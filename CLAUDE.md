@@ -41,4 +41,5 @@ consultado quando há dúvida. Responda em português.
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).
 - Firestore não aceita `undefined` nem arrays dentro de arrays.
-- No iPhone/iPad instalado na tela inicial, login por popup/redirect falha: por isso e-mail e senha.
+- Login: Google (popup, só fora do app instalado) e e-mail/senha. No iPhone/iPad instalado na tela inicial o popup falha;
+  contas Google criam uma senha em Conta › Criar senha (linkWithCredential) e usam e-mail/senha no app instalado.

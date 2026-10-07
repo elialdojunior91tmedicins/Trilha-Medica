@@ -166,7 +166,21 @@
     "auth/network-request-failed": "Sem conexão com a internet.",
     "auth/operation-not-allowed": "O login por e-mail e senha ainda não foi ativado no Firebase (Authentication › Sign-in method)."
   };
+  Object.assign(AUTH_ERR, {
+    "auth/popup-blocked": "O navegador bloqueou a janela do Google. Permita janelas para este site e tente de novo.",
+    "auth/popup-closed-by-user": "A janela do Google foi fechada antes de terminar.",
+    "auth/cancelled-popup-request": "A janela do Google foi fechada antes de terminar.",
+    "auth/account-exists-with-different-credential": "Este e-mail já tem conta com senha. Entre com e-mail e senha.",
+    "auth/credential-already-in-use": "Este e-mail já está em uso em outra conta.",
+    "auth/provider-already-linked": "Esta conta já tem senha. Use Esqueci minha senha para trocar.",
+    "auth/requires-recent-login": "Por segurança, saia e entre de novo com o Google e tente outra vez.",
+    "auth/unauthorized-domain": "O endereço do site ainda não foi autorizado no Firebase (Authentication › Configurações › Domínios autorizados)."
+  });
   const authMsg = e => AUTH_ERR[e && e.code] || "Não foi possível agora. Tente novamente.";
+  // app instalado na tela inicial: o login com Google (janela) não funciona no iPhone/iPad
+  const standalone = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  const hasPassword = u => (u.providerData || []).some(p => p && p.providerId === "password");
+  const hasGoogle = u => (u.providerData || []).some(p => p && p.providerId === "google.com");
 
   function openAccount() {
     authReady.then(u => {
@@ -194,8 +208,24 @@
               location.reload();
             } catch (e) { err.textContent = authMsg(e); out.disabled = false; }
           };
+          const pwBox = [];
+          if (hasGoogle(u) && !hasPassword(u)) {
+            const pw = h("input", { class: "etext", type: "password", autocomplete: "new-password", placeholder: "Nova senha (mínimo 6 caracteres)", "aria-label": "Nova senha" });
+            const st = h("p", { class: "gstatus", role: "status" }), e2 = h("p", { class: "err", role: "alert" });
+            const mk = h("button", { class: "btn primary", type: "button", text: "Criar senha" });
+            mk.onclick = async () => {
+              e2.textContent = ""; st.textContent = "";
+              if ((pw.value || "").length < 6) { e2.textContent = AUTH_ERR["auth/weak-password"]; return; }
+              mk.disabled = true;
+              try {
+                await auth.currentUser.linkWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, pw.value));
+                st.textContent = "Senha criada. No app instalado, entre com " + u.email + " e esta senha."; pw.value = "";
+              } catch (x) { e2.textContent = authMsg(x); mk.disabled = false; }
+            };
+            pwBox.push(h("p", { class: "gtext" }, h("b", { text: "Usar no app instalado: " }), "no app da tela inicial do iPhone/iPad, o botão do Google não funciona. Crie uma senha para esta mesma conta e entre lá com seu e-mail e ela."), pw, h("div", { class: "btns" }, mk), st, e2);
+          }
           b.append(
-            h("p", { class: "gtext" }, "Conectado como ", h("b", { text: u.email || "" }), "."),
+            h("p", { class: "gtext" }, "Conectado como ", h("b", { text: u.email || "" }), "."), ...pwBox,
             h("p", { class: "gtext", text: "Seu progresso fica salvo na sua conta e aparece em todos os aparelhos em que você entrar com este e-mail. Sem internet, o app continua funcionando e sincroniza quando a conexão voltar." }),
             h("p", { class: "gtext how", text: "Ao sair, os dados são apagados deste aparelho (continuam na sua conta)." }),
             h("div", { class: "btns" }, out), err);
@@ -226,6 +256,21 @@
           catch (e) { err.textContent = authMsg(e); }
         };
         const form = h("form", { class: "sform" }, intro, email, pass, h("div", { class: "btns" }, go), err, ok, h("div", { class: "btns" }, sw, forgot));
+        if (!standalone()) {
+          const gErr = h("p", { class: "err", role: "alert" });
+          const g = h("button", { class: "btn gbtn", type: "button", text: "Entrar com Google" });
+          g.onclick = async () => {
+            gErr.textContent = ""; g.disabled = true;
+            try {
+              await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+              try { sessionStorage.setItem("resid-justin", "1"); } catch (x) {}
+              location.reload();
+            } catch (x) { gErr.textContent = authMsg(x); g.disabled = false; }
+          };
+          b.append(h("div", { class: "btns" }, g), gErr, h("p", { class: "sor", text: "ou com e-mail e senha" }));
+        } else {
+          b.append(h("p", { class: "gtext how", text: "Criou a conta com o Google? No app instalado, entre com o mesmo e-mail e a senha criada em Conta › Criar senha (pelo Safari)." }));
+        }
         form.onsubmit = async (e) => {
           e.preventDefault(); err.textContent = ""; go.disabled = true;
           const em = email.value.trim(), pw = pass.value;
