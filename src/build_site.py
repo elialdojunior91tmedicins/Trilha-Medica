@@ -4,7 +4,7 @@ import re, pathlib, hashlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 src = (ROOT / "src/checklist-residencia.html").read_text(encoding="utf-8")
 FB = "10.12.2"
-ver = hashlib.sha1((src + (ROOT / "bridge.js").read_text(encoding="utf-8")).encode()).hexdigest()[:8]
+ver = hashlib.sha1((src + "".join((ROOT / f).read_text(encoding="utf-8") for f in ("bridge.js", "config.js", "site.css"))).encode()).hexdigest()[:8]
 head = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
