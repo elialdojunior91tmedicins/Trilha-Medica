@@ -1,0 +1,23 @@
+/* estilos só do site (janelas, avisos, conta) — usam as mesmas cores do app */
+header.hasacct{padding-right:110px}
+html[data-layout="phone"] header.hasacct{padding-right:132px}
+.acct{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .85rem var(--body);padding:7px 14px;border-radius:999px;cursor:pointer}
+.acct:hover{border-color:var(--accent)}
+.sbanners{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sbanners:empty{display:none}
+.sbanner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--accent-soft);color:var(--ink);border-radius:12px;padding:10px 14px;font-size:.92rem}
+.sbanner span{flex:1 1 220px;min-width:0}
+.smodal-back{position:fixed;inset:0;z-index:90;background:rgba(10,20,18,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+@media (min-width:600px){.smodal-back{align-items:center}}
+.smodal{background:var(--surface);color:var(--ink);border-radius:16px;width:min(560px,100%);max-height:calc(100dvh - 32px);overflow-y:auto;box-shadow:0 18px 50px rgba(0,0,0,.25);display:flex;flex-direction:column}
+.smodal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 6px;position:sticky;top:0;background:var(--surface)}
+.smodal-head h2{margin:0;font:700 1.15rem var(--display)}
+.smodal-body{padding:6px 18px 18px;display:flex;flex-direction:column;gap:10px}
+.smodal-body p{margin:0}
+.sform{display:flex;flex-direction:column;gap:10px}
+.sprompt{white-space:pre-wrap;word-break:break-word;font:.78rem/1.45 var(--mono);background:var(--bg);border-radius:8px;padding:10px;max-height:220px;overflow:auto;user-select:text;-webkit-user-select:text}
+.spaste{min-height:140px}
+.warnbox{background:var(--due-soft);color:var(--ink);border-radius:8px;padding:10px 12px}
+.stoast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;transition:.3s;z-index:95;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:12px;font-size:.92rem;max-width:min(520px,calc(100vw - 32px));box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.stoast.on{opacity:1;transform:translate(-50%,0)}
+#bkUndo{align-self:flex-start}
