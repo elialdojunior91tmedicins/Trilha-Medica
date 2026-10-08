@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=1a0cf9fb">
+<link rel="stylesheet" href="site.css?v=020f3ffd">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=1a0cf9fb"></script>
-<script src="bridge.js?v=1a0cf9fb"></script>
+<script src="config.js?v=020f3ffd"></script>
+<script src="bridge.js?v=020f3ffd"></script>
 </head>
 <body>
 <script>
@@ -306,7 +306,19 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qfrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
 .qfsel{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
 .qfsel select{width:100%;min-width:0;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;font-weight:400;letter-spacing:0}
-.qtg .link{margin-left:auto}
+.qftop{display:flex;gap:8px;align-items:stretch}
+.qftop .search{flex:1;min-width:0}
+.qfbtn{display:none;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9rem var(--body);padding:0 12px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.qfbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.qfbtn b{font:700 .72rem/18px var(--body);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--on-accent);text-align:center}
+.qfbtn[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.qfpanel{display:flex;flex-direction:column;gap:10px}
+.qfdone{display:none}
+html[data-layout="phone"] .qfbtn{display:inline-flex}
+html[data-layout="phone"] .qfpanel:not(.open){display:none}
+html[data-layout="phone"] .qfpanel.open{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+html[data-layout="phone"] .qfdone{display:block;align-self:stretch}
+#qFilters>#qClear{align-self:flex-start}
 .qchtog{margin-bottom:10px;align-self:flex-start}
 .qmore{margin-top:6px}
 html[data-layout="phone"] .qfrow{grid-template-columns:1fr 1fr}
@@ -1974,7 +1986,7 @@ function renderDash(){
 }
 
 /* aba Questões */
-let qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
+let qFOpen=false, qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
 function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
 const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
@@ -1994,6 +2006,12 @@ const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
 function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   const top=el(`<div class="qftop"><input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto (ex.: sepse)" aria-label="Buscar tema ou assunto"></div>`),qi=top.querySelector("input");qi.value=qQuery;
   qi.oninput=debounced(()=>{qQuery=qi.value;render()});box.appendChild(top);
+  // no celular os filtros ficam recolhidos atrás do botão "Filtros" (a busca fica sempre à vista)
+  const nAct=[qArea!=="all",qSpec!=="all",qDisc!=="all",qPer!=="all",qAcc!=="all",qInc,qErrF,qDueF,qSort!=="num"].filter(Boolean).length;
+  const fb=el(`<button class="qfbtn" type="button" id="qFBtn" aria-expanded="${qFOpen}" aria-controls="qFPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span>${nAct?`<b>${nAct}</b>`:""}</button>`);
+  fb.onclick=()=>{qFOpen=!qFOpen;render()};top.appendChild(fb);
+  const panel=el(`<div class="qfpanel${qFOpen?" open":""}" id="qFPanel"></div>`);box.appendChild(panel);
+  const realBox=box;{const box=panel;
   // área
   const ac=el(`<div class="chips" id="qArea" role="group" aria-label="Filtrar por área"></div>`);
   const withQ=it=>get(it.key).qt;
@@ -2018,9 +2036,10 @@ function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   const tg=el(`<div class="chips qtg" role="group" aria-label="Mais filtros"></div>`);
   [["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"}],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc}],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF}],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF}]].forEach(([id,lab,on,fn])=>{
     const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=id;b.textContent=lab;b.onclick=()=>{fn();render()};tg.appendChild(b)});
+  box.appendChild(tg);
+  if(qFOpen){const ok=el(`<button class="btn qfdone" type="button">Ver resultados</button>`);ok.onclick=()=>{qFOpen=false;render();$("#qkpis").scrollIntoView({block:"start"})};box.appendChild(ok)}}
   const any=qArea!=="all"||qSpec!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF;
-  if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;render()};tg.appendChild(cl)}
-  box.appendChild(tg)}
+  if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;render()};realBox.appendChild(cl)}}
 function renderQuest(){
   renderQFilters();
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
@@ -3422,7 +3441,7 @@ const HELP=[
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
-- **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno** e **Revisão pendente**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo.
+- **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno** e **Revisão pendente**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
