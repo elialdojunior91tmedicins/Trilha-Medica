@@ -490,7 +490,7 @@ html[data-layout="phone"] .appnav .tab.tabhelp{display:none}
 .appnav .tab,.tseg button,.navextra button{-webkit-tap-highlight-color:transparent}
 html[data-layout="phone"] .ecount::before,html[data-layout="phone"] .ecount::after,html[data-layout="tablet"] .ecount::before,html[data-layout="tablet"] .ecount::after,html[data-layout="desktop"] .appnav .ecount::before,html[data-layout="desktop"] .appnav .ecount::after{content:none}
 
-/* --- partes da aba Temas (celular e tablet com uma coluna) --- */
+/* --- partes da aba Residência (celular e tablet com uma coluna) --- */
 html[data-layout="phone"] .tseg,html[data-layout="tablet"][data-cols="1"] .tseg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;position:sticky;top:env(safe-area-inset-top,0px);z-index:6}
 .tseg button{flex:1;border:0;background:none;color:var(--muted);font:600 .85rem var(--body);padding:8px 2px;border-radius:9px;cursor:pointer;white-space:nowrap}
 .tseg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
@@ -561,7 +561,7 @@ html[data-layout="desktop"][data-cols="2"] #viewTemas>.controls{grid-column:1;gr
 html[data-layout="desktop"][data-cols="2"] #viewTemas>#areas{grid-column:1;grid-row:3}
 html[data-layout="desktop"][data-cols="2"] #viewTemas>#resetBox{grid-column:1;grid-row:4}
 
-/* ===== Faculdade: resumo, disciplinas no estilo da aba Temas, provas ===== */
+/* ===== Faculdade: resumo, disciplinas no estilo da aba Residência, provas ===== */
 #viewFac .fside{display:contents}
 .fsemchips .chip{font-size:.88rem}
 .chip.fnewchip{border-style:dashed;color:var(--muted);background:none}
@@ -582,7 +582,7 @@ html[data-layout="desktop"][data-cols="2"] #viewTemas>#resetBox{grid-column:1;gr
 .fbrow .hbar{height:10px}
 .fbrow:hover .vl{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .frevs{border:1.5px solid var(--l2)}.frevs .plan{margin:0}
-#facDiscs{display:flex;flex-direction:column;gap:14px;width:100%}
+.fdiscs{display:flex;flex-direction:column;gap:10px;width:100%}
 .fdhead{display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;padding:0 2px}
 .fdhead h2{font-size:1.3rem}
 .fdhead .how{font-size:.82rem;color:var(--muted)}
@@ -661,19 +661,71 @@ li.fspr.open{background:var(--bg)}
 .fobjadd{flex-wrap:wrap}.fobjadd textarea{flex:1 1 220px}
 .fmove{flex-wrap:wrap}
 @media (max-width:520px){.card.fimp.slim .fimph>div{flex:1 1 100%}}
-/* celular e tablet com uma coluna: só a parte escolhida */
-html[data-layout="phone"] #viewFac[data-seg="res"] [data-fs]:not([data-fs~="res"]),html[data-layout="phone"] #viewFac[data-seg="disc"] [data-fs]:not([data-fs~="disc"]),html[data-layout="phone"] #viewFac[data-seg="prov"] [data-fs]:not([data-fs~="prov"]),
-html[data-layout="tablet"][data-cols="1"] #viewFac[data-seg="res"] [data-fs]:not([data-fs~="res"]),html[data-layout="tablet"][data-cols="1"] #viewFac[data-seg="disc"] [data-fs]:not([data-fs~="disc"]),html[data-layout="tablet"][data-cols="1"] #viewFac[data-seg="prov"] [data-fs]:not([data-fs~="prov"]){display:none}
+/* faculdade em pastas */
+.fsems{display:flex;flex-direction:column;gap:14px;width:100%}
+.fsemf{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:72px}
+.fsemf.open{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.fsemf.arch .fssum{opacity:.75}
+.fssum,.fsph{width:100%;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.fssum{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:16px 18px}
+.fssum:hover .aname,.fdsum:hover .aname{color:var(--accent)}
+.fssum .chev,.fsph .chev{width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px}
+.fssum[aria-expanded="true"] .chev,.fsph[aria-expanded="true"] .chev{transform:rotate(45deg)}
+.ffold{width:26px;height:26px;fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6;stroke-linejoin:round;flex:none}
+.fssum .aname{font:700 1.2rem/1.2 var(--display);overflow-wrap:anywhere}
+.fssum .acount{font:500 .9rem var(--mono);color:var(--muted)}
+.fssum .fdmeta{grid-column:3/-1}
+.fssum .bar{grid-column:1/-1;height:6px;margin-top:6px}
+.fsbody{border-top:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
+.fstools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fsbody .fsemmenu{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.fshead{display:flex;justify-content:space-between;align-items:center;margin-top:2px}
+.fsbody .cempty{background:var(--surface)}
+.fsbody .fadddisc{background:var(--surface)}
+.fsbody .fdc{border-radius:12px}
+.fdsum{grid-template-columns:auto auto minmax(0,1fr) auto}
+.fdsum .fdmeta{grid-column:3/-1}
+.fdsum .ffold{width:22px;height:22px}
+.fdsum .aname{font:700 1.08rem/1.2 var(--display);overflow-wrap:anywhere}
+.fsprov{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:72px}
+.fsprov.open{border-color:var(--l2)}
+.fsph{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 14px}
+.fsphl{font:700 1rem/1.2 var(--display)}.fsphc{font-size:.8rem;color:var(--muted)}
+.fspbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.fsbody .fimp{background:var(--surface)}
+.farchbtn{align-self:flex-start}
+@media (max-width:480px){.fsbody{padding:10px;gap:10px}.fssum{padding:14px}.fspbody{padding:0 10px 12px}.fsph{padding:12px}}
 @media (max-width:480px){.fdsum{padding:14px}.fdtools,.finfo,.fdprov,.fdfoot,.fdbody>.grp{padding-left:14px;padding-right:14px}li.fexedit,li.fadd{padding-left:14px;padding-right:14px}.fdbody>.feadd{padding:12px 14px 0}.fdbody>p.gtext{padding:8px 14px 12px}
   .fsptl li.t .item{grid-template-columns:2.2rem minmax(0,1fr) auto}.frmrow{padding-left:12px}}
-/* computador e tablet largos: resumo e disciplinas à esquerda, provas e revisões à direita */
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac{max-width:none}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac:not([hidden]):not([data-empty="1"]){display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:24px;row-gap:20px;align-items:start}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>.fsem{grid-column:1;grid-row:1}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>.fhero{grid-column:1;grid-row:2}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>.fdiscs{grid-column:1;grid-row:3}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>.fside{display:flex;flex-direction:column;gap:20px;grid-column:2;grid-row:1/span 3;min-width:0}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac[data-empty="1"]{max-width:820px}
+/* ===== aba Início ===== */
+.ihome .icol{display:contents}
+.islot:empty{display:none}
+#iProva{order:1}#iToday{order:2}#iRevs{order:3}#iStats{order:4}
+.ipmain{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
+.ipmain:hover{border-color:var(--accent)}
+.ipdays{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:4.2rem;padding:8px 6px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+.ipdays.soon{background:var(--due-soft);color:var(--due)}
+.ipdays b{font:500 1.9rem/1 var(--mono);font-variant-numeric:tabular-nums}
+.ipdays span{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.06em}
+.ipinfo{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ipname{font:700 1.1rem/1.2 var(--display);overflow-wrap:anywhere}
+.ipsub,.ipst{font-size:.82rem;color:var(--muted)}
+.ipinfo .meter{margin:4px 0 0;display:block}
+.ipnext{margin:0}.ipnext li{align-items:baseline}
+.istats{gap:16px}
+.ipart{display:flex;flex-direction:column;gap:12px}
+.ipart+.ipart{border-top:1px solid var(--line);padding-top:16px}
+.iph{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.iph .link{align-self:auto}
+.ikpis{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.84rem;color:var(--muted)}
+.ikpis b{font:500 1rem var(--mono);color:var(--ink);margin-right:3px;font-variant-numeric:tabular-nums}
+html[data-layout="phone"] #viewInicio{gap:14px}
+html:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio{max-width:820px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio{max-width:none}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio:not([hidden]){display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:24px;align-items:start}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio .icol{display:flex;flex-direction:column;gap:20px;min-width:0}
+.ipnext .ud{text-transform:none}
+@media (max-width:480px){.fsptl li.t .item{grid-template-columns:minmax(0,1fr) auto}.fsptl li.t .item .num{display:none}.fsptl .meta{grid-column:1}.fsptl .lvl{grid-column:2}.fsptl .detail{padding:4px 10px 12px}.frmrow{padding-left:12px}}
 </style>
 
 <div class="wrap">
@@ -685,7 +737,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac[
 
   <nav class="appnav" aria-label="Navegação">
   <div class="tabs" role="tablist" aria-label="Seções">
-    <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="true"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Temas</span><span class="ecount" id="rcount"></span></button>
+    <button class="tab" role="tab" id="tabI" data-v="inicio" aria-selected="true"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2L12 4.2l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6M10 20v-5.6h4V20"/></svg><span class="tl">Início</span><span class="ecount" id="rcount"></span></button>
+    <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Residência</span></button>
     <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Anotações</span><span class="ecount" id="ncount"></span></button>
@@ -696,15 +749,9 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac[
   </nav>
 
   <div id="viewFac" class="wrap" style="width:100%" hidden>
-    <div class="tseg" id="fSeg" role="group" aria-label="Partes da Faculdade"><button type="button" data-s="res">Resumo</button><button type="button" data-s="disc">Disciplinas</button><button type="button" data-s="prov">Provas</button></div>
-    <section class="card fsem" id="facSemCard" data-fs="res disc prov" aria-labelledby="fh"></section>
-    <section class="card dash fhero" id="facHero" data-fs="res" aria-label="Resumo do semestre"></section>
-    <div class="fside">
-      <section class="card fprovcard" id="facProvas" data-fs="prov" aria-labelledby="fph2"></section>
-      <section class="card frevs" id="facRevs" data-fs="res" aria-label="Revisões da faculdade"></section>
-      <section class="card fcrunch" id="facCrunch" data-fs="res prov" aria-label="Modo provas"></section>
-    </div>
-    <div id="facDiscs" class="fdiscs" data-fs="disc"></div>
+    <section class="card fhead" id="facHead" aria-labelledby="fh"></section>
+    <div id="facSems" class="fsems"></div>
+    <section class="card fcrunch" id="facCrunch" aria-label="Modo provas"></section>
   </div>
 
   <div id="viewQuest" class="wrap" style="width:100%" hidden>
@@ -785,10 +832,16 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac[
     </section>
   </div>
 
-  <div id="viewTemas" class="wrap" style="width:100%" data-seg="hoje">
-  <div class="tseg" role="group" aria-label="Partes da aba Temas" id="tSeg">
+  <div id="viewInicio" class="wrap ihome" style="width:100%">
+    <div class="icol icol1"><div class="islot" id="iToday"></div><div class="islot" id="iRevs"></div></div>
+    <div class="icol icol2"><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+  </div>
+
+  <div id="viewTemas" class="wrap" style="width:100%" data-seg="hoje" hidden>
+  <div class="tseg" role="group" aria-label="Partes da aba Residência" id="tSeg">
     <button type="button" data-s="hoje" aria-pressed="true">Hoje</button><button type="button" data-s="rev" aria-pressed="false">Revisões</button><button type="button" data-s="lista" aria-pressed="false">Lista</button><button type="button" data-s="prog" aria-pressed="false">Progresso</button>
   </div>
+  <span id="todaySlot" hidden></span>
   <section class="card today" aria-labelledby="th">
     <div class="todayhead"><h2 id="th">Estudar hoje</h2><span class="todaydate" id="tdate"></span></div>
     <p class="crunch" id="crunchBar" hidden></p>
@@ -1093,7 +1146,7 @@ const ETIPS={conhecimento:"A maioria dos seus erros é por falta de conteúdo. V
   interpretacao:"A maioria dos seus erros é de leitura. Antes das alternativas, sublinhe o que o enunciado pede: conduta, diagnóstico, exceto, mais provável.",
   confusao:"A maioria dos seus erros vem de confundir ou esquecer. Monte quadros comparativos e revise estes erros com mais frequência."};
 const E_PAGE=60;let eLimit=E_PAGE;
-let errors=[], errStore=null, view="temas", eArea="all", eSp="all", eOrder="sp", nSp="all", eType="all", eQuery="", eTopicKey=null, drafts={}, eErr="", delArm=null;
+let errors=[], errStore=null, view="inicio", eArea="all", eSp="all", eOrder="sp", nSp="all", eType="all", eQuery="", eTopicKey=null, drafts={}, eErr="", delArm=null;
 const LSE="resid-erros-v1", LSP="resid-prompt-v1", LSN="resid-notas-v1";
 let notes={}, notesStore=null, noteTimers={}, subDraft={}, subErr="", genFocus={};
 const DEFAULT_PROMPT=`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
@@ -1414,7 +1467,7 @@ function renderNotasView(){
   spChips($("#nSp"),nArea,nSp,v=>keys.filter(k=>BYKEY[k].area.code===nArea&&(v==="all"||BYKEY[k].sp===v)).length,v=>{nSp=v;render()});
   const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]).includes(nQuery)));
   const list=$("#nlist");list.innerHTML="";
-  if(!keys.length)list.appendChild(el(`<li class="tips">Abra um tema na aba Temas e escreva no campo Anotações, use um modelo ou peça um resumo ao Claude. Tudo o que você anotar aparece aqui, reunido por área.</li>`));
+  if(!keys.length)list.appendChild(el(`<li class="tips">Abra um tema na aba Residência e escreva no campo Anotações, use um modelo ou peça um resumo ao Claude. Tudo o que você anotar aparece aqui, reunido por área.</li>`));
   else if(!vis.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhuma anotação com esses filtros.</li>`));
   const card=k=>{const it=BYKEY[k],open=nOpen.has(k);
     const c=el(`<li class="ncard${open?" open":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span><span></span></div><div class="mdview clamp"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini" type="button">Editar</button></div></li>`);
@@ -1779,7 +1832,7 @@ function renderQuest(){
   $("#qChartTitle").textContent=A?`Acerto por especialidade · ${A.name}`:"Acerto por área";
   const rows=A?A.specs.map(s=>[s.name,...aggr(s.items)]):AREAS.map(a=>[a.name,...aggr(a.items)]);
   $("#qChart").innerHTML=T?hbarRows(rows)+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span></div>`:
-    `<p class="cempty">Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema, na aba Temas.</p>`;
+    `<p class="cempty">Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema, na aba Residência.</p>`;
   // chips
   const ac=$("#qArea");ac.innerHTML="";
   [["all","Todas as áreas"],...AREAS.map(a=>[a.code,a.code])].forEach(([v,lab])=>{const n=(v==="all"?ALL:AREAS.find(a=>a.code===v).items).filter(i=>get(i.key).qt).length;
@@ -1901,14 +1954,14 @@ function renderRevs(){
   const t=dnum(today()),up=POOL.filter(i=>{const d=dueIn(get(i.key));return d!==null&&d>0&&d<=7}).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key)));
   $("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
-  const list=$("#revlist");list.innerHTML="";
+  const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
   const shown=revMore?due:due.slice(0,4);
   shown.forEach(it=>{const s=get(it.key),d=dueIn(s),subs=pickSubs(it,"r-rev"),chk=rchk(it.key),L=subList(it);
     const li=el(`<li class="pcard rcard"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason r-rev"></span></div><div class="pa"></div><div class="pbody"></div></li>`);
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=dueLabel(d);
-    const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · último estudo ${br(s.last)} · intervalo ${interval(s)} ${interval(s)===1?"dia":"dias"} · `;pa.appendChild(incEl(wOf(it),false));
+    const pa=li.querySelector(".pa");pa.textContent=`${it.area===FAC_AREA?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · último estudo ${br(s.last)} · intervalo ${interval(s)} ${interval(s)===1?"dia":"dias"} · `;if(it.own){pa.prepend(el(`<span class="facchip">FAC</span>`))}else{pa.appendChild(incEl(wOf(it),false));const L0=FL[it.key];if(L0){const x=el(`<span class="fbadge"></span>`);x.textContent=`FAC · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");pa.appendChild(x)}}
     const body=li.querySelector(".pbody");
     if(subs.length){body.appendChild(el(`<p class="plabel">Revisar:</p>`));const ul=el(`<ul class="psubs"></ul>`);
       subs.forEach((t,n)=>{const id=`rv-${it.key}-${n}`,on=chk.includes(t);const r=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label></li>`);r.querySelector("label").textContent=t;
@@ -1973,7 +2026,7 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 const LSF="resid-fac-v1", FAC_WIN=21, FAC_VESP=3, RES_MIN_WEEK=2, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=false, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
@@ -2030,7 +2083,7 @@ function resDaysNeeded(){const ws=weekStart(),t=dnum(today());let done=0;
   for(let x=ws;x<t;x++){const h=hist[fromNum(x)];if(h&&h.res)done++}
   const left=ws+7-t;return Math.max(0,RES_MIN_WEEK-done)>=left}
 
-/* selo na aba Temas */
+/* selo na aba Residência */
 function facBadge(key){for(const p of upcomingProvas()){if(p.items.some(r=>{const x=refTopic(r);return x&&x.k===key})){const d=discOf(p.discId);return {p,d}}}return null}
 
 /* ---------- busca com siglas (evita duplicatas) ---------- */
@@ -2049,7 +2102,7 @@ function exactDup(q){const n=norm(q).trim();return FAC_ITEMS.find(it=>norm(it.t)
 /* ---------- estrutura: disciplina › eixo › SP ----------
    disc = {id, semId, name, info:{tipo,ch,prof,tutor,horario,local,ementa,objetivos}, items:[ref] (conteúdo avulso, versão antiga),
            eixos:[{id,name,area,spec}], sps:[{id,name,eixoId,items:[ref],objs:[texto]}]}
-   O eixo define área e especialidade: os temas da faculdade criados nele aparecem na aba Temas nesse lugar, com o selo FAC.
+   O eixo define área e especialidade: os temas da faculdade criados nele aparecem na aba Residência nesse lugar, com o selo FAC.
    Os objetivos da SP viram subtópicos (cs com fac=<id da SP>) do primeiro tema ligado a ela. */
 const LV_DEF={disc:"Disciplina",eixo:"Eixo",sp:"SP"};
 const lv=sem=>({...LV_DEF,...((sem&&sem.lv)||{})});
@@ -2076,7 +2129,7 @@ function ownPlace(o){const d=discOf(o.discId);let area=o.area,spec=o.spec,spName
   const A=AREAS.find(a=>a.code===area);
   const dn=(f&&f.d.name)||(d&&d.name);
   return {A,spec:A?(spec||"Faculdade"):(dn||"Faculdade"),origin:[dn,spName&&spShort(spName)].filter(Boolean).join(" · "),originFull:[dn,spName].filter(Boolean).join(" · ")}}
-/* temas ligados a SPs dos semestres ativos (para o selo na aba Temas) */
+/* temas ligados a SPs dos semestres ativos (para o selo na aba Residência) */
 function facLinkMap(){const m={},act=new Set(activeSems());
   fac.discs.forEach(d=>{if(!act.has(d.semId))return;(d.sps||[]).forEach(s=>s.items.forEach(r=>{const x=refTopic(r);if(x&&!m[x.k])m[x.k]={d,s}}));
     (d.items||[]).forEach(r=>{const x=refTopic(r);if(x&&!m[x.k])m[x.k]={d,s:null}})});return m}
@@ -2091,7 +2144,7 @@ function syncObjs(s){const r=primaryRef(s);if(!r)return;const k=refTopic(r).k,it
 function dropObjs(s,k){if(!BYKEY[k]||!state[k]||!state[k].cs)return;upd(k,x=>{x.cs=(x.cs||[]).filter(c=>c.fac!==s.id);if(!x.cs.length)delete x.cs})}
 
 /* ---------- ações ---------- */
-function addSem(name){const s={id:fuid(),name,archived:false};fac.sems.push(s);facSel=s.id;saveFac();render()}
+function addSem(name){const s={id:fuid(),name,archived:false};fac.sems.push(s);facOpenSem.add(s.id);saveFac();render()}
 function addDisc(semId,name){const d={id:fuid(),semId,name,items:[],eixos:[],sps:[],info:{}};fac.discs.push(d);facOpenDisc.add(d.id);facEditDisc.add(d.id);saveFac();render()}
 function addEixo(d,name){const e={id:fuid(),name,...suggestMap(name)};d.eixos.push(e);saveFac();render();return e}
 function addSP(d,eixoId,name){const s={id:fuid(),name,eixoId:eixoId||null,items:[],objs:[]};d.sps.push(s);facOpenSP.add(s.id);saveFac();render();return s}
@@ -2243,10 +2296,7 @@ function nameEdit(id,val,save){const f=el(`<form class="fren"><input class="etex
 function armBtn(key,label,confirmLabel,act,cls="link"){const b=el(`<button class="${cls}" type="button"></button>`);const arm=facArm===key;b.textContent=arm?confirmLabel:label;if(arm)b.classList.add("warn");
   b.onclick=()=>{if(arm){facArm=null;act()}else{facArm=key;render()}};return b}
 
-/* ---------- Faculdade: partes no celular (Resumo | Disciplinas | Provas) ---------- */
-let fSeg="res";try{const v=localStorage.getItem("resid-fseg");if(["res","disc","prov"].includes(v))fSeg=v}catch(e){}
-function setFSeg(v,top=true){fSeg=v;try{localStorage.setItem("resid-fseg",v)}catch(e){}render();if(top)window.scrollTo({top:0})}
-function goSeg(v,id){fSeg=v;try{localStorage.setItem("resid-fseg",v)}catch(e){}render();const x=document.getElementById(id);if(x)x.scrollIntoView({behavior:"smooth",block:"start"})}
+/* ---------- Faculdade: pastas (Semestre › Disciplina › Eixo › SP) ---------- */
 const plural=w=>/s$/i.test(w)?w:w+"s";
 const byDate=(a,b)=>a.date<b.date?-1:a.date>b.date?1:0;
 const semDiscs=id=>fac.discs.filter(d=>d.semId===id);
@@ -2261,103 +2311,109 @@ function spNum(s,i){const m=String(s.name||"").match(/\d+(?:[.,]\d+)*/);return m
 function semStats(cur){const ds=semDiscs(cur.id),keys=topicKeysOf(ds.flatMap(discRefs));let od=0,ot=0,nsp=0;
   ds.forEach(d=>d.sps.forEach(s=>{nsp++;const [a,b]=objStats(s);od+=a;ot+=b}));
   const c=lvlCounts(keys);return {ds,keys,c,seen:keys.length-c[0],od,ot,nsp,own:keys.filter(k=>k.startsWith("F-")).length}}
-function goProva(p){const d=discOf(p.discId);if(d)facSel=d.semId;facProvaOpen.add(p.id);fSeg="prov";try{localStorage.setItem("resid-fseg","prov")}catch(e){}
-  if(view!=="fac")showView("fac");render();const x=document.getElementById("fp-"+p.id);if(x)x.scrollIntoView({behavior:"smooth",block:"start"})}
-function goDisc(d){facOpenDisc.add(d.id);fSeg="disc";try{localStorage.setItem("resid-fseg","disc")}catch(e){}render();const x=document.getElementById("fd-"+d.id);if(x)x.scrollIntoView({behavior:"smooth",block:"start"})}
+const curSem=()=>{const a=fac.sems.filter(s=>!s.archived);return a[a.length-1]||null};
+function scrollToId(id){const x=document.getElementById(id);if(x)x.scrollIntoView({behavior:"smooth",block:"start"})}
+function goProva(p){const d=discOf(p.discId);if(d){facOpenSem.add(d.semId);facOpenProv.add(d.semId);const s=semOf(d.semId);if(s&&s.archived)facShowArch=true}facProvaOpen.add(p.id);
+  if(view!=="fac")showView("fac");render();scrollToId("fp-"+p.id)}
+function goDisc(d){facOpenSem.add(d.semId);facOpenDisc.add(d.id);if(view!=="fac")showView("fac");render();scrollToId("fd-"+d.id)}
 const dayLabel=s=>new Date(s+"T12:00:00").toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"2-digit"});
-let facShown=new Set();
+let facShown=new Set(),facSemInit=false;
+const FOLDER_SVG=`<svg class="ffold" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.2l2 2.2h8.8A1.5 1.5 0 0 1 21 8.7v9.8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></svg>`;
 
 function renderFac(){
   const v=$("#viewFac");if(!v)return;facShown=new Set();
-  const sems=fac.sems.filter(s=>facShowArch||!s.archived);
-  if(!facSel||!semOf(facSel)||(!facShowArch&&semOf(facSel).archived))facSel=(sems[sems.length-1]||{}).id||null;
-  const cur=semOf(facSel),L=lv(cur);
-  v.dataset.seg=fSeg;v.dataset.empty=cur?"0":"1";
-  const upN=cur?semProvas(cur).filter(p=>p.date>=today()).length:0;
-  $("#fSeg").hidden=!cur;
-  $("#fSeg").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.s===fSeg);
-    if(b.dataset.s==="disc")b.textContent=plural(L.disc);if(b.dataset.s==="prov")b.innerHTML="Provas"+(upN?`<b>${upN}</b>`:"")});
-  renderFacSem(cur,sems,L);
-  ["facHero","facProvas","facRevs","facCrunch","facDiscs"].forEach(id=>{$("#"+id).hidden=!cur});
-  if(!cur)return;
-  renderFacHero(cur,L);renderFacProvas(cur,L);renderFacRevs(cur);renderFacCrunch();renderFacDiscs(cur,L)}
+  if(!facSemInit){facSemInit=true;const c=curSem();if(c)facOpenSem.add(c.id)}
+  renderFacHead();
+  const box=$("#facSems");box.innerHTML="";
+  const act=fac.sems.filter(s=>!s.archived).reverse(),arch=fac.sems.filter(s=>s.archived).reverse();
+  act.forEach(s=>box.appendChild(semFolder(s)));
+  if(arch.length){const t=el(`<button class="link farchbtn" type="button"></button>`);t.textContent=facShowArch?`Ocultar semestres arquivados`:`Semestres arquivados (${arch.length})`;t.onclick=()=>{facShowArch=!facShowArch;render()};box.appendChild(t);
+    if(facShowArch)arch.forEach(s=>box.appendChild(semFolder(s)))}
+  const fc=$("#facCrunch");fc.hidden=!fac.sems.length;if(fac.sems.length)renderFacCrunch()}
 
-/* semestre: escolha, ajustes e criação */
-function renderFacSem(cur,sems,L){const c=$("#facSemCard");c.innerHTML="";
+function renderFacHead(){const c=$("#facHead");c.innerHTML="";
   const head=el(`<div class="dhead"><h2 id="fh">Faculdade</h2></div>`);c.appendChild(head);
   const newForm=primary=>{const ns=el(`<form class="addsub"><input class="etext" id="facNewSem" maxlength="40" aria-label="Nome do novo semestre"><button class="btn${primary?" primary":""}" type="submit">Criar semestre</button></form>`);
     const i=ns.querySelector("input");i.placeholder=fac.sems.length?"Ex.: 7° Semestre":"Ex.: 6° Semestre";i.value=facNew.sem||"";i.oninput=()=>facNew.sem=i.value;
     ns.onsubmit=e=>{e.preventDefault();const t=i.value.trim();if(!t)return;facNew.sem="";facSemMenu=false;addSem(t.slice(0,40))};return ns};
   if(!fac.sems.length){
-    c.append(el(`<p class="gtext">Organize o semestre do jeito do seu curso: <b>Semestre › Disciplina (NCS) › Eixo › SP</b>. Cada SP é ligada aos temas do checklist, então o que você estuda aqui conta na aba Temas, nas revisões e no plano do dia.</p>`),
-      el(`<ol class="fsteps"><li><b>Crie o semestre</b> logo abaixo.</li><li><b>Cadastre as disciplinas</b>: cole a ementa (o Claude monta eixos, SPs e objetivos) ou adicione à mão.</li><li><b>Cadastre as provas</b> com data: nas 3 semanas anteriores, o plano do dia reserva espaço para elas.</li></ol>`),newForm(true));return}
-  const mb=el(`<button class="mini" type="button" aria-expanded="${facSemMenu}"></button>`);mb.textContent=facSemMenu?"Fechar ajustes":"Ajustes do semestre";
-  mb.onclick=()=>{facSemMenu=!facSemMenu;closeEdit();render()};head.appendChild(mb);
-  const chips=el(`<div class="chips fsemchips" role="group" aria-label="Semestres"></div>`);
-  sems.forEach(s=>{const b=el(`<button class="chip" type="button" aria-pressed="${s.id===facSel}"></button>`);b.textContent=s.name+(s.archived?" · arquivado":"");
-    b.onclick=()=>{if(facSel!==s.id&&(facEdit==="sem"||facEdit==="lv"))closeEdit();facSel=s.id;render()};chips.appendChild(b)});
-  const nb=el(`<button class="chip fnewchip" type="button">+ Semestre</button>`);nb.onclick=()=>{facSemMenu=true;closeEdit();render();setTimeout(()=>{const x=document.getElementById("facNewSem");if(x)x.focus()},30)};chips.appendChild(nb);
-  c.appendChild(chips);
-  if(cur){const st=el(`<p class="fpath"></p>`);st.textContent=`Estrutura: ${L.disc} › ${L.eixo} › ${L.sp}`+(cur.archived?" · semestre arquivado (fora do plano do dia)":"");c.appendChild(st)}
-  else c.appendChild(el(`<p class="gtext how">Todos os semestres estão arquivados. Abra os ajustes para mostrá-los ou crie um novo.</p>`));
-  if(!facSemMenu)return;
-  const m=el(`<div class="fsemmenu"><div class="fsemacts"></div><div class="fsemedit"></div></div>`),ac=m.querySelector(".fsemacts"),se=m.querySelector(".fsemedit");
-  if(cur){const rn=el(`<button class="mini" type="button" aria-pressed="${facEdit==="sem"}">Renomear</button>`);rn.onclick=()=>{openEdit(facEdit==="sem"?null:"sem");render()};
-    const lb=el(`<button class="mini" type="button" aria-pressed="${facEdit==="lv"}">Nomes dos níveis</button>`);lb.onclick=()=>{openEdit(facEdit==="lv"?null:"lv");render()};
-    const a=el(`<button class="mini" type="button"></button>`);a.textContent=cur.archived?"Desarquivar":"Arquivar";a.onclick=()=>{cur.archived=!cur.archived;closeEdit();saveFac();render()};ac.append(rn,lb,a)}
-  if(fac.sems.some(s=>s.archived)){const t=el(`<button class="mini" type="button"></button>`);t.textContent=facShowArch?"Ocultar arquivados":"Mostrar arquivados";t.onclick=()=>{facShowArch=!facShowArch;render()};ac.appendChild(t)}
-  if(cur&&facEdit==="sem"){const ne=nameEdit("sem",cur.name,v=>{cur.name=v.slice(0,40)});const i=ne.querySelector("input");i.maxLength=40;i.setAttribute("aria-label","Novo nome do semestre");se.appendChild(ne)}
-  if(cur&&facEdit==="lv"){const L0={...lv(cur),...(facDraft.lv||{})};const f=el(`<form class="flv"><p class="gtext how"></p><div class="fgrid"></div><div class="btns"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button">Cancelar</button></div></form>`);
-    f.querySelector("p").textContent=`Como o seu curso chama cada nível em ${cur.name} (usado nos botões e no cadastro pela ementa).`;
+    c.append(el(`<p class="gtext">Organize a faculdade em pastas, do jeito do seu curso: <b>Semestre › Disciplina (NCS) › Eixo › SP</b>. Cada SP é ligada aos temas da residência, então o que você estuda aqui conta lá também, nas revisões e no plano do dia.</p>`),
+      el(`<ol class="fsteps"><li><b>Crie o semestre</b> logo abaixo. Ele vira uma pasta.</li><li><b>Dentro dele</b>, cole a ementa (o Claude monta disciplinas, eixos, SPs e objetivos) ou adicione as disciplinas à mão.</li><li><b>Cadastre as provas</b> do semestre com data: nas 3 semanas anteriores, o plano do dia reserva espaço para elas.</li></ol>`),newForm(true));return}
+  const nb=el(`<button class="mini" type="button" aria-expanded="${facSemMenu}"></button>`);nb.textContent=facSemMenu?"Cancelar":"+ Semestre";nb.onclick=()=>{facSemMenu=!facSemMenu;render();if(facSemMenu)setTimeout(()=>{const x=document.getElementById("facNewSem");if(x)x.focus()},30)};head.appendChild(nb);
+  c.appendChild(el(`<p class="gtext how">Toque numa pasta para abrir. Dentro do semestre ficam as disciplinas, o cadastro pela ementa e as provas; dentro da disciplina, os eixos e as SPs com os temas para estudar.</p>`));
+  if(facSemMenu)c.appendChild(newForm(false))}
+
+function semFolder(s){const L=lv(s),open=facOpenSem.has(s.id),ds=semDiscs(s.id),keys=topicKeysOf(ds.flatMap(discRefs)),c=lvlCounts(keys),n=keys.length;
+  const np=semProvas(s).filter(p=>p.date>=today())[0];
+  const card=el(`<section class="fsemf${open?" open":""}${s.archived?" arch":""}" id="fs-${s.id}"><button class="fssum" type="button" aria-expanded="${open}"><span class="chev" aria-hidden="true"></span>${FOLDER_SVG}<span class="aname"></span><span class="acount"></span><span class="fdmeta"></span>${n?`<div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div>`:""}</button></section>`);
+  card.querySelector(".aname").textContent=s.name;card.querySelector(".acount").textContent=n?`${pct(n-c[0],n)}%`:"";
+  const meta=card.querySelector(".fdmeta"),add=(t,cls)=>{const x=document.createElement("span");x.textContent=t;if(cls)x.className=cls;meta.appendChild(x)};
+  add(`${ds.length} ${(ds.length===1?L.disc:plural(L.disc)).toLowerCase()}`);if(n)add(`${n-c[0]} de ${n} temas estudados`);
+  if(np){const dd=daysTo(np.date);add(`${np.name} · ${inLabel(dd)}`,"fbadge"+(dd<=7?" soon":""))}if(s.archived)add("arquivado");
+  if(n)bar(card.querySelector(".bar"),c,n);
+  card.querySelector(".fssum").onclick=()=>{open?facOpenSem.delete(s.id):facOpenSem.add(s.id);if(facEdit&&/^(sem|lv):/.test(facEdit))closeEdit();render()};
+  if(!open)return card;
+  const body=el(`<div class="fsbody"></div>`);
+  // ferramentas do semestre
+  const tb=el(`<div class="fstools"></div>`);
+  const I=facImport,impHere=I.status!=="closed"&&I.semId===s.id;
+  const eb=el(`<button class="btn primary" type="button">Colar ementa</button>`);eb.disabled=sampleOff||impHere;
+  eb.onclick=()=>{Object.assign(facImport,{status:"edit",semId:s.id,prop:null,msg:"",done:""});if(I.semId!==s.id)I.text="";render();setTimeout(()=>{const t=document.getElementById("fimpText");if(t)t.focus()},50)};
+  const aj=el(`<button class="mini" type="button" aria-expanded="${facSemAdj===s.id}">Ajustes do semestre</button>`);aj.onclick=()=>{facSemAdj=facSemAdj===s.id?null:s.id;closeEdit();render()};
+  tb.append(eb,aj);body.appendChild(tb);
+  if(facSemAdj===s.id)body.appendChild(semAdjust(s,L));
+  if(impHere)body.appendChild(ementaPanel(s,L));
+  else if(I.done&&I.doneSem===s.id){const p=el(`<p class="gstatus" role="status"></p>`);p.textContent=I.done;body.appendChild(p)}
+  // disciplinas
+  const dh=el(`<div class="fshead"><span class="glabel"></span></div>`);dh.querySelector(".glabel").textContent=`${plural(L.disc)} (${ds.length})`;body.appendChild(dh);
+  if(!ds.length){const p=el(`<p class="cempty"></p>`);p.textContent=`Nenhuma ${L.disc.toLowerCase()} ainda. Toque em Colar ementa para o Claude montar tudo, ou adicione à mão logo abaixo.`;body.appendChild(p)}
+  const dl=el(`<div class="fdiscs"></div>`);ds.forEach(d=>dl.appendChild(discCard(d,L)));body.appendChild(dl);
+  const nd=el(`<form class="addsub fadddisc"><input class="etext" maxlength="60"><button class="btn" type="submit"></button></form>`),ndi=nd.querySelector("input");
+  ndi.id="facNewDisc-"+s.id;ndi.placeholder=`Nova ${L.disc.toLowerCase()} (ex.: NCS 6)`;ndi.setAttribute("aria-label",`Nova ${L.disc.toLowerCase()} em ${s.name}`);nd.querySelector("button").textContent=`Adicionar ${L.disc.toLowerCase()}`;
+  const nk="disc"+s.id;ndi.value=facNew[nk]||"";ndi.oninput=()=>facNew[nk]=ndi.value;
+  nd.onsubmit=e=>{e.preventDefault();const t=ndi.value.trim();if(!t)return;facNew[nk]="";addDisc(s.id,t.slice(0,60))};body.appendChild(nd);
+  // provas
+  body.appendChild(semProvasBlock(s,L));
+  card.appendChild(body);return card}
+
+function semAdjust(s,L){const m=el(`<div class="fsemmenu"><div class="fsemacts"></div><div class="fsemedit"></div></div>`),ac=m.querySelector(".fsemacts"),se=m.querySelector(".fsemedit");
+  const ks="sem:"+s.id,kl="lv:"+s.id;
+  const rn=el(`<button class="mini" type="button" aria-pressed="${facEdit===ks}">Renomear</button>`);rn.onclick=()=>{openEdit(facEdit===ks?null:ks);render()};
+  const lb=el(`<button class="mini" type="button" aria-pressed="${facEdit===kl}">Nomes dos níveis</button>`);lb.onclick=()=>{openEdit(facEdit===kl?null:kl);render()};
+  const a=el(`<button class="mini" type="button"></button>`);a.textContent=s.archived?"Desarquivar":"Arquivar";a.onclick=()=>{s.archived=!s.archived;if(s.archived){facShowArch=true}facSemAdj=null;closeEdit();saveFac();render()};
+  ac.append(rn,lb,a);
+  if(facEdit===ks){const ne=nameEdit(ks,s.name,v=>{s.name=v.slice(0,40)});const i=ne.querySelector("input");i.maxLength=40;i.id="fr-sem";i.setAttribute("aria-label","Novo nome do semestre");se.appendChild(ne)}
+  if(facEdit===kl){const L0={...lv(s),...(facDraft.lv||{})};const f=el(`<form class="flv"><p class="gtext how"></p><div class="fgrid"></div><div class="btns"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button">Cancelar</button></div></form>`);
+    f.querySelector("p").textContent=`Como o seu curso chama cada nível em ${s.name} (usado nos botões e no cadastro pela ementa).`;
     [["disc","Disciplina (ex.: NCS, Módulo)"],["eixo","Eixo (ex.: Eixo, Unidade)"],["sp","SP (ex.: SP, Problema, Aula)"]].forEach(([k,lab])=>{const l=el(`<label class="ffield"><span></span><input class="etext" maxlength="20"></label>`);l.querySelector("span").textContent=lab;const i=l.querySelector("input");i.name=k;i.id="flv-"+k;i.value=L0[k];i.oninput=()=>{(facDraft.lv=facDraft.lv||{})[k]=i.value};f.querySelector(".fgrid").appendChild(l)});
-    f.onsubmit=e=>{e.preventDefault();const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)cur.lv=o;else delete cur.lv;closeEdit();saveFac();render()};
+    f.onsubmit=e=>{e.preventDefault();const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)s.lv=o;else delete s.lv;closeEdit();saveFac();render()};
     f.querySelectorAll("button")[1].onclick=()=>{closeEdit();render()};se.appendChild(f)}
   if(!se.children.length)se.remove();
-  m.append(el(`<span class="glabel">Novo semestre</span>`),newForm(!cur));
-  if(cur)m.appendChild(el(`<p class="gtext how">Arquivar tira o semestre do plano do dia e das provas, mas guarda tudo (temas, progresso e anotações).</p>`));
-  c.appendChild(m)}
+  m.appendChild(el(`<p class="gtext how">Arquivar tira o semestre do plano do dia e das provas, mas guarda tudo (temas, progresso e anotações).</p>`));
+  return m}
 
-/* resumo: progresso, próxima prova, números e disciplinas */
-function renderFacHero(cur,L){const h=$("#facHero");h.innerHTML="";const S=semStats(cur),n=S.keys.length;
-  const hd=el(`<div class="dhead"><h2>Resumo do semestre</h2><span class="todaydate"></span></div>`);hd.querySelector("span").textContent=cur.name;h.appendChild(hd);
-  if(!n){const p=el(`<p class="cempty"></p>`);p.textContent=S.ds.length?`Ligue as ${plural(L.sp)} aos temas que elas cobrem (abra a ${L.disc.toLowerCase()} e toque numa ${L.sp}). O progresso do semestre aparece aqui.`:`Cadastre as ${plural(L.disc).toLowerCase()} do semestre: cole a ementa ou adicione à mão. O progresso do semestre aparece aqui.`;h.appendChild(p);
-    const b=el(`<button class="btn primary" type="button" style="align-self:flex-start"></button>`);b.textContent=`Ir para ${plural(L.disc)}`;b.onclick=()=>goSeg("disc","facDiscs");h.appendChild(b);return}
-  const top=el(`<div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div>`);
-  top.querySelector(".ring").innerHTML=donut(S.c,n,"conteúdos do semestre")+`<div class="ringc"><b>${pct(S.seen,n)}%</b><span>estudado</span></div>`;
-  top.querySelector(".glegend").innerHTML=[["m3","Dominados",S.c[3]],["m2","Revisados",S.c[2]],["m1","Estudados",S.c[1]],["track","Não iniciados",S.c[0]]].map(([t,lab,v])=>`<li><i class="sw" style="background:var(--${t})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,n)}%</em></li>`).join("");
-  h.appendChild(top);
-  const up=semProvas(cur).filter(p=>p.date>=today()),np=up[0],dueK=S.keys.filter(k=>isDue(get(k))),late=dueK.filter(k=>dueIn(get(k))<0).length;
-  const k=el(`<div class="kpis"></div>`);
-  const kpi=(cls,lab,big,small,fn)=>{const x=el(`<div class="kpi${cls}"><span class="kl"></span><b></b><span class="ks"></span></div>`);x.querySelector(".kl").textContent=lab;x.querySelector("b").textContent=big;x.querySelector(".ks").textContent=small;
-    if(fn){x.classList.add("kbtn");x.tabIndex=0;x.setAttribute("role","button");x.onclick=fn;x.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fn()}}}k.appendChild(x);return x};
-  if(np){const dd=daysTo(np.date),pend=provaPending(np).length;kpi(dd<=7?" alert":"","Próxima prova",dd===0?"hoje":dd===1?"amanhã":`${dd} dias`,`${np.name} · ${pend?`${pend} pendente${pend>1?"s":""}`:"tudo estudado"}`,()=>goProva(np))}
-  else kpi("","Próxima prova","–","nenhuma cadastrada",()=>goSeg("prov","facProvas"));
-  kpi(dueK.length?" alert":"","Revisões",String(dueK.length),dueK.length?(late?`${late} atrasada${late>1?"s":""}`:"vencem hoje"):"tudo em dia",dueK.length?()=>{const r=$("#facRevs");if(r)r.scrollIntoView({behavior:"smooth",block:"start"})}:null);
-  kpi("","Conteúdos",String(n),`${S.nsp} ${S.nsp===1?L.sp:plural(L.sp)}${S.own?` · ${S.own} da faculdade`:""}`);
-  const ko=kpi("","Objetivos",S.ot?`${S.od}/${S.ot}`:"–",S.ot?"marcados":"nenhum cadastrado");if(S.ot){const mt=el(`<div class="meter"><i style="width:${pct(S.od,S.ot)}%"></i></div>`);ko.appendChild(mt)}
-  h.appendChild(k);
-  const fig=el(`<figure class="chart"><figcaption></figcaption><div class="fbars"></div><p class="cnote">Conteúdo estudado = tema que você já estudou (marcando o tema ou um subtópico). As cores seguem a legenda acima. Toque para abrir.</p></figure>`);
-  fig.querySelector("figcaption").textContent=`Progresso por ${L.disc.toLowerCase()}`;const fb=fig.querySelector(".fbars");
-  S.ds.forEach(d=>{const ks=topicKeysOf(discRefs(d)),c=lvlCounts(ks),nn=ks.length;
-    const r=el(`<button class="vrow fbrow" type="button"><span class="vtop"><span class="vl"></span><span class="hv"></span></span><span class="hbar"></span></button>`);
-    r.querySelector(".vl").textContent=d.name;r.querySelector(".hv").textContent=nn?`${nn-c[0]}/${nn}`:"sem temas";
-    const hb=r.querySelector(".hbar");if(nn)[[3,"m3","dominados"],[2,"m2","revisados"],[1,"m1","estudados"]].forEach(([i,t,lab])=>{if(c[i]){const x=document.createElement("i");x.style.width=c[i]/nn*100+"%";x.style.background=`var(--${t})`;x.dataset.tip=`${d.name} · ${lab}: ${c[i]} de ${nn}`;hb.appendChild(x)}});
-    r.onclick=()=>goDisc(d);fb.appendChild(r)});
-  h.appendChild(fig)}
-
-/* revisões dos conteúdos do semestre */
-function renderFacRevs(cur){const box=$("#facRevs");box.innerHTML="";const S=semStats(cur);
-  box.appendChild(el(`<div class="dhead"><h2>Revisões da faculdade</h2></div>`));
-  const due=S.keys.filter(k=>isDue(get(k))).sort((a,b)=>dueIn(get(a))-dueIn(get(b)));
-  const soon=S.keys.filter(k=>{const d=dueIn(get(k));return d!==null&&d>0&&d<=7}).sort((a,b)=>dueIn(get(a))-dueIn(get(b)));
-  if(!due.length)box.appendChild(el(`<p class="cempty">${S.keys.length?"Nenhuma revisão pendente nos conteúdos deste semestre.":"As revisões dos conteúdos da faculdade aparecem aqui depois que você estudar."}</p>`));
-  else{const ol=el(`<ol class="plan"></ol>`);due.forEach(k=>{const it=BYKEY[k],d=dueIn(get(k));
-    const li=el(`<li><button class="planitem" type="button"><span class="pt"></span><span class="pa"></span><span class="reason r-rev"></span></button></li>`);
-    li.querySelector(".pt").textContent=it.t;li.querySelector(".pa").textContent=it.own?(it.area===FAC_AREA?"FAC · só na Faculdade":`FAC · ${it.area.code} · ${it.sp}`):`${it.area.code} · ${it.sp}`;li.querySelector(".reason").textContent=dueLabel(d);
-    li.querySelector("button").onclick=()=>openTopic(k);ol.appendChild(li)});box.appendChild(ol)}
-  if(soon.length){const dt=el(`<details class="revup"><summary></summary><ul class="uplist"></ul></details>`);dt.querySelector("summary").textContent=`Próximos 7 dias (${soon.length})`;
-    soon.forEach(k=>{const d=dueIn(get(k)),li=el(`<li><span class="ud"></span><span></span></li>`);li.querySelector(".ud").textContent=dayLabel(fromNum(dnum(today())+d));li.lastChild.textContent=BYKEY[k].t;dt.querySelector("ul").appendChild(li)});box.appendChild(dt)}
-  box.appendChild(el(`<p class="gtext how">Elas também aparecem na aba Temas, junto com as da residência. Ao tocar, o tema abre lá.</p>`))}
+function semProvasBlock(s,L){const all=semProvas(s),up=all.filter(p=>p.date>=today()),past=all.filter(p=>p.date<today()).reverse(),open=facOpenProv.has(s.id);
+  const w=el(`<div class="fsprov${open?" open":""}" id="fsp-${s.id}"><button class="fsph" type="button" aria-expanded="${open}"><span class="chev" aria-hidden="true"></span><span class="fsphl"></span><span class="fsphc"></span></button></div>`);
+  w.querySelector(".fsphl").textContent=`Provas do semestre`;w.querySelector(".fsphc").textContent=up.length?`${up.length} próxima${up.length>1?"s":""}`:all.length?"nenhuma futura":"nenhuma";
+  w.querySelector(".fsph").onclick=()=>{open?facOpenProv.delete(s.id):facOpenProv.add(s.id);render()};
+  if(!open)return w;
+  const b=el(`<div class="fspbody"></div>`);
+  if(!up.length)b.appendChild(el(`<p class="cempty">${all.length?"Nenhuma prova futura neste semestre.":"Nenhuma prova cadastrada. Nas 3 semanas antes de cada prova, o plano do dia reserva espaço para o conteúdo dela."}</p>`));
+  else{const ol=el(`<ol class="fprovas"></ol>`);up.forEach(p=>ol.appendChild(provaCard(p,L)));b.appendChild(ol)}
+  if(past.length){const t=el(`<button class="link" type="button"></button>`);const sh=facShowPast.has(s.id);t.textContent=sh?"Ocultar provas realizadas":`Ver provas realizadas (${past.length})`;t.onclick=()=>{sh?facShowPast.delete(s.id):facShowPast.add(s.id);render()};b.appendChild(t);
+    if(sh){const ol=el(`<ol class="fprovas"></ol>`);past.forEach(p=>ol.appendChild(provaCard(p,L)));b.appendChild(ol)}}
+  const ds=semDiscs(s.id),ad=el(`<div class="fpadd"><span class="glabel">Nova prova</span></div>`);
+  if(!ds.length){ad.appendChild(el(`<p class="gtext how">Cadastre uma ${esc(L.disc.toLowerCase())} primeiro.</p>`));b.appendChild(ad);w.appendChild(b);return w}
+  const N=facNew["prov"+s.id]||(facNew["prov"+s.id]={});if(!ds.some(d=>d.id===N.d))N.d=ds[0].id;
+  const pf=el(`<form class="fpform"><select class="etext"></select><input class="etext" maxlength="60" placeholder="Nome (ex.: Avaliação do Eixo de Hematologia)" aria-label="Nome da prova"><input class="etext" type="date" aria-label="Data da prova"><button class="btn primary" type="submit">Adicionar prova</button></form>`);
+  const [sel,pn,pdt]=[pf.querySelector("select"),...pf.querySelectorAll("input")];sel.id="fpdisc-"+s.id;pn.id="fpn-"+s.id;pdt.id="fpd-"+s.id;sel.setAttribute("aria-label",`${L.disc} da prova`);
+  ds.forEach(d=>{const o=document.createElement("option");o.value=d.id;o.textContent=d.name;sel.appendChild(o)});sel.value=N.d;if(ds.length===1)sel.hidden=true;
+  sel.onchange=()=>N.d=sel.value;pn.value=N.n||"";pdt.value=N.dt||"";pn.oninput=()=>N.n=pn.value;pdt.oninput=()=>N.dt=pdt.value;
+  const er=el(`<p class="err" hidden></p>`);
+  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,d=discOf(sel.value);
+    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!d){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
+    const p={id:fuid(),discId:d.id,name:n.slice(0,60),date:dt,items:[...discRefs(d).filter(refOk)],done:[]};fac.provas.push(p);facProvaOpen.add(p.id);facNew["prov"+s.id]={d:d.id};saveFac();provaChanged(p,"nova prova")};
+  ad.append(pf,er,el(`<p class="gtext how">A prova começa com todo o conteúdo da ${esc(L.disc.toLowerCase())} marcado. Abra a prova para desmarcar o que não cai.</p>`));b.appendChild(ad);w.appendChild(b);return w}
 
 /* modo provas e regras do plano */
 function renderFacCrunch(){const fc=$("#facCrunch");fc.innerHTML="";const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
@@ -2378,27 +2434,6 @@ function renderFacCrunch(){const fc=$("#facCrunch");fc.innerHTML="";const ov=cru
     <li><b>Modo provas:</b> com 3 ou mais provas num intervalo de 7 dias, a residência pausa de 7 dias antes da primeira até a última.</li>
     <li>Uma prova só ocupa vagas enquanto tiver conteúdo pendente.</li></ul></details>`));
   if(planNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=planNote;fc.appendChild(n)}}
-
-/* provas do semestre */
-function renderFacProvas(cur,L){const box=$("#facProvas");box.innerHTML="";const all=semProvas(cur),up=all.filter(p=>p.date>=today()),past=all.filter(p=>p.date<today()).reverse();
-  const hd=el(`<div class="dhead"><h2 id="fph2">Provas</h2><span class="todaydate"></span></div>`);hd.querySelector("span").textContent=up.length?`${up.length} próxima${up.length>1?"s":""}`:"";box.appendChild(hd);
-  if(!up.length)box.appendChild(el(`<p class="cempty">${all.length?"Nenhuma prova futura neste semestre.":"Nenhuma prova cadastrada. Nas 3 semanas antes de cada prova, o plano do dia reserva espaço para o conteúdo dela."}</p>`));
-  else{const ol=el(`<ol class="fprovas"></ol>`);up.forEach(p=>ol.appendChild(provaCard(p,L)));box.appendChild(ol)}
-  if(past.length){const t=el(`<button class="link" type="button"></button>`);t.textContent=facShowPast?"Ocultar provas realizadas":`Ver provas realizadas (${past.length})`;t.onclick=()=>{facShowPast=!facShowPast;render()};box.appendChild(t);
-    if(facShowPast){const ol=el(`<ol class="fprovas"></ol>`);past.forEach(p=>ol.appendChild(provaCard(p,L)));box.appendChild(ol)}}
-  const ds=semDiscs(cur.id);
-  const ad=el(`<div class="fpadd"><span class="glabel">Nova prova</span></div>`);
-  if(!ds.length){ad.appendChild(el(`<p class="gtext how">Cadastre uma ${L.disc.toLowerCase()} primeiro.</p>`));box.appendChild(ad);return}
-  const N=facNew.prov||(facNew.prov={});if(!ds.some(d=>d.id===N.d))N.d=ds[0].id;
-  const pf=el(`<form class="fpform"><select class="etext" id="fpd-disc" aria-label="${esc(L.disc)} da prova"></select><input class="etext" id="fpn-new" maxlength="60" placeholder="Nome (ex.: Avaliação do Eixo de Hematologia)" aria-label="Nome da prova"><input class="etext" id="fpd-new" type="date" aria-label="Data da prova"><button class="btn primary" type="submit">Adicionar prova</button></form>`);
-  const [sel,pn,pdt]=[pf.querySelector("select"),...pf.querySelectorAll("input")];
-  ds.forEach(d=>{const o=document.createElement("option");o.value=d.id;o.textContent=d.name;sel.appendChild(o)});sel.value=N.d;if(ds.length===1)sel.hidden=true;
-  sel.onchange=()=>N.d=sel.value;pn.value=N.n||"";pdt.value=N.dt||"";pn.oninput=()=>N.n=pn.value;pdt.oninput=()=>N.dt=pdt.value;
-  const er=el(`<p class="err" hidden></p>`);
-  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,d=discOf(sel.value);
-    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!d){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
-    const p={id:fuid(),discId:d.id,name:n.slice(0,60),date:dt,items:[...discRefs(d).filter(refOk)],done:[]};fac.provas.push(p);facProvaOpen.add(p.id);facNew.prov={d:d.id};saveFac();provaChanged(p,"nova prova")};
-  ad.append(pf,er,el(`<p class="gtext how">A prova começa com todo o conteúdo da ${L.disc.toLowerCase()} marcado. Abra a prova para desmarcar o que não cai.</p>`));box.appendChild(ad)}
 
 function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=daysTo(p.date),tot=p.items.filter(refOk).length,pend=provaPending(p).length;
   const li=el(`<li class="fprova${dd<0?" past":""}${po?" open":""}" id="fp-${p.id}"><button class="fph" type="button" aria-expanded="${po}"><span class="fphl"><b></b><span></span></span><span class="fcount${dd>=0&&dd<=7?" soon":""}"></span><span class="meter"><i style="width:${tot?(tot-pend)/tot*100:0}%"></i></span><span class="fsub"></span></button></li>`);
@@ -2431,17 +2466,6 @@ function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=da
       cl.appendChild(row)});gw.appendChild(cl)});
   body.appendChild(gw);li.appendChild(body);return li}
 
-/* disciplinas: como as áreas da aba Temas */
-function renderFacDiscs(cur,L){const box=$("#facDiscs");box.innerHTML="";const ds=semDiscs(cur.id);
-  const hd=el(`<div class="fdhead"><h2></h2><span class="how"></span></div>`);hd.querySelector("h2").textContent=plural(L.disc);
-  hd.querySelector("span").textContent=ds.length?`${ds.length} no semestre · toque para abrir`:"";box.appendChild(hd);
-  box.appendChild(ementaPanel(cur,L));
-  ds.forEach(d=>box.appendChild(discCard(d,L)));
-  const nd=el(`<form class="addsub fadddisc"><input class="etext" id="facNewDisc" maxlength="60"><button class="btn${ds.length?"":" primary"}" type="submit"></button></form>`);
-  const ndi=nd.querySelector("input");ndi.placeholder=`Nova ${L.disc.toLowerCase()} (ex.: NCS 6)`;ndi.setAttribute("aria-label",`Nova ${L.disc.toLowerCase()}`);nd.querySelector("button").textContent=`Adicionar ${L.disc.toLowerCase()}`;
-  ndi.value=facNew.disc||"";ndi.oninput=()=>facNew.disc=ndi.value;
-  nd.onsubmit=e=>{e.preventDefault();const t=ndi.value.trim();if(!t)return;facNew.disc="";addDisc(cur.id,t.slice(0,60))};box.appendChild(nd)}
-
 const INFO_F=[["tipo","Tipo","Tutoria, Habilidades, IESC, Morfofuncional…"],["ch","Carga horária","ex.: 120 h"],["prof","Professor(es)",""],["tutor","Tutor",""],["horario","Dias e horários","ex.: seg e qua, 8h–12h"],["local","Local / sala",""]];
 function infoPanel(d,L,edit){const w=el(`<div class="finfo"></div>`);
   if(edit){const g=el(`<div class="fgrid"></div>`),gw=el(`<div class="fgridw"></div>`);
@@ -2458,7 +2482,7 @@ function infoPanel(d,L,edit){const w=el(`<div class="finfo"></div>`);
 
 function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.has(d.id),keys=topicKeysOf(discRefs(d)),c=lvlCounts(keys),n=keys.length;
   const nextP=fac.provas.filter(p=>p.discId===d.id&&p.date>=today()).sort(byDate)[0];
-  const card=el(`<section class="area fdc${open?" open":""}${edit?" editing":""}" id="fd-${d.id}"><button class="fdsum" type="button" aria-expanded="${open}"><span class="chev" aria-hidden="true"></span><span class="aname"></span><span class="acount"></span><span class="fdmeta"></span>${n?`<div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div>`:""}</button></section>`);
+  const card=el(`<section class="area fdc${open?" open":""}${edit?" editing":""}" id="fd-${d.id}"><button class="fdsum" type="button" aria-expanded="${open}"><span class="chev" aria-hidden="true"></span>${FOLDER_SVG}<span class="aname"></span><span class="acount"></span><span class="fdmeta"></span>${n?`<div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div>`:""}</button></section>`);
   card.querySelector(".aname").textContent=d.name;card.querySelector(".acount").textContent=n?`${n-c[0]}/${n}`:"";
   const meta=card.querySelector(".fdmeta");
   [d.info.tipo,d.eixos.length?`${d.eixos.length} ${(d.eixos.length>1?plural(L.eixo):L.eixo).toLowerCase()}`:"",`${d.sps.length} ${d.sps.length===1?L.sp:plural(L.sp)}`,n?`${n} tema${n>1?"s":""}`:""].filter(Boolean).forEach(t=>{const s=document.createElement("span");s.textContent=t;meta.appendChild(s)});
@@ -2490,7 +2514,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
     if(gn)bar(h.querySelector(".bar"),gc,gn);
     h.querySelector("button").onclick=()=>{closed?facClosedEixo.delete(gk):facClosedEixo.add(gk);render()};ol.appendChild(h);
     if(edit&&e)ol.appendChild(eixoEditRow(d,e,L));
-    if(edit&&!e&&!d.eixos.length)ol.appendChild(el(`<li class="fexedit how">Crie um ${esc(L.eixo.toLowerCase())} (abaixo) para definir em que área e especialidade estes temas aparecem na aba Temas.</li>`));
+    if(edit&&!e&&!d.eixos.length)ol.appendChild(el(`<li class="fexedit how">Crie um ${esc(L.eixo.toLowerCase())} (abaixo) para definir em que área e especialidade estes temas aparecem na aba Residência.</li>`));
     if(closed)return;
     if(!sps.length&&!edit){const li=el(`<li class="empty"></li>`);li.textContent=`Nenhuma ${L.sp} neste ${L.eixo.toLowerCase()}. Toque em Editar para adicionar.`;ol.appendChild(li)}
     sps.forEach((s,i)=>ol.appendChild(spRow(d,s,L,edit,i)));
@@ -2499,7 +2523,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
   if(edit){const ef=el(`<form class="addsub feadd"><input class="etext" maxlength="80"><button class="btn" type="submit"></button></form>`),ei=ef.querySelector("input");
     ei.id="fn-e"+d.id;ei.placeholder=`Novo ${L.eixo.toLowerCase()} (ex.: ${L.eixo} de Hematologia)`;ei.setAttribute("aria-label",`Novo ${L.eixo.toLowerCase()}`);ef.querySelector("button").textContent=`Adicionar ${L.eixo.toLowerCase()}`;
     ei.value=facNew["e"+d.id]||"";ei.oninput=()=>facNew["e"+d.id]=ei.value;ef.onsubmit=ev=>{ev.preventDefault();const t=ei.value.trim();if(!t)return;facNew["e"+d.id]="";addEixo(d,t.slice(0,80))};
-    body.append(ef,el(`<p class="gtext how">O ${esc(L.eixo.toLowerCase())} define onde os temas aparecem na aba Temas (ex.: ${esc(L.eixo)} de Hematologia = CM › Hematologia e oncologia). Ligue cada ${esc(L.sp)} a temas que já existem; o que não existir vira tema da faculdade, com o selo FAC.</p>`))}
+    body.append(ef,el(`<p class="gtext how">O ${esc(L.eixo.toLowerCase())} define onde os temas aparecem na aba Residência (ex.: ${esc(L.eixo)} de Hematologia = CM › Hematologia e oncologia). Ligue cada ${esc(L.sp)} a temas que já existem; o que não existir vira tema da faculdade, com o selo FAC.</p>`))}
   // conteúdo avulso (versão anterior)
   if(d.items.length){const g=el(`<div class="grp"><span class="glabel">Conteúdo avulso</span><ul class="fitems"></ul></div>`);const ul=g.querySelector("ul");
     d.items.filter(refOk).forEach(r=>{const x=refTopic(r),it=BYKEY[x.k],s=get(x.k);
@@ -2515,7 +2539,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
   const dp=fac.provas.filter(p=>p.discId===d.id).sort(byDate);
   const pr=el(`<div class="fdprov"><span class="glabel">Provas</span><div class="chips"></div></div>`),pc=pr.querySelector(".chips");
   dp.forEach(p=>{const dd=daysTo(p.date),b=el(`<button class="chip fpchip${dd<0?" past":dd<=7?" soon":""}" type="button"></button>`);b.textContent=`${p.name} · ${dd<0?br(p.date):inLabel(dd)}`;b.onclick=()=>goProva(p);pc.appendChild(b)});
-  const np=el(`<button class="chip fnewchip" type="button">+ Prova</button>`);np.onclick=()=>{facNew.prov={d:d.id};fSeg="prov";try{localStorage.setItem("resid-fseg","prov")}catch(e){}render();const x=document.getElementById("fpn-new");if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.focus({preventScroll:true})}};pc.appendChild(np);
+  const np=el(`<button class="chip fnewchip" type="button">+ Prova</button>`);np.onclick=()=>{facNew["prov"+d.semId]={d:d.id};facOpenProv.add(d.semId);render();const x=document.getElementById("fpn-"+d.semId);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.focus({preventScroll:true})}};pc.appendChild(np);
   body.appendChild(pr);
   if(edit){const ft=el(`<div class="fdfoot"></div>`);
     if(facEdit==="d"+d.id)ft.appendChild(nameEdit("d"+d.id,d.name,v=>{d.name=v.slice(0,60)}));
@@ -2529,7 +2553,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
 
 function eixoEditRow(d,e,L){const li=el(`<li class="fexedit"></li>`);
   if(facEdit==="e"+e.id){li.appendChild(nameEdit("e"+e.id,e.name,v=>{e.name=v.slice(0,80)}));return li}
-  const m=el(`<span class="fexmap"><span class="fexlab">Na aba Temas:</span></span>`);m.appendChild(mapPicker(e,x=>{e.area=x.area;e.spec=x.spec;saveFac();render()},e.id));
+  const m=el(`<span class="fexmap"><span class="fexlab">Na aba Residência:</span></span>`);m.appendChild(mapPicker(e,x=>{e.area=x.area;e.spec=x.spec;saveFac();render()},e.id));
   const ac=el(`<span class="fexact"></span>`),rn=el(`<button class="link" type="button"></button>`);rn.textContent=`renomear ${L.eixo.toLowerCase()}`;rn.onclick=()=>{openEdit("e"+e.id);render()};
   ac.append(rn,armBtn("e"+e.id,"excluir",`Toque de novo: as ${plural(L.sp)} ficam sem ${L.eixo.toLowerCase()}`,()=>delEixo(d,e)));li.append(m,ac);return li}
 function addSpRow(d,e,L){const li=el(`<li class="fadd"></li>`),k="sp-"+(e?e.id:d.id);
@@ -2648,7 +2672,7 @@ function ementaPanel(sem,L){const I=facImport;const w=el(`<section class="card f
     tree.appendChild(db)});
   w.appendChild(tree);
   const save=el(`<button class="btn primary" type="button">Salvar no semestre</button>`);save.disabled=!ds.some(x=>x.inc);
-  save.onclick=()=>{const r=ementaApply(sem.id,ds);I.status="closed";I.prop=null;I.text="";I.done=`Salvo: ${r.nd} ${L.disc.toLowerCase()}${r.nd===1?"":"s"} nova${r.nd===1?"":"s"}, ${r.ns} ${L.sp}${r.ns===1?"":"s"} e ${r.nt} tema${r.nt===1?"":"s"} da faculdade criado${r.nt===1?"":"s"}.`;render()};
+  save.onclick=()=>{const r=ementaApply(sem.id,ds);I.doneSem=sem.id;I.status="closed";I.prop=null;I.text="";I.done=`Salvo: ${r.nd} ${L.disc.toLowerCase()}${r.nd===1?"":"s"} nova${r.nd===1?"":"s"}, ${r.ns} ${L.sp}${r.ns===1?"":"s"} e ${r.nt} tema${r.nt===1?"":"s"} da faculdade criado${r.nt===1?"":"s"}.`;render()};
   const back=el(`<button class="btn" type="button">Voltar ao texto</button>`);back.onclick=()=>{I.status="edit";render()};
   const drop=el(`<button class="link" type="button">Descartar</button>`);drop.onclick=()=>{I.status="closed";I.prop=null;render()};
   w.append(el(`<div class="btns"></div>`));w.lastChild.append(save,back,drop);
@@ -2690,14 +2714,14 @@ async function putErr(e){saveErrsLocal();if(!errStore)return;
   try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
 async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 
-function showView(v){view=v;document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
+function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
   $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help"}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 function renderErros(){
   $("#ecount").textContent=errors.length?String(errors.length):"";
   const ins=$("#insight");ins.innerHTML="";
-  if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Depois de errar uma questão, abra o tema na aba Temas e registre o erro com o conceito correto.</p>`))}
+  if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Depois de errar uma questão, abra o tema na aba Residência e registre o erro com o conceito correto.</p>`))}
   else{
     const tc={conhecimento:0,interpretacao:0,confusao:0};errors.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
     const dist=el(`<div class="tdist"><span class="glabel">Tipo de erro</span></div>`);
@@ -2749,7 +2773,57 @@ function render(){
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
-/* celular: aba Temas dividida em Hoje | Revisões | Lista | Progresso */
+/* ---------- aba Início: próxima prova, estudar hoje, revisões e progresso ---------- */
+/* "Estudar hoje" e "Revisões" são os mesmos cartões da aba Residência: mudam de lugar conforme a aba aberta */
+function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)return;
+  if(view==="inicio"){if(t.parentNode!==$("#iToday"))$("#iToday").appendChild(t);if(r.parentNode!==$("#iRevs"))$("#iRevs").appendChild(r)}
+  else if(view==="temas"){const slot=$("#todaySlot");if(slot.nextElementSibling!==t)slot.after(t);const side=$("#viewTemas .side");if(side.firstElementChild!==r)side.prepend(r)}}
+function renderInicio(){renderInicioProva();renderInicioStats()}
+function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=upcomingProvas(),CR=examCrunch();
+  const hd=el(`<div class="dhead"><h2>Próxima prova</h2><span class="todaydate"></span></div>`);box.appendChild(hd);
+  if(!ups.length){box.appendChild(el(`<p class="cempty">${fac.provas.length?"Nenhuma prova futura nos semestres ativos.":"Nenhuma prova cadastrada. Cadastre as provas dentro do semestre, na aba Faculdade: nas 3 semanas antes, o plano do dia reserva espaço para elas."}</p>`));
+    const b=el(`<button class="btn" type="button" style="align-self:flex-start">Abrir Faculdade</button>`);b.onclick=()=>setView("fac");box.appendChild(b);return}
+  const p=ups[0],d=discOf(p.discId),s=semOf(d.semId),dd=daysTo(p.date),tot=p.items.filter(refOk).length,pend=provaPending(p).length;
+  hd.querySelector("span").textContent=dayLabel(p.date);
+  const main=el(`<button class="ipmain" type="button"><span class="ipdays${dd<=7?" soon":""}"><b></b><span></span></span><span class="ipinfo"><b class="ipname"></b><span class="ipsub"></span><span class="meter"><i style="width:${tot?(tot-pend)/tot*100:0}%"></i></span><span class="ipst"></span></span></button>`);
+  main.querySelector(".ipdays b").textContent=dd===0?"Hoje":dd===1?"1":String(dd);main.querySelector(".ipdays span").textContent=dd===0?"":dd===1?"dia":"dias";
+  main.querySelector(".ipname").textContent=p.name;main.querySelector(".ipsub").textContent=`${d.name} · ${s.name}`;
+  main.querySelector(".ipst").textContent=tot?(pend?`${tot-pend} de ${tot} conteúdos estudados · ${pend} pendente${pend>1?"s":""}`:`Todos os ${tot} conteúdos estudados`):"Nenhum conteúdo marcado para esta prova";
+  main.onclick=()=>goProva(p);box.appendChild(main);
+  if(CR.active){const c=el(`<p class="crunch"></p>`);c.textContent=`Modo provas ligado até ${br(CR.until)}: o plano do dia fica só com a faculdade.`;box.appendChild(c)}
+  if(ups.length>1){const ul=el(`<ul class="uplist ipnext"></ul>`);ups.slice(1,4).forEach(x=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=inLabel(daysTo(x.date));
+      const bt=li.querySelector("button");bt.textContent=`${x.name} · ${discOf(x.discId).name}`;bt.onclick=()=>goProva(x);ul.appendChild(li)});
+    const g=el(`<div class="grp"><span class="glabel">Depois</span></div>`);g.appendChild(ul);box.appendChild(g)}}
+function renderInicioStats(){const box=$("#iStats");box.innerHTML="";
+  box.appendChild(el(`<div class="dhead"><h2>Seu progresso</h2></div>`));
+  // residência
+  const c=counts(ALL);let qc=0,qt=0,due=0;ALL.forEach(i=>{const st=get(i.key);qc+=st.qc||0;qt+=st.qt||0;if(isDue(st))due++});
+  const r=el(`<div class="ipart"><div class="iph"><span class="glabel">Residência · ${TOTAL} temas</span><button class="link" type="button">Abrir</button></div><div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div><div class="ikpis"></div></div>`);
+  r.querySelector(".ring").innerHTML=donut(c)+`<div class="ringc"><b>${pct(c[3],TOTAL)}%</b><span>dominado</span></div>`;
+  r.querySelector(".glegend").innerHTML=[["m3","Dominados",c[3]],["m2","Revisados",c[2]],["m1","Estudados",c[1]],["track","Não iniciados",c[0]]].map(([t,lab,v])=>`<li><i class="sw" style="background:var(--${t})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,TOTAL)}%</em></li>`).join("");
+  r.querySelector(".ikpis").innerHTML=`<span><b>${due}</b> revis${due===1?"ão":"ões"} pendente${due===1?"":"s"}</span><span><b>${qt.toLocaleString("pt-BR")}</b> questões</span><span><b>${qt?pct(qc,qt)+"%":"–"}</b> de acerto</span><span><b>${weighted()}%</b> do peso da prova estudado</span>`;
+  r.querySelector(".iph button").onclick=()=>{tSeg="prog";try{localStorage.setItem("resid-tseg","prog")}catch(e){}setView("temas")};
+  box.appendChild(r);
+  // faculdade
+  const cur=curSem(),f=el(`<div class="ipart"><div class="iph"><span class="glabel"></span><button class="link" type="button">Abrir</button></div></div>`);
+  f.querySelector(".iph button").onclick=()=>setView("fac");
+  if(!cur){f.querySelector(".glabel").textContent="Faculdade";f.appendChild(el(`<p class="cempty">Crie o seu semestre na aba Faculdade para ver o progresso aqui.</p>`));box.appendChild(f);return}
+  const S=semStats(cur),n=S.keys.length;f.querySelector(".glabel").textContent=`Faculdade · ${cur.name}`;
+  if(!n){f.appendChild(el(`<p class="cempty">Ligue as SPs do semestre aos temas para ver o progresso aqui.</p>`));box.appendChild(f);return}
+  const t=el(`<div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div>`);
+  t.querySelector(".ring").innerHTML=donut(S.c,n,"conteúdos do semestre")+`<div class="ringc"><b>${pct(S.seen,n)}%</b><span>estudado</span></div>`;
+  t.querySelector(".glegend").innerHTML=[["m3","Dominados",S.c[3]],["m2","Revisados",S.c[2]],["m1","Estudados",S.c[1]],["track","Não iniciados",S.c[0]]].map(([k,lab,v])=>`<li><i class="sw" style="background:var(--${k})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,n)}%</em></li>`).join("");
+  f.appendChild(t);
+  const L=lv(cur),fb=el(`<div class="fbars"></div>`);
+  S.ds.forEach(d=>{const ks=topicKeysOf(discRefs(d)),k=lvlCounts(ks),nn=ks.length;
+    const row=el(`<button class="vrow fbrow" type="button"><span class="vtop"><span class="vl"></span><span class="hv"></span></span><span class="hbar"></span></button>`);
+    row.querySelector(".vl").textContent=d.name;row.querySelector(".hv").textContent=nn?`${nn-k[0]}/${nn}`:"sem temas";
+    const hb=row.querySelector(".hbar");if(nn)[[3,"m3","dominados"],[2,"m2","revisados"],[1,"m1","estudados"]].forEach(([i,tk,lab])=>{if(k[i]){const x=document.createElement("i");x.style.width=k[i]/nn*100+"%";x.style.background=`var(--${tk})`;x.dataset.tip=`${d.name} · ${lab}: ${k[i]} de ${nn}`;hb.appendChild(x)}});
+    row.onclick=()=>goDisc(d);fb.appendChild(row)});
+  f.appendChild(fb);
+  const ik=el(`<div class="ikpis"></div>`);ik.innerHTML=`<span><b>${S.ds.length}</b> ${esc((S.ds.length===1?L.disc:plural(L.disc)).toLowerCase())}</span><span><b>${S.nsp}</b> ${esc(S.nsp===1?L.sp:plural(L.sp))}</span><span><b>${S.ot?`${S.od}/${S.ot}`:"–"}</b> objetivos</span>`;f.appendChild(ik);
+  box.appendChild(f)}
+/* celular: aba Residência dividida em Hoje | Revisões | Lista | Progresso */
 let tSeg="hoje";try{const v=localStorage.getItem("resid-tseg");if(["hoje","rev","lista","prog"].includes(v))tSeg=v}catch(e){}
 function setTSeg(v){tSeg=v;try{localStorage.setItem("resid-tseg",v)}catch(e){}render();window.scrollTo({top:0})}
 function renderTSeg(dueN){const vt=$("#viewTemas");vt.dataset.seg=tSeg;
@@ -2757,8 +2831,8 @@ function renderTSeg(dueN){const vt=$("#viewTemas");vt.dataset.seg=tSeg;
 /* computador: atalhos no menu lateral */
 function renderNavExtra(P,dueN){const box=$("#navExtra");box.innerHTML="";
   const add=(k,v,cls,fn)=>{const b=el(`<button type="button"><span class="nk"></span><span class="nv${cls?" "+cls:""}"></span></button>`);b.querySelector(".nk").textContent=k;b.querySelector(".nv").textContent=v;b.onclick=fn;box.appendChild(b)};
-  if(P.items.length){const d=P.items.filter(itemDone).length;add("Estudar hoje",`${d} de ${P.items.length} temas`,"",()=>{setView("temas")})}
-  add("Revisões",dueN?`${dueN} pendente${dueN===1?"":"s"}`:"em dia",dueN?"late":"",()=>{setView("temas");const r=document.querySelector(".card.revs");if(r)r.scrollIntoView({block:"start"})});
+  if(P.items.length){const d=P.items.filter(itemDone).length;add("Estudar hoje",`${d} de ${P.items.length} temas`,"",()=>{setView("inicio")})}
+  add("Revisões",dueN?`${dueN} pendente${dueN===1?"":"s"}`:"em dia",dueN?"late":"",()=>{setView("inicio");const r=document.querySelector(".card.revs");if(r)r.scrollIntoView({block:"start"})});
   const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);add("Próxima prova",`${up.name} · ${inLabel(dd)}`,dd<=7?"late":"",()=>goProva(up))}
   const CR=examCrunch();if(CR.active)add("Modo provas",`ligado até ${br(CR.until)}`,"late",()=>setView("fac"))}
 /* ---------- backup ---------- */
@@ -2772,9 +2846,10 @@ function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai 
 
 const HELP=[
 ["Primeiros passos",`O checklist tem **185 temas** de alta recorrência nas 5 grandes áreas. Todo dia ele propõe **3 temas** para estudar, agenda as **revisões** de tudo o que você já estudou e mostra onde você mais erra.
-- Comece pela aba **Temas**: o plano do dia está no topo.
+- Comece pela aba **Início**: ela mostra a próxima prova, o plano do dia (**Estudar hoje**), as revisões e o seu progresso na residência e na faculdade.
+- A aba **Residência** tem a lista dos 185 temas, o plano e as revisões (os mesmos do Início) e os gráficos completos.
 - Marque os subtópicos conforme estuda. O tema estudado volta sozinho para revisão.
-- Cadastre suas provas na aba **Faculdade**: elas passam a ocupar vagas no plano quando se aproximam.
+- Na aba **Faculdade**, crie o semestre (uma pasta) e, dentro dele, as disciplinas e as provas: elas passam a ocupar vagas no plano quando se aproximam.
 - Registre erros no **caderno de erros** e escreva **anotações** dentro de cada tema.`],
 ["Estudar hoje",`O plano tem **3 temas com 3 subtópicos cada** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver) e temas novos de maior incidência.
 - **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. Ponto fraco: faça 5 questões dele no dia.
@@ -2782,13 +2857,13 @@ const HELP=[
 - **Trocar subtópicos:** escolha até 6 para o dia.
 - **Refazer plano:** monta de novo, mantendo o que você já começou.
 - **Prova nova nos próximos 7 dias:** o plano se refaz sozinho e avisa "Plano de hoje atualizado".`],
-["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer.
+["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer. Residência e faculdade ficam numa lista só, por urgência: conteúdo da faculdade aparece com o selo **FAC**.
 - **Lembrei bem:** avança para o próximo intervalo.
 - **Tive dificuldade:** volta para 1 dia.
 - Cada revisão sugere alguns subtópicos já estudados, em rodízio.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
 - **Modo provas ligado:** as revisões da residência ficam pausadas numa lista recolhida.`],
-["Temas, níveis e incidência",`Toque num tema para abrir tudo dele: nível, revisão, subtópicos, questões, anotações e erros.
+["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele: nível, revisão, subtópicos, questões, anotações e erros.
 | Nível | Quando |
 |---|---|
 | Estudado | Você viu o conteúdo |
@@ -2813,16 +2888,15 @@ const HELP=[
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**.
 - A aba **Erros** mostra onde você mais erra, por tipo, tema e especialidade.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
-["Faculdade e provas",`A Faculdade segue a estrutura do seu curso: **Semestre › Disciplina (NCS) › Eixo › SP**. No celular ela tem três partes no topo: **Resumo**, **Disciplinas** e **Provas**. No computador, provas e revisões ficam na coluna da direita.
-- **Semestre:** troque nos botões do topo; **+ Semestre** cria outro. Em **Ajustes do semestre** ficam **Renomear**, **Nomes dos níveis** (ex.: NCS, Módulo, Problema) e **Arquivar** (tira do plano do dia sem apagar).
-- **Resumo:** anel com quanto do conteúdo do semestre você já estudou, próxima prova, revisões pendentes, objetivos marcados e o progresso de cada disciplina (toque para abrir).
-- **Disciplinas** aparecem como as áreas da aba Temas: eixos com área e barra de progresso, e cada SP com o seu estado (**Não iniciada**, **Em estudo**, **Estudada**, **Dominada** ou **Sem tema**). Toque na SP para ver os temas (dá para estudar ali mesmo) e os objetivos.
+["Faculdade e provas",`A Faculdade funciona como pastas, do jeito do seu curso: **Semestre › Disciplina (NCS) › Eixo › SP**. Toque numa pasta para abrir e fechar.
+- **Semestre:** **+ Semestre** cria uma pasta nova. Dentro dela ficam **Colar ementa**, as disciplinas e as **Provas do semestre**. Em **Ajustes do semestre**: **Renomear**, **Nomes dos níveis** (ex.: NCS, Módulo, Problema) e **Arquivar** (tira do plano do dia sem apagar).
+- **Colar ementa** (dentro de cada semestre): o Claude monta disciplinas, eixos, SPs e objetivos e liga aos temas. Você revisa antes de salvar; o que já existe é juntado, sem duplicar.
+- **Disciplina** é uma pasta dentro do semestre: eixos com área e barra de progresso, e cada SP com o seu estado (**Não iniciada**, **Em estudo**, **Estudada**, **Dominada** ou **Sem tema**). Toque na SP para ver os temas (dá para estudar ali mesmo) e os objetivos.
 - **Editar:** cada disciplina tem um botão **Editar**. Só nele aparecem adicionar eixo e SP, renomear, mover, excluir, ligar temas e escrever objetivos e detalhes. **Concluir edição** volta à visão limpa.
-- **Cadastro rápido:** **Colar ementa** e o Claude monta disciplinas, eixos, SPs e objetivos e liga aos temas. Você revisa antes de salvar; o que já existe é juntado, sem duplicar.
-- **O eixo define a área:** "Eixo de Hematologia" vai para **CM › Hematologia e oncologia**. Dá para trocar em Editar › "Na aba Temas", inclusive para uma especialidade própria.
-- **Ligue cada SP aos temas** que ela cobre (sugestões e busca com siglas). O que não existir vira **tema da faculdade**, que aparece na aba Temas na área do eixo, com o selo **FAC**.
+- **O eixo define a área:** "Eixo de Hematologia" vai para **CM › Hematologia e oncologia** na aba Residência. Dá para trocar em Editar › "Na aba Residência", inclusive para uma especialidade própria.
+- **Ligue cada SP aos temas** que ela cobre (sugestões e busca com siglas). O que não existir vira **tema da faculdade**, que aparece na aba Residência na área do eixo, com o selo **FAC**.
 - **Objetivos de aprendizagem** (opcionais) viram subtópicos do primeiro tema da SP: entram no plano, nas revisões e no foco das questões (**gerar questões** ao lado do objetivo).
-- **Provas:** na parte Provas, escolha a disciplina, o nome e a data. Abra a prova para mudar a data, renomear e marcar o que cai (por SP inteira ou tema a tema). Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
+- **Provas:** em **Provas do semestre**, escolha a disciplina, o nome e a data. Abra a prova para mudar a data, renomear e marcar o que cai (por SP inteira ou tema a tema). Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão. A mais próxima aparece no **Início**.
 | Dias até a prova | Vagas no plano |
 |---|---|
 | 15 a 21 | 1 |
@@ -2831,13 +2905,14 @@ const HELP=[
 - **+1 vaga** se o conteúdo também cai muito na residência. **Residência protegida:** 2 dias por semana com um tema dela, exceto nos 7 dias finais antes de uma prova.
 - **Modo provas:** 3+ provas em 7 dias liga sozinho. Controle manual em **Faculdade › Modo provas**.
 - Os temas FAC não entram no "% dominado", que mede só os 185 temas da residência.`],
-["Navegação por aparelho",`| Aparelho | Navegação | Aba Temas |
+["Navegação por aparelho",`| Aparelho | Navegação | Aba Residência |
 |---|---|---|
 | Celular | Barra embaixo; Ajuda no ? do topo | Hoje · Revisões · Lista · Progresso |
 | Tablet em pé ou no app do Claude | Faixa lateral | Hoje · Revisões · Lista · Progresso |
 | Tablet deitado (tela cheia) | Faixa lateral | Duas colunas |
 | Computador | Menu lateral com atalhos | Duas colunas |
-- O número na aba Temas são as revisões pendentes.
+- O número na aba **Início** são as revisões pendentes.
+- O Início e a Faculdade se ajustam sozinhos: em uma coluna no celular e em duas no computador e no tablet deitado.
 - **Instruções e backup:** aba Questões › ⚙.`],
 ["Backup",`Em **Questões › ⚙ Instruções e backup**.
 - **Exportar backup:** salva um arquivo com tudo (temas, revisões, questões, anotações, erros, faculdade, histórico, instruções). No iPad/iPhone, escolha **Salvar em Arquivos**.
@@ -2891,7 +2966,7 @@ function renderAll(){
   $("#rcount").textContent=dueN?String(dueN):"";$("#rcount").title=dueN?`${dueN} revisões pendentes`:"";
   renderTSeg(dueN);renderNavExtra(P0,dueN);
   // só a aba aberta é redesenhada (as outras são montadas ao abrir)
-  if(view!=="temas")$("#areas").innerHTML="";if(view!=="fac")$("#facDiscs").innerHTML="";
+  if(view!=="temas")$("#areas").innerHTML="";if(view!=="fac")$("#facSems").innerHTML="";
   if(view==="erros")renderErros();
   else if(view==="notas")renderNotasView();
   else if(view==="quest")renderQuest();
@@ -2899,6 +2974,8 @@ function renderAll(){
   else if(view==="instr")renderBackup();
   else if(view==="help")renderHelp();
   renderFocus();
+  placeShared();
+  if(view==="inicio"){renderPlan();renderRevs();renderInicio();return}
   if(view!=="temas")return;
   // plano
   renderPlan();
@@ -2976,7 +3053,6 @@ $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setView(t.dataset.v));
-document.querySelectorAll("#fSeg button").forEach(b=>b.onclick=()=>setFSeg(b.dataset.s));
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
 $("#nq").addEventListener("input",debounced(e=>{nQuery=norm(e.target.value.trim());render()}));
 (async()=>{try{downloadsFn=await window.claude?.use?.("downloads")||null}catch(e){downloadsFn=null}render()})();

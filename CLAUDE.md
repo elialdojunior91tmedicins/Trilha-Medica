@@ -1,7 +1,8 @@
 # Trilha Médica — Checklist Residência Médica
 
 Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
-faculdade, questões, anotações, caderno de erros). Existe em duas versões com o MESMO código:
+faculdade, questões, anotações, caderno de erros). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
+Faculdade, Questões, Anotações, Erros, Ajuda. Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
 - **Artefato no Claude**: https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
@@ -42,6 +43,11 @@ consultado quando há dúvida. Responda em português.
   Objetivos da SP viram subtópicos (`cs` com `fac:<id da SP>`) do primeiro tema ligado (`syncObjs`).
   "Colar ementa": `ementaPrompt` → `sample.json` → `ementaParse` (revisão) → `ementaApply` (junta por nome, sem duplicar).
 - Backup: JSON `{app:"checklist-residencia", format:1, exportedAt, data:{topics,hist,plan,notes,noteAt,errors,fac,prompt,sort}}`.
+
+- Início: os cartões "Estudar hoje" (`.card.today`) e "Revisões" (`.card.revs`) são os mesmos nós da aba Residência;
+  `placeShared()` os move para `#iToday`/`#iRevs` quando a aba Início está aberta e de volta ao abrir a Residência.
+- Faculdade em pastas: semestre (`facOpenSem`) › disciplina (`facOpenDisc`, modo Editar em `facEditDisc`) › eixo › SP;
+  "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
 
 ## Cuidados
 
