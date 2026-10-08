@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=bb4e0496">
+<link rel="stylesheet" href="site.css?v=4aecc7e8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=bb4e0496"></script>
-<script src="bridge.js?v=bb4e0496"></script>
+<script src="config.js?v=4aecc7e8"></script>
+<script src="bridge.js?v=4aecc7e8"></script>
 </head>
 <body>
 <script>
@@ -489,6 +489,24 @@ body:has(.bulkbar)>.wrap{padding-bottom:220px}
 .agday.now .agw,.agday.now .agd{color:var(--accent);font-weight:700}
 .aglist{margin-top:4px}
 html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="phone"] #viewTemas[data-seg="hoje"] .agenda{display:none}
+.hsub{margin-top:-6px;min-height:12px}.hsub .hv{font-size:.72rem;color:var(--muted)}
+.sbar2{height:5px!important;background:var(--track)}.sbar2 i{background:var(--ink);opacity:.55;border-radius:0 3px 3px 0}
+.rmap{display:flex;flex-direction:column;gap:12px}
+.rmarea{display:flex;flex-direction:column;gap:6px}.rmh{font-size:.8rem;color:var(--muted)}.rmh b{font-family:var(--mono);color:var(--accent)}
+.rmspecs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 12px}
+.rmsp{display:flex;flex-direction:column;gap:3px;min-width:0}.rmsn{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rmcells{display:flex;flex-wrap:wrap;gap:3px}
+.rmc{width:16px;height:16px;border-radius:4px;border:0;padding:0;cursor:pointer;background:var(--track)}
+.rmc.l1,.rmk.l1{background:var(--m1)}.rmc.l2,.rmk.l2{background:var(--m2)}.rmc.l3,.rmk.l3{background:var(--m3)}.rmk.l0{background:var(--track)}
+.rmc.due,.rmk.due{box-shadow:inset 0 0 0 2px var(--due)}.rmc.weak,.rmk.weak{outline:2px solid var(--bad);outline-offset:1px}
+.rmc:hover{transform:scale(1.25)}
+.lvsug{border:1.5px solid var(--l3)}
+.lvlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.lvlist li{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.lvt{display:flex;flex-direction:column;min-width:0;flex:1 1 220px}.lvt .link{font-weight:600;color:var(--ink);font-size:.93rem;text-align:left}.lvt .ks{font-size:.8rem;color:var(--muted)}
+.lvup{color:var(--l3);font-weight:600}
+html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="lista"]) .resmap,html[data-layout="tablet"][data-cols="1"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="lista"]) .resmap{display:none}
+html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="prog"]) .lvsug,html[data-layout="tablet"][data-cols="1"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="prog"]) .lvsug{display:none}
 .dsum{display:flex;flex-wrap:wrap;gap:6px}
 .dchip{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 10px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .dchip span{font:600 .64rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.dchip b{font:600 .86rem var(--body)}
@@ -1249,6 +1267,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
       <figure class="chart"><figcaption>Atividade nos últimos 14 dias</figcaption><div id="actChart"></div></figure>
     </div>
   </section>
+  <section class="card resmap" id="resMap" aria-label="Mapa da residência"></section>
   </div>
 
   <section class="controls">
@@ -1257,6 +1276,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <div class="sortrow"><label for="sortSel">Ordenar</label><select id="sortSel"><option value="num">Pela ordem da lista</option><option value="inc">Maior incidência primeiro</option></select></div>
     <p class="how">As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
     <p class="how">Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
+    <section class="card lvsug" id="lvSug" aria-label="Sugestões de nível" hidden></section>
   </section>
 
   <div id="areas" class="wrap" style="gap:14px;width:100%"></div>
@@ -2208,8 +2228,10 @@ function renderDash(){
   // progresso por área
   $("#areaChart").innerHTML=AREAS.map(a=>{const k=counts(a.items),n=a.items.length,seen=k[1]+k[2]+k[3];
     const seg=(v,t,lab)=>v?`<i style="width:${v/n*100}%;background:var(--${t})" data-tip="${a.name} · ${lab}: ${v} de ${n}"></i>`:"";
-    return `<div class="hrow"><span class="hl">${a.code}</span><div class="hbar" role="img" aria-label="${a.name}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}</div><span class="hv">${pct(seen,n)}%</span></div>`}).join("")+
-    `<p class="cnote">Porcentagem de temas já estudados em cada área. As cores seguem a legenda acima.</p>`;
+    let sd=0,st=0;a.items.forEach(it=>{const [x,y]=subCount(it);sd+=x;st+=y});const sp=pct(sd,st);
+    return `<div class="hrow"><span class="hl">${a.code}</span><div class="hbar" role="img" aria-label="${a.name}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}</div><span class="hv">${pct(seen,n)}%</span></div>
+      <div class="hrow hsub"><span class="hl"></span><div class="hbar sbar2" role="img" aria-label="${a.name}: ${sd} de ${st} subtópicos marcados"><i style="width:${st?sd/st*100:0}%" data-tip="${a.name} · subtópicos: ${sd} de ${st}"></i></div><span class="hv">${sp}%</span></div>`}).join("")+
+    `<p class="cnote">Barra grossa: temas já estudados em cada área (cores da legenda acima). Barra fina: subtópicos marcados, que mostram o quanto do conteúdo você realmente cobriu.</p>`;
   // atividade
   const days=lastDays(14),qs=days.map(d=>(hist[d]||{}).q||0),mx=Math.max(...qs,1),active=days.filter(d=>{const h=hist[d];return h&&(h.e||h.r||h.q)}).length,st=streak();
   const step=Math.max(1,Math.ceil(mx/4)),top=Math.ceil(mx/step)*step;
@@ -4253,6 +4275,35 @@ function renderAgenda(){const box=$("#revAgenda");if(!box)return;box.innerHTML="
     box.appendChild(el(`<p class="how">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}
   if(agOpen!==null&&D[agOpen]){const ul=el(`<ul class="uplist aglist"></ul>`);D[agOpen].sort((a,b)=>wOf(b)-wOf(a)).forEach(it=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=dueLabel(dueIn(get(it.key)));const bt=li.querySelector("button");bt.textContent=it.t;bt.onclick=()=>openTopic(it.key);ul.appendChild(li)});
     if(!D[agOpen].length)ul.appendChild(el(`<li class="how">Nenhuma revisão neste dia.</li>`));box.appendChild(ul)}}
+/* ---------- Residência: mapa, sugestões de nível ---------- */
+function renderResMap(){const box=$("#resMap");if(!box)return;box.innerHTML="";
+  box.appendChild(el(`<div class="dhead"><h2>Mapa da residência</h2><span class="todaydate">${TOTAL} temas</span></div>`));
+  const wrap=el(`<div class="rmap"></div>`);
+  AREAS.forEach(a=>{const g=el(`<div class="rmarea"><span class="rmh"><b>${a.code}</b> <span></span></span><div class="rmspecs"></div></div>`);g.querySelector(".rmh span").textContent=a.name;
+    (a.specs||[{name:"",items:a.items}]).forEach(sp=>{const r=el(`<div class="rmsp"><span class="rmsn"></span><div class="rmcells"></div></div>`);r.querySelector(".rmsn").textContent=sp.name;
+      sp.items.forEach(it=>{const s=get(it.key),l=tfLevel(s),c=el(`<button type="button" class="rmc l${l}${isDue(s)?" due":""}${isWeak(s)?" weak":""}"></button>`);
+        c.dataset.tip=`${it.t} · ${LVL[s.l||0]}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}${isDue(s)?" · revisão pendente":""}`;c.setAttribute("aria-label",c.dataset.tip);c.onclick=()=>openTopic(it.key);r.querySelector(".rmcells").appendChild(c)});
+      g.querySelector(".rmspecs").appendChild(r)});
+    wrap.appendChild(g)});
+  box.appendChild(wrap);
+  box.appendChild(el(`<div class="clegend"><span><i class="sw rmk l0"></i>não iniciado</span><span><i class="sw rmk l1"></i>estudado</span><span><i class="sw rmk l2"></i>revisado</span><span><i class="sw rmk l3"></i>dominado</span><span><i class="sw rmk l0 due"></i>revisão pendente</span><span><i class="sw rmk l0 weak"></i>ponto fraco</span></div>`));
+  box.appendChild(el(`<p class="cnote">Cada quadrado é um tema. Toque para abrir.</p>`))}
+/* domínio automático: propõe subir para Dominado quando bate os critérios, e voltar para Revisado quando o acerto cai */
+const lvMeets=s=>(s.l||0)===2&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
+function lvDrop(k){const s=get(k);if((s.l||0)!==3)return null;const tr=qTrend(k);if(tr&&tr.rq>=5&&tr.r<70)return `${tr.r}% nos últimos 30 dias`;
+  let rq=0,rc=0;const t=dnum(today());for(const d in s.qd||{}){const v=s.qd[d];if(Array.isArray(v)&&t-dnum(d)<30){rq+=v[0]||0;rc+=v[1]||0}}if(rq>=5&&rc/rq<0.7)return `${Math.round(rc/rq*100)}% nos últimos 30 dias`;return null}
+function lvSuggestions(){const t=today(),out=[];[...ALL,...FAC_ITEMS].forEach(it=>{const s=get(it.key);if(s.lvDis&&dnum(t)-dnum(s.lvDis)<14)return;
+  if(lvMeets(s))out.push({it,up:true,why:`${Math.round(acc(s)*100)}% em ${s.qt} questões e ${s.step} revisões seguidas sem dificuldade`});
+  else{const d=lvDrop(it.key);if(d)out.push({it,up:false,why:`acerto caiu para ${d}`})}});return out.sort((a,b)=>b.up-a.up||wOf(b.it)-wOf(a.it))}
+function renderLvSug(){const box=$("#lvSug");if(!box)return;box.innerHTML="";const L=lvSuggestions();box.hidden=!L.length;if(!L.length)return;
+  box.appendChild(el(`<div class="dhead"><h2>Sugestões de nível</h2><span class="todaydate">${L.length}</span></div>`));
+  const ul=el(`<ul class="lvlist"></ul>`);L.slice(0,5).forEach(x=>{const li=el(`<li><span class="lvt"><button class="link" type="button"></button><span class="ks"></span></span><span class="btns"></span></li>`);
+    const b=li.querySelector(".link");b.textContent=x.it.t;b.onclick=()=>openTopic(x.it.key);li.querySelector(".ks").textContent=(x.up?"Pronto para Dominado: ":"Dominado, mas o ")+x.why+".";
+    const go=el(`<button class="btn ${x.up?"primary":""}" type="button"></button>`);go.textContent=x.up?"Marcar como Dominado":"Voltar para Revisado";go.onclick=()=>{upd(x.it.key,s=>{s.l=x.up?3:2;delete s.lvDis});commit()};
+    const no=el(`<button class="btn" type="button">Agora não</button>`);no.onclick=()=>{upd(x.it.key,s=>{s.lvDis=today()});commit()};
+    li.querySelector(".btns").append(go,no);ul.appendChild(li)});
+  box.appendChild(ul);if(L.length>5)box.appendChild(el(`<p class="how">+ ${L.length-5} temas com sugestão.</p>`));
+  box.appendChild(el(`<p class="how">Dominado: 80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade. Volta para Revisado se o acerto dos últimos 30 dias cair abaixo de 70% (com 5+ questões). "Agora não" esconde por 14 dias.</p>`))}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -4297,6 +4348,10 @@ const HELP=[
 - **Barrinhas de incidência:** peso calculado a partir de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026). Ajustável dentro do tema.
 - **Subtópicos próprios:** adicione no fim da lista do tema.
 - **Filtros:** **Situação** (Não iniciados, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
+- **Mapa da residência** (parte Progresso): os 185 temas como quadradinhos por especialidade, na cor do nível; borda vermelha = revisão pendente, contorno = ponto fraco. Toque para abrir o tema.
+- **Progresso por área:** a barra grossa mostra os temas já estudados; a fina, os subtópicos marcados (o quanto do conteúdo você cobriu de verdade).
+- **Linha de cada tema:** acerto colorido (verde, amarelo ou vermelho), tempo de foco (⏱), subtópicos, anotações e erros, sem precisar abrir.
+- **Sugestões de nível** (acima da lista): quando um tema Revisado bate os critérios (80%+ em 10+ questões e 2 revisões seguidas sem dificuldade), o app propõe **Marcar como Dominado**; se um Dominado cair para menos de 70% nos últimos 30 dias (5+ questões), propõe **Voltar para Revisado**. **Agora não** esconde a sugestão por 14 dias.
 - **Agenda de revisões** (parte Revisões): quantas revisões caem em cada um dos próximos 14 dias; toque num dia para ver os temas. Quando um dia passa do ritmo confortável, **Equilibrar** adianta revisões para dias mais leves (ou adia no máximo 3 dias, se não houver espaço antes) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. Revisar o tema volta a contar pelos intervalos normais.
 - **Já estudei alguns temas antes do app** (abaixo dos filtros): marque de uma vez os temas que você já tinha estudado (toque em cada um ou em **Selecionar os não iniciados desta especialidade**), escolha **Estudados** ou **Já revisados** e confirme. A 1ª revisão fica espalhada pelos próximos dias (alguns por dia) e não conta como estudo de hoje. **Desfazer** volta como estava.`],
 ["Questões",`As questões são geradas pelo Claude dentro de cada tema, com comentário, e cada resposta conta no seu acerto.
@@ -4452,10 +4507,11 @@ function renderAll(){
   renderPlan();
   renderRevs();renderAgenda();
   // resumo
-  renderDash();
+  renderDash();renderResMap();renderLvSug();
   renderTFilters();
   // áreas
   const errN={};errors.forEach(e=>errN[e.k]=(errN[e.k]||0)+1);
+  const foTot={};foSess.forEach(x=>{if(x.ref&&x.ref[0]==="T"){const k=x.ref.slice(2);foTot[k]=(foTot[k]||0)+x.sec}});
   const box=$("#areas"); box.innerHTML="";
   const facL=facLinkMap();
   [...AREAS,FAC_AREA].forEach(a=>{if(tf.area!=="all"&&a.code!==tf.area)return;
@@ -4479,7 +4535,9 @@ function renderAll(){
       const fb=facBadge(it.key);if(fb){const x=el(`<span class="fbadge"></span>`);x.textContent=`Prova de ${fb.d.name} · ${br(fb.p.date)}`;m.appendChild(x)}
       else if(!it.own&&facL[it.key]){const L0=facL[it.key],x=el(`<span class="fbadge"></span>`);x.textContent=`Faculdade · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");m.appendChild(x)}
       if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
-      if(s.qt)m.appendChild(el(`<span>${Math.round(acc(s)*100)}% em ${s.qt} questões</span>`));
+      if(s.qt){const pp=Math.round(acc(s)*100),[bk]=band(pp);m.appendChild(el(`<span class="st ${bk}">${pp}% em ${s.qt} questões</span>`))}
+      {const fo=foTot[it.key];if(fo)m.appendChild(el(`<span>⏱ ${fmtMin(fo)}</span>`))}
+      if(lvMeets(s))m.appendChild(el(`<span class="lvup">pronto para Dominado</span>`));else if(lvDrop(it.key))m.appendChild(el(`<span class="late">acerto caiu</span>`));
       const [sd,st]=subCount(it); if(sd)m.appendChild(el(`<span>${sd}/${st} subtópicos</span>`));
       if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
       const ne=errN[it.key]||0; if(ne)m.appendChild(el(`<span>${ne} ${ne===1?"erro":"erros"} no caderno</span>`));
