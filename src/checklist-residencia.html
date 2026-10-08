@@ -295,6 +295,22 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qfsel select{width:100%;min-width:0;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;font-weight:400;letter-spacing:0}
 .qftop{display:flex;gap:8px;align-items:stretch}
 .qregb{padding:7px 12px;font-size:.85rem}
+.qgoal{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;border-top:1px solid var(--line);padding-top:12px}
+.qgm{flex:1 1 260px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.qgtop{display:flex;align-items:baseline;gap:8px}.qgtop b{font:500 1.4rem var(--mono)}.qgtop span{font-size:.85rem;color:var(--muted)}
+.qgm .meter{margin:0;height:8px}.qgm .meter.ok i{background:var(--good)}
+.qgtxt{margin:0;font-size:.82rem;color:var(--muted)}.qgtxt b{color:var(--ink)}
+.qgsel{flex:0 1 180px}
+.qrx{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:.78rem;border-top:1px dashed var(--line);padding-top:6px}
+.qrxsp{flex:1}
+.qrx .link{font-size:.78rem}
+.qtr{font:600 .74rem var(--mono);padding:1px 7px;border-radius:99px}
+.qtr.up{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.qtr.down{background:var(--due-soft);color:var(--due)}
+.qer{background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.78rem;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;text-align:left}
+.qrsrc{flex:2 1 170px!important}
+.qrsrc input{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}
+.qsrows{display:flex;flex-direction:column;gap:12px}
 .qreg{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
 .qreg .dhead b{font-family:var(--display)}
 .qreg .pnote{margin:0}
@@ -1017,6 +1033,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
       <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
       <div id="qRegBox"></div>
       <div class="kpis" id="qkpis"></div>
+      <div id="qGoal"></div>
       <figure class="chart"><figcaption>Evolução: últimas 12 semanas</figcaption><div id="qEvo"></div></figure>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
@@ -1467,8 +1484,10 @@ function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
 function dueIn(s){return s.last? dnum(s.last)+interval(s)-dnum(today()) : null}
 function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
-function addQ(x,t,c,day){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc||0)+c);const d=day||today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
-  const ks=Object.keys(m).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(k=>delete m[k]);x.qd=m}
+function addQ(x,t,c,day,src){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc||0)+c);const d=day||today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
+  const ks=Object.keys(m).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(k=>delete m[k]);x.qd=m;
+  const sk=src&&qSrcKey(src);if(sk){const b={...(x.qb||{})},m2={...(b[sk]||{})},v2=m2[d]||[0,0];m2[d]=[Math.max(0,v2[0]+t),Math.max(0,v2[1]+c)];
+    const k2=Object.keys(m2).sort();if(k2.length>200)k2.slice(0,k2.length-200).forEach(z=>delete m2[z]);b[sk]=m2;x.qb=b}}
 function qPeriod(keys,from){let q=0,c=0,und=0,est=0;keys.forEach(k=>{const s=get(k);if(s.qe&&(!from||s.qe.d>=from))est+=s.qe.q||0;if(!from){q+=s.qt||0;c+=s.qc||0;return}
   let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und,est}}
 const isDue=s=>{const d=dueIn(s);return d!==null&&d<=0};
@@ -1946,7 +1965,7 @@ function answer(it,qi,letra){
   const g=gen[it.key];if(!g||g.ans[qi])return;
   g.ans[qi]=letra;const ok=letra===g.qs[qi].correta;
   if(!ok)rdAdd(it.key,g.qs[qi]);
-  upd(it.key,x=>addQ(x,1,ok?1:0));logAct("q",1,ok?1:0);commit();
+  upd(it.key,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
   const g=gen[it.key],q=g.qs[qi],mine=q.alternativas.find(a=>a.letra===g.ans[qi]),right=q.alternativas.find(a=>a.letra===q.correta);
@@ -2092,7 +2111,7 @@ function renderDash(){
 }
 
 /* aba Questões */
-let qFOpen=false, qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
+let qWorse=false,qFOpen=false, qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
 function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
 const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
@@ -2107,13 +2126,14 @@ function qUniverse(){// temas da residência + conteúdos da faculdade, com os f
   if(qInc)pool=pool.filter(i=>!i.own&&wOf(i)===3);
   if(qErrF)pool=pool.filter(i=>errK.has(i.key));
   if(qDueF)pool=pool.filter(i=>isDue(get(i.key)));
+  if(qWorse)pool=pool.filter(i=>{const tr=qTrend(i.key);return tr&&tr.d<=-5});
   return pool}
 const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
 function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   const top=el(`<div class="qftop"><input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto (ex.: sepse)" aria-label="Buscar tema ou assunto"></div>`),qi=top.querySelector("input");qi.value=qQuery;
   qi.oninput=debounced(()=>{qQuery=qi.value;render()});box.appendChild(top);
   // no celular os filtros ficam recolhidos atrás do botão "Filtros" (a busca fica sempre à vista)
-  const nAct=[qArea!=="all",qSpec!=="all",qDisc!=="all",qPer!=="all",qAcc!=="all",qInc,qErrF,qDueF,qSort!=="num"].filter(Boolean).length;
+  const nAct=[qArea!=="all",qSpec!=="all",qDisc!=="all",qPer!=="all",qAcc!=="all",qInc,qErrF,qDueF,qWorse,qSort!=="num"].filter(Boolean).length;
   const fb=el(`<button class="qfbtn" type="button" id="qFBtn" aria-expanded="${qFOpen}" aria-controls="qFPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span>${nAct?`<b>${nAct}</b>`:""}</button>`);
   fb.onclick=()=>{qFOpen=!qFOpen;render()};top.appendChild(fb);
   const panel=el(`<div class="qfpanel${qFOpen?" open":""}" id="qFPanel"></div>`);box.appendChild(panel);
@@ -2140,18 +2160,18 @@ function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   box.appendChild(row);
   // atalhos
   const tg=el(`<div class="chips qtg" role="group" aria-label="Mais filtros"></div>`);
-  [["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"}],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc}],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF}],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF}]].forEach(([id,lab,on,fn])=>{
+  [["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"}],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc}],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF}],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF}],["qWorseB","Piorando",qWorse,()=>{qWorse=!qWorse}]].forEach(([id,lab,on,fn])=>{
     const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=id;b.textContent=lab;b.onclick=()=>{fn();render()};tg.appendChild(b)});
   box.appendChild(tg);
   if(qFOpen){const ok=el(`<button class="btn qfdone" type="button">Ver resultados</button>`);ok.onclick=()=>{qFOpen=false;render();$("#qkpis").scrollIntoView({block:"start"})};box.appendChild(ok)}}
-  const any=qArea!=="all"||qSpec!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF;
-  if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;render()};realBox.appendChild(cl)}}
+  const any=qArea!=="all"||qSpec!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF||qWorse;
+  if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;qWorse=false;render()};realBox.appendChild(cl)}}
 function renderQuest(){
   renderQFilters();
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qRedoCard(U0),qGainCard(U0))}
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qRedoCard(U0),qGainCard(U0),qSrcCard(U0,qFrom()));const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl())}
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
   const withQ=st.filter(x=>x.t),vis=withQ.filter(x=>qAcc==="all"||accBand(x.c,x.t)===qAcc);
   let C=0,T=0;vis.forEach(x=>{C+=x.c;T+=x.t});const p=pct(C,T),[bk,bl]=band(p),weakN=withQ.filter(x=>x.t>=WEAK_MIN&&x.c/x.t<WEAK_PCT).length;
@@ -2178,7 +2198,7 @@ function renderQuest(){
   const row=it=>{const x=S.get(it.key),pp=pct(x.c,x.t),[k,l]=band(pp);
     const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+" · "+String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
     li.querySelector(".qname").textContent=it.t;li.querySelector(".qt").onclick=()=>openTopic(it.key);
-    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);return li};
+    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);li.appendChild(qRowExtra(it));return li};
   const items=vis.map(x=>x.it);
   if(qSort==="num"){const ai=it=>{const i=AREAS.indexOf(it.area);return i<0?99:i},si=it=>{const i=(it.area.specs||[]).findIndex(z=>z.name===it.sp);return i<0?99:i};items.sort((a,b)=>ai(a)-ai(b)||si(a)-si(b)||(a.sp||"").localeCompare(b.sp||"","pt")||(a.own-b.own)||a.num-b.num);appendGrouped(list,items,x=>x,row,["tema","temas"])}
   else{items.sort(qSort==="low"?(a,b)=>S.get(a.key).c/S.get(a.key).t-S.get(b.key).c/S.get(b.key).t||S.get(b.key).t-S.get(a.key).t:(a,b)=>S.get(b.key).t-S.get(a.key).t);items.forEach(it=>list.appendChild(row(it)))}
@@ -3173,7 +3193,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true},profile:{name:"",goal:"",goalDate:""}};
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,qgoal:0},profile:{name:"",goal:"",goalDate:""}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -3191,6 +3211,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof p.fsnd==="boolean")o.prefs.fsnd=p.fsnd;
   if(typeof p.fwake==="boolean")o.prefs.fwake=p.fwake;
   if(Number.isInteger(p.fgoal)&&p.fgoal>=0&&p.fgoal<=720)o.prefs.fgoal=p.fgoal;
+  if(Number.isInteger(p.qgoal)&&p.qgoal>=0&&p.qgoal<=5000)o.prefs.qgoal=p.qgoal;
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
@@ -3277,6 +3298,8 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
     segRow("Som ao finalizar","Toca quando o ciclo ou a pausa terminam, com o app aberto.",[[true,"Ligado"],[false,"Desligado"]],!!P.fsnd,v=>{ui.prefs.fsnd=v;saveUI();render()}),
     segRow("Tela acesa durante o foco","Quando o aparelho permite.",[[true,"Sim"],[false,"Não"]],!!P.fwake,v=>{ui.prefs.fwake=v;saveUI();render()}));
   box.appendChild(fo);
+  const qm=el(`<section class="card"><div class="dhead"><h2>Questões</h2></div></section>`);
+  qm.appendChild(segRow("Meta semanal de questões","De segunda a domingo, contando todas as questões (geradas, registradas e as do tema).",[[0,"Sem meta"],[100,"100"],[200,"200"],[300,"300"],[500,"500"],...(![0,100,200,300,500].includes(P.qgoal)?[[P.qgoal,String(P.qgoal)]]:[])],P.qgoal,v=>{ui.prefs.qgoal=v;saveUI();render()}));box.appendChild(qm);
   // questões, backup e ajuda
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
@@ -3781,8 +3804,8 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
 function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="dhead"><b>Registrar questões</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{qReg=null;render()};
   if(R.saved){const S=R.saved,it=BYKEY[S.k],m=el(`<p class="pnote" role="status"><span></span> <button class="link" type="button">Desfazer</button></p>`);
-    m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}.`;
-    m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d));logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
+    m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}${S.src?` · ${S.src}`:""}.`;
+    m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d,S.src));logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
     if(S.t>S.c){const e=el(`<button class="btn" type="button">Registrar um erro deste tema no caderno</button>`);e.onclick=()=>{const k=S.k;qReg=null;openTopic(k);setTimeout(()=>{const f=document.getElementById("ew-"+k);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};w.appendChild(e)}}
   const it=R.k&&BYKEY[R.k];
   if(!it){const s=el(`<label class="qfsel"><span>Tema</span><input class="search" id="qrq" type="search" placeholder="Digite o tema (ex.: sepse, IAM, pré-eclâmpsia)" autocomplete="off"></label>`),i=s.querySelector("input");i.value=R.query||"";
@@ -3793,13 +3816,16 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
     else w.appendChild(el(`<p class="how">Para questões de bancos (Medcel, Estratégia, MedCof…) ou provas antigas: escolha o tema e digite quantas fez e acertou.</p>`))}
   else{const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
     ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
-    const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
+    const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><label class="qfsel qrsrc"><span>Banca ou fonte</span><input type="text" id="qrb" list="qrbl" maxlength="30" placeholder="opcional (ex.: ENARE)" autocomplete="off"><datalist id="qrbl"></datalist></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
+    {const bi=f.querySelector("#qrb"),dl=f.querySelector("#qrbl");[...new Set([...qSrcAll(),...QSRC_SUG])].filter(x=>x!=="Claude").forEach(v=>{const o=document.createElement("option");o.value=v;dl.appendChild(o)});
+      let last="";try{last=localStorage.getItem("resid-qsrc")||""}catch(e){}bi.value=R.b!==undefined?R.b:last;bi.oninput=()=>{R.b=bi.value}}
     const ti=f.querySelector("#qrt"),ci=f.querySelector("#qrc"),di=f.querySelector("#qrd");ti.value=R.t||"";ci.value=R.c||"";di.value=R.d||today();di.max=today();
     ti.oninput=()=>{R.t=ti.value};ci.oninput=()=>{R.c=ci.value};di.oninput=()=>{R.d=di.value};
     f.querySelector("#qrSave").onclick=()=>{const t=Math.round(+ti.value),c=Math.round(+ci.value),d=di.value||today();
       if(!(t>=1&&t<=500)){R.msg="Digite quantas questões fez (1 a 500).";render();return}if(!(c>=0&&c<=t)||ci.value===""){R.msg="Os acertos vão de 0 até o número de questões feitas.";render();return}
       if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){R.msg="Escolha um dia até hoje.";render();return}
-      upd(it.key,x=>addQ(x,t,c,d));logAct("q",t,c,d);commit();qReg={saved:{k:it.key,t,c,d},d,query:""};render();setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
+      const src=qSrcKey(f.querySelector("#qrb").value);try{localStorage.setItem("resid-qsrc",src)}catch(e){}
+      upd(it.key,x=>addQ(x,t,c,d,src));logAct("q",t,c,d);commit();qReg={saved:{k:it.key,t,c,d,src},d,query:""};render();setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
     w.appendChild(f)}
   if(R.msg){const m=el(`<p class="err" role="alert"></p>`);m.textContent=R.msg;w.appendChild(m)}
   return w}
@@ -3843,6 +3869,48 @@ function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6
   if(last.q&&pa!==null){const d=Math.round(last.c/last.q*100-pa*100);note+=` Esta semana: ${pct(last.c,last.q)}% de acerto, ${d===0?"igual à":d>0?`${d} pontos acima da`:`${-d} pontos abaixo da`} média das 4 anteriores.`}
   if(est)note+=` Inclui ${est} questões antigas com data estimada.`;
   return {html:g+`<div class="clegend"><span><i class="sw" style="background:var(--accent);opacity:.35"></i>questões na semana</span><span><i class="sw" style="background:var(--ink)"></i>acerto</span><span><i class="refk"></i>60%</span></div><p class="cnote">${note}</p>`,tot}}
+/* ---------- Questões: meta semanal, tendência, erros na lista, acerto por banca ---------- */
+const QSRC_SUG=["Claude","ENARE","USP","UNIFESP","SUS-SP","UNICAMP","AMRIGS","PSU-MG","SES-DF","UERJ","UFRJ","Revalida","Medcel","Estratégia MED","MedCof","Aristo","Sanar","Prova antiga"];
+const ESHORT={conhecimento:"não sabia",interpretacao:"li errado",confusao:"confundi"};
+/* meta semanal (segunda a domingo), contada no histórico de todas as questões */
+function qWeekQ(ws){let q=0,c=0;for(let i=0;i<7;i++){const h=hist[fromNum(ws+i)];if(h){q+=h.q||0;c+=h.c||0}}return {q,c}}
+function qGoalEl(){const g=ui.prefs.qgoal,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,W=qWeekQ(ws),w=el(`<div class="qgoal"></div>`);
+  const sel=el(`<label class="qfsel qgsel"><span>Meta semanal</span><select id="qGoalSel"></select></label>`),s=sel.querySelector("select");
+  [[0,"Sem meta"],[50,"50"],[100,"100"],[150,"150"],[200,"200"],[300,"300"],[400,"400"],[500,"500"],[700,"700"],[1000,"1.000"]].forEach(([v,lab])=>{const o=document.createElement("option");o.value=v;o.textContent=v?lab+" questões":lab;s.appendChild(o)});
+  if(![0,50,100,150,200,300,400,500,700,1000].includes(g)){const o=document.createElement("option");o.value=g;o.textContent=g+" questões";s.appendChild(o)}
+  s.value=String(g);s.onchange=()=>{ui.prefs.qgoal=+s.value;saveUI();render()};
+  if(!g){w.appendChild(el(`<p class="how qgtxt">Nesta semana: <b>${W.q}</b> ${W.q===1?"questão":"questões"}. Defina uma meta semanal para acompanhar o ritmo.</p>`));w.appendChild(sel);return w}
+  let st=0,k=ws-7;while(qWeekQ(k).q>=g){st++;k-=7}if(W.q>=g)st++;
+  const left=7-(t-ws),miss=Math.max(0,g-W.q),pc=Math.min(100,W.q/g*100);
+  const box=el(`<div class="qgm"><div class="qgtop"><b>${W.q.toLocaleString("pt-BR")}</b><span>de ${g.toLocaleString("pt-BR")} questões nesta semana</span></div><div class="meter${W.q>=g?" ok":""}"><i style="width:${pc}%"></i></div><p class="how qgtxt"></p></div>`);
+  box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`;
+  w.append(box,sel);return w}
+/* tendência: acerto dos últimos 30 dias contra os 90 dias antes deles (mínimo de 5 questões em cada) */
+function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
+  for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=t-dnum(d);if(n<0)continue;if(n<30){rq+=v[0]||0;rc+=v[1]||0}else if(n<120){pq+=v[0]||0;pc+=v[1]||0}}
+  if(rq<5||pq<5)return null;const r=rc/rq*100,p=pc/pq*100;return {d:Math.round(r-p),r:Math.round(r),p:Math.round(p),rq,pq}}
+/* linha extra de cada tema na lista: tendência, erros no caderno e atalhos */
+function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key),ex=el(`<div class="qrx"></div>`);
+  if(tr&&Math.abs(tr.d)>=5){const b=el(`<span class="qtr ${tr.d>0?"up":"down"}"></span>`);b.textContent=`${tr.d>0?"▲":"▼"} ${Math.abs(tr.d)} pts`;b.dataset.tip=`Últimos 30 dias: ${tr.r}% em ${tr.rq} questões · antes: ${tr.p}% em ${tr.pq}`;b.title=b.dataset.tip;ex.appendChild(b)}
+  if(en.length){const tc={};en.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const b=el(`<button class="qer" type="button"></button>`);
+    b.textContent=`${en.length} ${en.length===1?"erro":"erros"} no caderno: ${Object.keys(ETYPES).filter(t=>tc[t]).map(t=>`${tc[t]} ${ESHORT[t]}`).join(" · ")}`;
+    b.onclick=()=>{eTopicKey=it.key;eArea="all";eSp="all";eType="all";backStack=[];setView("erros")};ex.appendChild(b)}
+  const sp=el(`<span class="qrxsp"></span>`);ex.appendChild(sp);
+  const ae=el(`<button class="link" type="button">+ erro</button>`);ae.onclick=()=>{openTopic(it.key);setTimeout(()=>{const f=document.getElementById("ew-"+it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};
+  const ar=el(`<button class="link" type="button">+ registrar</button>`);ar.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};
+  ex.append(ae,ar);return ex}
+/* acerto por banca ou fonte (informada no registro rápido; as geradas entram como "Claude") */
+const qSrcKey=s=>String(s||"").trim().replace(/[.\/~*\[\]`]/g,"-").replace(/\s+/g," ").slice(0,30);
+function qSrcAll(){const set=new Set();ALL.concat(FAC_ITEMS).forEach(it=>{for(const k in get(it.key).qb||{})set.add(k)});return [...set]}
+function qSrcCard(U,from){const by={};let tq=0,tc=0;
+  U.forEach(it=>{const s=get(it.key),[c,t]=qOf(it.key,from);tq+=t;tc+=c;for(const src in s.qb||{}){const m=s.qb[src];for(const d in m){if(from&&d<from)continue;const v=m[d];if(!Array.isArray(v))continue;const r=by[src]||(by[src]={q:0,c:0});r.q+=v[0]||0;r.c+=v[1]||0}}});
+  const c=el(`<section class="card qsrc" aria-labelledby="qsh"><div class="dhead"><h2 id="qsh">Acerto por banca ou fonte</h2></div></section>`);
+  const rows=Object.entries(by).filter(([,r])=>r.q>0).sort((a,b)=>b[1].q-a[1].q).map(([k,r])=>[k,r.c,r.q]);
+  if(!rows.length){c.appendChild(el(`<p class="cempty">Informe a banca ou a fonte em <b>+ Registrar questões</b> (ENARE, USP, Medcel…) para comparar o seu acerto entre elas. As questões geradas pelo Claude entram sozinhas como “Claude”.</p>`));return c}
+  const nq=rows.reduce((a,r)=>a+r[2],0),nc=rows.reduce((a,r)=>a+r[1],0);if(tq-nq>0)rows.push(["Não informado",Math.max(0,tc-nc),tq-nq]);
+  const box=el(`<div class="qsrows"></div>`);box.innerHTML=hbarRows(rows);c.appendChild(box);
+  c.appendChild(el(`<p class="how">${from?`Nos últimos ${qPer} dias. `:""}“Não informado”: questões registradas sem banca ou antes deste campo existir. Compare a banca da sua prova com a média: se estiver bem abaixo, faça mais questões dela.</p>`));
+  return c}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -3892,7 +3960,11 @@ const HELP=[
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
 - **Refazer as que errei:** toda questão gerada pelo Claude que você erra fica guardada, com o comentário. Refaça 10 de cada vez (primeiro as que você mais errou); acertou, ela sai da lista. Refazer não muda o acerto do tema, porque você já viu a resposta. **Ver lista** mostra e remove.
 - **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
-- **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno** e **Revisão pendente**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
+- **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
+- **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
+- **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
+- **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros.
+- **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente** e **Piorando**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
