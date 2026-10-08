@@ -313,7 +313,8 @@
       diasHistorico: Object.keys(d.hist || {}).length,
       foco: Array.isArray(d.focus) ? d.focus.length : 0,
       refazer: Array.isArray(d.redo) ? d.redo.length : 0,
-      cartoes: Array.isArray(d.cards) ? d.cards.length : 0
+      cartoes: Array.isArray(d.cards) ? d.cards.length : 0,
+      livres: Array.isArray(d.free) ? d.free.length : 0
     };
   }
   const isEmpty = c => !c.temas && !c.anotacoes && !c.erros && !c.disciplinas; // o histórico de hoje é criado pelo próprio plano do dia
@@ -335,6 +336,8 @@
     const hasFocus = Array.isArray(d.focus) && typeof foOk === "function";
     const hasRedo = Array.isArray(d.redo) && typeof rdOk === "function";
     const hasCards = Array.isArray(d.cards) && typeof cdOk === "function";
+    const hasFree = Array.isArray(d.free) && typeof frOk === "function";
+    if (hasFree) { freeN = d.free.filter(frOk).map(frClean); try { localStorage.setItem(LSFR2, JSON.stringify(freeN)); } catch (e) {} }
     if (hasCards) { cards = d.cards.filter(cdOk).map(cdClean); try { localStorage.setItem(LSCD, JSON.stringify(cards)); } catch (e) {} }
     if (hasRedo) { redo = d.redo.filter(rdOk).map(rdClean); try { localStorage.setItem(LSRD, JSON.stringify(redo)); } catch (e) {} }
     if (hasFocus) { foSess = d.focus.filter(foOk).map(foClean); try { localStorage.setItem(LSFO, JSON.stringify(foSess)); } catch (e) {} }
@@ -353,6 +356,11 @@
       const ns = await notesStore.get();
       await Promise.all(ns.docs.filter(x => !notes[x.id]).map(x => notesStore.doc(x.id).delete()));
       await Promise.all(Object.keys(notes).map(k => notesStore.doc(k).set({ t: notes[k], updatedAt: noteAt[k] || now })));
+      if (hasFree && typeof freeStore !== "undefined" && freeStore) {
+        const fs2 = await freeStore.get(), fids = new Set(freeN.map(x => x.id));
+        await Promise.all(fs2.docs.filter(x => !fids.has(x.id)).map(x => freeStore.doc(x.id).delete()));
+        await Promise.all(freeN.map(x => freeStore.doc(x.id).set({ ...x })));
+      }
       if (hasCards && typeof cardStore !== "undefined" && cardStore) {
         const cs = await cardStore.get(), cids = new Set(cards.map(x => x.id));
         await Promise.all(cs.docs.filter(x => !cids.has(x.id)).map(x => cardStore.doc(x.id).delete()));

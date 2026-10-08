@@ -1,7 +1,7 @@
 /* Funciona sem internet: guarda os arquivos do app no aparelho.
    Arquivos do site: tenta a rede primeiro (para receber atualizações) e usa a cópia guardada se estiver sem internet.
    Fontes e Firebase: usa a cópia guardada. O banco de dados (Firestore) não passa por aqui. */
-const V = "checklist-6e1f7215";
+const V = "checklist-93b450d9";
 const CORE = ["./", "index.html", "bridge.js", "config.js", "site.css", "manifest.webmanifest",
   "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
