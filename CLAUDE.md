@@ -55,6 +55,8 @@ consultado quando há dúvida. Responda em português.
   `s.adj` (dias) vale só enquanto `s.adjFrom===s.last` (`dueIn`); `upd` apaga o ajuste quando `last`/`step` mudam.
   Mapa `#resMap` (`renderResMap`), sugestões de nível `#lvSug` (`lvSuggestions`: `lvMeets` sobe, `lvDrop` desce; `s.lvDis` = dispensado
   por 14 dias), linha do tema com acerto colorido e foco (`foTot`), barra fina de subtópicos no gráfico por área.
+  Prévia da semana `weekPreview()` (simula 6 dias com `dayOff`, que desloca `today()`; clona e restaura `state`) em `#weekBox`;
+  temas fixados `s.pin` (`togglePin`, `#pinBox`, filtro `tf.pin`).
 - Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
   guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.

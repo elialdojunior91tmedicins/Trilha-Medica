@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=4aecc7e8">
+<link rel="stylesheet" href="site.css?v=78e304dc">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=4aecc7e8"></script>
-<script src="bridge.js?v=4aecc7e8"></script>
+<script src="config.js?v=78e304dc"></script>
+<script src="bridge.js?v=78e304dc"></script>
 </head>
 <body>
 <script>
@@ -507,11 +507,24 @@ html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="
 .lvup{color:var(--l3);font-weight:600}
 html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="lista"]) .resmap,html[data-layout="tablet"][data-cols="1"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="lista"]) .resmap{display:none}
 html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="prog"]) .lvsug,html[data-layout="tablet"][data-cols="1"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data-seg="prog"]) .lvsug{display:none}
+.pweek summary{margin-top:2px}
+#iToday .pweek{display:none}
+.pwlist{list-style:none;margin:8px 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
+.pwlist li{display:grid;grid-template-columns:5.2rem minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;font-size:.86rem;border-bottom:1px solid var(--line);padding-bottom:6px}
+.pwd{font:500 .76rem var(--mono);color:var(--muted);text-transform:capitalize}.pwi .link{font-size:.86rem;color:var(--ink);text-align:left}.pwr{font-size:.76rem;color:var(--l2);white-space:nowrap}
+@media (max-width:480px){.pwlist li{grid-template-columns:4.4rem minmax(0,1fr)}.pwr{grid-column:2}}
+.pinbox{border-color:var(--l1)}
+.pinlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.pinlist li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.pint{display:flex;flex-direction:column;align-items:flex-start;background:none;border:0;padding:0;text-align:left;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.pint b{font-size:.93rem;font-weight:600}.pint span{font-size:.76rem;color:var(--muted)}
+.pinx{background:none;border:0;color:var(--l1);font-size:1.15rem;cursor:pointer;padding:4px}
+.dpin[aria-pressed="true"]{color:var(--l1);border-color:var(--l1)}
 .dsum{display:flex;flex-wrap:wrap;gap:6px}
 .dchip{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 10px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .dchip span{font:600 .64rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.dchip b{font:600 .86rem var(--body)}
 .dchip.late b{color:var(--due)}
-.dtabs{align-items:center}.dtabs .dfoco{margin-left:auto}
+.dtabs{align-items:center}.dtabs .dpin{margin-left:auto}
 @media (max-width:480px){.dtabs button{padding:6px 9px;font-size:.8rem}.dchip{padding:4px 8px}}
 .ecount:not(:empty)::before{content:"("}.ecount:not(:empty)::after{content:")"}
 textarea,select,.etext{width:100%;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.95rem}
@@ -1244,6 +1257,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <div class="planhead"><span id="planmeta"></span><button class="link" id="planRedo" type="button">Refazer plano</button></div>
     <div class="meter" id="planbar" hidden><i></i></div>
     <ol class="plan" id="plan"></ol>
+    <div id="weekBox"></div>
     <p class="how">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
   </section>
 
@@ -1277,6 +1291,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <p class="how">As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
     <p class="how">Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
     <section class="card lvsug" id="lvSug" aria-label="Sugestões de nível" hidden></section>
+    <section class="card pinbox" id="pinBox" aria-label="Temas fixados" hidden></section>
   </section>
 
   <div id="areas" class="wrap" style="gap:14px;width:100%"></div>
@@ -1579,7 +1594,8 @@ function mdC(src){let v=mdCache.get(src);if(v===undefined){if(mdCache.size>400)m
 function debounced(fn,ms=180){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
 
 /* datas locais */
-function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+let dayOff=0;// usado só para simular os próximos dias (prévia da semana)
+function today(){const d=new Date();if(dayOff)d.setDate(d.getDate()+dayOff);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function dnum(s){const [y,m,d]=s.split("-").map(Number);return Math.round(Date.UTC(y,m-1,d)/864e5)}
 function fromNum(x){return new Date(x*864e5).toISOString().slice(0,10)}
 function br(s){const [y,m,d]=s.split("-");return d+"/"+m}
@@ -1641,13 +1657,13 @@ function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i
 function counts(items){const c=[0,0,0,0];items.forEach(it=>c[get(it.key).l||0]++);return c}
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
 /* filtros da lista: situação (vários juntos = "ou") e atalhos (todos juntos = "e"), mais área e especialidade */
-let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,area:"all",sp:"all"};
-function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.area!=="all"||tf.sp!=="all"}
-function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,area:"all",sp:"all"};filter="all"}
+let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};
+function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.area!=="all"||tf.sp!=="all"}
+function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};filter="all"}
 const tfLevel=s=>!s.last&&!(s.l>0)?0:(s.l||1);
 function matches(it){const s=get(it.key);
   if(tf.lv.size&&!tf.lv.has(tfLevel(s)))return false;
-  if(tf.due&&!isDue(s))return false;if(tf.weak&&!isWeak(s))return false;if(tf.noq&&s.qt)return false;if(tf.high&&(it.own||wOf(it)!==3))return false;
+  if(tf.due&&!isDue(s))return false;if(tf.weak&&!isWeak(s))return false;if(tf.noq&&s.qt)return false;if(tf.high&&(it.own||wOf(it)!==3))return false;if(tf.pin&&!s.pin)return false;
   if(tf.area!=="all"&&it.area.code!==tf.area)return false;if(tf.sp!=="all"&&it.sp!==tf.sp)return false;
   return !query||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")+" "+(notes[it.key]||"")).includes(query)}
 
@@ -2018,6 +2034,7 @@ function renderDetail(it){
   const tb=el(`<div class="seg dtabs" role="tablist" aria-label="Partes do tema"></div>`);
   [["estudo","Estudo"],["questoes","Questões"],["notas","Anotações"],["erros","Erros"]].forEach(([v,l])=>{const b=el(`<button type="button" role="tab" aria-pressed="${tab===v}" aria-selected="${tab===v}"></button>`);
     b.textContent=l+(v==="erros"&&mine.length?` · ${mine.length}`:v==="notas"&&nt?" ✓":"");b.dataset.dt=v;b.onclick=()=>{detTab[it.key]=v;render()};tb.appendChild(b)});
+  const pn=el(`<button class="mini dpin" type="button"></button>`);pn.textContent=s.pin?"★ Fixado":"☆ Fixar";pn.setAttribute("aria-pressed",!!s.pin);pn.title=s.pin?"Tirar dos fixados":"Fixar este tema no topo da lista";pn.onclick=()=>togglePin(it.key);tb.appendChild(pn);
   const fz=el(`<button class="mini dfoco" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);tb.appendChild(fz);
   box.prepend(sum,tb);
   return box;
@@ -2385,6 +2402,7 @@ function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.st
    planOpen guarda o que você abriu ou fechou à mão hoje */
 let planOpen={};
 function renderPlan(){
+  {const wb=$("#weekBox");if(wb){wb.innerHTML="";if(view==="temas")wb.appendChild(weekEl())}}
   const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";const compact=true;if(planOpen.d!==P.d)planOpen={d:P.d};
   const CR=examCrunch(),cb=$("#crunchBar");cb.hidden=!CR.active;{const pn=$("#planNote");pn.hidden=!planNote;pn.textContent=planNote}
   if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
@@ -4213,7 +4231,7 @@ function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML=
   const chip=(t,on,fn,id)=>{const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.textContent=t;if(id)b.id=id;b.onclick=()=>{fn();render()};return b};
   row("Situação",[[0,"Não iniciados"],[1,"Estudados"],[2,"Revisados"],[3,"Dominados"]].map(([v,t])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v)));
   row("Atalhos",[chip(`Revisão pendente · ${cnt(i=>isDue(get(i.key)))}`,tf.due,()=>{tf.due=!tf.due},"tfdue"),chip(`Pontos fracos · ${cnt(i=>isWeak(get(i.key)))}`,tf.weak,()=>{tf.weak=!tf.weak},"tfweak"),
-    chip("Sem questões",tf.noq,()=>{tf.noq=!tf.noq},"tfnoq"),chip("Incidência muito alta",tf.high,()=>{tf.high=!tf.high},"tfhigh")]);
+    chip("Sem questões",tf.noq,()=>{tf.noq=!tf.noq},"tfnoq"),chip("Incidência muito alta",tf.high,()=>{tf.high=!tf.high},"tfhigh"),chip(`★ Fixados · ${cnt(i=>get(i.key).pin)}`,tf.pin,()=>{tf.pin=!tf.pin},"tfpin")]);
   const sr=el(`<div class="qfrow"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
     opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;x.onchange=()=>{on(x.value);render()};sr.appendChild(l)};
   sel("tfArea","Área",[["all","Todas"],...AREAS.map(a=>[a.code,a.name]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","Faculdade (sem área)"]]:[])],tf.area,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)});
@@ -4304,6 +4322,32 @@ function renderLvSug(){const box=$("#lvSug");if(!box)return;box.innerHTML="";con
     li.querySelector(".btns").append(go,no);ul.appendChild(li)});
   box.appendChild(ul);if(L.length>5)box.appendChild(el(`<p class="how">+ ${L.length-5} temas com sugestão.</p>`));
   box.appendChild(el(`<p class="how">Dominado: 80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade. Volta para Revisado se o acerto dos últimos 30 dias cair abaixo de 70% (com 5+ questões). "Agora não" esconde por 14 dias.</p>`))}
+/* ---------- Residência: prévia da semana e temas fixados ---------- */
+let weekOpen=false;
+/* simula os próximos 6 dias supondo que você cumpre o plano e faz as revisões de cada dia (nada é salvo) */
+function weekPreview(){const snap=state,out=[];
+  try{state=JSON.parse(JSON.stringify(state));const POOL=[...ALL,...FAC_ITEMS];
+    ensurePlan().items.forEach(p=>{const s={...get(p.k)};if(!s.last){s.last=today();s.step=0;s.l=Math.max(s.l||0,1);state[p.k]=s}});
+    POOL.filter(x=>isDue(get(x.key))).forEach(x=>{const s={...get(x.key)};s.last=today();s.step=Math.min((s.step||0)+1,INT.length-1);delete s.adj;state[x.key]=s});
+    for(let i=1;i<=6;i++){dayOff=i;const plan=buildPlan(),revs=POOL.filter(x=>isDue(get(x.key)));
+      out.push({d:today(),items:plan.map(x=>({k:x.it.key,cls:x.cls,txt:x.txt})),rev:revs.length});
+      plan.forEach(x=>{const s={...get(x.it.key)};if(!s.last){s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}state[x.it.key]=s});
+      revs.forEach(x=>{const s={...get(x.key)};s.last=today();s.step=Math.min((s.step||0)+1,INT.length-1);delete s.adj;state[x.key]=s})}}
+  finally{dayOff=0;state=snap}return out}
+function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}><summary>Ver os próximos 6 dias</summary></details>`);w.addEventListener("toggle",()=>{if(w.open!==weekOpen){weekOpen=w.open;render()}});
+  if(!weekOpen)return w;
+  const wd=["dom","seg","ter","qua","qui","sex","sáb"],ol=el(`<ol class="pwlist"></ol>`);
+  weekPreview().forEach(D=>{const li=el(`<li><span class="pwd"></span><span class="pwi"></span><span class="pwr"></span></li>`);li.querySelector(".pwd").textContent=`${wd[new Date(D.d+"T12:00:00").getDay()]} ${br(D.d)}`;
+    const box=li.querySelector(".pwi");if(!D.items.length)box.textContent="sem temas novos";D.items.forEach((x,j)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[x.k].t;b.title=x.txt;b.onclick=()=>openTopic(x.k);if(j)box.append(" · ");box.appendChild(b)});
+    li.querySelector(".pwr").textContent=D.rev?`${D.rev} ${D.rev===1?"revisão":"revisões"}`:"";ol.appendChild(li)});
+  w.appendChild(ol);w.appendChild(el(`<p class="how">Prévia supondo que você cumpre o plano e as revisões de cada dia. O plano de cada dia só é montado naquele dia e muda conforme o que você fizer (questões, provas da faculdade, pontos fracos).</p>`));return w}
+/* temas fixados (estrela) */
+function togglePin(k){upd(k,s=>{if(s.pin)delete s.pin;else s.pin=1});commit()}
+function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";const P=[...ALL,...FAC_ITEMS].filter(i=>get(i.key).pin);box.hidden=!P.length||!!bulk;if(box.hidden)return;
+  box.appendChild(el(`<div class="dhead"><h2>★ Fixados</h2><span class="todaydate">${P.length}</span></div>`));
+  const ul=el(`<ul class="pinlist"></ul>`);P.forEach(it=>{const s=get(it.key),d=dueIn(s),li=el(`<li><button class="pint" type="button"><b></b><span></span></button><span class="lvl" data-l="${s.l||0}">${LVL[s.l||0]}</span><button class="pinx" type="button" aria-label="Desafixar" title="Desafixar">★</button></li>`);
+    li.querySelector("b").textContent=it.t;li.querySelector(".pint span").textContent=`${it.own?"FAC":it.area.code} · ${it.sp||""}${d!==null?" · "+dueLabel(d):""}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}`;
+    li.querySelector(".pint").onclick=()=>openTopic(it.key);li.querySelector(".pinx").onclick=()=>togglePin(it.key);ul.appendChild(li)});box.appendChild(ul)}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -4347,11 +4391,13 @@ const HELP=[
 | Dominado | 80%+ em 10 ou mais questões e duas revisões seguidas sem dificuldade |
 - **Barrinhas de incidência:** peso calculado a partir de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026). Ajustável dentro do tema.
 - **Subtópicos próprios:** adicione no fim da lista do tema.
-- **Filtros:** **Situação** (Não iniciados, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
+- **Filtros:** **Situação** (Não iniciados, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**, **★ Fixados**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
 - **Mapa da residência** (parte Progresso): os 185 temas como quadradinhos por especialidade, na cor do nível; borda vermelha = revisão pendente, contorno = ponto fraco. Toque para abrir o tema.
 - **Progresso por área:** a barra grossa mostra os temas já estudados; a fina, os subtópicos marcados (o quanto do conteúdo você cobriu de verdade).
 - **Linha de cada tema:** acerto colorido (verde, amarelo ou vermelho), tempo de foco (⏱), subtópicos, anotações e erros, sem precisar abrir.
 - **Sugestões de nível** (acima da lista): quando um tema Revisado bate os critérios (80%+ em 10+ questões e 2 revisões seguidas sem dificuldade), o app propõe **Marcar como Dominado**; se um Dominado cair para menos de 70% nos últimos 30 dias (5+ questões), propõe **Voltar para Revisado**. **Agora não** esconde a sugestão por 14 dias.
+- **Próximos 6 dias** (no fim do Estudar hoje, na Residência): prévia dos temas que o plano deve propor em cada dia e quantas revisões caem, supondo que você cumpre o plano e as revisões. É só uma previsão: o plano de cada dia é montado naquele dia.
+- **Temas fixados (★):** dentro do tema, toque em **☆ Fixar**. Os fixados aparecem numa seção no topo da lista, com estrela na linha, e têm o atalho de filtro **★ Fixados**. Toque na estrela para desafixar.
 - **Agenda de revisões** (parte Revisões): quantas revisões caem em cada um dos próximos 14 dias; toque num dia para ver os temas. Quando um dia passa do ritmo confortável, **Equilibrar** adianta revisões para dias mais leves (ou adia no máximo 3 dias, se não houver espaço antes) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. Revisar o tema volta a contar pelos intervalos normais.
 - **Já estudei alguns temas antes do app** (abaixo dos filtros): marque de uma vez os temas que você já tinha estudado (toque em cada um ou em **Selecionar os não iniciados desta especialidade**), escolha **Estudados** ou **Já revisados** e confirme. A 1ª revisão fica espalhada pelos próximos dias (alguns por dia) e não conta como estudo de hoje. **Desfazer** volta como estava.`],
 ["Questões",`As questões são geradas pelo Claude dentro de cada tema, com comentário, e cada resposta conta no seu acerto.
@@ -4507,7 +4553,7 @@ function renderAll(){
   renderPlan();
   renderRevs();renderAgenda();
   // resumo
-  renderDash();renderResMap();renderLvSug();
+  renderDash();renderResMap();renderLvSug();renderPins();
   renderTFilters();
   // áreas
   const errN={};errors.forEach(e=>errN[e.k]=(errN[e.k]||0)+1);
@@ -4529,7 +4575,7 @@ function renderAll(){
     if(!vis.length&&!facIn.length)ol.appendChild(el(`<li class="empty">Nenhum tema desta área neste filtro.</li>`));
     const row=it=>{const s=get(it.key),l=s.l||0,dd=dueIn(s),open=openKey===it.key;
       const li=el(`<li class="t${open?" open":""}${it.own?" own":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">${it.own?"FAC":String(it.num).padStart(3,"0")}</span><span class="topic"></span><span class="lvl" data-l="${l}">${LVL[l]}</span><span class="meta"></span></button></li>`);
-      li.querySelector(".topic").textContent=it.t;
+      li.querySelector(".topic").textContent=(s.pin?"★ ":"")+it.t;
       const m=li.querySelector(".meta");
       if(it.own){const x=el(`<span class="facchip"></span>`);x.textContent="FAC"+(it.origin?" · "+it.origin:"");if(it.originFull)x.title=it.originFull;m.appendChild(x)}else m.appendChild(incEl(wOf(it),wOf(it)===3));
       const fb=facBadge(it.key);if(fb){const x=el(`<span class="fbadge"></span>`);x.textContent=`Prova de ${fb.d.name} · ${br(fb.p.date)}`;m.appendChild(x)}
