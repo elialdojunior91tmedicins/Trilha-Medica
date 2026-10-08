@@ -1319,6 +1319,11 @@ function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="In
 function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
 function dueIn(s){return s.last? dnum(s.last)+interval(s)-dnum(today()) : null}
 function acc(s){return s.qt? s.qc/s.qt : null}
+/* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
+function addQ(x,t,c){x.qt=(x.qt||0)+t;x.qc=(x.qc||0)+c;const d=today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
+  const ks=Object.keys(m).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(k=>delete m[k]);x.qd=m}
+function qPeriod(keys,from){let q=0,c=0,und=0;keys.forEach(k=>{const s=get(k);if(!from){q+=s.qt||0;c+=s.qc||0;return}
+  let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und}}
 const isDue=s=>{const d=dueIn(s);return d!==null&&d<=0};
 const isWeak=s=>s.qt>=WEAK_MIN&&acc(s)<WEAK_PCT;
 const isNew=s=>!s.last&&!(s.l>0);
@@ -1687,10 +1692,10 @@ function renderDetail(it){
     const c=Number(g3.querySelector(`#qc-${it.key}`).value), t=Number(g3.querySelector(`#qt-${it.key}`).value);
     if(!Number.isInteger(c)||!Number.isInteger(t)||t<1||c<0||t>500){formErr="Preencha acertos e total com números inteiros (total entre 1 e 500).";render();return}
     if(c>t){formErr="Os acertos não podem ser maiores que o total de questões.";render();return}
-    formErr="";upd(it.key,x=>{x.qc=(x.qc||0)+c;x.qt=(x.qt||0)+t});logAct("q",t,c);commit();});
+    formErr="";upd(it.key,x=>addQ(x,t,c));logAct("q",t,c);commit();});
   if(s.qt){const z=el(`<button class="link${clearArm===it.key?" warn":""}" type="button"></button>`);
     z.textContent=clearArm===it.key?"Toque de novo para zerar as questões deste tema":"Zerar questões deste tema";
-    z.onclick=()=>{if(clearArm===it.key){upd(it.key,x=>{delete x.qc;delete x.qt});clearArm=null;commit()}else{clearArm=it.key;render()}};g3.appendChild(z)}
+    z.onclick=()=>{if(clearArm===it.key){upd(it.key,x=>{delete x.qc;delete x.qt;delete x.qd});clearArm=null;commit()}else{clearArm=it.key;render()}};g3.appendChild(z)}
   box.appendChild(g3);
   // gerar questões
   if(!sampleOff)box.appendChild(renderGen(it));
@@ -1790,7 +1795,7 @@ async function generate(it){
 function answer(it,qi,letra){
   const g=gen[it.key];if(!g||g.ans[qi])return;
   g.ans[qi]=letra;const ok=letra===g.qs[qi].correta;
-  upd(it.key,x=>{x.qt=(x.qt||0)+1;x.qc=(x.qc||0)+(ok?1:0)});logAct("q",1,ok?1:0);commit();
+  upd(it.key,x=>addQ(x,1,ok?1:0));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
   const g=gen[it.key],q=g.qs[qi],mine=q.alternativas.find(a=>a.letra===g.ans[qi]),right=q.alternativas.find(a=>a.letra===q.correta);
@@ -2299,8 +2304,8 @@ function replaceOwn(id,ref){const from="O:"+id,fk="F-"+id,to=refTopic(ref);if(!t
   fac.provas.forEach(p=>{p.items=swap(p.items);p.done=(p.done||[]).map(r=>r===from?ref:r)});
   if(notes[fk]){const cur=(notes[to.k]||"").replace(/\s+$/,"");saveNote(to.k,(cur?cur+"\n\n---\n\n":"")+"## Da faculdade: "+fac.own[id].t+"\n"+notes[fk]);saveNote(fk,"")}
   errors.forEach(e=>{if(e.k===fk){e.k=to.k;putErr(e)}});saveErrsLocal();
-  const fs=state[fk];if(fs){upd(to.k,x=>{if(fs.last&&(!x.last||fs.last>x.last)){x.last=fs.last;x.step=fs.step||0}x.l=Math.max(x.l||0,fs.l||0);x.qc=(x.qc||0)+(fs.qc||0);x.qt=(x.qt||0)+(fs.qt||0);
-    const cs=[...(x.cs||[]),...(fs.cs||[]).filter(c=>!(x.cs||[]).some(y=>y.t===c.t))];if(cs.length)x.cs=cs});delete state[fk];if(!state[to.k].qt){delete state[to.k].qt;delete state[to.k].qc}}
+  const fs=state[fk];if(fs){upd(to.k,x=>{if(fs.last&&(!x.last||fs.last>x.last)){x.last=fs.last;x.step=fs.step||0}x.l=Math.max(x.l||0,fs.l||0);x.qc=(x.qc||0)+(fs.qc||0);x.qt=(x.qt||0)+(fs.qt||0);if(fs.qd){const m={...(x.qd||{})};for(const d in fs.qd){const a=m[d]||[0,0],b2=fs.qd[d]||[0,0];m[d]=[a[0]+(b2[0]||0),a[1]+(b2[1]||0)]}x.qd=m}
+    const cs=[...(x.cs||[]),...(fs.cs||[]).filter(c=>!(x.cs||[]).some(y=>y.t===c.t))];if(cs.length)x.cs=cs});delete state[fk];if(!state[to.k].qt){delete state[to.k].qt;delete state[to.k].qc;delete state[to.k].qd}}
   if(dayPlan)dayPlan.items.forEach(x=>{if(x.k===fk)x.k=to.k});
   delete fac.own[id];facReplace=null;saveFac();commit()}
 
@@ -3087,11 +3092,11 @@ function reportData(o){const t=dnum(today()),from=o.period==="all"?null:fromNum(
   const sems=fac.sems.filter(s=>!s.archived),facKeys=new Set();sems.forEach(s=>semDiscs(s.id).forEach(d=>topicKeysOf(discRefs(d)).forEach(k=>facKeys.add(k))));
   const inScope=k=>!!BYKEY[k]&&(!mk||mk.has(k))&&((o.res&&!BYKEY[k].own)||(o.fac&&facKeys.has(k))||(mk&&mk.has(k)));
   const errs=errors.filter(e=>inScope(e.k)&&inP(e.d)),groups={};errs.forEach(e=>{(groups[e.k]=groups[e.k]||[]).push(e)});
-  const topics=Object.keys(groups).map(k=>{const s=get(k);return {k,it:BYKEY[k],s,acc:s.qt?s.qc/s.qt:null,list:groups[k].sort((a,b)=>(ETORD[a.t]??3)-(ETORD[b.t]??3)||(a.d<b.d?1:-1))}})
+  const topics=Object.keys(groups).map(k=>{const s=get(k),pq=qPeriod([k],from);return {k,it:BYKEY[k],s,pq,acc:s.qt?s.qc/s.qt:null,list:groups[k].sort((a,b)=>(ETORD[a.t]??3)-(ETORD[b.t]??3)||(a.d<b.d?1:-1))}})
     .sort((a,b)=>(a.acc===null)-(b.acc===null)||(a.acc??0)-(b.acc??0)||b.list.length-a.list.length);
   const tc={conhecimento:0,interpretacao:0,confusao:0};errs.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
   const qs=keys=>{let q=0,c=0;keys.forEach(k=>{const s=get(k);q+=s.qt||0;c+=s.qc||0});return {q,c}};
-  let F=null;if(mk){const keys=[...mk].filter(k=>BYKEY[k]),c=lvlCounts(keys),q=qs(keys);F={n:keys.length,c,seen:keys.length-c[0],q:q.q,qc:q.c,stP:keys.filter(k=>{const l=get(k).last;return l&&inP(l)}).length,due:keys.filter(k=>isDue(get(k))).length}}
+  let F=null;if(mk){const keys=[...mk].filter(k=>BYKEY[k]),c=lvlCounts(keys),q=qPeriod(keys,from);F={n:keys.length,c,seen:keys.length-c[0],q:q.q,qc:q.c,und:q.und,stP:keys.filter(k=>{const l=get(k).last;return l&&inP(l)}).length,due:keys.filter(k=>isDue(get(k))).length}}
   return {from,S,first:Object.keys(hist).sort()[0],errs,topics,tc,qRes:qs(ALL.map(i=>i.key)),qFac:qs([...facKeys]),sems,sel,mk,F}}
 function topicTips(it,list,s){const tips=[],n=t=>list.filter(x=>x.t===t).length,subs=[...new Set(list.map(x=>x.s).filter(Boolean))].slice(0,3),sl=subs.join(", ");
   if(n("conhecimento"))tips.push(`Volte à teoria ${sl?"de "+sl:"do tema"} antes de fazer novas questões. Estude pelos subtópicos e marque-os: eles entram nas revisões espaçadas.`);
@@ -3128,22 +3133,24 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
   if(ui.profile.goalDate){const dd=daysTo(ui.profile.goalDate);P.text(M,y+10,`Meta: ${ui.profile.goal||"prova de residência"}${dd>=0?` · faltam ${dd} dias`:""}`,{size:9,color:C.mut});y+=16}
   y+=6;
   h2(R.F?"Resumo das matérias escolhidas":"Resumo do período");
-  if(R.F){const F=R.F;kpis([["Temas vistos",`${F.seen}/${F.n}`,`${F.c[3]} dominado${F.c[3]===1?"":"s"}`],["Estudados no período",String(F.stP),"pela última data de estudo"],["Questões",String(F.q),F.q?`${pctS(F.qc,F.q)} de acerto (acumulado)`:"nenhuma registrada"],["Erros no período",String(R.errs.length),F.due?`${F.due} revis${F.due===1?"ão pendente":"ões pendentes"}`:"no caderno de erros"]]);
-    para("Com matérias escolhidas, o app usa a última data de estudo de cada tema e o acerto acumulado dessas matérias (ele não guarda questões por dia em cada matéria). Os erros respeitam o período.",{size:8,color:C.mut,after:4})}
+  if(R.F){const F=R.F;kpis([["Temas vistos",`${F.seen}/${F.n}`,`${F.c[3]} dominado${F.c[3]===1?"":"s"}`],["Estudados no período",String(F.stP),"pela última data de estudo"],["Questões",String(F.q),F.q?`${pctS(F.qc,F.q)} de acerto${R.from?" no período":""}`:(R.from?"nenhuma no período":"nenhuma registrada")],["Erros no período",String(R.errs.length),F.due?`${F.due} revis${F.due===1?"ão pendente":"ões pendentes"}`:"no caderno de erros"]]);
+    para(`Questões, acerto e erros contam só o período e as matérias escolhidas. "Estudados no período" usa a última data de estudo de cada tema.${R.from&&F.und?` ${F.und} questões destas matérias foram registradas antes de o app guardar a data por matéria e só entram em "Tudo".`:""}`,{size:8,color:C.mut,after:4})}
   else kpis([["Dias com estudo",String(R.S.act),`sequência atual: ${streak()} dia${streak()===1?"":"s"}`],["Temas estudados",String(R.S.e),"temas começados"],["Revisões",String(R.S.r),"revisões espaçadas feitas"],["Questões",String(R.S.q),R.S.q?`${pctS(R.S.c,R.S.q)} de acerto`:"nenhuma no período"]]);
   // residência
   const selSp=R.sel.filter(m=>m.id.startsWith("sp:")),selD=R.sel.filter(m=>m.id.startsWith("d:"));
   if(o.res&&R.mk&&selSp.length){h2("Residência");const w=CW;
     table([{t:"Especialidade",w:w*.37},{t:"Vistos",w:w*.10,al:"r"},{t:"Progresso",w:w*.21},{t:"Domin.",w:w*.10,al:"r"},{t:"Questões",w:w*.11,al:"r"},{t:"Acerto",w:w*.11,al:"r"}],
-      selSp.map(m=>{const ks=m.keys.filter(k=>BYKEY[k]),k=lvlCounts(ks),n=ks.length||1;let q=0,cc=0;ks.forEach(x=>{const st=get(x);q+=st.qt||0;cc+=st.qc||0});
-        return [`${m.code} · ${m.label}`,`${ks.length-k[0]}/${ks.length}`,{bar:[[k[3]/n,C.l3],[k[2]/n,C.l2],[k[1]/n,C.l1]]},String(k[3]),String(q),pctS(cc,q)]}))}
+      selSp.map(m=>{const ks=m.keys.filter(k=>BYKEY[k]),k=lvlCounts(ks),n=ks.length||1,pq=qPeriod(ks,R.from),q=pq.q,cc=pq.c;
+        return [`${m.code} · ${m.label}`,`${ks.length-k[0]}/${ks.length}`,{bar:[[k[3]/n,C.l3],[k[2]/n,C.l2],[k[1]/n,C.l1]]},String(k[3]),String(q),pctS(cc,q)]}));
+    if(R.from)para("Questões e acerto: só as respondidas no período.",{size:7.6,color:C.mut})}
   else if(o.res&&!R.mk){h2("Residência");const c=counts(ALL),seen=c[1]+c[2]+c[3];
     para(`${TOTAL} temas: ${c[3]} dominado${c[3]===1?"":"s"}, ${c[2]} revisado${c[2]===1?"":"s"}, ${c[1]} estudado${c[1]===1?"":"s"} e ${c[0]} não iniciado${c[0]===1?"":"s"}. ${pctS(seen,TOTAL)} dos temas já foram vistos; ${weighted()}% do peso das provas já foi estudado.`,{after:6});
     need(16);bar(M,y,CW,9,[[c[3]/TOTAL,C.l3],[c[2]/TOTAL,C.l2],[c[1]/TOTAL,C.l1]]);y+=14;
     para("Verde: dominados · azul: revisados · amarelo: estudados · cinza: não iniciados.",{size:7.6,color:C.mut,after:8});
     const w=CW;table([{t:"Área",w:w*.37},{t:"Vistos",w:w*.10,al:"r"},{t:"Progresso",w:w*.21},{t:"Domin.",w:w*.10,al:"r"},{t:"Questões",w:w*.11,al:"r"},{t:"Acerto",w:w*.11,al:"r"}],
-      AREAS.map(a=>{const k=counts(a.items),n=a.items.length;let q=0,cc=0;a.items.forEach(i=>{const s=get(i.key);q+=s.qt||0;cc+=s.qc||0});
+      AREAS.map(a=>{const k=counts(a.items),n=a.items.length,pq=qPeriod(a.items.map(i=>i.key),R.from),q=pq.q,cc=pq.c;
         return [a.name,`${k[1]+k[2]+k[3]}/${n}`,{bar:[[k[3]/n,C.l3],[k[2]/n,C.l2],[k[1]/n,C.l1]]},String(k[3]),String(q),pctS(cc,q)]}));
+    if(R.from){const u=qPeriod(ALL.map(i=>i.key),R.from).und;para(`Questões e acerto: só as respondidas no período.${u?` ${u} questões registradas antes de o app guardar a data por matéria só entram em "Tudo".`:""}`,{size:7.6,color:C.mut})}
     const due=ALL.filter(i=>isDue(get(i.key))).length;if(due)para(`${due} revis${due===1?"ão pendente":"ões pendentes"} da residência hoje.`,{color:C.due,bold:true})}
   // faculdade
   if(o.fac&&(!R.mk||selD.length)){h2("Faculdade");
@@ -3155,7 +3162,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
           return [d.name,nn?`${nn-kk[0]}/${nn}`:"0",{bar:nn?[[kk[3]/nn,C.l3],[kk[2]/nn,C.l2],[kk[1]/nn,C.l1]]:[]},np?`${np.name} · ${br(np.date)} · ${provaPending(np).length} pend.`:"–"]}))}})}
   // questões e erros
   if(o.err){h2("Questões e erros");
-    if(R.F)para(`Questões nas matérias escolhidas: ${R.F.q}${R.F.q?` (${pctS(R.F.qc,R.F.q)} de acerto, acumulado)`:""}.`,{bold:true,after:8});
+    if(R.F)para(`Questões nas matérias escolhidas${R.from?" no período":""}: ${R.F.q}${R.F.q?` (${pctS(R.F.qc,R.F.q)} de acerto)`:""}.`,{bold:true,after:8});
     else{para(`Questões respondidas no período: ${R.S.q}${R.S.q?` (${pctS(R.S.c,R.S.q)} de acerto)`:""}.`,{bold:true,after:2});
     const acc=[];if(o.res)acc.push(`residência: ${R.qRes.q} questões, ${pctS(R.qRes.c,R.qRes.q)} de acerto`);if(o.fac)acc.push(`faculdade: ${R.qFac.q} questões, ${pctS(R.qFac.c,R.qFac.q)} de acerto`);
     para(`Acumulado desde o início: ${acc.join("; ")}.`,{color:C.mut,after:8})}
@@ -3166,7 +3173,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
       h3("Principais erros por tema");para("Ordem: temas com menor acerto primeiro. Dentro de cada tema: primeiro o que você não sabia, depois o que confundiu, por último o que leu errado.",{size:8.4,color:C.mut,after:6});
       R.topics.slice(0,25).forEach((T,i)=>{const it=T.it,s=T.s;need(60);y+=4;
         para(`${i+1}. ${it.t}`,{size:11,bold:true,after:0});
-        para(`${it.own?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · ${s.qt?`acerto ${Math.round(s.qc/s.qt*100)}% em ${s.qt} questões (acumulado)`:"sem questões registradas"} · ${T.list.length} erro${T.list.length>1?"s":""} no período`,{size:8.4,color:C.mut,after:4});
+        para(`${it.own?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · ${R.from&&T.pq.q?`no período: ${Math.round(T.pq.c/T.pq.q*100)}% em ${T.pq.q} questões · `:""}${s.qt?`acumulado: ${Math.round(s.qc/s.qt*100)}% em ${s.qt}`:"sem questões registradas"} · ${T.list.length} erro${T.list.length>1?"s":""} no período`,{size:8.4,color:C.mut,after:4});
         T.list.slice(0,8).forEach(e=>{need(40);para(`• ${ETYPES[e.t]||"Erro"}${e.s?" · "+e.s:""} · ${br(e.d)}`,{size:9,bold:true,indent:8,after:0});
           para(`Errei: ${e.w}`,{size:9,indent:18,after:0});para(`Correto: ${e.r}`,{size:9,indent:18,color:C.l3,after:4})});
         if(T.list.length>8)para(`+ ${T.list.length-8} outros erros neste tema no caderno.`,{size:8.4,color:C.mut,indent:8});
@@ -3378,7 +3385,7 @@ const HELP=[
 - **Meta da residência:** prova-alvo e data. O Início mostra quantos dias faltam e quanto do peso das provas você já estudou.
 - **Conta** (no site): entrar, sair e criar senha para o app instalado.
 - **Minhas estatísticas:** sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
-- **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Com matérias escolhidas, o resumo usa a última data de estudo de cada tema e o acerto acumulado delas. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
+- **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 não têm data e só entram em "Tudo"). O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
 
 **⚙ Configurações:**
 - **Layout:** **Clássico** (o padrão), **Compacto** (mais coisa por tela, sem textos de explicação) ou **Foco** (só o essencial do dia, letras maiores, sem gráficos no Início). Troca na hora.

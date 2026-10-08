@@ -57,6 +57,8 @@ consultado quando há dúvida. Responda em português.
 
 - PDF "Panorama de estudos" (Perfil › Exportar PDF): gerador próprio `MiniPDF` (Helvetica WinAnsi, larguras em `HW`), sem bibliotecas;
   `buildReport(opt)` monta e `downloads.save` entrega (no site, `bridge.js` aceita `.pdf`).
+  Questões por dia em cada tema: `state[k].qd = {"AAAA-MM-DD":[questões, acertos]}` (via `addQ`); `qPeriod(keys, from)` soma por período
+  (questões anteriores a 08/10/2026 não têm data: `und`).
 
 ## Cuidados
 
