@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=c891bf71">
+<link rel="stylesheet" href="site.css?v=19e49a75">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=c891bf71"></script>
-<script src="bridge.js?v=c891bf71"></script>
+<script src="config.js?v=19e49a75"></script>
+<script src="bridge.js?v=19e49a75"></script>
 </head>
 <body>
 <script>
@@ -318,6 +318,43 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qfsel{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
 .qfsel select{width:100%;min-width:0;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;font-weight:400;letter-spacing:0}
 .qftop{display:flex;gap:8px;align-items:stretch}
+.qregb{padding:7px 12px;font-size:.85rem}
+.qreg{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
+.qreg .dhead b{font-family:var(--display)}
+.qreg .pnote{margin:0}
+.qrres{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
+.qrpick{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 11px;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.qrpick:hover{border-color:var(--accent)}.qrpick b{font-size:.93rem}.qrpick span{font-size:.76rem;color:var(--muted)}
+.qrsel{margin:0;font-size:.93rem}.qrsel span{color:var(--muted);font-size:.82rem}.qrsel .link{margin-left:8px;font-size:.8rem}
+.qrform{justify-content:flex-start}
+.qrform .qfsel{flex:1 1 110px}
+.qrform .btn{align-self:flex-end}
+.qevo{width:100%;height:auto;display:block;overflow:visible}
+.qegrid{stroke:var(--line);stroke-width:1}
+.qeref{stroke:var(--ink);stroke-opacity:.4;stroke-width:1;stroke-dasharray:4 4}
+.qeax{fill:var(--muted);font:500 10px var(--mono)}
+.qebar{fill:var(--accent);fill-opacity:.3}
+.qeline{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}
+.qedot{stroke:var(--surface);stroke-width:2}
+.qedot.good{fill:var(--good)}.qedot.warn{fill:var(--warn)}.qedot.bad{fill:var(--bad)}
+.qextra{display:flex;flex-direction:column;gap:20px}
+html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.qrdsum{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:.88rem;color:var(--muted)}.qrdsum b{color:var(--ink);font-family:var(--mono)}
+.rdlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.rdlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.rdl{display:flex;flex-direction:column;min-width:0}.rdl b{font-size:.88rem;font-weight:600;overflow-wrap:anywhere}.rdl span{font-size:.76rem;color:var(--muted)}
+.rdlist .foxb.warn{color:var(--danger);font-size:.8rem;font-weight:600}
+.rdplay{display:flex;flex-direction:column;gap:10px}
+.rdtopic{font-size:.82rem}
+.qglist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.qglist li{display:grid;grid-template-columns:1.6rem minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.qgn{font:500 .8rem var(--mono);color:var(--muted);grid-row:1/3}
+.qgm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.qgt{background:none;border:0;padding:0;text-align:left;font:600 .93rem var(--body);color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.qgs{font:500 .74rem var(--mono);color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.qga{display:flex;flex-direction:column;align-items:flex-end;font:500 .75rem var(--mono);color:var(--muted)}
+.qgp.none{font:600 .75rem var(--body);color:var(--muted)}
+.qgb{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px}
 .qftop .search{flex:1;min-width:0}
 .qfbtn{display:none;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9rem var(--body);padding:0 12px;border-radius:10px;cursor:pointer;white-space:nowrap}
 .qfbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
@@ -1001,11 +1038,14 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 
   <div id="viewQuest" class="wrap" style="width:100%" hidden>
     <section class="card dash" aria-labelledby="qh">
-      <div class="dhead"><h2 id="qh">Desempenho em questões</h2></div>
+      <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
+      <div id="qRegBox"></div>
       <div class="kpis" id="qkpis"></div>
+      <figure class="chart"><figcaption>Evolução: últimas 12 semanas</figcaption><div id="qEvo"></div></figure>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
     <section class="controls qfilters" id="qFilters" aria-label="Filtros das questões"></section>
+    <div id="qExtra" class="qextra"></div>
     <ol class="elist qlistT" id="qlistT"></ol>
   </div>
 
@@ -1451,7 +1491,7 @@ function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
 function dueIn(s){return s.last? dnum(s.last)+interval(s)-dnum(today()) : null}
 function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
-function addQ(x,t,c){x.qt=(x.qt||0)+t;x.qc=(x.qc||0)+c;const d=today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
+function addQ(x,t,c,day){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc||0)+c);const d=day||today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
   const ks=Object.keys(m).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(k=>delete m[k]);x.qd=m}
 function qPeriod(keys,from){let q=0,c=0,und=0,est=0;keys.forEach(k=>{const s=get(k);if(s.qe&&(!from||s.qe.d>=from))est+=s.qe.q||0;if(!from){q+=s.qt||0;c+=s.qc||0;return}
   let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und,est}}
@@ -1929,6 +1969,7 @@ async function generate(it){
 function answer(it,qi,letra){
   const g=gen[it.key];if(!g||g.ans[qi])return;
   g.ans[qi]=letra;const ok=letra===g.qs[qi].correta;
+  if(!ok)rdAdd(it.key,g.qs[qi]);
   upd(it.key,x=>addQ(x,1,ok?1:0));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
@@ -2017,7 +2058,7 @@ function restorePromptReset(){$("#promptResetBox").innerHTML=`<button class="btn
 
 /* histórico de atividade (por dia): e=temas estudados, r=revisões, q=questões, c=acertos */
 let hist={};const LSH="resid-hist-v1";
-function logAct(f,n,c){const d=today(),h=hist[d]||(hist[d]={});h[f]=(h[f]||0)+(n||1);if(c)h.c=(h.c||0)+c;
+function logAct(f,n,c,day){const d=day||today(),h=hist[d]||(hist[d]={});h[f]=Math.max(0,(h[f]||0)+(n||1));if(c)h.c=Math.max(0,(h.c||0)+c);
   const keys=Object.keys(hist).sort();if(keys.length>400)keys.slice(0,keys.length-400).forEach(k=>delete hist[k]);
   try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
 function lastDays(n){const t=dnum(today());return Array.from({length:n},(_,i)=>fromNum(t-n+1+i))}
@@ -2131,6 +2172,10 @@ function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;render()};realBox.appendChild(cl)}}
 function renderQuest(){
   renderQFilters();
+  {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
+   const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
+   const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qRedoCard(U0),qGainCard(U0))}
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
   const withQ=st.filter(x=>x.t),vis=withQ.filter(x=>qAcc==="all"||accBand(x.c,x.t)===qAcc);
   let C=0,T=0;vis.forEach(x=>{C+=x.c;T+=x.t});const p=pct(C,T),[bk,bl]=band(p),weakN=withQ.filter(x=>x.t>=WEAK_MIN&&x.c/x.t<WEAK_PCT).length;
@@ -3699,13 +3744,136 @@ function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h
    ["Anotações",nk?`${nk} tema${nk>1?"s":""} com anotações`:"Resumos e anotações dos temas","notas","maisNotas"]].forEach(([t,d,v,id])=>{
     const x=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);x.id="go-"+v;x.querySelector("b").textContent=t;const sp=x.querySelector("span");sp.textContent=d;sp.id=id;x.onclick=()=>setView(v);l.appendChild(x)});
   b.appendChild(c)}
+/* ---------- Questões: refazer erradas, registro rápido, onde ganhar pontos, evolução ---------- */
+/* questões geradas que você errou: {id, k, d, n (vezes errada), q:{enunciado, alternativas:[{letra,texto}], correta, comentario, conceito, alerta}} */
+const LSRD="resid-redo-v1",RD_MAX=600;
+let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
+function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
+function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>({letra:s(a.letra),texto:s(a.texto)})),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta)}}}
+try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
+function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
+async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
+async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoStore)try{await redoStore.doc(id).delete()}catch(e){}}
+/* chamada quando você erra uma questão gerada */
+function rdAdd(k,q){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem);
+  if(ex){ex.n++;ex.d=today();rdPut(ex);return}
+  const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),n:1,q});redo.push(x);
+  if(redo.length>RD_MAX){const old=redo.sort((a,b)=>a.d<b.d?-1:1).slice(0,redo.length-RD_MAX);old.forEach(o=>rdDel(o.id))}rdPut(x)}
+function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),list=redo.filter(x=>BYKEY[x.k]&&ks.has(x.k)).sort((a,b)=>b.n-a.n||(a.d<b.d?-1:1));
+  const c=el(`<section class="card qredo" aria-labelledby="qrdh"><div class="dhead"><h2 id="qrdh">Refazer as que errei</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=redo.length?`${list.length} ${list.length===1?"questão":"questões"}${list.length<redo.length?" neste filtro":""}`:"";
+  if(rdRun){c.appendChild(rdPlayer());return c}
+  if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
+  if(!list.length){c.appendChild(el(`<p class="cempty">Nenhuma questão para refazer com esses filtros.</p>`));return c}
+  const by={};list.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
+  const top=Object.entries(by).sort((a,b)=>b[1]-a[1]);
+  c.appendChild(el(`<p class="gtext qrdsum">${top.slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}${top.length>4?`<span>+ ${top.length-4} especialidades</span>`:""}</p>`));
+  const acts=el(`<div class="btns"></div>`);
+  const go=el(`<button class="btn primary" type="button" id="rdGo"></button>`);go.textContent=`Refazer ${Math.min(list.length,10)} ${Math.min(list.length,10)===1?"questão":"questões"}`;
+  go.onclick=()=>{rdRun={ids:list.slice(0,10).map(x=>x.id),i:0,ans:null,hit:0,done:0};render();const h=$("#qrdh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};acts.appendChild(go);
+  if(list.length>10){const all=el(`<button class="btn" type="button">Todas (${list.length})</button>`);all.onclick=()=>{rdRun={ids:list.map(x=>x.id),i:0,ans:null,hit:0,done:0};render()};acts.appendChild(all)}
+  const vl=el(`<button class="link" type="button">${rdList?"Esconder lista":"Ver lista"}</button>`);vl.onclick=()=>{rdList=!rdList;render()};acts.appendChild(vl);c.appendChild(acts);
+  c.appendChild(el(`<p class="how">Primeiro as que você errou mais vezes. Refazer não muda o seu acerto nos temas (você já viu a resposta); acertou, a questão sai daqui.</p>`));
+  if(rdList){const ul=el(`<ul class="rdlist"></ul>`);list.slice(0,80).forEach(x=>{const it=BYKEY[x.k];const li=el(`<li><span class="rdl"><b></b><span></span></span><button class="foxb" type="button" aria-label="Remover da lista">×</button></li>`);
+      li.querySelector("b").textContent=x.q.enunciado.replace(/\s+/g," ").slice(0,110)+(x.q.enunciado.length>110?"…":"");li.querySelector(".rdl span").textContent=`${it.t} · errada ${x.n}× · ${br(x.d)}`;
+      const xb=li.querySelector("button");if(rdArm===x.id){xb.textContent="Remover?";xb.classList.add("warn");xb.onclick=()=>{rdArm=null;rdDel(x.id).then(render);render()}}else xb.onclick=()=>{rdArm=x.id;render()};ul.appendChild(li)});
+    if(list.length>80)ul.appendChild(el(`<li class="how">+ ${list.length-80} questões.</li>`));c.appendChild(ul)}
+  return c}
+function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
+  if(R.i>=R.ids.length){w.appendChild(el(`<p class="verdict ok">Fim: ${R.hit} de ${R.done} certas.</p>`));
+    w.appendChild(el(`<p class="gtext">${R.hit?`${R.hit} ${R.hit===1?"saiu":"saíram"} da lista. `:""}${R.done-R.hit?`${R.done-R.hit} ${R.done-R.hit===1?"continua":"continuam"} para a próxima vez.`:"Nenhuma ficou para trás."}</p>`));
+    const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{rdRun=null;render()};w.appendChild(b);return w}
+  const x=redo.find(y=>y.id===R.ids[R.i])||R.snap;if(!x){R.i++;return rdPlayer()}
+  R.snap=x;const it=BYKEY[x.k],q=x.q;
+  const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p><div class="alts"></div></div>`);
+  c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
+  c.querySelector(".qstem").textContent=q.enunciado;
+  q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
+    if(R.ans){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===R.ans)b.classList.add("wrong")}
+    else b.onclick=()=>{R.ans=a.letra;R.done++;const ok=a.letra===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()};
+    c.querySelector(".alts").appendChild(b)});
+  if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
+    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
+    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
+    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}}
+  w.appendChild(c);
+  const acts=el(`<div class="btns"></div>`);
+  if(R.ans){const nx=el(`<button class="btn primary" type="button" id="rdNext">${R.i+1<R.ids.length?"Próxima":"Ver resultado"}</button>`);nx.onclick=()=>{R.i++;R.ans=null;R.snap=null;render()};acts.appendChild(nx)}
+  const st=el(`<button class="btn" type="button">Encerrar</button>`);st.onclick=()=>{rdRun=null;render()};acts.appendChild(st);w.appendChild(acts);return w}
+/* ----- registro rápido de questões feitas fora (bancos, provas antigas) ----- */
+function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="dhead"><b>Registrar questões</b><button class="link" type="button">Fechar</button></div></div>`);
+  w.querySelector(".dhead .link").onclick=()=>{qReg=null;render()};
+  if(R.saved){const S=R.saved,it=BYKEY[S.k],m=el(`<p class="pnote" role="status"><span></span> <button class="link" type="button">Desfazer</button></p>`);
+    m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}.`;
+    m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d));logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
+    if(S.t>S.c){const e=el(`<button class="btn" type="button">Registrar um erro deste tema no caderno</button>`);e.onclick=()=>{const k=S.k;qReg=null;openTopic(k);setTimeout(()=>{const f=document.getElementById("ew-"+k);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};w.appendChild(e)}}
+  const it=R.k&&BYKEY[R.k];
+  if(!it){const s=el(`<label class="qfsel"><span>Tema</span><input class="search" id="qrq" type="search" placeholder="Digite o tema (ex.: sepse, IAM, pré-eclâmpsia)" autocomplete="off"></label>`),i=s.querySelector("input");i.value=R.query||"";
+    i.oninput=debounced(()=>{R.query=i.value;render()});w.appendChild(s);
+    const n=norm((R.query||"").trim());if(n.length>=2){const res=[...ALL,...FAC_ITEMS].map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,7);
+      const ul=el(`<ul class="qrres"></ul>`);if(!res.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));
+      res.forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>{R.k=x.key;R.msg="";render();setTimeout(()=>{const f=$("#qrt");if(f)f.focus()},30)};ul.appendChild(li)});w.appendChild(ul)}
+    else w.appendChild(el(`<p class="how">Para questões de bancos (Medcel, Estratégia, MedCof…) ou provas antigas: escolha o tema e digite quantas fez e acertou.</p>`))}
+  else{const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
+    ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
+    const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
+    const ti=f.querySelector("#qrt"),ci=f.querySelector("#qrc"),di=f.querySelector("#qrd");ti.value=R.t||"";ci.value=R.c||"";di.value=R.d||today();di.max=today();
+    ti.oninput=()=>{R.t=ti.value};ci.oninput=()=>{R.c=ci.value};di.oninput=()=>{R.d=di.value};
+    f.querySelector("#qrSave").onclick=()=>{const t=Math.round(+ti.value),c=Math.round(+ci.value),d=di.value||today();
+      if(!(t>=1&&t<=500)){R.msg="Digite quantas questões fez (1 a 500).";render();return}if(!(c>=0&&c<=t)||ci.value===""){R.msg="Os acertos vão de 0 até o número de questões feitas.";render();return}
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){R.msg="Escolha um dia até hoje.";render();return}
+      upd(it.key,x=>addQ(x,t,c,d));logAct("q",t,c,d);commit();qReg={saved:{k:it.key,t,c,d},d,query:""};render();setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
+    w.appendChild(f)}
+  if(R.msg){const m=el(`<p class="err" role="alert"></p>`);m.textContent=R.msg;w.appendChild(m)}
+  return w}
+/* ----- onde ganhar pontos: incidência na prova × o quanto falta para 80% de acerto ----- */
+function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
+  const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);
+  if(!rows.length){c.appendChild(el(`<p class="cempty">${U.some(i=>!i.own)?"Todos os temas deste filtro estão com 80% ou mais de acerto. Mantenha as revisões.":"Escolha temas da residência nos filtros para ver as prioridades."}</p>`));return c}
+  c.appendChild(el(`<p class="how">Temas que mais caem na prova e onde o seu acerto está mais longe de 80%. Temas sem questões contam como 60% até você fazer algumas.</p>`));
+  const ol=el(`<ol class="qglist"></ol>`),sh=rows.slice(0,qGainMore?20:6);
+  sh.forEach((r,i)=>{const it=r.it,p=r.qt?pct(r.qc,r.qt):null,[bk]=p===null?["warn"]:band(p);
+    const li=el(`<li><span class="qgn">${i+1}</span><span class="qgm"><button class="qgt" type="button"></button><span class="qgs"></span></span><span class="qga"></span></li>`);
+    const tb=li.querySelector(".qgt");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
+    const sm=li.querySelector(".qgs");sm.textContent=`${it.area.code} · ${it.sp} · `;sm.appendChild(incEl(r.w,true));
+    li.querySelector(".qga").innerHTML=p===null?`<b class="qgp none">sem questões</b>`:`<b class="qgp"><span class="st ${bk}">${p}%</span></b><span>${r.qc}/${r.qt}</span>`;
+    const acts=el(`<span class="qgb"></span>`);
+    const rg=el(`<button class="mini" type="button">Registrar</button>`);rg.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};acts.appendChild(rg);
+    if(!sampleOff){const g=el(`<button class="mini" type="button">Gerar questões</button>`);g.onclick=()=>{openTopic(it.key);setTimeout(()=>{const x=document.getElementById("qf-"+it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(g)}
+    li.appendChild(acts);ol.appendChild(li)});
+  c.appendChild(ol);
+  if(rows.length>6){const m=el(`<button class="link" type="button">${qGainMore?"Mostrar menos":`Mostrar mais ${Math.min(rows.length,20)-6}`}</button>`);m.onclick=()=>{qGainMore=!qGainMore;render()};c.appendChild(m)}
+  return c}
+/* ----- evolução semanal: questões por semana (barras) e acerto (linha) ----- */
+function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,q:0,c:0}));
+  let est=0;U.forEach(it=>{const s=get(it.key);if(s.qe&&dnum(s.qe.d)>=start)est+=s.qe.q||0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=dnum(d);if(n<start||n>t)continue;const w=W[Math.floor((n-start)/7)];if(w){w.q+=v[0]||0;w.c+=v[1]||0}}});
+  const tot=W.reduce((a,w)=>a+w.q,0);if(!tot)return {html:`<p class="cempty">Sem questões nas últimas ${N} semanas${U.length<ALL.length+FAC_ITEMS.length?" neste filtro":""}.</p>`,tot};
+  const VW=Math.max(300,Math.round(width||600)),VH=VW<500?170:200,L=30,R=36,T=12,B=24,lstep=VW<420?3:2,cw=(VW-L-R)/N,mq=Math.max(...W.map(w=>w.q)),yq=v=>T+(VH-T-B)*(1-v/mq),ya=a=>T+(VH-T-B)*(1-a);
+  const nice=mq<=10?mq:Math.ceil(mq/5)*5;
+  let g=`<svg class="qevo" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Questões e acerto por semana nas últimas ${N} semanas">`;
+  [0,0.6,1].forEach(a=>{g+=`<line x1="${L}" x2="${VW-R}" y1="${ya(a)}" y2="${ya(a)}" class="${a===0.6?"qeref":"qegrid"}"/><text x="${VW-R+4}" y="${ya(a)+3.5}" class="qeax">${a*100}%</text>`});
+  g+=`<text x="${L-4}" y="${yq(mq)+3.5}" class="qeax" text-anchor="end">${mq}</text><text x="${L-4}" y="${yq(0)+3.5}" class="qeax" text-anchor="end">0</text>`;
+  W.forEach((w,i)=>{const x=L+i*cw+cw*0.18,bw=cw*0.64,ws2=fromNum(w.s),we=fromNum(Math.min(w.s+6,t)),tip=`Semana de ${br(ws2)} a ${br(we)}: ${w.q} questões${w.q?`, ${pct(w.c,w.q)}% de acerto`:""}`;
+    if(w.q)g+=`<rect x="${x}" y="${yq(w.q)}" width="${bw}" height="${yq(0)-yq(w.q)}" rx="3" class="qebar" data-tip="${esc(tip)}"/>`;
+    else g+=`<rect x="${x}" y="${T}" width="${bw}" height="${VH-T-B}" fill="transparent" data-tip="${esc(tip)}"/>`;
+    if((N-1-i)%lstep===0)g+=`<text x="${x+bw/2}" y="${VH-8}" text-anchor="middle" class="qeax">${br(ws2)}</text>`});
+  const pts=W.map((w,i)=>w.q?[L+i*cw+cw/2,ya(w.c/w.q),w]:null).filter(Boolean);
+  if(pts.length>1)g+=`<polyline points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" class="qeline"/>`;
+  pts.forEach(([x,y,w])=>{const p=pct(w.c,w.q),[bk]=band(p);g+=`<circle cx="${x}" cy="${y}" r="4.5" class="qedot ${bk}" data-tip="${p}% de acerto em ${w.q} questões"/>`});
+  g+=`</svg>`;
+  const last=W[N-1],prev=W.slice(N-5,N-1).filter(w=>w.q),pa=prev.length?prev.reduce((a,w)=>a+w.c,0)/prev.reduce((a,w)=>a+w.q,0):null;
+  let note=`${tot.toLocaleString("pt-BR")} questões em ${N} semanas.`;
+  if(last.q&&pa!==null){const d=Math.round(last.c/last.q*100-pa*100);note+=` Esta semana: ${pct(last.c,last.q)}% de acerto, ${d===0?"igual à":d>0?`${d} pontos acima da`:`${-d} pontos abaixo da`} média das 4 anteriores.`}
+  if(est)note+=` Inclui ${est} questões antigas com data estimada.`;
+  return {html:g+`<div class="clegend"><span><i class="sw" style="background:var(--accent);opacity:.35"></i>questões na semana</span><span><i class="sw" style="background:var(--ink)"></i>acerto</span><span><i class="refk"></i>60%</span></div><p class="cnote">${note}</p>`,tot}}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
-  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length}}
+  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess}}}
-function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}`}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo}}}
+function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
 const HELP=[
@@ -3744,6 +3912,10 @@ const HELP=[
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
+- **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
+- **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
+- **Refazer as que errei:** toda questão gerada pelo Claude que você erra fica guardada, com o comentário. Refaça 10 de cada vez (primeiro as que você mais errou); acertou, ela sai da lista. Refazer não muda o acerto do tema, porque você já viu a resposta. **Ver lista** mostra e remove.
+- **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
 - **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno** e **Revisão pendente**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
@@ -4021,6 +4193,9 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
     const rids=new Set(remote.map(e=>e.id)),localOnly=errors.filter(e=>!rids.has(e.id));
     if(remote.length){errors=[...remote.map(e=>({...e})),...localOnly];saveErrsLocal();render()}
     for(const e of localOnly)await putErr(e);
+    redoStore=store.collection("redo");
+    try{const rq=await redoStore.get(),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
+      if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
     focStore=store.collection("focus");
     try{const fq=await focStore.get(),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
       if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}

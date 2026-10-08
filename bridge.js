@@ -311,7 +311,8 @@
       disciplinas: d.fac ? d.fac.discs.length : 0,
       provas: d.fac ? d.fac.provas.length : 0,
       diasHistorico: Object.keys(d.hist || {}).length,
-      foco: Array.isArray(d.focus) ? d.focus.length : 0
+      foco: Array.isArray(d.focus) ? d.focus.length : 0,
+      refazer: Array.isArray(d.redo) ? d.redo.length : 0
     };
   }
   const isEmpty = c => !c.temas && !c.anotacoes && !c.erros && !c.disciplinas; // o histórico de hoje é criado pelo próprio plano do dia
@@ -331,6 +332,8 @@
     errors = (Array.isArray(d.errors) ? d.errors : []).filter(errOk);
     if (typeof d.prompt === "string" && d.prompt.trim()) promptText = d.prompt;
     const hasFocus = Array.isArray(d.focus) && typeof foOk === "function";
+    const hasRedo = Array.isArray(d.redo) && typeof rdOk === "function";
+    if (hasRedo) { redo = d.redo.filter(rdOk).map(rdClean); try { localStorage.setItem(LSRD, JSON.stringify(redo)); } catch (e) {} }
     if (hasFocus) { foSess = d.focus.filter(foOk).map(foClean); try { localStorage.setItem(LSFO, JSON.stringify(foSess)); } catch (e) {} }
     if (d.ui && typeof d.ui === "object" && typeof uiSanitize === "function") { ui = uiSanitize(d.ui); try { localStorage.setItem(LSUI, JSON.stringify(ui)); } catch (e) {} }
     const ls = (k, v) => { try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); } catch (e) {} };
@@ -347,6 +350,11 @@
       const ns = await notesStore.get();
       await Promise.all(ns.docs.filter(x => !notes[x.id]).map(x => notesStore.doc(x.id).delete()));
       await Promise.all(Object.keys(notes).map(k => notesStore.doc(k).set({ t: notes[k], updatedAt: noteAt[k] || now })));
+      if (hasRedo && typeof redoStore !== "undefined" && redoStore) {
+        const rs = await redoStore.get(), rids = new Set(redo.map(x => x.id));
+        await Promise.all(rs.docs.filter(x => !rids.has(x.id)).map(x => redoStore.doc(x.id).delete()));
+        await Promise.all(redo.map(x => redoStore.doc(x.id).set({ ...x })));
+      }
       if (hasFocus && typeof focStore !== "undefined" && focStore) {
         const fs = await focStore.get(), fids = new Set(foSess.map(x => x.id));
         await Promise.all(fs.docs.filter(x => !fids.has(x.id)).map(x => focStore.doc(x.id).delete()));
