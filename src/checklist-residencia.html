@@ -122,6 +122,17 @@ h2{font:700 1.2rem/1.2 var(--display);margin:0}
 .planhead{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.85rem;color:var(--muted)}
 .pcard{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
 .pcard.pdone{opacity:.72}
+.psum{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;background:none;border:0;border-top:1px dashed var(--line);padding:7px 0 0;color:var(--muted);font:inherit;font-size:.82rem;text-align:left;cursor:pointer}
+.psp{font-weight:600;color:var(--ink);white-space:nowrap}
+.pst{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pchev{width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin:0 4px 3px}
+.psum[aria-expanded="true"] .pchev{transform:rotate(-135deg);margin-bottom:-3px}
+.pcard.pmini{padding:10px 12px;gap:4px}
+.pcard.pmini .pbody,.pcard.pmini .pacts{display:none}
+.pcard.pmini .ptitle{font-size:.95rem}
+#iToday .today{gap:10px}
+#iToday .today>p.how{display:none}
+#iToday .plan{gap:6px}
 .pcard.pdone .ptitle{text-decoration:line-through;text-decoration-color:var(--muted)}
 .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ptitle{background:none;border:0;padding:0;text-align:left;font:700 1rem/1.25 var(--display);color:var(--ink);cursor:pointer;min-width:0}
@@ -2163,8 +2174,9 @@ function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete
 let revArm=null;
 function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
 
+let iPlanOpen=null;// no Início, os cartões do plano ficam recolhidos; este é o aberto
 function renderPlan(){
-  const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";
+  const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";const compact=view==="inicio";
   const CR=examCrunch(),cb=$("#crunchBar");cb.hidden=!CR.active;{const pn=$("#planNote");pn.hidden=!planNote;pn.textContent=planNote}
   if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
   const doneN=P.items.filter(itemDone).length;
@@ -2177,6 +2189,13 @@ function renderPlan(){
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=done?"Concluído":(p.cls==="r-new"?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
     const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · ${String(it.num).padStart(3,"0")} · `;pa.appendChild(incEl(wOf(it),false));
+    if(compact&&!editing){const open=iPlanOpen===p.k,rev=p.cls==="r-rev";let prog;
+      if(p.cls==="r-weak"){const n=weakDone(p);prog=`${Math.min(n,WEAK_DAY_Q)} de ${WEAK_DAY_Q} questões`}
+      else if(p.subs.length){const L2=subList(it),dn=p.subs.filter(t=>rev?(p.chk||[]).includes(t):(L2.find(y=>y.t===t)||{}).done).length;prog=`${dn} de ${p.subs.length} subtópicos`}
+      else prog=done?"feito":"tema inteiro";
+      const sm=el(`<button class="psum" type="button" aria-expanded="${open}"><span class="psp"></span><span class="pst"></span><span class="pchev" aria-hidden="true"></span></button>`);
+      sm.querySelector(".psp").textContent=prog;sm.querySelector(".pst").textContent=open?"":p.subs.join(" · ");
+      sm.onclick=()=>{iPlanOpen=open?null:p.k;render()};if(!open)li.classList.add("pmini");li.querySelector(".pa").after(sm)}
     const body=li.querySelector(".pbody");
     if(p.prev&&BYKEY[p.prev.k]){const sw=el(`<p class="pswap"><span></span> <button class="link" type="button">Desfazer troca</button></p>`);
       sw.querySelector("span").textContent=`Entrou no lugar de “${BYKEY[p.prev.k].t}”, que volta a ser sugerido nos próximos dias.`;sw.querySelector("button").onclick=()=>undoSwap(p.k);body.appendChild(sw)}
@@ -3670,6 +3689,7 @@ const HELP=[
 - Na aba **Faculdade**, crie o semestre (uma pasta) e, dentro dele, as disciplinas e as provas: elas passam a ocupar vagas no plano quando se aproximam.
 - Registre erros no **caderno de erros** e escreva **anotações** dentro de cada tema.`],
 ["Estudar hoje",`O plano tem **3 temas com 3 subtópicos cada** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver) e temas novos de maior incidência.
+- **No Início**, cada tema aparece resumido (quantos subtópicos já fez e quais são). Toque na linha do resumo para abrir os subtópicos e os botões; toque de novo para fechar. Na aba **Residência**, os cartões ficam sempre abertos.
 - **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. Ponto fraco: faça 5 questões dele no dia.
 - **Estudou outro tema?** Ele entra no lugar de um tema proposto ainda não iniciado. **Desfazer troca** volta atrás.
 - **Trocar subtópicos:** escolha até 6 para o dia.
