@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=f4070e34">
+<link rel="stylesheet" href="site.css?v=bb4e0496">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=f4070e34"></script>
-<script src="bridge.js?v=f4070e34"></script>
+<script src="config.js?v=bb4e0496"></script>
+<script src="bridge.js?v=bb4e0496"></script>
 </head>
 <body>
 <script>
@@ -466,6 +466,35 @@ li.sphead{border-bottom:1px solid var(--line);background:var(--bg)}
 .tab{flex:1;border:0;background:none;color:var(--muted);font:600 .95rem var(--body);padding:9px 10px;border-radius:9px;cursor:pointer}
 .tab[aria-selected="true"]{background:var(--accent);color:var(--on-accent)}
 .ecount{font:500 .78rem var(--mono);margin-left:4px}
+.tfilters{display:flex;flex-direction:column;gap:8px}
+.tfrow{display:flex;flex-direction:column;gap:5px}
+.tfres{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;font-size:.85rem;color:var(--muted)}.tfres .link{font-size:.85rem}
+.bulkrow .item:disabled{opacity:.45;cursor:default}
+.bchk{display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--accent);border-radius:5px;color:var(--on-accent);font-size:.8rem;font-weight:700}
+.bsel .bchk{background:var(--accent)}
+.bsel>.item{background:var(--accent-soft)}
+li.bulkall{padding:4px 18px 8px;border-bottom:1px solid var(--line)}
+.bulkbar{position:fixed;z-index:35;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 24px));display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1.5px solid var(--accent);border-radius:14px;padding:12px 14px;box-shadow:0 8px 24px rgb(0 0 0 / .18)}
+html[data-layout="phone"] .bulkbar{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+.bulkbar p{margin:0;font-size:.9rem}.bbtop{display:flex;flex-direction:column;gap:2px}.bbtop .ks{font-size:.8rem;color:var(--muted)}
+body:has(.bulkbar)>.wrap{padding-bottom:220px}
+.agrid{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:3px}
+.agday{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:1px solid transparent;border-radius:8px;padding:3px 0;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.agday.sel{border-color:var(--accent);background:var(--accent-soft)}
+.agn{font:500 .7rem var(--mono);height:1rem;color:var(--muted)}
+.agb{height:70px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.agb i{display:block;width:min(100%,16px);background:var(--l2);border-radius:4px 4px 0 0}
+.agday.over .agb i{background:var(--due)}.agday.over .agn{color:var(--due);font-weight:700}
+.agw{font:600 .62rem var(--body);text-transform:uppercase;color:var(--muted)}.agd{font:500 .66rem var(--mono);color:var(--muted)}
+.agday.now .agw,.agday.now .agd{color:var(--accent);font-weight:700}
+.aglist{margin-top:4px}
+html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="phone"] #viewTemas[data-seg="hoje"] .agenda{display:none}
+.dsum{display:flex;flex-wrap:wrap;gap:6px}
+.dchip{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 10px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.dchip span{font:600 .64rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.dchip b{font:600 .86rem var(--body)}
+.dchip.late b{color:var(--due)}
+.dtabs{align-items:center}.dtabs .dfoco{margin-left:auto}
+@media (max-width:480px){.dtabs button{padding:6px 9px;font-size:.8rem}.dchip{padding:4px 8px}}
 .ecount:not(:empty)::before{content:"("}.ecount:not(:empty)::after{content:")"}
 textarea,select,.etext{width:100%;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.95rem}
 textarea{min-height:4.2rem;resize:vertical}
@@ -1201,6 +1230,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </section>
 
   <div class="side">
+  <section class="card agenda" id="revAgenda" aria-label="Agenda de revisões"></section>
   <section class="card revs" aria-labelledby="rh">
     <div class="todayhead"><h2 id="rh">Revisões</h2><span class="revmeta" id="revmeta"></span></div>
     <div id="revVesp"></div>
@@ -1223,14 +1253,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 
   <section class="controls">
     <input class="search" id="q" type="search" placeholder="Buscar tema, subtópico ou anotação (ex.: sepse, HELLP, SUS)" aria-label="Buscar tema, subtópico ou anotação">
-    <div class="chips" role="group" aria-label="Filtrar temas">
-      <button class="chip" data-f="all" aria-pressed="true">Todos</button>
-      <button class="chip" data-f="due" aria-pressed="false">Revisões pendentes</button>
-      <button class="chip" data-f="weak" aria-pressed="false">Pontos fracos</button>
-      <button class="chip" data-f="new" aria-pressed="false">Não iniciados</button>
-      <button class="chip" data-f="high" aria-pressed="false">Incidência muito alta</button>
-      <button class="chip" data-f="done" aria-pressed="false">Dominados</button>
-    </div>
+    <div id="tFilters" class="tfilters"></div>
     <div class="sortrow"><label for="sortSel">Ordenar</label><select id="sortSel"><option value="num">Pela ordem da lista</option><option value="inc">Maior incidência primeiro</option></select></div>
     <p class="how">As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
     <p class="how">Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
@@ -1542,14 +1565,14 @@ function fromNum(x){return new Date(x*864e5).toISOString().slice(0,10)}
 function br(s){const [y,m,d]=s.split("-");return d+"/"+m}
 const get=k=>state[k]||{l:0};
 let synced=false;const touchedEarly=new Set();
-function upd(k,fn){const s={...get(k)};fn(s);
+function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if((s.last!==l0||s.step!==st0)&&"adj" in s){delete s.adj;delete s.adjFrom}
   if(s.last===today()&&!(s.ed||[]).includes(s.last))s.ed=[...(s.ed||[]),s.last].slice(-200);// dias de estudo/revisão do tema
   state[k]=s;if(!synced)touchedEarly.add(k)}
 let estChanged=false;
 const wOf=it=>get(it.key).w||it.w0;
 function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="Incidência ${INC[w].toLowerCase()}"><i></i><i></i><i></i>${withText?`<b>${INC[w]}</b>`:""}</span>`);e.setAttribute("aria-label","Incidência "+INC[w].toLowerCase());return e}
 function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
-function dueIn(s){return s.last? dnum(s.last)+interval(s)-dnum(today()) : null}
+function dueIn(s){return s.last? dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0)-dnum(today()) : null}
 function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
 function addQ(x,t,c,day,src){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc||0)+c);const d=day||today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
@@ -1597,9 +1620,15 @@ function buildPlan(){
 function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i.key).l||0)>=1||get(i.key).last)dw+=w});return Math.round(dw/tw*100)}
 function counts(items){const c=[0,0,0,0];items.forEach(it=>c[get(it.key).l||0]++);return c}
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
+/* filtros da lista: situação (vários juntos = "ou") e atalhos (todos juntos = "e"), mais área e especialidade */
+let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,area:"all",sp:"all"};
+function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.area!=="all"||tf.sp!=="all"}
+function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,area:"all",sp:"all"};filter="all"}
+const tfLevel=s=>!s.last&&!(s.l>0)?0:(s.l||1);
 function matches(it){const s=get(it.key);
-  if(filter==="due"&&!isDue(s))return false; if(filter==="weak"&&!isWeak(s))return false;
-  if(filter==="new"&&!isNew(s))return false; if(filter==="done"&&s.l!==3)return false; if(filter==="high"&&wOf(it)!==3)return false;
+  if(tf.lv.size&&!tf.lv.has(tfLevel(s)))return false;
+  if(tf.due&&!isDue(s))return false;if(tf.weak&&!isWeak(s))return false;if(tf.noq&&s.qt)return false;if(tf.high&&(it.own||wOf(it)!==3))return false;
+  if(tf.area!=="all"&&it.area.code!==tf.area)return false;if(tf.sp!=="all"&&it.sp!==tf.sp)return false;
   return !query||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")+" "+(notes[it.key]||"")).includes(query)}
 
 /* subtópicos: padrão (índice em s.sd) + próprios (s.cs) */
@@ -1856,8 +1885,7 @@ function renderNotasView(){
 function openTopic(key){const it=BYKEY[key];if(!it)return;
   if(view!=="temas")showView("temas");
   tSeg="lista";try{localStorage.setItem("resid-tseg","lista")}catch(e){}
-  openKey=key;openAreas.add(it.area.code);if(it.sp)openSpecs.add(spKey(it));filter="all";query="";$("#q").value="";
-  document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="all"));render();
+  openKey=key;openAreas.add(it.area.code);if(it.sp)openSpecs.add(spKey(it));tfReset();query="";$("#q").value="";render();
   const el=document.getElementById("t-"+key); if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
 
 function el(html){const t=document.createElement("template");t.innerHTML=html.trim();return t.content.firstChild}
@@ -1889,7 +1917,7 @@ function renderDetail(it){
   const p=g2.querySelector("p"), bt=g2.querySelector(".btns");
   if(!s.last){p.textContent="Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
     const b=el(`<button class="btn primary">Estudei hoje</button>`);b.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");adoptTopic(it.key);commit()};bt.appendChild(b);}
-  else{const next=fromNum(dnum(s.last)+interval(s));
+  else{const next=fromNum(dnum(today())+d);
     p.textContent=`Último estudo em ${br(s.last)}. Próxima revisão em ${br(next)} (${dueLabel(d)}). Intervalo atual: ${interval(s)} ${interval(s)===1?"dia":"dias"}.`;
     const g=el(`<button class="btn primary">Revisei: lembrei bem</button>`);g.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=Math.min((x.step||0)+1,INT.length-1);x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(it.key);commit()};
     const h=el(`<button class="btn">Revisei: tive dificuldade</button>`);h.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0});logAct("r");markReviewed(it.key);commit()};
@@ -1919,6 +1947,7 @@ function renderDetail(it){
   // anotações
   if(focusKey===it.key){const ph=el(`<div class="grp"><span class="glabel">Anotações</span><p class="gtext">Abertas em tela cheia.</p></div>`);box.appendChild(ph)}
   else box.appendChild(renderNotes(it,false));
+  const notesEl=box.lastElementChild;
   // questões
   const g3=el(`<div class="grp"><span class="glabel">Questões</span><p class="gtext"></p>
     <form class="qform"><label for="qc-${it.key}">Acertei</label><input id="qc-${it.key}" type="number" inputmode="numeric" min="0" max="500" placeholder="0">
@@ -1935,7 +1964,7 @@ function renderDetail(it){
     z.onclick=()=>{if(clearArm===it.key){upd(it.key,x=>{delete x.qc;delete x.qt;delete x.qd});clearArm=null;commit()}else{clearArm=it.key;render()}};g3.appendChild(z)}
   box.appendChild(g3);
   // gerar questões
-  if(!sampleOff)box.appendChild(renderGen(it));
+  const genEl=!sampleOff?renderGen(it):null;if(genEl)box.appendChild(genEl);
   // caderno de erros
   const mine=errors.filter(e=>e.k===it.key).sort(byNewest);
   const g4=el(`<div class="grp"><span class="glabel">Caderno de erros${mine.length?" · "+mine.length:""}</span></div>`);
@@ -1958,8 +1987,24 @@ function renderDetail(it){
     errors.push(e);drafts[it.key]={w:"",r:"",t:dr.t,s:dr.s};render();putErr(e);});
   g4.appendChild(f);
   box.appendChild(g4);
+  // abas: Estudo · Questões · Anotações · Erros
+  const tabOf=c=>c===notesEl?"notas":c===g3||c===genEl?"questoes":c===g4?"erros":"estudo";
+  let tab=detTab[it.key]||"estudo";if(formErr)tab="questoes";if(eErr)tab="erros";if(subErr)tab="estudo";detTab[it.key]=tab;
+  [...box.children].forEach(c=>{c.dataset.tab=tabOf(c);c.hidden=c.dataset.tab!==tab});
+  const fo=foSum(foSess.filter(x=>x.ref==="T:"+it.key)),nt=(notes[it.key]||"").trim();
+  const sum=el(`<div class="dsum"></div>`),chip=(lab,val,t,cls)=>{const b=el(`<button type="button" class="dchip${cls?" "+cls:""}"><span></span><b></b></button>`);b.querySelector("span").textContent=lab;b.querySelector("b").textContent=val;b.onclick=()=>{detTab[it.key]=t;render()};sum.appendChild(b)};
+  chip("Nível",LVL[s.l||0],"estudo");chip("Revisão",s.last?dueLabel(d):"sem estudo","estudo",s.last&&d<=0?"late":"");
+  chip("Acerto",s.qt?`${Math.round(a*100)}% em ${s.qt}`:"sem questões","questoes",s.qt&&isWeak(s)?"late":"");chip("Foco",fo?fmtMin(fo):"0 min","estudo");chip("Erros",String(mine.length),"erros");
+  const tb=el(`<div class="seg dtabs" role="tablist" aria-label="Partes do tema"></div>`);
+  [["estudo","Estudo"],["questoes","Questões"],["notas","Anotações"],["erros","Erros"]].forEach(([v,l])=>{const b=el(`<button type="button" role="tab" aria-pressed="${tab===v}" aria-selected="${tab===v}"></button>`);
+    b.textContent=l+(v==="erros"&&mine.length?` · ${mine.length}`:v==="notas"&&nt?" ✓":"");b.dataset.dt=v;b.onclick=()=>{detTab[it.key]=v;render()};tb.appendChild(b)});
+  const fz=el(`<button class="mini dfoco" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);tb.appendChild(fz);
+  box.prepend(sum,tb);
   return box;
 }
+let detTab={};
+/* abre a aba certa do tema antes de procurar um campo dela (questões ou caderno de erros) */
+function detGet(pre,k){detTab[k]=pre==="ew-"?"erros":pre==="nt-"?"notas":"questoes";render();return document.getElementById(pre+k)}
 
 /* gerador de questões */
 function buildPrompt(it,nq,o){
@@ -2041,7 +2086,7 @@ function toCaderno(it,qi){
   drafts[it.key]={w:`Marquei ${mine.letra}) ${mine.texto}\nCaso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,
     r:`${q.conceito?q.conceito+"\n":""}Correta: ${right.letra}) ${right.texto}`,t:(drafts[it.key]||{}).t||"conhecimento",s:"Questão gerada pelo Claude"};
   eErr="";render();
-  const f=document.getElementById("ew-"+it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}
+  const f=detGet("ew-",it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}
 }
 function setQCount(v){qCount=Math.max(1,Math.min(QMAX,Math.round(v)||10));try{localStorage.setItem("resid-qcount",String(qCount))}catch(e){}}
 function renderGen(it){
@@ -2372,7 +2417,7 @@ function renderPlan(){
     const acts=li.querySelector(".pacts");
     const ed=el(`<button class="mini" type="button">${editing?"Pronto":"Trocar subtópicos"}</button>`);ed.onclick=()=>{planEdit=editing?null:p.k;render()};acts.appendChild(ed);
     if(!editing){
-      if(p.subs.length&&!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[p.k]="__hoje";openTopic(p.k);setTimeout(()=>{const g=document.getElementById("qf-"+p.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
+      if(p.subs.length&&!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[p.k]="__hoje";openTopic(p.k);setTimeout(()=>{const g=detGet("qf-",p.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
       const o=el(`<button class="mini" type="button">Abrir tema</button>`);o.onclick=()=>openTopic(p.k);acts.appendChild(o);
       const fz=el(`<button class="mini" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(p.k);acts.appendChild(fz)}
     pl.appendChild(li)});
@@ -2424,7 +2469,7 @@ function renderRevs(){
     else body.appendChild(el(`<p class="phint">Nenhum subtópico marcado neste tema: revise o tema como um todo.</p>`));
     const acts=el(`<div class="pacts"><button class="btn primary" type="button">Lembrei bem</button><button class="btn" type="button">Tive dificuldade</button></div>`);
     const [g,h]=acts.querySelectorAll("button");g.onclick=()=>reviewTopic(it.key,true);h.onclick=()=>reviewTopic(it.key,false);
-    if(!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[it.key]="__hoje";openTopic(it.key);setTimeout(()=>{const x=document.getElementById("qf-"+it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
+    if(!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[it.key]="__hoje";openTopic(it.key);setTimeout(()=>{const x=detGet("qf-",it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
     {const fz=el(`<button class="mini" type="button" title="Contar o tempo de revisão deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);acts.appendChild(fz)}
     body.appendChild(acts);
     const ne=el(`<button class="link" type="button"></button>`),armed=revArm===it.key;ne.textContent=armed?"Toque de novo: tira das revisões e volta para não iniciado (questões e anotações ficam)":"Não estudei este tema";if(armed)ne.classList.add("warn");
@@ -3104,7 +3149,7 @@ function spDetail(d,s,L,edit){const box=el(`<div class="detail fspd"></div>`),re
   s.objs.forEach((o,n)=>{const sub=objSubs.find(x=>x.t===o),id=`ob-${s.id}-${n}`;
     const r=el(`<li><input type="checkbox" id="${id}"${sub&&sub.done?" checked":""}${pit?"":" disabled"}><label for="${id}"></label></li>`);r.querySelector("label").textContent=o;
     r.querySelector("input").onchange=()=>{const c2=subList(pit).find(y=>y.t===o);if(c2)toggleSub(pit,c2)};
-    if(pit&&!sampleOff){const q=el(`<button class="link" type="button">gerar questões</button>`);q.onclick=()=>{genFocus[pit.key]=o;openTopic(pit.key);setTimeout(()=>{const gq=document.getElementById("qf-"+pit.key);if(gq)gq.scrollIntoView({behavior:"smooth",block:"center"})},350)};r.appendChild(q)}
+    if(pit&&!sampleOff){const q=el(`<button class="link" type="button">gerar questões</button>`);q.onclick=()=>{genFocus[pit.key]=o;openTopic(pit.key);setTimeout(()=>{const gq=detGet("qf-",pit.key);if(gq)gq.scrollIntoView({behavior:"smooth",block:"center"})},350)};r.appendChild(q)}
     if(edit){const xb=el(`<button class="link" type="button" aria-label="Remover objetivo">remover</button>`);xb.onclick=()=>{s.objs=s.objs.filter(y=>y!==o);saveFac();syncObjs(s);commit()};r.appendChild(xb)}
     oul.appendChild(r)});
   if(s.objs.length&&!pit)og.appendChild(el(`<p class="gtext how">Os objetivos viram subtópicos assim que esta ${esc(L.sp)} tiver um tema ligado.</p>`));
@@ -3888,7 +3933,7 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
   if(R.saved){const S=R.saved,it=BYKEY[S.k],m=el(`<p class="pnote" role="status"><span></span> <button class="link" type="button">Desfazer</button></p>`);
     m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}${S.src?` · ${S.src}`:""}${S.mn?` · ${fmtPace(S.mn*60/S.t)} por questão`:""}.`;
     m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d,S.src));if(S.mn)logPace(S.d,-S.t,-S.mn*60);logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
-    if(S.t>S.c){const e=el(`<button class="btn" type="button">Registrar um erro deste tema no caderno</button>`);e.onclick=()=>{const k=S.k;qReg=null;openTopic(k);setTimeout(()=>{const f=document.getElementById("ew-"+k);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};w.appendChild(e)}}
+    if(S.t>S.c){const e=el(`<button class="btn" type="button">Registrar um erro deste tema no caderno</button>`);e.onclick=()=>{const k=S.k;qReg=null;openTopic(k);setTimeout(()=>{const f=detGet("ew-",k);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};w.appendChild(e)}}
   const it=R.k&&BYKEY[R.k];
   if(!it){const s=el(`<label class="qfsel"><span>Tema</span><input class="search" id="qrq" type="search" placeholder="Digite o tema (ex.: sepse, IAM, pré-eclâmpsia)" autocomplete="off"></label>`),i=s.querySelector("input");i.value=R.query||"";
     i.oninput=debounced(()=>{if(qReg!==R||R.k)return;R.query=i.value;render()});w.appendChild(s);
@@ -3925,7 +3970,7 @@ function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key
     li.querySelector(".qga").innerHTML=p===null?`<b class="qgp none">sem questões</b>`:`<b class="qgp"><span class="st ${bk}">${p}%</span></b><span>${r.qc}/${r.qt}</span>`;
     const acts=el(`<span class="qgb"></span>`);
     const rg=el(`<button class="mini" type="button">Registrar</button>`);rg.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};acts.appendChild(rg);
-    if(!sampleOff){const g=el(`<button class="mini" type="button">Gerar questões</button>`);g.onclick=()=>{openTopic(it.key);setTimeout(()=>{const x=document.getElementById("qf-"+it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(g)}
+    if(!sampleOff){const g=el(`<button class="mini" type="button">Gerar questões</button>`);g.onclick=()=>{openTopic(it.key);setTimeout(()=>{const x=detGet("qf-",it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(g)}
     li.appendChild(acts);ol.appendChild(li)});
   c.appendChild(ol);
   if(rows.length>6){const m=el(`<button class="link" type="button">${qGainMore?"Mostrar menos":`Mostrar mais ${Math.min(rows.length,20)-6}`}</button>`);m.onclick=()=>{qGainMore=!qGainMore;render()};c.appendChild(m)}
@@ -3981,7 +4026,7 @@ function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key)
     b.textContent=`${en.length} ${en.length===1?"erro":"erros"} no caderno: ${Object.keys(ETYPES).filter(t=>tc[t]).map(t=>`${tc[t]} ${ESHORT[t]}`).join(" · ")}`;
     b.onclick=()=>{eTopicKey=it.key;eArea="all";eSp="all";eType="all";backStack=[];setView("erros")};ex.appendChild(b)}
   const sp=el(`<span class="qrxsp"></span>`);ex.appendChild(sp);
-  const ae=el(`<button class="link" type="button">+ erro</button>`);ae.onclick=()=>{openTopic(it.key);setTimeout(()=>{const f=document.getElementById("ew-"+it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};
+  const ae=el(`<button class="link" type="button">+ erro</button>`);ae.onclick=()=>{openTopic(it.key);setTimeout(()=>{const f=detGet("ew-",it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};
   const ar=el(`<button class="link" type="button">+ registrar</button>`);ar.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};
   ex.append(ae,ar);return ex}
 /* acerto por banca ou fonte (informada no registro rápido; as geradas entram como "Claude") */
@@ -4139,6 +4184,75 @@ function projEl(){const P=ui.profile;if(!P.goalDate)return null;const dd=daysTo(
   w.innerHTML=`<div class="iprow"><span>Faltam <b>${left}</b> ${left===1?"tema":"temas"} para ver</span><span>precisa de <b>${fmt(need)}</b> por semana</span><span class="${ok?"ok":"late"}">seu ritmo: <b>${fmt(pace)}</b> por semana</span></div>`;
   const msg=el(`<p class="ks"></p>`);msg.textContent=pace===0?"Nas últimas 4 semanas nenhum tema novo foi estudado. Comece pelo plano de hoje.":ok?`No ritmo atual, você termina de ver os temas por volta de ${br(end)}/${end.slice(0,4)}, antes da prova.`:`No ritmo atual, você terminaria só em ${br(end)}/${end.slice(0,4)}${end>P.goalDate?", depois da prova":""}. Aumente para ${Math.ceil(need)} temas por semana (cerca de ${Math.ceil(need/6)} por dia, 6 dias por semana).`;
   w.appendChild(msg);return w}
+/* ---------- Residência: filtros, agenda de revisões e "Já estudei antes" ---------- */
+function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML="";filter=tfOn()?"on":"all";
+  const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length;
+  const row=(lab,items)=>{const r=el(`<div class="tfrow"><span class="glabel"></span><div class="chips"></div></div>`);r.querySelector(".glabel").textContent=lab;items.forEach(b=>r.querySelector(".chips").appendChild(b));box.appendChild(r)};
+  const chip=(t,on,fn,id)=>{const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.textContent=t;if(id)b.id=id;b.onclick=()=>{fn();render()};return b};
+  row("Situação",[[0,"Não iniciados"],[1,"Estudados"],[2,"Revisados"],[3,"Dominados"]].map(([v,t])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v)));
+  row("Atalhos",[chip(`Revisão pendente · ${cnt(i=>isDue(get(i.key)))}`,tf.due,()=>{tf.due=!tf.due},"tfdue"),chip(`Pontos fracos · ${cnt(i=>isWeak(get(i.key)))}`,tf.weak,()=>{tf.weak=!tf.weak},"tfweak"),
+    chip("Sem questões",tf.noq,()=>{tf.noq=!tf.noq},"tfnoq"),chip("Incidência muito alta",tf.high,()=>{tf.high=!tf.high},"tfhigh")]);
+  const sr=el(`<div class="qfrow"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
+    opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;x.onchange=()=>{on(x.value);render()};sr.appendChild(l)};
+  sel("tfArea","Área",[["all","Todas"],...AREAS.map(a=>[a.code,a.name]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","Faculdade (sem área)"]]:[])],tf.area,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)});
+  if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area)||FAC_AREA,names=[...new Set([...(A.specs||[]).map(x=>x.name),...FAC_ITEMS.filter(i=>i.area===A).map(i=>i.sp)])].filter(Boolean);
+    sel("tfSp","Especialidade",[["all","Todas"],...names.map(n=>[n,n])],tf.sp,v=>{tf.sp=v})}
+  box.appendChild(sr);
+  const n=pool.filter(matches).length,ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=tfOn()||query?`${n} ${n===1?"tema":"temas"} com esses filtros`:`${pool.length} temas`;
+  if(tfOn()){const c=el(`<button class="link" type="button" id="tfClear">Limpar filtros</button>`);c.onclick=()=>{tfReset();render()};ft.appendChild(c)}
+  const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null}render()};ft.appendChild(bk);
+  box.appendChild(ft);
+  renderBulkBar()}
+/* ----- "Já estudei antes": marcar vários temas de uma vez, com a primeira revisão espalhada ----- */
+let bulk=null,bulkUndo=null;
+function bulkCap(){return Math.max(3,ui.prefs.planN+1)}
+function renderBulkBar(){let bar=$("#bulkBar");if(!bulk&&!bulkUndo){if(bar)bar.remove();return}
+  if(!bar){bar=el(`<div class="bulkbar" id="bulkBar" role="region" aria-label="Marcação em lote"></div>`);document.body.appendChild(bar)}bar.innerHTML="";
+  if(!bulk){const u=bulkUndo,m=el(`<p><span></span> <button class="link" type="button">Desfazer</button> <button class="link" type="button">Fechar</button></p>`);m.querySelector("span").textContent=`${u.keys.length} ${u.keys.length===1?"tema marcado":"temas marcados"} como já estudados.`;
+    const [d,c]=m.querySelectorAll("button");d.onclick=()=>{u.keys.forEach(k=>{if(u.prev[k])state[k]=u.prev[k];else delete state[k]});bulkUndo=null;commit()};c.onclick=()=>{bulkUndo=null;render()};bar.appendChild(m);return}
+  const n=bulk.sel.size,days=Math.ceil(n/bulkCap());
+  const t=el(`<div class="bbtop"><b></b><span class="ks"></span></div>`);t.querySelector("b").textContent=`${n} ${n===1?"tema selecionado":"temas selecionados"}`;
+  t.querySelector(".ks").textContent=n?`1ª revisão espalhada em ${days} ${days===1?"dia":"dias"} (até ${bulkCap()} por dia)`:"Toque nos temas da lista que você já estudou antes de usar o app.";bar.appendChild(t);
+  const lv=el(`<div class="seg" role="group" aria-label="Como estão esses temas"></div>`);[[1,"Estudados"],[2,"Já revisados"]].forEach(([v,l])=>{const b=el(`<button type="button" aria-pressed="${bulk.lv===v}"></button>`);b.textContent=l;b.onclick=()=>{bulk.lv=v;renderBulkBar()};lv.appendChild(b)});bar.appendChild(lv);
+  const a=el(`<div class="btns"></div>`),ok=el(`<button class="btn primary" type="button" id="bulkOk">Confirmar</button>`),cc=el(`<button class="btn" type="button">Cancelar</button>`);ok.disabled=!n;
+  ok.onclick=()=>{const keys=[...bulk.sel].filter(k=>BYKEY[k]),prev={},cap=bulkCap(),T=today();
+    keys.sort((x,y)=>wOf(BYKEY[y])-wOf(BYKEY[x])||BYKEY[x].num-BYKEY[y].num).forEach((k,i)=>{prev[k]=state[k]?{...state[k]}:null;const s={...get(k)},off=1+Math.floor(i/cap);
+      s.last=T;s.step=bulk.lv===2?1:0;s.l=Math.max(s.l||0,bulk.lv);s.adj=off-INT[s.step];s.adjFrom=T;s.pre0=1;state[k]=s});
+    bulkUndo={keys,prev};bulk=null;commit()};
+  cc.onclick=()=>{bulk=null;render()};a.append(ok,cc);bar.appendChild(a)}
+function bulkToggle(k){if(!bulk)return;bulk.sel.has(k)?bulk.sel.delete(k):bulk.sel.add(k);render()}
+/* ----- agenda de revisões (próximos 14 dias) e "Equilibrar" ----- */
+let agOpen=null,agMsg="";
+function agItems(){return [...ALL,...FAC_ITEMS].filter(i=>get(i.key).last)}
+function agDays(){const D=[...Array(14)].map(()=>[]);agItems().forEach(it=>{const d=dueIn(get(it.key));if(d===null||d>13)return;D[Math.max(0,d)].push(it)});return D}
+function agCap(D){const tot=D.reduce((a,x)=>a+x.length,0);return Math.max(3,Math.ceil(tot/14*1.25))}
+function agBalance(){const D=agDays(),cap=agCap(D),T=today();let moved=0;
+  const setDue=(it,day)=>{const k=it.key,s={...get(k)},base=dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)];s.adj=dnum(T)+day-base;s.adjFrom=s.last;state[k]=s;moved++};
+  // hoje (com as atrasadas): fica o mais urgente; o resto vai para os próximos dias com espaço
+  const pri=(a,b)=>dueIn(get(a.key))-dueIn(get(b.key))||wOf(b)-wOf(a);
+  if(D[0].length>cap){const rest=D[0].sort(pri).slice(cap);D[0]=D[0].slice(0,cap);rest.forEach(it=>{for(let d=1;d<7;d++){if(D[d].length<cap){D[d].push(it);setDue(it,d);return}}})}
+  // dias futuros cheios: adianta o excesso para dias mais leves antes deles (ou, sem espaço, adia até 3 dias)
+  for(let d=1;d<14;d++){while(D[d].length>cap){let lighter=[...Array(d).keys()].slice(1).filter(x=>D[x].length<cap).sort((a,b)=>D[a].length-D[b].length||b-a)[0];
+      if(lighter===undefined)lighter=[d+1,d+2,d+3].filter(x=>x<14&&D[x].length<cap)[0];// sem espaço antes: adia no máximo 3 dias
+      if(lighter===undefined)break;
+      const it=D[d].sort((a,b)=>wOf(a)-wOf(b)).shift();D[lighter].push(it);setDue(it,lighter)}}
+  agMsg=moved?`${moved} ${moved===1?"revisão foi remanejada":"revisões foram remanejadas"} para no máximo ${cap} por dia.`:"A agenda já está equilibrada.";commit()}
+function renderAgenda(){const box=$("#revAgenda");if(!box)return;box.innerHTML="";const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.map(x=>x.length),1),T=dnum(today()),wd=["D","S","T","Q","Q","S","S"];
+  box.appendChild(el(`<div class="dhead"><h2>Agenda de revisões</h2><span class="todaydate">próximos 14 dias</span></div>`));
+  const tot=D.reduce((a,x)=>a+x.length,0);
+  if(!tot){box.appendChild(el(`<p class="cempty">Nenhuma revisão nos próximos 14 dias. Elas aparecem aqui conforme você estuda os temas.</p>`));return}
+  const g=el(`<div class="agrid" role="list"></div>`);
+  D.forEach((list,i)=>{const day=fromNum(T+i),dt=new Date(T*864e5),w=wd[(new Date(day+"T12:00:00").getDay())],over=list.length>cap;
+    const b=el(`<button type="button" class="agday${i===0?" now":""}${over?" over":""}${agOpen===i?" sel":""}" role="listitem"><span class="agn">${list.length||""}</span><span class="agb"><i style="height:${list.length/mx*100}%"></i></span><span class="agw">${w}</span><span class="agd">${br(day).slice(0,2)}</span></button>`);
+    b.dataset.tip=`${i===0?"Hoje (com as atrasadas)":["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"][new Date(day+"T12:00:00").getDay()]+" "+br(day)}: ${list.length} ${list.length===1?"revisão":"revisões"}`;b.onclick=()=>{agOpen=agOpen===i?null:i;render()};g.appendChild(b)});
+  box.appendChild(g);
+  const over=D.filter(x=>x.length>cap).length;
+  const info=el(`<p class="how"></p>`);info.textContent=`${tot} ${tot===1?"revisão":"revisões"} em 14 dias · ritmo confortável: até ${cap} por dia.${over?` ${over} ${over===1?"dia passa":"dias passam"} disso.`:""}`;box.appendChild(info);
+  if(agMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=agMsg;box.appendChild(m)}
+  if(over){const eb=el(`<button class="btn" type="button" id="agBal">Equilibrar</button>`);eb.onclick=agBalance;box.appendChild(eb);
+    box.appendChild(el(`<p class="how">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}
+  if(agOpen!==null&&D[agOpen]){const ul=el(`<ul class="uplist aglist"></ul>`);D[agOpen].sort((a,b)=>wOf(b)-wOf(a)).forEach(it=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=dueLabel(dueIn(get(it.key)));const bt=li.querySelector("button");bt.textContent=it.t;bt.onclick=()=>openTopic(it.key);ul.appendChild(li)});
+    if(!D[agOpen].length)ul.appendChild(el(`<li class="how">Nenhuma revisão neste dia.</li>`));box.appendChild(ul)}}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -4174,7 +4288,7 @@ const HELP=[
 - Cada revisão sugere alguns subtópicos já estudados, em rodízio.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
 - **Modo provas ligado:** as revisões da residência ficam pausadas numa lista recolhida.`],
-["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele: nível, revisão, subtópicos, questões, anotações e erros.
+["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele. No topo, um resumo (nível, próxima revisão, acerto, tempo de foco e erros); abaixo, as partes **Estudo** (nível, incidência, revisão e subtópicos), **Questões** (registrar e gerar), **Anotações** e **Erros**, além do botão **⏱ Foco**.
 | Nível | Quando |
 |---|---|
 | Estudado | Você viu o conteúdo |
@@ -4182,7 +4296,9 @@ const HELP=[
 | Dominado | 80%+ em 10 ou mais questões e duas revisões seguidas sem dificuldade |
 - **Barrinhas de incidência:** peso calculado a partir de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026). Ajustável dentro do tema.
 - **Subtópicos próprios:** adicione no fim da lista do tema.
-- **Filtros:** Revisões pendentes, Pontos fracos, Não iniciados, Incidência muito alta, Dominados. A busca procura também nas anotações.`],
+- **Filtros:** **Situação** (Não iniciados, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
+- **Agenda de revisões** (parte Revisões): quantas revisões caem em cada um dos próximos 14 dias; toque num dia para ver os temas. Quando um dia passa do ritmo confortável, **Equilibrar** adianta revisões para dias mais leves (ou adia no máximo 3 dias, se não houver espaço antes) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. Revisar o tema volta a contar pelos intervalos normais.
+- **Já estudei alguns temas antes do app** (abaixo dos filtros): marque de uma vez os temas que você já tinha estudado (toque em cada um ou em **Selecionar os não iniciados desta especialidade**), escolha **Estudados** ou **Já revisados** e confirme. A 1ª revisão fica espalhada pelos próximos dias (alguns por dia) e não conta como estudo de hoje. **Desfazer** volta como estava.`],
 ["Questões",`As questões são geradas pelo Claude dentro de cada tema, com comentário, e cada resposta conta no seu acerto.
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
@@ -4334,14 +4450,15 @@ function renderAll(){
   if(view!=="temas")return;
   // plano
   renderPlan();
-  renderRevs();
+  renderRevs();renderAgenda();
   // resumo
   renderDash();
+  renderTFilters();
   // áreas
   const errN={};errors.forEach(e=>errN[e.k]=(errN[e.k]||0)+1);
   const box=$("#areas"); box.innerHTML="";
   const facL=facLinkMap();
-  [...AREAS,FAC_AREA].forEach(a=>{
+  [...AREAS,FAC_AREA].forEach(a=>{if(tf.area!=="all"&&a.code!==tf.area)return;
     const isFac=a===FAC_AREA, facIn=FAC_ITEMS.filter(it=>it.area===a&&matches(it)).sort((x,y)=>x.t.localeCompare(y.t,"pt"));
     if(isFac&&!facIn.length)return;
     const ac=counts(isFac?[]:a.items), vis=isFac?[]:a.items.filter(matches);
@@ -4367,6 +4484,8 @@ function renderAll(){
       if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
       const ne=errN[it.key]||0; if(ne)m.appendChild(el(`<span>${ne} ${ne===1?"erro":"erros"} no caderno</span>`));
       if(!m.children.length)m.remove();
+      if(bulk){const can=tfLevel(s)===0,on=bulk.sel.has(it.key);li.classList.add("bulkrow");if(on)li.classList.add("bsel");const b=li.querySelector(".item");b.setAttribute("aria-pressed",on);b.removeAttribute("aria-expanded");
+        b.querySelector(".num").innerHTML=can?`<span class="bchk" aria-hidden="true">${on?"✓":""}</span>`:"";if(!can){b.disabled=true;b.title="Já tem estudo registrado"}else b.onclick=()=>bulkToggle(it.key);return li}
       li.querySelector(".item").onclick=()=>{openKey=open?null:it.key;formErr="";subErr="";clearArm=null;render()};
       if(open){const det=renderDetail(it);if(it.own)det.appendChild(dupBox(it));li.appendChild(det)}
       return li};
@@ -4377,7 +4496,10 @@ function renderAll(){
         h.querySelector(".spname").textContent=sp.name;if(sp.items.length)bar(h.querySelector(".bar"),sc,sp.items.length);
         h.querySelector("button").onclick=()=>{if(forced)return;if(sp.extra){const sk="~"+a.code+":"+sp.name;openSpecs.has(sk)?openSpecs.delete(sk):openSpecs.add(sk)}else{const sk=a.code+":"+sp.name;openSpecs.has(sk)?openSpecs.delete(sk):openSpecs.add(sk)}render()};
         if(forced)h.querySelector("button").disabled=true;
-        ol.appendChild(h);if(op)sv.forEach(it=>ol.appendChild(row(it)))})}
+        ol.appendChild(h);
+        if(op&&bulk){const free=sv.filter(it=>tfLevel(get(it.key))===0);if(free.length){const all=free.every(it=>bulk.sel.has(it.key)),x=el(`<li class="bulkall"><button class="link" type="button"></button></li>`);x.querySelector("button").textContent=all?`Desmarcar os ${free.length} desta especialidade`:`Selecionar os ${free.length} não iniciados desta especialidade`;
+          x.querySelector("button").onclick=()=>{free.forEach(it=>all?bulk.sel.delete(it.key):bulk.sel.add(it.key));render()};ol.appendChild(x)}}
+        if(op)sv.forEach(it=>ol.appendChild(row(it)))})}
     else vis.forEach(it=>ol.appendChild(row(it)));
     d.appendChild(ol); box.appendChild(d);
     if(isFac)d.open=openAreas.has("FAC")||!!query||filter!=="all";
@@ -4432,7 +4554,7 @@ $("#bkCopy").onclick=async()=>{const m=$("#bkMsg"),txt=JSON.stringify(buildBacku
 
 $("#eOrder").onchange=e=>{eOrder=e.target.value;render()};
 $("#eq").addEventListener("input",debounced(e=>{eQuery=norm(e.target.value.trim());render()}));
-document.querySelectorAll(".chip[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
+
 try{const sb=localStorage.getItem("resid-sort");if(sb==="inc")sortBy="inc"}catch(e){}
 $("#sortSel").value=sortBy;$("#sortSel").onchange=e=>{sortBy=e.target.value;try{localStorage.setItem("resid-sort",sortBy)}catch(x){}render()};
 $("#q").addEventListener("input",debounced(e=>{query=norm(e.target.value.trim());render()}));

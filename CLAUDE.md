@@ -49,6 +49,10 @@ consultado quando há dúvida. Responda em português.
   Placar do dia `#iBoard` (`renderInicioBoard`), próximo passo `nextSteps()`/`startStep()` (liga o Foco no tema), projeção `projEl()`
   dentro de `#iMeta` (temas não vistos × `hist[d].e` das últimas 4 semanas). Cartões do plano (`planOpen`) e das revisões (`revOpen`)
   ficam recolhidos e abrem sozinhos quando começados.
+- Residência: filtros `tf` (`renderTFilters`, `matches`; situação `tf.lv` por `tfLevel`, atalhos, área/especialidade), tema em abas
+  (`renderDetail` marca `data-tab` = estudo|questoes|notas|erros; `detTab[k]`; `detGet(pre,k)` abre a aba antes de focar um campo),
+  agenda `#revAgenda` (`renderAgenda`, `agBalance`) e marcação em lote `bulk` ("Já estudei antes"). Ajuste de data da revisão:
+  `s.adj` (dias) vale só enquanto `s.adjFrom===s.last` (`dueIn`); `upd` apaga o ajuste quando `last`/`step` mudam.
 - Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
   guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
