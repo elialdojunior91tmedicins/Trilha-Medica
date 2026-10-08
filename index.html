@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=24accf76">
+<link rel="stylesheet" href="site.css?v=ff12f599">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=24accf76"></script>
-<script src="bridge.js?v=24accf76"></script>
+<script src="config.js?v=ff12f599"></script>
+<script src="bridge.js?v=ff12f599"></script>
 </head>
 <body>
 <script>
@@ -3916,8 +3916,10 @@ function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6
     if(w.q)g+=`<rect x="${x}" y="${yq(w.q)}" width="${bw}" height="${yq(0)-yq(w.q)}" rx="3" class="qebar" data-tip="${esc(tip)}"/>`;
     else g+=`<rect x="${x}" y="${T}" width="${bw}" height="${VH-T-B}" fill="transparent" data-tip="${esc(tip)}"/>`;
     if((N-1-i)%lstep===0)g+=`<text x="${x+bw/2}" y="${VH-8}" text-anchor="middle" class="qeax">${br(ws2)}</text>`});
-  const pts=W.map((w,i)=>w.q?[L+i*cw+cw/2,ya(w.c/w.q),w]:null).filter(Boolean);
-  if(pts.length>1)g+=`<polyline points="${pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" class="qeline"/>`;
+  const all=W.map((w,i)=>w.q?[L+i*cw+cw/2,ya(w.c/w.q),w]:null),pts=all.filter(Boolean);
+  // a linha só liga semanas seguidas com questões; semana vazia interrompe a linha
+  let seg=[];const flush=()=>{if(seg.length>1)g+=`<polyline points="${seg.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" class="qeline"/>`;seg=[]};
+  all.forEach(p=>{if(p)seg.push(p);else flush()});flush();
   pts.forEach(([x,y,w])=>{const p=pct(w.c,w.q),[bk]=band(p);g+=`<circle cx="${x}" cy="${y}" r="4.5" class="qedot ${bk}" data-tip="${p}% de acerto em ${w.q} questões"/>`});
   g+=`</svg>`;
   const last=W[N-1],prev=W.slice(N-5,N-1).filter(w=>w.q),pa=prev.length?prev.reduce((a,w)=>a+w.c,0)/prev.reduce((a,w)=>a+w.q,0):null;
