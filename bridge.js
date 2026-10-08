@@ -100,7 +100,7 @@
         : "\n\nResponda somente com o texto final, em Markdown, sem comentários antes ou depois.");
       let done = false;
       const finish = (fn, v) => { if (done) return; done = true; closeIt(); fn(v); };
-      const closeIt = modal(asJson ? "Gerar questões com o Claude" : "Pedir ao Claude", (body) => {
+      const closeIt = modal(asJson ? "Gerar questões com o Claude" : (opts && opts.images && opts.images.length ? "Ler imagem com o Claude" : "Pedir ao Claude"), (body) => {
         const msg = h("p", { class: "gstatus", role: "status" });
         const copy = h("button", { class: "btn primary", type: "button", text: "Copiar pedido" });
         copy.onclick = async () => {
@@ -123,7 +123,9 @@
           } else finish(resolve, { text: v, truncated: false });
         };
         body.append(
-          h("p", { class: "gtext" }, h("b", { text: "1. " }), "Copie o pedido e cole numa conversa no app do Claude ou em claude.ai."),
+          h("p", { class: "gtext" }, h("b", { text: "1. " }), opts && opts.images && opts.images.length
+            ? "Copie o pedido, abra uma conversa no app do Claude ou em claude.ai, anexe a mesma imagem que você escolheu e cole o pedido."
+            : "Copie o pedido e cole numa conversa no app do Claude ou em claude.ai."),
           h("div", { class: "btns" }, copy, h("a", { class: "btn", href: "https://claude.ai/new", target: "_blank", rel: "noopener", text: "Abrir o Claude ↗" })),
           msg,
           h("details", { class: "plain" }, h("summary", { text: "Ver o pedido" }), pre),
@@ -137,7 +139,7 @@
   }
   const sample = (input, opts) => manual(input, opts || {}, false);
   sample.json = (input, opts) => manual(input, opts || {}, true);
-  sample.limits = async () => ({ images: false });
+  sample.limits = async () => ({ images: true }); // no copiar e colar, você anexa a imagem na conversa
 
   /* ---------------- o "claude.use" do site ---------------- */
   window.claude = {

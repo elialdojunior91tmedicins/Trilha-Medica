@@ -528,6 +528,22 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[
 .frlinks{display:flex;flex-wrap:wrap;gap:6px}
 .frt{font:700 1rem var(--display)}
 .frlinked details{border-top:1px solid var(--line);padding:6px 0}.frlinked summary{font-weight:600;font-size:.9rem;color:var(--ink);text-decoration:none}
+.mdview a{color:var(--accent);text-decoration:underline;overflow-wrap:anywhere}
+.mdpre{font:500 .82rem/1.5 var(--mono);background:var(--bg);border-radius:8px;padding:8px 10px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 .6em}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:.4em 0 .8em}
+.fl-box{max-width:min(100%,420px);text-align:center;background:var(--surface);border:1.5px solid var(--accent);border-radius:10px;padding:7px 12px;font-size:.88rem;line-height:1.35}
+.fl-box.fl-q{border-color:var(--l1);background:color-mix(in srgb,var(--l1) 10%,var(--surface));border-radius:18px;font-weight:600}
+.fl-arrow{width:2px;height:16px;background:var(--muted);position:relative;margin:0 auto}
+.fl-arrow::after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--muted);border-bottom:0}
+.fl-arrow.sm{height:10px}
+.fl-branches{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%}
+.fl-branch{display:flex;flex-direction:column;align-items:center;flex:1 1 140px;max-width:260px;min-width:0}
+.fl-lab{font:700 .72rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--l1);margin-top:4px}
+.imgpanel{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1.5px solid var(--accent);border-radius:12px;padding:12px 14px;margin-top:8px}
+.imgrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.imgpick{cursor:pointer}
+.imgprev{max-height:120px;max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.imgpanel .how{margin:0;font-size:.8rem}
 .dsum{display:flex;flex-wrap:wrap;gap:6px}
 .dchip{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 10px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .dchip span{font:600 .64rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.dchip b{font:600 .86rem var(--body)}
@@ -1183,7 +1199,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <section class="card ns-all" aria-labelledby="nh">
       <h2 id="nh">Minhas anotações</h2>
       <p class="gtext" id="nsum"></p>
-      <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button></div>
+      <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button><button class="btn" id="nImg" type="button">📷 Ler imagem</button></div>
+      <div id="nImgBox"></div>
       <p class="gstatus" id="nmsg" aria-live="polite"></p>
       <textarea id="nFallback" class="ntext" hidden readonly aria-label="Anotações em Markdown"></textarea>
     </section>
@@ -1716,13 +1733,15 @@ function replaceNote(k,v){noteUndo[k]=notes[k]||"";saveNote(k,v)}
 
 /* markdown simples → HTML seguro */
 function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function inl(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>")}
+function inl(s){return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>').replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>")}
 function md(src){
   const L=src.replace(/\r/g,"").split("\n"),out=[];let i=0;
   const isRow=l=>/^\s*\|.*\|\s*$/.test(l), isSep=l=>/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
   const cells=l=>l.trim().replace(/^\||\|$/g,"").split("|").map(c=>inl(c.trim()));
   while(i<L.length){const l=L[i];
     if(!l.trim()){i++;continue}
+    if(/^\s*```/.test(l)){const lang=l.trim().slice(3).trim().toLowerCase(),b=[];i++;while(i<L.length&&!/^\s*```/.test(L[i])){b.push(L[i]);i++}i++;
+      out.push(lang==="fluxo"?flowHTML(b):`<pre class="mdpre">${esc(b.join("\n"))}</pre>`);continue}
     let m;
     if(m=l.match(/^(#{1,3})\s+(.*)/)){const n=m[1].length;out.push(`<h${n+2} class="mdh">${inl(m[2])}</h${n+2}>`);i++;continue}
     if(/^\s*(-{3,}|\*{3,})\s*$/.test(l)){out.push("<hr>");i++;continue}
@@ -1736,7 +1755,7 @@ function md(src){
       out.push(`<ul>${b.join("")}</ul>`);continue}
     if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){b.push(`<li>${inl(L[i].replace(/^\s*\d+[.)]\s*/,""))}</li>`);i++}
       out.push(`<ol>${b.join("")}</ol>`);continue}
-    const p=[];while(i<L.length&&L[i].trim()&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\|)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
+    const p=[];while(i<L.length&&L[i].trim()&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
     if(p.length)out.push(`<p>${p.join("<br>")}</p>`);else i++;
   }
   return out.join("");
@@ -1834,7 +1853,7 @@ function renderNotes(it,full){
     const ta=el(`<textarea class="ntext" maxlength="${NOTE_MAX}" placeholder="Escreva seu resumo, macetes e pegadinhas. Use a barra acima para formatar ou um dos modelos."></textarea>`);
     ta.id=(full?"fnt-":"nt-")+k;ta.setAttribute("aria-label","Anotações de "+it.t);ta.value=notes[k]||"";
     const T=[["Título","H",()=>prefix(ta,k,"## ")],["Negrito","B",()=>wrap(ta,k,"**","**","texto")],["Destaque","==",()=>wrap(ta,k,"==","==","cai na prova")],
-      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>prefix(ta,k,"> ")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)]];
+      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>prefix(ta,k,"> ")],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)]];
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
     [["Modelo de resumo",()=>insertBlock(ta,k,TPL_RESUMO)],["Seções dos subtópicos",()=>insertBlock(ta,k,tplSubs(it))],["Meus erros",()=>{const t=tplErros(it);if(t)insertBlock(ta,k,t)}]].forEach(([lab,fn])=>{
@@ -1862,7 +1881,9 @@ function renderNotes(it,full){
       const g=el(`<button class="btn" type="button">Gerar resumo com o Claude</button>`);g.onclick=()=>noteClaude(it,"resumo");
       const o=el(`<button class="btn" type="button">Organizar minhas anotações</button>`);o.onclick=()=>noteClaude(it,"organizar");
       if(!sampleFn){g.disabled=o.disabled=true}if(!has){o.disabled=true;o.title="Escreva algo primeiro"}
-      row.append(g,o);cb.appendChild(row)}
+      const im=el(`<button class="btn" type="button">📷 Ler imagem</button>`);im.title="Envie uma foto (slide, livro, caderno, esquema, ECG) e o Claude escreve um resumo com fluxograma";im.onclick=()=>imgStart(k);if(!sampleFn)im.disabled=true;
+      row.append(g,o,im);cb.appendChild(row)}
+    if(imgR&&imgR.from===k)cb.appendChild(imgPanel());
     if(a){
       const title=a.kind==="resumo"?"Resumo sugerido pelo Claude":"Anotações organizadas pelo Claude";
       const pv=el(`<div class="aiprev"><div class="aihead"><span class="glabel"></span></div><div class="mdview" id="ai-${k}"></div></div>`);
@@ -1910,6 +1931,7 @@ function renderNotasView(){
   spChips($("#nSp"),nArea,nSp,v=>keys.filter(k=>BYKEY[k].area.code===nArea&&(v==="all"||BYKEY[k].sp===v)).length,v=>{nSp=v;render()});
   const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]).includes(nQuery))&&nFlagOk(k));
   renderNFlags();{const fb=$("#nFreeBox");fb.innerHTML="";fb.appendChild(freeCard())}
+  {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
   // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
   {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length;
    $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas",todas:"Todas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
@@ -4405,7 +4427,7 @@ function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||""
   return c}
 /* pegadinhas e destaques: linhas com "> ", textos ==destacados== e itens da seção "Pegadinhas" */
 function pegOf(k){const t=(notes[k]||"").replace(/\r/g,""),out=[];let inPeg=false;
-  t.split("\n").forEach(l=>{const h=l.match(/^#{1,3}\s+(.*)/);if(h){inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
+  let fen=false;t.split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const h=l.match(/^#{1,3}\s+(.*)/);if(h){inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
     if(/^\s*>/.test(l)){const x=l.replace(/^\s*>\s?/,"").trim();if(x)out.push({x,kind:"peg"});return}
     if(inPeg&&/^\s*([-*•]|\d+[.)])\s+/.test(l)){out.push({x:l.replace(/^\s*([-*•]|\d+[.)])\s+/,"").trim(),kind:"peg"});return}
     (l.match(/==([^=]+)==/g)||[]).forEach(m=>out.push({x:m.slice(2,-2).trim(),kind:"dest"}))});
@@ -4517,9 +4539,12 @@ function noteErrsEl(k){const mine=errors.filter(e=>e.k===k).sort(byNewest);if(!m
 function notesPDF(keys,free){const P=new MiniPDF("Anotações"),M=46,CW=P.W-2*M;let y=M;
   const C={ink:[21,33,31],mut:[91,106,103],acc:[15,110,100],l1:[176,122,14],line:[215,224,221],bg:[243,246,245]};
   const need=h=>{if(y+h>P.H-M-14){P.add();y=M}};
-  const plain=t=>String(t).replace(/\*\*(.+?)\*\*/g,"$1").replace(/==(.+?)==/g,"$1").replace(/(^|[\s(])_(.+?)_/g,"$1$2").replace(/`/g,"");
+  const plain=t=>String(t).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,"$1 ($2)").replace(/\*\*(.+?)\*\*/g,"$1").replace(/==(.+?)==/g,"$1").replace(/(^|[\s(])_(.+?)_/g,"$1$2").replace(/`/g,"");
   const para=(t,o={})=>{const s=o.size||9.6,lh=s*1.42,ind=o.indent||0;pdfWrap(plain(t),s,o.bold,CW-ind-(o.box?10:0)).forEach(l=>{need(lh);if(o.box){P.rect(M+ind,y+1,2.4,lh,C.l1)}P.text(M+ind+(o.box?8:0),y+s,l,{size:s,bold:o.bold,color:o.color});y+=lh});y+=o.after??2};
-  const body=txt=>{String(txt).replace(/\r/g,"").split("\n").forEach(l=>{if(!l.trim()){y+=3;return}let m;
+  const body=txt=>{let fence=null;String(txt).replace(/\r/g,"").split("\n").forEach(l=>{
+    if(/^\s*```/.test(l)){fence=fence===null?l.trim().slice(3).trim().toLowerCase():null;if(fence==="fluxo"){y+=2;para("Fluxograma:",{size:9,bold:true,color:C.acc,after:1})}return}
+    if(fence!==null){if(!l.trim())return;if(fence==="fluxo"){const ind=/^\s{2,}/.test(l)?26:10;para((/^\s*\?/.test(l)?"? ":ind>10?"":"-> ")+l.trim().replace(/^\?\s*/,""),{indent:ind,size:9.2,bold:/^\s*\?/.test(l)})}else para(l,{size:8.6,indent:8});return}
+    if(!l.trim()){y+=3;return}let m;
     if(m=l.match(/^(#{1,3})\s+(.*)/)){need(26);y+=4;para(m[2],{size:m[1].length===1?11.5:10.5,bold:true,color:C.acc,after:1});return}
     if(/^\s*\|.*\|\s*$/.test(l)){if(/^\s*\|?\s*:?-{2,}/.test(l))return;para(l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()).join("  ·  "),{size:8.8,indent:6});return}
     if(/^\s*>/.test(l)){para(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
@@ -4575,6 +4600,89 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
 /* anotações livres ligadas a um tema (aparecem dentro dele) */
 function freeLinkedEl(k){const L=freeN.filter(f=>f.ks.includes(k));if(!L.length)return null;const w=el(`<div class="grp frlinked"><span class="glabel">Do caderno livre · ${L.length}</span></div>`);
   L.forEach(f=>{const d=el(`<details class="plain"><summary></summary><div class="mdview"></div></details>`);d.querySelector("summary").textContent=f.t||"Sem título";d.querySelector(".mdview").innerHTML=mdC(f.b||"");w.appendChild(d)});return w}
+/* ---------- Fluxograma (bloco ```fluxo) e leitura de imagem pelo Claude ---------- */
+/* sintaxe: uma etapa por linha; "? pergunta" é decisão; linhas recuadas "Rótulo: texto" são os caminhos (use → para encadear) */
+function flowHTML(lines){const L=lines.map(l=>l.replace(/\t/g,"  ")).filter(l=>l.trim());let out=`<div class="flow">`,i=0,first=true;
+  const box=(t,cls)=>`<div class="fl-box${cls?" "+cls:""}">${inl(t)}</div>`;
+  while(i<L.length){const l=L[i];if(/^\s{2,}/.test(l)){i++;continue}
+    if(!first)out+=`<div class="fl-arrow" aria-hidden="true"></div>`;first=false;
+    if(/^\s*\?/.test(l)){out+=box(l.replace(/^\s*\?\s*/,"")+(/\?\s*$/.test(l)?"":"?"),"fl-q");i++;const br=[];
+      while(i<L.length&&/^\s{2,}/.test(L[i])){const m=L[i].trim().replace(/^[-*]\s*/,"").match(/^([^:]{1,24}):\s*(.*)$/);br.push(m?{lab:m[1],steps:m[2].split(/\s*(?:→|->)\s*/).filter(Boolean)}:{lab:"",steps:L[i].trim().split(/\s*(?:→|->)\s*/)});i++}
+      if(br.length)out+=`<div class="fl-branches">${br.map(b=>`<div class="fl-branch">${b.lab?`<span class="fl-lab">${inl(b.lab)}</span>`:""}${b.steps.map((s,j)=>(j?`<div class="fl-arrow" aria-hidden="true"></div>`:`<div class="fl-arrow sm" aria-hidden="true"></div>`)+box(s)).join("")}</div>`).join("")}</div>`;continue}
+    out+=box(l.trim().replace(/^[-*]\s*/,""));i++}
+  return out+`</div>`}
+/* ----- ler imagem ----- */
+let imgR=null;// {from:k|null,dest:"tema"|"livre",k,kind,blob,url,status,text,msg,ctl,title,q}
+const IMG_KIND={slide:"Slide ou foto de livro",mao:"Anotação à mão",esquema:"Esquema ou algoritmo",clinica:"Imagem clínica (ECG, raio X, lâmina, pele)"};
+function imgPrompt(kind,it){return `Você é um professor de medicina ajudando um estudante que se prepara para a prova de residência no Brasil. Analise a imagem anexada (tipo informado: ${IMG_KIND[kind]})${it?` sobre o tema "${it.t}" (${areaLabel(it)})`:""} e escreva uma anotação de estudo em Markdown, em português do Brasil, com estas seções:
+
+## O que a imagem mostra
+Transcreva e organize o conteúdo essencial (tópicos curtos; tabelas viram tabela em Markdown com | ). Se algo estiver ilegível, escreva [ilegível]. Não invente o que não está na imagem.
+
+## Explicação
+Explique de forma didática o que é importante para a prova: conceitos, critérios, condutas e o porquê.${kind==="clinica"?" Descreva os achados visíveis, as hipóteses mais prováveis e o que confirmaria cada uma. Deixe claro que é material de estudo, não laudo.":""}
+
+## Fluxograma
+Um fluxograma do raciocínio ou da conduta, num bloco de código com a palavra fluxo, exatamente neste formato:
+\`\`\`fluxo
+Primeira etapa
+Segunda etapa
+? Pergunta de decisão
+  Sim: conduta → próxima etapa
+  Não: outra conduta
+Etapa final
+\`\`\`
+(uma etapa por linha; linhas começando com ? são decisões; os caminhos ficam recuados com dois espaços e começam com o rótulo e dois-pontos; use → para encadear etapas dentro de um caminho; no máximo 10 linhas)
+
+## Pegadinhas
+De 1 a 3 linhas começando com "> ", com o que costuma cair ou confundir.
+
+Use **negrito** só para termos-chave. Seja objetivo.`}
+async function imgShrink(file){// reduz para no máximo 1600 px (JPEG), para enviar mais leve
+  try{const bmp=await createImageBitmap(file),sc=Math.min(1,1600/Math.max(bmp.width,bmp.height)),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*sc);cv.height=Math.round(bmp.height*sc);
+    cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);return await new Promise(r=>cv.toBlob(b=>r(b||file),"image/jpeg",0.85))}catch(e){return file}}
+async function imgRun(){const R=imgR;if(!R||!R.blob||!sampleFn)return;R.status="loading";R.text="";R.msg="";R.ctl=new AbortController();render();
+  try{const lim=sampleFn.limits?await sampleFn.limits():{images:false};const it=R.dest==="tema"&&R.k?BYKEY[R.k]:null;
+    const r=await sampleFn(imgPrompt(R.kind,it),{images:[R.blob],signal:R.ctl.signal,cache:false,modelTier:"default",onText:({text})=>{if(imgR===R){R.text=text;const v=$("#imgOut");if(v)v.innerHTML=md(text)}}});
+    if(imgR!==R)return;R.text=(r&&r.text)||R.text;R.status=R.text.trim()?"done":"error";if(!R.text.trim())R.msg="O Claude não devolveu texto. Tente de novo.";if(!lim.images&&!window.__site)R.msg=""}
+  catch(e){if(imgR!==R)return;const code=e&&e.code;if(code==="cancelled"){R.status="ready";render();return}R.status="error";
+    R.msg=code==="not_granted"?"Você não permitiu o uso do Claude por este app.":GEN_OFF.includes(code)?"A leitura de imagem não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível ler a imagem agora. Tente de novo.")}
+  render()}
+function imgSave(){const R=imgR;if(!R||!R.text.trim())return;const stamp=`\n\n_Gerado pelo Claude a partir de uma imagem em ${br(today())}/${today().slice(0,4)}. Confira com a fonte._`;
+  if(R.dest==="tema"){if(!R.k)return;const cur=(notes[R.k]||"").replace(/\s+$/,"");replaceNote(R.k,(cur?cur+"\n\n---\n\n":"")+R.text.trim()+stamp);const k=R.k;imgR=null;noteMode[k]="ler";detTab[k]="notas";openTopic(k);return}
+  const x=frClean({id:"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:R.title.trim()||"Imagem lida pelo Claude",b:R.text.trim()+stamp,tags:["imagem"],ks:R.k?[R.k]:[],at:new Date().toISOString()});
+  freeN.push(x);frPut(x);imgR=null;nSeg="todas";try{localStorage.setItem("resid-nseg","todas")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const c=document.getElementById("fr-"+x.id);if(c)c.scrollIntoView({behavior:"smooth",block:"center"})},80)}
+function imgStart(k){imgR={from:k||null,dest:k?"tema":"livre",k:k||null,kind:"slide",blob:null,url:"",status:"pick",text:"",msg:"",title:"",q:""};render();setTimeout(()=>{const p=$("#imgPanel");if(p)p.scrollIntoView({behavior:"smooth",block:"center"})},60)}
+function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div class="dhead"><b>Ler imagem com o Claude</b><button class="link" type="button">Fechar</button></div></div>`);
+  w.querySelector(".dhead .link").onclick=()=>{if(R.ctl)R.ctl.abort();if(R.url)URL.revokeObjectURL(R.url);imgR=null;render()};
+  if(sampleOff){w.appendChild(el(`<p class="err">O Claude não está disponível nesta visualização.</p>`));return w}
+  // 1. imagem
+  const pick=el(`<label class="btn imgpick"><input type="file" accept="image/*" hidden><span></span></label>`);pick.querySelector("span").textContent=R.blob?"Trocar imagem":"Escolher foto ou tirar foto";
+  pick.querySelector("input").onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(R.url)URL.revokeObjectURL(R.url);R.blob=await imgShrink(f);R.url=URL.createObjectURL(R.blob);R.status="ready";R.text="";render()};
+  const row=el(`<div class="imgrow"></div>`);row.appendChild(pick);if(R.url){const im=el(`<img class="imgprev" alt="Imagem escolhida">`);im.src=R.url;row.appendChild(im)}w.appendChild(row);
+  w.appendChild(el(`<p class="how">A imagem não fica salva: só o texto que o Claude escrever, depois que você conferir. Para guardar a foto, deixe um link do Drive ou do Google Fotos na anotação.</p>`));
+  // 2. tipo e destino
+  const kd=el(`<div class="chips" role="group" aria-label="Tipo de imagem"></div>`);Object.entries(IMG_KIND).forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${R.kind===v}"></button>`);b.textContent=l;b.onclick=()=>{R.kind=v;render()};kd.appendChild(b)});
+  w.append(el(`<span class="glabel">Tipo</span>`),kd);
+  const ds=el(`<div class="seg" role="group" aria-label="Onde salvar"></div>`);[["tema","Na anotação de um tema"],["livre","No caderno livre"]].forEach(([v,l])=>{const b=el(`<button type="button" aria-pressed="${R.dest===v}"></button>`);b.textContent=l;b.onclick=()=>{R.dest=v;render()};ds.appendChild(b)});
+  w.append(el(`<span class="glabel">Salvar</span>`),ds);
+  if(R.dest==="tema"||R.dest==="livre"){const lab=R.dest==="tema"?"Tema":"Ligar a um tema (opcional)";
+    if(R.k&&BYKEY[R.k]){const c=el(`<p class="qrsel"><b></b> <button class="link" type="button">trocar</button></p>`);c.querySelector("b").textContent=BYKEY[R.k].t;c.querySelector("button").onclick=()=>{R.k=null;render()};w.append(el(`<span class="glabel">${lab}</span>`),c)}
+    else{const s=el(`<label class="ffield"><span class="glabel"></span><input class="etext" id="imgQ" type="search" placeholder="Buscar tema" autocomplete="off"></label>`);s.querySelector("span").textContent=lab;const i=s.querySelector("input");i.value=R.q;
+      i.oninput=debounced(()=>{if(imgR!==R)return;R.q=i.value;render()});w.appendChild(s);const n=norm(R.q.trim());
+      if(n.length>=2){const ul=el(`<ul class="qrres"></ul>`);[...ALL,...FAC_ITEMS].filter(x=>norm(x.t+" "+(x.sp||"")).includes(n)).slice(0,6).forEach(x=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||""}`;li.querySelector("button").onclick=()=>{R.k=x.key;R.q="";render()};ul.appendChild(li)});w.appendChild(ul)}}
+    if(R.dest==="livre"){const t=el(`<label class="ffield"><span class="glabel">Título</span><input class="etext" id="imgT" maxlength="120" placeholder="Ex.: Slide da aula de IAM"></label>`);const ti=t.querySelector("input");ti.value=R.title;ti.oninput=()=>R.title=ti.value;w.appendChild(t)}}
+  if(R.kind==="clinica")w.appendChild(el(`<p class="pnote">Imagens clínicas: a leitura serve para estudar o raciocínio, não é laudo. O Claude pode errar achados; confira com a fonte e com o professor.</p>`));
+  // 3. ler
+  const go=el(`<button class="btn primary" type="button" id="imgGo"></button>`);go.textContent=R.status==="loading"?"Lendo a imagem…":R.text?"Ler de novo":"Ler com o Claude";go.disabled=!R.blob||R.status==="loading"||!sampleFn||(R.dest==="tema"&&!R.k);
+  if(R.dest==="tema"&&!R.k&&R.blob)go.title="Escolha o tema primeiro";go.onclick=imgRun;const gb=el(`<div class="btns"></div>`);gb.appendChild(go);
+  if(R.status==="loading"){const st=el(`<button class="btn" type="button">Parar</button>`);st.onclick=()=>R.ctl&&R.ctl.abort();gb.appendChild(st)}w.appendChild(gb);
+  if(window.__site&&R.blob&&R.status!=="done")w.appendChild(el(`<p class="how">No site, o Claude é usado por copiar e colar: na janela que abrir, copie o pedido, abra o Claude, <b>anexe esta mesma imagem</b> na conversa e cole o pedido. Depois cole a resposta de volta aqui.</p>`));
+  if(R.msg){const m=el(`<p class="err"></p>`);m.textContent=R.msg;w.appendChild(m)}
+  if(R.text){const pv=el(`<div class="aiprev"><div class="aihead"><span class="glabel">Prévia${R.status==="loading"?" · escrevendo…":""}</span></div><div class="mdview" id="imgOut"></div></div>`);pv.querySelector(".mdview").innerHTML=md(R.text);w.appendChild(pv);
+    if(R.status==="done"){const ed=el(`<details class="plain"><summary>Editar o texto antes de salvar</summary><textarea class="ntext" id="imgTxt"></textarea></details>`);const ta=ed.querySelector("textarea");ta.value=R.text;ta.oninput=()=>{R.text=ta.value;const v=$("#imgOut");if(v)v.innerHTML=md(R.text)};w.appendChild(ed);
+      const sv=el(`<button class="btn primary" type="button" id="imgSave"></button>`);sv.textContent=R.dest==="tema"?"Inserir na anotação do tema":"Salvar no caderno livre";sv.disabled=R.dest==="tema"&&!R.k;sv.onclick=imgSave;const b2=el(`<div class="btns"></div>`);b2.appendChild(sv);w.appendChild(b2)}}
+  return w}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -4656,7 +4764,10 @@ const HELP=[
 - **Erros junto:** cada anotação mostra, abaixo, os erros do caderno daquele tema (o que errou e o correto).
 - **Baixar PDF:** gera um PDF com as anotações que estão na tela (seguindo os filtros), por especialidade, com títulos, listas, tabelas e pegadinhas; sem filtros, inclui o caderno livre.
 - **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
-- Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa.
+- Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
+- **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
+- **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
+- **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Anotações): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
 - Modelos: **Modelo de resumo**, **Seções dos subtópicos**, **Meus erros**.
 - **Tela cheia** para escrever; **Ler** mostra formatado.
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.

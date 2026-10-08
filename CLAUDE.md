@@ -91,6 +91,9 @@ consultado quando há dúvida. Responda em português.
   Filtros extras `nFlags` (week|peg|tab|cards, `nFlagOk`) e ordem `nSort`; erros junto `noteErrsEl(k)`; PDF `notesPDF(keys,free)`;
   caderno livre `freeN` = [{id,t,b,tags,ks,at}] (`resid-free-v1` + Firestore `progress/free/{id}`, `freeCard`/`freeEditor`,
   `freeLinkedEl(k)` dentro do tema; backup `data.free`).
+  Markdown: links `[t](url)` e URLs soltas em `inl`; bloco ```fluxo → `flowHTML` (etapas, "? decisão", caminhos recuados "Rótulo: a → b").
+  Ler imagem: `imgR`/`imgPanel`/`imgRun` (`sample(prompt,{images:[blob]})`, imagem reduzida em `imgShrink`; não é salva) → `imgSave`
+  na anotação do tema ou no caderno livre. O artefato declara `sample:{images:true}`; no site, `bridge.js` pede para anexar a imagem.
 - Foco (view `foco`, `renderFoco`): pomodoro/cronômetro. Sessões em `foSess` = [{id,d,s,sec,m:"p"|"c"|"x",ref:"T:<tema>"|"D:<disc>"|"",lab}],
   localStorage `resid-focus-v1` e Firestore `progress/focus/{id}` (`focStore`, mescla por id como os erros). Relógio em andamento
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.
