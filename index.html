@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=47b5c571">
+<link rel="stylesheet" href="site.css?v=1a0cf9fb">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=47b5c571"></script>
-<script src="bridge.js?v=47b5c571"></script>
+<script src="config.js?v=1a0cf9fb"></script>
+<script src="bridge.js?v=1a0cf9fb"></script>
 </head>
 <body>
 <script>
@@ -303,6 +303,13 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .stat span{font-size:.8rem;color:var(--muted)}
 .save{font-size:.82rem;color:var(--muted)}
 .controls{display:flex;flex-direction:column;gap:10px}
+.qfrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
+.qfsel{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.qfsel select{width:100%;min-width:0;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;font-weight:400;letter-spacing:0}
+.qtg .link{margin-left:auto}
+.qchtog{margin-bottom:10px;align-self:flex-start}
+.qmore{margin-top:6px}
+html[data-layout="phone"] .qfrow{grid-template-columns:1fr 1fr}
 .search{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
 input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -900,11 +907,7 @@ html[data-layout="phone"] .hico{width:20px;height:20px}
       <div class="kpis" id="qkpis"></div>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
-    <section class="controls">
-      <div class="chips" id="qArea" role="group" aria-label="Filtrar por área"></div>
-      <div class="sortrow"><label for="qSort">Ordenar</label><select id="qSort"><option value="num">Por especialidade</option><option value="low">Menor acerto primeiro</option><option value="most">Mais questões primeiro</option></select>
-        <button class="chip" id="qWeak" type="button" aria-pressed="false">Pontos fracos</button></div>
-    </section>
+    <section class="controls qfilters" id="qFilters" aria-label="Filtros das questões"></section>
     <ol class="elist qlistT" id="qlistT"></ol>
   </div>
 
@@ -1337,7 +1340,10 @@ function fromNum(x){return new Date(x*864e5).toISOString().slice(0,10)}
 function br(s){const [y,m,d]=s.split("-");return d+"/"+m}
 const get=k=>state[k]||{l:0};
 let synced=false;const touchedEarly=new Set();
-function upd(k,fn){const s={...get(k)};fn(s);state[k]=s;if(!synced)touchedEarly.add(k)}
+function upd(k,fn){const s={...get(k)};fn(s);
+  if(s.last===today()&&!(s.ed||[]).includes(s.last))s.ed=[...(s.ed||[]),s.last].slice(-200);// dias de estudo/revisão do tema
+  state[k]=s;if(!synced)touchedEarly.add(k)}
+let estChanged=false;
 const wOf=it=>get(it.key).w||it.w0;
 function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="Incidência ${INC[w].toLowerCase()}"><i></i><i></i><i></i>${withText?`<b>${INC[w]}</b>`:""}</span>`);e.setAttribute("aria-label","Incidência "+INC[w].toLowerCase());return e}
 function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
@@ -1346,8 +1352,8 @@ function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
 function addQ(x,t,c){x.qt=(x.qt||0)+t;x.qc=(x.qc||0)+c;const d=today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
   const ks=Object.keys(m).sort();if(ks.length>400)ks.slice(0,ks.length-400).forEach(k=>delete m[k]);x.qd=m}
-function qPeriod(keys,from){let q=0,c=0,und=0;keys.forEach(k=>{const s=get(k);if(!from){q+=s.qt||0;c+=s.qc||0;return}
-  let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und}}
+function qPeriod(keys,from){let q=0,c=0,und=0,est=0;keys.forEach(k=>{const s=get(k);if(s.qe&&(!from||s.qe.d>=from))est+=s.qe.q||0;if(!from){q+=s.qt||0;c+=s.qc||0;return}
+  let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und,est}}
 const isDue=s=>{const d=dueIn(s);return d!==null&&d<=0};
 const isWeak=s=>s.qt>=WEAK_MIN&&acc(s)<WEAK_PCT;
 const isNew=s=>!s.last&&!(s.l>0);
@@ -1356,6 +1362,9 @@ function dueLabel(d){return d<0?`atrasada ${-d} d`:d===0?"revisar hoje":d===1?"r
 function migrate(obj){const out={};for(const k in obj||{}){const v=obj[k];if(!BYKEY[k])continue;const s=typeof v==="number"?{l:v}:{...v};
     // subtópicos marcados na ordem antiga (sem sv=2) são convertidos para a nova ordem didática
     if(Array.isArray(s.sd)&&s.sv!==2){const P=SUB_PERM[k];if(P)s.sd=[...new Set(s.sd.map(i=>P[i]).filter(i=>Number.isInteger(i)))].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
+    // questões registradas antes de existir a data por tema (qd): estimadas na data do último estudo
+    if(s.qt>0&&s.last&&!s.qe){let dq=0,dc=0;for(const d in s.qd||{}){const v=s.qd[d];if(Array.isArray(v)){dq+=v[0]||0;dc+=v[1]||0}}
+      const uq=s.qt-dq;if(uq>0){const uc=Math.max(0,Math.min(uq,(s.qc||0)-dc)),m={...(s.qd||{})},v=m[s.last]||[0,0];m[s.last]=[v[0]+uq,v[1]+uc];s.qd=m;s.qe={d:s.last,q:uq};estChanged=true}}
     out[k]=s}return out}
 function renamePlanLabels(dp){if(!dp||!Array.isArray(dp.items))return dp;const rn=(k,t)=>(SUB_RENAME[k]&&SUB_RENAME[k][t])||t;
   dp.items.forEach(x=>{x.subs=[...new Set((x.subs||[]).map(t=>rn(x.k,t)))];if(x.chk)x.chk=x.chk.map(t=>rn(x.k,t));if(x.prev&&x.prev.subs)x.prev.subs=x.prev.subs.map(t=>rn(x.prev.k,t))});
@@ -1396,7 +1405,7 @@ function subCount(it){const L=subList(it);return [L.filter(x=>x.done).length,L.l
 function toggleSub(it,x){let undo=false;const first=!x.done&&!get(it.key).last;const fb=!x.done&&!first&&facBadge(it.key);const bump=fb&&daysTo(fb.p.date)<=FAC_WIN&&get(it.key).last<today();
   upd(it.key,s=>{if(s.pre&&s.pre.d!==today())delete s.pre;if(first){s.pre={d:today(),l:s.l||0};s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}if(bump)s.last=today();if(x.i!==undefined){const sd=new Set(s.sd||[]);sd.has(x.i)?sd.delete(x.i):sd.add(x.i);s.sd=[...sd].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
   else{s.cs=(s.cs||[]).map((c,j)=>j===x.j?{...c,d:!c.d}:c)}
-  if(x.done&&s.pre&&s.pre.d===today()&&!(s.sd||[]).length&&!(s.cs||[]).some(c=>c.d)){delete s.last;delete s.step;s.l=s.pre.l||0;delete s.pre;undo=true}});
+  if(x.done&&s.pre&&s.pre.d===today()&&!(s.sd||[]).length&&!(s.cs||[]).some(c=>c.d)){delete s.last;delete s.step;s.l=s.pre.l||0;delete s.pre;if(s.ed){s.ed=s.ed.filter(d=>d!==today());if(!s.ed.length)delete s.ed}undo=true}});
   if(undo){const h=hist[today()];if(h&&h.e>0){h.e--;try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}}
   if(first)logAct("e");if(!x.done)adoptTopic(it.key,x.t);commit()}
 
@@ -1965,43 +1974,90 @@ function renderDash(){
 }
 
 /* aba Questões */
-let qArea="all", qSort="num", qWeak=false;
+let qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
 function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
+/* questões de um tema no período escolhido na aba Questões */
+const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
+function qOf(k,from){if(!from){const s=get(k);return [s.qc||0,s.qt||0]}const r=qPeriod([k],from);return [r.c,r.q]}
+function qUniverse(){// temas da residência + conteúdos da faculdade, com os filtros (menos período e acerto)
+  const n=norm(qQuery.trim()),errK=new Set(errors.map(e=>e.k));
+  let pool=[...ALL,...FAC_ITEMS];
+  if(qArea!=="all")pool=pool.filter(i=>i.area.code===qArea);
+  if(qSpec!=="all")pool=pool.filter(i=>i.sp===qSpec);
+  if(qDisc!=="all"){const d=discOf(qDisc),ks=new Set(d?topicKeysOf(discRefs(d)):[]);pool=pool.filter(i=>ks.has(i.key))}
+  if(n)pool=pool.filter(i=>norm(i.t+" "+(i.sp||"")+" "+i.area.name+" "+subList(i).map(x=>x.t).join(" ")).includes(n));
+  if(qInc)pool=pool.filter(i=>!i.own&&wOf(i)===3);
+  if(qErrF)pool=pool.filter(i=>errK.has(i.key));
+  if(qDueF)pool=pool.filter(i=>isDue(get(i.key)));
+  return pool}
+const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
+function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
+  const top=el(`<div class="qftop"><input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto (ex.: sepse)" aria-label="Buscar tema ou assunto"></div>`),qi=top.querySelector("input");qi.value=qQuery;
+  qi.oninput=debounced(()=>{qQuery=qi.value;render()});box.appendChild(top);
+  // área
+  const ac=el(`<div class="chips" id="qArea" role="group" aria-label="Filtrar por área"></div>`);
+  const withQ=it=>get(it.key).qt;
+  [["all","Todas"],...AREAS.map(a=>[a.code,a.code]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","FAC"]]:[])].forEach(([v,lab])=>{const n=[...ALL,...FAC_ITEMS].filter(i=>(v==="all"||i.area.code===v)&&withQ(i)).length;
+    const b=el(`<button class="chip" type="button" aria-pressed="${qArea===v}"></button>`);b.textContent=`${lab} · ${n}`;b.onclick=()=>{qArea=v;qSpec="all";render()};ac.appendChild(b)});
+  box.appendChild(ac);
+  // especialidade
+  if(qArea!=="all"){const A=AREAS.find(a=>a.code===qArea)||FAC_AREA,names=[...new Set([...(A.specs||[]).map(s=>s.name),...FAC_ITEMS.filter(i=>i.area===A).map(i=>i.sp)])];
+    const sc=el(`<div class="chips spchips" role="group" aria-label="Filtrar por especialidade"></div>`);
+    [["all","Todas as especialidades"],...names.map(n=>[n,n])].forEach(([v,lab])=>{const b=el(`<button class="chip" type="button" aria-pressed="${qSpec===v}"></button>`);b.textContent=lab;b.onclick=()=>{qSpec=v;render()};sc.appendChild(b)});box.appendChild(sc)}
+  // período, acerto, disciplina e ordem
+  const row=el(`<div class="qfrow"></div>`);
+  const sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const s=l.querySelector("select");s.id=id;
+    opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=val;s.onchange=()=>on(s.value);row.appendChild(l)};
+  sel("qPer","Período",[["all","Tudo"],["7","7 dias"],["14","14 dias"],["21","21 dias"],["30","30 dias"],["60","60 dias"],["90","90 dias"]],qPer,v=>{qPer=v;render()});
+  sel("qAccSel","Acerto",[["all","Qualquer"],["bad","Fraco (<60%)"],["mid","Regular (60–79%)"],["good","Bom (80%+)"]],qAcc,v=>{qAcc=v;qWeak=v==="bad";render()});
+  const ds=fac.discs.filter(d=>{const s=semOf(d.semId);return s&&!s.archived});
+  if(ds.length)sel("qDiscSel","Disciplina",[["all","Todas"],...ds.map(d=>[d.id,d.name])],ds.some(d=>d.id===qDisc)?qDisc:"all",v=>{qDisc=v;render()});
+  sel("qSort","Ordenar",[["num","Por especialidade"],["low","Menor acerto primeiro"],["most","Mais questões primeiro"]],qSort,v=>{qSort=v;render()});
+  box.appendChild(row);
+  // atalhos
+  const tg=el(`<div class="chips qtg" role="group" aria-label="Mais filtros"></div>`);
+  [["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"}],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc}],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF}],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF}]].forEach(([id,lab,on,fn])=>{
+    const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=id;b.textContent=lab;b.onclick=()=>{fn();render()};tg.appendChild(b)});
+  const any=qArea!=="all"||qSpec!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF;
+  if(any){const cl=el(`<button class="link" type="button" id="qClear">Limpar filtros</button>`);cl.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;render()};tg.appendChild(cl)}
+  box.appendChild(tg)}
+function renderQuest(){
+  renderQFilters();
+  const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
+  const withQ=st.filter(x=>x.t),vis=withQ.filter(x=>qAcc==="all"||accBand(x.c,x.t)===qAcc);
+  let C=0,T=0;vis.forEach(x=>{C+=x.c;T+=x.t});const p=pct(C,T),[bk,bl]=band(p),weakN=withQ.filter(x=>x.t>=WEAK_MIN&&x.c/x.t<WEAK_PCT).length;
+  const perL=from?`nos últimos ${qPer} dias`:"desde o início";
+  $("#qkpis").innerHTML=`
+    <div class="kpi"><span class="kl">Questões feitas</span><b>${T.toLocaleString("pt-BR")}</b><span class="ks">${C.toLocaleString("pt-BR")} acertos · ${(T-C).toLocaleString("pt-BR")} erros ${perL}</span></div>
+    <div class="kpi"><span class="kl">Acerto</span><b>${T?p+"%":"–"}</b><span class="ks">${T?`<span class="st ${bk}">${bl}</span>`:"sem questões neste filtro"}</span></div>
+    <div class="kpi"><span class="kl">Temas praticados</span><b>${vis.length}</b><span class="ks">de ${U.length} no filtro</span></div>
+    <div class="kpi${weakN?" alert":""}"><span class="kl">Pontos fracos</span><b>${weakN}</b><span class="ks">abaixo de 60% (5+ questões)</span></div>`;
+  // gráfico: especialidades (padrão) ou áreas
+  const groups={};vis.forEach(x=>{const key=qChartBy==="area"?x.it.area.code:x.it.area.code+"|"+x.it.sp;const g=groups[key]||(groups[key]={lab:qChartBy==="area"?x.it.area.name:`${x.it.sp} · ${x.it.area.code}`,c:0,t:0});g.c+=x.c;g.t+=x.t});
+  const rows=Object.values(groups).sort((a,b)=>a.c/a.t-b.c/b.t||b.t-a.t).map(g=>[g.lab,g.c,g.t]);
+  $("#qChartTitle").textContent=qChartBy==="area"?"Acerto por área":"Acerto por especialidade (menor acerto primeiro)";
+  const tog=`<div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div>`;
+  $("#qChart").innerHTML=tog+(T?hbarRows(rows.slice(0,qMore?rows.length:12))+(rows.length>12?`<button class="link qmore" type="button">${qMore?"Mostrar menos":`Mostrar todas as ${rows.length}`}</button>`:"")+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span></div>`:
+    `<p class="cempty">${[...ALL,...FAC_ITEMS].some(i=>get(i.key).qt)?"Nenhuma questão com esses filtros.":"Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema."}</p>`);
+  $("#qChart").querySelectorAll(".qchtog button").forEach(b=>b.onclick=()=>{qChartBy=b.dataset.by;render()});
+  const mb=$("#qChart").querySelector(".qmore");if(mb)mb.onclick=()=>{qMore=!qMore;render()};
+  // lista por tema
+  const list=$("#qlistT");list.innerHTML="";
+  if(!withQ.length&&![...ALL,...FAC_ITEMS].some(i=>get(i.key).qt)){list.appendChild(el(`<li class="tips">Quando você fizer questões, cada tema aparece aqui com o número de questões e a porcentagem de acerto, agrupado por especialidade.</li>`));return}
+  if(!vis.length){list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema com esses filtros.</li>`));return}
+  const S=new Map(vis.map(x=>[x.it.key,x]));
+  const row=it=>{const x=S.get(it.key),pp=pct(x.c,x.t),[k,l]=band(pp);
+    const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+" · "+String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
+    li.querySelector(".qname").textContent=it.t;li.querySelector(".qt").onclick=()=>openTopic(it.key);
+    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);return li};
+  const items=vis.map(x=>x.it);
+  if(qSort==="num"){const ai=it=>{const i=AREAS.indexOf(it.area);return i<0?99:i},si=it=>{const i=(it.area.specs||[]).findIndex(z=>z.name===it.sp);return i<0?99:i};items.sort((a,b)=>ai(a)-ai(b)||si(a)-si(b)||(a.sp||"").localeCompare(b.sp||"","pt")||(a.own-b.own)||a.num-b.num);appendGrouped(list,items,x=>x,row,["tema","temas"])}
+  else{items.sort(qSort==="low"?(a,b)=>S.get(a.key).c/S.get(a.key).t-S.get(b.key).c/S.get(b.key).t||S.get(b.key).t-S.get(a.key).t:(a,b)=>S.get(b.key).t-S.get(a.key).t);items.forEach(it=>list.appendChild(row(it)))}
+}
+
 function hbarRows(rows){// rows: [label, c, t, onclick?]
   return rows.map(([lab,c,t])=>{const p=pct(c,t),[bk,bl]=band(p);
     return `<div class="vrow"><div class="vtop"><span class="vl">${esc(lab)}</span><span class="hv">${t?p+"%":"–"}</span><span class="hn">${t?`${c}/${t}`:"sem questões"}</span></div><div class="hbar track1">${t?`<i class="pbar ${bk}" style="width:${Math.max(p,1)}%" data-tip="${esc(lab)}: ${c} de ${t} (${p}%) · ${bl}"></i>`:""}<span class="ref" style="left:60%" aria-hidden="true"></span></div></div>`}).join("")}
-function renderQuest(){
-  const [C,T]=aggr(ALL),withQ=ALL.filter(i=>get(i.key).qt),weakN=ALL.filter(i=>isWeak(get(i.key))).length;
-  const p=pct(C,T),[bk,bl]=band(p);
-  $("#qkpis").innerHTML=`
-    <div class="kpi"><span class="kl">Questões feitas</span><b>${T.toLocaleString("pt-BR")}</b><span class="ks">${C.toLocaleString("pt-BR")} acertos · ${(T-C).toLocaleString("pt-BR")} erros</span></div>
-    <div class="kpi"><span class="kl">Acerto geral</span><b>${T?p+"%":"–"}</b><span class="ks">${T?`<span class="st ${bk}">${bl}</span>`:"sem questões ainda"}</span></div>
-    <div class="kpi"><span class="kl">Temas praticados</span><b>${withQ.length}</b><span class="ks">de ${TOTAL} temas</span></div>
-    <div class="kpi${weakN?" alert":""}"><span class="kl">Pontos fracos</span><b>${weakN}</b><span class="ks">abaixo de 60% (5+ questões)</span></div>`;
-  // gráfico: áreas ou especialidades da área escolhida
-  const A=qArea==="all"?null:AREAS.find(a=>a.code===qArea);
-  $("#qChartTitle").textContent=A?`Acerto por especialidade · ${A.name}`:"Acerto por área";
-  const rows=A?A.specs.map(s=>[s.name,...aggr(s.items)]):AREAS.map(a=>[a.name,...aggr(a.items)]);
-  $("#qChart").innerHTML=T?hbarRows(rows)+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span></div>`:
-    `<p class="cempty">Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema, na aba Residência.</p>`;
-  // chips
-  const ac=$("#qArea");ac.innerHTML="";
-  [["all","Todas as áreas"],...AREAS.map(a=>[a.code,a.code])].forEach(([v,lab])=>{const n=(v==="all"?ALL:AREAS.find(a=>a.code===v).items).filter(i=>get(i.key).qt).length;
-    const b=el(`<button class="chip" aria-pressed="${qArea===v}">${lab} · ${n}</button>`);b.onclick=()=>{qArea=v;render()};ac.appendChild(b)});
-  $("#qWeak").setAttribute("aria-pressed",qWeak);$("#qSort").value=qSort;
-  // lista por tema
-  let vis=(A?A.items:ALL).filter(i=>get(i.key).qt&&(!qWeak||isWeak(get(i.key))));
-  const list=$("#qlistT");list.innerHTML="";
-  if(!withQ.length){list.appendChild(el(`<li class="tips">Quando você fizer questões, cada tema aparece aqui com o número de questões e a porcentagem de acerto, agrupado por especialidade.</li>`));return}
-  if(!vis.length){list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema com esses filtros.</li>`));return}
-  const row=it=>{const s=get(it.key),pp=pct(s.qc,s.qt),[k,l]=band(pp);
-    const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.area.code} · ${String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${s.qc}/${s.qt}</span><span class="st ${k}">${l}</span></div></li>`);
-    li.querySelector(".qname").textContent=it.t;li.querySelector(".qt").onclick=()=>openTopic(it.key);
-    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${s.qc} acertos em ${s.qt} questões (${pp}%)`);return li};
-  if(qSort==="num"){vis.sort((a,b)=>a.num-b.num);appendGrouped(list,vis,x=>x,row,["tema","temas"])}
-  else{vis.sort(qSort==="low"?(a,b)=>acc(get(a.key))-acc(get(b.key))||get(b.key).qt-get(a.key).qt:(a,b)=>get(b.key).qt-get(a.key).qt);vis.forEach(it=>list.appendChild(row(it)))}
-}
-
 /* plano do dia: fica fixo até virar o dia (ou até "Refazer plano") */
 const LSDP="resid-plano-v1";let SUBS_PER_DAY=3;
 let dayPlan=null, planEdit=null;
@@ -2029,7 +2085,7 @@ function itemDone(p){const it=BYKEY[p.k],L=subList(it),s=get(p.k);
   return !!(p.subs.length&&p.subs.every(t=>{const x=L.find(y=>y.t===t);return !x||x.done}));}
 function weakDone(p){if(p.q0===undefined)p.q0=get(p.k).qt||0;return Math.max(0,(get(p.k).qt||0)-p.q0)}
 /* "Não estudei": tira das revisões e volta para não iniciado (mantém questões, anotações e erros) */
-function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
+function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete x.ed;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
   if(dayPlan){if(dayPlan.rchk)delete dayPlan.rchk[k];if(Array.isArray(dayPlan.revd))dayPlan.revd=dayPlan.revd.filter(y=>y!==k);savePlan()}revArm=null;commit()}
 let revArm=null;
 function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
@@ -3109,7 +3165,7 @@ const specId=it=>"sp:"+it.area.code+"|"+it.sp;
 function matCatalog(){const out=[];AREAS.forEach(a=>{const m={};[...a.items,...FAC_ITEMS.filter(i=>i.area===a)].forEach(i=>{const id=specId(i);(m[id]=m[id]||{id,label:i.sp,keys:[]}).keys.push(i.key)});out.push({g:a.name,code:a.code,items:Object.values(m)})});
   const act=fac.sems.filter(s=>!s.archived),ds=[];act.forEach(s=>semDiscs(s.id).forEach(d=>ds.push({id:"d:"+d.id,label:d.name+(act.length>1?" · "+s.name:""),keys:topicKeysOf(discRefs(d))})));
   out.push({g:"Faculdade",code:"FAC",items:ds});return out}
-function matSel(o){const sel=[];matCatalog().forEach(g=>g.items.forEach(m=>{if(o.mats.has(m.id)&&((o.res&&m.id.startsWith("sp:"))||(o.fac&&m.id.startsWith("d:"))))sel.push({...m,g:g.g,code:g.code})}));return sel}
+function matSel(o){const sel=[],ms=o.mats||new Set();matCatalog().forEach(g=>g.items.forEach(m=>{if(ms.has(m.id)&&((o.res&&m.id.startsWith("sp:"))||(o.fac&&m.id.startsWith("d:"))))sel.push({...m,g:g.g,code:g.code})}));return sel}
 const ETORD={conhecimento:0,confusao:1,interpretacao:2};
 function reportData(o){const t=dnum(today()),from=o.period==="all"?null:fromNum(t-(+o.period)+1),inP=d=>!from||d>=from,sel=matSel(o),mk=sel.length?new Set(sel.flatMap(m=>m.keys)):null;
   const S={e:0,r:0,q:0,c:0,act:0};Object.keys(hist).filter(inP).forEach(d=>{const h=hist[d]||{};S.e+=h.e||0;S.r+=h.r||0;S.q+=h.q||0;S.c+=h.c||0;if(h.e||h.r||h.q)S.act++});
@@ -3120,7 +3176,7 @@ function reportData(o){const t=dnum(today()),from=o.period==="all"?null:fromNum(
     .sort((a,b)=>(a.acc===null)-(b.acc===null)||(a.acc??0)-(b.acc??0)||b.list.length-a.list.length);
   const tc={conhecimento:0,interpretacao:0,confusao:0};errs.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
   const qs=keys=>{let q=0,c=0;keys.forEach(k=>{const s=get(k);q+=s.qt||0;c+=s.qc||0});return {q,c}};
-  let F=null;if(mk){const keys=[...mk].filter(k=>BYKEY[k]),c=lvlCounts(keys),q=qPeriod(keys,from);F={n:keys.length,c,seen:keys.length-c[0],q:q.q,qc:q.c,und:q.und,stP:keys.filter(k=>{const l=get(k).last;return l&&inP(l)}).length,due:keys.filter(k=>isDue(get(k))).length}}
+  let F=null;if(mk){const keys=[...mk].filter(k=>BYKEY[k]),c=lvlCounts(keys),q=qPeriod(keys,from);F={n:keys.length,c,seen:keys.length-c[0],q:q.q,qc:q.c,und:q.und,est:q.est,stP:keys.filter(k=>{const st=get(k);return (st.ed||[]).some(inP)||(st.last&&inP(st.last))}).length,due:keys.filter(k=>isDue(get(k))).length}}
   return {from,S,first:Object.keys(hist).sort()[0],errs,topics,tc,qRes:qs(ALL.map(i=>i.key)),qFac:qs([...facKeys]),sems,sel,mk,F}}
 function topicTips(it,list,s){const tips=[],n=t=>list.filter(x=>x.t===t).length,subs=[...new Set(list.map(x=>x.s).filter(Boolean))].slice(0,3),sl=subs.join(", ");
   if(n("conhecimento"))tips.push(`Volte à teoria ${sl?"de "+sl:"do tema"} antes de fazer novas questões. Estude pelos subtópicos e marque-os: eles entram nas revisões espaçadas.`);
@@ -3157,8 +3213,8 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
   if(ui.profile.goalDate){const dd=daysTo(ui.profile.goalDate);P.text(M,y+10,`Meta: ${ui.profile.goal||"prova de residência"}${dd>=0?` · faltam ${dd} dias`:""}`,{size:9,color:C.mut});y+=16}
   y+=6;
   h2(R.F?"Resumo das matérias escolhidas":"Resumo do período");
-  if(R.F){const F=R.F;kpis([["Temas vistos",`${F.seen}/${F.n}`,`${F.c[3]} dominado${F.c[3]===1?"":"s"}`],["Estudados no período",String(F.stP),"pela última data de estudo"],["Questões",String(F.q),F.q?`${pctS(F.qc,F.q)} de acerto${R.from?" no período":""}`:(R.from?"nenhuma no período":"nenhuma registrada")],["Erros no período",String(R.errs.length),F.due?`${F.due} revis${F.due===1?"ão pendente":"ões pendentes"}`:"no caderno de erros"]]);
-    para(`Questões, acerto e erros contam só o período e as matérias escolhidas. "Estudados no período" usa a última data de estudo de cada tema.${R.from&&F.und?` ${F.und} questões destas matérias foram registradas antes de o app guardar a data por matéria e só entram em "Tudo".`:""}`,{size:8,color:C.mut,after:4})}
+  if(R.F){const F=R.F;kpis([["Temas vistos",`${F.seen}/${F.n}`,`${F.c[3]} dominado${F.c[3]===1?"":"s"}`],["Estudados no período",String(F.stP),"temas estudados ou revisados"],["Questões",String(F.q),F.q?`${pctS(F.qc,F.q)} de acerto${R.from?" no período":""}`:(R.from?"nenhuma no período":"nenhuma registrada")],["Erros no período",String(R.errs.length),F.due?`${F.due} revis${F.due===1?"ão pendente":"ões pendentes"}`:"no caderno de erros"]]);
+    para(`Questões, acerto, estudos e erros contam só o período e as matérias escolhidas.${F.est?` ${F.est} questões foram registradas antes de 08/10/2026, quando o app ainda não guardava a data por tema: a data delas foi estimada pelo último estudo do tema.`:""}${R.from&&F.und?` ${F.und} questões antigas de temas nunca estudados não têm data e só entram em "Tudo".`:""}`,{size:8,color:C.mut,after:4})}
   else kpis([["Dias com estudo",String(R.S.act),`sequência atual: ${streak()} dia${streak()===1?"":"s"}`],["Temas estudados",String(R.S.e),"temas começados"],["Revisões",String(R.S.r),"revisões espaçadas feitas"],["Questões",String(R.S.q),R.S.q?`${pctS(R.S.c,R.S.q)} de acerto`:"nenhuma no período"]]);
   // residência
   const selSp=R.sel.filter(m=>m.id.startsWith("sp:")),selD=R.sel.filter(m=>m.id.startsWith("d:"));
@@ -3174,7 +3230,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
     const w=CW;table([{t:"Área",w:w*.37},{t:"Vistos",w:w*.10,al:"r"},{t:"Progresso",w:w*.21},{t:"Domin.",w:w*.10,al:"r"},{t:"Questões",w:w*.11,al:"r"},{t:"Acerto",w:w*.11,al:"r"}],
       AREAS.map(a=>{const k=counts(a.items),n=a.items.length,pq=qPeriod(a.items.map(i=>i.key),R.from),q=pq.q,cc=pq.c;
         return [a.name,`${k[1]+k[2]+k[3]}/${n}`,{bar:[[k[3]/n,C.l3],[k[2]/n,C.l2],[k[1]/n,C.l1]]},String(k[3]),String(q),pctS(cc,q)]}));
-    if(R.from){const u=qPeriod(ALL.map(i=>i.key),R.from).und;para(`Questões e acerto: só as respondidas no período.${u?` ${u} questões registradas antes de o app guardar a data por matéria só entram em "Tudo".`:""}`,{size:7.6,color:C.mut})}
+    if(R.from){const u=qPeriod(ALL.map(i=>i.key),R.from);para(`Questões e acerto: só as respondidas no período.${u.est?` Inclui ${u.est} com data estimada (registradas antes de 08/10/2026).`:""}${u.und?` ${u.und} antigas, de temas nunca estudados, só entram em "Tudo".`:""}`,{size:7.6,color:C.mut})}
     const due=ALL.filter(i=>isDue(get(i.key))).length;if(due)para(`${due} revis${due===1?"ão pendente":"ões pendentes"} da residência hoje.`,{color:C.due,bold:true})}
   // faculdade
   if(o.fac&&(!R.mk||selD.length)){h2("Faculdade");
@@ -3365,7 +3421,9 @@ const HELP=[
 ["Questões",`As questões são geradas pelo Claude dentro de cada tema, com comentário, e cada resposta conta no seu acerto.
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
-- **Aba Questões:** acerto por área, por especialidade e por tema.
+- **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
+- **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno** e **Revisão pendente**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo.
+- **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
@@ -3409,7 +3467,7 @@ const HELP=[
 - **Meta da residência:** prova-alvo e data. O Início mostra quantos dias faltam e quanto do peso das provas você já estudou.
 - **Conta** (no site): entrar, sair e criar senha para o app instalado.
 - **Minhas estatísticas:** sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
-- **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 não têm data e só entram em "Tudo"). O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
+- **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 usam a data do último estudo do tema). "Estudados no período" conta cada dia em que o tema foi estudado ou revisado. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
 
 **⚙ Configurações:**
 - **Layout:** **Clássico** (o padrão), **Compacto** (mais coisa por tela, sem textos de explicação) ou **Foco** (só o essencial do dia, letras maiores, sem gráficos no Início). Troca na hora.
@@ -3549,7 +3607,7 @@ function persist(){
 try{const lu=JSON.parse(localStorage.getItem(LSUI)||"null");if(lu)ui=uiSanitize(lu)}catch(e){}applyUI();
 try{const lf=JSON.parse(localStorage.getItem(LSF)||"null");if(facValid(lf))fac=lf}catch(e){}
 registerOwn();
-try{const v2=localStorage.getItem(LS2);state=migrate(JSON.parse(v2||localStorage.getItem(LS1)||"{}"))}catch(e){state={}}
+try{const v2=localStorage.getItem(LS2);state=migrate(JSON.parse(v2||localStorage.getItem(LS1)||"{}"));if(estChanged)localStorage.setItem(LS2,JSON.stringify(state))}catch(e){state={}}
 try{const le=JSON.parse(localStorage.getItem(LSE)||"[]");errors=Array.isArray(le)?le.filter(errOk):[]}catch(e){errors=[]}
 try{const h=JSON.parse(localStorage.getItem(LSH)||"{}");if(h&&typeof h==="object")hist=h}catch(e){hist={}}
 try{const ln=JSON.parse(localStorage.getItem(LSN)||"{}");for(const k in ln)if(BYKEY[k]&&typeof ln[k]==="string"&&ln[k].trim())notes[k]=ln[k];noteAt=JSON.parse(localStorage.getItem(LSN+"-at")||"{}")||{}}catch(e){notes={}}
@@ -3580,7 +3638,7 @@ $("#bkSave").onclick=async()=>{const m=$("#bkMsg");if(!downloadsFn)return;
 $("#bkCopy").onclick=async()=>{const m=$("#bkMsg"),txt=JSON.stringify(buildBackup());
   try{await navigator.clipboard.writeText(txt);m.textContent="Backup copiado ("+Math.round(txt.length/1024)+" KB). Cole no site do checklist em Importar backup, ou num arquivo de texto para guardar."}
   catch(e){m.textContent="Seu navegador não deixou copiar. Use Exportar backup."}};$("#backQuest").onclick=goBack;
-$("#qSort").onchange=e=>{qSort=e.target.value;render()};$("#qWeak").onclick=()=>{qWeak=!qWeak;render()};
+
 $("#eOrder").onchange=e=>{eOrder=e.target.value;render()};
 $("#eq").addEventListener("input",debounced(e=>{eQuery=norm(e.target.value.trim());render()}));
 document.querySelectorAll(".chip[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
@@ -3613,7 +3671,7 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
     if(data&&(data.topics||data.levels)){const local=state;state=migrate(data.topics||data.levels);
       touchedEarly.forEach(k=>{if(local[k])state[k]=local[k];else delete state[k]});
       if(!(data.plan&&data.plan.d===today())&&!planTouched)dayPlan=null;// plano montado antes de carregar a conta: refaz com o progresso real
-      synced=true;render();if(!data.topics||touchedEarly.size||!dayPlan||!(data.plan&&data.plan.d===today()))persist()}
+      synced=true;render();if(estChanged||!data.topics||touchedEarly.size||!dayPlan||!(data.plan&&data.plan.d===today())){estChanged=false;persist()}}
     else{synced=true;if(Object.keys(state).length)persist()}
     settingsDoc=db.doc("data/users/"+uid+"/settings");
     try{const ss=await settingsDoc.get();const sp=ss.exists&&ss.data().prompt;

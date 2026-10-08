@@ -57,8 +57,13 @@ consultado quando há dúvida. Responda em português.
 
 - PDF "Panorama de estudos" (Perfil › Exportar PDF): gerador próprio `MiniPDF` (Helvetica WinAnsi, larguras em `HW`), sem bibliotecas;
   `buildReport(opt)` monta e `downloads.save` entrega (no site, `bridge.js` aceita `.pdf`).
-  Questões por dia em cada tema: `state[k].qd = {"AAAA-MM-DD":[questões, acertos]}` (via `addQ`); `qPeriod(keys, from)` soma por período
-  (questões anteriores a 08/10/2026 não têm data: `und`).
+
+- Questões por dia: `state[k].qd={"AAAA-MM-DD":[q,c]}` (gravado por `addQ`); `qPeriod(keys,from)` → `{q,c,und,est}`.
+  Questões antigas sem dia são estimadas em `migrate()` no dia `s.last` (marca `s.qe={d,q}`, roda uma vez).
+  Dias de estudo/revisão: `state[k].ed=[datas]` (gravado em `upd`; usado em "Estudados no período" do PDF).
+- Aba Questões: filtros em `renderQFilters()` (busca `#qq`, área/especialidade, `#qPer`, `#qAccSel`, `#qDiscSel`, `#qSort`,
+  atalhos `#qWeak/#qIncB/#qErrB/#qDueB`, `#qClear`); `qUniverse()` aplica os filtros; gráfico por especialidade com
+  alternância `.qchtog` para áreas (`qChartBy`).
 
 ## Cuidados
 
