@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=572240d5">
+<link rel="stylesheet" href="site.css?v=cfb92b58">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=572240d5"></script>
-<script src="bridge.js?v=572240d5"></script>
+<script src="config.js?v=cfb92b58"></script>
+<script src="bridge.js?v=cfb92b58"></script>
 </head>
 <body>
 <script>
@@ -1289,9 +1289,12 @@ function matches(it){const s=get(it.key);
 function subList(it){const s=get(it.key),sd=s.sd||[];
   return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j}))]}
 function subCount(it){const L=subList(it);return [L.filter(x=>x.done).length,L.length]}
-function toggleSub(it,x){const first=!x.done&&!get(it.key).last;const fb=!x.done&&!first&&facBadge(it.key);const bump=fb&&daysTo(fb.p.date)<=FAC_WIN&&get(it.key).last<today();
-  upd(it.key,s=>{if(first){s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}if(bump)s.last=today();if(x.i!==undefined){const sd=new Set(s.sd||[]);sd.has(x.i)?sd.delete(x.i):sd.add(x.i);s.sd=[...sd].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
-  else{s.cs=(s.cs||[]).map((c,j)=>j===x.j?{...c,d:!c.d}:c)}});if(first)logAct("e");if(!x.done)adoptTopic(it.key,x.t);commit()}
+function toggleSub(it,x){let undo=false;const first=!x.done&&!get(it.key).last;const fb=!x.done&&!first&&facBadge(it.key);const bump=fb&&daysTo(fb.p.date)<=FAC_WIN&&get(it.key).last<today();
+  upd(it.key,s=>{if(s.pre&&s.pre.d!==today())delete s.pre;if(first){s.pre={d:today(),l:s.l||0};s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}if(bump)s.last=today();if(x.i!==undefined){const sd=new Set(s.sd||[]);sd.has(x.i)?sd.delete(x.i):sd.add(x.i);s.sd=[...sd].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
+  else{s.cs=(s.cs||[]).map((c,j)=>j===x.j?{...c,d:!c.d}:c)}
+  if(x.done&&s.pre&&s.pre.d===today()&&!(s.sd||[]).length&&!(s.cs||[]).some(c=>c.d)){delete s.last;delete s.step;s.l=s.pre.l||0;delete s.pre;undo=true}});
+  if(undo){const h=hist[today()];if(h&&h.e>0){h.e--;try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}}
+  if(first)logAct("e");if(!x.done)adoptTopic(it.key,x.t);commit()}
 
 /* anotações */
 const NOTE_MAX=30000;
@@ -1547,7 +1550,7 @@ function renderDetail(it){
   const box=el(`<div class="detail"></div>`);
   // nível
   const g1=el(`<div class="grp"><span class="glabel">Nível de domínio</span><div class="seg"></div></div>`);
-  LVL.forEach((name,i)=>{const b=el(`<button aria-pressed="${(s.l||0)===i}">${name}</button>`);b.onclick=()=>{upd(it.key,x=>x.l=i);commit()};g1.querySelector(".seg").appendChild(b)});
+  LVL.forEach((name,i)=>{const b=el(`<button aria-pressed="${(s.l||0)===i}">${name}</button>`);b.onclick=()=>{if(i===0&&(get(it.key).last||(get(it.key).sd||[]).length)){resetStudy(it.key);return}upd(it.key,x=>x.l=i);commit()};g1.querySelector(".seg").appendChild(b)});
   const ready=(s.l||0)<3&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
   g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudado: viu o conteúdo. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
   box.appendChild(g1);
@@ -1921,6 +1924,10 @@ function itemDone(p){const it=BYKEY[p.k],L=subList(it),s=get(p.k);
   if(!p.subs.length&&s.last===today())return true;
   return !!(p.subs.length&&p.subs.every(t=>{const x=L.find(y=>y.t===t);return !x||x.done}));}
 function weakDone(p){if(p.q0===undefined)p.q0=get(p.k).qt||0;return Math.max(0,(get(p.k).qt||0)-p.q0)}
+/* "Não estudei": tira das revisões e volta para não iniciado (mantém questões, anotações e erros) */
+function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
+  if(dayPlan){if(dayPlan.rchk)delete dayPlan.rchk[k];if(Array.isArray(dayPlan.revd))dayPlan.revd=dayPlan.revd.filter(y=>y!==k);savePlan()}revArm=null;commit()}
+let revArm=null;
 function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
 
 function renderPlan(){
@@ -2017,6 +2024,8 @@ function renderRevs(){
     const [g,h]=acts.querySelectorAll("button");g.onclick=()=>reviewTopic(it.key,true);h.onclick=()=>reviewTopic(it.key,false);
     if(!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[it.key]="__hoje";openTopic(it.key);setTimeout(()=>{const x=document.getElementById("qf-"+it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
     body.appendChild(acts);
+    const ne=el(`<button class="link" type="button"></button>`),armed=revArm===it.key;ne.textContent=armed?"Toque de novo: tira das revisões e volta para não iniciado (questões e anotações ficam)":"Não estudei este tema";if(armed)ne.classList.add("warn");
+    ne.onclick=()=>{if(armed)resetStudy(it.key);else{revArm=it.key;render()}};body.appendChild(ne);
     list.appendChild(li)});
   if(due.length>4){const m=el(`<li><button class="link" type="button">${revMore?"Mostrar menos":`Mostrar todas as ${due.length} revisões`}</button></li>`);m.querySelector("button").onclick=()=>{revMore=!revMore;render()};list.appendChild(m)}
   if(paused.length){paused.sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key)));
@@ -2043,13 +2052,14 @@ function renderRevs(){
 function renderVesp(){const box=$("#revVesp");box.innerHTML="";
   const ps=upcomingProvas().filter(p=>daysTo(p.date)<=FAC_VESP);if(!ps.length)return;
   ensurePlan();const V=dayPlan.vesp||(dayPlan.vesp={});
-  ps.forEach(p=>{const d=discOf(p.discId),items=p.items.filter(refOk);if(!items.length)return;const chk=V[p.id]||[];
+  ps.forEach(p=>{const d=discOf(p.discId),all=p.items.filter(refOk),items=all.filter(r=>itemStudied(p,r)),pend=all.length-items.length;if(!all.length)return;const chk=V[p.id]||[];
     const c=el(`<div class="pcard vcard"><div class="ptop"><span class="ptitle"></span><span class="reason r-fac"></span></div><p class="phint"></p><ul class="psubs"></ul></div>`);
     c.querySelector(".ptitle").textContent=`Véspera: ${p.name}`;c.querySelector(".reason").textContent=inLabel(daysTo(p.date));
-    c.querySelector(".phint").textContent=`${d.name} · ${chk.filter(r=>items.includes(r)).length} de ${items.length} revisados hoje. Passada rápida: anotações, erros do caderno e algumas questões. Não altera o agendamento das revisões espaçadas.`;
+    c.querySelector(".phint").textContent=items.length?`${d.name} · ${chk.filter(r=>items.includes(r)).length} de ${items.length} revisados hoje. Passada rápida no que você já estudou: anotações, erros do caderno e algumas questões. Não altera o agendamento das revisões espaçadas.`:`${d.name} · você ainda não estudou nenhum conteúdo desta prova.`;
+    if(pend){const pn=el(`<p class="phint"></p>`);pn.textContent=`${pend} conteúdo${pend>1?"s":""} ainda não estudado${pend>1?"s":""}: ${pend>1?"ficam":"fica"} no Estudar hoje, não aqui.`;c.insertBefore(pn,c.querySelector("ul"))}
     items.forEach((r,n)=>{const id=`vp-${p.id}-${n}`,on=chk.includes(r),x=refTopic(r);
       const li=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label><button class="link" type="button">abrir</button></li>`);
-      li.querySelector("label").textContent=refLabel(r)+(itemStudied(p,r)?"":" (ainda pendente)");
+      li.querySelector("label").textContent=refLabel(r);
       li.querySelector("input").onchange=()=>{const s=new Set(V[p.id]||[]);s.has(r)?s.delete(r):s.add(r);V[p.id]=[...s];savePlan();render()};
       li.querySelector("button").onclick=()=>openTopic(x.k);c.querySelector("ul").appendChild(li)});
     box.appendChild(c)})}
@@ -2478,7 +2488,7 @@ function renderFacCrunch(){const fc=$("#facCrunch");fc.innerHTML="";const ov=cru
     <li><b>21 dias</b> antes: 1 dos 3 temas do dia é da prova. <b>14 dias</b>: 2. <b>7 dias</b>: os 3.</li>
     <li>Se o conteúdo também cai muito na residência, a prova ganha +1 vaga.</li>
     <li>Pelo menos 2 dias por semana mantêm 1 tema da residência, exceto na semana da prova.</li>
-    <li>Nos 3 últimos dias, o conteúdo volta como revisão de véspera, na seção Revisões.</li>
+    <li>Nos 3 últimos dias, o conteúdo que você já estudou volta como revisão de véspera, na seção Revisões. O que ainda não foi estudado continua no Estudar hoje.</li>
     <li><b>Modo provas:</b> com 3 ou mais provas num intervalo de 7 dias, a residência pausa de 7 dias antes da primeira até a última.</li>
     <li>Uma prova só ocupa vagas enquanto tiver conteúdo pendente.</li></ul></details>`));
   if(planNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=planNote;fc.appendChild(n)}}
@@ -2960,6 +2970,9 @@ const HELP=[
 ["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer. Residência e faculdade ficam numa lista só, por urgência: conteúdo da faculdade aparece com o selo **FAC**.
 - **Lembrei bem:** avança para o próximo intervalo.
 - **Tive dificuldade:** volta para 1 dia.
+- **Não estudei este tema:** tira o tema das revisões e volta para "não iniciado" (questões, anotações e erros ficam). Escolher o nível **Não iniciado** dentro do tema faz o mesmo.
+- Marcou um subtópico sem querer? Desmarque no mesmo dia: o tema deixa de contar como estudado e a revisão é cancelada.
+- **Véspera de prova:** nos 3 dias antes, aparece aqui só o que você já estudou para a prova; o que falta continua no Estudar hoje.
 - Cada revisão sugere alguns subtópicos já estudados, em rodízio.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
 - **Modo provas ligado:** as revisões da residência ficam pausadas numa lista recolhida.`],
