@@ -775,7 +775,7 @@ html[data-layout="desktop"] .appnav .tab:not([aria-selected="true"]):hover{backg
 html[data-layout="desktop"] .ti{display:block;width:20px;height:20px}
 html[data-layout="desktop"] .appnav .ecount{margin:0;font:600 .74rem var(--mono);background:var(--bg);border-radius:999px;padding:1px 8px;color:var(--muted)}
 html[data-layout="desktop"] .appnav #rcount,html[data-layout="desktop"] .appnav #ecount{color:var(--due)}
-html[data-layout="desktop"] .appnav .tab[aria-selected="true"] .ecount,html[data-layout="desktop"] .appnav .tab[aria-selected="true"] #rcount{background:rgba(255,255,255,.2);color:var(--on-accent)}
+html[data-layout="desktop"] .appnav .tab[aria-selected="true"] .ecount,html[data-layout="desktop"] .appnav .tab[aria-selected="true"] #rcount,html[data-layout="desktop"] .appnav .tab[aria-selected="true"] #ecount{background:rgba(255,255,255,.2);color:var(--on-accent)}
 html[data-layout="desktop"] .navextra{display:flex;flex-direction:column;gap:8px}
 .navextra button{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);font:inherit;cursor:pointer}
 .navextra button:hover{border-color:var(--accent)}
@@ -3609,10 +3609,10 @@ function renderErros(){
     ins.appendChild(ts);
   }
   // chips
-  const ac=$("#eArea");ac.innerHTML="";
-  [["all","Todas as áreas"],...[...AREAS,FAC_AREA].map(a=>[a.code,a.code])].forEach(([v,lab])=>{const cnt=v==="all"?errors.length:errors.filter(e=>BYKEY[e.k]?.area.code===v).length;if(v==="FAC"&&!cnt)return;
+  const ac=$("#eArea");ac.innerHTML="";const EA=errors.filter(e=>BYKEY[e.k]&&(eFlags.has("arch")?e.arch:!e.arch));
+  [["all","Todas as áreas"],...[...AREAS,FAC_AREA].map(a=>[a.code,a.code])].forEach(([v,lab])=>{const cnt=v==="all"?EA.length:EA.filter(e=>BYKEY[e.k].area.code===v).length;if(v==="FAC"&&!cnt)return;
     const b=el(`<button class="chip" aria-pressed="${eArea===v}">${lab} · ${cnt}</button>`);b.onclick=()=>{eArea=v;eSp="all";render()};ac.appendChild(b)});
-  spChips($("#eSp"),eArea,eSp,v=>errors.filter(e=>{const it=BYKEY[e.k];return it&&it.area.code===eArea&&(v==="all"||it.sp===v)}).length,v=>{eSp=v;render()});
+  spChips($("#eSp"),eArea,eSp,v=>EA.filter(e=>{const it=BYKEY[e.k];return it&&it.area.code===eArea&&(v==="all"||it.sp===v)}).length,v=>{eSp=v;render()});
   const tcp=$("#eType");tcp.innerHTML="";
   [["all","Todos os tipos"],...Object.entries(ETYPES)].forEach(([v,lab])=>{const b=el(`<button class="chip" aria-pressed="${eType===v}"></button>`);b.textContent=lab;b.onclick=()=>{eType=v;render()};tcp.appendChild(b)});
   // lista
@@ -4430,7 +4430,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     f.append(el(`<span class="glabel">Temas</span>`),src,el(`<span class="glabel">Tamanho</span>`),nn);c.appendChild(f);
     const T=simTopics(simCfg.src,U),go=el(`<button class="btn primary" type="button" id="simGo"></button>`);
     if(!T.length&&simTopics(simCfg.src,U).length===0){const alt=SIM_SRC.find(([v])=>simTopics(v,U).length);if(alt&&alt[0]!==simCfg.src){simCfg.src=alt[0]}}
-    const T2=simTopics(simCfg.src,U);go.textContent=`Começar simulado · ${simCfg.n} questões de ${Math.min(T2.length,simCfg.n)} ${Math.min(T2.length,simCfg.n)===1?"tema":"temas"}`;
+    const T2=simTopics(simCfg.src,U),nq=simCfg.src==="errs"?Math.min(simCfg.n,errors.filter(e=>BYKEY[e.k]&&!e.arch).length):simCfg.n;go.textContent=`Começar simulado · ${nq} ${nq===1?"questão":"questões"} de ${Math.min(T2.length,nq)} ${Math.min(T2.length,nq)===1?"tema":"temas"}`;
     go.disabled=!sampleFn||!T2.length;if(sampleOff)go.title="O Claude não está disponível nesta visualização";go.onclick=()=>simStart(U);c.appendChild(go);
     if(simCfg.src==="filter")c.appendChild(el(`<p class="how">Filtro atual: os temas que aparecem com os filtros da aba (área, especialidade, busca…).</p>`));
     return c}
@@ -5115,7 +5115,7 @@ function renderHelp(){const box=$("#helpList");const q=helpQ?norm(helpQ):"";cons
 function renderAll(){
   $("#tdate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
   // contadores das abas (sempre visíveis)
-  $("#ecount").textContent=errors.length?String(errors.length):"";
+  {const n=eDueList().length;$("#ecount").textContent=n?String(n):"";$("#ecount").title=n?`${n} ${n===1?"erro para revisar":"erros para revisar"} hoje`:""}
   {const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;$("#ncount").textContent=nk?String(nk):""}
   const P0=ensurePlan(),dueN=dueCount();
   $("#rcount").textContent=dueN?String(dueN):"";$("#rcount").title=dueN?`${dueN} revisões pendentes`:"";
