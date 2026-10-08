@@ -39,7 +39,7 @@
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
   const downloads = {
     async save({ filename, data }) {
-      const type = /\.json$/i.test(filename) ? "application/json" : "text/markdown";
+      const type = /\.json$/i.test(filename) ? "application/json" : /\.pdf$/i.test(filename) ? "application/pdf" : "text/markdown";
       const blob = new Blob([data], { type });
       if (isIOS && navigator.canShare) {
         const file = new File([blob], filename, { type });
