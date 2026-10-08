@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=2c30476a">
+<link rel="stylesheet" href="site.css?v=153cd365">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=2c30476a"></script>
-<script src="bridge.js?v=2c30476a"></script>
+<script src="config.js?v=153cd365"></script>
+<script src="bridge.js?v=153cd365"></script>
 </head>
 <body>
 <script>
@@ -595,6 +595,13 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .efoot .sp{flex:1}
 .etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
 .etopacts{margin:0}
+/* duas colunas (tablet deitado, notebook, monitor): lista à esquerda; revisar, repetidos e onde melhorar à direita */
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros{max-width:none}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros:not([hidden]){display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:24px;row-gap:20px;align-items:start}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>.eside{display:flex;flex-direction:column;gap:20px;grid-column:2;grid-row:1/span 2;min-width:0}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>.controls{grid-column:1;grid-row:1;min-width:0}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>#elist{grid-column:1;grid-row:2;min-width:0}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros .etop{margin-bottom:0}
 .emore{display:flex;flex-direction:column;gap:8px}.emore .tfres{gap:4px 16px}
 .ecard .ehead .ecause{font-style:italic}
 .ecard.arch{opacity:.75;border-left-style:dashed}
@@ -1290,11 +1297,13 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </div>
 
   <div id="viewErros" class="wrap" style="width:100%" hidden>
+    <div class="side eside">
     <div id="eTop" class="etop"></div>
     <section class="card" aria-labelledby="mh">
       <h2 id="mh">Onde melhorar</h2>
       <div id="insight"></div>
     </section>
+    </div>
     <section class="controls">
       <input class="search" id="eq" type="search" placeholder="Buscar nos erros (tema, conceito, fonte)" aria-label="Buscar nos erros">
       <div class="chips" id="eArea" role="group" aria-label="Filtrar por área"></div>
