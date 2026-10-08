@@ -70,6 +70,9 @@ consultado quando há dúvida. Responda em português.
   Meta semanal `ui.prefs.qgoal` (`qGoalEl`, conta `hist[d].q`), tendência `qTrend(k)` (30 dias × 90 antes; filtro `qWorse`),
   linha extra por tema `qRowExtra` (erros do caderno, + erro, + registrar), banca/fonte por tema em `state[k].qb={fonte:{dia:[q,c]}}`
   (`addQ(...,src)`; geradas = "Claude"; `qSrcCard`).
+  Partes no celular/tablet em pé: `qSeg` = resumo|praticar|temas (`#viewQuest[data-qseg]`, classes `.qs-res/.qs-prac/.qs-tem`, `setQSeg`).
+  Simulado misto `sim` (`qSimCard`, `simStart` com `simPrompt` multi-tema, `simAnswer`); ritmo em `hist[d].ts/tq` (`logPace`, `qPaceEl`,
+  meta `ui.prefs.qpace` em segundos).
 - Foco (view `foco`, `renderFoco`): pomodoro/cronômetro. Sessões em `foSess` = [{id,d,s,sec,m:"p"|"c"|"x",ref:"T:<tema>"|"D:<disc>"|"",lab}],
   localStorage `resid-focus-v1` e Firestore `progress/focus/{id}` (`focStore`, mescla por id como os erros). Relógio em andamento
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.

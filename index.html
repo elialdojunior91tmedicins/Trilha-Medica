@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=25d644e3">
+<link rel="stylesheet" href="site.css?v=50120794">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=25d644e3"></script>
-<script src="bridge.js?v=25d644e3"></script>
+<script src="config.js?v=50120794"></script>
+<script src="bridge.js?v=50120794"></script>
 </head>
 <body>
 <script>
@@ -335,6 +335,22 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qrsrc{flex:2 1 170px!important}
 .qrsrc input{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}
 .qsrows{display:flex;flex-direction:column;gap:12px}
+.qpace{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;border-top:1px solid var(--line);padding-top:12px}
+.meter.pace{position:relative;overflow:visible}.meter.pace i{border-radius:99px}.meter.pace.ok i{background:var(--good)}.meter.pace.slow i{background:var(--warn)}
+.pref{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink);opacity:.5}
+#qRegBox:empty,#qPace:empty{display:none}
+.qfnote{margin:0}.qfnote .link{font-size:.85rem}
+.simcfg{display:flex;flex-direction:column;gap:8px}
+.qsim #simGo{align-self:flex-start}
+.simtopic{font-size:.8rem;color:var(--muted);font-style:italic}
+.simt{font:500 .78rem var(--mono);color:var(--muted)}
+.simlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.simlist li{display:grid;grid-template-columns:1.4rem minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.simlist .link{font-size:.88rem;text-align:left}
+.simok{font-weight:700;text-align:center}.simok.ok{color:var(--good)}.simok.no{color:var(--due)}
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="resumo"] :is(.qs-prac,.qs-tem),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="praticar"] :is(.qs-res,.qs-tem),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="temas"] :is(.qs-res,.qs-prac,.qfnote){display:none!important}
 .qreg{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
 .qreg .dhead b{font-family:var(--display)}
 .qreg .pnote{margin:0}
@@ -355,6 +371,7 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qedot.good{fill:var(--good)}.qedot.warn{fill:var(--warn)}.qedot.bad{fill:var(--bad)}
 .qextra{display:flex;flex-direction:column;gap:20px}
 html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.qextra .qsim{grid-column:1/-1}
 .qrdsum{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:.88rem;color:var(--muted)}.qrdsum b{color:var(--ink);font-family:var(--mono)}
 .rdlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
 .rdlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
@@ -1052,18 +1069,22 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <section class="card fcrunch" id="facCrunch" aria-label="Modo provas"></section>
   </div>
 
-  <div id="viewQuest" class="wrap" style="width:100%" hidden>
-    <section class="card dash" aria-labelledby="qh">
+  <div id="viewQuest" class="wrap" style="width:100%" data-qseg="resumo" hidden>
+    <div class="tseg qseg" role="group" aria-label="Partes da aba Questões" id="qSegBar"><button type="button" data-q="resumo">Resumo</button><button type="button" data-q="praticar">Praticar</button><button type="button" data-q="temas">Temas</button></div>
+    <div id="qRegBox"></div>
+    <p class="pnote qfnote" id="qFNote" hidden></p>
+    <section class="card dash qs-res" aria-labelledby="qh">
       <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
-      <div id="qRegBox"></div>
       <div class="kpis" id="qkpis"></div>
       <div id="qGoal"></div>
+      <div id="qPace"></div>
       <figure class="chart"><figcaption>Evolução: últimas 12 semanas</figcaption><div id="qEvo"></div></figure>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
-    <section class="controls qfilters" id="qFilters" aria-label="Filtros das questões"></section>
-    <div id="qExtra" class="qextra"></div>
-    <ol class="elist qlistT" id="qlistT"></ol>
+    <div id="qSrcBox" class="qs-res"></div>
+    <div id="qExtra" class="qextra qs-prac"></div>
+    <section class="controls qfilters qs-tem" id="qFilters" aria-label="Filtros das questões"></section>
+    <ol class="elist qlistT qs-tem" id="qlistT"></ol>
   </div>
 
   <div id="viewNotas" class="wrap" style="width:100%" hidden>
@@ -2195,7 +2216,14 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qRedoCard(U0),qGainCard(U0),qSrcCard(U0,qFrom()));const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl())}
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0),qGainCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
+   // partes (celular e tablet em pé)
+   const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
+   $("#qSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.q===qSeg);b.innerHTML={resumo:"Resumo",praticar:"Praticar"+(rdN?`<b>${rdN}</b>`:""),temas:"Temas"+(tN?`<b>${tN}</b>`:"")}[b.dataset.q];b.onclick=()=>setQSeg(b.dataset.q)});
+   const fl=[];if(qArea!=="all")fl.push(qSpec!=="all"?`${qArea} · ${qSpec}`:qArea);if(qDisc!=="all"){const d=discOf(qDisc);if(d)fl.push(d.name)}if(qQuery)fl.push(`“${qQuery}”`);if(qPer!=="all")fl.push(`${qPer} dias`);if(qAcc!=="all")fl.push({bad:"acerto fraco",mid:"acerto regular",good:"acerto bom"}[qAcc]);if(qInc)fl.push("incidência muito alta");if(qErrF)fl.push("com erros");if(qDueF)fl.push("revisão pendente");if(qWorse)fl.push("piorando");
+   const fn=$("#qFNote");fn.hidden=!fl.length;if(fl.length){fn.innerHTML="";fn.append("Filtros ligados: ");const bb=document.createElement("b");bb.textContent=fl.join(", ");fn.appendChild(bb);fn.append(". ");
+     const v=el(`<button class="link" type="button">Ver filtros</button>`);v.onclick=()=>{qFOpen=true;setQSeg("temas")};const l=el(`<button class="link" type="button">Limpar</button>`);l.onclick=()=>{qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;qWorse=false;render()};fn.append(v," ",l)}}
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
   const withQ=st.filter(x=>x.t),vis=withQ.filter(x=>qAcc==="all"||accBand(x.c,x.t)===qAcc);
   let C=0,T=0;vis.forEach(x=>{C+=x.c;T+=x.t});const p=pct(C,T),[bk,bl]=band(p),weakN=withQ.filter(x=>x.t>=WEAK_MIN&&x.c/x.t<WEAK_PCT).length;
@@ -3217,7 +3245,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,qgoal:0},profile:{name:"",goal:"",goalDate:""}};
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,qgoal:0,qpace:180},profile:{name:"",goal:"",goalDate:""}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -3236,6 +3264,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof p.fwake==="boolean")o.prefs.fwake=p.fwake;
   if(Number.isInteger(p.fgoal)&&p.fgoal>=0&&p.fgoal<=720)o.prefs.fgoal=p.fgoal;
   if(Number.isInteger(p.qgoal)&&p.qgoal>=0&&p.qgoal<=5000)o.prefs.qgoal=p.qgoal;
+  if([120,150,180,210,240].includes(p.qpace))o.prefs.qpace=p.qpace;
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
@@ -3828,19 +3857,19 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
 function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="dhead"><b>Registrar questões</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{qReg=null;render()};
   if(R.saved){const S=R.saved,it=BYKEY[S.k],m=el(`<p class="pnote" role="status"><span></span> <button class="link" type="button">Desfazer</button></p>`);
-    m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}${S.src?` · ${S.src}`:""}.`;
-    m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d,S.src));logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
+    m.querySelector("span").textContent=`Registrado: ${S.t} questões, ${S.c} acertos (${pct(S.c,S.t)}%) em ${it?it.t:""}${S.d!==today()?` · ${br(S.d)}`:""}${S.src?` · ${S.src}`:""}${S.mn?` · ${fmtPace(S.mn*60/S.t)} por questão`:""}.`;
+    m.querySelector("button").onclick=()=>{upd(S.k,x=>addQ(x,-S.t,-S.c,S.d,S.src));if(S.mn)logPace(S.d,-S.t,-S.mn*60);logAct("q",-S.t,-S.c,S.d);commit();R.saved=null;R.msg="Registro desfeito.";render()};w.appendChild(m);
     if(S.t>S.c){const e=el(`<button class="btn" type="button">Registrar um erro deste tema no caderno</button>`);e.onclick=()=>{const k=S.k;qReg=null;openTopic(k);setTimeout(()=>{const f=document.getElementById("ew-"+k);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};w.appendChild(e)}}
   const it=R.k&&BYKEY[R.k];
   if(!it){const s=el(`<label class="qfsel"><span>Tema</span><input class="search" id="qrq" type="search" placeholder="Digite o tema (ex.: sepse, IAM, pré-eclâmpsia)" autocomplete="off"></label>`),i=s.querySelector("input");i.value=R.query||"";
-    i.oninput=debounced(()=>{R.query=i.value;render()});w.appendChild(s);
+    i.oninput=debounced(()=>{if(qReg!==R||R.k)return;R.query=i.value;render()});w.appendChild(s);
     const n=norm((R.query||"").trim());if(n.length>=2){const res=[...ALL,...FAC_ITEMS].map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,7);
       const ul=el(`<ul class="qrres"></ul>`);if(!res.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));
       res.forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>{R.k=x.key;R.msg="";render();setTimeout(()=>{const f=$("#qrt");if(f)f.focus()},30)};ul.appendChild(li)});w.appendChild(ul)}
     else w.appendChild(el(`<p class="how">Para questões de bancos (Medcel, Estratégia, MedCof…) ou provas antigas: escolha o tema e digite quantas fez e acertou.</p>`))}
   else{const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
     ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
-    const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><label class="qfsel qrsrc"><span>Banca ou fonte</span><input type="text" id="qrb" list="qrbl" maxlength="30" placeholder="opcional (ex.: ENARE)" autocomplete="off"><datalist id="qrbl"></datalist></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
+    const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><label class="qfsel"><span>Tempo (min)</span><input type="number" id="qrm" min="1" max="600" inputmode="numeric" placeholder="opcional"></label><label class="qfsel qrsrc"><span>Banca ou fonte</span><input type="text" id="qrb" list="qrbl" maxlength="30" placeholder="opcional (ex.: ENARE)" autocomplete="off"><datalist id="qrbl"></datalist></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
     {const bi=f.querySelector("#qrb"),dl=f.querySelector("#qrbl");[...new Set([...qSrcAll(),...QSRC_SUG])].filter(x=>x!=="Claude").forEach(v=>{const o=document.createElement("option");o.value=v;dl.appendChild(o)});
       let last="";try{last=localStorage.getItem("resid-qsrc")||""}catch(e){}bi.value=R.b!==undefined?R.b:last;bi.oninput=()=>{R.b=bi.value}}
     const ti=f.querySelector("#qrt"),ci=f.querySelector("#qrc"),di=f.querySelector("#qrd");ti.value=R.t||"";ci.value=R.c||"";di.value=R.d||today();di.max=today();
@@ -3849,7 +3878,8 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
       if(!(t>=1&&t<=500)){R.msg="Digite quantas questões fez (1 a 500).";render();return}if(!(c>=0&&c<=t)||ci.value===""){R.msg="Os acertos vão de 0 até o número de questões feitas.";render();return}
       if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){R.msg="Escolha um dia até hoje.";render();return}
       const src=qSrcKey(f.querySelector("#qrb").value);try{localStorage.setItem("resid-qsrc",src)}catch(e){}
-      upd(it.key,x=>addQ(x,t,c,d,src));logAct("q",t,c,d);commit();qReg={saved:{k:it.key,t,c,d,src},d,query:""};render();setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
+      const mn=Math.round(+f.querySelector("#qrm").value)||0;if(f.querySelector("#qrm").value&&!(mn>=1&&mn<=600)){R.msg="Tempo de 1 a 600 minutos (ou deixe vazio).";render();return}
+      upd(it.key,x=>addQ(x,t,c,d,src));logAct("q",t,c,d);if(mn)logPace(d,t,mn*60);commit();qReg={saved:{k:it.key,t,c,d,src,mn},d,query:""};render();setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
     w.appendChild(f)}
   if(R.msg){const m=el(`<p class="err" role="alert"></p>`);m.textContent=R.msg;w.appendChild(m)}
   return w}
@@ -3935,6 +3965,97 @@ function qSrcCard(U,from){const by={};let tq=0,tc=0;
   const box=el(`<div class="qsrows"></div>`);box.innerHTML=hbarRows(rows);c.appendChild(box);
   c.appendChild(el(`<p class="how">${from?`Nos últimos ${qPer} dias. `:""}“Não informado”: questões registradas sem banca ou antes deste campo existir. Compare a banca da sua prova com a média: se estiver bem abaixo, faça mais questões dela.</p>`));
   return c}
+/* ---------- Questões: partes (Resumo, Praticar, Temas), simulado misto e ritmo por questão ---------- */
+let qSeg="resumo";try{const v=localStorage.getItem("resid-qseg");if(["resumo","praticar","temas"].includes(v))qSeg=v}catch(e){}
+function setQSeg(v){qSeg=v;try{localStorage.setItem("resid-qseg",v)}catch(e){}render();window.scrollTo({top:0})}
+/* ritmo: segundos e questões cronometradas por dia, no histórico (hist[d].ts / hist[d].tq) */
+function logPace(d,n,sec){const h=hist[d]||(hist[d]={});h.tq=Math.max(0,(h.tq||0)+n);h.ts=Math.max(0,(h.ts||0)+Math.round(sec));try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
+const fmtPace=s=>{s=Math.round(s);return s<60?`${s}s`:`${Math.floor(s/60)}min${s%60?String(s%60).padStart(2,"0")+"s":""}`};
+function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;i++){const h=hist[fromNum(t-i)];if(h&&h.tq){n+=h.tq;s+=h.ts||0;if(i<7){n7+=h.tq;s7+=h.ts||0}}}
+  const ref=ui.prefs.qpace,w=el(`<div class="qpace"></div>`);
+  const sel=el(`<label class="qfsel qgsel"><span>Tempo da prova</span><select id="qPaceSel"></select></label>`),sl=sel.querySelector("select");
+  [[120,"2 min por questão"],[150,"2min30s"],[180,"3 min"],[210,"3min30s"],[240,"4 min"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;sl.appendChild(o)});sl.value=String(ref);sl.onchange=()=>{ui.prefs.qpace=+sl.value;saveUI();render()};
+  if(!n){w.appendChild(el(`<p class="how qgtxt"><b>Ritmo:</b> ainda sem questões cronometradas. O simulado mede o tempo de cada questão; no registro rápido, informe quantos minutos levou.</p>`));w.appendChild(sel);return w}
+  const avg=s/n,ok=avg<=ref,box=el(`<div class="qgm"><div class="qgtop"><b>${fmtPace(avg)}</b><span>por questão nos últimos 30 dias (${n} cronometradas)</span></div><div class="meter pace${ok?" ok":" slow"}"><i style="width:${Math.min(100,avg/ref/1.5*100)}%"></i><span class="pref" style="left:${100/1.5}%"></span></div><p class="how qgtxt"></p></div>`);
+  box.querySelector(".qgtxt").textContent=`${ok?"Dentro":"Acima"} do tempo da prova (${fmtPace(ref)})${ok?"":`: ${fmtPace(avg-ref)} a mais por questão`}.${n7?` Últimos 7 dias: ${fmtPace(s7/n7)}.`:""}`;
+  w.append(box,sel);return w}
+/* simulado misto: questões de vários temas num bloco só */
+let sim=null,simCfg={src:"weak",n:10};
+const SIM_SRC=[["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["filter","Filtro atual"]];
+function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
+  if(src==="weak")return pool.filter(i=>{const s=get(i.key);return s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT}).sort((a,b)=>acc(get(a.key))-acc(get(b.key)));
+  if(src==="gain")return U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return {it,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,15).map(r=>r.it);
+  if(src==="due")return pool.filter(i=>isDue(get(i.key)));
+  if(src==="plan")return ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean);
+  return U}
+function simPrompt(items){return promptText.trim()+`
+
+Tarefa
+Monte um simulado com ${items.length} ${items.length===1?"questão inédita":"questões inéditas"}, uma para cada item abaixo, na mesma ordem (a 1ª questão é sobre o item 1, a 2ª sobre o item 2, e assim por diante):
+${items.map((x,i)=>{const it=BYKEY[x.k];return `${i+1}. Tema "${it.t}" (área: ${areaLabel(it)})${x.sub?`, com foco no subtópico "${x.sub}"`:""}`}).join("\n")}
+Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complicação, exceção), como numa prova de residência.
+
+${fixedFormat(items.length)}`}
+async function simStart(U){if(!sampleFn)return;const T=simTopics(simCfg.src,U);if(!T.length)return;
+  const ts=shuffle(T),items=[];for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
+  const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0};render();
+  let fails=0;
+  while(S.qs.length<items.length){const part=items.slice(S.qs.length,S.qs.length+BATCH);
+    try{const data=await sampleFn.json(simPrompt(part),{signal:S.ctl.signal,cache:false,onText:()=>{const s=$("#simSt");if(s)s.textContent=`Escrevendo as questões ${S.qs.length+1} a ${S.qs.length+part.length} de ${items.length}…`}});
+      if(sim!==S||S.stopped)return;const qs=validQs(data).slice(0,part.length);
+      if(!qs.length){if(++fails>=2){S.msg=GEN_ERR.invalid_json;break}continue}fails=0;
+      qs.forEach((q,j)=>S.qs.push({...q,k:part[j].k}));
+      if(qs.length<part.length)items.splice(S.qs.length,part.length-qs.length);
+      if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}render()}
+    catch(e){if(sim!==S||S.stopped)return;const code=e&&e.code;if(code==="cancelled"){if(!S.qs.length){sim=null;render();return}break}
+      S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
+  if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
+function simAnswer(letra){const S=sim,q=S.qs[S.i];if(!q||S.ans[S.i])return;const sec=Math.min(1800,Math.max(1,(Date.now()-S.shown)/1000));
+  S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;
+  upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok)rdAdd(q.k,q);commit()}
+function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.gen)S.status="done";render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
+function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="simh"><div class="dhead"><h2 id="simh">Simulado misto</h2><span class="todaydate" id="simClock"></span></div></section>`);
+  const S=sim;
+  if(!S||S.status==="error"){
+    c.appendChild(el(`<p class="how">O Claude monta um bloco com temas variados, uma questão por vez, medindo o seu tempo em cada uma. Cada resposta conta no acerto do tema; as erradas vão para Refazer.</p>`));
+    if(S&&S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;c.appendChild(m)}
+    const f=el(`<div class="simcfg"></div>`);
+    const src=el(`<div class="chips" role="group" aria-label="Temas do simulado"></div>`);
+    SIM_SRC.forEach(([v,lab])=>{const n=simTopics(v,U).length,b=el(`<button class="chip" type="button" aria-pressed="${simCfg.src===v}"></button>`);b.textContent=`${lab} · ${n}`;b.disabled=!n;b.onclick=()=>{simCfg.src=v;render()};src.appendChild(b)});
+    const nn=el(`<div class="seg" role="group" aria-label="Número de questões"></div>`);[5,10,20,30].forEach(v=>{const b=el(`<button type="button" aria-pressed="${simCfg.n===v}">${v} questões</button>`);b.onclick=()=>{simCfg.n=v;render()};nn.appendChild(b)});
+    f.append(el(`<span class="glabel">Temas</span>`),src,el(`<span class="glabel">Tamanho</span>`),nn);c.appendChild(f);
+    const T=simTopics(simCfg.src,U),go=el(`<button class="btn primary" type="button" id="simGo"></button>`);
+    if(!T.length&&simTopics(simCfg.src,U).length===0){const alt=SIM_SRC.find(([v])=>simTopics(v,U).length);if(alt&&alt[0]!==simCfg.src){simCfg.src=alt[0]}}
+    const T2=simTopics(simCfg.src,U);go.textContent=`Começar simulado · ${simCfg.n} questões de ${Math.min(T2.length,simCfg.n)} ${Math.min(T2.length,simCfg.n)===1?"tema":"temas"}`;
+    go.disabled=!sampleFn||!T2.length;if(sampleOff)go.title="O Claude não está disponível nesta visualização";go.onclick=()=>simStart(U);c.appendChild(go);
+    if(simCfg.src==="filter")c.appendChild(el(`<p class="how">Filtro atual: os temas que aparecem com os filtros da aba (área, especialidade, busca…).</p>`));
+    return c}
+  if(S.status==="loading"){c.appendChild(el(`<p class="gstatus" id="simSt" aria-live="polite">Preparando o simulado. O primeiro bloco pode levar até um minuto…</p>`));
+    const b=el(`<button class="btn" type="button">Cancelar</button>`);b.onclick=()=>S.ctl.abort();c.appendChild(b);return c}
+  if(S.status==="done"){const n=S.qs.length,hit=S.qs.filter((q,i)=>S.ans[i]===q.correta).length,tt=Object.values(S.t).reduce((a,b)=>a+b,0),ans=Object.keys(S.ans).length;
+    c.appendChild(el(`<div class="kpis simres"><div class="kpi"><span class="kl">Acerto</span><b>${pct(hit,ans)}%</b><span class="ks">${hit} de ${ans}</span></div><div class="kpi"><span class="kl">Tempo total</span><b>${fmtPace(tt)}</b><span class="ks">${n} questões</span></div><div class="kpi${ans&&tt/ans>ui.prefs.qpace?" alert":""}"><span class="kl">Por questão</span><b>${ans?fmtPace(tt/ans):"–"}</b><span class="ks">prova: ${fmtPace(ui.prefs.qpace)}</span></div></div>`));
+    const ul=el(`<ol class="simlist"></ol>`);S.qs.forEach((q,i)=>{const it=BYKEY[q.k],ok=S.ans[i]===q.correta,li=el(`<li><span class="simok ${S.ans[i]?ok?"ok":"no":""}">${S.ans[i]?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${S.t[i]?fmtPace(S.t[i]):""}</span></li>`);
+      const b=li.querySelector("button");b.textContent=it?it.t:"";b.onclick=()=>openTopic(q.k);ul.appendChild(li)});c.appendChild(ul);
+    const wrong=S.qs.filter((q,i)=>S.ans[i]&&S.ans[i]!==q.correta).length;
+    c.appendChild(el(`<p class="how">${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo.</p>`));
+    const b=el(`<button class="btn primary" type="button">Novo simulado</button>`);b.onclick=()=>{sim=null;render()};c.appendChild(b);return c}
+  // em andamento
+  const q=S.qs[S.i];if(!q){c.appendChild(el(`<p class="gstatus" id="simSt">Escrevendo a próxima questão…</p>`));return c}
+  const it=BYKEY[q.k],mine=S.ans[S.i],card=el(`<div class="qcard"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p><div class="alts"></div></div>`);
+  card.querySelector(".qn").textContent=`QUESTÃO ${S.i+1} DE ${S.items.length}`;card.querySelector(".simtopic").textContent=mine&&it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Tema revelado depois de responder";
+  card.querySelector(".qstem").textContent=q.enunciado;
+  q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
+    if(mine){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===mine)b.classList.add("wrong")}else b.onclick=()=>{simAnswer(a.letra);render()};card.querySelector(".alts").appendChild(b)});
+  if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
+    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
+    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
+    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}}
+  c.appendChild(card);const acts=el(`<div class="btns"></div>`);
+  if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
+  const st=el(`<button class="btn" type="button">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
+  c.appendChild(acts);return c}
+function simTick(){const c=$("#simClock");if(!c||!sim||sim.status!=="run")return;const q=sim.ans[sim.i]?null:Math.floor((Date.now()-sim.shown)/1000);c.textContent=q===null?"":`${fmtPace(q)} nesta questão`}
+setInterval(simTick,1000);
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
@@ -3980,6 +4101,9 @@ const HELP=[
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
+- **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
+- **Simulado misto** (em Praticar): o Claude monta 5, 10, 20 ou 30 questões de vários temas, a partir de **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje** ou **Filtro atual**. Uma questão por vez, com o tempo medido em cada uma; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer. **Encerrar** mostra o resultado das que você já respondeu.
+- **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
 - **Refazer as que errei:** toda questão gerada pelo Claude que você erra fica guardada, com o comentário. Refaça 10 de cada vez (primeiro as que você mais errou); acertou, ela sai da lista. Refazer não muda o acerto do tema, porque você já viu a resposta. **Ver lista** mostra e remove.
