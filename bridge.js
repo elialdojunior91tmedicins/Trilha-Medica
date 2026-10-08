@@ -310,7 +310,8 @@
       erros: (d.errors || []).length,
       disciplinas: d.fac ? d.fac.discs.length : 0,
       provas: d.fac ? d.fac.provas.length : 0,
-      diasHistorico: Object.keys(d.hist || {}).length
+      diasHistorico: Object.keys(d.hist || {}).length,
+      foco: Array.isArray(d.focus) ? d.focus.length : 0
     };
   }
   const isEmpty = c => !c.temas && !c.anotacoes && !c.erros && !c.disciplinas; // o histórico de hoje é criado pelo próprio plano do dia
@@ -329,6 +330,8 @@
     notes = nn; noteAt = na;
     errors = (Array.isArray(d.errors) ? d.errors : []).filter(errOk);
     if (typeof d.prompt === "string" && d.prompt.trim()) promptText = d.prompt;
+    const hasFocus = Array.isArray(d.focus) && typeof foOk === "function";
+    if (hasFocus) { foSess = d.focus.filter(foOk).map(foClean); try { localStorage.setItem(LSFO, JSON.stringify(foSess)); } catch (e) {} }
     if (d.ui && typeof d.ui === "object" && typeof uiSanitize === "function") { ui = uiSanitize(d.ui); try { localStorage.setItem(LSUI, JSON.stringify(ui)); } catch (e) {} }
     const ls = (k, v) => { try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); } catch (e) {} };
     ls(LS2, state); ls(LSH, hist); ls(LSDP, dayPlan); ls(LSN, notes); ls(LSN + "-at", noteAt); ls(LSE, errors); ls(LSF, fac); ls(LSP, promptText);
@@ -344,6 +347,11 @@
       const ns = await notesStore.get();
       await Promise.all(ns.docs.filter(x => !notes[x.id]).map(x => notesStore.doc(x.id).delete()));
       await Promise.all(Object.keys(notes).map(k => notesStore.doc(k).set({ t: notes[k], updatedAt: noteAt[k] || now })));
+      if (hasFocus && typeof focStore !== "undefined" && focStore) {
+        const fs = await focStore.get(), fids = new Set(foSess.map(x => x.id));
+        await Promise.all(fs.docs.filter(x => !fids.has(x.id)).map(x => focStore.doc(x.id).delete()));
+        await Promise.all(foSess.map(x => focStore.doc(x.id).set({ ...x })));
+      }
     }
   }
   const summaryLine = c => backupSummaryText(c);

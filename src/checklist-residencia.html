@@ -862,6 +862,78 @@ html[data-layout="phone"] .hico{width:20px;height:20px}
 .pdfm input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 .pdfm em{font-style:normal;color:var(--muted);font-size:.75rem}
 .pdfm:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+/* ---------- Foco ---------- */
+.fobody{display:flex;flex-direction:column;gap:20px}
+.fotimer{align-items:center;text-align:center;gap:14px;border:1.5px solid var(--accent)}
+.fotimer.onbreak{border-color:var(--l2)}
+.fomode{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;width:100%;max-width:420px;flex-wrap:nowrap}
+.fomode button{flex:1;border:0;border-radius:9px;background:none;color:var(--muted)}
+.fomode button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.fomode button:disabled{opacity:.45;cursor:default}
+.fophase{margin:0;font:700 .75rem var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.onbreak .fophase{color:var(--l2)}
+.foring{position:relative;width:min(240px,64vw);aspect-ratio:1;max-width:100%}
+.foring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.fotrk{fill:none;stroke:var(--track);stroke-width:5}
+.foarc{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .5s linear}
+.onbreak .foarc{stroke:var(--l2)}
+.foclk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.foclk b{font:500 clamp(2.4rem,11vw,3.4rem)/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.fost{font:600 .68rem var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.foacts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.foacts .btn{padding:11px 18px;font-size:1rem;border-radius:12px}
+.foacts .fogo{padding:13px 26px;font-size:1.05rem}
+.foopts{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center;align-items:center}
+.foopts .link{align-self:center}
+.fopre{justify-content:center}
+.focus-form{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;justify-content:center}
+.focus-form .qfsel{flex:0 1 130px}
+.focus-form input{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 .95rem var(--mono)}
+.folink{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 10px;width:100%;max-width:560px;text-align:left}
+.fohow{margin:0;max-width:52ch;font-size:.82rem;color:var(--muted)}
+.fomsg{margin:0;font-weight:600;color:var(--accent)}
+.fowk{position:relative;height:150px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.fod{display:flex;flex-direction:column;align-items:center;min-width:0}
+.fov{height:1.3rem;font:500 .7rem/1.3rem var(--mono);color:var(--muted);white-space:nowrap}
+.fob{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.fob i{display:block;width:min(100%,30px);background:var(--accent);border-radius:5px 5px 0 0;min-height:0}
+.fob i.ok{background:var(--good)}
+.fod.fut .fox{opacity:.5}
+.fox{height:1.3rem;font:600 .74rem/1.3rem var(--body);color:var(--muted)}
+.fod.now .fox{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+.fogl{position:absolute;left:0;right:0;border-top:1.5px dashed var(--ink);opacity:.45;pointer-events:none}
+.fogoal{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end}
+.fogsel{flex:0 1 200px}
+.fogoal .how{margin:0;font-size:.8rem;color:var(--muted)}
+.foper{align-self:flex-start}
+.fomats{display:flex;flex-direction:column;gap:10px}
+.fomats .how{margin:0;font-size:.8rem;color:var(--muted)}
+.folist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.foitem{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:4px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.foic{width:34px;height:34px;border-radius:10px;background:var(--bg);display:grid;place-items:center;color:var(--accent);font-size:1rem}
+.fon{display:flex;flex-direction:column;min-width:0}.fon b{font-size:.93rem;overflow-wrap:anywhere}.fon span{font-size:.78rem;color:var(--muted)}
+.fod2{font:600 1rem var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.foxb{border:0;background:none;color:var(--muted);font-size:1.2rem;line-height:1;padding:6px 8px;border-radius:8px;cursor:pointer}
+.foxb:hover{color:var(--danger);background:var(--bg)}
+.foconf{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end}
+.foadd{display:flex;flex-direction:column;gap:6px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.foadd .focus-form{justify-content:flex-start}
+.foadd .how{margin:0;font-size:.82rem}
+.fopill{position:fixed;z-index:30;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--on-accent);border:0;border-radius:999px;padding:9px 16px;font:600 .9rem var(--body);box-shadow:0 6px 18px rgb(0 0 0 / .2);cursor:pointer}
+.fopill b{font:500 1rem var(--mono);font-variant-numeric:tabular-nums}
+html[data-layout="phone"] .fopill{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+html[data-layout="phone"] body.typing .fopill{display:none}
+#tabM{display:none}
+html[data-layout="phone"] #tabM{display:flex}
+html[data-layout="phone"] .appnav #tabN,html[data-layout="phone"] .appnav #tabFo{display:none}
+.appnav #mcount,.appnav #focount{background:var(--accent)!important;color:var(--on-accent)}
+.appnav #mcount:empty,.appnav #focount:empty{display:none}
+html[data-layout="tablet"] #viewFoco,html[data-layout="tablet"] #viewMais{max-width:820px}
+html[data-layout="desktop"] #viewFoco,html[data-layout="desktop"] #viewMais{max-width:900px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco{max-width:1180px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fobody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fotimer{grid-row:span 2}
+@media (max-width:480px){.foacts .btn{padding:10px 14px}.fowk{height:130px;gap:3px}.fov{font-size:.62rem}}
 </style>
 
 <div class="wrap">
@@ -878,10 +950,13 @@ html[data-layout="phone"] .hico{width:20px;height:20px}
     <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Anotações</span><span class="ecount" id="ncount"></span></button>
+    <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
     <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
+    <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg><span class="tl">Mais</span><span class="ecount" id="mcount"></span></button>
   </div>
   <div class="navextra" id="navExtra"></div>
   </nav>
+  <button class="fopill" id="foPill" type="button" hidden aria-label="Voltar ao Foco"><span class="fpl">Foco</span><b>00:00</b></button>
 
   <div id="viewFac" class="wrap" style="width:100%" hidden>
     <section class="card fhead" id="facHead" aria-labelledby="fh"></section>
@@ -914,6 +989,9 @@ html[data-layout="phone"] .hico{width:20px;height:20px}
     </section>
     <ol class="elist" id="nlist"></ol>
   </div>
+
+  <div id="viewFoco" class="wrap" style="width:100%" hidden><div id="foBody" class="fobody"></div></div>
+  <div id="viewMais" class="wrap" style="width:100%" hidden><div id="maisBody" class="cfbody"></div></div>
 
   <div id="viewInstr" class="wrap" style="width:100%" hidden>
     <button class="link fback" id="backQuest" type="button">← Voltar</button>
@@ -2133,7 +2211,8 @@ function renderPlan(){
     const ed=el(`<button class="mini" type="button">${editing?"Pronto":"Trocar subtópicos"}</button>`);ed.onclick=()=>{planEdit=editing?null:p.k;render()};acts.appendChild(ed);
     if(!editing){
       if(p.subs.length&&!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[p.k]="__hoje";openTopic(p.k);setTimeout(()=>{const g=document.getElementById("qf-"+p.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
-      const o=el(`<button class="mini" type="button">Abrir tema</button>`);o.onclick=()=>openTopic(p.k);acts.appendChild(o)}
+      const o=el(`<button class="mini" type="button">Abrir tema</button>`);o.onclick=()=>openTopic(p.k);acts.appendChild(o);
+      const fz=el(`<button class="mini" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(p.k);acts.appendChild(fz)}
     pl.appendChild(li)});
 }
 /* quando você começa um tema fora do plano, ele substitui um tema proposto ainda não iniciado */
@@ -2178,6 +2257,7 @@ function renderRevs(){
     const acts=el(`<div class="pacts"><button class="btn primary" type="button">Lembrei bem</button><button class="btn" type="button">Tive dificuldade</button></div>`);
     const [g,h]=acts.querySelectorAll("button");g.onclick=()=>reviewTopic(it.key,true);h.onclick=()=>reviewTopic(it.key,false);
     if(!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[it.key]="__hoje";openTopic(it.key);setTimeout(()=>{const x=document.getElementById("qf-"+it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
+    {const fz=el(`<button class="mini" type="button" title="Contar o tempo de revisão deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);acts.appendChild(fz)}
     body.appendChild(acts);
     const ne=el(`<button class="link" type="button"></button>`),armed=revArm===it.key;ne.textContent=armed?"Toque de novo: tira das revisões e volta para não iniciado (questões e anotações ficam)":"Não estudei este tema";if(armed)ne.classList.add("warn");
     ne.onclick=()=>{if(armed)resetStudy(it.key);else{revArm=it.key;render()}};body.appendChild(ne);
@@ -2966,7 +3046,7 @@ async function putErr(e){saveErrsLocal();if(!errStore)return;
 async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 
 function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
-  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help"}
+  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 function renderErros(){
@@ -3026,7 +3106,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2},profile:{name:"",goal:"",goalDate:""}};
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true},profile:{name:"",goal:"",goalDate:""}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -3039,6 +3119,11 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(INT_SETS[p.ints])o.prefs.ints=p.ints;
   if([14,21,28].includes(p.facWin))o.prefs.facWin=p.facWin;
   if([0,1,2,3].includes(p.resWeek))o.prefs.resWeek=p.resWeek;
+  if(Number.isInteger(p.fw)&&p.fw>=5&&p.fw<=180)o.prefs.fw=p.fw;
+  if(Number.isInteger(p.fb)&&p.fb>=0&&p.fb<=60)o.prefs.fb=p.fb;
+  if(typeof p.fsnd==="boolean")o.prefs.fsnd=p.fsnd;
+  if(typeof p.fwake==="boolean")o.prefs.fwake=p.fwake;
+  if(Number.isInteger(p.fgoal)&&p.fgoal>=0&&p.fgoal<=720)o.prefs.fgoal=p.fgoal;
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
@@ -3099,7 +3184,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   if(uiNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=uiNote;box.appendChild(n)}
   // aparência
   const ap=el(`<section class="card"><div class="dhead"><h2>Aparência</h2></div><span class="glabel">Layout</span><div class="lays"></div></section>`),ly=ap.querySelector(".lays");
-  [["classic","Clássico","Cartões arejados e gráficos completos. O padrão."],["compact","Compacto","Mais coisa por tela: letras e espaços menores, sem textos de explicação."],["focus","Foco","Só o essencial do dia, letras maiores e sem gráficos no Início."]].forEach(([v,t,d])=>{
+  [["classic","Clássico","Cartões arejados e gráficos completos. O padrão."],["compact","Compacto","Mais coisa por tela: letras e espaços menores, sem textos de explicação."],["focus","Essencial","Só o essencial do dia, letras maiores e sem gráficos no Início."]].forEach(([v,t,d])=>{
     const b=el(`<button class="lay" type="button" aria-pressed="${P.layout===v}"><span class="laypic lp-${v}" aria-hidden="true"><i></i><i></i><i></i></span><b></b><span></span></button>`);b.querySelector("b").textContent=t;b.querySelector("span:last-child").textContent=d;
     b.onclick=()=>setPref("layout",v);ly.appendChild(b)});
   ap.append(segRow("Tema","Automático segue o aparelho.",[["auto","Automático"],["light","Claro"],["dark","Escuro"]],P.theme,v=>setPref("theme",v)),
@@ -3118,6 +3203,13 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   fc.append(segRow("Antecedência das provas","Quantos dias antes a prova começa a ocupar o plano do dia.",[[14,"14 dias"],[21,"21 dias"],[28,"28 dias"]],P.facWin,v=>{ui.prefs.facWin=v;saveUI();redoPlan();render()}),
     segRow("Residência garantida","Dias por semana com pelo menos 1 tema da residência, mesmo com provas (exceto na semana da prova).",[[0,"0"],[1,"1"],[2,"2"],[3,"3"]],P.resWeek,v=>{ui.prefs.resWeek=v;saveUI();redoPlan();render()}));
   const mc=el(`<div class="cfcrunch"></div>`);fc.appendChild(mc);box.appendChild(fc);renderFacCrunch(mc);
+  // foco
+  const fo=el(`<section class="card"><div class="dhead"><h2>Foco</h2></div></section>`);
+  fo.append(segRow("Pomodoro","Minutos de foco + pausa. Em Personalizar, na aba Foco, você escolhe outros tempos.",[["25+5","25 + 5"],["50+10","50 + 10"],...(!(P.fw===25&&P.fb===5)&&!(P.fw===50&&P.fb===10)?[[`${P.fw}+${P.fb}`,`${P.fw} + ${P.fb}`]]:[])],`${P.fw}+${P.fb}`,v=>{const [w,b]=v.split("+").map(Number);ui.prefs.fw=w;ui.prefs.fb=b;saveUI();render()}),
+    segRow("Meta diária de foco","Aparece na aba Foco, com a sequência de dias na meta.",[[0,"Sem meta"],[60,"1 h"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[360,"6 h"]],P.fgoal,v=>{ui.prefs.fgoal=v;saveUI();render()}),
+    segRow("Som ao finalizar","Toca quando o ciclo ou a pausa terminam, com o app aberto.",[[true,"Ligado"],[false,"Desligado"]],!!P.fsnd,v=>{ui.prefs.fsnd=v;saveUI();render()}),
+    segRow("Tela acesa durante o foco","Quando o aparelho permite.",[[true,"Sim"],[false,"Não"]],!!P.fwake,v=>{ui.prefs.fwake=v;saveUI();render()}));
+  box.appendChild(fo);
   // questões, backup e ajuda
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
@@ -3172,7 +3264,13 @@ function reportData(o){const t=dnum(today()),from=o.period==="all"?null:fromNum(
   const tc={conhecimento:0,interpretacao:0,confusao:0};errs.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
   const qs=keys=>{let q=0,c=0;keys.forEach(k=>{const s=get(k);q+=s.qt||0;c+=s.qc||0});return {q,c}};
   let F=null;if(mk){const keys=[...mk].filter(k=>BYKEY[k]),c=lvlCounts(keys),q=qPeriod(keys,from);F={n:keys.length,c,seen:keys.length-c[0],q:q.q,qc:q.c,und:q.und,est:q.est,stP:keys.filter(k=>{const st=get(k);return (st.ed||[]).some(inP)||(st.last&&inP(st.last))}).length,due:keys.filter(k=>isDue(get(k))).length}}
-  return {from,S,first:Object.keys(hist).sort()[0],errs,topics,tc,qRes:qs(ALL.map(i=>i.key)),qFac:qs([...facKeys]),sems,sel,mk,F}}
+  // tempo de foco no período e nas matérias
+  const foIn=x=>{const t=(x.ref||"")[0],id=(x.ref||"").slice(2);if(mk){if(t==="T")return mk.has(id);if(t==="D")return sel.some(m=>m.id==="d:"+id);return false}
+    if(t==="T"&&BYKEY[id])return BYKEY[id].own?o.fac:o.res;if(t==="D")return o.fac;return true};
+  const fl=foSess.filter(x=>inP(x.d)&&foIn(x)),fby={};fl.forEach(x=>{const m=foMat(x),r=fby[m.id]||(fby[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
+  const fdm={};fl.forEach(x=>{fdm[x.d]=(fdm[x.d]||0)+x.sec});const fFirst=fl.length?fl.map(x=>x.d).sort()[0]:null;
+  const Fo={n:fl.length,sec:foSum(fl),days:Object.keys(fdm).length,span:from?t-dnum(from)+1:(fFirst?t-dnum(fFirst)+1:0),goalDays:ui.prefs.fgoal?Object.values(fdm).filter(v=>v>=ui.prefs.fgoal*60).length:0,by:Object.values(fby).sort((a,b)=>b.sec-a.sec)};
+  return {from,S,first:Object.keys(hist).sort()[0],errs,topics,tc,qRes:qs(ALL.map(i=>i.key)),qFac:qs([...facKeys]),sems,sel,mk,F,Fo}}
 function topicTips(it,list,s){const tips=[],n=t=>list.filter(x=>x.t===t).length,subs=[...new Set(list.map(x=>x.s).filter(Boolean))].slice(0,3),sl=subs.join(", ");
   if(n("conhecimento"))tips.push(`Volte à teoria ${sl?"de "+sl:"do tema"} antes de fazer novas questões. Estude pelos subtópicos e marque-os: eles entram nas revisões espaçadas.`);
   if(n("confusao"))tips.push(`Monte um quadro comparativo com o que você confundiu${sl?" ("+sl+")":""}, lado a lado, e releia o caderno de erros a cada revisão deste tema.`);
@@ -3211,6 +3309,12 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
   if(R.F){const F=R.F;kpis([["Temas vistos",`${F.seen}/${F.n}`,`${F.c[3]} dominado${F.c[3]===1?"":"s"}`],["Estudados no período",String(F.stP),"temas estudados ou revisados"],["Questões",String(F.q),F.q?`${pctS(F.qc,F.q)} de acerto${R.from?" no período":""}`:(R.from?"nenhuma no período":"nenhuma registrada")],["Erros no período",String(R.errs.length),F.due?`${F.due} revis${F.due===1?"ão pendente":"ões pendentes"}`:"no caderno de erros"]]);
     para(`Questões, acerto, estudos e erros contam só o período e as matérias escolhidas.${F.est?` ${F.est} questões foram registradas antes de 08/10/2026, quando o app ainda não guardava a data por tema: a data delas foi estimada pelo último estudo do tema.`:""}${R.from&&F.und?` ${F.und} questões antigas de temas nunca estudados não têm data e só entram em "Tudo".`:""}`,{size:8,color:C.mut,after:4})}
   else kpis([["Dias com estudo",String(R.S.act),`sequência atual: ${streak()} dia${streak()===1?"":"s"}`],["Temas estudados",String(R.S.e),"temas começados"],["Revisões",String(R.S.r),"revisões espaçadas feitas"],["Questões",String(R.S.q),R.S.q?`${pctS(R.S.c,R.S.q)} de acerto`:"nenhuma no período"]]);
+  // tempo de foco
+  if(R.Fo.n){const Fo=R.Fo,g=ui.prefs.fgoal;h2("Tempo de estudo (Foco)");
+    kpis([["Tempo total",fmtMin(Fo.sec),`${Fo.n} ${Fo.n===1?"sessão":"sessões"}`],["Dias com foco",String(Fo.days),Fo.span?`de ${Fo.span} dia${Fo.span===1?"":"s"} no período`:""],["Média por dia",fmtMin(Fo.span?Fo.sec/Fo.span:0),`${fmtMin(Fo.days?Fo.sec/Fo.days:0)} nos dias com foco`],g?["Dias na meta",String(Fo.goalDays),`meta de ${fmtMin(g*60)} por dia`]:["Sessão média",fmtMin(Fo.sec/Fo.n),"pomodoro, cronômetro e manual"]]);
+    const w=CW,mx=Fo.by[0].sec;table([{t:"Matéria",w:w*.44},{t:"Tempo",w:w*.14,al:"r"},{t:"Sessões",w:w*.13,al:"r"},{t:"Parte do tempo",w:w*.29}],Fo.by.slice(0,15).map(r=>[r.lab,fmtMin(r.sec),String(r.n),{bar:[[r.sec/mx,C.acc]]}]));
+    if(Fo.by.length>15)para(`+ ${Fo.by.length-15} matérias com menos tempo.`,{size:7.6,color:C.mut});
+    para(`Tempo registrado na aba Foco${R.mk?", só das matérias escolhidas":""}. Temas contam na especialidade; disciplinas da faculdade, pelo nome.`,{size:7.6,color:C.mut})}
   // residência
   const selSp=R.sel.filter(m=>m.id.startsWith("sp:")),selD=R.sel.filter(m=>m.id.startsWith("d:"));
   if(o.res&&R.mk&&selSp.length){h2("Residência");const w=CW;
@@ -3372,14 +3476,190 @@ function renderNavExtra(P,dueN){const box=$("#navExtra");box.innerHTML="";
   if(P.items.length){const d=P.items.filter(itemDone).length;add("Estudar hoje",`${d} de ${P.items.length} temas`,"",()=>{setView("inicio")})}
   add("Revisões",dueN?`${dueN} pendente${dueN===1?"":"s"}`:"em dia",dueN?"late":"",()=>{setView("inicio");const r=document.querySelector(".card.revs");if(r)r.scrollIntoView({block:"start"})});
   const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);add("Próxima prova",`${up.name} · ${inLabel(dd)}`,dd<=7?"late":"",()=>goProva(up))}
-  const CR=examCrunch();if(CR.active)add("Modo provas",`ligado até ${br(CR.until)}`,"late",()=>setView("fac"))}
+  const CR=examCrunch();if(CR.active)add("Modo provas",`ligado até ${br(CR.until)}`,"late",()=>setView("fac"));
+  {const td=foSum(foSess.filter(x=>x.d===today())),g=ui.prefs.fgoal*60;add("Foco hoje",foRun?"sessão em andamento":`${fmtMin(td)}${g?` de ${fmtMin(g)}`:""}`,"",()=>setView("foco"))}}
+/* ---------- Foco: pomodoro e cronômetro que contam o tempo de estudo ---------- */
+/* sessões: {id, d:"AAAA-MM-DD", s:ISO do início, sec, m:"p"|"c"|"x" (pomodoro, cronômetro, manual), ref:"T:<tema>"|"D:<disciplina>"|"", lab} */
+const LSFO="resid-focus-v1",LSFR="resid-focus-run",LSFP="resid-focus-pick",FO_C=2*Math.PI*46;
+let foSess=[],focStore=null,foRun=null,foPick={ref:"",mode:"p"},foTimer=null,foWake=null,foWaking=false,foActx=null,foMsg="",foPer="week",foMore=false,foAdd=null,foDel=null,foCustom=null,foArm=false,foTitle0=null;
+function foOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.d==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x.d)&&typeof x.sec==="number"&&x.sec>0&&x.sec<86400&&(typeof x.ref==="string"||x.ref===undefined)}
+function foClean(x){return {id:x.id,d:x.d,s:typeof x.s==="string"?x.s:x.d+"T12:00:00.000Z",sec:Math.round(x.sec),m:["p","c","x"].includes(x.m)?x.m:"c",ref:typeof x.ref==="string"?x.ref:"",lab:typeof x.lab==="string"?x.lab.slice(0,120):""}}
+try{const v=JSON.parse(localStorage.getItem(LSFO)||"[]");if(Array.isArray(v))foSess=v.filter(foOk).map(foClean)}catch(e){}
+try{const r=JSON.parse(localStorage.getItem(LSFR)||"null");if(r&&typeof r==="object"&&(r.mode==="p"||r.mode==="c")&&typeof r.acc==="number")foRun=r}catch(e){}
+try{const p=JSON.parse(localStorage.getItem(LSFP)||"null");if(p&&typeof p.ref==="string")foPick={ref:p.ref,mode:p.mode==="c"?"c":"p"}}catch(e){}
+const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fmtMin=sec=>{const m=Math.round(sec/60);return m<60?`${m} min`:`${Math.floor(m/60)}h${String(m%60).padStart(2,"0")}`};
+const foSum=list=>list.reduce((a,x)=>a+x.sec,0);
+const FO_MODE={p:"Pomodoro",c:"Cronômetro",x:"Manual"};
+function foSaveRun(){try{foRun?localStorage.setItem(LSFR,JSON.stringify(foRun)):localStorage.removeItem(LSFR)}catch(e){}}
+function foSaveLocal(){try{localStorage.setItem(LSFO,JSON.stringify(foSess))}catch(e){}}
+function foSavePick(){try{localStorage.setItem(LSFP,JSON.stringify(foPick))}catch(e){}}
+async function foPut(x){foSaveLocal();if(!focStore)return;try{await focStore.doc(x.id).set({...x})}catch(e){setSave("Não foi possível salvar a sessão de foco na conta; ficou salva neste navegador")}}
+async function foDelete(id){foSess=foSess.filter(x=>x.id!==id);foDel=null;foSaveLocal();render();if(focStore)try{await focStore.doc(id).delete()}catch(e){}}
+function foRefLabel(ref){const t=(ref||"")[0],id=(ref||"").slice(2);
+  if(t==="T"){const it=BYKEY[id];return it?it.t:""}
+  if(t==="D"){const d=discOf(id);return d?d.name:""}return ""}
+/* matéria da sessão: especialidade do tema ou disciplina da faculdade */
+function foMat(x){const t=(x.ref||"")[0],id=(x.ref||"").slice(2);
+  if(t==="T"&&BYKEY[id]){const it=BYKEY[id];return {id:specId(it),lab:`${it.area.code} · ${it.sp||it.area.name}`}}
+  if(t==="D"){const d=discOf(id);return {id:"d:"+id,lab:d?d.name:(x.lab||"Disciplina excluída")}}
+  if(t==="T")return {id:"x:"+id,lab:x.lab||"Tema excluído"};
+  return {id:"none",lab:"Sem vínculo"}}
+/* ----- relógio ----- */
+const foEl=()=>foRun?foRun.acc+(foRun.t0?Date.now()-foRun.t0:0):0;
+function foClockText(ms){const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;return (h?h+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(ss).padStart(2,"0")}
+function foShown(){if(!foRun)return {txt:foPick.mode==="c"?"00:00":foClockText(ui.prefs.fw*60000),frac:0};const el=foEl();
+  if(foRun.mode==="c")return {txt:foClockText(Math.floor(el/1000)*1000),frac:(el%3600000)/3600000};
+  return {txt:foClockText(foRun.plan-el),frac:Math.min(1,el/foRun.plan)}}
+function foStart(){foUnlock();const P=ui.prefs,mode=foPick.mode;foRun={mode,ph:"w",t0:Date.now(),acc:0,plan:mode==="p"?P.fw*60000:0,s:Date.now(),ref:foPick.ref||""};foMsg="";foArm=false;foSaveRun();foEnsureTick();render()}
+function foPause(){if(!foRun||!foRun.t0)return;foRun.acc=foEl();foRun.t0=null;foSaveRun();render()}
+function foResume(){if(!foRun||foRun.t0)return;foUnlock();foRun.t0=Date.now();foSaveRun();render()}
+function foRecord(startMs,sec,mode,ref){if(sec<60)return null;
+  const x={id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d:ymd(startMs),s:new Date(startMs).toISOString(),sec:Math.round(sec),m:mode,ref:ref||"",lab:foRefLabel(ref)};
+  foSess.unshift(x);if(foSess.length>5000)foSess.length=5000;foPut(x);return x}
+function foFinish(){if(!foRun)return;
+  if(foRun.ph==="b"){foRun=null;foMsg="Pausa encerrada. Pronto para o próximo ciclo."}
+  else{const x=foRecord(foRun.s,foEl()/1000,foRun.mode,foRun.ref);foMsg=x?`Sessão salva: ${fmtMin(x.sec)}${x.lab?" · "+x.lab:""}.`:"Sessão com menos de 1 minuto: não foi salva.";foRun=null}
+  foArm=false;foSaveRun();foWakeSync();render()}
+function foDiscard(){foRun=null;foArm=false;foSaveRun();foMsg="Sessão descartada: nada foi salvo.";foWakeSync();render()}
+function foEnsureTick(){if(foRun&&!foTimer)foTimer=setInterval(foTick,500);if(!foRun&&foTimer){clearInterval(foTimer);foTimer=null}}
+/* a contagem usa a hora de início, então segue certa mesmo com a tela bloqueada ou o app em segundo plano */
+function foTick(){if(!foRun){foEnsureTick();foPaint();return}
+  if(foRun.mode==="p"&&foRun.t0){const el=foEl();
+    if(el>=foRun.plan){const endAt=foRun.t0+(foRun.plan-foRun.acc),late=Date.now()-endAt;
+      if(foRun.ph==="w"){const x=foRecord(foRun.s,foRun.plan/1000,"p",foRun.ref),P=ui.prefs;
+        foRun=P.fb>0?{mode:"p",ph:"b",t0:endAt,acc:0,plan:P.fb*60000,s:endAt,ref:foRun.ref}:null;
+        foMsg=x?`Ciclo concluído: ${fmtMin(x.sec)} salvos${x.lab?" · "+x.lab:""}.${foRun?" Hora da pausa.":""}`:""}
+      else{foRun=null;foMsg="Pausa terminada. Pronto para o próximo ciclo."}
+      if(late<90000)foAlarm();foSaveRun();foWakeSync();render();foTick();return}}
+  foPaint()}
+function foPaint(){const S=foShown(),c=$("#foClock");if(c)c.textContent=S.txt;const r=$("#foArc");if(r)r.style.strokeDashoffset=String(FO_C*(1-S.frac));
+  const pill=$("#foPill");if(pill){const on=!!foRun&&view!=="foco";pill.hidden=!on;if(on){pill.querySelector("b").textContent=S.txt;pill.querySelector(".fpl").textContent=foRun.ph==="b"?"Pausa":foRun.t0?"Foco":"Pausado"}}
+  for(const id of ["mcount","focount"]){const b=document.getElementById(id);if(b)b.textContent=foRun?"●":""}
+  const ml=$("#maisFoco");if(ml&&foRun)ml.textContent=`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${S.txt}`;
+  if(foRun){if(foTitle0===null)foTitle0=document.title;document.title=`${S.txt} · ${foRun.ph==="b"?"Pausa":"Foco"}`}else if(foTitle0!==null){document.title=foTitle0;foTitle0=null}}
+/* som (gerado na hora, sem arquivo) e vibração */
+function foUnlock(){try{if(!foActx){const A=window.AudioContext||window.webkitAudioContext;if(A)foActx=new A()}if(foActx&&foActx.state==="suspended")foActx.resume()}catch(e){}}
+function foAlarm(force){if(!ui.prefs.fsnd&&!force)return;
+  try{foUnlock();if(foActx){const t=foActx.currentTime+0.05;[0,0.4,0.8,1.6,2.0,2.4].forEach((d,i)=>{const o=foActx.createOscillator(),g=foActx.createGain();o.type="sine";o.frequency.value=i%3===2?1175:880;
+    g.gain.setValueAtTime(0.0001,t+d);g.gain.exponentialRampToValueAtTime(0.4,t+d+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d+0.32);o.connect(g);g.connect(foActx.destination);o.start(t+d);o.stop(t+d+0.35)})}}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([250,120,250,120,250])}catch(e){}}
+/* manter a tela acesa durante o foco (quando o aparelho permite) */
+async function foWakeSync(){const want=!!(foRun&&foRun.t0&&ui.prefs.fwake&&document.visibilityState==="visible");
+  if(want&&!foWake&&!foWaking&&navigator.wakeLock){foWaking=true;try{foWake=await navigator.wakeLock.request("screen");foWake.addEventListener("release",()=>{foWake=null})}catch(e){foWake=null}foWaking=false}
+  else if(!want&&foWake){const w=foWake;foWake=null;try{await w.release()}catch(e){}}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){foTick();foWakeSync()}});
+function foSetRef(r){foPick.ref=r;foSavePick();if(foRun){foRun.ref=r;foSaveRun()}render()}
+function foGo(key){foSetRef("T:"+key);backStack=[];setView("foco")}
+/* ----- estatísticas ----- */
+function foDayTotals(){const m={};foSess.forEach(x=>{m[x.d]=(m[x.d]||0)+x.sec});return m}
+function foGoalStreak(m){const g=ui.prefs.fgoal*60;if(!g)return 0;let n=0,t=dnum(today());if((m[today()]||0)<g)t--;while((m[fromNum(t)]||0)>=g){n++;t--}return n}
+const foWeekStart=()=>dnum(today())-(new Date().getDay()+6)%7;// segunda-feira
+function foActiveDiscs(){return fac.discs.filter(d=>{const s=semOf(d.semId);return s&&!s.archived})}
+/* ----- tela ----- */
+function foLinkEl(){const ref=(foRun?foRun.ref:foPick.ref)||"",kind=ref[0]||"",ds=foActiveDiscs();
+  const w=el(`<div class="folink"><label class="qfsel"><span>Vincular a</span><select id="foKind"></select></label><label class="qfsel" id="foRefL"><span></span><select id="foRef"></select></label></div>`);
+  const ks=w.querySelector("#foKind");[["","Sem vínculo"],["T","Tema"],...(ds.length?[["D","Disciplina da faculdade"]]:[])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;ks.appendChild(o)});
+  ks.value=kind==="D"&&!ds.length?"":kind;
+  ks.onchange=()=>{const v=ks.value;foSetRef(v==="T"?"T:"+(((ensurePlan().items[0]||{}).k)||ALL[0].key):v==="D"?"D:"+ds[0].id:"")};
+  const rl=w.querySelector("#foRefL"),rs=w.querySelector("#foRef"),opt=(p,v,t)=>{const o=document.createElement("option");o.value=v;o.textContent=t;p.appendChild(o)};
+  if(kind==="T"){rl.querySelector("span").textContent="Tema";
+    const grp=(lab,items)=>{if(!items.length)return;const g=document.createElement("optgroup");g.label=lab;items.forEach(it=>opt(g,"T:"+it.key,it.t));rs.appendChild(g)};
+    grp("Plano de hoje",ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean));
+    const due=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key)));grp("Revisões de hoje",due.slice(0,15));
+    const by={};[...ALL,...FAC_ITEMS].forEach(it=>{const k=`${it.area.code} · ${it.sp||it.area.name}`;(by[k]=by[k]||[]).push(it)});Object.keys(by).forEach(k=>grp(k,by[k]));
+    if(!BYKEY[ref.slice(2)])opt(rs,ref,foRefLabel(ref)||"Tema excluído");rs.value=ref}
+  else if(kind==="D"&&ds.length){rl.querySelector("span").textContent="Disciplina";const many=new Set(ds.map(d=>d.semId)).size>1;
+    ds.forEach(d=>opt(rs,"D:"+d.id,d.name+(many?" · "+(semOf(d.semId)||{}).name:"")));if(!discOf(ref.slice(2)))opt(rs,ref,"Disciplina excluída");rs.value=ref}
+  else rl.hidden=true;
+  rs.onchange=()=>foSetRef(rs.value);return w}
+function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foShown();
+  const c=el(`<section class="card fotimer" aria-labelledby="foh"><div class="seg fomode" role="group" aria-label="Tipo de contagem"></div><p class="fophase" id="foh"></p>
+    <div class="foring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="fotrk"/><circle cx="50" cy="50" r="46" class="foarc" id="foArc" style="stroke-dasharray:${FO_C};stroke-dashoffset:${FO_C*(1-S.frac)}"/></svg>
+    <div class="foclk"><b id="foClock" role="timer" aria-live="off"></b><span class="fost"></span></div></div><div class="foacts"></div><div class="foopts"></div><p class="gstatus fomsg" role="status"></p></section>`);
+  const seg=c.querySelector(".fomode");[["p","Pomodoro"],["c","Cronômetro"]].forEach(([v,t])=>{const b=el(`<button type="button" aria-pressed="${mode===v}"></button>`);b.textContent=t;b.disabled=!!R&&mode!==v;b.onclick=()=>{if(R)return;foPick.mode=v;foSavePick();render()};seg.appendChild(b)});
+  c.querySelector(".fophase").textContent=R&&R.ph==="b"?"Pausa":mode==="p"?"Sessão de foco":"Cronômetro livre";
+  c.querySelector("#foClock").textContent=S.txt;
+  c.querySelector(".fost").textContent=!R?"Pronto para começar":R.ph==="b"?(R.t0?"Pausa em andamento":"Pausa parada"):R.t0?"Foco em andamento":"Pausado";
+  c.classList.toggle("onbreak",!!R&&R.ph==="b");c.classList.toggle("running",!!R&&!!R.t0);
+  const a=c.querySelector(".foacts"),btn=(t,cls,fn)=>{const b=el(`<button class="btn ${cls}" type="button"></button>`);b.textContent=t;b.onclick=fn;a.appendChild(b);return b};
+  if(!R)btn(mode==="p"?`▶ Iniciar foco · ${P.fw} min`:"▶ Iniciar cronômetro","primary fogo",foStart).id="foStart";
+  else if(R.ph==="b"){btn(R.t0?"Ⅱ Pausar":"▶ Retomar","",R.t0?foPause:foResume);btn("Pular pausa","",foFinish).id="foSkip"}
+  else{btn(R.t0?"Ⅱ Pausar":"▶ Retomar","fopause",R.t0?foPause:foResume).id="foPauseB";btn("✓ Encerrar e salvar","primary",foFinish).id="foEnd";
+    const d=el(`<button class="link" type="button" id="foDisc"></button>`);d.textContent=foArm?"Toque de novo para descartar (não salva)":"Descartar";if(foArm)d.classList.add("warn");d.onclick=()=>{if(foArm)foDiscard();else{foArm=true;render()}};a.appendChild(d)}
+  const o=c.querySelector(".foopts");
+  const snd=el(`<button class="chip" type="button" id="foSnd" aria-pressed="${!!P.fsnd}"></button>`);snd.textContent=`Som ao finalizar: ${P.fsnd?"ligado":"desligado"}`;snd.onclick=()=>{ui.prefs.fsnd=!P.fsnd;saveUI();render()};o.appendChild(snd);
+  const tst=el(`<button class="link" type="button">Testar alarme</button>`);tst.onclick=()=>foAlarm(true);o.appendChild(tst);
+  if("wakeLock" in navigator){const wk=el(`<button class="chip" type="button" id="foWk" aria-pressed="${!!P.fwake}"></button>`);wk.textContent=`Tela acesa: ${P.fwake?"sim":"não"}`;wk.title="Mantém a tela ligada enquanto o foco corre";wk.onclick=()=>{ui.prefs.fwake=!P.fwake;saveUI();foWakeSync();render()};o.appendChild(wk)}
+  if(mode==="p"){const pr=el(`<div class="chips fopre" role="group" aria-label="Duração do pomodoro"></div>`);
+    [[25,5],[50,10]].forEach(([w,b])=>{const x=el(`<button class="chip" type="button" aria-pressed="${P.fw===w&&P.fb===b&&!foCustom}">${w} + ${b}</button>`);x.onclick=()=>{ui.prefs.fw=w;ui.prefs.fb=b;foCustom=null;saveUI();render()};pr.appendChild(x)});
+    const cu=!(P.fw===25&&P.fb===5)&&!(P.fw===50&&P.fb===10),cb=el(`<button class="chip" type="button" id="foCus" aria-pressed="${cu||!!foCustom}"></button>`);cb.textContent=cu?`${P.fw} + ${P.fb}`:"Personalizar";
+    cb.onclick=()=>{foCustom=foCustom?null:{w:P.fw,b:P.fb};render()};pr.appendChild(cb);c.appendChild(pr);
+    if(foCustom){const f=el(`<div class="focus-form"><label class="qfsel"><span>Foco (min)</span><input type="number" id="foW" min="5" max="180" inputmode="numeric"></label><label class="qfsel"><span>Pausa (min)</span><input type="number" id="foB" min="0" max="60" inputmode="numeric"></label><button class="btn" type="button">Salvar</button></div>`);
+      const iw=f.querySelector("#foW"),ib=f.querySelector("#foB");iw.value=foCustom.w;ib.value=foCustom.b;iw.oninput=()=>{foCustom.w=iw.value};ib.oninput=()=>{foCustom.b=ib.value};
+      f.querySelector("button").onclick=()=>{const w=Math.round(+iw.value),b=Math.round(+ib.value);if(!(w>=5&&w<=180)||!(b>=0&&b<=60)){foMsg="Foco de 5 a 180 minutos e pausa de 0 a 60.";render();return}ui.prefs.fw=w;ui.prefs.fb=b;foCustom=null;foMsg=`Pomodoro: ${w} min de foco e ${b?b+" min de pausa":"sem pausa"}.${foRun?" Vale a partir do próximo ciclo.":""}`;saveUI();render()};c.appendChild(f)}}
+  c.appendChild(foLinkEl());
+  c.appendChild(el(`<p class="how fohow">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
+  const m=c.querySelector(".fomsg");m.textContent=foMsg;m.hidden=!foMsg;return c}
+function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=P.fgoal*60;
+  const wk=foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t),tot=foSum(wk),td=m[today()]||0,act=new Set(wk.map(x=>x.d)).size,st=foGoalStreak(m);
+  const c=el(`<section class="card dash" aria-labelledby="fowh"><div class="dhead"><h2 id="fowh">Esta semana</h2><span class="todaydate">tempo de estudo efetivamente salvo</span></div><div class="kpis"></div><div class="fowk" role="img"></div><div class="fogoal"></div></section>`);
+  c.querySelector(".kpis").innerHTML=`<div class="kpi"><span class="kl">Hoje</span><b>${fmtMin(td)}</b><span class="ks">${g?`${Math.min(100,Math.round(td/g*100))}% da meta de ${fmtMin(g)}`:"sem meta diária"}</span>${g?`<div class="meter"><i style="width:${Math.min(100,td/g*100)}%"></i></div>`:""}</div>
+    <div class="kpi"><span class="kl">Total na semana</span><b>${fmtMin(tot)}</b><span class="ks">${act} dia${act===1?"":"s"} com foco</span></div>
+    <div class="kpi"><span class="kl">Sessões</span><b>${wk.length}</b><span class="ks">${wk.length?`média de ${fmtMin(tot/wk.length)}`:"nenhuma ainda"}</span></div>
+    <div class="kpi"><span class="kl">${g?"Sequência na meta":"Média por dia"}</span><b>${g?st:fmtMin(act?tot/act:0)}</b><span class="ks">${g?`dia${st===1?"":"s"} seguido${st===1?"":"s"}`:"nos dias com foco"}</span></div>`;
+  const days=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],vals=days.map((_,i)=>m[fromNum(ws+i)]||0),mx=Math.max(g,...vals,1);
+  const box=c.querySelector(".fowk");box.setAttribute("aria-label","Minutos de foco por dia da semana: "+days.map((d,i)=>`${d} ${Math.round(vals[i]/60)} min`).join(", "));
+  box.innerHTML=days.map((d,i)=>{const n=ws+i,v=vals[i],fut=n>t;return `<div class="fod${n===t?" now":""}${fut?" fut":""}"><span class="fov">${v?fmtMin(v).replace(" min","m"):""}</span><div class="fob"><i style="height:${v/mx*100}%" data-tip="${d} ${br(fromNum(n))}: ${fmtMin(v)}${g?` (meta ${fmtMin(g)})`:""}" class="${g&&v>=g?"ok":""}"></i></div><span class="fox">${d}</span></div>`}).join("")+(g?`<span class="fogl" style="bottom:calc(1.3rem + ${g/mx}*(100% - 2.6rem))" aria-hidden="true"></span>`:"");
+  const gl=c.querySelector(".fogoal"),sel=el(`<label class="qfsel fogsel"><span>Meta diária de foco</span><select id="foGoal"></select></label>`),s=sel.querySelector("select");
+  [[0,"Sem meta"],[30,"30 min"],[60,"1 h"],[90,"1h30"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[300,"5 h"],[360,"6 h"],[480,"8 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});
+  if(![0,30,60,90,120,180,240,300,360,480].includes(P.fgoal)){const o=document.createElement("option");o.value=P.fgoal;o.textContent=fmtMin(P.fgoal*60);s.appendChild(o)}
+  s.value=String(P.fgoal);s.onchange=()=>{ui.prefs.fgoal=+s.value;saveUI();render()};gl.appendChild(sel);
+  if(g)gl.appendChild(el(`<span class="how">A linha no gráfico marca a meta; barras verdes bateram a meta.</span>`));
+  return c}
+function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foPer==="30"?t-29:-Infinity;
+  const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),g={};list.forEach(x=>{const m=foMat(x);const r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
+  const rows=Object.values(g).sort((a,b)=>b.sec-a.sec),mx=rows.length?rows[0].sec:1;
+  const c=el(`<section class="card" aria-labelledby="fomh"><div class="dhead"><h2 id="fomh">Tempo por matéria</h2></div><div class="seg foper" role="group" aria-label="Período"></div><div class="fomats"></div></section>`);
+  [["week","Esta semana"],["30","30 dias"],["all","Tudo"]].forEach(([v,lab])=>{const b=el(`<button type="button" aria-pressed="${foPer===v}"></button>`);b.textContent=lab;b.onclick=()=>{foPer=v;render()};c.querySelector(".foper").appendChild(b)});
+  const box=c.querySelector(".fomats");
+  if(!rows.length)box.innerHTML=`<p class="cempty">${foSess.length?"Nenhuma sessão neste período.":"Vincule as sessões a um tema ou a uma disciplina para ver aqui quanto tempo foi para cada matéria."}</p>`;
+  else box.innerHTML=rows.slice(0,15).map(r=>`<div class="vrow"><div class="vtop"><span class="vl">${esc(r.lab)}</span><span class="hv">${fmtMin(r.sec)}</span><span class="hn">${Math.round(r.sec/tot*100)}%</span></div><div class="hbar track1"><i style="width:${Math.max(r.sec/mx*100,1)}%;background:var(--accent)" data-tip="${esc(r.lab)}: ${fmtMin(r.sec)} em ${r.n} sess${r.n===1?"ão":"ões"}"></i></div></div>`).join("")+(rows.length>15?`<p class="how">+ ${rows.length-15} matérias com menos tempo.</p>`:"")+`<p class="how">Total: ${fmtMin(tot)} em ${list.length} sess${list.length===1?"ão":"ões"}. Temas contam na especialidade; disciplinas da faculdade, pelo nome.</p>`;
+  return c}
+function foListCard(){const c=el(`<section class="card" aria-labelledby="folh"><div class="dhead"><h2 id="folh">Sessões recentes</h2><button class="link" type="button" id="foAddB"></button></div><div class="foaddbox"></div><ol class="folist"></ol></section>`);
+  const ab=c.querySelector("#foAddB");ab.textContent=foAdd?"Fechar":"+ Adicionar tempo";ab.onclick=()=>{foAdd=foAdd?null:{d:today(),min:"",msg:""};render()};
+  if(foAdd){const f=el(`<div class="foadd"><p class="how">Para estudo feito sem o cronômetro (aula, ambulatório, leitura). Fica vinculado ao que estiver escolhido em <b>Vincular a</b>, acima.</p><div class="focus-form"><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label><label class="qfsel"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label><button class="btn primary" type="button">Salvar</button></div><p class="err" role="alert"></p></div>`);
+    const id=f.querySelector("#foAddD"),im=f.querySelector("#foAddM");id.value=foAdd.d;id.max=today();im.value=foAdd.min;id.oninput=()=>{foAdd.d=id.value};im.oninput=()=>{foAdd.min=im.value};f.querySelector(".err").textContent=foAdd.msg;
+    f.querySelector("button").onclick=()=>{const mn=Math.round(+im.value),d=id.value;if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){foAdd.msg="Escolha um dia até hoje.";render();return}if(!(mn>=1&&mn<=720)){foAdd.msg="Digite de 1 a 720 minutos.";render();return}
+      const ref=foPick.ref||"",x={id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d,s:d+"T12:00:00.000Z",sec:mn*60,m:"x",ref,lab:foRefLabel(ref)};
+      foSess.push(x);foSess.sort((a,b)=>a.s<b.s?1:-1);foPut(x);foAdd=null;foMsg=`${fmtMin(x.sec)} adicionados em ${br(d)}${x.lab?" · "+x.lab:""}.`;render()};
+    c.querySelector(".foaddbox").appendChild(f)}
+  const ol=c.querySelector(".folist"),all=[...foSess].sort((a,b)=>a.d===b.d?(a.s<b.s?1:-1):(a.d<b.d?1:-1)),sh=foMore?all.slice(0,60):all.slice(0,8);
+  if(!all.length)ol.appendChild(el(`<li class="cempty">Nenhuma sessão ainda. Inicie um pomodoro ou o cronômetro acima: o tempo é salvo aqui.</li>`));
+  sh.forEach(x=>{const li=el(`<li class="foitem"><span class="foic" aria-hidden="true">${x.m==="p"?"◎":x.m==="c"?"◷":"✎"}</span><span class="fon"><b></b><span></span></span><span class="fod2"></span><button class="foxb" type="button" aria-label="Excluir sessão">×</button></li>`);
+    li.querySelector(".fon b").textContent=x.ref?(foRefLabel(x.ref)||x.lab||"Excluído"):"Sem vínculo";
+    li.querySelector(".fon span").textContent=`${br(x.d)}/${x.d.slice(0,4)} · ${FO_MODE[x.m]||""}${x.ref&&x.ref[0]==="D"?" · faculdade":""}`;
+    li.querySelector(".fod2").textContent=fmtMin(x.sec);
+    const xb=li.querySelector(".foxb");if(foDel===x.id){xb.remove();const cf=el(`<span class="foconf"><button class="mini warn" type="button">Excluir</button><button class="mini" type="button">Manter</button></span>`);const [y,n]=cf.querySelectorAll("button");y.onclick=()=>foDelete(x.id);n.onclick=()=>{foDel=null;render()};li.appendChild(cf)}
+    else xb.onclick=()=>{foDel=x.id;render()};
+    ol.appendChild(li)});
+  if(all.length>8){const m=el(`<li><button class="link" type="button">${foMore?"Mostrar menos":`Mostrar mais (${Math.min(all.length,60)-8})`}</button></li>`);m.querySelector("button").onclick=()=>{foMore=!foMore;render()};ol.appendChild(m)}
+  return c}
+function renderFoco(){const b=$("#foBody");b.innerHTML="";b.append(foTimerCard(),foWeekCard(),foMatCard(),foListCard());foPaint()}
+function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h2 class="cftitle">Mais</h2>`));
+  const c=el(`<section class="card"><div class="cflinks"></div></section>`),l=c.querySelector(".cflinks");
+  const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,td=foSum(foSess.filter(x=>x.d===today()));
+  [["Foco",foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Pomodoro e cronômetro · hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"foco","maisFoco"],
+   ["Anotações",nk?`${nk} tema${nk>1?"s":""} com anotações`:"Resumos e anotações dos temas","notas","maisNotas"]].forEach(([t,d,v,id])=>{
+    const x=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);x.id="go-"+v;x.querySelector("b").textContent=t;const sp=x.querySelector("span");sp.textContent=d;sp.id=id;x.onclick=()=>setView(v);l.appendChild(x)});
+  b.appendChild(c)}
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
-  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length}}
+  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui}}}
-function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico`}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess}}}
+function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
 const HELP=[
@@ -3448,9 +3728,19 @@ const HELP=[
 - **+1 vaga** se o conteúdo também cai muito na residência. **Residência protegida:** 2 dias por semana com um tema dela, exceto nos 7 dias finais antes de uma prova.
 - **Modo provas:** 3+ provas em 7 dias liga sozinho. Controle manual em **Faculdade › Modo provas**.
 - Os temas FAC não entram no "% dominado", que mede só os 185 temas da residência.`],
+["Foco: tempo de estudo",`A aba **Foco** (no celular, dentro de **Mais**) conta os minutos que você estuda.
+- **Pomodoro:** 25 + 5 ou 50 + 10 minutos, ou **Personalizar**. Ao terminar o ciclo, o tempo é salvo e a pausa começa sozinha; **Pular pausa** encerra a pausa.
+- **Cronômetro:** conta até você tocar em **Encerrar e salvar**. Menos de 1 minuto não é salvo. **Descartar** apaga a sessão em andamento.
+- **Vincular a:** um tema (os do plano e das revisões de hoje aparecem primeiro) ou uma disciplina da faculdade. Dá para mudar com o relógio correndo. Nos cartões do **Estudar hoje** e das **Revisões**, o botão **Foco** já abre o relógio no tema.
+- **Esta semana:** hoje, total, sessões e um gráfico de segunda a domingo. Com uma **meta diária**, aparecem a linha da meta e a sequência de dias na meta.
+- **Tempo por matéria:** semana, 30 dias ou tudo; temas contam na especialidade e disciplinas pelo nome.
+- **Sessões recentes:** toque no × para excluir. **+ Adicionar tempo** registra estudo feito sem o relógio (aula, ambulatório, leitura).
+- A contagem usa a hora de início: continua certa com a tela bloqueada ou o app fechado. O **alarme** só toca com o app aberto; com o app em segundo plano, ele toca quando você volta. No iPhone, o som segue a chave de silencioso. **Tela acesa** mantém a tela ligada durante o foco, quando o aparelho permite.
+- Fora da aba Foco, um botão com o tempo aparece no canto da tela para voltar ao relógio.
+- O tempo vai para o **PDF** (Perfil › Exportar PDF), respeitando o período e as matérias escolhidas, e para o backup.`],
 ["Navegação por aparelho",`| Aparelho | Navegação | Aba Residência |
 |---|---|---|
-| Celular | Barra embaixo; Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
+| Celular | Barra embaixo (Anotações e Foco ficam em **Mais**); Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
 | Tablet em pé ou no app do Claude | Faixa lateral | Hoje · Revisões · Lista · Progresso |
 | Tablet deitado (tela cheia) | Faixa lateral | Duas colunas |
 | Computador | Menu lateral com atalhos | Duas colunas |
@@ -3465,7 +3755,7 @@ const HELP=[
 - **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 usam a data do último estudo do tema). "Estudados no período" conta cada dia em que o tema foi estudado ou revisado. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
 
 **⚙ Configurações:**
-- **Layout:** **Clássico** (o padrão), **Compacto** (mais coisa por tela, sem textos de explicação) ou **Foco** (só o essencial do dia, letras maiores, sem gráficos no Início). Troca na hora.
+- **Layout:** **Clássico** (o padrão), **Compacto** (mais coisa por tela, sem textos de explicação) ou **Essencial** (só o essencial do dia, letras maiores, sem gráficos no Início). Troca na hora.
 - **Tema** (automático, claro, escuro) e **tamanho da letra**.
 - **Plano do dia e revisões:** temas por dia (2 a 5), subtópicos por tema (2 a 4) e intervalos das revisões (**Padrão** 1·3·7·15·30·60·90, **Intensivo** 1·2·4·7·15·30·60, **Espaçado** 1·4·10·21·45·90·120 dias). O plano de hoje só muda se você tocar em **Refazer o plano de hoje**.
 - **Faculdade:** antecedência das provas (14, 21 ou 28 dias), dias por semana com residência garantida e o modo provas.
@@ -3532,6 +3822,10 @@ function renderAll(){
   else if(view==="help")renderHelp();
   else if(view==="perfil")renderPerfil();
   else if(view==="config")renderConfig();
+  else if(view==="foco")renderFoco();
+  else if(view==="mais")renderMais();
+  if(view!=="foco")$("#foBody").innerHTML="";
+  foEnsureTick();foPaint();
   renderHead();
   renderFocus();
   placeShared();
@@ -3614,6 +3908,7 @@ $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});
+$("#foPill").onclick=()=>{backStack=[];setView("foco")};
 if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
 $("#nq").addEventListener("input",debounced(e=>{nQuery=norm(e.target.value.trim());render()}));
@@ -3679,6 +3974,9 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
     const rids=new Set(remote.map(e=>e.id)),localOnly=errors.filter(e=>!rids.has(e.id));
     if(remote.length){errors=[...remote.map(e=>({...e})),...localOnly];saveErrsLocal();render()}
     for(const e of localOnly)await putErr(e);
+    focStore=store.collection("focus");
+    try{const fq=await focStore.get(),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
+      if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}
     notesStore=store.collection("notes");
     try{const ns=await notesStore.get();let changed=false;
       ns.docs.forEach(d=>{const v=d.data();if(BYKEY[d.id]&&v&&typeof v.t==="string"&&v.t.trim()&&notes[d.id]!==v.t){
