@@ -104,6 +104,10 @@ consultado quando há dúvida. Responda em português.
   `errFormEl(D,pre,onSave)` + `eNew` (também usados por `eCadEl` no simulado e no Refazer, com `qDraft`), `eRepCard`/`eRepeat`
   (mesmo tema ≥2 em 30 dias; `miss`≥2), `eWeeksEl` (8 semanas por tipo), `eCardBtn` (→ `cdAdd`, guarda `cd`) e `eToNote`
   (seção "## Meus erros" da anotação, marca `nt`). Próximo passo do Início: `kind:"errs"`.
+  Também: causa `e.c` (`ECAUSES` por tipo, dicas `ECTIPS`, "Por que você erra"), arquivar `e.arch` (`eArchive`; arquivados saem de
+  `eDueList`/`eRepeat`), filtros `#eMore` (`renderEMore`: `eFlags` due|rep|nocard|arch, `ePer`, `eSrc`, `eCause`; `eExtraOk`), ordem
+  `eOrder` sp|new|due|miss, PDF `errosPDF(eVis)`/`ePdfSave`, simulado `simCfg.src="errs"` (`eSimItems`, questão com `err` → `eAnswer`).
+  O selo `#ecount` mostra os erros para revisar hoje.
 
 ## Cuidados
 
