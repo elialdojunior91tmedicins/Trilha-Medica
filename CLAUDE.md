@@ -46,6 +46,9 @@ consultado quando há dúvida. Responda em português.
 
 - Início: os cartões "Estudar hoje" (`.card.today`) e "Revisões" (`.card.revs`) são os mesmos nós da aba Residência;
   `placeShared()` os move para `#iToday`/`#iRevs` quando a aba Início está aberta e de volta ao abrir a Residência.
+  Placar do dia `#iBoard` (`renderInicioBoard`), próximo passo `nextSteps()`/`startStep()` (liga o Foco no tema), projeção `projEl()`
+  dentro de `#iMeta` (temas não vistos × `hist[d].e` das últimas 4 semanas). Cartões do plano (`planOpen`) e das revisões (`revOpen`)
+  ficam recolhidos e abrem sozinhos quando começados.
 - Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
   guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
