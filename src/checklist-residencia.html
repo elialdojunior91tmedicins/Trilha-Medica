@@ -237,6 +237,7 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .fchip{font:500 .76rem var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:2px 9px;cursor:pointer}
 .fchip.fac{border-color:var(--l1);color:var(--l1)}
 .flv{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+#facSemEdit:empty{display:none}#facSemEdit{margin:8px 0}
 .flv p{margin:0}
 @media (max-width:480px){.fpform{grid-template-columns:1fr 1fr}.fpform .btn{grid-column:1/-1}}
 .r-own{background:var(--accent);color:var(--on-accent)}
@@ -584,6 +585,7 @@ html[data-layout="desktop"][data-cols="2"] #viewTemas>#resetBox{grid-column:1;gr
   <div id="viewFac" class="wrap" style="width:100%" hidden>
     <section class="card" aria-labelledby="fh">
       <div class="dhead"><h2 id="fh">Faculdade</h2><span class="ftools" id="facSemTools"></span></div>
+      <div id="facSemEdit"></div>
       <p class="gtext how">Disciplinas, conteúdos e provas do semestre. Os conteúdos são os mesmos temas do checklist: estudar aqui conta na aba Temas, nas revisões e no progresso.</p>
       <details class="plain"><summary>Como as provas entram no plano do dia</summary><ul class="frules">
         <li><b>21 dias</b> antes: 1 dos 3 temas do dia é da prova. <b>14 dias</b>: 2. <b>7 dias</b>: os 3.</li>
@@ -1866,7 +1868,7 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 const LSF="resid-fac-v1", FAC_WIN=21, FAC_VESP=3, RES_MIN_WEEK=2, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
@@ -2118,21 +2120,22 @@ function renderFac(){
   const sems=fac.sems.filter(s=>facShowArch||!s.archived);
   if(!facSel||!semOf(facSel)||(!facShowArch&&semOf(facSel).archived))facSel=(sems[sems.length-1]||{}).id||null;
   const sc=$("#facSems");sc.innerHTML="";
-  sems.forEach(s=>{const b=el(`<button class="chip" aria-pressed="${s.id===facSel}"></button>`);b.textContent=s.name+(s.archived?" · arquivado":"");b.onclick=()=>{facSel=s.id;render()};sc.appendChild(b)});
+  sems.forEach(s=>{const b=el(`<button class="chip" aria-pressed="${s.id===facSel}"></button>`);b.textContent=s.name+(s.archived?" · arquivado":"");b.onclick=()=>{if(facSel!==s.id&&(facEdit==="sem"||facEdit==="lv"))closeEdit();facSel=s.id;render()};sc.appendChild(b)});
   const ns=el(`<form class="addsub"><input class="etext" id="facNewSem" maxlength="40" placeholder="${fac.sems.length?"Novo semestre: ex. 2027.1":"Seu semestre: ex. 2026.2"}" aria-label="Novo semestre"><button class="btn${fac.sems.length?"":" primary"}" type="submit">Criar semestre</button></form>`);
   const nsi=ns.querySelector("input");nsi.value=facNew.sem||"";nsi.oninput=()=>facNew.sem=nsi.value;
   ns.onsubmit=e=>{e.preventDefault();const t=nsi.value.trim();if(!t)return;facNew.sem="";addSem(t)};
   $("#facSemNew").innerHTML="";$("#facSemNew").appendChild(ns);
   const cur=semOf(facSel),tools=$("#facSemTools");tools.innerHTML="";
   if(cur){const a=el(`<button class="link" type="button">${cur.archived?"Desarquivar semestre":"Arquivar semestre"}</button>`);a.onclick=()=>{cur.archived=!cur.archived;saveFac();render()};tools.appendChild(a);
-    const rn=el(`<button class="link" type="button">Renomear</button>`);rn.onclick=()=>{facEdit=facEdit==="sem"?null:"sem";render()};
-    const lb=el(`<button class="link" type="button">Nomes dos níveis</button>`);lb.onclick=()=>{facEdit=facEdit==="lv"?null:"lv";render()};tools.append(rn,lb)}
+    const rn=el(`<button class="link" type="button" aria-expanded="${facEdit==="sem"}">Renomear</button>`);rn.onclick=()=>{openEdit(facEdit==="sem"?null:"sem");render()};
+    const lb=el(`<button class="link" type="button" aria-expanded="${facEdit==="lv"}">Nomes dos níveis</button>`);lb.onclick=()=>{openEdit(facEdit==="lv"?null:"lv");render()};tools.append(rn,lb)}
   if(fac.sems.some(s=>s.archived)){const t=el(`<button class="link" type="button">${facShowArch?"Ocultar arquivados":"Mostrar arquivados"}</button>`);t.onclick=()=>{facShowArch=!facShowArch;render()};tools.appendChild(t)}
-  if(cur&&facEdit==="sem")tools.after(nameEdit("sem",cur.name,v=>{cur.name=v}));
-  if(cur&&facEdit==="lv"){const L0=lv(cur);const f=el(`<form class="flv"><p class="gtext how">Como o seu curso chama cada nível (usado nos botões e no cadastro pela ementa).</p><div class="fgrid"></div><div class="btns"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button">Cancelar</button></div></form>`);
-    [["disc","Disciplina (ex.: NCS, Módulo)"],["eixo","Eixo (ex.: Eixo, Unidade)"],["sp","SP (ex.: SP, Problema, Aula)"]].forEach(([k,lab])=>{const l=el(`<label class="ffield"><span></span><input class="etext" maxlength="20"></label>`);l.querySelector("span").textContent=lab;const i=l.querySelector("input");i.name=k;i.id="flv-"+k;i.value=L0[k];f.querySelector(".fgrid").appendChild(l)});
-    f.onsubmit=e=>{e.preventDefault();const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)cur.lv=o;else delete cur.lv;facEdit=null;saveFac();render()};
-    f.querySelectorAll("button")[1].onclick=()=>{facEdit=null;render()};tools.after(f)}
+  const se=$("#facSemEdit");se.innerHTML="";
+  if(cur&&facEdit==="sem"){const ne=nameEdit("sem",cur.name,v=>{cur.name=v.slice(0,40)});ne.querySelector("input").maxLength=40;ne.querySelector("input").setAttribute("aria-label","Novo nome do semestre");se.appendChild(ne)}
+  if(cur&&facEdit==="lv"){const L0={...lv(cur),...(facDraft.lv||{})};const f=el(`<form class="flv"><p class="gtext how"></p><div class="fgrid"></div><div class="btns"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button">Cancelar</button></div></form>`);
+    [["disc","Disciplina (ex.: NCS, Módulo)"],["eixo","Eixo (ex.: Eixo, Unidade)"],["sp","SP (ex.: SP, Problema, Aula)"]].forEach(([k,lab])=>{const l=el(`<label class="ffield"><span></span><input class="etext" maxlength="20"></label>`);l.querySelector("span").textContent=lab;const i=l.querySelector("input");i.name=k;i.id="flv-"+k;i.value=L0[k];i.oninput=()=>{(facDraft.lv=facDraft.lv||{})[k]=i.value};f.querySelector(".fgrid").appendChild(l)});
+    f.onsubmit=e=>{e.preventDefault();const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)cur.lv=o;else delete cur.lv;closeEdit();saveFac();render()};
+    f.querySelector("p").textContent=`Nomes dos níveis em ${cur.name}: como o seu curso chama cada nível (usado nos botões e no cadastro pela ementa).`;f.querySelectorAll("button")[1].onclick=()=>{closeEdit();render()};se.appendChild(f)}
   // modo provas: automático ou manual
   const fc=$("#facCrunch");fc.innerHTML="";{const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
     const g=el(`<div class="grp"><span class="glabel">Modo provas</span><div class="seg" role="group" aria-label="Modo provas"></div><p class="gtext how"></p></div>`);
@@ -2180,9 +2183,13 @@ function mapPicker(m,onPick,id){const w=el(`<span class="fmapw"></span>`);
     if(sp==="*"){facMapCustom=id;onPick({area:a,spec:""})}else{facMapCustom=null;onPick({area:a,spec:sp})}};
   return w}
 /* texto que vira campo de edição ao tocar em "renomear" */
-function nameEdit(id,val,save){const f=el(`<form class="fren"><input class="etext" maxlength="120"><button class="mini" type="submit">Salvar</button><button class="mini" type="button">Cancelar</button></form>`);
-  const i=f.querySelector("input");i.id="fr-"+id;i.value=val;f.onsubmit=e=>{e.preventDefault();const v=i.value.trim();if(v){save(v)}facEdit=null;saveFac();render()};
-  f.querySelectorAll("button")[1].onclick=()=>{facEdit=null;render()};setTimeout(()=>{if(document.activeElement!==i)i.focus()},0);return f}
+function openEdit(k){facEdit=k;facDraft={};facFocus=!!k}
+function closeEdit(){facEdit=null;facDraft={};facFocus=false}
+function nameEdit(id,val,save){const f=el(`<form class="fren"><input class="etext" maxlength="120" aria-label="Novo nome"><button class="mini" type="submit">Salvar</button><button class="mini" type="button">Cancelar</button></form>`);
+  const i=f.querySelector("input");i.id="fr-"+id;i.value=facDraft.name!=null?facDraft.name:val;i.oninput=()=>{facDraft.name=i.value};
+  f.onsubmit=e=>{e.preventDefault();const v=i.value.trim();if(v){save(v)}closeEdit();saveFac();render()};
+  f.querySelectorAll("button")[1].onclick=()=>{closeEdit();render()};
+  if(facFocus){facFocus=false;setTimeout(()=>{if(i.isConnected&&document.activeElement!==i)i.focus()},0)}return f}
 function armBtn(key,label,confirmLabel,act,cls="link"){const b=el(`<button class="${cls}" type="button"></button>`);const arm=facArm===key;b.textContent=arm?confirmLabel:label;if(arm)b.classList.add("warn");
   b.onclick=()=>{if(arm){facArm=null;act()}else{facArm=key;render()}};return b}
 
@@ -2215,7 +2222,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),provas=fac.provas.filter
     if(e){if(facEdit==="e"+e.id)blk.querySelector(".fexh").replaceWith(nameEdit("e"+e.id,e.name,v=>{e.name=v}));
       else{blk.querySelector(".fexn").textContent=e.name;
         blk.querySelector(".fexmap").append(el(`<span class="fexlab">Na aba Temas:</span>`),mapPicker(e,m=>{e.area=m.area;e.spec=m.spec;saveFac();render()},e.id));
-        const ac=blk.querySelector(".fexact");const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{facEdit="e"+e.id;render()};
+        const ac=blk.querySelector(".fexact");const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{openEdit("e"+e.id);render()};
         ac.append(rn,armBtn("e"+e.id,"excluir",`Toque de novo: as ${L.sp}s ficam sem ${L.eixo.toLowerCase()}`,()=>delEixo(d,e)))}}
     else{blk.classList.add("fnoeixo");blk.querySelector(".fexn").textContent=d.eixos.length?`Sem ${L.eixo.toLowerCase()}`:`${L.sp}s`;
       if(!d.eixos.length)blk.querySelector(".fexmap").textContent=`Crie um ${L.eixo.toLowerCase()} para definir a área e a especialidade na aba Temas.`}
@@ -2245,7 +2252,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),provas=fac.provas.filter
   // provas
   card.appendChild(provasBlock(d,provas,L));
   // renomear / excluir
-  const foot=el(`<div class="fdfoot"></div>`);const rn=el(`<button class="link" type="button"></button>`);rn.textContent=`Renomear ${L.disc.toLowerCase()}`;rn.onclick=()=>{facEdit="d"+d.id;render()};
+  const foot=el(`<div class="fdfoot"></div>`);const rn=el(`<button class="link" type="button"></button>`);rn.textContent=`Renomear ${L.disc.toLowerCase()}`;rn.onclick=()=>{openEdit("d"+d.id);render()};
   foot.append(rn,armBtn("d"+d.id,`Excluir ${L.disc.toLowerCase()}`,`Toque de novo: apaga a ${L.disc.toLowerCase()}, suas provas e os temas da faculdade só dela`,()=>{
     discRefs(d).filter(r=>r.startsWith("O:")).forEach(r=>{if(!fac.discs.some(x=>x!==d&&discRefs(x).includes(r)))purgeOwn(r.slice(2))});
     d.sps.forEach(s=>s.items.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)}));
@@ -2298,7 +2305,7 @@ function spRow(d,s,L){const open=facOpenSP.has(s.id),refs=s.items.filter(refOk),
   if(d.eixos.length){const sel=el(`<label class="fmove">Mover para <select class="fmapsel"></select></label>`);const se=sel.querySelector("select");se.id="fmv-"+s.id;
     [["",`Sem ${L.eixo.toLowerCase()}`],...d.eixos.map(e=>[e.id,e.name])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;se.appendChild(o)});
     se.value=s.eixoId&&eixoOf(d,s.eixoId)?s.eixoId:"";se.onchange=()=>{s.eixoId=se.value||null;saveFac();render()};act.appendChild(sel)}
-  const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{facEdit="s"+s.id;render()};
+  const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{openEdit("s"+s.id);render()};
   act.append(rn,armBtn("s"+s.id,`excluir ${L.sp}`,`Toque de novo: apaga a ${L.sp} (temas da faculdade só dela também)`,()=>delSP(d,s)));
   body.appendChild(act);li.appendChild(body);return li}
 
