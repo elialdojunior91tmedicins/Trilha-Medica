@@ -84,6 +84,10 @@ consultado quando há dúvida. Responda em português.
   Partes no celular/tablet em pé: `qSeg` = resumo|praticar|temas (`#viewQuest[data-qseg]`, classes `.qs-res/.qs-prac/.qs-tem`, `setQSeg`).
   Simulado misto `sim` (`qSimCard`, `simStart` com `simPrompt` multi-tema, `simAnswer`); ritmo em `hist[d].ts/tq` (`logPace`, `qPaceEl`,
   meta `ui.prefs.qpace` em segundos).
+- Anotações (view `notas`): partes `nSeg` = revisar|pegadinhas|todas (`#viewNotas[data-nseg]`, classes `.ns-rev/.ns-peg/.ns-all/.ns-ctl`).
+  "Para reler hoje" (`nTodayCard`, `s.nread`), pegadinhas `pegOf(k)` (linhas "> ", ==destaque==, seção "Pegadinhas"), cobertura
+  `noNoteKeys()`/`nNoNote`, cartões `cards` = [{id,k,q,a,box,due,n,ok,src}] (`resid-cards-v1` + Firestore `progress/cards/{id}`,
+  `cardsBlock` no tema, `cdGenerate` via `sample.json`, revisão Leitner `CD_INT` em `nCardsCard`; backup `data.cards`).
 - Foco (view `foco`, `renderFoco`): pomodoro/cronômetro. Sessões em `foSess` = [{id,d,s,sec,m:"p"|"c"|"x",ref:"T:<tema>"|"D:<disc>"|"",lab}],
   localStorage `resid-focus-v1` e Firestore `progress/focus/{id}` (`focStore`, mescla por id como os erros). Relógio em andamento
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.
