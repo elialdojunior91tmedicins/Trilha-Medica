@@ -726,6 +726,12 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio .icol{display:flex;flex-direction:column;gap:20px;min-width:0}
 .ipnext .ud{text-transform:none}
 @media (max-width:480px){.fsptl li.t .item{grid-template-columns:minmax(0,1fr) auto}.fsptl li.t .item .num{display:none}.fsptl .meta{grid-column:1}.fsptl .lvl{grid-column:2}.fsptl .detail{padding:4px 10px 12px}.frmrow{padding-left:12px}}
+.ifocus{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.ifk{font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:99px}
+.ifname{background:none;border:0;padding:0;font:700 1.05rem/1.2 var(--display);color:var(--ink);cursor:pointer;text-align:left}
+.ifname:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.ifwhy{flex-basis:100%;font-size:.8rem;color:var(--muted)}
+.fbrow.focus .vl{font-weight:700;color:var(--accent)}
 </style>
 
 <div class="wrap">
@@ -2794,6 +2800,16 @@ function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=u
   if(ups.length>1){const ul=el(`<ul class="uplist ipnext"></ul>`);ups.slice(1,4).forEach(x=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=inLabel(daysTo(x.date));
       const bt=li.querySelector("button");bt.textContent=`${x.name} · ${discOf(x.discId).name}`;bt.onclick=()=>goProva(x);ul.appendChild(li)});
     const g=el(`<div class="grp"><span class="glabel">Depois</span></div>`);g.appendChild(ul);box.appendChild(g)}}
+/* disciplina em foco no semestre: prova próxima com conteúdo pendente > mais estudada nos últimos 7 dias > mais conteúdo */
+function focusDisc(cur){const ds=semDiscs(cur.id).map(d=>({d,ks:topicKeysOf(discRefs(d))})).filter(x=>x.ks.length);if(!ds.length)return null;
+  const t=dnum(today());
+  const ps=semProvas(cur).filter(p=>{const dd=daysTo(p.date);return dd>=0&&dd<=FAC_WIN&&provaPending(p).length}).sort(byDate);
+  for(const p of ps){const x=ds.find(y=>y.d.id===p.discId);if(x){const dd=daysTo(p.date);return {d:x.d,why:`${p.name} ${inLabel(dd)} · ${provaPending(p).length} conteúdo${provaPending(p).length>1?"s":""} pendente${provaPending(p).length>1?"s":""}`}}}
+  const recent=k=>{const st=get(k);return st.last&&t-dnum(st.last)<=6?1:0};
+  const sc=ds.map(x=>({...x,r:x.ks.reduce((a,k)=>a+recent(k),0)})).sort((a,b)=>b.r-a.r||b.ks.length-a.ks.length);
+  if(sc[0].r)return {d:sc[0].d,why:`a mais estudada nos últimos 7 dias · ${sc[0].r} tema${sc[0].r>1?"s":""}`};
+  if(ds.length===1)return {d:ds[0].d,why:"única com temas ligados"};
+  return {d:sc[0].d,why:"a com mais conteúdo; o foco muda sozinho quando você estudar ou cadastrar uma prova"}}
 function renderInicioStats(){const box=$("#iStats");box.innerHTML="";
   box.appendChild(el(`<div class="dhead"><h2>Seu progresso</h2></div>`));
   // residência
@@ -2810,13 +2826,17 @@ function renderInicioStats(){const box=$("#iStats");box.innerHTML="";
   if(!cur){f.querySelector(".glabel").textContent="Faculdade";f.appendChild(el(`<p class="cempty">Crie o seu semestre na aba Faculdade para ver o progresso aqui.</p>`));box.appendChild(f);return}
   const S=semStats(cur),n=S.keys.length;f.querySelector(".glabel").textContent=`Faculdade · ${cur.name}`;
   if(!n){f.appendChild(el(`<p class="cempty">Ligue as SPs do semestre aos temas para ver o progresso aqui.</p>`));box.appendChild(f);return}
+  const F=focusDisc(cur),fk=F?topicKeysOf(discRefs(F.d)):S.keys,fc=F?lvlCounts(fk):S.c,fn=fk.length,fseen=fn-fc[0];
+  if(F){const fh=el(`<div class="ifocus"><span class="ifk">Foco agora</span><button class="ifname" type="button"></button><span class="ifwhy"></span></div>`);
+    fh.querySelector(".ifname").textContent=F.d.name;fh.querySelector(".ifname").onclick=()=>goDisc(F.d);fh.querySelector(".ifwhy").textContent=F.why;f.appendChild(fh)}
   const t=el(`<div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div>`);
-  t.querySelector(".ring").innerHTML=donut(S.c,n,"conteúdos do semestre")+`<div class="ringc"><b>${pct(S.seen,n)}%</b><span>estudado</span></div>`;
-  t.querySelector(".glegend").innerHTML=[["m3","Dominados",S.c[3]],["m2","Revisados",S.c[2]],["m1","Estudados",S.c[1]],["track","Não iniciados",S.c[0]]].map(([k,lab,v])=>`<li><i class="sw" style="background:var(--${k})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,n)}%</em></li>`).join("");
+  t.querySelector(".ring").innerHTML=donut(fc,fn,F?`temas de ${esc(F.d.name)}`:"conteúdos do semestre")+`<div class="ringc"><b>${pct(fseen,fn)}%</b><span>estudado</span></div>`;
+  t.querySelector(".glegend").innerHTML=[["m3","Dominados",fc[3]],["m2","Revisados",fc[2]],["m1","Estudados",fc[1]],["track","Não iniciados",fc[0]]].map(([k,lab,v])=>`<li><i class="sw" style="background:var(--${k})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,fn)}%</em></li>`).join("");
   f.appendChild(t);
   const L=lv(cur),fb=el(`<div class="fbars"></div>`);
+  if(F&&S.ds.length>1){const st=el(`<p class="cnote"></p>`);st.textContent=`Semestre inteiro: ${pct(S.seen,n)}% estudado (${S.seen} de ${n} temas).`;f.appendChild(st)}
   S.ds.forEach(d=>{const ks=topicKeysOf(discRefs(d)),k=lvlCounts(ks),nn=ks.length;
-    const row=el(`<button class="vrow fbrow" type="button"><span class="vtop"><span class="vl"></span><span class="hv"></span></span><span class="hbar"></span></button>`);
+    const row=el(`<button class="vrow fbrow${F&&F.d===d?" focus":""}" type="button"><span class="vtop"><span class="vl"></span><span class="hv"></span></span><span class="hbar"></span></button>`);
     row.querySelector(".vl").textContent=d.name;row.querySelector(".hv").textContent=nn?`${nn-k[0]}/${nn}`:"sem temas";
     const hb=row.querySelector(".hbar");if(nn)[[3,"m3","dominados"],[2,"m2","revisados"],[1,"m1","estudados"]].forEach(([i,tk,lab])=>{if(k[i]){const x=document.createElement("i");x.style.width=k[i]/nn*100+"%";x.style.background=`var(--${tk})`;x.dataset.tip=`${d.name} · ${lab}: ${k[i]} de ${nn}`;hb.appendChild(x)}});
     row.onclick=()=>goDisc(d);fb.appendChild(row)});
@@ -2897,6 +2917,7 @@ const HELP=[
 - **Ligue cada SP aos temas** que ela cobre (sugestões e busca com siglas). O que não existir vira **tema da faculdade**, que aparece na aba Residência na área do eixo, com o selo **FAC**.
 - **Objetivos de aprendizagem** (opcionais) viram subtópicos do primeiro tema da SP: entram no plano, nas revisões e no foco das questões (**gerar questões** ao lado do objetivo).
 - **Provas:** em **Provas do semestre**, escolha a disciplina, o nome e a data. Abra a prova para mudar a data, renomear e marcar o que cai (por SP inteira ou tema a tema). Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão. A mais próxima aparece no **Início**.
+- **Foco no Início:** o anel da faculdade mostra sozinho a disciplina em foco: a que tem prova em até 21 dias com conteúdo pendente; sem isso, a que você mais estudou nos últimos 7 dias; sem estudo recente, a que tem mais conteúdo. O motivo aparece embaixo do nome, e as barras mostram o semestre inteiro.
 | Dias até a prova | Vagas no plano |
 |---|---|
 | 15 a 21 | 1 |
