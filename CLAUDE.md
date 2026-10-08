@@ -99,6 +99,12 @@ consultado quando há dúvida. Responda em português.
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.
   `foMat` agrupa por especialidade/disciplina; entra no PDF (`R.Fo`) e no backup (`data.focus`). Pílula `#foPill` fora da aba.
 
+- Erros (view `erros`): objeto do erro `{id,k,w,r,t,s,d,rev,lastRev,box,due,miss,lastMiss,cd,nt}`. Revisão ativa `eRevCard`/`erRun`
+  (`E_INT=[1,3,7,15,30]`, `eAnswer`; `eDue(e)` calcula a data para erros antigos sem `due`), registro `eRegPanel`/`eReg` e
+  `errFormEl(D,pre,onSave)` + `eNew` (também usados por `eCadEl` no simulado e no Refazer, com `qDraft`), `eRepCard`/`eRepeat`
+  (mesmo tema ≥2 em 30 dias; `miss`≥2), `eWeeksEl` (8 semanas por tipo), `eCardBtn` (→ `cdAdd`, guarda `cd`) e `eToNote`
+  (seção "## Meus erros" da anotação, marca `nt`). Próximo passo do Início: `kind:"errs"`.
+
 ## Cuidados
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).

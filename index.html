@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=a5447ff4">
+<link rel="stylesheet" href="site.css?v=de4f9d03">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=a5447ff4"></script>
-<script src="bridge.js?v=a5447ff4"></script>
+<script src="config.js?v=de4f9d03"></script>
+<script src="bridge.js?v=de4f9d03"></script>
 </head>
 <body>
 <script>
@@ -593,6 +593,23 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .ebody b{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block}
 .efoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.8rem;color:var(--muted)}
 .efoot .sp{flex:1}
+.etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
+.etopacts{margin:0}
+.erfc .ebody span{font-size:1rem}.erfc .ehint{margin:0}
+.efoot .rv.due{color:var(--due);font-weight:700}
+.ecad{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-top:6px}
+.ecad.bare{border:0;padding:0}.ecad .pnote{margin:0}
+.ereplist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ereplist li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--bg)}
+.ereplist .ks{flex:1;min-width:130px;font-size:.8rem;color:var(--muted)}.ereplist .ew{flex:1 1 100%;min-width:0;font-size:.88rem;overflow-wrap:anywhere}
+.erep .glabel{display:block;margin-top:12px}
+.ewk{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin-top:6px}
+.ewcol{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.ewn{font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;min-height:1em}
+.ewb{height:96px;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px}.ewb .ews{max-height:80px}
+.ews{display:flex;flex-direction:column-reverse;width:min(100%,22px);border-radius:4px 4px 0 0;overflow:hidden}.ews i{display:block;flex-basis:0;min-height:2px}
+.ewl{font-size:.64rem;color:var(--muted);white-space:nowrap}.ewcol.now .ewl{color:var(--accent);font-weight:700}
+.elegend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.76rem;color:var(--muted);margin-top:6px}.elegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .mini{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .8rem var(--body);padding:5px 10px;border-radius:7px;cursor:pointer}
 .mini.warn{border-color:var(--danger);color:var(--danger)}
 .tdist{display:flex;flex-direction:column;gap:8px}
@@ -1267,6 +1284,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </div>
 
   <div id="viewErros" class="wrap" style="width:100%" hidden>
+    <div id="eTop" class="etop"></div>
     <section class="card" aria-labelledby="mh">
       <h2 id="mh">Onde melhorar</h2>
       <div id="insight"></div>
@@ -2099,8 +2117,7 @@ function renderDetail(it){
   if(eErr){const e=el(`<p class="err"></p>`);e.textContent=eErr;f.appendChild(e)}
   f.addEventListener("submit",ev=>{ev.preventDefault();
     if(!dr.w.trim()||!dr.r.trim()){eErr="Preencha o que você errou e o conceito correto para salvar.";render();return}
-    eErr="";const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k:it.key,w:dr.w.trim(),r:dr.r.trim(),t:dr.t,s:dr.s.trim(),d:today(),rev:0};
-    errors.push(e);drafts[it.key]={w:"",r:"",t:dr.t,s:dr.s};render();putErr(e);});
+    eErr="";eNew(it.key,dr.w,dr.r,dr.t,dr.s);drafts[it.key]={w:"",r:"",t:dr.t,s:dr.s};render();});
   g4.appendChild(f);
   box.appendChild(g4);
   // abas: Estudo · Questões · Anotações · Erros
@@ -2198,10 +2215,8 @@ function answer(it,qi,letra){
   upd(it.key,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
-  const g=gen[it.key],q=g.qs[qi],mine=q.alternativas.find(a=>a.letra===g.ans[qi]),right=q.alternativas.find(a=>a.letra===q.correta);
-  const stem=q.enunciado.replace(/\s+/g," ");
-  drafts[it.key]={w:`Marquei ${mine.letra}) ${mine.texto}\nCaso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,
-    r:`${q.conceito?q.conceito+"\n":""}Correta: ${right.letra}) ${right.texto}`,t:(drafts[it.key]||{}).t||"conhecimento",s:"Questão gerada pelo Claude"};
+  const g=gen[it.key],q=g.qs[qi];
+  drafts[it.key]={...qDraft(q,g.ans[qi],"Questão gerada pelo Claude"),t:(drafts[it.key]||{}).t||"conhecimento"};
   eErr="";render();
   const f=detGet("ew-",it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}
 }
@@ -3364,12 +3379,12 @@ function ecardEl(e,withTopic){
   h.appendChild(el(`<span class="etype">${ETYPES[e.t]||""}</span>`));h.appendChild(el(`<span>${br(e.d)}</span>`));
   if(e.s){const s=el(`<span></span>`);s.textContent=e.s;h.appendChild(s)}
   c.querySelector(".w").textContent=e.w;c.querySelector(".r").textContent=e.r;
-  c.querySelector(".rv").textContent=e.rev?`Revisado ${e.rev}x · último em ${br(e.lastRev)}`:"Ainda não revisado";
+  {const du=eDue(e);c.querySelector(".rv").textContent=`${du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
-  const rb=el(`<button class="mini" type="button">Revisei este erro</button>`);rb.onclick=()=>{e.rev=(e.rev||0)+1;e.lastRev=today();render();putErr(e)};
+  const rb=eCardBtn(e),nb=eNoteBtn(e);
   const db=el(`<button class="mini${delArm===e.id?" warn":""}" type="button">${delArm===e.id?"Confirmar exclusão":"Excluir"}</button>`);
   db.onclick=()=>{if(delArm===e.id){delArm=null;delErr(e.id)}else{delArm=e.id;render()}};
-  ft.append(rb,db);
+  ft.append(rb,nb,db);
   return c;
 }
 function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();return true}
@@ -3377,6 +3392,127 @@ function saveErrsLocal(){try{localStorage.setItem(LSE,JSON.stringify(errors))}ca
 async function putErr(e){saveErrsLocal();if(!errStore)return;
   try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
 async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
+/* ---------- Caderno de erros: revisão ativa, registro rápido, erros repetidos, cartão e anotação ---------- */
+const E_INT=[1,3,7,15,30];
+let erRun=null,eReg=null;
+function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.box:Math.min(e.rev||0,E_INT.length-1)}
+// erros antigos (sem data marcada) entram pela data do último "revisei" ou do registro
+function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
+const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&eDue(e)<=today());
+function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
+  if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
+  else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
+  putErr(e)}
+function eNew(k,w,r,t,s){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
+  errors.push(e);putErr(e);return e}
+const eOneLine=s=>String(s||"").replace(/\s*\n+\s*/g," ").trim();
+/* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
+function qDraft(q,mine,src){const m=q.alternativas.find(a=>a.letra===mine),r=q.alternativas.find(a=>a.letra===q.correta),stem=q.enunciado.replace(/\s+/g," ");
+  return {w:`${m?`Marquei ${m.letra}) ${m.texto}\n`:""}Caso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,r:`${q.conceito?q.conceito+"\n":""}${r?`Correta: ${r.letra}) ${r.texto}`:""}`.trim(),t:"conhecimento",s:src||""}}
+/* formulário de erro reaproveitável (registro na aba, simulado, refazer) */
+function errFormEl(D,pre,onSave){
+  const f=el(`<form class="eform"><label for="${pre}w">O que eu errei</label><textarea id="${pre}w" maxlength="2000" rows="3" placeholder="Ex.: marquei betabloqueador na cocaína"></textarea>
+    <label for="${pre}r">Conceito correto / o que lembrar</label><textarea id="${pre}r" maxlength="2000" rows="3" placeholder="Ex.: na dor torácica por cocaína, evitar betabloqueador; usar benzodiazepínico e nitrato"></textarea>
+    <div class="erow2"><div class="eform"><label for="${pre}t">Tipo de erro</label><select id="${pre}t">${Object.entries(ETYPES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></div>
+    <div class="eform"><label for="${pre}s">Fonte (opcional)</label><input class="etext" id="${pre}s" maxlength="120" placeholder="Ex.: ENARE 2024, Q35"></div></div>
+    <button class="btn primary" type="submit" style="align-self:flex-start">Salvar no caderno</button></form>`);
+  const fw=f.querySelector(`#${pre}w`),fr=f.querySelector(`#${pre}r`),ft=f.querySelector("select"),fs=f.querySelector("input");
+  fw.value=D.w||"";fr.value=D.r||"";ft.value=ETYPES[D.t]?D.t:"conhecimento";fs.value=D.s||"";
+  fw.oninput=()=>D.w=fw.value;fr.oninput=()=>D.r=fr.value;ft.onchange=()=>D.t=ft.value;fs.oninput=()=>D.s=fs.value;
+  if(D.msg){const p=el(`<p class="err"></p>`);p.textContent=D.msg;f.appendChild(p)}
+  f.addEventListener("submit",ev=>{ev.preventDefault();
+    if(!(D.w||"").trim()||!(D.r||"").trim()){D.msg="Preencha o que você errou e o conceito correto para salvar.";render();return}
+    D.msg="";onSave(eNew(D.k,D.w,D.r,ft.value,D.s))});
+  return f}
+/* "Levar para o caderno" dentro do simulado e do refazer */
+function eCadEl(H,idx,k,q,mine,src){const st=H[idx],w=el(`<div class="ecad"></div>`);
+  if(st&&st.saved){w.appendChild(el(`<p class="pnote" role="status">No caderno de erros. Ele volta para você revisar amanhã.</p>`));return w}
+  if(!st){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>{H[idx]={...qDraft(q,mine,src),k};render();setTimeout(()=>{const f=$("#ecq-r");if(f)f.focus()},30)};w.classList.add("bare");w.appendChild(b);return w}
+  w.appendChild(el(`<span class="glabel">Levar para o caderno de erros</span>`));
+  w.appendChild(el(`<p class="how">Já veio preenchido com a questão. Reescreva o conceito correto com as suas palavras: é isso que você vai revisar.</p>`));
+  w.appendChild(errFormEl(st,"ecq-",()=>{H[idx]={saved:true};render()}));
+  const c=el(`<button class="link" type="button">Cancelar</button>`);c.onclick=()=>{delete H[idx];render()};w.appendChild(c);return w}
+/* ----- registro rápido na própria aba ----- */
+function eRegPanel(){const R=eReg,w=el(`<div class="qreg" id="eReg"><div class="dhead"><b>Registrar erro</b><button class="link" type="button">Fechar</button></div></div>`);
+  w.querySelector(".dhead .link").onclick=()=>{eReg=null;render()};
+  if(R.saved){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=`Salvo no caderno (${BYKEY[R.saved]?BYKEY[R.saved].t:""}). Ele volta para revisão amanhã. Pode registrar outro.`;w.appendChild(m)}
+  const it=R.k&&BYKEY[R.k];
+  if(!it){const s=el(`<label class="qfsel"><span>Tema</span><input class="search" id="erq" type="search" placeholder="Digite o tema (ex.: sepse, IAM, pré-eclâmpsia)" autocomplete="off"></label>`),i=s.querySelector("input");i.value=R.query||"";
+    i.oninput=debounced(()=>{if(eReg!==R||R.k)return;R.query=i.value;render()});w.appendChild(s);
+    const n=norm((R.query||"").trim());if(n.length>=2){const res=[...ALL,...FAC_ITEMS].map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,7);
+      const ul=el(`<ul class="qrres"></ul>`);if(!res.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));
+      res.forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>{R.k=x.key;render();setTimeout(()=>{const f=$("#erg-w");if(f)f.focus()},30)};ul.appendChild(li)});w.appendChild(ul)}
+    else w.appendChild(el(`<p class="how">Errou uma questão fora do app (banco, prova antiga, aula)? Escolha o tema e anote o erro e o conceito certo.</p>`));return w}
+  const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
+  ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
+  w.appendChild(errFormEl(R,"erg-",e=>{eReg={k:e.k,t:e.t,s:e.s,w:"",r:"",saved:e.k};render()}));return w}
+/* ----- revisão ativa: esconde o correto, você tenta lembrar ----- */
+function eRevCard(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=`${due.length} para hoje · ${errors.length} no caderno`;
+  if(erRun){const R=erRun,e=errors.find(y=>y.id===R.ids[R.i]);
+    if(!e||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: você já sabe ${R.ok} de ${R.done}.</p>`));
+      c.appendChild(el(`<p class="how">Os que você ainda erraria voltam amanhã; os que já sabe voltam em 3, 7, 15 e 30 dias.${R.done-R.ok?" Se o mesmo erro voltar várias vezes, ele aparece em Erros que se repetem.":""}</p>`));
+      const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{erRun=null;render()};c.appendChild(b);return c}
+    const it=BYKEY[e.k],card=el(`<div class="fcard erfc${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="ebody"><b>Você errou</b><span class="w"></span></p><p class="how ehint">Antes de abrir: qual é o certo? Responda de cabeça.</p><div class="fca"><p class="ebody"><b>Correto</b><span class="r"></span></p></div></div>`);
+    card.querySelector(".qn").textContent=`ERRO ${R.i+1} DE ${R.ids.length} · ${(ETYPES[e.t]||"").toUpperCase()}${e.s?" · "+e.s.toUpperCase():""}`;
+    const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(e.k);
+    card.querySelector(".w").textContent=e.w;card.querySelector(".r").textContent=e.r;if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
+    const a=el(`<div class="btns"></div>`);
+    if(!R.show){const s=el(`<button class="btn primary" type="button" id="erShow">Mostrar o correto</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
+    else{const g=el(`<button class="btn primary" type="button" id="erGood">Agora sei</button>`),b=el(`<button class="btn" type="button" id="erBad">Ainda erraria</button>`);
+      g.onclick=()=>{eAnswer(e,true);R.ok++;R.done++;R.i++;R.show=false;render()};b.onclick=()=>{eAnswer(e,false);R.done++;R.i++;R.show=false;render()};a.append(g,b)}
+    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{erRun=null;render()};a.appendChild(st);c.appendChild(a);return c}
+  if(!due.length){const nx=errors.filter(e=>BYKEY[e.k]).map(eDue).sort()[0];c.appendChild(el(`<p class="cempty">Nenhum erro para revisar hoje.${nx?` O próximo volta em ${br(nx)}.`:""}</p>`));return c}
+  const by={};due.forEach(e=>{const it=BYKEY[e.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
+  c.appendChild(el(`<p class="gtext qrdsum">${Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}</p>`));
+  const n=Math.min(due.length,15),go=el(`<button class="btn primary" type="button" id="erGo"></button>`);go.textContent=`Revisar ${n} ${n===1?"erro":"erros"}`;
+  // os mais atrasados primeiro; dentro do mesmo dia, embaralhados
+  go.onclick=()=>{erRun={ids:shuffle(due).sort((a,b)=>eDue(a)<eDue(b)?-1:eDue(a)>eDue(b)?1:0).slice(0,15).map(e=>e.id),i:0,show:false,ok:0,done:0};render();const h=$("#erh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};c.appendChild(go);
+  c.appendChild(el(`<p class="how">Você vê o que errou, tenta lembrar o certo e só então abre. Já sabe: volta em 3, 7, 15 e 30 dias. Ainda erraria: volta amanhã.</p>`));return c}
+/* ----- erros que se repetem (últimos 30 dias) ----- */
+function eRepeat(){const t=dnum(today()),by={};errors.forEach(e=>{if(BYKEY[e.k]&&t-dnum(e.d)<=30)(by[e.k]=by[e.k]||[]).push(e)});
+  return {tem:Object.entries(by).filter(([,l])=>l.length>=2).sort((a,b)=>b[1].length-a[1].length),stub:errors.filter(e=>BYKEY[e.k]&&(e.miss||0)>=2).sort((a,b)=>b.miss-a.miss)}}
+function eRepCard(){const {tem,stub}=eRepeat();if(!tem.length&&!stub.length)return null;
+  const c=el(`<section class="card erep" aria-labelledby="eph"><div class="dhead"><h2 id="eph">Erros que se repetem</h2><span class="todaydate">últimos 30 dias</span></div></section>`);
+  if(tem.length){c.appendChild(el(`<p class="gtext">Errar várias vezes no mesmo tema é sinal de que a base não firmou. Antes de mais questões, volte à teoria ou à sua anotação desses temas.</p>`));
+    const ul=el(`<ul class="ereplist"></ul>`);tem.slice(0,6).forEach(([k,l])=>{const it=BYKEY[k],tc={};l.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const main=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
+      const li=el(`<li><button class="link" type="button"></button><span class="ks"></span><button class="mini" type="button">Ver erros</button><button class="mini" type="button">Estudar de novo</button></li>`);
+      li.querySelector(".link").textContent=it.t;li.querySelector(".link").onclick=()=>openTopic(k);
+      li.querySelector(".ks").textContent=`${l.length} erros · mais: ${(ETYPES[main]||"").toLowerCase()}`;
+      const [v,s]=li.querySelectorAll(".mini");v.onclick=()=>{eTopicKey=k;eArea="all";eSp="all";eType="all";render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
+      s.onclick=()=>{detTab[k]=(notes[k]||"").trim()?"notas":"estudo";openTopic(k)};ul.appendChild(li)});
+    if(tem.length>6)ul.appendChild(el(`<li class="how">+ ${tem.length-6} temas.</li>`));c.appendChild(ul)}
+  if(stub.length){c.appendChild(el(`<span class="glabel">Ainda não firmaram na revisão</span>`));
+    const ul=el(`<ul class="ereplist"></ul>`);stub.slice(0,5).forEach(e=>{const it=BYKEY[e.k],li=el(`<li><span class="ew"><b></b><span></span></span><span class="ks"></span></li>`);
+      li.querySelector("b").textContent=it.t+": ";li.querySelector(".ew span").textContent=eOneLine(e.w).slice(0,140)+(eOneLine(e.w).length>140?"…":"");li.querySelector(".ks").textContent=`"ainda erraria" ${e.miss}×`;
+      li.appendChild(eCardBtn(e));ul.appendChild(li)});c.appendChild(ul);
+    c.appendChild(el(`<p class="how">Para estes, um cartão de memorização ajuda: ele volta mais vezes que a revisão do erro.</p>`))}
+  return c}
+/* ----- erros por semana, por tipo ----- */
+const ECOL={conhecimento:"var(--due)",interpretacao:"var(--l1)",confusao:"var(--l2)"};
+function eWeeksEl(){const N=8,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,n:0,t:{conhecimento:0,interpretacao:0,confusao:0}}));
+  errors.forEach(e=>{const n=dnum(e.d);if(n<start||n>t)return;const w=W[Math.floor((n-start)/7)];if(w){w.n++;const ty=ETYPES[e.t]?e.t:"conhecimento";w.t[ty]++}});
+  const tot=W.reduce((a,w)=>a+w.n,0);if(!tot)return null;
+  const mx=Math.max(...W.map(w=>w.n)),box=el(`<div class="grp ewks" style="margin-top:14px"><span class="glabel">Erros registrados por semana</span><div class="ewk" role="img"></div><div class="elegend"></div></div>`),g=box.querySelector(".ewk");
+  g.setAttribute("aria-label","Erros por semana nas últimas 8 semanas: "+W.map(w=>`${br(fromNum(w.s))} ${w.n}`).join(", "));
+  W.forEach((w,i)=>{const col=el(`<div class="ewcol${i===N-1?" now":""}"><span class="ewb"><span class="ewn">${w.n||""}</span><span class="ews"></span></span><span class="ewl">${i===N-1?"esta":br(fromNum(w.s))}</span></div>`),s=col.querySelector(".ews");
+    s.style.height=`${Math.round(w.n/mx*80)}px`;Object.keys(ETYPES).forEach(ty=>{if(!w.t[ty])return;const i2=document.createElement("i");i2.style.flexGrow=String(w.t[ty]);i2.style.background=ECOL[ty];s.appendChild(i2)});
+    col.title=`Semana de ${br(fromNum(w.s))}: ${w.n} ${w.n===1?"erro":"erros"}`+Object.keys(ETYPES).filter(ty=>w.t[ty]).map(ty=>` · ${w.t[ty]} ${ETYPES[ty].toLowerCase()}`).join("");g.appendChild(col)});
+  const lg=box.querySelector(".elegend");Object.keys(ETYPES).forEach(ty=>{const s=el(`<span><i style="background:${ECOL[ty]}"></i></span>`);s.appendChild(document.createTextNode(ETYPES[ty]));lg.appendChild(s)});
+  // tendência: últimas 4 semanas × 4 anteriores, no tipo que mais mudou
+  const sum=(a,b,ty)=>W.slice(a,b).reduce((x,w)=>x+(ty?w.t[ty]:w.n),0),ch=Object.keys(ETYPES).map(ty=>({ty,a:sum(0,4,ty),b:sum(4,8,ty)})).sort((x,y)=>Math.abs(y.b-y.a)-Math.abs(x.b-x.a))[0];
+  if(ch&&ch.a+ch.b>=3&&ch.a!==ch.b){const p=el(`<p class="how"></p>`);p.textContent=`${ETYPES[ch.ty]}: ${ch.b<ch.a?"caiu":"subiu"} de ${ch.a} para ${ch.b} nas últimas 4 semanas (contra as 4 anteriores).`;box.appendChild(p)}
+  return box}
+/* ----- virar cartão e levar para a anotação ----- */
+function eCardBtn(e){const has=e.cd&&cards.some(x=>x.id===e.cd),b=el(`<button class="mini" type="button"></button>`);b.textContent=has?"Cartão criado ✓":"Virar cartão";b.disabled=has;
+  b.title="Cria um cartão de memorização: na frente o que você errou, no verso o correto";
+  b.onclick=()=>{const x=cdAdd(e.k,`${e.w}\n\nQual é o certo?`,e.r,"eu");e.cd=x.id;putErr(e);render()};return b}
+function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
+  if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
+  else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
+  replaceNote(k,v);e.nt=today();putErr(e);render()}
+function eNoteBtn(e){const b=el(`<button class="mini" type="button"></button>`);b.textContent=e.nt?"Na anotação ✓":"Levar para a anotação";b.disabled=!!e.nt;
+  b.title="Acrescenta o conceito correto na seção Meus erros da anotação do tema";b.onclick=()=>eToNote(e);return b}
 
 function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
   $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
@@ -3384,14 +3520,18 @@ function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 function renderErros(){
   $("#ecount").textContent=errors.length?String(errors.length):"";
+  {const top=$("#eTop");top.innerHTML="";
+    if(eReg)top.appendChild(eRegPanel());else{const a=el(`<div class="btns etopacts"><button class="btn" type="button" id="eRegB">+ Registrar erro</button></div>`);a.querySelector("button").onclick=()=>{eReg={};render();setTimeout(()=>{const i=$("#erq");if(i)i.focus()},30)};top.appendChild(a)}
+    if(errors.length)top.appendChild(eRevCard());const rp=eRepCard();if(rp)top.appendChild(rp)}
   const ins=$("#insight");ins.innerHTML="";
-  if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Depois de errar uma questão, abra o tema na aba Residência e registre o erro com o conceito correto.</p>`))}
+  if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Errou uma questão? Toque em <b>+ Registrar erro</b> (ou abra o tema, aba Erros) e anote o que errou e o conceito correto. Os erros voltam para você revisar em intervalos crescentes.</p>`))}
   else{
     const tc={conhecimento:0,interpretacao:0,confusao:0};errors.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
     const dist=el(`<div class="tdist"><span class="glabel">Tipo de erro</span></div>`);
     const colors={conhecimento:"var(--due)",interpretacao:"var(--l1)",confusao:"var(--l2)"};
     Object.keys(ETYPES).forEach(k=>{const r=el(`<div class="trow"><span>${ETYPES[k]}</span><div class="bar"><i style="width:${tc[k]/errors.length*100}%;background:${colors[k]}"></i></div><b>${tc[k]}</b></div>`);dist.appendChild(r)});
     ins.appendChild(dist);
+    {const wk=eWeeksEl();if(wk)ins.appendChild(wk)}
     const dom=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
     const tip=el(`<p class="tips" style="margin-top:12px"></p>`);tip.textContent=ETIPS[dom];ins.appendChild(tip);
     const per={};errors.forEach(e=>per[e.k]=(per[e.k]||0)+1);
@@ -4042,7 +4182,8 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
-    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}}
+    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
+    if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"))}
   w.appendChild(c);
   const acts=el(`<div class="btns"></div>`);
   if(R.ans){const nx=el(`<button class="btn primary" type="button" id="rdNext">${R.i+1<R.ids.length?"Próxima":"Ver resultado"}</button>`);nx.onclick=()=>{R.i++;R.ans=null;R.snap=null;render()};acts.appendChild(nx)}
@@ -4245,7 +4386,8 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
-    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}}
+    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
+    if(!ok)card.appendChild(eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
   if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
   const st=el(`<button class="btn" type="button">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
@@ -4264,10 +4406,12 @@ function nextSteps(){const out=[],P=ensurePlan(),CR=examCrunch();
   due.filter(i=>dueIn(get(i.key))>=0).forEach(it=>out.push({k:it.key,kind:"rev",t:it.t,why:"Revisão de hoje"}));
   planItems.filter(p=>!started(p)).forEach(p=>out.push({k:p.k,kind:"plan",t:BYKEY[p.k].t,why:p.cls==="r-weak"?"Ponto fraco do plano de hoje":p.cls==="r-fac"?"Conteúdo da prova da faculdade":"Tema do plano de hoje"}));
   const rd=redo.filter(x=>BYKEY[x.k]).length;if(rd)out.push({kind:"redo",t:`Refazer ${Math.min(rd,10)} ${Math.min(rd,10)===1?"questão errada":"questões erradas"}`,why:`${rd} na lista de Refazer as que errei`});
+  const ed=eDueList().length;if(ed)out.push({kind:"errs",t:`Revisar ${Math.min(ed,15)} ${Math.min(ed,15)===1?"erro":"erros"} do caderno`,why:`${ed} ${ed===1?"erro volta":"erros voltam"} para revisão hoje`});
   const g=ui.prefs.qgoal,W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7).q;if(g&&W<g)out.push({kind:"sim",t:"Simulado misto de 10 questões",why:`Faltam ${g-W} questões para a meta da semana`});
   return out}
 function startStep(s){
   if(s.kind==="redo"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const b=$("#rdGo");if(b)b.click()},60);return}
+  if(s.kind==="errs"){backStack=[];setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60);return}
   if(s.kind==="sim"){simCfg={src:[...ALL,...FAC_ITEMS].some(i=>{const x=get(i.key);return x.qt>=WEAK_MIN&&x.qc/x.qt<WEAK_PCT})?"weak":"gain",n:10};backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60);return}
   // tema: liga o Foco no tema e abre o cartão no Início
   foPick.ref="T:"+s.k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}
@@ -4289,7 +4433,7 @@ function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML
   if(!s){nw.innerHTML=`<p class="inowdone"><b>Tudo feito por hoje.</b> Plano e revisões em dia. Se quiser ir além, faça um simulado ou adiante um tema.</p>`}
   else{const m=el(`<div class="inowtx"><span class="kl">O que fazer agora</span><b></b><span class="ks"></span></div>`);m.querySelector("b").textContent=s.t;m.querySelector(".ks").textContent=s.why;nw.appendChild(m);
     const a=el(`<div class="inowb"></div>`),go=el(`<button class="btn primary" type="button" id="nowGo"></button>`);
-    go.textContent=s.kind==="redo"?"Refazer agora":s.kind==="sim"?"Começar simulado":foRun?"Abrir e continuar o foco":"Começar com o Foco";go.onclick=()=>startStep(s);a.appendChild(go);
+    go.textContent=s.kind==="redo"?"Refazer agora":s.kind==="errs"?"Revisar agora":s.kind==="sim"?"Começar simulado":foRun?"Abrir e continuar o foco":"Começar com o Foco";go.onclick=()=>startStep(s);a.appendChild(go);
     if(steps.length>1){const o=el(`<button class="link" type="button" id="nowSkip">Outra sugestão</button>`);o.onclick=()=>{nowSkip++;render()};a.appendChild(o)}
     nw.appendChild(a)}
   box.appendChild(nw);
@@ -4796,9 +4940,12 @@ const HELP=[
 - **Tela cheia** para escrever; **Ler** mostra formatado.
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.
 - A aba **Anotações** reúne todas, com busca, e exporta em Markdown (bom para o Notion).`],
-["Caderno de erros",`Registre o erro dentro do tema: o que você pensou, o conceito certo, o tipo e a fonte.
-- Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**.
-- A aba **Erros** mostra onde você mais erra, por tipo, tema e especialidade.
+["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
+- **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: já vem preenchido com a questão (reescreva o conceito com as suas palavras).
+- **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
+- **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
+- **Virar cartão** cria um cartão de memorização (frente: o que você errou; verso: o correto). **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
+- Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
 ["Faculdade e provas",`A Faculdade funciona como pastas: **Semestre › Disciplina › conteúdos**. Toque numa pasta para abrir e fechar.
 - **Semestre:** **+ Semestre** cria a pasta. Dentro dela: **+ Disciplina**, **Colar ementa** (o Claude monta disciplinas, eixos, SPs e objetivos; você revisa antes de salvar) e **Provas do semestre**. Em **⚙ Ajustes**: renomear, nomes dos níveis (NCS, Módulo, Problema…) e arquivar.
