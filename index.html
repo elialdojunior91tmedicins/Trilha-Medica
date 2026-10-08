@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=cfb92b58">
+<link rel="stylesheet" href="site.css?v=90ea381b">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=cfb92b58"></script>
-<script src="bridge.js?v=cfb92b58"></script>
+<script src="config.js?v=90ea381b"></script>
+<script src="bridge.js?v=90ea381b"></script>
 </head>
 <body>
 <script>
@@ -497,8 +497,7 @@ header{position:relative}
 .hacts{position:absolute;top:0;right:0;display:flex;gap:8px;align-items:center}
 .hbtn{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 1rem var(--body);cursor:pointer;display:none;-webkit-tap-highlight-color:transparent}
 .hbtn:hover{border-color:var(--accent)}
-html[data-layout="phone"] .hbtn{display:block}
-html[data-layout="phone"] header{padding-right:48px}
+header{padding-right:100px}
 html[data-layout="phone"] .appnav .tab.tabhelp{display:none}
 .hlist{display:flex;flex-direction:column;gap:6px}
 .hsec{border:1px solid var(--line);border-radius:10px;background:var(--surface)}
@@ -770,11 +769,90 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 @media (max-width:480px){.fadder,.fguide,.fdbody>.fedtag{margin-left:12px;margin-right:12px}}
 .fhowto{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
 .fhowto b{color:var(--ink)}
+/* ===== topo: perfil e configurações ===== */
+.hbtn{display:grid;place-items:center;width:40px;height:40px;padding:0;color:var(--ink)}
+.hico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.hprof #profIni{display:none;font:700 .85rem var(--body);letter-spacing:.02em}
+.hprof.hasini{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.hprof.hasini .hico{display:none}.hprof.hasini #profIni{display:block}
+.fback{align-self:flex-start;font-size:.9rem}
+.pfbody,.cfbody{display:flex;flex-direction:column;gap:16px;width:100%}
+.pfhead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
+.pfav{width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font:700 1.6rem var(--display)}
+.pfav svg{width:38px;height:38px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+.pfid{display:flex;flex-direction:column;gap:4px;min-width:0}.pfid .how{margin:0}
+.pfcount{margin:0;font-weight:600;color:var(--accent)}
+.acctslot .btn{align-self:flex-start}
+.pfstats{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:560px){.pfstats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cftitle{font:700 1.5rem/1.2 var(--display);margin:0}
+.cfrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:10px 0;border-top:1px solid var(--line)}
+.cfl{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px}.cfl .how{margin:0;font-size:.82rem}
+.lays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.lays{grid-template-columns:1fr}}
+.lay{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;gap:2px 12px;align-items:center;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
+.lay[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.lay b{font-family:var(--display)}.lay>span:last-child{grid-column:2;font-size:.8rem;color:var(--muted)}
+.laypic{grid-row:1/3;width:46px;height:40px;border-radius:7px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:3px;padding:5px}
+.laypic i{display:block;border-radius:2px;background:var(--line)}
+.lp-classic i{height:8px}.lp-classic i:first-child{background:var(--accent)}
+.lp-compact{gap:2px;padding:4px}.lp-compact i{height:4px}.lp-compact i:nth-child(2),.lp-compact i:nth-child(3){height:4px}
+.lp-compact::after{content:"";display:block;height:4px;border-radius:2px;background:var(--line)}
+.lp-focus{justify-content:center;align-items:center}.lp-focus i{width:70%;height:6px}.lp-focus i:first-child{background:var(--accent);width:50%}.lp-focus i:last-child{display:none}
+.cflinks{display:flex;flex-direction:column}
+.cflink{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 2px;color:var(--ink);font:inherit;cursor:pointer}
+.cflink:first-child{border-top:0}.cflink span{grid-column:1;font-size:.82rem;color:var(--muted)}.cflink i{grid-row:1/3;grid-column:2;font-style:normal;font-size:1.4rem;color:var(--muted);align-self:center}
+.cflink:hover b{color:var(--accent)}
+.cfcrunch{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px}
+.cfcrunch .dhead h2{font-size:1rem}
+.imeta[hidden]{display:none}
+#iMeta{order:0}
+.imetab{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
+.imetab .ikl{grid-row:1/3;font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:99px}
+.imetab b{font:700 1.05rem var(--display)}.imetab .ims{grid-column:2;font-size:.82rem;color:var(--muted)}
+html[data-font="g"]{font-size:112.5%}
+
+/* ===== layout Compacto ===== */
+html[data-skin="compact"] body{font-size:14.5px;line-height:1.42;padding-top:14px}
+html[data-skin="compact"] .wrap{gap:12px}
+html[data-skin="compact"] header .lede{display:none}
+html[data-skin="compact"] h1{font-size:1.35rem}
+html[data-skin="compact"] h2{font-size:1.02rem}
+html[data-skin="compact"] .card{padding:12px 14px;gap:8px;border-radius:10px}
+html[data-skin="compact"] .today>p.how,html[data-skin="compact"] .revs>p.how,html[data-skin="compact"] .cnote,html[data-skin="compact"] .fhowto,html[data-skin="compact"] .fdbody>p.gtext.how,html[data-skin="compact"] .frules{display:none}
+html[data-skin="compact"] .pcard{padding:8px 10px;gap:5px;border-radius:9px}
+html[data-skin="compact"] .psubs{gap:4px}html[data-skin="compact"] .psubs li{padding:5px 8px;border-radius:6px}
+html[data-skin="compact"] .item{padding:7px 14px}
+html[data-skin="compact"] summary,html[data-skin="compact"] .fdsum,html[data-skin="compact"] .fssum{padding:10px 14px}
+html[data-skin="compact"] .ring{width:92px;height:92px}html[data-skin="compact"] .dtop{grid-template-columns:92px 1fr;gap:12px}
+html[data-skin="compact"] .ringc b{font-size:1.2rem}
+html[data-skin="compact"] .kpi{padding:7px 9px}html[data-skin="compact"] .kpi>b{font-size:1.1rem}
+html[data-skin="compact"] .btn,html[data-skin="compact"] .seg button{padding:5px 10px;font-size:.8rem}
+html[data-skin="compact"] .mini{padding:4px 8px}
+html[data-skin="compact"] .ipdays b{font-size:1.4rem}html[data-skin="compact"] .ipmain{padding:8px 10px}
+html[data-skin="compact"] .hbtn{width:34px;height:34px}
+
+/* ===== layout Foco ===== */
+html[data-skin="focus"] body{font-size:17px;line-height:1.6}
+html[data-skin="focus"] header .lede,html[data-skin="focus"] .navextra,html[data-skin="focus"] #iStats,html[data-skin="focus"] .ipnext,html[data-skin="focus"] #viewTemas .dash,html[data-skin="focus"] .today>p.how,html[data-skin="focus"] .revs>p.how,html[data-skin="focus"] .cnote{display:none!important}
+html[data-skin="focus"] .card{border-color:transparent;box-shadow:0 1px 4px rgb(0 0 0 / .07)}
+html[data-skin="focus"] .today,html[data-skin="focus"] .revs{border:1px solid var(--line)}
+html[data-skin="focus"] .pcard{padding:16px 18px;background:var(--surface)}
+html[data-skin="focus"] .psubs li{padding:11px 12px}
+html[data-skin="focus"] #viewInicio:not([hidden]){display:flex!important;flex-direction:column;gap:22px;max-width:700px!important;margin-inline:auto;width:100%}
+html[data-skin="focus"] #viewInicio .icol{display:contents!important}
+html[data-skin="focus"] #iMeta{order:0}html[data-skin="focus"] #iToday{order:1}html[data-skin="focus"] #iRevs{order:2}html[data-skin="focus"] #iProva{order:3}
+html[data-skin="focus"] .ipmain{background:var(--surface)}
+html[data-layout="phone"] header{padding-right:84px}
+html[data-layout="phone"] header h1{font-size:1.16rem;letter-spacing:-.015em;line-height:1.15;padding-top:6px}
+html[data-layout="phone"] .hbtn{width:36px;height:36px}
+html[data-layout="phone"] .hico{width:20px;height:20px}
 </style>
 
 <div class="wrap">
   <header>
-    <div class="hacts" id="hacts"><button class="hbtn" id="helpBtn" type="button" aria-label="Ajuda" title="Ajuda">?</button></div>
+    <div class="hacts" id="hacts"><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
     <h1>Checklist Residência Médica</h1>
     <p class="lede">185 temas de alta recorrência nas 5 grandes áreas. Estude no seu ritmo: o app agenda as revisões e mostra onde você mais erra.</p>
   </header>
@@ -787,7 +865,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Anotações</span><span class="ecount" id="ncount"></span></button>
     <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
-    <button class="tab tabhelp" role="tab" id="tabH" data-v="help" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></svg><span class="tl">Ajuda</span></button>
   </div>
   <div class="navextra" id="navExtra"></div>
   </nav>
@@ -800,7 +877,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 
   <div id="viewQuest" class="wrap" style="width:100%" hidden>
     <section class="card dash" aria-labelledby="qh">
-      <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="mini" id="openInstr" type="button">⚙ Instruções e backup</button></div>
+      <div class="dhead"><h2 id="qh">Desempenho em questões</h2></div>
       <div class="kpis" id="qkpis"></div>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
@@ -829,7 +906,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
   </div>
 
   <div id="viewInstr" class="wrap" style="width:100%" hidden>
-    <button class="link" id="backQuest" type="button" style="align-self:flex-start">← Voltar para Questões</button>
+    <button class="link fback" id="backQuest" type="button">← Voltar</button>
     <section class="card" aria-labelledby="ih">
       <h2 id="ih">Instruções para as questões</h2>
       <p class="gtext">Este texto é enviado ao Claude toda vez que você gera questões em um tema. Ajuste o estilo da banca, número de alternativas, dificuldade, foco e formato do comentário. O app acrescenta sozinho o tema, seus erros anteriores nele e o formato técnico da resposta.</p>
@@ -866,7 +943,10 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
     <ol class="elist" id="elist"></ol>
   </div>
 
+  <div id="viewPerfil" class="wrap" style="width:100%" hidden><div id="pfBody" class="pfbody"></div><div id="acctSlot" class="acctslot" hidden></div></div>
+  <div id="viewConfig" class="wrap" style="width:100%" hidden><div id="cfBody" class="cfbody"></div></div>
   <div id="viewHelp" class="wrap" style="width:100%" hidden>
+    <button class="link fback" id="backHelp" type="button">← Voltar</button>
     <section class="card" aria-labelledby="hh">
       <h2 id="hh">Ajuda</h2>
       <p class="gtext">Toque num assunto para abrir. A busca procura em todos os textos.</p>
@@ -878,7 +958,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 
   <div id="viewInicio" class="wrap ihome" style="width:100%">
     <div class="icol icol1"><div class="islot" id="iToday"></div><div class="islot" id="iRevs"></div></div>
-    <div class="icol icol2"><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="icol icol2"><section class="imeta" id="iMeta" hidden></section><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
   </div>
 
   <div id="viewTemas" class="wrap" style="width:100%" data-seg="hoje" hidden>
@@ -893,7 +973,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
     <div class="planhead"><span id="planmeta"></span><button class="link" id="planRedo" type="button">Refazer plano</button></div>
     <div class="meter" id="planbar" hidden><i></i></div>
     <ol class="plan" id="plan"></ol>
-    <p class="how">O plano é montado uma vez por dia com 3 temas, cada um com 3 subtópicos. Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
+    <p class="how">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
   </section>
 
   <div class="side">
@@ -1258,7 +1338,7 @@ function renamePlanLabels(dp){if(!dp||!Array.isArray(dp.items))return dp;const r
   if(dp.rchk)for(const k in dp.rchk)dp.rchk[k]=dp.rchk[k].map(t=>rn(k,t));return dp}
 
 /* plano do dia */
-const PLAN_N=3;
+let PLAN_N=3;
 function buildPlan(){
   const plan=[],used=new Set();
   const add=(it,cls,txt)=>{if(plan.length<PLAN_N&&!used.has(it.key)){used.add(it.key);plan.push({it,cls,txt})}};
@@ -1899,7 +1979,7 @@ function renderQuest(){
 }
 
 /* plano do dia: fica fixo até virar o dia (ou até "Refazer plano") */
-const LSDP="resid-plano-v1", SUBS_PER_DAY=3;
+const LSDP="resid-plano-v1";let SUBS_PER_DAY=3;
 let dayPlan=null, planEdit=null;
 function pickSubs(it,kind){const L=subList(it),s=get(it.key);if(!L.length)return [];
   const open=L.filter(x=>!x.done),done=L.filter(x=>x.done);
@@ -2079,7 +2159,7 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
 /* ===================== FACULDADE =====================
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
-const LSF="resid-fac-v1", FAC_WIN=21, FAC_VESP=3, RES_MIN_WEEK=2, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
+let FAC_WIN=21, RES_MIN_WEEK=2;const LSF="resid-fac-v1", FAC_VESP=3, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
 let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -2111,7 +2191,7 @@ function facPlanPicks(){const out=[],seen=new Set();
   out.sort((a,b)=>a.d-b.d||wOf(b.it)-wOf(a.it));
   if(!out.length)return {picks:[],slots:0};
   const near=out[0].d;
-  let slots=near<=7?3:near<=14?2:1;                       // 21 dias: 1 · 14 dias: 2 · 7 dias: 3
+  let slots=near<=FAC_WIN/3?PLAN_N:near<=FAC_WIN*2/3?Math.max(1,Math.round(PLAN_N*2/3)):Math.max(1,Math.round(PLAN_N/3)); // padrão (21 dias, 3 temas): 1 · 2 · 3
   if(out.some(o=>!o.it.own&&wOf(o.it)===3))slots++;       // conteúdo que também cai muito na residência: +1 vaga
   slots=Math.min(slots,PLAN_N);
   // proteção da residência: pelo menos RES_MIN_WEEK dias por semana com 1 tema da residência (exceto nos 7 dias finais de uma prova)
@@ -2474,7 +2554,7 @@ function semProvasBlock(s,L){const all=semProvas(s),up=all.filter(p=>p.date>=tod
   ad.append(pf,er,el(`<p class="gtext how">A prova começa com todo o conteúdo da ${esc(L.disc.toLowerCase())} marcado. Abra a prova para desmarcar o que não cai.</p>`));b.appendChild(ad);w.appendChild(b);return w}
 
 /* modo provas e regras do plano */
-function renderFacCrunch(){const fc=$("#facCrunch");fc.innerHTML="";const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
+function renderFacCrunch(target){const fc=target||$("#facCrunch");fc.innerHTML="";const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
   fc.appendChild(el(`<div class="dhead"><h2>Modo provas</h2></div>`));
   const sg=el(`<div class="seg" role="group" aria-label="Modo provas"></div>`);
   [["auto","Automático"],["on","Ligado"],["off","Desligado"]].forEach(([v,lab])=>{const b=el(`<button type="button" aria-pressed="${mode===v}">${lab}</button>`);
@@ -2810,7 +2890,7 @@ async function putErr(e){saveErrsLocal();if(!errStore)return;
   try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
 async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 
-function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
+function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
   $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help"}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
@@ -2869,12 +2949,117 @@ function render(){
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
+/* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
+const LSUI="resid-ui-v1";
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2},profile:{name:"",goal:"",goalDate:""}};
+const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
+const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
+let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
+function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profile}},p=(x&&x.prefs)||{},f=(x&&x.profile)||{};
+  if(["classic","compact","focus"].includes(p.layout))o.prefs.layout=p.layout;
+  if(["auto","light","dark"].includes(p.theme))o.prefs.theme=p.theme;
+  if(["n","g"].includes(p.font))o.prefs.font=p.font;
+  if([2,3,4,5].includes(p.planN))o.prefs.planN=p.planN;
+  if([2,3,4].includes(p.subN))o.prefs.subN=p.subN;
+  if(INT_SETS[p.ints])o.prefs.ints=p.ints;
+  if([14,21,28].includes(p.facWin))o.prefs.facWin=p.facWin;
+  if([0,1,2,3].includes(p.resWeek))o.prefs.resWeek=p.resWeek;
+  if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
+  if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
+  if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
+  return o}
+function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.layout;R.dataset.font=P.font;
+  if(P.theme==="auto"){if(R.dataset.themeOwn){R.removeAttribute("data-theme");delete R.dataset.themeOwn}}else{R.setAttribute("data-theme",P.theme);R.dataset.themeOwn="1"}
+  PLAN_N=P.planN;SUBS_PER_DAY=P.subN;INT.splice(0,INT.length,...INT_SETS[P.ints]);FAC_WIN=P.facWin;RES_MIN_WEEK=P.resWeek;
+  if(window.__decideLayout)window.__decideLayout()}
+function saveUI(){uiTouched=true;ui=uiSanitize(ui);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();
+  if(!uiDoc)return;clearTimeout(uiTimer);uiTimer=setTimeout(async()=>{try{await uiDoc.set({...ui,updatedAt:new Date().toISOString()})}catch(e){}},600)}
+function setPref(k,v){ui.prefs[k]=v;saveUI();render()}
+const initials=n=>{const w=String(n||"").trim().split(/\s+/).filter(x=>x&&!STOP.has(norm(x)));return w.length?(w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase():""};
+function goSub(v){if(view!==v){if(!["perfil","config","help","instr"].includes(view))backStack=[];backStack.push(view);if(backStack.length>6)backStack.shift()}setView(v)}
+function goBack(){setView(backStack.pop()||"inicio")}
+function renderHead(){const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
+  b.setAttribute("aria-pressed",view==="perfil");$("#cfgBtn").setAttribute("aria-pressed",["config","help","instr"].includes(view))}
+
+/* ---------- Perfil ---------- */
+function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChild(slot);const box=$("#pfBody");box.innerHTML="";const P=ui.profile;
+  const back=el(`<button class="link fback" type="button">← Voltar</button>`);back.onclick=goBack;box.appendChild(back);
+  // cabeçalho
+  const hd=el(`<section class="card pfhead"><div class="pfav" aria-hidden="true"></div><div class="pfid"><label class="ffield"><span>Seu nome</span><input class="etext" id="pfName" maxlength="40" placeholder="Como você quer ser chamado"></label><p class="gtext how">Aparece nas iniciais do ícone de perfil, no topo.</p></div></section>`);
+  const av=hd.querySelector(".pfav"),ini=initials(P.name);if(ini)av.textContent=ini;else av.innerHTML=`<svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg>`;
+  const ni=hd.querySelector("input");ni.value=P.name;ni.onchange=()=>{ui.profile.name=ni.value;saveUI();render()};box.appendChild(hd);
+  // meta
+  const mt=el(`<section class="card"><div class="dhead"><h2>Meta da residência</h2></div><p class="gtext how">A prova que você quer fazer e a data. O Início mostra a contagem regressiva.</p><div class="fgrid"><label class="ffield"><span>Prova-alvo</span><input class="etext" id="pfGoal" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data da prova</span><input class="etext" id="pfGoalDate" type="date"></label></div><p class="pfcount"></p></section>`);
+  const gi=mt.querySelector("#pfGoal"),gd=mt.querySelector("#pfGoalDate");gi.value=P.goal;gd.value=P.goalDate;
+  gi.onchange=()=>{ui.profile.goal=gi.value;saveUI();render()};gd.onchange=()=>{ui.profile.goalDate=/^\d{4}-\d{2}-\d{2}$/.test(gd.value)?gd.value:"";saveUI();render()};
+  const gc=mt.querySelector(".pfcount");if(P.goalDate){const dd=daysTo(P.goalDate);gc.textContent=dd>=0?`${P.goal||"Prova"}: faltam ${dd} dias (${goalSpan(dd)}). Você já estudou ${weighted()}% do peso das provas.`:`A data de ${P.goal||"prova"} já passou. Atualize para a próxima.`}else gc.remove();
+  box.appendChild(mt);
+  // conta
+  const ac=el(`<section class="card"><div class="dhead"><h2>Conta</h2></div><p class="gtext pfacct"></p><div class="pfslot"></div></section>`),at=ac.querySelector(".pfacct");
+  if(window.__site){at.textContent=!window.__site.configured?"A sincronização não está configurada neste site: os dados ficam só neste aparelho.":acctEmail?`Conectado como ${acctEmail}. Tudo sincroniza entre os aparelhos com essa conta.`:"Você não entrou: os dados ficam só neste aparelho. Entre para sincronizar com os outros aparelhos.";
+    ac.querySelector(".pfslot").appendChild(slot);slot.hidden=false}
+  else{at.textContent="No Claude, seu progresso fica salvo na sua conta do Claude, sem precisar de login. O site tem uma conta separada.";slot.hidden=true}
+  box.appendChild(ac);
+  // estatísticas
+  const days=Object.keys(hist).sort(),act=days.filter(d=>{const h=hist[d];return h&&(h.e||h.r||h.q)});let rv=0,qq=0,qc=0;days.forEach(d=>{const h=hist[d]||{};rv+=h.r||0});
+  ALL.forEach(i=>{const s=get(i.key);qq+=s.qt||0;qc+=s.qc||0});
+  const studied=ALL.filter(i=>{const s=get(i.key);return s.last||(s.l||0)>0}).length,dom=ALL.filter(i=>(get(i.key).l||0)===3).length,first=act[0];
+  const st=el(`<section class="card dash"><div class="dhead"><h2>Minhas estatísticas</h2></div><div class="kpis pfstats"></div></section>`),k=st.querySelector(".kpis");
+  [["Sequência atual",`${streak()}`,streak()===1?"dia seguido":"dias seguidos"],["Dias com estudo",`${act.length}`,first?`desde ${br(first)}/${first.slice(0,4)}`:"comece hoje"],
+   ["Temas estudados",`${studied}`,`de ${TOTAL} · ${dom} dominados`],["Revisões feitas",`${rv}`,"no total"],
+   ["Questões",qq.toLocaleString("pt-BR"),qq?`${pct(qc,qq)}% de acerto`:"nenhuma ainda"],["Faculdade",`${FAC_ITEMS.length}`,`conteúdos próprios · ${fac.discs.length} disciplina${fac.discs.length===1?"":"s"}`]]
+   .forEach(([a,b2,c])=>{const x=el(`<div class="kpi"><span class="kl"></span><b></b><span class="ks"></span></div>`);x.querySelector(".kl").textContent=a;x.querySelector("b").textContent=b2;x.querySelector(".ks").textContent=c;k.appendChild(x)});
+  box.appendChild(st)}
+const goalSpan=dd=>dd>=60?`${Math.round(dd/30.4)} meses`:dd>=14?`${Math.round(dd/7)} semanas`:`${dd} dias`;
+
+/* ---------- Configurações ---------- */
+function segRow(lab,how,opts,cur,on){const g=el(`<div class="cfrow"><div class="cfl"><b></b><span class="gtext how"></span></div><div class="seg" role="group"></div></div>`);
+  g.querySelector("b").textContent=lab;const h=g.querySelector(".how");if(how)h.textContent=how;else h.remove();g.querySelector(".seg").setAttribute("aria-label",lab);
+  opts.forEach(([v,t])=>{const b=el(`<button type="button"></button>`);b.textContent=t;b.setAttribute("aria-pressed",cur===v);b.onclick=()=>on(v);g.querySelector(".seg").appendChild(b)});return g}
+function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs;
+  const back=el(`<button class="link fback" type="button">← Voltar</button>`);back.onclick=goBack;box.appendChild(back);
+  box.appendChild(el(`<h2 class="cftitle">Configurações</h2>`));
+  if(uiNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=uiNote;box.appendChild(n)}
+  // aparência
+  const ap=el(`<section class="card"><div class="dhead"><h2>Aparência</h2></div><span class="glabel">Layout</span><div class="lays"></div></section>`),ly=ap.querySelector(".lays");
+  [["classic","Clássico","Cartões arejados e gráficos completos. O padrão."],["compact","Compacto","Mais coisa por tela: letras e espaços menores, sem textos de explicação."],["focus","Foco","Só o essencial do dia, letras maiores e sem gráficos no Início."]].forEach(([v,t,d])=>{
+    const b=el(`<button class="lay" type="button" aria-pressed="${P.layout===v}"><span class="laypic lp-${v}" aria-hidden="true"><i></i><i></i><i></i></span><b></b><span></span></button>`);b.querySelector("b").textContent=t;b.querySelector("span:last-child").textContent=d;
+    b.onclick=()=>setPref("layout",v);ly.appendChild(b)});
+  ap.append(segRow("Tema","Automático segue o aparelho.",[["auto","Automático"],["light","Claro"],["dark","Escuro"]],P.theme,v=>setPref("theme",v)),
+    segRow("Tamanho da letra","",[["n","Normal"],["g","Grande"]],P.font,v=>setPref("font",v)));
+  box.appendChild(ap);
+  // plano e revisões
+  const pl=el(`<section class="card"><div class="dhead"><h2>Plano do dia e revisões</h2></div></section>`);
+  const planChange=(k,v)=>{ui.prefs[k]=v;saveUI();uiNote="O plano de hoje continua como estava. Toque em Refazer o plano de hoje para aplicar agora, ou espere até amanhã.";render()};
+  pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
+    segRow("Subtópicos por tema","Quantos subtópicos de cada tema entram no dia.",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
+  const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
+  const rp=el(`<button class="btn" type="button">Refazer o plano de hoje</button>`);rp.onclick=()=>{redoPlan("Plano de hoje refeito com a nova configuração. O que você já tinha começado foi mantido.");uiNote="Plano de hoje refeito com a nova configuração.";render()};pl.appendChild(rp);
+  box.appendChild(pl);
+  // faculdade
+  const fc=el(`<section class="card"><div class="dhead"><h2>Faculdade</h2></div></section>`);
+  fc.append(segRow("Antecedência das provas","Quantos dias antes a prova começa a ocupar o plano do dia.",[[14,"14 dias"],[21,"21 dias"],[28,"28 dias"]],P.facWin,v=>{ui.prefs.facWin=v;saveUI();redoPlan();render()}),
+    segRow("Residência garantida","Dias por semana com pelo menos 1 tema da residência, mesmo com provas (exceto na semana da prova).",[[0,"0"],[1,"1"],[2,"2"],[3,"3"]],P.resWeek,v=>{ui.prefs.resWeek=v;saveUI();redoPlan();render()}));
+  const mc=el(`<div class="cfcrunch"></div>`);fc.appendChild(mc);box.appendChild(fc);renderFacCrunch(mc);
+  // questões, backup e ajuda
+  const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
+  [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
+    const b=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);b.querySelector("b").textContent=t;b.querySelector("span").textContent=d;b.onclick=fn;ql.appendChild(b)});
+  box.appendChild(qb);
+  const rs=el(`<button class="link" type="button">Voltar tudo ao padrão</button>`);rs.onclick=()=>{ui.prefs={...UI_DEF.prefs};saveUI();uiNote="Configurações de volta ao padrão.";render()};box.appendChild(rs)}
+
+/* ---------- Início: meta ---------- */
+function renderInicioMeta(){const box=$("#iMeta");if(!box)return;const P=ui.profile;box.innerHTML="";box.hidden=!P.goalDate;if(!P.goalDate)return;
+  const dd=daysTo(P.goalDate);
+  const m=el(`<button class="imetab" type="button"><span class="ikl">Meta</span><b></b><span class="ims"></span></button>`);m.querySelector("b").textContent=P.goal||"Prova de residência";
+  m.querySelector(".ims").textContent=dd>=0?`faltam ${dd} dias (${goalSpan(dd)}) · ${weighted()}% do peso estudado`:"a data já passou: atualize no Perfil";m.onclick=()=>goSub("perfil");box.appendChild(m)}
+
 /* ---------- aba Início: próxima prova, estudar hoje, revisões e progresso ---------- */
 /* "Estudar hoje" e "Revisões" são os mesmos cartões da aba Residência: mudam de lugar conforme a aba aberta */
 function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)return;
   if(view==="inicio"){if(t.parentNode!==$("#iToday"))$("#iToday").appendChild(t);if(r.parentNode!==$("#iRevs"))$("#iRevs").appendChild(r)}
   else if(view==="temas"){const slot=$("#todaySlot");if(slot.nextElementSibling!==t)slot.after(t);const side=$("#viewTemas .side");if(side.firstElementChild!==r)side.prepend(r)}}
-function renderInicio(){renderInicioProva();renderInicioStats()}
+function renderInicio(){renderInicioMeta();renderInicioProva();renderInicioStats()}
 function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=upcomingProvas(),CR=examCrunch();
   const hd=el(`<div class="dhead"><h2>Próxima prova</h2><span class="todaydate"></span></div>`);box.appendChild(hd);
   if(!ups.length){box.appendChild(el(`<p class="cempty">${fac.provas.length?"Nenhuma prova futura nos semestres ativos.":"Nenhuma prova cadastrada. Cadastre as provas dentro do semestre, na aba Faculdade: nas 3 semanas antes, o plano do dia reserva espaço para elas."}</p>`));
@@ -2950,7 +3135,7 @@ const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
   anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy}}}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui}}}
 function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
@@ -2989,7 +3174,7 @@ const HELP=[
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
 - **Aba Questões:** acerto por área, por especialidade e por tema.
-- **⚙ Instruções e backup:** ajuste o estilo das questões (banca, dificuldade, formato).
+- **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa.
@@ -3020,14 +3205,27 @@ const HELP=[
 - Os temas FAC não entram no "% dominado", que mede só os 185 temas da residência.`],
 ["Navegação por aparelho",`| Aparelho | Navegação | Aba Residência |
 |---|---|---|
-| Celular | Barra embaixo; Ajuda no ? do topo | Hoje · Revisões · Lista · Progresso |
+| Celular | Barra embaixo; Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
 | Tablet em pé ou no app do Claude | Faixa lateral | Hoje · Revisões · Lista · Progresso |
 | Tablet deitado (tela cheia) | Faixa lateral | Duas colunas |
 | Computador | Menu lateral com atalhos | Duas colunas |
 - O número na aba **Início** são as revisões pendentes.
 - O Início e a Faculdade se ajustam sozinhos: em uma coluna no celular e em duas no computador e no tablet deitado.
-- **Instruções e backup:** aba Questões › ⚙.`],
-["Backup",`Em **Questões › ⚙ Instruções e backup**.
+- **Perfil** (suas iniciais) e **⚙ Configurações** ficam no canto superior direito em todos os aparelhos. A Ajuda, as instruções do gerador e o backup ficam dentro da ⚙.`],
+["Perfil e Configurações",`**Perfil** (ícone com suas iniciais, no topo):
+- **Nome:** vira as iniciais do ícone.
+- **Meta da residência:** prova-alvo e data. O Início mostra quantos dias faltam e quanto do peso das provas você já estudou.
+- **Conta** (no site): entrar, sair e criar senha para o app instalado.
+- **Minhas estatísticas:** sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
+
+**⚙ Configurações:**
+- **Layout:** **Clássico** (o padrão), **Compacto** (mais coisa por tela, sem textos de explicação) ou **Foco** (só o essencial do dia, letras maiores, sem gráficos no Início). Troca na hora.
+- **Tema** (automático, claro, escuro) e **tamanho da letra**.
+- **Plano do dia e revisões:** temas por dia (2 a 5), subtópicos por tema (2 a 4) e intervalos das revisões (**Padrão** 1·3·7·15·30·60·90, **Intensivo** 1·2·4·7·15·30·60, **Espaçado** 1·4·10·21·45·90·120 dias). O plano de hoje só muda se você tocar em **Refazer o plano de hoje**.
+- **Faculdade:** antecedência das provas (14, 21 ou 28 dias), dias por semana com residência garantida e o modo provas.
+- **Questões, backup e ajuda:** instruções do gerador, exportar e importar, e esta Ajuda.
+- Tudo fica salvo na sua conta e vale em todos os aparelhos.`],
+["Backup",`Em **⚙ Configurações › Backup**.
 - **Exportar backup:** salva um arquivo com tudo (temas, revisões, questões, anotações, erros, faculdade, histórico, instruções). No iPad/iPhone, escolha **Salvar em Arquivos**.
 - **Copiar backup:** o mesmo conteúdo como texto.
 - **Importar backup** (site): mostra um resumo, avisa o que será substituído e guarda uma cópia do que existia.
@@ -3079,13 +3277,16 @@ function renderAll(){
   $("#rcount").textContent=dueN?String(dueN):"";$("#rcount").title=dueN?`${dueN} revisões pendentes`:"";
   renderTSeg(dueN);renderNavExtra(P0,dueN);
   // só a aba aberta é redesenhada (as outras são montadas ao abrir)
-  if(view!=="temas")$("#areas").innerHTML="";if(view!=="fac")$("#facSems").innerHTML="";
+  if(view!=="temas")$("#areas").innerHTML="";if(view!=="fac"){$("#facSems").innerHTML="";$("#facCrunch").innerHTML=""}if(view!=="config")$("#cfBody").innerHTML="";
   if(view==="erros")renderErros();
   else if(view==="notas")renderNotasView();
   else if(view==="quest")renderQuest();
   else if(view==="fac")renderFac();
   else if(view==="instr")renderBackup();
   else if(view==="help")renderHelp();
+  else if(view==="perfil")renderPerfil();
+  else if(view==="config")renderConfig();
+  renderHead();
   renderFocus();
   placeShared();
   if(view==="inicio"){renderPlan();renderRevs();renderInicio();return}
@@ -3152,6 +3353,7 @@ function persist(){
     catch(e){setSave(e&&e.code==="unavailable"?"Sem conexão no momento. Sua próxima marcação salva tudo de novo.":"Não foi possível salvar na conta; salvo neste navegador")}},700);
 }
 
+try{const lu=JSON.parse(localStorage.getItem(LSUI)||"null");if(lu)ui=uiSanitize(lu)}catch(e){}applyUI();
 try{const lf=JSON.parse(localStorage.getItem(LSF)||"null");if(facValid(lf))fac=lf}catch(e){}
 registerOwn();
 try{const v2=localStorage.getItem(LS2);state=migrate(JSON.parse(v2||localStorage.getItem(LS1)||"{}"))}catch(e){state={}}
@@ -3165,7 +3367,8 @@ $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus(
 $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setView(t.dataset.v));
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});
+if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
 $("#nq").addEventListener("input",debounced(e=>{nQuery=norm(e.target.value.trim());render()}));
 (async()=>{try{downloadsFn=await window.claude?.use?.("downloads")||null}catch(e){downloadsFn=null}render()})();
@@ -3175,15 +3378,15 @@ document.querySelectorAll("#tSeg button").forEach(b=>b.onclick=()=>setTSeg(b.dat
 const isTypingEl=e=>e&&(e.tagName==="TEXTAREA"||(e.tagName==="INPUT"&&!/^(checkbox|radio|button|submit|range|color|file)$/.test(e.type)));
 document.addEventListener("focusin",e=>{if(isTypingEl(e.target))document.body.classList.add("typing")});
 document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement))document.body.classList.remove("typing")},50));
-$("#openInstr").onclick=()=>setView("instr");
-$("#helpBtn").onclick=()=>setView("help");
+
+$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
 $("#hq").addEventListener("input",debounced(e=>{helpQ=e.target.value.trim();renderHelp()},150));
 $("#bkSave").onclick=async()=>{const m=$("#bkMsg");if(!downloadsFn)return;
   try{await downloadsFn.save({filename:`checklist-backup-${today()}.json`,data:JSON.stringify(buildBackup(),null,1)});m.textContent="Backup salvo. No iPad/iPhone ele fica no app Arquivos, em Downloads."}
   catch(e){m.textContent=e&&/cancel|denied|declin/i.test(String(e.code||e.message))?"Salvamento cancelado.":"Não foi possível salvar o arquivo. Use Copiar backup e cole num arquivo de texto."}};
 $("#bkCopy").onclick=async()=>{const m=$("#bkMsg"),txt=JSON.stringify(buildBackup());
   try{await navigator.clipboard.writeText(txt);m.textContent="Backup copiado ("+Math.round(txt.length/1024)+" KB). Cole no site do checklist em Importar backup, ou num arquivo de texto para guardar."}
-  catch(e){m.textContent="Seu navegador não deixou copiar. Use Exportar backup."}};$("#backQuest").onclick=()=>setView("quest");
+  catch(e){m.textContent="Seu navegador não deixou copiar. Use Exportar backup."}};$("#backQuest").onclick=goBack;
 $("#qSort").onchange=e=>{qSort=e.target.value;render()};$("#qWeak").onclick=()=>{qWeak=!qWeak;render()};
 $("#eOrder").onchange=e=>{eOrder=e.target.value;render()};
 $("#eq").addEventListener("input",debounced(e=>{eQuery=norm(e.target.value.trim());render()}));
@@ -3222,6 +3425,8 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
     settingsDoc=db.doc("data/users/"+uid+"/settings");
     try{const ss=await settingsDoc.get();const sp=ss.exists&&ss.data().prompt;
       if(typeof sp==="string"&&sp.trim()){promptText=sp;try{localStorage.setItem(LSP,sp)}catch(e){}if(!promptEdited)$("#promptBox").value=sp}}catch(e){}
+    uiDoc=db.doc("data/users/"+uid+"/prefs");
+    try{const us=await uiDoc.get();const ud=us.exists?us.data():null;if(ud&&!uiTouched){ui=uiSanitize(ud);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();render()}else if(uiTouched)saveUI()}catch(e){}
     errStore=store.collection("errors");
     const es=await errStore.get();
     const remote=es.docs.map(d=>d.data()).filter(errOk);

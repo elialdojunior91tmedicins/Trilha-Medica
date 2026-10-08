@@ -329,6 +329,7 @@
     notes = nn; noteAt = na;
     errors = (Array.isArray(d.errors) ? d.errors : []).filter(errOk);
     if (typeof d.prompt === "string" && d.prompt.trim()) promptText = d.prompt;
+    if (d.ui && typeof d.ui === "object" && typeof uiSanitize === "function") { ui = uiSanitize(d.ui); try { localStorage.setItem(LSUI, JSON.stringify(ui)); } catch (e) {} }
     const ls = (k, v) => { try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); } catch (e) {} };
     ls(LS2, state); ls(LSH, hist); ls(LSDP, dayPlan); ls(LSN, notes); ls(LSN + "-at", noteAt); ls(LSE, errors); ls(LSF, fac); ls(LSP, promptText);
     if (d.sort === "inc" || d.sort === "num") ls("resid-sort", d.sort);
@@ -336,6 +337,7 @@
       await store.set({ version: 2, topics: state, hist, plan: dayPlan, updatedAt: now });
       await facStore.set({ ...fac, updatedAt: now });
       if (settingsDoc) await settingsDoc.set({ prompt: promptText, updatedAt: now });
+      if (d.ui && typeof uiDoc !== "undefined" && uiDoc) await uiDoc.set({ ...ui, updatedAt: now });
       const es = await errStore.get(), ids = new Set(errors.map(e => e.id));
       await Promise.all(es.docs.filter(x => !ids.has(x.id)).map(x => errStore.doc(x.id).delete()));
       await Promise.all(errors.map(e => errStore.doc(e.id).set({ ...e })));
@@ -423,10 +425,12 @@
   function mount() {
     // botão de conta no cabeçalho
     const header = document.querySelector("body > .wrap > header");
-    if (header && configured) {
-      const btn = h("button", { class: "acct", type: "button", id: "acctBtn", text: "Entrar" });
-      btn.onclick = openAccount; header.classList.add("hasacct"); (header.querySelector(".hacts") || header).prepend(btn);
-      authReady.then(u => { btn.textContent = u ? "Conta" : "Entrar"; btn.title = u ? (u.email || "") : "Entrar para sincronizar"; });
+    const slot = document.getElementById("acctSlot"); // página Perfil do app
+    if (configured && (slot || header)) {
+      const btn = h("button", { class: slot ? "btn primary" : "acct", type: "button", id: "acctBtn", text: "Entrar" });
+      btn.onclick = openAccount;
+      if (slot) slot.append(btn); else { header.classList.add("hasacct"); (header.querySelector(".hacts") || header).prepend(btn); }
+      authReady.then(u => { btn.textContent = u ? (slot ? "Gerenciar conta (sair, criar senha)" : "Conta") : (slot ? "Entrar ou criar conta" : "Entrar"); btn.title = u ? (u.email || "") : "Entrar para sincronizar"; if (slot) btn.className = u ? "btn" : "btn primary"; });
     }
     // banners
     const bannerHost = h("div", { class: "sbanners" });
