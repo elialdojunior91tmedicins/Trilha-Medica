@@ -46,7 +46,8 @@ consultado quando há dúvida. Responda em português.
 
 - Início: os cartões "Estudar hoje" (`.card.today`) e "Revisões" (`.card.revs`) são os mesmos nós da aba Residência;
   `placeShared()` os move para `#iToday`/`#iRevs` quando a aba Início está aberta e de volta ao abrir a Residência.
-- Faculdade em pastas: semestre (`facOpenSem`) › disciplina (`facOpenDisc`, modo Editar em `facEditDisc`) › eixo › SP;
+- Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
+  guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
 
 ## Cuidados
