@@ -63,7 +63,7 @@ consultado quando há dúvida. Responda em português.
   Painel `#facProvas` (`renderFacProvas`: `provaStats`/`provaRitmo`/`provaNext`, `provaStudyNext` → Foco + `facGoRef`, `provaSimGo` →
   `simCfg={src:"prova",pid}`; `simProva()`, `simSrcList()`, item `ctx` no `simPrompt`). Depois da prova: `provasToClose()` (até 30 dias,
   sem `p.res`) → `provaResEl` (`facRes`; `p.res={d,e,n?,of?,skip?}`; erros via `errFormEl` com `s`=nome da prova).
-  Fechamento da SP `s.fech` (`spAsProva` = mini prova com objetivos `S:<chave>:<obj>` e `win:10`; `itemStudied` usa `p.win`), `spFechas`,
+  Fechamento da SP `s.fech` (`spAsProva` = mini prova com objetivos `S:<chave>:<obj>` e `win`=antecedência+3; `itemStudied` usa `p.win`), antecedência `s.lead` (`spLead`, padrão `SP_LEAD`=7, opções `SP_LEADS`), `spFechas`,
   `spPlanPicks` (vagas no `buildPlan` antes das provas), `spFechaBlock` no painel, `spFechEl` na SP, selo "fecha em N dias" no `spRow`.
   Materiais `d.links`/`s.links` = [{id,u,t}] (`linksBlock`, `normUrl`). Foco por disciplina `discFocusSec(d,from)`, cartão `#facWeek`
   (só em 2 colunas). Layout: `.fside` (provas, foco, modo provas) é `display:contents` com `order` no celular e coluna da direita em 2 colunas.

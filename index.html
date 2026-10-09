@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Checklist">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=82d86ae3">
+<link rel="stylesheet" href="site.css?v=1d3c82a5">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=82d86ae3"></script>
-<script src="bridge.js?v=82d86ae3"></script>
+<script src="config.js?v=1d3c82a5"></script>
+<script src="bridge.js?v=1d3c82a5"></script>
 </head>
 <body>
 <script>
@@ -2810,7 +2810,7 @@ function exactDup(q){const n=norm(q).trim();return FAC_ITEMS.find(it=>norm(it.t)
 const LV_DEF={disc:"Disciplina",eixo:"Eixo",sp:"SP"};
 const lv=sem=>({...LV_DEF,...((sem&&sem.lv)||{})});
 function facNormalize(){fac.discs.forEach(d=>{if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.eixos))d.eixos=[];if(!Array.isArray(d.sps))d.sps=[];
-  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone})})}
+  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})})}
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
 function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===id);if(s)return {d,s}}return null}
@@ -3115,22 +3115,24 @@ function linksBlock(o,key,always){const L=Array.isArray(o.links)?o.links:[],fk="
   return w}
 
 /* ---------- fechamento da SP (tutoria): objetivos e conteúdos entram no plano na semana antes ---------- */
-const SP_WIN=10,SP_LEAD=7,SP_SHOW=14;
+const SP_LEAD=7,SP_SHOW=14,SP_LEADS=[2,3,4,5,6,7,10,14,21];
+/* quantos dias antes do fechamento a SP entra no plano (escolha do estudante; sugestão 7) */
+const spLead=s=>Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30?s.lead:SP_LEAD;
 /* a SP vira uma "mini prova": conteúdos + objetivos ainda não marcados; vale o que foi estudado nos 10 dias antes */
 function spAsProva(d,s){const pr=primaryRef(s),pk=pr&&refTopic(pr).k,obj=pk&&BYKEY[pk]?s.objs.map(o=>`S:${pk}:${o}`):[];
-  return {id:"sp:"+s.id,discId:d.id,name:`${spShort(s.name)} (fechamento)`,date:s.fech,items:[...s.items,...obj],done:s.fdone||[],win:SP_WIN,sp:s}}
+  return {id:"sp:"+s.id,discId:d.id,name:`${spShort(s.name)} (fechamento)`,date:s.fech,items:[...s.items,...obj],done:s.fdone||[],win:spLead(s)+3,sp:s}}
 function spFechas(maxDays){const t=today(),act=new Set(activeSems()),out=[];
   fac.discs.forEach(d=>{if(!act.has(d.semId))return;(d.sps||[]).forEach(s=>{if(typeof s.fech!=="string"||s.fech<t)return;const dd=daysTo(s.fech);if(dd<=maxDays)out.push({d,s,dd,p:spAsProva(d,s)})})});
   return out.sort((a,b)=>a.dd-b.dd)}
 /* vagas no plano do dia: 1 por SP (2 nos 2 últimos dias), no máximo 2 no total */
 function spPlanPicks(){const out=[],seen=new Set();
-  spFechas(SP_LEAD).forEach(f=>{let n=f.dd<=2?2:1;for(const r of provaPending(f.p)){if(!n||out.length>=2)break;const x=refTopic(r);if(!x||seen.has(x.k))continue;seen.add(x.k);out.push({x,it:BYKEY[x.k],d:f.dd,lab:spShort(f.s.name)});n--}});
+  spFechas(30).filter(f=>f.dd<=spLead(f.s)).forEach(f=>{let n=f.dd<=2?2:1;for(const r of provaPending(f.p)){if(!n||out.length>=2)break;const x=refTopic(r);if(!x||seen.has(x.k))continue;seen.add(x.k);out.push({x,it:BYKEY[x.k],d:f.dd,lab:spShort(f.s.name)});n--}});
   return out}
 /* ir estudar: o objetivo abre o conteúdo principal da SP (é lá que os objetivos estão) */
 function spGo(d,s,r){const x=refTopic(r);facGoRef(d,x&&x.sub?primaryRef(s):r)}
 function spStudyNext(f){const r=provaNext(f.p);if(!r)return;const k=refTopic(r).k;
   foPick.ref="T:"+k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}spGo(f.d,f.s,r)}
-function spFechaBlock(){const L=spFechas(SP_SHOW);if(!L.length)return null;
+function spFechaBlock(){const L=spFechas(30).filter(f=>f.dd<=Math.max(SP_SHOW,spLead(f.s)));if(!L.length)return null;
   const w=el(`<div class="fspfech"><span class="glabel">Fechamentos de SP</span></div>`);
   L.forEach(f=>{const st=provaStats(f.p),nx=provaNext(f.p),[od,ot]=objStats(f.s);
     const r=el(`<div class="fpd fpsp lv-${st.lvl}" id="fpsp-${f.s.id}"><div class="fpdh"><b></b><span class="fcount${f.dd<=3?" soon":""}"></span></div><span class="ks"></span><div class="meter"><i style="width:${st.tot?st.done/st.tot*100:0}%"></i></div><p class="fpdtx"></p></div>`);
@@ -3145,9 +3147,13 @@ function spFechaBlock(){const L=spFechas(SP_SHOW);if(!L.length)return null;
 function spFechEl(d,s,L){const w=el(`<div class="fspfd"><label class="fcru">Fechamento <input type="date" class="etext"></label></div>`),i=w.querySelector("input");i.id="fech-"+s.id;i.value=s.fech||"";
   i.setAttribute("aria-label",`Data de fechamento da ${L.sp}`);
   i.onchange=()=>{const v=i.value;if(v&&!/^\d{4}-\d{2}-\d{2}$/.test(v))return;if(v)s.fech=v;else{delete s.fech;delete s.fdone}saveFac();
-    const dd=v?daysTo(v):99;if(dd>=0&&dd<=SP_LEAD)provaChanged({date:v,name:spShort(s.name)},"fechamento da");else render()};
+    const dd=v?daysTo(v):99;if(dd>=0&&dd<=spLead(s))provaChanged({date:v,name:spShort(s.name)},"fechamento da");else render()};
   if(s.fech){const c=el(`<button class="link" type="button">tirar a data</button>`);c.onclick=()=>{delete s.fech;delete s.fdone;saveFac();redoPlan()};w.appendChild(c)}
-  w.appendChild(el(`<p class="gtext how">Com a data, os objetivos e os conteúdos desta ${esc(L.sp)} entram no plano do dia nos ${SP_LEAD} dias antes do fechamento (1 vaga; 2 nos últimos 2 dias) e aparecem em Próximas provas.</p>`));
+  const ld=spLead(s),sl=el(`<label class="fcru">Começar a estudar <select class="etext"></select></label>`),se=sl.querySelector("select");se.id="flead-"+s.id;
+  SP_LEADS.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=`${n} dias antes${n===SP_LEAD?" (sugerido)":""}`;se.appendChild(o)});
+  if(!SP_LEADS.includes(ld)){const o=document.createElement("option");o.value=ld;o.textContent=`${ld} dias antes`;se.appendChild(o)}se.value=String(ld);
+  se.onchange=()=>{const n=+se.value;if(n===SP_LEAD)delete s.lead;else s.lead=n;saveFac();if(s.fech)redoPlan();else render()};w.appendChild(sl);
+  w.appendChild(el(`<p class="gtext how">Com a data, os objetivos e os conteúdos desta ${esc(L.sp)} entram no plano do dia nos ${ld} dias antes do fechamento (1 vaga; 2 nos últimos 2 dias) e aparecem em Próximas provas. Conta como pronto o que você estudar nesse período (e até 3 dias antes dele).</p>`));
   return w}
 
 function renderFac(){
@@ -5295,7 +5301,7 @@ const HELP=[
 - **Provas:** **+ Prova** na disciplina ou em **Provas do semestre**. A prova começa com todo o conteúdo da disciplina; abra para mudar a data e desmarcar o que não cai. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
 - **Próximas provas** (no topo da aba; no computador e no tablet deitado, na coluna da direita): cada prova mostra quanto já está pronto, quantos conteúdos faltam e o ritmo para chegar a tempo (a véspera fica para revisar). **Estudar o próximo** abre o conteúdo que falta e liga o Foco; **Simulado da prova** monta questões só com o conteúdo daquela prova (também aparece como **Prova: …** no Simulado misto).
 - **Depois da prova:** por até 30 dias, o painel pergunta como foi. Registre a nota (ex.: 7,5 de 10) e toque no que caiu e você não sabia: vira um erro no caderno, já ligado ao tema. A nota aparece depois na lista de provas realizadas.
-- **Fechamento da SP (tutoria):** abra a SP e preencha **Fechamento**. Nos 7 dias antes, os objetivos e os conteúdos dela entram no plano do dia (1 vaga; 2 nos 2 últimos dias), a SP mostra **fecha em N dias** e aparece em **Próximas provas › Fechamentos de SP** com o que falta e **Estudar o próximo**. Conta como pronto o conteúdo estudado nos 10 dias antes e o objetivo marcado.
+- **Fechamento da SP (tutoria):** abra a SP e preencha **Fechamento**. Em **Começar a estudar** você escolhe com quantos dias de antecedência (sugestão: 7). Nesse período, os objetivos e os conteúdos dela entram no plano do dia (1 vaga; 2 nos 2 últimos dias), a SP mostra **fecha em N dias** e aparece em **Próximas provas › Fechamentos de SP** com o que falta e **Estudar o próximo**. Conta como pronto o conteúdo estudado nesse período (e até 3 dias antes dele) e o objetivo marcado.
 - **Materiais:** **+ Material** guarda links (slides, Drive, artigos, vídeos) na disciplina; dentro de cada SP também há **+ Material**. Os links abrem numa nova aba.
 - **Foco por disciplina:** o cabeçalho da disciplina mostra o tempo de foco na semana (sessões vinculadas a ela ou aos conteúdos dela). No computador e no tablet deitado, o cartão **Foco nesta semana** compara as disciplinas.
 - **Foco no Início:** o anel da faculdade mostra sozinho a disciplina em foco: a que tem prova em até 21 dias com conteúdo pendente; sem isso, a mais estudada nos últimos 7 dias; sem estudo recente, a com mais conteúdo.
