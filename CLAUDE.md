@@ -109,6 +109,7 @@ consultado quando há dúvida. Responda em português.
   `eOrder` sp|new|due|miss, PDF `errosPDF(eVis)`/`ePdfSave`, simulado `simCfg.src="errs"` (`eSimItems`, questão com `err` → `eAnswer`).
   O selo `#ecount` mostra os erros para revisar hoje.
   Em duas colunas (`data-cols=2`, tablet/desktop): `.eside` (eTop + Onde melhorar) à direita, filtros e lista à esquerda; no celular `.side` é `display:contents`.
+  Revisão em tela inteira: `erFull` (localStorage `resid-erfull`, `erFullSet`), classe `#viewErros.erfull` só com `erRun`; atalhos espaço/1/2/Esc.
 
 ## Cuidados
 

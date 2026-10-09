@@ -571,6 +571,18 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .efoot .sp{flex:1}
 .etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
 .etopacts{margin:0}
+.erev .dhead .erfullb{margin-left:auto}.erev .dhead .todaydate{flex:1;text-align:right}
+.erfullb,.erkeys{display:none}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .erfullb{display:inline-block}
+html[data-layout="desktop"] .erkeys{display:block}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull:not([hidden]){display:block;max-width:860px;margin-inline:auto}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull>:is(.controls,#elist),
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .eside>.card,
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .etop>:not(.erev){display:none}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erev{padding:26px 30px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erfc{padding:22px 24px;min-height:260px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erfc .ebody span{font-size:1.15rem;line-height:1.5}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erev .btn{padding:10px 18px;font-size:.95rem}
 /* duas colunas (tablet deitado, notebook, monitor): lista à esquerda; revisar, repetidos e onde melhorar à direita */
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros{max-width:none}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros:not([hidden]){display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:24px;row-gap:20px;align-items:start}
@@ -3431,7 +3443,16 @@ function eRegPanel(){const R=eReg,w=el(`<div class="qreg" id="eReg"><div class="
   ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
   w.appendChild(errFormEl(R,"erg-",e=>{eReg={k:e.k,t:e.t,s:e.s,w:"",r:"",saved:e.k};render()}));return w}
 /* ----- revisão ativa: esconde o correto, você tenta lembrar ----- */
+/* tela inteira na revisão (só faz diferença nas telas em duas colunas); a escolha fica salva */
+let erFull=false;try{erFull=localStorage.getItem("resid-erfull")==="1"}catch(x){}
+function erFullSet(v){erFull=v;try{localStorage.setItem("resid-erfull",v?"1":"0")}catch(x){}render();const h=$("#erh");if(h)h.scrollIntoView({block:"start"})}
+document.addEventListener("keydown",ev=>{if(view!=="erros"||!erRun)return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const b=id=>{const x=$(id);if(x){ev.preventDefault();x.click();return true}};
+  if(ev.key===" "||ev.key==="Enter"){if(b("#erShow"))return}
+  if(ev.key==="1"){b("#erGood");return}if(ev.key==="2"){b("#erBad");return}
+  if(ev.key==="Escape"&&erFull&&document.documentElement.dataset.cols==="2"){ev.preventDefault();erFullSet(false)}});
 function eRevCard(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
+  if(erRun){const fb=el(`<button class="mini erfullb" type="button" id="erFullB"></button>`);fb.textContent=erFull?"Sair da tela inteira":"⛶ Tela inteira";fb.setAttribute("aria-pressed",erFull);fb.title=erFull?"Volta a mostrar a lista ao lado (Esc)":"Esconde a lista e mostra só a revisão";fb.onclick=()=>erFullSet(!erFull);c.querySelector(".dhead").appendChild(fb)}
   c.querySelector(".todaydate").textContent=`${due.length} para hoje · ${errors.filter(e=>!e.arch).length} no caderno`;
   if(erRun){const R=erRun,e=errors.find(y=>y.id===R.ids[R.i]);
     if(!e||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: você já sabe ${R.ok} de ${R.done}.</p>`));
@@ -3446,7 +3467,8 @@ function eRevCard(){const due=eDueList(),c=el(`<section class="card erev" aria-l
     else{const g=el(`<button class="btn primary" type="button" id="erGood">Agora sei</button>`),b=el(`<button class="btn" type="button" id="erBad">Ainda erraria</button>`);
       g.onclick=()=>{eAnswer(e,true);R.ok++;R.done++;R.i++;R.show=false;render()};b.onclick=()=>{eAnswer(e,false);R.done++;R.i++;R.show=false;render()};a.append(g,b);
       if(eBox(e)>=2){const ar=el(`<button class="btn" type="button" id="erArch">Já domino: arquivar</button>`);ar.onclick=()=>{e.rev=(e.rev||0)+1;e.lastRev=today();e.arch=today();putErr(e);R.ok++;R.done++;R.i++;R.show=false;render()};a.appendChild(ar)}}
-    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{erRun=null;render()};a.appendChild(st);c.appendChild(a);return c}
+    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{erRun=null;render()};a.appendChild(st);c.appendChild(a);
+    c.appendChild(el(`<p class="how erkeys">Teclado: espaço mostra o correto · 1 Agora sei · 2 Ainda erraria${erFull?" · Esc sai da tela inteira":""}</p>`));return c}
   if(!due.length){const nx=errors.filter(e=>BYKEY[e.k]&&!e.arch).map(eDue).sort()[0];c.appendChild(el(`<p class="cempty">Nenhum erro para revisar hoje.${nx?` O próximo volta em ${br(nx)}.`:""}</p>`));return c}
   const by={};due.forEach(e=>{const it=BYKEY[e.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
   c.appendChild(el(`<p class="gtext qrdsum">${Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}</p>`));
@@ -3584,6 +3606,7 @@ function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 function renderErros(){
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):""}
+  $("#viewErros").classList.toggle("erfull",!!(erRun&&erFull));
   {const top=$("#eTop");top.innerHTML="";
     if(eReg)top.appendChild(eRegPanel());else{const a=el(`<div class="btns etopacts"><button class="btn" type="button" id="eRegB">+ Registrar erro</button></div>`);a.querySelector("button").onclick=()=>{eReg={};render();setTimeout(()=>{const i=$("#erq");if(i)i.focus()},30)};
       if(!sampleOff&&errors.some(e=>BYKEY[e.k]&&!e.arch)){const sb=el(`<button class="btn" type="button" id="eSimB">Simulado dos meus erros</button>`);sb.disabled=!sampleFn;sb.title="O Claude cria questões novas sobre os pontos que você já errou";sb.onclick=eSimGo;a.appendChild(sb)}
@@ -5025,6 +5048,7 @@ const HELP=[
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.
 - **Filtros:** para revisar hoje, que se repetem, sem cartão, arquivados, período, fonte e causa; ordem por próxima revisão ou mais teimosos. **Exportar PDF destes erros** gera o caderno com os filtros atuais.
+- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
 - O número na aba Erros mostra quantos erros você tem para revisar hoje.
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
