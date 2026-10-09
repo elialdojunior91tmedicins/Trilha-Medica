@@ -105,6 +105,11 @@ consultado quando há dúvida. Responda em português.
   localStorage `resid-focus-v1` e Firestore `progress/focus/{id}` (`focStore`, mescla por id como os erros). Relógio em andamento
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.
   `foMat` agrupa por especialidade/disciplina; entra no PDF (`R.Fo`) e no backup (`data.focus`). Pílula `#foPill` fora da aba.
+  Depois da sessão: `foAfter` ({k,sec,d,id}, localStorage `resid-focus-after`, `foAfterSet` em `foTick`/`foFinish`) → `foAfterCard` (subtópicos via
+  `toggleSub`, Estudei/Revisei, questões). Vínculo rápido `foQuickEl`. Ciclos `foSeries` (`resid-focus-series`, zera após 1 h) e pausa longa
+  `ui.prefs.flong/fevery` (`foRun.lb`), bolinhas `foDotsEl`. Distrações `foRun.dist` → sessão `dz`. Ruído `ui.prefs.fnoise` w|b|r e `fvol`
+  (`foNoiseSync` no fim de `render()`, WebAudio). Tela inteira `fullOn.fo`. Mapa `foHeatCard` (12 semanas + melhor horário), `foWeekExtra`
+  (meta semanal `ui.prefs.fwgoal` em minutos, recorde, distrações). Layout: `.focol` (esquerda: depois, relógio, sessões; direita: semana, mapa, matéria).
 
 - Erros (view `erros`): objeto do erro `{id,k,w,r,t,s,d,rev,lastRev,box,due,miss,lastMiss,cd,nt}`. Revisão ativa `eRevCard`/`erRun`
   (`E_INT=[1,3,7,15,30]`, `eAnswer`; `eDue(e)` calcula a data para erros antigos sem `due`), registro `eRegPanel`/`eReg` e
