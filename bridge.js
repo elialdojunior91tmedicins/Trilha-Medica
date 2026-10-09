@@ -39,7 +39,7 @@
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
   const downloads = {
     async save({ filename, data }) {
-      const type = /\.json$/i.test(filename) ? "application/json" : /\.pdf$/i.test(filename) ? "application/pdf" : "text/markdown";
+      const type = /\.json$/i.test(filename) ? "application/json" : /\.pdf$/i.test(filename) ? "application/pdf" : /\.ics$/i.test(filename) ? "text/calendar" : /\.txt$/i.test(filename) ? "text/plain" : "text/markdown";
       const blob = new Blob([data], { type });
       if (isIOS && navigator.canShare) {
         const file = new File([blob], filename, { type });
@@ -348,7 +348,8 @@
     ls(LS2, state); ls(LSH, hist); ls(LSDP, dayPlan); ls(LSN, notes); ls(LSN + "-at", noteAt); ls(LSE, errors); ls(LSF, fac); ls(LSP, promptText);
     if (d.sort === "inc" || d.sort === "num") ls("resid-sort", d.sort);
     if (store) {
-      await store.set({ version: 2, topics: state, hist, plan: dayPlan, updatedAt: now });
+      if (typeof topicStore !== "undefined" && topicStore && typeof saveTopics === "function") { await saveTopics(); await store.set({ version: 3, split: true, hist, plan: dayPlan, updatedAt: now }); }
+      else await store.set({ version: 2, topics: state, hist, plan: dayPlan, updatedAt: now });
       await facStore.set({ ...fac, updatedAt: now });
       if (settingsDoc) await settingsDoc.set({ prompt: promptText, updatedAt: now });
       if (d.ui && typeof uiDoc !== "undefined" && uiDoc) await uiDoc.set({ ...ui, updatedAt: now });

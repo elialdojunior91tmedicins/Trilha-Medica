@@ -34,7 +34,7 @@ consultado quando há dúvida. Responda em português.
 - `config.js`: `window.FIREBASE_CONFIG` (com `COLE_AQUI` o site funciona só no aparelho).
 - `sw.js` + `manifest.webmanifest` + `icons/`: app instalável e offline.
 - `firestore.rules`: cada usuário só acessa `data/users/{uid}/**`.
-- Dados no Firestore: `data/users/{uid}/progress` (topics, hist, plan), `/faculdade`, `/settings`,
+- Dados no Firestore: `data/users/{uid}/progress` (hist, plan; temas em `progress/topics/{chave}`), `/faculdade`, `/settings`,
   `progress/errors/{id}`, `progress/notes/{key}`.
 - Faculdade: `fac.discs[]` = {name, info:{tipo,ch,prof,tutor,horario,local,ementa,objetivos}, items (conteúdo avulso antigo),
   eixos:[{id,name,area,spec}], sps:[{id,name,eixoId,items:[ref],objs:[texto]}]}; `sem.lv` renomeia os níveis.
@@ -124,6 +124,17 @@ consultado quando há dúvida. Responda em português.
   Revisão em tela inteira: `erFull` (localStorage `resid-erfull`, `erFullSet`), classe `#viewErros.erfull` só com `erRun`; atalhos espaço/1/2/Esc.
   Igual nos cartões e no simulado: `fullOn.cd/sim` (localStorage `resid-cdfull`/`resid-simfull`, `fullSet`, `fullBtn`), `applyFull()` no fim de `render()`
   marca `.vfull` na aba e `.fullhide`/`.fullpath` nos irmãos/ancestrais do cartão; só vale com `twoCols()`.
+
+- Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
+  cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
+  backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),
+  Início personalizável `ICARDS`/`applyICustom` (`ui.prefs.ihide`/`iorder`), busca `gsResults`/`renderGSearch` (`#srchBtn`, Ctrl+K, "/"),
+  primeiros passos `renderOnb`/`maybeOnb` (só conta vazia, uma vez: `ui.prefs.onb` + `resid-onb-seen`; testes ligam com `window.__wantOnb`),
+  calendário `icsBuild`/`icsSave` (.ics), Anki `ankiSave("cards"|"errs")` (.txt com tabulação), ajuda `goHelp(título)`/`helpBtn(título)` (botão "?").
+  Botões menos usados: erro com "⋯ Ações" (`eMenu`), Foco com "Mais opções" (`.fomore`); Anotações paginadas (`N_PAGE`, `#nMore`).
+- Temas na conta: um documento por tema em `progress/topics/{chave}` (`topicStore`, `saveTopics` grava só o que mudou via `tSaved`);
+  `progress` guarda `{version:3,split:true,hist,plan}`. Conta antiga (v2, `topics` no documento) migra sozinha; se uma versão antiga do app
+  regravar v2, a carga junta os dois ficando com o registro mais novo (`tNewer`).
 
 ## Cuidados
 

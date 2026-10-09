@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Checklist Residência Médica</title>
+<title>Trilha Médica</title>
 <meta name="description" content="185 temas de alta recorrência para residência médica, com plano do dia, revisões espaçadas, faculdade e caderno de erros.">
 <meta name="theme-color" content="#f3f6f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1514" media="(prefers-color-scheme: dark)">
@@ -12,15 +12,15 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Checklist">
+<meta name="apple-mobile-web-app-title" content="Trilha">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=0b929e7c">
+<link rel="stylesheet" href="site.css?v=d92a6b7c">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=0b929e7c"></script>
-<script src="bridge.js?v=0b929e7c"></script>
+<script src="config.js?v=d92a6b7c"></script>
+<script src="bridge.js?v=d92a6b7c"></script>
 </head>
 <body>
 <script>
@@ -595,6 +595,42 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .efoot .sp{flex:1}
 .etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
 .etopacts{margin:0}
+.inoticebox,.icustbox{grid-column:1/-1}#iNotice{order:-3}#iQueue{order:0}#iWeek{order:0}#iCust{order:20}
+.inotices{display:flex;flex-direction:column;gap:10px}
+.inote{display:flex;flex-direction:column;gap:8px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
+.inote.warn{background:var(--due-soft);border-color:var(--due)}.inote p{margin:0;font-size:.9rem}.inote .btns{align-items:center}
+.iqueue{border:1.5px solid var(--l2)}
+.iqlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
+.iqlist li{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--bg);border-radius:10px;padding:8px 12px}
+.iqlist li.on{outline:2px solid var(--l2)}.iqlist li.done{opacity:.6}
+.iqn{font:500 1.15rem var(--mono);text-align:center}.iqlist li.done .iqn{color:var(--good)}.iql{font-weight:600;font-size:.92rem}
+.dqbar{position:fixed;z-index:34;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 24px));display:flex;flex-wrap:nowrap;align-items:center;gap:8px 12px;background:var(--surface);border:1.5px solid var(--l2);border-radius:14px;padding:10px 14px;box-shadow:0 8px 24px rgb(0 0 0 / .18)}
+html[data-layout="phone"] .dqbar{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.qbt{display:flex;flex-direction:column;flex:1 1 auto;min-width:0}.qbt b,.qbt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dqbar .btn{flex:none;white-space:nowrap}.dqbar .link{flex:none}.qbt b{font-size:.85rem}.qbt span{font-size:.8rem;color:var(--muted)}
+body.hasqbar>.wrap{padding-bottom:140px}body.hasqbar .fopill{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+.iwk{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.iweek .how{margin:0}
+.ihid{display:none!important}
+.icustom{display:flex;flex-direction:column;align-items:center;gap:10px}.icustom>.link{font-size:.85rem}
+.icust{width:100%}.icl{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
+.icl li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:6px}
+.icl label{display:flex;gap:8px;align-items:center;font-size:.9rem;cursor:pointer}.icl input{width:18px;height:18px;accent-color:var(--accent)}
+.gsearch{position:fixed;inset:0;z-index:60;background:rgb(0 0 0 / .35);display:flex;justify-content:center;align-items:flex-start;padding:calc(40px + env(safe-area-inset-top,0px)) 12px 12px}
+.gsbox{width:min(640px,100%);max-height:calc(100vh - 80px);overflow:auto;background:var(--surface);border-radius:14px;box-shadow:0 16px 40px rgb(0 0 0 / .3);padding:14px;display:flex;flex-direction:column;gap:12px}
+.gshead{display:flex;gap:10px;align-items:center}.gshead .search{flex:1;min-width:0}
+.gsres{display:flex;flex-direction:column;gap:12px}.gsg ul{list-style:none;margin:4px 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
+.gsg button{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 11px;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.gsg button:hover{border-color:var(--accent)}.gsg b{font-size:.92rem}.gsg span{font-size:.78rem;color:var(--muted);overflow-wrap:anywhere}
+.onbbox{gap:14px;padding:22px}.onbbox h2{font-size:1.35rem}.onbdots{display:flex;gap:6px;margin:0}.onbdots i{width:28px;height:4px;border-radius:99px;background:var(--track)}.onbdots i.on{background:var(--accent)}
+.onbopts{display:flex;flex-direction:column;gap:8px}.onbopts .btn{text-align:left;padding:12px 14px}.onbgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.onbskip{align-self:flex-end}
+.onbf input{width:100%}
+.hlpb{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:700 .75rem var(--body);cursor:pointer;padding:0;line-height:20px;flex:none}
+.hlpb:hover{color:var(--accent);border-color:var(--accent)}
+.fcal{font-size:.85rem}
+.emenu{margin-left:auto}
+.fomore{align-self:stretch;text-align:left;border-top:1px solid var(--line);padding-top:10px}.fomore>summary{padding:4px 0;font-weight:600;font-size:.9rem;color:var(--ink);display:list-item;cursor:pointer}
+.fomore[open]{display:flex;flex-direction:column;gap:12px}.fomore .foopts{justify-content:flex-start}
+
 .fside{display:contents}
 #viewFac>#facHead{order:0}#viewFac #facProvas{order:1}#viewFac>#facSems{order:2}#viewFac #facWeek{order:3}#viewFac #facCrunch{order:4}
 html:not([data-cols="2"]) #facWeek{display:none!important}
@@ -1294,8 +1330,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 
 <div class="wrap">
   <header>
-    <div class="hacts" id="hacts"><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
-    <h1>Checklist Residência Médica</h1>
+    <div class="hacts" id="hacts"><button class="hbtn" id="srchBtn" type="button" aria-label="Buscar em tudo" title="Buscar em tudo (Ctrl+K)"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
+    <h1>Trilha Médica</h1>
     <p class="lede">185 temas de alta recorrência nas 5 grandes áreas. Estude no seu ritmo: o app agenda as revisões e mostra onde você mais erra.</p>
   </header>
 
@@ -1424,9 +1460,11 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </div>
 
   <div id="viewInicio" class="wrap ihome" style="width:100%">
+    <div class="islot inoticebox" id="iNotice"></div>
     <section class="card iboard" id="iBoard" aria-label="Seu dia"></section>
-    <div class="icol icol1"><div class="islot" id="iToday"></div><div class="islot" id="iRevs"></div></div>
-    <div class="icol icol2"><section class="imeta" id="iMeta" hidden></section><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="icol icol1"><div class="islot" id="iQueue"></div><div class="islot" id="iToday"></div><div class="islot" id="iRevs"></div></div>
+    <div class="icol icol2"><div class="islot" id="iWeek"></div><section class="imeta" id="iMeta" hidden></section><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="islot icustbox" id="iCust"></div>
   </div>
 
   <div id="viewTemas" class="wrap" style="width:100%" data-seg="hoje" hidden>
@@ -2074,6 +2112,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&focusKey){focusKey=
 
 /* aba Anotações */
 function notesMarkdown(keys){return [...keys].sort((x,y)=>BYKEY[x].num-BYKEY[y].num).map(k=>{const it=BYKEY[k];return `# ${it.t}\n_${it.area.name} · ${it.sp}_\n\n${notes[k].trim()}`}).join("\n\n---\n\n")}
+const N_PAGE=30;let nLimit=N_PAGE;
 function renderNotasView(){
   const keys=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).map(i=>i.key);
   $("#ncount").textContent=keys.length?String(keys.length):"";
@@ -2112,7 +2151,8 @@ function renderNotasView(){
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
     ed.onclick=()=>{noteMode[k]="editar";focusKey=k;render()};
     return c};
-  nSortKeys(vis);if(nSort==="sp")appendGrouped(list,vis,k=>BYKEY[k],card,["tema","temas"]);else vis.forEach(k=>list.appendChild(card(k)));
+  nSortKeys(vis);const nShow=vis.slice(0,nLimit);if(nSort==="sp")appendGrouped(list,nShow,k=>BYKEY[k],card,["tema","temas"]);else nShow.forEach(k=>list.appendChild(card(k)));
+  if(vis.length>nShow.length){const m=el(`<li><button class="btn" type="button" id="nMore"></button></li>`);m.querySelector("button").textContent=`Mostrar mais ${Math.min(N_PAGE,vis.length-nShow.length)} (de ${vis.length-nShow.length} restantes)`;m.querySelector("button").onclick=()=>{nLimit+=N_PAGE;render()};list.appendChild(m)}
   $("#nPdf").hidden=!downloadsFn;$("#nPdf").disabled=!vis.length&&!freeN.length;
   $("#nPdf").onclick=async()=>{if(!downloadsFn)return;$("#nmsg").textContent="Gerando o PDF…";
     try{const fr=nArea==="all"&&!nFlags.size?freeVisible():[],bytes=notesPDF(nSort==="sp"?vis:[...vis].sort((x,y)=>BYKEY[x].num-BYKEY[y].num),fr);
@@ -3114,7 +3154,9 @@ function provaDashItem(p){const st=provaStats(p),d=discOf(p.discId),nx=provaNext
 function renderFacProvas(){const box=$("#facProvas");if(!box)return;box.innerHTML="";
   const up=upcomingProvas(),cl=provasToClose();box.hidden=!fac.sems.length;if(box.hidden)return;
   box.appendChild(el(`<div class="dhead"><h2 id="fph">Próximas provas</h2><span class="todaydate"></span></div>`));
-  box.querySelector(".todaydate").textContent=up.length?`${up.length} ${up.length===1?"prova":"provas"}`:"";
+  box.querySelector(".todaydate").textContent=up.length?`${up.length} ${up.length===1?"prova":"provas"}`:"";box.querySelector(".dhead").appendChild(helpBtn("Faculdade e provas"));
+  if(downloadsFn&&(up.length||spFechas(365).length)){const cb=el(`<button class="link fcal" type="button" id="icsB">Adicionar ao calendário</button>`);cb.title="Gera um arquivo com provas e fechamentos para o Google Agenda ou o Calendário do celular";cb.onclick=icsSave;box.appendChild(cb)}
+  if(icsMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=icsMsg;box.appendChild(m);icsMsg=""}
   cl.forEach(p=>box.appendChild(provaResEl(p)));
   const sb=spFechaBlock();
   if(!up.length&&!sb){box.appendChild(el(`<p class="cempty">Nenhuma prova futura. Cadastre em <b>+ Prova</b>, dentro da disciplina: aqui aparece quanto falta e o ritmo para chegar pronto.</p>`));return}
@@ -3622,7 +3664,8 @@ function ecardEl(e,withTopic){
   const db=el(`<button class="mini${delArm===e.id?" warn":""}" type="button">${delArm===e.id?"Confirmar exclusão":"Excluir"}</button>`);
   db.onclick=()=>{if(delArm===e.id){delArm=null;delErr(e.id)}else{delArm=e.id;render()}};
   const ab=el(`<button class="mini" type="button"></button>`);ab.textContent=e.arch?"Desarquivar":"Resolvido";ab.title=e.arch?"Volta para as revisões":"Arquiva: sai das revisões e da lista (fica em Arquivados)";ab.onclick=()=>eArchive(e,!e.arch);
-  ft.append(rb,nb,ab,db);
+  const mb=el(`<button class="mini emenu" type="button" aria-expanded="${eMenu===e.id}"></button>`);mb.textContent=eMenu===e.id?"Fechar ações":"⋯ Ações";mb.onclick=()=>{eMenu=eMenu===e.id?null:e.id;render()};
+  if(eMenu===e.id)ft.append(rb,nb,ab,db,mb);else ft.append(mb);
   return c;
 }
 function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();return true}
@@ -3632,7 +3675,7 @@ async function putErr(e){saveErrsLocal();if(!errStore)return;
 async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 /* ---------- Caderno de erros: revisão ativa, registro rápido, erros repetidos, cartão e anotação ---------- */
 const E_INT=[1,3,7,15,30];
-let erRun=null,eReg=null;
+let erRun=null,eReg=null,eMenu=null;
 function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.box:Math.min(e.rev||0,E_INT.length-1)}
 // erros antigos (sem data marcada) entram pela data do último "revisei" ou do registro
 function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
@@ -3720,7 +3763,8 @@ document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAR
     if(/^[A-E]$/.test(L)){const alt=[...document.querySelectorAll(".qsim .alt")].find(x=>!x.disabled&&(x.querySelector("b")||{}).textContent===L+")");if(alt){ev.preventDefault();alt.click()}return}
     if(ev.key===" "||ev.key==="Enter"){b("#simNext");return}
     if(ev.key==="Escape"&&fullOn.sim&&twoCols()){ev.preventDefault();fullSet("sim",false)}}});
-function eRevCard(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
+function eRevCard(){const c=eRevCard0();c.querySelector(".dhead").insertBefore(helpBtn("Caderno de erros"),c.querySelector(".dhead .todaydate"));return c}
+function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
   if(erRun){const fb=el(`<button class="mini erfullb" type="button" id="erFullB"></button>`);fb.textContent=erFull?"Sair da tela inteira":"⛶ Tela inteira";fb.setAttribute("aria-pressed",erFull);fb.title=erFull?"Volta a mostrar a lista ao lado (Esc)":"Esconde a lista e mostra só a revisão";fb.onclick=()=>erFullSet(!erFull);c.querySelector(".dhead").appendChild(fb)}
   c.querySelector(".todaydate").textContent=`${due.length} para hoje · ${errors.filter(e=>!e.arch).length} no caderno`;
   if(erRun){const R=erRun,e=errors.find(y=>y.id===R.ids[R.i]);
@@ -3798,7 +3842,7 @@ const ECTIPS={"Nunca estudei isso":"Esses temas precisam de teoria antes de ques
   "Lembrei pela metade":"Revise o conceito inteiro, não só a resposta: reescreva o 'Correto' com as suas palavras."};
 /* ----- arquivar erros resolvidos ----- */
 const eAct=e=>!e.arch;
-function eArchive(e,on){if(on)e.arch=today();else delete e.arch;putErr(e);render()}
+function eArchive(e,on){eMenu=null;if(on)e.arch=today();else delete e.arch;putErr(e);render()}
 /* ----- filtros extras ----- */
 let eFlags=new Set(),ePer="all",eSrc="all",eCause="all",eVis=[],eMsg="";
 const EFLAG={due:"Para revisar hoje",rep:"Que se repetem",nocard:"Sem cartão",arch:"Arquivados"};
@@ -3829,6 +3873,7 @@ function renderEMore(){const box=$("#eMore");if(!box)return;box.innerHTML="";
   const ft=el(`<p class="tfres"><span id="eRes"></span></p>`);
   if(eExtraOn()||eArea!=="all"||eType!=="all"||eQuery){const c=el(`<button class="link" type="button" id="eClear">Limpar filtros</button>`);c.onclick=()=>{eFlags.clear();ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;$("#eq").value="";render()};ft.appendChild(c)}
   if(downloadsFn){const p=el(`<button class="link" type="button" id="ePdf">Exportar PDF destes erros</button>`);p.onclick=ePdfSave;ft.appendChild(p)}
+  if(downloadsFn&&errors.some(e=>BYKEY[e.k]&&!e.arch)){const a=el(`<button class="link" type="button" id="eAnki">Exportar para o Anki</button>`);a.onclick=async()=>{eMsg=await ankiSave("errs");render()};ft.appendChild(a)}
   box.appendChild(ft);
   if(eMsg){const m=el(`<p class="pnote" role="status" id="eMsg"></p>`);m.textContent=eMsg;box.appendChild(m)}}
 /* ----- simulado dos meus erros ----- */
@@ -3936,9 +3981,166 @@ function renderErros(){
   if(vis.length>shown.length){const m=el(`<li><button class="btn" type="button">Mostrar mais ${Math.min(E_PAGE,vis.length-shown.length)} (de ${vis.length-shown.length} restantes)</button></li>`);m.querySelector("button").onclick=()=>{eLimit+=E_PAGE;render()};list.appendChild(m)}
 }
 
+/* ===================== GERAL: fila do dia, avisos, busca, resumo da semana, primeiros passos, calendário, Anki ===================== */
+const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+/* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
+const QSTEPS=[["errs","Erros","erro","erros"],["cards","Cartões","cartão","cartões"],["notes","Anotações para reler","anotação","anotações"],["revs","Temas para revisar","tema","temas"]];
+function qCounts(){return {errs:eDueList().length,cards:cdDue().length,notes:notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length,revs:dueCount()}}
+let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
+function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
+function qGoStep(id){backStack=[];
+  if(id==="errs"){setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60)}
+  else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
+  else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
+  else{setView("inicio");setTimeout(()=>{const c=$("#viewInicio .card.revs");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
+function qStart(){const C=qCounts(),ids=QSTEPS.map(s=>s[0]).filter(id=>C[id]);if(!ids.length)return;dayQ={d:today(),ids,i:0};dayQSave();qGoStep(ids[0])}
+function qNext(){if(!dayQ)return;const C=qCounts();let i=dayQ.i+1;while(i<dayQ.ids.length&&!C[dayQ.ids[i]])i++;
+  if(i>=dayQ.ids.length){dayQ=null;dayQSave();qMsg="Fila do dia concluída. Bom trabalho!";setView("inicio");return}dayQ.i=i;dayQSave();qGoStep(dayQ.ids[i])}
+function qStop(){dayQ=null;dayQSave();render()}
+let qMsg="";
+function iQueueCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=tot?`${tot} ${tot===1?"item":"itens"}`:"";
+  if(qMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=qMsg;c.appendChild(m);qMsg=""}
+  if(!tot){c.appendChild(el(`<p class="cempty">Nada para revisar hoje: temas, cartões, erros e anotações estão em dia.</p>`));return c}
+  const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab,s1,sn])=>{const n=C[id],on=dayQ&&dayQ.ids[dayQ.i]===id,li=el(`<li class="${n?"":"done"}${on?" on":""}"><span class="iqn"></span><span class="iql"></span><button class="link" type="button">abrir</button></li>`);
+    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+  const a=el(`<div class="btns"></div>`);
+  if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
+    const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;a.append(b,x)}
+  else{const b=el(`<button class="btn primary" type="button" id="iqGo">Começar a fila</button>`);b.onclick=qStart;a.appendChild(b)}
+  c.appendChild(a);c.appendChild(el(`<p class="how">Na ordem: erros, cartões, anotações para reler e temas. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
+function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
+  if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
+  const C=qCounts(),cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),nx=dayQ.ids.slice(dayQ.i+1).find(id=>C[id]),nxs=QSTEPS.find(s=>s[0]===nx);
+  const t=el(`<span class="qbt"><b></b><span></span></span>`);t.querySelector("b").textContent=`Fila do dia · ${dayQ.i+1} de ${dayQ.ids.length}`;t.querySelector("span").textContent=cur?`${cur[1]}${C[cur[0]]?` · faltam ${C[cur[0]]}`:" · feito ✓"}`:"";bar.appendChild(t);
+  const n=el(`<button class="btn primary" type="button" id="qNext"></button>`);n.textContent=nxs?`Próximo: ${nxs[1].toLowerCase()}`:"Concluir";n.onclick=qNext;
+  const x=el(`<button class="link" type="button">Sair</button>`);x.onclick=qStop;bar.append(n,x)}
+/* ----- 7 e 10. avisos: artefato × site e lembrete de backup ----- */
+const lastBk=()=>lsGet("resid-lastbk","");
+function markBackup(){lsSet("resid-lastbk",today())}
+function hasData(){return Object.keys(state).length>0||errors.length>0||Object.keys(notes).length>0}
+function iNoticeEl(){const box=el(`<div class="inotices"></div>`);
+  if(!window.__site&&lsGet("resid-artnote-v1","")!=="1"){const n=el(`<div class="inote"><p><b>Você vai usar o site.</b> Os dados deste artefato ficam separados do site: o que você marcar aqui não aparece lá. Para levar o progresso, use <b>Perfil › Backup › Exportar</b> e, no site, <b>Importar</b>.</p><div class="btns"><a class="btn primary" target="_blank" rel="noopener">Abrir o site</a><button class="link" type="button">Entendi</button></div></div>`);
+    n.querySelector("a").href=SITE_URL;n.querySelector(".link").onclick=()=>{lsSet("resid-artnote-v1","1");render()};box.appendChild(n)}
+  const lb=lastBk(),days=lb?dnum(today())-dnum(lb):null,first=Object.keys(hist).sort()[0],age=first?dnum(today())-dnum(first):0,logged=!!(window.__site&&store);
+  const snooze=lsGet("resid-bksnooze","");
+  if(hasData()&&!logged&&(days===null?age>=30:days>=30)&&!(snooze&&snooze>=today())){const n=el(`<div class="inote warn"><p></p><div class="btns"><button class="btn" type="button">Fazer backup agora</button><button class="link" type="button">Lembrar em 7 dias</button></div></div>`);
+    n.querySelector("p").textContent=days===null?"Você nunca fez um backup dos seus dados. Sem conta, eles ficam só neste aparelho: um backup evita perder tudo se o navegador for limpo.":`Seu último backup foi há ${days} dias. Exporte um novo para não perder o que estudou desde então.`;
+    const [go,sn]=n.querySelectorAll("button");go.onclick=()=>{goSub("config");setTimeout(()=>{const b=$("#bkSave");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};sn.onclick=()=>{lsSet("resid-bksnooze",fromNum(dnum(today())+7));render()};box.appendChild(n)}
+  return box.children.length?box:null}
+/* ----- 4. resumo da semana (domingo: esta semana; segunda: a que passou) ----- */
+function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
+  foSess.forEach(x=>{const n=dnum(x.d);if(n>=ws&&n<=we)r.fo+=x.sec});
+  for(let n=ws;n<=we;n++){const h=hist[fromNum(n)];if(h){r.q+=h.q||0;r.c+=h.c||0;r.e+=h.e||0;r.rv+=h.r||0}}
+  errors.forEach(e=>{const n=dnum(e.d);if(n>=ws&&n<=we)r.er++});return r}
+function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return null;const ws=dow===0?foWeekStart():foWeekStart()-7;if(lsGet("resid-wkdis","")===String(ws))return null;
+  const A=weekStats(ws),B=weekStats(ws-7);if(!A.fo&&!A.q&&!A.e&&!A.rv)return null;
+  const c=el(`<section class="card iweek" id="iWeek" aria-labelledby="iwh"><div class="dhead"><h2 id="iwh"></h2><button class="link" type="button">Fechar</button></div><div class="iwk"></div><p class="how"></p></section>`);
+  c.querySelector("h2").textContent=dow===0?"Sua semana":"Semana passada";c.querySelector(".dhead .link").onclick=()=>{lsSet("resid-wkdis",String(ws));render()};
+  const cmp=(a,b,fmt)=>{if(!b)return "";const d=a-b;return d===0?" · igual":` · ${d>0?"▲":"▼"} ${fmt(Math.abs(d))}`};
+  const rows=[["Foco",fmtMin(A.fo),cmp(A.fo,B.fo,fmtMin)],["Questões",A.q?`${A.q} · ${pct(A.c,A.q)}%`:"0",cmp(A.q,B.q,String)],["Temas estudados",String(A.e),cmp(A.e,B.e,String)],["Revisões",String(A.rv),cmp(A.rv,B.rv,String)],["Erros registrados",String(A.er),cmp(A.er,B.er,String)]];
+  const g=c.querySelector(".iwk");rows.forEach(([l,v,d])=>{const r=el(`<div class="kpi"><span class="kl"></span><b></b><span class="ks"></span></div>`);r.querySelector(".kl").textContent=l;r.querySelector("b").textContent=v;r.querySelector(".ks").textContent=d?`vs. anterior${d}`:"";g.appendChild(r)});
+  const best=A.fo>B.fo&&B.fo?"Mais tempo de foco que na semana anterior.":A.q>B.q&&B.q?"Mais questões que na semana anterior.":"";
+  c.querySelector("p.how").textContent=`${br(fromNum(ws))} a ${br(fromNum(ws+6))}.${best?" "+best:""}`;return c}
+/* ----- 12. Início personalizável ----- */
+const ICARDS=[["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iRevs","Revisões"],["iMeta","Meta e projeção até a prova"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
+let iCustom=false;
+function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:[])}
+function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(id=>ICARDS.some(c=>c[0]===id)):[];ICARDS.forEach(c=>{if(!o.includes(c[0]))o.push(c[0])});return o}
+function applyICustom(){const H=iHidden(),O=iOrder();ICARDS.forEach(([id])=>{const e=document.getElementById(id);if(!e)return;e.classList.toggle("ihid",H.has(id));e.style.order=String(O.indexOf(id)+1)})}
+function iCustomEl(){const w=el(`<div class="icustom"></div>`);
+  if(!iCustom){const b=el(`<button class="link" type="button" id="iCustB">Personalizar o Início</button>`);b.onclick=()=>{iCustom=true;render()};w.appendChild(b);return w}
+  const H=iHidden(),O=iOrder(),c=el(`<section class="card icust"><div class="dhead"><h2>Personalizar o Início</h2><button class="link" type="button">Concluir</button></div><p class="how">Escolha o que aparece e a ordem. Nada é apagado: o que você esconder continua nas outras abas.</p><ul class="icl"></ul><button class="link" type="button">Voltar ao padrão</button></section>`);
+  c.querySelector(".dhead .link").onclick=()=>{iCustom=false;render()};
+  const ul=c.querySelector(".icl"),save=()=>{saveUI();render()};
+  O.forEach((id,i)=>{const lab=ICARDS.find(x=>x[0]===id)[1],li=el(`<li><label><input type="checkbox"><span></span></label><button class="mini" type="button" aria-label="Subir">↑</button><button class="mini" type="button" aria-label="Descer">↓</button></li>`);
+    const cb=li.querySelector("input");cb.checked=!H.has(id);cb.id="icb-"+id;li.querySelector("span").textContent=lab;
+    cb.onchange=()=>{const h=iHidden();cb.checked?h.delete(id):h.add(id);ui.prefs.ihide=[...h];save()};
+    const [up,dn]=li.querySelectorAll("button");up.disabled=i===0;dn.disabled=i===O.length-1;
+    up.onclick=()=>{const o=iOrder();[o[i-1],o[i]]=[o[i],o[i-1]];ui.prefs.iorder=o;save()};dn.onclick=()=>{const o=iOrder();[o[i+1],o[i]]=[o[i],o[i+1]];ui.prefs.iorder=o;save()};ul.appendChild(li)});
+  c.querySelector(".icust>.link:last-child").onclick=()=>{delete ui.prefs.ihide;delete ui.prefs.iorder;save()};w.appendChild(c);return w}
+/* ----- 3. busca em tudo ----- */
+let gsQ="",gsOpen=false;
+function gsSnip(t,n){const T=String(t||"").replace(/^\s*(#{1,6}\s+|[-*>]\s+|\d+\.\s+)/gm,"").replace(/==|\*\*|`/g,"").replace(/\s+/g," "),N=norm(T),i=N.indexOf(n);if(i<0)return T.slice(0,110);const a=Math.max(0,i-40);return (a?"…":"")+T.slice(a,a+120)+(T.length>a+120?"…":"")}
+function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],add=(g,t,s,go)=>R.push({g,t,s,go});
+  [...ALL,...FAC_ITEMS].forEach(it=>{const subs=subList(it).map(x=>x.t).join(" · ");if(norm(it.t).includes(n)||norm(subs).includes(n))add("Temas",it.t,norm(it.t).includes(n)?`${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`:gsSnip(subs,n),()=>openTopic(it.key))});
+  Object.keys(notes).forEach(k=>{if(BYKEY[k]&&norm(notes[k]).includes(n))add("Anotações",BYKEY[k].t,gsSnip(notes[k],n),()=>{detTab[k]="notas";openTopic(k)})});
+  freeN.forEach(f=>{if(norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(n))add("Caderno livre",f.t||"Sem título",gsSnip(f.b,n),()=>{freeOpen.add(f.id);backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("todas");setTimeout(()=>{const x=document.getElementById("fr-"+f.id);if(x)x.scrollIntoView({block:"center"})},80)})});
+  errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eTopicKey=e.k;eArea="all";eSp="all";eType="all";eFlags.clear();backStack=[];setView("erros")})});
+  cards.forEach(x=>{if(BYKEY[x.k]&&norm(x.q+" "+x.a).includes(n))add("Cartões",x.q.slice(0,90),BYKEY[x.k].t,()=>{detTab[x.k]="notas";openTopic(x.k)})});
+  fac.discs.forEach(d=>{if(norm(d.name).includes(n))add("Faculdade",d.name,"disciplina",()=>goDisc(d));
+    (d.sps||[]).forEach(s=>{if(norm(s.name+" "+s.objs.join(" ")).includes(n))add("Faculdade",s.name,d.name,()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(s.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+s.id),60)})});
+    [d,...(d.sps||[])].forEach(o=>(o.links||[]).forEach(l=>{if(norm((l.t||"")+" "+l.u).includes(n))add("Materiais",l.t||hostOf(l.u),`${d.name} · ${hostOf(l.u)}`,()=>window.open(l.u,"_blank","noopener"))}))});
+  return R}
+function renderGSearch(){let ov=$("#gsearch");if(!gsOpen){if(ov)ov.remove();return}
+  if(!ov){ov=el(`<div class="gsearch" id="gsearch" role="dialog" aria-modal="true" aria-label="Buscar em tudo"><div class="gsbox"><div class="gshead"><input class="search" id="gsq" type="search" placeholder="Buscar em temas, anotações, erros, cartões, faculdade…" autocomplete="off"><button class="link" type="button">Fechar</button></div><div class="gsres" id="gsres"></div></div></div>`);
+    document.body.appendChild(ov);const i=ov.querySelector("#gsq");i.value=gsQ;i.oninput=debounced(()=>{gsQ=i.value;fillGS()},120);ov.querySelector(".gshead .link").onclick=gsClose;
+    ov.addEventListener("click",e=>{if(e.target===ov)gsClose()});setTimeout(()=>i.focus(),30)}
+  fillGS()}
+function fillGS(){const box=$("#gsres");if(!box)return;box.innerHTML="";const R=gsResults(gsQ);
+  if(norm(gsQ.trim()).length<2){box.appendChild(el(`<p class="how">Digite pelo menos 2 letras. A busca olha temas e subtópicos, anotações, caderno livre, erros, cartões, disciplinas, SPs e materiais.</p>`));return}
+  if(!R.length){box.appendChild(el(`<p class="cempty">Nada encontrado com “${esc(gsQ.trim())}”.</p>`));return}
+  const groups={};R.forEach(r=>(groups[r.g]=groups[r.g]||[]).push(r));
+  Object.entries(groups).forEach(([g,L])=>{const s=el(`<div class="gsg"><span class="glabel"></span><ul></ul></div>`);s.querySelector(".glabel").textContent=`${g} · ${L.length}`;
+    L.slice(0,8).forEach(r=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`);li.querySelector("b").textContent=r.t;li.querySelector("span").textContent=r.s;li.querySelector("button").onclick=()=>{gsClose();r.go()};s.querySelector("ul").appendChild(li)});
+    if(L.length>8)s.appendChild(el(`<p class="how">+ ${L.length-8} resultados. Refine a busca.</p>`));box.appendChild(s)})}
+function gsClose(){gsOpen=false;renderGSearch()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&gsOpen){gsClose();return}
+  if((e.key==="k"&&(e.ctrlKey||e.metaKey))||(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((e.target||{}).tagName||""))){e.preventDefault();gsOpen=true;renderGSearch()}});
+/* ----- 2. primeiros passos ----- */
+let onb=null;
+function needOnb(){return !!window.claude&&synced&&!ui.prefs.onb&&!hasData()&&!fac.sems.length&&!foSess.length}
+function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
+  if(!ov){ov=el(`<div class="gsearch onbov" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbh"><div class="gsbox onbbox"></div></div>`);document.body.appendChild(ov)}
+  const b=ov.querySelector(".onbbox");b.innerHTML="";const O=onb,dots=el(`<p class="onbdots"></p>`);for(let i=0;i<3;i++)dots.appendChild(el(`<i class="${i<=O.step?"on":""}"></i>`));b.appendChild(dots);
+  const fin=(go)=>{ui.prefs.onb=1;if(O.date)ui.profile.goalDate=O.date;ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
+    if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null;render()}else{redoPlan();render()}};
+  const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
+  if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo à Trilha Médica</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
+      el(`<label class="qfsel onbf"><span>Quando é a sua prova de residência?</span><input type="date" class="etext" id="onbDate"></label>`));
+    const i=b.querySelector("#onbDate");i.value=O.date||"";i.min=today();i.oninput=()=>O.date=i.value;
+    const a=el(`<div class="btns"><button class="btn primary" type="button">Continuar</button><button class="btn" type="button">Ainda não sei</button></div>`),[c1,c2]=a.querySelectorAll("button");
+    c1.onclick=()=>{if(O.date&&!/^\d{4}-\d{2}-\d{2}$/.test(O.date))return;O.step=1;renderOnb()};c2.onclick=()=>{O.date="";O.step=1;renderOnb()};b.append(a,skip)}
+  else if(O.step===1){b.append(el(`<h2 id="onbh">Você já estudou para a residência?</h2>`),el(`<p class="gtext">Se já estudou alguns temas, marque quais: eles entram nas revisões em vez de aparecerem como novos.</p>`));
+    const a=el(`<div class="onbopts"><button class="btn" type="button">Estou começando agora</button><button class="btn" type="button">Já estudei alguns temas</button></div>`),[x,y]=a.querySelectorAll("button");
+    x.onclick=()=>{O.prev=false;O.step=2;renderOnb()};y.onclick=()=>{O.prev=true;O.step=2;renderOnb()};b.append(a,skip)}
+  else{b.append(el(`<h2 id="onbh">Quanto tempo por dia?</h2>`),el(`<p class="gtext">A meta de foco aparece no Início e na aba Foco. Os temas por dia definem o tamanho do plano.</p>`));
+    const g=el(`<div class="onbgrid"><label class="qfsel"><span>Meta diária de foco</span><select id="onbF"></select></label><label class="qfsel"><span>Temas novos por dia</span><select id="onbN"></select></label></div>`);
+    const sf=g.querySelector("#onbF"),sn=g.querySelector("#onbN");[[0,"Sem meta"],[60,"1 h"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[300,"5 h"],[360,"6 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sf.appendChild(o)});
+    [2,3,4,5].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=`${v} temas${v===3?" (sugerido)":""}`;sn.appendChild(o)});sf.value=String(O.fgoal);sn.value=String(O.planN);sf.onchange=()=>O.fgoal=+sf.value;sn.onchange=()=>O.planN=+sn.value;b.appendChild(g);
+    const a=el(`<div class="btns"><button class="btn primary" type="button" id="onbFin"></button><button class="btn" type="button">Voltar</button></div>`),[f,bk]=a.querySelectorAll("button");f.textContent=O.prev?"Concluir e marcar o que já estudei":"Concluir";f.onclick=()=>fin(O.prev?"bulk":"");bk.onclick=()=>{O.step=1;renderOnb()};b.append(a,skip)}}
+let onbTried=false;const ONB_SEEN0=lsGet("resid-onb-seen","")==="1";
+function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&&!ONB_SEEN0){lsSet("resid-onb-seen","1");onb={step:0,date:"",prev:false,fgoal:ui.prefs.fgoal||120,planN:ui.prefs.planN||3};renderOnb()}}
+/* ----- 5. calendário (.ics) ----- */
+function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
+function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
+  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?d.name+". ":""}Trilha Médica`})});
+  spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Trilha Médica`}));
+  if(ui.profile.goalDate&&ui.profile.goalDate>=today())ev.push({uid:"residencia",date:ui.profile.goalDate,t:`Prova de residência${ui.profile.goal?": "+ui.profile.goal:""}`,desc:"Trilha Médica"});
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Trilha Médica"];
+  ev.forEach(e=>{const d=e.date.replace(/-/g,""),d2=fromNum(dnum(e.date)+1).replace(/-/g,"");L.push("BEGIN:VEVENT",`UID:${e.uid}@trilha-medica`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${d2}`,`SUMMARY:${icsEsc(e.t)}`,`DESCRIPTION:${icsEsc(e.desc)}`,
+    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsEsc(e.t)}`,"TRIGGER:-P1D","END:VALARM","END:VEVENT")});L.push("END:VCALENDAR");return {text:L.join("\r\n"),n:ev.length}}
+let icsMsg="";
+async function icsSave(){if(!downloadsFn)return;const r=icsBuild();if(!r.n){icsMsg="Nenhuma prova ou fechamento futuro para exportar.";render();return}
+  try{await downloadsFn.save({filename:"trilha-medica-provas.ics",data:new Blob([r.text],{type:"text/calendar"})});icsMsg=`Arquivo com ${r.n} ${r.n===1?"data":"datas"} salvo. Abra-o para adicionar ao Google Agenda ou ao Calendário (lembrete 1 dia antes).`}
+  catch(e){icsMsg=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o arquivo agora."}render()}
+/* ----- 6. Anki (texto separado por tabulação) ----- */
+const ankiClean=s=>String(s||"").replace(/\t/g," ").replace(/\r?\n/g,"<br>");
+function ankiText(rows){return "#separator:tab\n#html:true\n#tags column:3\n"+rows.map(r=>`${ankiClean(r[0])}\t${ankiClean(r[1])}\t${r[2]}`).join("\n")}
+const ankiTag=k=>{const it=BYKEY[k];if(!it)return "trilha";return ["trilha",(it.own?"FAC":it.area.code),(it.sp||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_")].filter(Boolean).join(" ")};
+async function ankiSave(kind){if(!downloadsFn)return null;
+  const rows=kind==="cards"?cards.filter(x=>BYKEY[x.k]).map(x=>[x.q,`${x.a}<br><small>${BYKEY[x.k].t}</small>`,ankiTag(x.k)]):errors.filter(e=>BYKEY[e.k]&&!e.arch).map(e=>[`${e.w}<br><br><i>Qual é o certo?</i>`,`${e.r}<br><small>${BYKEY[e.k].t}</small>`,ankiTag(e.k)+" erro"]);
+  if(!rows.length)return "Nada para exportar ainda.";
+  try{await downloadsFn.save({filename:kind==="cards"?"trilha-cartoes-anki.txt":"trilha-erros-anki.txt",data:new Blob([ankiText(rows)],{type:"text/plain"})});return `${rows.length} ${kind==="cards"?(rows.length===1?"cartão exportado":"cartões exportados"):(rows.length===1?"erro exportado":"erros exportados")}. No Anki: Arquivo › Importar e escolha o arquivo.`}
+  catch(e){return e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível exportar agora."}}
+/* ----- 14. ajuda: abrir uma seção ----- */
+function goHelp(title){helpQ="";const i=$("#hq");if(i)i.value="";goSub("help");setTimeout(()=>{const idx=HELP.findIndex(h=>h[0]===title);const d=document.querySelector(`#helpList details[data-i="${idx}"]`);if(d){d.open=true;d.scrollIntoView({block:"start"})}},40)}
+function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
+
 function render(){
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
-  renderAll();applyFull();foNoiseSync();
+  renderAll();applyFull();foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
@@ -3961,6 +4163,9 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(Number.isInteger(p.fw)&&p.fw>=5&&p.fw<=180)o.prefs.fw=p.fw;
   if(Number.isInteger(p.fb)&&p.fb>=0&&p.fb<=60)o.prefs.fb=p.fb;
   if(Number.isInteger(p.flong)&&p.flong>=0&&p.flong<=60)o.prefs.flong=p.flong;
+  if(p.onb===1)o.prefs.onb=1;
+  if(Array.isArray(p.ihide))o.prefs.ihide=p.ihide.filter(x=>typeof x==="string").slice(0,20);
+  if(Array.isArray(p.iorder))o.prefs.iorder=p.iorder.filter(x=>typeof x==="string").slice(0,20);
   if(Number.isInteger(p.fevery)&&p.fevery>=2&&p.fevery<=8)o.prefs.fevery=p.fevery;
   if(["","w","b","r"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
   if(Number.isInteger(p.fvol)&&p.fvol>=0&&p.fvol<=100)o.prefs.fvol=p.fvol;
@@ -3994,6 +4199,7 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
   const hd=el(`<section class="card pfhead"><div class="pfav" aria-hidden="true"></div><div class="pfid"><label class="ffield"><span>Seu nome</span><input class="etext" id="pfName" maxlength="40" placeholder="Como você quer ser chamado"></label><p class="gtext how">Aparece nas iniciais do ícone de perfil, no topo.</p></div></section>`);
   const av=hd.querySelector(".pfav"),ini=initials(P.name);if(ini)av.textContent=ini;else av.innerHTML=`<svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg>`;
   const ni=hd.querySelector("input");ni.value=P.name;ni.onchange=()=>{ui.profile.name=ni.value;saveUI();render()};box.appendChild(hd);
+  if(!window.__site){const n=el(`<section class="card inote"><p><b>Use o site como principal.</b> Os dados deste artefato ficam separados do site. Para levar o progresso: <b>Configurações › Backup › Exportar</b> aqui e <b>Importar backup</b> no site.</p><div class="btns"><a class="btn" target="_blank" rel="noopener">Abrir o site</a></div></section>`);n.querySelector("a").href=SITE_URL;box.appendChild(n)}
   // meta
   const mt=el(`<section class="card"><div class="dhead"><h2>Meta da residência</h2></div><p class="gtext how">A prova que você quer fazer e a data. O Início mostra a contagem regressiva.</p><div class="fgrid"><label class="ffield"><span>Prova-alvo</span><input class="etext" id="pfGoal" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data da prova</span><input class="etext" id="pfGoalDate" type="date"></label></div><p class="pfcount"></p></section>`);
   const gi=mt.querySelector("#pfGoal"),gd=mt.querySelector("#pfGoalDate");gi.value=P.goal;gd.value=P.goalDate;
@@ -4254,7 +4460,11 @@ function renderInicioMeta(){const box=$("#iMeta");if(!box)return;const P=ui.prof
 function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)return;
   if(view==="inicio"){if(t.parentNode!==$("#iToday"))$("#iToday").appendChild(t);if(r.parentNode!==$("#iRevs"))$("#iRevs").appendChild(r)}
   else if(view==="temas"){const slot=$("#todaySlot");if(slot.nextElementSibling!==t)slot.after(t);const side=$("#viewTemas .side");if(side.firstElementChild!==r)side.prepend(r)}}
-function renderInicio(){renderInicioBoard();renderInicioMeta();renderInicioProva();renderInicioStats()}
+function renderInicio(){renderInicioBoard();renderInicioMeta();renderInicioProva();renderInicioStats();
+  {const n=$("#iNotice");n.innerHTML="";const x=iNoticeEl();if(x)n.appendChild(x)}
+  {const q=$("#iQueue");q.innerHTML="";const c=iQueueCard();c.querySelector(".dhead").appendChild(helpBtn("Revisões"));q.appendChild(c)}
+  {const w=$("#iWeek");w.innerHTML="";const x=iWeekCard();if(x)w.appendChild(x)}
+  {const c=$("#iCust");c.innerHTML="";c.appendChild(iCustomEl())}applyICustom()}
 function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=upcomingProvas(),CR=examCrunch();
   const hd=el(`<div class="dhead"><h2>Próxima prova</h2><span class="todaydate"></span></div>`);box.appendChild(hd);
   if(!ups.length){box.appendChild(el(`<p class="cempty">${fac.provas.length?"Nenhuma prova futura nos semestres ativos.":"Nenhuma prova cadastrada. Cadastre as provas dentro do semestre, na aba Faculdade: nas 3 semanas antes, o plano do dia reserva espaço para elas."}</p>`));
@@ -4454,7 +4664,9 @@ function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foSh
         if(!(w>=5&&w<=180)||!(b>=0&&b<=60)||!(lo>=0&&lo<=60)||!(ev>=2&&ev<=8)){foMsg="Foco de 5 a 180 minutos, pausas de 0 a 60 e pausa longa a cada 2 a 8 ciclos.";render();return}
         ui.prefs.fw=w;ui.prefs.fb=b;ui.prefs.flong=lo;ui.prefs.fevery=ev;foCustom=null;foMsg=`Pomodoro: ${w} min de foco, ${b?b+" min de pausa":"sem pausa"}${lo?` e pausa longa de ${lo} min a cada ${ev} ciclos`:" e sem pausa longa"}.${foRun?" Vale a partir do próximo ciclo.":""}`;saveUI();render()};c.appendChild(f)}}
   {const q=foQuickEl();if(q)c.appendChild(q)}
-  c.appendChild(foLinkEl());c.appendChild(foNoiseEl());
+  {const mo=el(`<details class="fomore"><summary></summary></details>`),P2=ui.prefs,rf=(foRun?foRun.ref:foPick.ref)||"";if(foMoreOpts)mo.open=true;mo.addEventListener("toggle",()=>{foMoreOpts=mo.open});
+    mo.querySelector("summary").textContent=`Mais opções${rf?" · "+(foRefLabel(rf)||"vínculo"):""}${P2.fnoise?" · som de fundo":""}`;
+    mo.append(foLinkEl(),foNoiseEl(),c.querySelector(".foopts"));c.appendChild(mo)}
   c.appendChild(el(`<p class="how fohow">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
   const m=c.querySelector(".fomsg");m.textContent=foMsg;m.hidden=!foMsg;return c}
 function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=P.fgoal*60;
@@ -4503,7 +4715,7 @@ function foListCard(){const c=el(`<section class="card" aria-labelledby="folh"><
   return c}
 /* ---------- Foco: depois da sessão, vínculo rápido, ciclos, ruído, distrações, mapa e metas ---------- */
 const LSFA="resid-focus-after",LSFS="resid-focus-series";
-let foAfter=null,foSeries={n:0,t:0},foAfterQ=null,foAfterAll=false,foNoise=null;
+let foAfter=null,foSeries={n:0,t:0},foAfterQ=null,foAfterAll=false,foNoise=null,foMoreOpts=false;
 try{const a=JSON.parse(localStorage.getItem(LSFA)||"null");if(a&&typeof a.k==="string"&&a.d===today())foAfter=a}catch(e){}
 try{const s=JSON.parse(localStorage.getItem(LSFS)||"null");if(s&&Number.isInteger(s.n)&&typeof s.t==="number")foSeries=s}catch(e){}
 function foAfterSet(x){foAfter=x&&x.ref&&x.ref[0]==="T"&&BYKEY[x.ref.slice(2)]?{k:x.ref.slice(2),sec:x.sec,d:x.d,id:x.id}:null;foAfterQ=null;foAfterAll=false;
@@ -5157,7 +5369,11 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
   return w}
 let nMsgCards="";
 /* sessão de revisão dos cartões */
-function nCardsCard(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões para revisar</h2><span class="todaydate"></span></div></section>`);
+let ankiMsg="";
+function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Anotações"));
+  if(!cdRun&&cards.length&&downloadsFn){const b=el(`<button class="link" type="button" id="ankiCd">Exportar para o Anki</button>`);b.onclick=async()=>{ankiMsg=await ankiSave("cards");render()};c.appendChild(b)}
+  if(ankiMsg&&!cdRun){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=ankiMsg;c.appendChild(m);ankiMsg=""}return c}
+function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões para revisar</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=cards.length?`${due.length} hoje · ${cards.length} no total`:"";
   if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
     if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: ${R.ok} de ${R.done} lembrados.</p>`));c.appendChild(el(`<p class="how">Os que você não lembrou voltam amanhã; os lembrados, em intervalos cada vez maiores (1, 2, 4, 8, 16, 32 e 64 dias).</p>`));
@@ -5357,6 +5573,20 @@ function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} c
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
 const HELP=[
+["Comece aqui",`Um dia de estudo na Trilha Médica, em 5 passos:
+1. **Início › Revisar hoje:** toque em **Começar a fila**. O app passa pelos erros, cartões, anotações para reler e temas para revisar, um depois do outro; a barra de baixo leva ao próximo.
+2. **Estudar hoje:** estude os 3 temas do plano. **Começar com o Foco** conta o tempo; ao terminar, marque os subtópicos que viu.
+3. **Questões:** faça questões dos temas do dia (no tema, **Gerar questões**, ou registre as de bancos em **+ Registrar questões**).
+4. **Erros:** errou? **Levar para o caderno de erros**. Ele volta para você revisar amanhã.
+5. **Faculdade:** com prova ou fechamento de SP por perto, o painel **Próximas provas** mostra o que falta e o ritmo.
+- **Buscar em tudo:** a lupa no topo (no computador, **Ctrl+K** ou **/**) procura em temas, anotações, erros, cartões e faculdade.
+- **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo por dia. Dá para mudar depois em Perfil e Configurações.
+- **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
+- **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
+- **Anki:** em Anotações › Cartões para revisar e em Erros › Mais filtros, **Exportar para o Anki** gera um arquivo .txt (no Anki: Arquivo › Importar).
+- **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
+- **Resumo da semana:** no domingo e na segunda, o Início compara a sua semana com a anterior.
+- O botão **?** ao lado de vários cartões abre a parte certa desta ajuda.`],
 ["Primeiros passos",`O checklist tem **185 temas** de alta recorrência nas 5 grandes áreas. Todo dia ele propõe **3 temas** para estudar, agenda as **revisões** de tudo o que você já estudou e mostra onde você mais erra.
 - Comece pela aba **Início**: ela mostra a próxima prova, o plano do dia (**Estudar hoje**), as revisões e o seu progresso na residência e na faculdade.
 - A aba **Residência** tem a lista dos 185 temas, o plano e as revisões (os mesmos do Início) e os gráficos completos.
@@ -5516,7 +5746,8 @@ const HELP=[
 - **Copiar backup:** o mesmo conteúdo como texto.
 - **Importar backup** (site): mostra um resumo, avisa o que será substituído e guarda uma cópia do que existia.
 - **Desfazer a última importação:** até 7 dias, no mesmo aparelho.
-- Exporte por último ao migrar: o que você estudar depois não vai no arquivo.`],
+- Exporte por último ao migrar: o que você estudar depois não vai no arquivo.
+- **Lembrete:** sem conta no site, o Início avisa quando o último backup passou de 30 dias (ou se você nunca fez um). **Lembrar em 7 dias** adia o aviso.`],
 ["Site: instalar, conta e sem internet",`Endereço: **elialdojunior91tmedicins.github.io/Trilha-Medica**
 - **Instalar (iPad/iPhone):** abra o site no Safari › **Compartilhar** › **Adicionar à Tela de Início**. Abre em tela cheia. No computador, o Chrome oferece **Instalar** na barra de endereço.
 - **Conta:** **Entrar** no topo, com **Google** ou com **e-mail e senha** (6+ caracteres). Nos outros aparelhos, entre do mesmo jeito: tudo sincroniza.
@@ -5644,11 +5875,21 @@ function renderAll(){
 
 function commit(){clearArm=null;render();persist()}
 function setSave(t){$("#save").textContent=t}
+/* na conta, cada tema é um documento próprio em progress/topics/{chave} (o documento principal guarda só histórico e plano);
+   assim nenhum documento passa do limite de 1 MB do Firestore, mesmo com anos de questões registradas */
+let topicStore=null,tSaved={};
+const tNewer=(a,b)=>{const la=(a&&a.last)||"",lb=(b&&b.last)||"";if(la!==lb)return la>lb;const qa=(a&&a.qt)||0,qb=(b&&b.qt)||0;if(qa!==qb)return qa>qb;return JSON.stringify(a||{}).length>JSON.stringify(b||{}).length};
+async function inChunks(list,fn,n=20){for(let i=0;i<list.length;i+=n)await Promise.all(list.slice(i,i+n).map(fn))}
+async function saveTopics(){const ch=[],del=[];for(const k in state){const j=JSON.stringify(state[k]);if(tSaved[k]!==j)ch.push([k,j])}for(const k in tSaved)if(!(k in state))del.push(k);
+  await inChunks(ch,async([k,j])=>{await topicStore.doc(k).set(JSON.parse(j));tSaved[k]=j});
+  await inChunks(del,async k=>{await topicStore.doc(k).delete();delete tSaved[k]})}
 function persist(){
   try{localStorage.setItem(LS2,JSON.stringify(state))}catch(e){}
   if(!store){setSave("Progresso salvo neste navegador");return}
   setSave("Salvando…"); clearTimeout(saveTimer);
-  saveTimer=setTimeout(async()=>{try{await store.set({version:2,topics:state,hist,plan:dayPlan,updatedAt:new Date().toISOString()});setSave("Progresso salvo na sua conta")}
+  if(!synced)return;// antes de ler a conta, só no aparelho; ao sincronizar, o que mudou é enviado
+  saveTimer=setTimeout(async()=>{try{if(topicStore){await saveTopics();await store.set({version:3,split:true,hist,plan:dayPlan,updatedAt:new Date().toISOString()})}
+      else await store.set({version:2,topics:state,hist,plan:dayPlan,updatedAt:new Date().toISOString()});setSave("Progresso salvo na sua conta")}
     catch(e){setSave(e&&e.code==="unavailable"?"Sem conexão no momento. Sua próxima marcação salva tudo de novo.":"Não foi possível salvar na conta; salvo neste navegador")}},700);
 }
 
@@ -5679,10 +5920,10 @@ const isTypingEl=e=>e&&(e.tagName==="TEXTAREA"||(e.tagName==="INPUT"&&!/^(checkb
 document.addEventListener("focusin",e=>{if(isTypingEl(e.target))document.body.classList.add("typing")});
 document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement))document.body.classList.remove("typing")},50));
 
-$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
+$("#srchBtn").onclick=()=>{gsOpen=true;renderGSearch()};$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
 $("#hq").addEventListener("input",debounced(e=>{helpQ=e.target.value.trim();renderHelp()},150));
 $("#bkSave").onclick=async()=>{const m=$("#bkMsg");if(!downloadsFn)return;
-  try{await downloadsFn.save({filename:`checklist-backup-${today()}.json`,data:JSON.stringify(buildBackup(),null,1)});m.textContent="Backup salvo. No iPad/iPhone ele fica no app Arquivos, em Downloads."}
+  try{await downloadsFn.save({filename:`checklist-backup-${today()}.json`,data:JSON.stringify(buildBackup(),null,1)});markBackup();m.textContent="Backup salvo. No iPad/iPhone ele fica no app Arquivos, em Downloads."}
   catch(e){m.textContent=e&&/cancel|denied|declin/i.test(String(e.code||e.message))?"Salvamento cancelado.":"Não foi possível salvar o arquivo. Use Copiar backup e cole num arquivo de texto."}};
 $("#bkCopy").onclick=async()=>{const m=$("#bkMsg"),txt=JSON.stringify(buildBackup());
   try{await navigator.clipboard.writeText(txt);m.textContent="Backup copiado ("+Math.round(txt.length/1024)+" KB). Cole no site do checklist em Importar backup, ou num arquivo de texto para guardar."}
@@ -5707,7 +5948,7 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
   try{
     const [db,user]=await Promise.all([window.claude?.use?.("db"),window.claude?.use?.("user")]);
     const uid=user?await user.id():null;
-    if(!db||!uid){synced=true;setSave("Progresso salvo neste navegador");return}
+    if(!db||!uid){synced=true;setSave("Progresso salvo neste navegador");setTimeout(maybeOnb,0);return}
     store=db.doc("data/users/"+uid+"/progress");
     facStore=db.doc("data/users/"+uid+"/faculdade");
     try{const fs=await facStore.get();const fd=fs.exists?fs.data():null;
@@ -5715,12 +5956,18 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
       else if(fac.sems.length||facTouched)saveFac()}catch(e){}
     const snap=await store.get();
     const data=snap.exists?snap.data():null;
+    topicStore=store.collection("topics");let remoteT=null;
+    if(data&&data.split){try{const ts=await topicStore.get();remoteT={};ts.docs.forEach(d=>{remoteT[d.id]=d.data()})}catch(e){remoteT=null}}
+    else if(data&&(data.topics||data.levels)){remoteT=data.topics||data.levels;
+      /* conta já dividida, mas uma versão antiga do app voltou a gravar tudo junto: junta os dois, ficando com o registro mais recente de cada tema */
+      try{const ts=await topicStore.get();if(ts.docs.length){remoteT={...remoteT};ts.docs.forEach(d=>{const a=d.data(),b=remoteT[d.id];if(!b||tNewer(a,b))remoteT[d.id]=a})}}catch(e){}}
+    if(data&&data.split&&remoteT)for(const k in remoteT)tSaved[k]=JSON.stringify(remoteT[k]);
     if(data&&data.hist&&typeof data.hist==="object"){for(const k in data.hist){const r=data.hist[k],l=hist[k]||{};hist[k]={};for(const f of ["e","r","q","c","res","tq","ts"]){const v=Math.max(r[f]||0,l[f]||0);if(v)hist[k][f]=v}}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
     if(data&&data.plan&&data.plan.d===today()&&Array.isArray(data.plan.items)){dayPlan=renamePlanLabels(data.plan);try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}}
-    if(data&&(data.topics||data.levels)){const local=state;state=migrate(data.topics||data.levels);
+    if(remoteT&&(data.split||Object.keys(remoteT).length||!Object.keys(state).length)){const local=state;state=migrate(remoteT);
       touchedEarly.forEach(k=>{if(local[k])state[k]=local[k];else delete state[k]});
       if(!(data.plan&&data.plan.d===today())&&!planTouched)dayPlan=null;// plano montado antes de carregar a conta: refaz com o progresso real
-      synced=true;render();if(estChanged||!data.topics||touchedEarly.size||!dayPlan||!(data.plan&&data.plan.d===today())){estChanged=false;persist()}}
+      synced=true;render();if(estChanged||!data.split||touchedEarly.size||!dayPlan||!(data.plan&&data.plan.d===today())){estChanged=false;persist()}}
     else{synced=true;if(Object.keys(state).length)persist()}
     settingsDoc=db.doc("data/users/"+uid+"/settings");
     try{const ss=await settingsDoc.get();const sp=ss.exists&&ss.data().prompt;
@@ -5753,8 +6000,8 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
       for(const k in notes)if(!remoteIds.has(k))await notesStore.doc(k).set({t:notes[k],updatedAt:noteAt[k]||new Date().toISOString()});
       if(changed){saveNotesLocal();render()}
     }catch(e){}
-    setSave("Progresso salvo na sua conta");
-  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador")}
+    setSave("Progresso salvo na sua conta");maybeOnb();
+  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");setTimeout(maybeOnb,0)}
 })();
 </script>
 
