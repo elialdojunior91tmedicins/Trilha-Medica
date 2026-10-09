@@ -1053,6 +1053,16 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{g
 .iprow .ok b{color:var(--good)}.iprow .late b{color:var(--due)}
 .iproj .ks{margin:0;font-size:.8rem;color:var(--muted)}
 .pjtog{font-size:.84rem;margin-top:2px}
+.trtoast{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;background:var(--tipbg);color:var(--tipfg);border-radius:10px;padding:10px 16px;font-size:.9rem;box-shadow:0 6px 20px rgb(0 0 0 / .25);max-width:calc(100% - 24px)}
+.trtoast .link{color:var(--tipfg);font-weight:600}
+html[data-layout="phone"] .trtoast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body.hasqbar .trtoast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+.trlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
+.trlist li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.trk{font:600 .68rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.trt{display:flex;flex-direction:column;min-width:0}.trt b{font-size:.92rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trt span{font-size:.76rem;color:var(--muted)}
+.trb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.trb .link{font-size:.8rem}
+@media (max-width:560px){.trlist li{grid-template-columns:minmax(0,1fr) auto}.trk{grid-column:1/-1;justify-self:start}.trb{grid-column:1/-1;justify-content:flex-start}}
 .pjw{display:flex;flex-direction:column;gap:0;margin-top:6px;border-top:1px solid var(--line)}
 .pjrow{display:grid;grid-template-columns:minmax(7.5rem,1.3fr) repeat(4,minmax(0,1fr));gap:2px 10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:.84rem}
 .pjw.noq .pjrow{grid-template-columns:minmax(7.5rem,1.3fr) repeat(3,minmax(0,1fr))}
@@ -1830,7 +1840,11 @@ function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if((s.last!==l
 let estChanged=false;
 const wOf=it=>get(it.key).w||it.w0;
 function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="Incidência ${INC[w].toLowerCase()}"><i></i><i></i><i></i>${withText?`<b>${INC[w]}</b>`:""}</span>`);e.setAttribute("aria-label","Incidência "+INC[w].toLowerCase());return e}
-function interval(s){return INT[Math.min(s.step||0,INT.length-1)]}
+/* intervalo da revisão: o da tabela, ajustado pelo acerto nas questões do tema (desligável em Configurações) */
+function adaptAcc(s){if(!s.qt)return null;const from=fromNum(dnum(today())-90);let q=0,c=0;const m=s.qd||{};for(const d in m)if(d>=from&&Array.isArray(m[d])){q+=m[d][0]||0;c+=m[d][1]||0}
+  if(q<5){q=s.qt||0;c=s.qc||0}return q>=5?{a:c/q,q}:null}
+function adaptF(s){if(ui.prefs.adapt===false||!((s.step||0)>=1))return 1;const r=adaptAcc(s);if(!r)return 1;const a=r.a;return a>=.85&&r.q>=8?1.4:a>=.75?1.2:a<.5?.5:a<.65?.75:1}
+function interval(s){const b=INT[Math.min(s.step||0,INT.length-1)];if(s.adjFrom===s.last&&s.adj)return b;const f=adaptF(s);return f===1?b:Math.max(1,Math.min(150,Math.round(b*f)))}
 function dueIn(s){return s.last? dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0)-dnum(today()) : null}
 function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
@@ -1912,8 +1926,8 @@ function whenLabel(iso){if(!iso)return "";const d=new Date(iso);if(isNaN(d))retu
 function saveNotesLocal(){try{localStorage.setItem(LSN,JSON.stringify(notes));localStorage.setItem(LSN+"-at",JSON.stringify(noteAt))}catch(e){}}
 function setNoteStatus(k,t){document.querySelectorAll(`[data-ns="${k}"]`).forEach(s=>s.textContent=t)}
 function noteFoot(k){const t=notes[k]||"";return t?`${wordCount(t)} palavras · editado ${whenLabel(noteAt[k])}`:"Salva automaticamente enquanto você escreve."}
-function saveNote(k,v){
-  v=v.slice(0,NOTE_MAX);notes[k]=v;noteAt[k]=new Date().toISOString();if(!v.trim()){delete notes[k];delete noteAt[k]}
+function saveNote(k,v){const old=notes[k]||"";
+  v=v.slice(0,NOTE_MAX);notes[k]=v;noteAt[k]=new Date().toISOString();if(!v.trim()){delete notes[k];delete noteAt[k];if(old.trim().length>=20)toTrash("note",topicName(k),"Anotação do tema",{k,t:old})}
   saveNotesLocal();
   document.querySelectorAll(`[data-nw="${k}"]`).forEach(s=>s.textContent=noteFoot(k));
   setNoteStatus(k,notesStore?"Salvando…":"Salvo neste navegador");
@@ -2205,7 +2219,7 @@ function renderDetail(it){
   if(!s.last){p.textContent="Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
     const b=el(`<button class="btn primary">Estudei hoje</button>`);b.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");adoptTopic(it.key);commit()};bt.appendChild(b);}
   else{const next=fromNum(dnum(today())+d);
-    p.textContent=`Último estudo em ${br(s.last)}. Próxima revisão em ${br(next)} (${dueLabel(d)}). Intervalo atual: ${interval(s)} ${interval(s)===1?"dia":"dias"}.`;
+    const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;p.textContent=`Último estudo em ${br(s.last)}. Próxima revisão em ${br(next)} (${dueLabel(d)}). Intervalo atual: ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
     const g=el(`<button class="btn primary">Revisei: lembrei bem</button>`);g.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=Math.min((x.step||0)+1,INT.length-1);x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(it.key);commit()};
     const h=el(`<button class="btn">Revisei: tive dificuldade</button>`);h.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0});logAct("r");markReviewed(it.key);commit()};
     bt.append(g,h);}
@@ -2934,7 +2948,8 @@ function dropRefEverywhere(d,ref){// tira o conteúdo das provas da disciplina e
   if(!discRefs(d).includes(ref))fac.provas.filter(p=>p.discId===d.id).forEach(p=>{p.items=p.items.filter(r=>r!==ref);p.done=(p.done||[]).filter(r=>r!==ref)});
   if(ref.startsWith("O:")&&!refsInUse().has(ref))purgeOwn(ref.slice(2))}
 function spRemove(d,s,ref){s.items=s.items.filter(r=>r!==ref);const x=refTopic(ref);if(x)dropObjs(s,x.k);dropRefEverywhere(d,ref);saveFac();syncObjs(s);persist();render()}
-function delSP(d,s){const refs=[...s.items];refs.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)});d.sps=d.sps.filter(x=>x!==s);refs.forEach(r=>dropRefEverywhere(d,r));saveFac();persist();render()}
+function delSP(d,s){toTrash("sp",s.name,d.name,{discId:d.id,s:JSON.parse(JSON.stringify(s)),os:ownSnap(s.items),pv:fac.provas.filter(p=>p.discId===d.id).map(p=>({id:p.id,items:[...p.items],done:[...(p.done||[])]}))});trSkip=true;
+  try{const refs=[...s.items];refs.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)});d.sps=d.sps.filter(x=>x!==s);refs.forEach(r=>dropRefEverywhere(d,r))}finally{trSkip=false}saveFac();persist();render()}
 function delEixo(d,e){d.sps.forEach(s=>{if(s.eixoId===e.id)s.eixoId=null});d.eixos=d.eixos.filter(x=>x!==e);saveFac();render()}
 function removeFromDisc(d,ref){d.items=d.items.filter(r=>r!==ref);dropRefEverywhere(d,ref);saveFac();persist();render()}
 /* apaga um tema próprio e tudo que é dele (também na conta) */
@@ -3364,7 +3379,7 @@ function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=da
   else{const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{openEdit("p"+p.id);render()};
     const dl=el(`<label class="fcru">Data <input type="date" class="etext"></label>`),di=dl.querySelector("input");di.id="fpdt-"+p.id;di.value=p.date;
     di.onchange=()=>{if(/^\d{4}-\d{2}-\d{2}$/.test(di.value)&&di.value!==p.date){const old={...p};p.date=di.value;saveFac();provaChanged(daysTo(p.date)<=daysTo(old.date)?p:old,"data alterada em")}};
-    ed.append(dl,rn,armBtn("p"+p.id,"excluir prova","Toque de novo para excluir a prova",()=>{fac.provas=fac.provas.filter(x=>x.id!==p.id);saveFac();provaChanged(p,"prova excluída")}))}
+    ed.append(dl,rn,armBtn("p"+p.id,"excluir prova","Toque de novo para excluir a prova",()=>{toTrash("prova",p.name,(discOf(p.discId)||{}).name,JSON.parse(JSON.stringify(p)));fac.provas=fac.provas.filter(x=>x.id!==p.id);saveFac();provaChanged(p,"prova excluída")}))}
   body.appendChild(ed);
   body.appendChild(el(`<p class="gtext how">Marque o que cai nesta prova (por ${esc(L.sp)} ou tema a tema). Um conteúdo conta como estudado quando você o estuda ou revisa nas 3 semanas antes da prova.</p>`));
   const groups=[...d.sps.map(s=>({t:s.name,refs:s.items.filter(refOk)})),...(d.items.filter(refOk).length?[{t:"Conteúdo avulso",refs:d.items.filter(refOk)}]:[])].filter(g=>g.refs.length);
@@ -3462,9 +3477,10 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
     if(facEdit==="d"+d.id)ft.appendChild(nameEdit("d"+d.id,d.name,v=>{d.name=v.slice(0,60)}));
     else{const rn=el(`<button class="link" type="button"></button>`);rn.textContent=`Renomear ${L.disc.toLowerCase()}`;rn.onclick=()=>{openEdit("d"+d.id);render()};
       ft.append(rn,armBtn("d"+d.id,`Excluir ${L.disc.toLowerCase()}`,`Toque de novo: apaga a ${L.disc.toLowerCase()}, suas provas e os conteúdos da faculdade só dela`,()=>{
+        toTrash("disc",d.name,"com provas e conteúdos",{d:JSON.parse(JSON.stringify(d)),provas:JSON.parse(JSON.stringify(fac.provas.filter(p=>p.discId===d.id))),os:ownSnap(discRefs(d))});trSkip=true;try{
         discRefs(d).filter(r=>r.startsWith("O:")).forEach(r=>{if(!fac.discs.some(x=>x!==d&&discRefs(x).includes(r)))purgeOwn(r.slice(2))});
         d.sps.forEach(s=>s.items.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)}));
-        fac.provas=fac.provas.filter(p=>p.discId!==d.id);fac.discs=fac.discs.filter(x=>x!==d);facEditDisc.delete(d.id);saveErrsLocal();saveNotesLocal();saveFac();commit()}))}
+        fac.provas=fac.provas.filter(p=>p.discId!==d.id);fac.discs=fac.discs.filter(x=>x!==d);facEditDisc.delete(d.id)}finally{trSkip=false}saveErrsLocal();saveNotesLocal();saveFac();commit()}))}
     const done=el(`<button class="btn primary" type="button">Concluir</button>`);done.onclick=()=>{facEditDisc.delete(d.id);closeEdit();facArm=null;render()};ft.appendChild(done);body.appendChild(ft)}
   card.appendChild(body);return card}
 
@@ -3673,7 +3689,7 @@ function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string
 function saveErrsLocal(){try{localStorage.setItem(LSE,JSON.stringify(errors))}catch(x){}}
 async function putErr(e){saveErrsLocal();if(!errStore)return;
   try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
-async function delErr(id){errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
+async function delErr(id){{const e=errors.find(x=>x.id===id);if(e)toTrash("err",topicName(e.k),e.w,e)}errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 /* ---------- Caderno de erros: revisão ativa, registro rápido, erros repetidos, cartão e anotação ---------- */
 const E_INT=[1,3,7,15,30];
 let erRun=null,eReg=null,eMenu=null;
@@ -3982,6 +3998,61 @@ function renderErros(){
   if(vis.length>shown.length){const m=el(`<li><button class="btn" type="button">Mostrar mais ${Math.min(E_PAGE,vis.length-shown.length)} (de ${vis.length-shown.length} restantes)</button></li>`);m.querySelector("button").onclick=()=>{eLimit+=E_PAGE;render()};list.appendChild(m)}
 }
 
+/* ===================== LIXEIRA: o que é apagado fica 30 dias e pode voltar ===================== */
+const LSTR="resid-trash-v1",TR_DAYS=30,TR_MAX=300;
+const TR_KIND={err:"Erro",card:"Cartão",free:"Caderno livre",note:"Anotação",prova:"Prova",sp:"SP",disc:"Disciplina"};
+let trash=[],trashStore=null,trSkip=false,trArm=null,trMsg="";
+function trOk(x){return !!x&&typeof x.id==="string"&&!!TR_KIND[x.kind]&&typeof x.j==="string"&&typeof x.at==="string"}
+try{const v=JSON.parse(localStorage.getItem(LSTR)||"[]");if(Array.isArray(v))trash=v.filter(trOk)}catch(e){trash=[]}
+function trSaveLocal(){try{localStorage.setItem(LSTR,JSON.stringify(trash))}catch(e){}}
+async function trPut(x){trSaveLocal();if(!trashStore)return;try{await trashStore.doc(x.id).set({...x})}catch(e){}}
+async function trDrop(id){trash=trash.filter(x=>x.id!==id);trSaveLocal();if(trashStore)try{await trashStore.doc(id).delete()}catch(e){}}
+function trLeft(x){return Math.max(0,TR_DAYS-Math.floor((Date.now()-Date.parse(x.at))/864e5))}
+function trPurgeOld(){trash.filter(x=>trLeft(x)<=0).forEach(x=>trDrop(x.id))}
+function toTrash(kind,lab,sub,data){if(trSkip)return null;const x={id:"tr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),kind,lab:String(lab||"").slice(0,140),sub:String(sub||"").slice(0,140),at:new Date().toISOString(),j:JSON.stringify(data)};
+  trash.unshift(x);while(trash.length>TR_MAX){const o=trash.pop();if(trashStore)trashStore.doc(o.id).delete().catch(()=>{})}trPut(x);trToast(x);return x}
+/* temas próprios da faculdade apagados junto com uma SP ou disciplina: guarda tudo deles */
+function ownSnap(refs){const o={own:{},st:{},nt:{},errs:[]};refs.filter(r=>typeof r==="string"&&r.startsWith("O:")).forEach(r=>{const id=r.slice(2),k="F-"+id;
+  if(fac.own[id])o.own[id]=JSON.parse(JSON.stringify(fac.own[id]));if(state[k])o.st[k]=JSON.parse(JSON.stringify(state[k]));if(notes[k])o.nt[k]=notes[k];errors.filter(e=>e.k===k).forEach(e=>o.errs.push({...e}))});return o}
+function ownRestore(o){if(!o)return;let ch=false;for(const id in o.own)if(!fac.own[id]){fac.own[id]=o.own[id];ch=true}if(ch)registerOwn();
+  for(const k in o.st)if(!state[k])state[k]=o.st[k];for(const k in o.nt)if(!notes[k])saveNote(k,o.nt[k]);
+  (o.errs||[]).forEach(e=>{if(!errors.some(x=>x.id===e.id)){errors.push(e);putErr(e)}})}
+const topicName=k=>BYKEY[k]?BYKEY[k].t:"tema apagado";
+/* devolver */
+function trRestore(id){const x=trash.find(y=>y.id===id);if(!x)return;let d;try{d=JSON.parse(x.j)}catch(e){trMsg="Não foi possível ler este item.";render();return}
+  let ok=true,why="";
+  if(x.kind==="err"){if(!errors.some(e=>e.id===d.id)){errors.push(d);putErr(d)}}
+  else if(x.kind==="card"){if(!cards.some(c=>c.id===d.id)){const c=cdClean(d);cards.push(c);cdPut(c)}}
+  else if(x.kind==="free"){if(!freeN.some(f=>f.id===d.id)){const f=frClean(d);freeN.push(f);frPut(f)}}
+  else if(x.kind==="note"){const cur=notes[d.k]||"";saveNote(d.k,cur.trim()?cur+"\n\n---\n\n"+d.t:d.t)}
+  else if(x.kind==="prova"){if(!discOf(d.discId)){ok=false;why=`a disciplina desta prova não existe mais`}else if(!fac.provas.some(p=>p.id===d.id)){fac.provas.push(d);saveFac()}}
+  else if(x.kind==="sp"){const dc=discOf(d.discId);if(!dc){ok=false;why="a disciplina desta SP não existe mais"}else{
+      ownRestore(d.os);if(!dc.sps.some(s=>s.id===d.s.id)){const s=d.s;if(s.eixoId&&!(dc.eixos||[]).some(e=>e.id===s.eixoId))s.eixoId=null;dc.sps.push(s)}
+      (d.pv||[]).forEach(v=>{const p=fac.provas.find(y=>y.id===v.id);if(p){p.items=[...new Set([...p.items,...v.items])];p.done=[...new Set([...(p.done||[]),...(v.done||[])])]}});
+      const s=dc.sps.find(y=>y.id===d.s.id);if(s)syncObjs(s);saveFac();persist()}}
+  else if(x.kind==="disc"){const dc=d.d;if(fac.discs.some(y=>y.id===dc.id)){/* já voltou */}else{
+      if(!fac.sems.some(s=>s.id===dc.semId)){const a=activeSems()[0]||(fac.sems[0]&&fac.sems[0].id);if(!a){ok=false;why="crie um semestre antes de devolver a disciplina"}else dc.semId=a}
+      if(ok){ownRestore(d.os);fac.discs.push(dc);(d.provas||[]).forEach(p=>{if(!fac.provas.some(y=>y.id===p.id))fac.provas.push(p)});(dc.sps||[]).forEach(syncObjs);saveFac();commit()}}}
+  if(!ok){trMsg=`Não deu para devolver: ${why}.`;render();return}
+  trDrop(id);if(view==="config")trMsg=`${TR_KIND[x.kind]} devolvido${x.kind==="note"||x.kind==="prova"||x.kind==="sp"||x.kind==="disc"?"a":""}: ${x.lab}.`;hideToast();render()}
+/* aviso rápido com Desfazer */
+let toastT=null;
+function hideToast(){const t=$("#trToast");if(t)t.remove();clearTimeout(toastT)}
+function trToast(x){hideToast();const t=el(`<div class="trtoast" id="trToast" role="status"><span></span><button class="link" type="button">Desfazer</button></div>`);
+  t.querySelector("span").textContent=`${TR_KIND[x.kind]} na lixeira`;t.querySelector("button").onclick=()=>trRestore(x.id);document.body.appendChild(t);toastT=setTimeout(hideToast,7000)}
+/* Configurações › Lixeira */
+function trashCardEl(){trPurgeOld();const c=el(`<section class="card trash" id="trashCard"><div class="dhead"><h2>Lixeira</h2><span class="todaydate"></span></div><p class="how">Erros, cartões, anotações, caderno livre, provas, SPs e disciplinas apagados ficam aqui por ${TR_DAYS} dias. Depois disso, somem de vez.</p></section>`);
+  c.querySelector(".todaydate").textContent=trash.length?`${trash.length} ${trash.length===1?"item":"itens"}`:"";
+  if(trMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=trMsg;c.appendChild(m);trMsg=""}
+  if(!trash.length){c.appendChild(el(`<p class="cempty">A lixeira está vazia.</p>`));return c}
+  const ul=el(`<ul class="trlist"></ul>`);trash.slice().sort((a,b)=>b.at.localeCompare(a.at)).forEach(x=>{const li=el(`<li><span class="trk"></span><span class="trt"><b></b><span></span></span><span class="trb"><button class="mini" type="button">Restaurar</button><button class="link warn" type="button"></button></span></li>`);
+    li.querySelector(".trk").textContent=TR_KIND[x.kind];li.querySelector(".trt b").textContent=x.lab||"(sem título)";const lf=trLeft(x),ag=TR_DAYS-lf;
+    li.querySelector(".trt span").textContent=`${x.sub?x.sub+" · ":""}apagado ${ag<=0?"hoje":ag===1?"ontem":`há ${ag} dias`} · some em ${lf} ${lf===1?"dia":"dias"}`;
+    const [r,dl]=li.querySelectorAll("button");r.id="trR-"+x.id;r.onclick=()=>trRestore(x.id);const arm=trArm===x.id;dl.textContent=arm?"Toque de novo para apagar de vez":"apagar de vez";
+    dl.onclick=()=>{if(trArm===x.id){trArm=null;trDrop(x.id);render()}else{trArm=x.id;render()}};ul.appendChild(li)});c.appendChild(ul);
+  const all=el(`<button class="link warn" type="button" id="trEmpty"></button>`);all.textContent=trArm==="all"?"Toque de novo: apaga tudo da lixeira de vez":"Esvaziar a lixeira";
+  all.onclick=()=>{if(trArm==="all"){trArm=null;[...trash].forEach(x=>trDrop(x.id));render()}else{trArm="all";render()}};c.appendChild(all);return c}
+
 /* ===================== GERAL: fila do dia, avisos, busca, resumo da semana, primeiros passos, calendário, Anki ===================== */
 const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
@@ -4148,7 +4219,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180},profile:{name:"",goal:"",goalDate:"",exams:[]}};
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180,adapt:true},profile:{name:"",goal:"",goalDate:"",exams:[]}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -4175,6 +4246,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof p.fwake==="boolean")o.prefs.fwake=p.fwake;
   if(Number.isInteger(p.fgoal)&&p.fgoal>=0&&p.fgoal<=720)o.prefs.fgoal=p.fgoal;
   if(Number.isInteger(p.qgoal)&&p.qgoal>=0&&p.qgoal<=5000)o.prefs.qgoal=p.qgoal;
+  if(typeof p.adapt==="boolean")o.prefs.adapt=p.adapt;
   if([120,150,180,210,240].includes(p.qpace))o.prefs.qpace=p.qpace;
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
@@ -4251,6 +4323,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
     segRow("Subtópicos por tema","Quantos subtópicos de cada tema entram no dia.",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
   const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
+  pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%; abaixo de 65% encurta para 75%, abaixo de 50% para a metade. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
   const rp=el(`<button class="btn" type="button">Refazer o plano de hoje</button>`);rp.onclick=()=>{redoPlan("Plano de hoje refeito com a nova configuração. O que você já tinha começado foi mantido.");uiNote="Plano de hoje refeito com a nova configuração.";render()};pl.appendChild(rp);
   box.appendChild(pl);
   // faculdade
@@ -4271,7 +4344,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
     const b=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);b.querySelector("b").textContent=t;b.querySelector("span").textContent=d;b.onclick=fn;ql.appendChild(b)});
-  box.appendChild(qb);
+  box.appendChild(qb);box.appendChild(trashCardEl());
   const rs=el(`<button class="link" type="button">Voltar tudo ao padrão</button>`);rs.onclick=()=>{ui.prefs={...UI_DEF.prefs};saveUI();uiNote="Configurações de volta ao padrão.";render()};box.appendChild(rs)}
 
 /* ---------- PDF: gerador próprio (Helvetica, A4, sem bibliotecas: funciona sem internet) ---------- */
@@ -5402,7 +5475,7 @@ function cdClean(x){return {id:x.id,k:x.k,q:x.q.slice(0,600),a:x.a.slice(0,1200)
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;try{await cardStore.doc(x.id).set({...x})}catch(e){}}
-async function cdDel(id){cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
+async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",x.q,topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
 function cdAdd(k,q,a,src){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src});cards.push(x);cdPut(x);return x}
 const cdDue=()=>cards.filter(x=>BYKEY[x.k]&&x.due<=today());
 function cdAnswer(x,good){x.n++;if(good){x.ok++;x.box=Math.min(x.box+1,CD_INT.length-1);x.due=fromNum(dnum(today())+CD_INT[x.box])}else{x.box=0;x.due=fromNum(dnum(today())+1)}cdPut(x)}
@@ -5522,7 +5595,7 @@ function frClean(x){return {id:x.id,t:typeof x.t==="string"?x.t.slice(0,120):"",
 try{const v=JSON.parse(localStorage.getItem(LSFR2)||"[]");if(Array.isArray(v))freeN=v.filter(frOk).map(frClean)}catch(e){}
 function frSaveLocal(){try{localStorage.setItem(LSFR2,JSON.stringify(freeN))}catch(e){}}
 async function frPut(x){frSaveLocal();if(!freeStore)return;try{await freeStore.doc(x.id).set({...x})}catch(e){}}
-async function frDel(id){freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
+async function frDel(id){{const f=freeN.find(x=>x.id===id);if(f)toTrash("free",f.t||"Sem título",(f.b||"").replace(/\s+/g," ").slice(0,80),f)}freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
 function freeVisible(){return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!nQuery||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(nQuery))).sort((a,b)=>b.at.localeCompare(a.at))}
 function freeCard(){const c=el(`<section class="card nfree ns-all" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno livre</h2><button class="btn primary" type="button" id="frNew">+ Nova anotação</button></div></section>`);
   c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
@@ -5682,6 +5755,7 @@ const HELP=[
 ["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer. Residência e faculdade ficam numa lista só, por urgência: conteúdo da faculdade aparece com o selo **FAC**.
 - **Lembrei bem:** avança para o próximo intervalo.
 - **Tive dificuldade:** volta para 1 dia.
+- **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo; abaixo de 65% = mais curto; abaixo de 50% = metade. O tema mostra quando o intervalo foi ajustado. Desliga em Configurações.
 - **Não estudei este tema:** tira o tema das revisões e volta para "não iniciado" (questões, anotações e erros ficam). Escolher o nível **Não iniciado** dentro do tema faz o mesmo.
 - Marcou um subtópico sem querer? Desmarque no mesmo dia: o tema deixa de contar como estudado e a revisão é cancelada.
 - **Véspera de prova:** nos 3 dias antes, aparece aqui só o que você já estudou para a prova; o que falta continua no Estudar hoje.
@@ -5823,7 +5897,8 @@ const HELP=[
 - **Importar backup** (site): mostra um resumo, avisa o que será substituído e guarda uma cópia do que existia.
 - **Desfazer a última importação:** até 7 dias, no mesmo aparelho.
 - Exporte por último ao migrar: o que você estudar depois não vai no arquivo.
-- **Lembrete:** sem conta no site, o Início avisa quando o último backup passou de 30 dias (ou se você nunca fez um). **Lembrar em 7 dias** adia o aviso.`],
+- **Lembrete:** sem conta no site, o Início avisa quando o último backup passou de 30 dias (ou se você nunca fez um). **Lembrar em 7 dias** adia o aviso.
+- **Lixeira:** em **⚙ Configurações › Lixeira** ficam por 30 dias os erros, cartões, anotações (quando você apaga todo o texto), notas do caderno livre, provas, SPs e disciplinas apagados. Logo depois de apagar, aparece **Desfazer** embaixo da tela.`],
 ["Site: instalar, conta e sem internet",`Endereço: **elialdojunior91tmedicins.github.io/Trilha-Medica**
 - **Instalar (iPad/iPhone):** abra o site no Safari › **Compartilhar** › **Adicionar à Tela de Início**. Abre em tela cheia. No computador, o Chrome oferece **Instalar** na barra de endereço.
 - **Conta:** **Entrar** no topo, com **Google** ou com **e-mail e senha** (6+ caracteres). Nos outros aparelhos, entre do mesmo jeito: tudo sincroniza.
@@ -6059,6 +6134,9 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
     freeStore=store.collection("free");
     try{const fq=await freeStore.get(),rem=fq.docs.map(d=>d.data()).filter(frOk).map(frClean),ids=new Set(rem.map(x=>x.id)),lo=freeN.filter(x=>!ids.has(x.id));
       if(rem.length){freeN=[...rem,...lo];frSaveLocal();render()}for(const x of lo)await frPut(x)}catch(e){}
+    trashStore=store.collection("trash");
+    try{const tq=await trashStore.get(),rem=tq.docs.map(d=>d.data()).filter(trOk),ids=new Set(rem.map(x=>x.id)),lo=trash.filter(x=>!ids.has(x.id));
+      if(rem.length){trash=[...rem,...lo];trSaveLocal()}for(const x of lo)await trPut(x);trPurgeOld()}catch(e){}
     cardStore=store.collection("cards");
     try{const cq=await cardStore.get(),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),lo=cards.filter(x=>!ids.has(x.id));
       if(rem.length){cards=[...rem,...lo];cdSaveLocal();render()}for(const x of lo)await cdPut(x)}catch(e){}

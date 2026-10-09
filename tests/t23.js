@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');
+const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext();await ctx.addInitScript(mock+`;if(!sessionStorage.x){sessionStorage.x=1;localStorage.clear()}window.__mock(JSON.parse(sessionStorage.st||"{}"),5);addEventListener("beforeunload",()=>sessionStorage.st=JSON.stringify(window.__store))`);
+const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));await ctx.route(/googleapis|gstatic/,r=>r.abort());
+await p.goto('file://'+__dirname+'/../src/checklist-residencia.html');await p.waitForFunction(()=>typeof saveFac==='function');await p.waitForTimeout(500);
+await p.evaluate(()=>{fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"D",items:["O:a"]}],provas:[],own:{a:{t:"Anatomia",discId:"d"}}};saveFac();
+  saveNote("F-a","minha nota");const e={id:"e1",k:"F-a",w:"x",r:"y",t:"conceito",s:"",d:today(),rev:0};errors.push(e);putErr(e);commit()});
+await p.waitForTimeout(1500);
+const keys=()=>p.evaluate(()=>Object.keys(window.__store));
+let k=await keys();ok(k.some(x=>x.includes("notes/F-a"))&&k.some(x=>x.includes("errors/e1")),"nota e erro salvos na conta");
+await p.evaluate(()=>{removeFromDisc(fac.discs[0],"O:a")});await p.waitForTimeout(1500);
+k=await keys();ok(!k.some(x=>x.includes("notes/F-a")),"nota apagada na conta");ok(!k.some(x=>x.includes("errors/e1")),"erro apagado na conta");
+await p.reload();await p.waitForFunction(()=>typeof saveFac==='function');await p.waitForTimeout(800);
+ok(await p.evaluate(()=>!fac.own.a&&!notes["F-a"]&&!errors.length),"após recarregar: nada volta");
+ok(await p.evaluate(()=>{const h=hist[today()];return !h||Object.keys(h).length>0}),"hist sem entrada vazia");
+ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();

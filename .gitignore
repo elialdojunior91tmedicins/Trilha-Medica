@@ -1,0 +1,7 @@
+tests/preview.html
+tests/out_*.txt
+tests/*.png
+tests/node_modules/
+tests/*.pdf
+tests/*.ics
+tests/trilha-*.txt

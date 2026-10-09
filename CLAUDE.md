@@ -16,7 +16,8 @@ consultado quando há dúvida. Responda em português.
 1. Edite **`src/checklist-residencia.html`** (fonte única do app; é o arquivo publicado como artefato).
    Não edite `index.html` à mão: ele é gerado.
 2. Gere o site: `python3 src/build_site.py` (monta `index.html` e muda a versão do `sw.js`).
-3. Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
+3. Rode os testes: `tests/run.sh` (todos; veja `tests/README.md`) e escreva um teste novo `tests/tNN.js` para cada recurso novo
+   (inclua-o em `tests/list.txt`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
    iPad dentro do app do Claude) e computador (1366, 1920). Modos de layout ficam em
    `html[data-layout=phone|tablet|desktop|compact][data-cols]`, decididos pelo tamanho da TELA.
 4. Commit e push na `main` (o GitHub Pages publica a raiz).
@@ -138,6 +139,12 @@ consultado quando há dúvida. Responda em português.
   distribuídos com peso menor em semana de prova da faculdade (0,4; semana anterior 0,6), fechamento de SP (0,75) e outra prova de residência (0,2);
   revisões = cadeias `INT` das já agendadas + dos novos previstos; cartões pelo `due`; `out` = temas que não cabem no ritmo atual. `projEl` mostra o
   resumo e "Ver semanas" (`projOpen`, localStorage `resid-projopen`; `projWeeksEl`, 8 semanas e `projAll`). O .ics leva todas as provas com data.
+- Lixeira (módulo antes do GERAL): `trash` = [{id,kind,lab,sub,at,j}] (`j` = JSON do item; localStorage `resid-trash-v1` + Firestore
+  `progress/trash/{id}`), 30 dias (`TR_DAYS`, `trPurgeOld`). `toTrash(kind,...)` é chamado em `delErr`, `cdDel`, `frDel`, `saveNote` (texto
+  apagado inteiro, ≥20 caracteres), exclusão de prova, `delSP` e exclusão de disciplina (um item só, com provas e temas próprios via `ownSnap`;
+  `trSkip` evita itens duplicados durante a exclusão). `trRestore` devolve por tipo; aviso `#trToast` com Desfazer; lista em Configurações (`trashCardEl`).
+- Intervalo ajustado pelo acerto: `interval(s)` = `INT[step]` × `adaptF(s)` (a partir de step 1; acerto das questões do tema nos últimos 90 dias,
+  mín. 5, `adaptAcc`): ≥85% (mín. 8) ×1,4 · ≥75% ×1,2 · <65% ×0,75 · <50% ×0,5. Não vale com ajuste manual ativo (`adj`). Pref `ui.prefs.adapt`.
 - Temas na conta: um documento por tema em `progress/topics/{chave}` (`topicStore`, `saveTopics` grava só o que mudou via `tSaved`);
   `progress` guarda `{version:3,split:true,hist,plan}`. Conta antiga (v2, `topics` no documento) migra sozinha; se uma versão antiga do app
   regravar v2, a carga junta os dois ficando com o registro mais novo (`tNewer`).

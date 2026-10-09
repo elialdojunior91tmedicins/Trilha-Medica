@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1366,height:900}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
+const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+__dirname+'/../src/checklist-residencia.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+await p.evaluate(()=>{localStorage.clear();fac={sems:[{id:"s",name:"6",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:[],info:{},eixos:[{id:"e",name:"Eixo de Cardiologia",area:"CM",spec:"Cardiologia"}],sps:[{id:"sp",name:"SP 3.2 Valvas",eixoId:"e",items:["O:v"],objs:["Sopros"]}]}],provas:[{id:"p",discId:"d",name:"P",date:fromNum(dnum(today())+30),items:["O:v"],done:[]}],own:{v:{t:"Doenças das valvas",discId:"d",spId:"sp"}}};saveFac();fac.discs[0].sps.forEach(syncObjs);
+  const it=BYKEY["F-v"];toggleSub(it,subList(it)[0]);saveNote("F-v","minha nota");commit()});
+await p.evaluate(()=>openTopic("F-v"));await p.waitForTimeout(300);
+ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector("#t-F-v.open")),"tema FAC abre na aba Temas");
+await p.click('#t-F-v button:has-text("Substituir por tema existente")');await p.fill('[id="fq-rep-v"]','valvopatias');await p.waitForTimeout(200);
+await p.click('#t-F-v .fres li >> nth=0 >> button');await p.waitForTimeout(200);
+const r=await p.evaluate(()=>({own:!!fac.own.v,sp:fac.discs[0].sps[0].items,prova:fac.provas[0].items,note:/minha nota/.test(notes["CM-10"]||""),cs:(get("CM-10").cs||[]).map(c=>c.t+":"+!!c.d)}));
+ok(!r.own&&r.sp.includes("T:CM-10")&&r.prova.includes("T:CM-10")&&r.note,"substituir passa SP, prova e anotação para Valvopatias: "+JSON.stringify(r));
+ok(r.cs.includes("Sopros:true"),"objetivo (subtópico marcado) foi junto");
+ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();

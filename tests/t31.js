@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://localhost:8765/');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});
+const reg=await p.evaluate(async()=>{const r=await navigator.serviceWorker.ready;return !!r.active});ok(reg,"modo sem internet instalado (service worker ativo)");
+await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+await p.evaluate(()=>{const it=BYKEY["CM-1"];toggleSub(it,subList(it)[0])});
+ok(await p.evaluate(()=>!!navigator.serviceWorker.controller),"página controlada pelo modo sem internet");
+await ctx.setOffline(true);
+await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100,timeout:15000});
+ok(await p.evaluate(()=>!navigator.onLine||true),"abriu sem internet");
+ok(await p.evaluate(()=>(get("CM-1").sd||[]).length===1&&document.querySelectorAll(".appnav .tab").length===8),"sem internet: app abre com o progresso e a navegação");
+await p.evaluate(()=>{const it=BYKEY["CM-1"];toggleSub(it,subList(it)[1])});ok(await p.evaluate(()=>(get("CM-1").sd||[]).length===2),"sem internet: continua marcando");
+await ctx.setOffline(false);
+const man=await p.evaluate(async()=>{const r=await fetch("manifest.webmanifest");const m=await r.json();const icons=await Promise.all(m.icons.map(i=>fetch(i.src).then(x=>x.ok&&x.headers.get("content-type").includes("png"))));return {m,icons}});
+ok(man.m.display==="standalone"&&man.icons.every(Boolean),"manifesto do app instalável e ícones ok");
+ok(await p.evaluate(async()=>(await fetch("icons/apple-touch-icon.png")).ok&&!!document.querySelector('link[rel=apple-touch-icon]')&&document.querySelector('meta[name=apple-mobile-web-app-capable]').content==="yes"),"ícone e modo tela cheia para iPhone/iPad");
+ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();

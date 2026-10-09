@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const fs=require('fs');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
+const fake=fs.readFileSync(__dirname+'/fakefb.js','utf8');
+const CFG='window.FIREBASE_CONFIG={apiKey:"AIzaTESTE",authDomain:"x.firebaseapp.com",projectId:"checklist-teste",storageBucket:"",messagingSenderId:"1",appId:"1:1:web:1"};';
+const png=Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGP8z8DAwMDAxMDAwMDAAAANHQEDasKb6QAAAABJRU5ErkJggg==","base64");
+(async()=>{const b=await chromium.launch();const errs=[];const ctx=await b.newContext({serviceWorkers:'block',viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+await ctx.addInitScript(()=>{try{localStorage.setItem('resid-onb-seen','1')}catch(e){}});await ctx.route(/fonts\.(googleapis|gstatic)/,r=>r.abort());await ctx.route(/www\.gstatic\.com\/firebasejs\//,r=>r.fulfill({contentType:'text/javascript',body:'/* ok */'}));
+await ctx.route(/www\.gstatic\.com\/firebasejs\/.*app-compat/,r=>r.fulfill({contentType:'text/javascript',body:fake}));await ctx.route(/config\.js/,r=>r.fulfill({contentType:'text/javascript',body:CFG}));
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/');await p.waitForFunction(()=>typeof saveFac==='function'&&window.__site&&synced&&sampleFn,null,{polling:100});
+await p.evaluate(()=>{setView("notas");setNSeg("todas")});await p.tap('#nImg');await p.setInputFiles('#imgPanel input[type=file]',{name:"a.png",mimeType:"image/png",buffer:png});await p.waitForTimeout(300);
+ok(/anexe esta mesma imagem/.test(await p.$eval('#imgPanel',x=>x.textContent)),"site: avisa para anexar a imagem");
+await p.tap('#imgGo');await p.waitForTimeout(300);const t=await p.$eval('.smodal',x=>x.textContent);ok(/Ler imagem com o Claude/.test(t)&&/anexe a mesma imagem/.test(t),"site: janela de copiar e colar para imagem");
+await p.fill('.smodal textarea','## O que a imagem mostra\n- teste\n```fluxo\nA\nB\n```');await p.tap('.smodal button:has-text("Usar esta resposta")');await p.waitForTimeout(300);
+ok(await p.evaluate(()=>imgR&&imgR.status==="done"),"site: resposta colada vira prévia");await p.fill('#imgT','Teste');await p.tap('#imgSave');await p.waitForTimeout(300);
+ok(await p.evaluate(()=>freeN.some(f=>f.t==="Teste")),"site: salva no caderno livre");ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();
