@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Trilha">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=d92a6b7c">
+<link rel="stylesheet" href="site.css?v=60728a34">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=d92a6b7c"></script>
-<script src="bridge.js?v=d92a6b7c"></script>
+<script src="config.js?v=60728a34"></script>
+<script src="bridge.js?v=60728a34"></script>
 </head>
 <body>
 <script>
@@ -1075,6 +1075,30 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{g
 .iprow{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:.84rem;color:var(--muted)}.iprow b{font-family:var(--mono);color:var(--ink)}
 .iprow .ok b{color:var(--good)}.iprow .late b{color:var(--due)}
 .iproj .ks{margin:0;font-size:.8rem;color:var(--muted)}
+.pjtog{font-size:.84rem;margin-top:2px}
+.pjw{display:flex;flex-direction:column;gap:0;margin-top:6px;border-top:1px solid var(--line)}
+.pjrow{display:grid;grid-template-columns:minmax(7.5rem,1.3fr) repeat(4,minmax(0,1fr));gap:2px 10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:.84rem}
+.pjw.noq .pjrow{grid-template-columns:minmax(7.5rem,1.3fr) repeat(3,minmax(0,1fr))}
+.pjhead{font:600 .66rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:6px 0}
+.pjrow.now{background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:8px;padding-inline:8px;margin-inline:-8px}
+.pjl{display:flex;flex-direction:column;min-width:0}.pjl b{font-weight:600}.pjl i{font-style:normal;font:500 .72rem var(--mono);color:var(--muted)}.pjl i:empty{display:none}
+.pjc{display:flex;flex-direction:column;min-width:0}.pjc b{font:500 .95rem var(--mono);font-variant-numeric:tabular-nums}.pjc i{display:none;font-style:normal;font-size:.7rem;color:var(--muted)}
+.pjc b.heavy{color:var(--due)}.pjc b.heavy::after{content:" ⚠";font-family:var(--body)}
+.pjev{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px}
+.pjchip{font:600 .72rem var(--body);border-radius:99px;padding:1px 8px;border:1px solid var(--line);color:var(--muted)}
+.pjchip.fac{border-color:var(--l2);color:var(--l2)}.pjchip.sp{border-color:var(--l1);color:var(--l1)}.pjchip.res{border-color:var(--due);color:var(--due)}.pjchip.res.main{background:var(--due);color:var(--surface)}
+.pjw>.link{margin-top:6px}.pjw>.how{margin-top:6px;font-size:.78rem}
+html[data-layout="phone"] .pjhead,html[data-cols="1"] .icol2 .pjhead{display:none}
+html[data-layout="phone"] .pjrow,html[data-layout="phone"] .pjw.noq .pjrow{grid-template-columns:repeat(4,minmax(0,1fr))}
+html[data-layout="phone"] .pjw.noq .pjrow{grid-template-columns:repeat(3,minmax(0,1fr))}
+html[data-layout="phone"] .pjl{grid-column:1/-1;flex-direction:row;gap:8px;align-items:baseline}
+html[data-layout="phone"] .pjc i{display:block}
+.exlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:8px}
+.exrow{display:grid;grid-template-columns:auto minmax(0,1.4fr) minmax(0,1fr) auto;gap:6px 12px;align-items:end;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.exmain{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted);padding-bottom:10px}.exmain input{accent-color:var(--accent);width:18px;height:18px}
+.exdel{padding-bottom:10px}
+#pfExAdd{align-self:flex-start}
+@media (max-width:560px){.exrow{grid-template-columns:minmax(0,1fr) auto}.exrow .ffield{grid-column:1/-1}.exmain{grid-row:1;padding:0}.exdel{grid-row:1;grid-column:2;padding:0}}
 @media (max-width:640px){.itiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ipmain{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
 .ipmain:hover{border-color:var(--accent)}
@@ -4094,7 +4118,7 @@ function needOnb(){return !!window.claude&&synced&&!ui.prefs.onb&&!hasData()&&!f
 function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
   if(!ov){ov=el(`<div class="gsearch onbov" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbh"><div class="gsbox onbbox"></div></div>`);document.body.appendChild(ov)}
   const b=ov.querySelector(".onbbox");b.innerHTML="";const O=onb,dots=el(`<p class="onbdots"></p>`);for(let i=0;i<3;i++)dots.appendChild(el(`<i class="${i<=O.step?"on":""}"></i>`));b.appendChild(dots);
-  const fin=(go)=>{ui.prefs.onb=1;if(O.date)ui.profile.goalDate=O.date;ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
+  const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
     if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null;render()}else{redoPlan();render()}};
   const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
   if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo à Trilha Médica</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
@@ -4117,7 +4141,7 @@ function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").re
 function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
   upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?d.name+". ":""}Trilha Médica`})});
   spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Trilha Médica`}));
-  if(ui.profile.goalDate&&ui.profile.goalDate>=today())ev.push({uid:"residencia",date:ui.profile.goalDate,t:`Prova de residência${ui.profile.goal?": "+ui.profile.goal:""}`,desc:"Trilha Médica"});
+  exList().forEach(x=>{if(x.date&&x.date>=today())ev.push({uid:"residencia-"+x.id,date:x.date,t:`Prova de residência: ${x.name||"sem nome"}`,desc:"Trilha Médica"})});
   const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Trilha Médica"];
   ev.forEach(e=>{const d=e.date.replace(/-/g,""),d2=fromNum(dnum(e.date)+1).replace(/-/g,"");L.push("BEGIN:VEVENT",`UID:${e.uid}@trilha-medica`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${d2}`,`SUMMARY:${icsEsc(e.t)}`,`DESCRIPTION:${icsEsc(e.desc)}`,
     "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsEsc(e.t)}`,"TRIGGER:-P1D","END:VALARM","END:VEVENT")});L.push("END:VCALENDAR");return {text:L.join("\r\n"),n:ev.length}}
@@ -4147,7 +4171,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180},profile:{name:"",goal:"",goalDate:""}};
+const UI_DEF={prefs:{layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180},profile:{name:"",goal:"",goalDate:"",exams:[]}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -4178,6 +4202,11 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
+  /* provas de residência: lista + principal; goal/goalDate passam a espelhar a principal (o resto do app lê esses dois) */
+  let ex=Array.isArray(f.exams)?f.exams.filter(e=>e&&typeof e==="object").slice(0,12).map((e,i)=>{const y={id:typeof e.id==="string"&&e.id?e.id.slice(0,24):"ex"+i,name:typeof e.name==="string"?e.name.trim().slice(0,60):""};
+    if(typeof e.date==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.date))y.date=e.date;return y}):null;
+  if(!ex||(!ex.length&&(o.profile.goal||o.profile.goalDate)&&!f.exOk)){ex=(o.profile.goal||o.profile.goalDate)?[{id:"ex0",name:o.profile.goal||"Prova de residência",...(o.profile.goalDate?{date:o.profile.goalDate}:{})}]:[]}
+  o.profile.exams=ex;o.profile.exOk=true;const mn=ex.find(e=>e.id===f.mainEx)||ex[0];if(mn){o.profile.mainEx=mn.id;o.profile.goal=mn.name;o.profile.goalDate=mn.date||""}else{o.profile.goal="";o.profile.goalDate=""}
   return o}
 function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.layout;R.dataset.font=P.font;
   if(P.theme==="auto"){if(R.dataset.themeOwn){R.removeAttribute("data-theme");delete R.dataset.themeOwn}}else{R.setAttribute("data-theme",P.theme);R.dataset.themeOwn="1"}
@@ -4200,11 +4229,8 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
   const av=hd.querySelector(".pfav"),ini=initials(P.name);if(ini)av.textContent=ini;else av.innerHTML=`<svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg>`;
   const ni=hd.querySelector("input");ni.value=P.name;ni.onchange=()=>{ui.profile.name=ni.value;saveUI();render()};box.appendChild(hd);
   if(!window.__site){const n=el(`<section class="card inote"><p><b>Use o site como principal.</b> Os dados deste artefato ficam separados do site. Para levar o progresso: <b>Configurações › Backup › Exportar</b> aqui e <b>Importar backup</b> no site.</p><div class="btns"><a class="btn" target="_blank" rel="noopener">Abrir o site</a></div></section>`);n.querySelector("a").href=SITE_URL;box.appendChild(n)}
-  // meta
-  const mt=el(`<section class="card"><div class="dhead"><h2>Meta da residência</h2></div><p class="gtext how">A prova que você quer fazer e a data. O Início mostra a contagem regressiva.</p><div class="fgrid"><label class="ffield"><span>Prova-alvo</span><input class="etext" id="pfGoal" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data da prova</span><input class="etext" id="pfGoalDate" type="date"></label></div><p class="pfcount"></p></section>`);
-  const gi=mt.querySelector("#pfGoal"),gd=mt.querySelector("#pfGoalDate");gi.value=P.goal;gd.value=P.goalDate;
-  gi.onchange=()=>{ui.profile.goal=gi.value;saveUI();render()};gd.onchange=()=>{ui.profile.goalDate=/^\d{4}-\d{2}-\d{2}$/.test(gd.value)?gd.value:"";saveUI();render()};
-  const gc=mt.querySelector(".pfcount");if(P.goalDate){const dd=daysTo(P.goalDate);gc.textContent=dd>=0?`${P.goal||"Prova"}: faltam ${dd} dias (${goalSpan(dd)}). Você já estudou ${weighted()}% do peso das provas.`:`A data de ${P.goal||"prova"} já passou. Atualize para a próxima.`}else gc.remove();
+  // provas de residência
+  const mt=exEditorEl();
   box.appendChild(mt);
   // conta
   const ac=el(`<section class="card"><div class="dhead"><h2>Conta</h2></div><p class="gtext pfacct"></p><div class="pfslot"></div></section>`),at=ac.querySelector(".pfacct");
@@ -4449,11 +4475,93 @@ function pdfPanel(){const o=pdfOpt,w=el(`<div class="pdfpan"><span class="glabel
   if(o.msg){const m=el(`<p class="gstatus" role="status"></p>`);m.textContent=o.msg;w.appendChild(m)}
   return w}
 
+/* ---------- Meta e projeção: provas de residência (lista + principal) e linha do tempo semanal ---------- */
+const exList=()=>Array.isArray(ui.profile.exams)?ui.profile.exams:[];
+const exMain=()=>{const L=exList();return L.find(x=>x.id===ui.profile.mainEx)||L[0]||null};
+let projOpen=lsGet("resid-projopen","")==="1",projAll=false;
+const PJ_SHOW=8;
+/* modelo: temas não vistos distribuídos pelas semanas (semanas de prova pesam menos), revisões já agendadas + as dos temas
+   novos planejados, cartões vencendo, meta de questões e marcos (faculdade, SP, residência) */
+function projModel(){const t=dnum(today()),ws0=foWeekStart(),main=exMain(),end=main&&main.date&&main.date>=today()?dnum(main.date):null;
+  const left=counts(ALL)[0];let e4=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e4+=h.e||0}const pace=e4/4,cap=PLAN_N*6;
+  let done0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)done0+=h.e||0}
+  let q0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)q0+=h.q||0}
+  const rate=pace>0?pace:cap,total=left+done0;
+  let nW=end!==null?Math.floor((end-ws0)/7)+1:Math.ceil(total/Math.max(rate,.5))+1;nW=Math.max(1,Math.min(nW,end!==null?104:52));
+  const W=[];for(let i=0;i<nW;i++){const s=ws0+i*7;W.push({s,wt:1,ev:[],rv:0,cd:0,nw:0})}
+  const wi=n=>{const i=Math.floor((n-ws0)/7);return i>=0&&i<nW?i:-1};
+  upcomingProvas().forEach(p=>{const n=dnum(p.date),i=wi(n),d=discOf(p.discId);if(i>=0){W[i].ev.push({k:"fac",t:p.name,d:p.date,sub:d?d.name:""});W[i].wt=Math.min(W[i].wt,.4)}
+    const j=wi(n-7);if(j>=0&&j!==i)W[j].wt=Math.min(W[j].wt,.6)});
+  spFechas(9999).forEach(f=>{const i=wi(dnum(f.s.fech));if(i>=0){W[i].ev.push({k:"sp",t:`Fechamento: ${spShort(f.s.name)}`,d:f.s.fech,sub:f.d.name});W[i].wt=Math.min(W[i].wt,.75)}});
+  exList().forEach(x=>{if(!x.date||x.date<today())return;const i=wi(dnum(x.date));if(i>=0){W[i].ev.push({k:"res",t:x.name||"Prova de residência",d:x.date,main:!!main&&x.id===main.id});W[i].wt=Math.min(W[i].wt,.2)}});
+  W.forEach(w=>w.ev.sort((a,b)=>a.d<b.d?-1:1));
+  /* temas novos por semana */
+  const sumW=W.reduce((a,w)=>a+w.wt,0),need=end!==null?total/Math.max(sumW,.01):null;
+  let acc=0,given=0;W.forEach(w=>{const want=end!==null?need*w.wt:Math.min(rate*w.wt,total-acc);acc+=want;const n=Math.max(0,Math.round(acc)-given);w.nw=n;given+=n});
+  if(end===null){let r=total-given;for(let i=W.length-1;r>0&&i>=0;i--){W[i].nw++;r--}}
+  /* revisões: as já agendadas e as dos temas novos planejados (estudados no meio da semana) */
+  const chain=(d,step,n)=>{for(let g=0;g<12;g++){const i=wi(d);if(i<0)break;W[i].rv+=n;step++;d+=INT[Math.min(step,INT.length-1)]}};
+  ALL.forEach(it=>{const s=get(it.key);if(!s.last)return;const di=dueIn(s);if(di===null)return;chain(t+Math.max(di,0),s.step||0,1)});
+  W.forEach((w,i)=>{const n=i===0?Math.max(0,w.nw-done0):w.nw;if(n)chain(Math.max(t,w.s+3)+INT[0],0,n)});
+  W.forEach(w=>w.rv=Math.round(w.rv));
+  cards.forEach(x=>{if(!BYKEY[x.k]||!x.due)return;const i=wi(Math.max(dnum(x.due),t));if(i>=0)W[i].cd++});
+  const rvs=W.map(w=>w.rv).filter(Boolean).sort((a,b)=>a-b),med=rvs.length?rvs[Math.floor(rvs.length/2)]:0;W.forEach(w=>w.heavy=w.rv>=10&&w.rv>med*1.5);
+  /* cabe até a prova? */
+  let out=0;if(end!==null&&pace<need){const fit=pace*sumW;out=Math.max(0,Math.ceil(total-fit))}
+  const endPace=pace>0?fromNum(t+Math.ceil(left/pace)*7):null;
+  return {W,left,pace,cap,need,end,main,done0,q0,out,endPace,total}}
+function projWeekLab(s,i){return i===0?"Esta semana":i===1?"Próxima semana":`${br(fromNum(s))} a ${br(fromNum(s+6))}`}
+function projWeeksEl(M){const w=el(`<div class="pjw" id="projWeeks"></div>`),qg=ui.prefs.qgoal||0,L=projAll?M.W:M.W.slice(0,PJ_SHOW);
+  const head=el(`<div class="pjrow pjhead" aria-hidden="true"><span>Semana</span><span>Temas novos</span><span>Revisões</span><span>Cartões</span>${qg?"<span>Questões</span>":""}</div>`);w.appendChild(head);
+  if(!qg)w.classList.add("noq");
+  L.forEach((x,i)=>{const r=el(`<div class="pjrow${i===0?" now":""}${x.ev.length?" hasev":""}"><span class="pjl"><b></b><i></i></span><span class="pjc pjn"><b></b><i>temas novos</i></span><span class="pjc pjr"><b></b><i>revisões</i></span><span class="pjc pjd"><b></b><i>cartões</i></span>${qg?`<span class="pjc pjq"><b></b><i>questões</i></span>`:""}</div>`);
+    r.querySelector(".pjl b").textContent=projWeekLab(x.s,i);r.querySelector(".pjl i").textContent=i<2?`${br(fromNum(x.s))} a ${br(fromNum(x.s+6))}`:"";
+    const nb=r.querySelector(".pjn b");nb.textContent=i===0?`${M.done0} de ${Math.max(x.nw,M.done0)}`:String(x.nw);if(x.wt<1&&x.ev.some(e=>e.k!=="sp"))r.querySelector(".pjn i").textContent="temas novos (semana de prova)";
+    const rb=r.querySelector(".pjr b");rb.textContent=String(x.rv);if(x.heavy){rb.classList.add("heavy");rb.title="Semana pesada de revisões";r.querySelector(".pjr i").textContent="revisões · semana pesada"}
+    r.querySelector(".pjd b").textContent=String(x.cd);
+    if(qg)r.querySelector(".pjq b").textContent=i===0?`${M.q0} de ${qg}`:String(qg);
+    if(x.ev.length){const ev=el(`<span class="pjev"></span>`);x.ev.forEach(e=>{const c=el(`<span class="pjchip ${e.k}${e.main?" main":""}"></span>`);c.textContent=`${e.k==="fac"?"Prova":e.k==="res"?"Residência":"Fechamento"} · ${e.k==="sp"?e.t.replace(/^Fechamento: /,""):e.t} (${br(e.d)})`;if(e.sub)c.title=e.sub;ev.appendChild(c)});r.appendChild(ev)}
+    w.appendChild(r)});
+  if(M.W.length>PJ_SHOW){const m=el(`<button class="link" type="button" id="projAll"></button>`);m.textContent=projAll?"Mostrar menos":`Ver todas as ${M.W.length} semanas`;m.onclick=()=>{projAll=!projAll;render()};w.appendChild(m)}
+  w.appendChild(el(`<p class="how">Semanas com prova da faculdade ou de residência recebem menos temas novos; as outras compensam. As revisões contam as já agendadas e as dos temas novos previstos. Tudo se recalcula a cada dia, com o que você fez.</p>`));
+  return w}
+function projEl(){const M=projModel(),w=el(`<div class="iproj"></div>`),fmt=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1});
+  if(!M.left){w.innerHTML=`<p class="ks"><b>Todos os ${TOTAL} temas já foram vistos.</b> Até a prova: revisões e questões, principalmente nos pontos fracos.</p>`}
+  else if(M.end!==null){const ok=M.pace>=M.need;
+    w.innerHTML=`<div class="iprow"><span>Faltam <b>${M.left}</b> ${M.left===1?"tema":"temas"} para ver</span><span>precisa de <b>${fmt(M.need)}</b> por semana</span><span class="${ok?"ok":"late"}">seu ritmo: <b>${fmt(M.pace)}</b> por semana</span></div>`;
+    const msg=el(`<p class="ks"></p>`);
+    msg.textContent=M.pace===0?"Nas últimas 4 semanas nenhum tema novo foi estudado. Comece pelo plano de hoje.":ok?`No ritmo atual, você termina de ver os temas por volta de ${br(M.endPace)}/${M.endPace.slice(0,4)}, antes da prova.`:`No ritmo atual, cerca de ${M.out} ${M.out===1?"tema ficaria":"temas ficariam"} sem ver até a prova (os de menor incidência ficam por último). Para ver todos, suba para ${Math.ceil(M.need)} por semana${Math.ceil(M.need)>M.cap?` (seu plano diário de ${PLAN_N} temas não chega lá: aumente em Configurações)`:""}.`;
+    w.appendChild(msg)}
+  else{w.innerHTML=`<div class="iprow"><span>Faltam <b>${M.left}</b> ${M.left===1?"tema":"temas"} para ver</span><span class="${M.pace>0?"ok":"late"}">seu ritmo: <b>${fmt(M.pace)}</b> por semana</span></div>`;
+    const msg=el(`<p class="ks"></p>`);msg.textContent=M.pace>0?`Sem data de prova: no ritmo atual, você vê todos os temas por volta de ${br(M.endPace)}/${M.endPace.slice(0,4)}.`:`Sem data de prova e sem temas novos nas últimas 4 semanas. As semanas abaixo usam o seu plano diário (${PLAN_N} temas, ${M.cap} por semana).`;w.appendChild(msg)}
+  if(M.left||M.W.some(x=>x.rv||x.ev.length)){const b=el(`<button class="link pjtog" type="button" id="projTog" aria-expanded="${projOpen}"></button>`);b.textContent=projOpen?"Esconder semanas":"Ver semanas";
+    b.onclick=()=>{projOpen=!projOpen;lsSet("resid-projopen",projOpen?"1":null);render()};w.appendChild(b);if(projOpen)w.appendChild(projWeeksEl(M))}
+  return w}
+/* Perfil: lista de provas de residência */
+function exEditorEl(){const P=ui.profile,L=exList(),main=exMain();
+  const mt=el(`<section class="card pfex"><div class="dhead"><h2>Provas de residência</h2></div><p class="gtext how">Cadastre as provas que vai prestar e marque a principal: ela guia a projeção do Início. Sem data, o Início mostra só o seu ritmo; as outras aparecem marcadas na linha do tempo e no calendário.</p><ul class="exlist"></ul><button class="btn" type="button" id="pfExAdd">+ Adicionar prova</button><p class="pfcount"></p></section>`);
+  const ul=mt.querySelector(".exlist");
+  L.forEach(x=>{const li=el(`<li class="exrow"><label class="exmain"><input type="radio" name="pfMain"><span>Principal</span></label><label class="ffield"><span>Prova</span><input class="etext exn" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data (se já souber)</span><input class="etext exd" type="date"></label><button class="link warn exdel" type="button">remover</button></li>`);
+    const rb=li.querySelector("input[type=radio]"),n=li.querySelector(".exn"),d=li.querySelector(".exd");rb.checked=!!main&&main.id===x.id;rb.id="pfExMain-"+x.id;n.id="pfExName-"+x.id;d.id="pfExDate-"+x.id;n.value=x.name||"";d.value=x.date||"";
+    rb.setAttribute("aria-label",`Marcar ${x.name||"esta prova"} como principal`);li.querySelector(".exdel").setAttribute("aria-label",`Remover ${x.name||"prova"}`);
+    rb.onchange=()=>{ui.profile.mainEx=x.id;saveUI();render()};
+    const cur=()=>exList().find(y=>y.id===x.id);/* o objeto muda a cada saveUI: procura pelo id */
+    n.onchange=()=>{const y=cur();if(!y)return;y.name=n.value.trim();saveUI();renderHead()};
+    d.onchange=()=>{const v=d.value,y=cur();if(!y||(v&&!/^\d{4}-\d{2}-\d{2}$/.test(v)))return;if(v)y.date=v;else delete y.date;saveUI();render()};
+    li.querySelector(".exdel").onclick=()=>{ui.profile.exams=exList().filter(y=>y.id!==x.id);if(ui.profile.mainEx===x.id)delete ui.profile.mainEx;saveUI();render()};ul.appendChild(li)});
+  if(!L.length)ul.appendChild(el(`<li class="cempty">Nenhuma prova cadastrada. Sem prova, a projeção usa só o seu ritmo.</li>`));
+  const ad=mt.querySelector("#pfExAdd");if(L.length>=12)ad.remove();else ad.onclick=()=>{const id="ex"+Date.now().toString(36),L2=exList();ui.profile.exams=[...L2,{id,name:""}];if(!L2.length)ui.profile.mainEx=id;saveUI();render();setTimeout(()=>{const i=document.getElementById("pfExName-"+id);if(i)i.focus()},40)};
+  const gc=mt.querySelector(".pfcount");if(main&&main.date){const dd=daysTo(main.date);gc.textContent=dd>=0?`${main.name||"Prova principal"}: faltam ${dd} dias (${goalSpan(dd)}). Você já estudou ${weighted()}% do peso das provas.`:`A data de ${main.name||"prova principal"} já passou. Atualize ou marque outra como principal.`}
+  else if(main)gc.textContent=`${main.name||"Prova principal"}: sem data ainda. Quando sair o edital, coloque a data e o Início passa a mostrar o ritmo necessário.`;else gc.remove();
+  return mt}
+
 /* ---------- Início: meta ---------- */
-function renderInicioMeta(){const box=$("#iMeta");if(!box)return;const P=ui.profile;box.innerHTML="";box.hidden=!P.goalDate;if(!P.goalDate)return;
-  const dd=daysTo(P.goalDate);
-  const m=el(`<button class="imetab" type="button"><span class="ikl">Meta</span><b></b><span class="ims"></span></button>`);m.querySelector("b").textContent=P.goal||"Prova de residência";
-  m.querySelector(".ims").textContent=dd>=0?`faltam ${dd} dias (${goalSpan(dd)}) · ${weighted()}% do peso estudado`:"a data já passou: atualize no Perfil";m.onclick=()=>goSub("perfil");box.appendChild(m);const pj=projEl();if(pj)box.appendChild(pj)}
+function renderInicioMeta(){const box=$("#iMeta");if(!box)return;const main=exMain();box.innerHTML="";box.hidden=!main&&!hasData();if(box.hidden)return;
+  const m=el(`<button class="imetab" type="button"><span class="ikl">Meta</span><b></b><span class="ims"></span></button>`);
+  if(main){m.querySelector("b").textContent=main.name||"Prova de residência";const dd=main.date?daysTo(main.date):null,others=exList().filter(x=>x.id!==main.id&&x.date&&x.date>=today()).length;
+    m.querySelector(".ims").textContent=(dd===null?"data ainda não definida":dd>=0?`faltam ${dd} dias (${goalSpan(dd)})`:"a data já passou: atualize no Perfil")+` · ${weighted()}% do peso estudado`+(others?` · +${others} ${others===1?"prova":"provas"} na lista`:"")}
+  else{m.querySelector("b").textContent="Sem prova cadastrada";m.querySelector(".ims").textContent="Cadastre no Perfil as provas de residência que vai prestar"}
+  m.onclick=()=>goSub("perfil");box.appendChild(m);box.appendChild(projEl())}
 
 /* ---------- aba Início: próxima prova, estudar hoje, revisões e progresso ---------- */
 /* "Estudar hoje" e "Revisões" são os mesmos cartões da aba Residência: mudam de lugar conforme a aba aberta */
@@ -5144,17 +5252,7 @@ function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML
     if(steps.length>1){const o=el(`<button class="link" type="button" id="nowSkip">Outra sugestão</button>`);o.onclick=()=>{nowSkip++;render()};a.appendChild(o)}
     nw.appendChild(a)}
   box.appendChild(nw);
-  if(!ui.profile.goalDate){const h=el(`<p class="how igoalhint">Quer saber se chega a tempo na prova de residência? <button class="link" type="button">Defina a data no Perfil</button> e o Início mostra o ritmo necessário.</p>`);h.querySelector("button").onclick=()=>goSub("perfil");box.appendChild(h)}}
-/* projeção até a prova de residência: temas que faltam × ritmo das últimas 4 semanas */
-function projEl(){const P=ui.profile;if(!P.goalDate)return null;const dd=daysTo(P.goalDate);if(dd<0)return null;
-  const c=counts(ALL),left=c[0],weeks=Math.max(dd/7,1/7),need=left/weeks,t=dnum(today());let e=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e+=h.e||0}
-  const pace=e/4,w=el(`<div class="iproj"></div>`);
-  if(!left){w.innerHTML=`<p class="ks"><b>Todos os ${TOTAL} temas já foram vistos.</b> Até a prova: revisões e questões, principalmente nos pontos fracos.</p>`;return w}
-  const ok=pace>=need,endW=pace>0?Math.ceil(left/pace):null,end=endW!==null?fromNum(t+endW*7):null;
-  const fmt=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1});
-  w.innerHTML=`<div class="iprow"><span>Faltam <b>${left}</b> ${left===1?"tema":"temas"} para ver</span><span>precisa de <b>${fmt(need)}</b> por semana</span><span class="${ok?"ok":"late"}">seu ritmo: <b>${fmt(pace)}</b> por semana</span></div>`;
-  const msg=el(`<p class="ks"></p>`);msg.textContent=pace===0?"Nas últimas 4 semanas nenhum tema novo foi estudado. Comece pelo plano de hoje.":ok?`No ritmo atual, você termina de ver os temas por volta de ${br(end)}/${end.slice(0,4)}, antes da prova.`:`No ritmo atual, você terminaria só em ${br(end)}/${end.slice(0,4)}${end>P.goalDate?", depois da prova":""}. Aumente para ${Math.ceil(need)} temas por semana (cerca de ${Math.ceil(need/6)} por dia, 6 dias por semana).`;
-  w.appendChild(msg);return w}
+  if(!exList().length){const h=el(`<p class="how igoalhint">Quer saber se chega a tempo na prova de residência? <button class="link" type="button">Cadastre as provas no Perfil</button> e o Início mostra o ritmo necessário.</p>`);h.querySelector("button").onclick=()=>goSub("perfil");box.appendChild(h)}}
 /* ---------- Residência: filtros, agenda de revisões e "Já estudei antes" ---------- */
 function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML="";filter=tfOn()?"on":"all";
   const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length;
@@ -5596,7 +5694,8 @@ const HELP=[
 ["Estudar hoje",`O plano tem **3 temas com 3 subtópicos cada** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver) e temas novos de maior incidência.
 - **Placar do dia** (topo do Início): plano, revisões, questões da semana e foco de hoje, cada um com barra; toque para ir até a parte certa.
 - **O que fazer agora:** o app escolhe o próximo passo (revisão atrasada → tema do plano já começado → revisão de hoje → tema novo do plano → refazer erradas → simulado para a meta da semana). **Começar com o Foco** liga o relógio naquele tema e abre o cartão; **Outra sugestão** mostra a próxima opção.
-- **Projeção até a prova:** com a data da prova no Perfil, o Início mostra quantos temas faltam ver, quantos por semana são necessários e o seu ritmo das últimas 4 semanas (temas novos estudados), com a data em que você terminaria nesse ritmo.
+- **Meta e projeção:** com as provas de residência cadastradas no Perfil, o Início mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.
+- **Ver semanas:** abre a linha do tempo até a prova, semana a semana: temas novos, revisões previstas (⚠ = semana pesada), cartões vencendo e a meta de questões. Semanas com prova da faculdade, fechamento de SP ou outra prova de residência aparecem marcadas e recebem menos temas novos; as outras compensam. Tudo se recalcula a cada dia, com o que você fez.
 - **Cartões recolhidos:** no Início e na Residência, cada tema do plano e cada revisão aparecem resumidos (quantos subtópicos já fez e quais são). Toque na linha do resumo para abrir os subtópicos e os botões. O tema que você começou (marcou algo e ainda não concluiu) fica aberto sozinho; ao concluir, fecha. Dá para abrir e fechar à mão a qualquer momento.
 - **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. Ponto fraco: faça 5 questões dele no dia.
 - **Estudou outro tema?** Ele entra no lugar de um tema proposto ainda não iniciado. **Desfazer troca** volta atrás.
@@ -5729,7 +5828,7 @@ const HELP=[
 - **Perfil** (suas iniciais) e **⚙ Configurações** ficam no canto superior direito em todos os aparelhos. A Ajuda, as instruções do gerador e o backup ficam dentro da ⚙.`],
 ["Perfil e Configurações",`**Perfil** (ícone com suas iniciais, no topo):
 - **Nome:** vira as iniciais do ícone.
-- **Meta da residência:** prova-alvo e data. O Início mostra quantos dias faltam e quanto do peso das provas você já estudou.
+- **Provas de residência:** cadastre as provas que vai prestar (ENARE, USP, SUS-SP…), com data se já souber, e marque a principal. Ela guia a projeção do Início; as outras aparecem na linha do tempo e no arquivo de calendário.
 - **Conta** (no site): entrar, sair e criar senha para o app instalado.
 - **Minhas estatísticas:** sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
 - **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 usam a data do último estudo do tema). "Estudados no período" conta cada dia em que o tema foi estudado ou revisado. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.

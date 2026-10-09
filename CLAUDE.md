@@ -132,6 +132,12 @@ consultado quando há dúvida. Responda em português.
   primeiros passos `renderOnb`/`maybeOnb` (só conta vazia, uma vez: `ui.prefs.onb` + `resid-onb-seen`; testes ligam com `window.__wantOnb`),
   calendário `icsBuild`/`icsSave` (.ics), Anki `ankiSave("cards"|"errs")` (.txt com tabulação), ajuda `goHelp(título)`/`helpBtn(título)` (botão "?").
   Botões menos usados: erro com "⋯ Ações" (`eMenu`), Foco com "Mais opções" (`.fomore`); Anotações paginadas (`N_PAGE`, `#nMore`).
+- Meta e projeção (Início `#iMeta`): provas de residência em `ui.profile.exams=[{id,name,date?}]` + `mainEx` (lista no Perfil, `exEditorEl`;
+  `exList`/`exMain`). `uiSanitize` migra o campo único antigo e faz `goal`/`goalDate` espelharem a principal (o resto do app lê esses dois; `exOk`
+  impede recriar a antiga). `projModel()` = semanas de segunda a domingo até a prova principal (sem data: pelo ritmo, até 52): temas novos
+  distribuídos com peso menor em semana de prova da faculdade (0,4; semana anterior 0,6), fechamento de SP (0,75) e outra prova de residência (0,2);
+  revisões = cadeias `INT` das já agendadas + dos novos previstos; cartões pelo `due`; `out` = temas que não cabem no ritmo atual. `projEl` mostra o
+  resumo e "Ver semanas" (`projOpen`, localStorage `resid-projopen`; `projWeeksEl`, 8 semanas e `projAll`). O .ics leva todas as provas com data.
 - Temas na conta: um documento por tema em `progress/topics/{chave}` (`topicStore`, `saveTopics` grava só o que mudou via `tSaved`);
   `progress` guarda `{version:3,split:true,hist,plan}`. Conta antiga (v2, `topics` no documento) migra sozinha; se uma versão antiga do app
   regravar v2, a carga junta os dois ficando com o registro mais novo (`tNewer`).
