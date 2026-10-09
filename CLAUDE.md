@@ -110,6 +110,8 @@ consultado quando há dúvida. Responda em português.
   O selo `#ecount` mostra os erros para revisar hoje.
   Em duas colunas (`data-cols=2`, tablet/desktop): `.eside` (eTop + Onde melhorar) à direita, filtros e lista à esquerda; no celular `.side` é `display:contents`.
   Revisão em tela inteira: `erFull` (localStorage `resid-erfull`, `erFullSet`), classe `#viewErros.erfull` só com `erRun`; atalhos espaço/1/2/Esc.
+  Igual nos cartões e no simulado: `fullOn.cd/sim` (localStorage `resid-cdfull`/`resid-simfull`, `fullSet`, `fullBtn`), `applyFull()` no fim de `render()`
+  marca `.vfull` na aba e `.fullhide`/`.fullpath` nos irmãos/ancestrais do cartão; só vale com `twoCols()`.
 
 ## Cuidados
 

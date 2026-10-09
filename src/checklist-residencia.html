@@ -573,6 +573,14 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .etopacts{margin:0}
 .erev .dhead .erfullb{margin-left:auto}.erev .dhead .todaydate{flex:1;text-align:right}
 .erfullb,.erkeys{display:none}
+.ncards .dhead .erfullb,.qsim .dhead .erfullb{margin-left:auto}
+.fullhide{display:none!important}
+.fullpath{display:block!important;max-width:none!important}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull:not([hidden]){display:block!important;max-width:860px!important;margin-inline:auto}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim){padding:26px 30px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard{padding:22px 24px;min-height:260px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard .fcq{font-size:1.3rem}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .qsim .qstem{font-size:1.08rem;line-height:1.55}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .erfullb{display:inline-block}
 html[data-layout="desktop"] .erkeys{display:block}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull:not([hidden]){display:block;max-width:860px;margin-inline:auto}
@@ -3451,6 +3459,28 @@ document.addEventListener("keydown",ev=>{if(view!=="erros"||!erRun)return;const 
   if(ev.key===" "||ev.key==="Enter"){if(b("#erShow"))return}
   if(ev.key==="1"){b("#erGood");return}if(ev.key==="2"){b("#erBad");return}
   if(ev.key==="Escape"&&erFull&&document.documentElement.dataset.cols==="2"){ev.preventDefault();erFullSet(false)}});
+/* tela inteira também nos cartões (Anotações) e no simulado (Questões); cada um lembra a própria escolha */
+const FULLK={cd:"resid-cdfull",sim:"resid-simfull"},fullOn={cd:false,sim:false};
+try{for(const k in FULLK)fullOn[k]=localStorage.getItem(FULLK[k])==="1"}catch(x){}
+const twoCols=()=>{const R=document.documentElement.dataset;return R.cols==="2"&&(R.layout==="desktop"||R.layout==="tablet")};
+function fullSet(k,v){fullOn[k]=v;try{localStorage.setItem(FULLK[k],v?"1":"0")}catch(x){}render();const h=$(k==="cd"?"#nch":"#simh");if(h)h.scrollIntoView({block:"start"})}
+function fullBtn(k){const on=fullOn[k],b=el(`<button class="mini erfullb" type="button"></button>`);b.id=k+"FullB";b.textContent=on?"Sair da tela inteira":"⛶ Tela inteira";b.setAttribute("aria-pressed",on);
+  b.title=on?"Volta a mostrar o resto da aba (Esc)":"Esconde o resto da aba e mostra só isto";b.onclick=()=>fullSet(k,!on);return b}
+/* esconde tudo da aba menos o cartão (marca os irmãos de cada nível até a aba) */
+function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").forEach(x=>x.classList.remove("fullhide","fullpath","vfull"));
+  if(!twoCols())return;let v=null,card=null;
+  if(view==="notas"&&cdRun&&fullOn.cd){v=$("#viewNotas");card=v&&v.querySelector(".ncards")}
+  else if(view==="quest"&&sim&&sim.status!=="error"&&fullOn.sim){v=$("#viewQuest");card=v&&v.querySelector(".qsim")}
+  if(!v||!card)return;v.classList.add("vfull");let n=card;
+  while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
+document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
+  if(view==="notas"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(ev.key==="1"){b("#cdGood");return}if(ev.key==="2"){b("#cdBad");return}
+    if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
+  if(view==="quest"&&sim&&sim.status==="run"){const L=ev.key.length===1?ev.key.toUpperCase():"";
+    if(/^[A-E]$/.test(L)){const alt=[...document.querySelectorAll(".qsim .alt")].find(x=>!x.disabled&&(x.querySelector("b")||{}).textContent===L+")");if(alt){ev.preventDefault();alt.click()}return}
+    if(ev.key===" "||ev.key==="Enter"){b("#simNext");return}
+    if(ev.key==="Escape"&&fullOn.sim&&twoCols()){ev.preventDefault();fullSet("sim",false)}}});
 function eRevCard(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
   if(erRun){const fb=el(`<button class="mini erfullb" type="button" id="erFullB"></button>`);fb.textContent=erFull?"Sair da tela inteira":"⛶ Tela inteira";fb.setAttribute("aria-pressed",erFull);fb.title=erFull?"Volta a mostrar a lista ao lado (Esc)":"Esconde a lista e mostra só a revisão";fb.onclick=()=>erFullSet(!erFull);c.querySelector(".dhead").appendChild(fb)}
   c.querySelector(".todaydate").textContent=`${due.length} para hoje · ${errors.filter(e=>!e.arch).length} no caderno`;
@@ -3669,7 +3699,7 @@ function renderErros(){
 
 function render(){
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
-  renderAll();
+  renderAll();applyFull();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
@@ -4451,7 +4481,7 @@ function simAnswer(letra){const S=sim,q=S.qs[S.i];if(!q||S.ans[S.i])return;const
   if(q.err){const e=errors.find(x=>x.id===q.err);if(e){if(!ok)eAnswer(e,false);else if(eDue(e)<=today())eAnswer(e,true)}}commit()}
 function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.gen)S.status="done";render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
 function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="simh"><div class="dhead"><h2 id="simh">Simulado misto</h2><span class="todaydate" id="simClock"></span></div></section>`);
-  const S=sim;
+  const S=sim;if(S&&S.status!=="error")c.querySelector(".dhead").appendChild(fullBtn("sim"));
   if(!S||S.status==="error"){
     c.appendChild(el(`<p class="how">O Claude monta um bloco com temas variados, uma questão por vez, medindo o seu tempo em cada uma. Cada resposta conta no acerto do tema; as erradas vão para Refazer.</p>`));
     if(S&&S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;c.appendChild(m)}
@@ -4490,7 +4520,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
   if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
   const st=el(`<button class="btn" type="button">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
-  c.appendChild(acts);return c}
+  c.appendChild(acts);c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.sim?" · Esc sai da tela inteira":""}</p>`));return c}
 function simTick(){const c=$("#simClock");if(!c||!sim||sim.status!=="run")return;const q=sim.ans[sim.i]?null:Math.floor((Date.now()-sim.shown)/1000);c.textContent=q===null?"":`${fmtPace(q)} nesta questão`}
 setInterval(simTick,1000);
 /* ---------- Início: placar do dia, "o que fazer agora" e projeção até a prova ---------- */
@@ -4763,7 +4793,7 @@ let nMsgCards="";
 /* sessão de revisão dos cartões */
 function nCardsCard(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões para revisar</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=cards.length?`${due.length} hoje · ${cards.length} no total`:"";
-  if(cdRun){const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
+  if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
     if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: ${R.ok} de ${R.done} lembrados.</p>`));c.appendChild(el(`<p class="how">Os que você não lembrou voltam amanhã; os lembrados, em intervalos cada vez maiores (1, 2, 4, 8, 16, 32 e 64 dias).</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{cdRun=null;render()};c.appendChild(b);return c}
     const it=BYKEY[x.k],card=el(`<div class="fcard${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="fcq"></p><div class="fca"></div></div>`);
@@ -4773,7 +4803,8 @@ function nCardsCard(){const due=cdDue(),c=el(`<section class="card ncards" aria-
     if(!R.show){const s=el(`<button class="btn primary" type="button" id="cdShow">Mostrar resposta</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
     else{const g=el(`<button class="btn primary" type="button" id="cdGood">Lembrei</button>`),b=el(`<button class="btn" type="button" id="cdBad">Não lembrei</button>`);
       g.onclick=()=>{cdAnswer(x,true);R.ok++;R.done++;R.i++;R.show=false;render()};b.onclick=()=>{cdAnswer(x,false);R.done++;R.i++;R.show=false;render()};a.append(g,b)}
-    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{cdRun=null;render()};a.appendChild(st);c.appendChild(a);return c}
+    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{cdRun=null;render()};a.appendChild(st);c.appendChild(a);
+    c.appendChild(el(`<p class="how erkeys">Teclado: espaço mostra a resposta · 1 Lembrei · 2 Não lembrei${fullOn.cd?" · Esc sai da tela inteira":""}</p>`));return c}
   if(!cards.length){c.appendChild(el(`<p class="cempty">Transforme suas anotações em perguntas e respostas: abra um tema, vá em Anotações e toque em <b>Criar cartões com o Claude</b> (ou crie à mão). Os cartões voltam em intervalos crescentes, como as revisões.</p>`));return c}
   if(!due.length){const nx=cards.map(x=>x.due).sort()[0];c.appendChild(el(`<p class="cempty">Nenhum cartão para hoje. O próximo volta em ${br(nx)}.</p>`));return c}
   const by={};due.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
@@ -4837,7 +4868,7 @@ async function frPut(x){frSaveLocal();if(!freeStore)return;try{await freeStore.d
 async function frDel(id){freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
 function freeVisible(){return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!nQuery||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(nQuery))).sort((a,b)=>b.at.localeCompare(a.at))}
 function freeCard(){const c=el(`<section class="card nfree ns-all" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno livre</h2><button class="btn primary" type="button" id="frNew">+ Nova anotação</button></div></section>`);
-  c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT");if(t)t.focus()},40)};
+  c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
   if(freeEdit)c.appendChild(freeEditor());
   if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a anotação aparece também dentro deles.</p>`));return c}
   const tags=[...new Set(freeN.flatMap(f=>f.tags))].sort();
@@ -5048,7 +5079,7 @@ const HELP=[
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.
 - **Filtros:** para revisar hoje, que se repetem, sem cartão, arquivados, período, fonte e causa; ordem por próxima revisão ou mais teimosos. **Exportar PDF destes erros** gera o caderno com os filtros atuais.
-- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
+- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões para revisar** (Anotações; teclado: espaço, 1 Lembrei, 2 Não lembrei) e no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
 - O número na aba Erros mostra quantos erros você tem para revisar hoje.
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
