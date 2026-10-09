@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Trilha">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=776023c4">
+<link rel="stylesheet" href="site.css?v=da45e02d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=776023c4"></script>
-<script src="bridge.js?v=776023c4"></script>
+<script src="config.js?v=da45e02d"></script>
+<script src="bridge.js?v=da45e02d"></script>
 </head>
 <body>
 <script>
@@ -1011,6 +1011,17 @@ li.fspr.open{background:var(--bg)}
 .fpform>*{flex:1 1 150px;min-width:0}
 .fpform>.btn{flex:0 0 auto}
 .fpform input[type=date]{flex:0 1 170px}
+.fpform>fieldset.fpdiscs{flex:1 1 100%}
+.fpdiscs{display:flex;flex-direction:column;gap:6px;border:0;margin:0;padding:0;min-width:0}
+.fpdiscs legend{padding:0;margin-bottom:6px;font:600 .78rem var(--body);color:var(--muted)}
+.fpdiscs .chips,.fsppv .chips{display:flex;flex-wrap:wrap;gap:6px}
+.fpdiscs .chip,.fsppv .chip{max-width:100%;white-space:normal;text-align:left}
+.fpdh2{margin:10px 0 0;font:700 .8rem var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.fst.else{background:var(--chip,var(--line));color:var(--muted)}
+.fpnone{margin:0 0 4px 28px}
+.fpall{align-self:flex-start;margin-top:6px}
+.fsppv{display:flex;flex-direction:column;gap:6px}.fsppv .how{margin:0}
+.flvwarn{display:block;margin:0}
 .fcrunch .fcru{margin-top:2px}
 .fpform>select,.fpform>input:not([type=date]){flex:1 1 100%}
 .fobjadd{flex-wrap:wrap}.fobjadd textarea{flex:1 1 220px}
@@ -2223,7 +2234,7 @@ function renderDetail(it){
   const ready=(s.l||0)<3&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
   g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudado: viu o conteúdo. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
   box.appendChild(g1);
-  const fbd=facBadge(it.key);if(fbd){const x=el(`<p class="tips fbadgep"></p>`);x.textContent=`Faculdade: cai na prova “${fbd.p.name}” de ${fbd.d.name} (${br(fbd.p.date)}, ${inLabel(daysTo(fbd.p.date))}).`;box.insertBefore(x,box.firstChild)}
+  const fbd=facBadge(it.key);if(fbd){const x=el(`<p class="tips fbadgep"></p>`);x.textContent=`Faculdade: cai na prova “${fbd.p.name}” de ${provaDiscName(fbd.p)} (${br(fbd.p.date)}, ${inLabel(daysTo(fbd.p.date))}).`;box.insertBefore(x,box.firstChild)}
   // peso de incidência
   if(!it.own){
   const w=wOf(it),gw=el(`<div class="grp"><span class="glabel">Peso de incidência</span><div class="seg"></div><p class="gtext how"></p></div>`);
@@ -2815,7 +2826,7 @@ function renderVesp(){const box=$("#revVesp");box.innerHTML="";
   ps.forEach(p=>{const d=discOf(p.discId),all=p.items.filter(refOk),items=all.filter(r=>itemStudied(p,r)),pend=all.length-items.length;if(!all.length)return;const chk=V[p.id]||[];
     const c=el(`<div class="pcard vcard"><div class="ptop"><span class="ptitle"></span><span class="reason r-fac"></span></div><p class="phint"></p><ul class="psubs"></ul></div>`);
     c.querySelector(".ptitle").textContent=`Véspera: ${p.name}`;c.querySelector(".reason").textContent=inLabel(daysTo(p.date));
-    c.querySelector(".phint").textContent=items.length?`${d.name} · ${chk.filter(r=>items.includes(r)).length} de ${items.length} revisados hoje. Passada rápida no que você já estudou: anotações, erros do caderno e algumas questões. Não altera o agendamento das revisões espaçadas.`:`${d.name} · você ainda não estudou nenhum conteúdo desta prova.`;
+    c.querySelector(".phint").textContent=items.length?`${provaDiscName(p)} · ${chk.filter(r=>items.includes(r)).length} de ${items.length} revisados hoje. Passada rápida no que você já estudou: anotações, erros do caderno e algumas questões. Não altera o agendamento das revisões espaçadas.`:`${provaDiscName(p)} · você ainda não estudou nenhum conteúdo desta prova.`;
     if(pend){const pn=el(`<p class="phint"></p>`);pn.textContent=`${pend} conteúdo${pend>1?"s":""} ainda não estudado${pend>1?"s":""}: ${pend>1?"ficam":"fica"} no Estudar hoje, não aqui.`;c.insertBefore(pn,c.querySelector("ul"))}
     items.forEach((r,n)=>{const id=`vp-${p.id}-${n}`,on=chk.includes(r),x=refTopic(r);
       const li=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label><button class="link" type="button">abrir</button></li>`);
@@ -2840,7 +2851,7 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 let FAC_WIN=21, RES_MIN_WEEK=2;const LSF="resid-fac-v1", FAC_VESP=3, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
@@ -2861,6 +2872,31 @@ function upcomingProvas(){const t=today(),act=new Set(activeSems());
 function itemStudied(p,r){if((p.done||[]).includes(r))return true;const x=refTopic(r);if(!x||!BYKEY[x.k])return true;const s=get(x.k),start=fromNum(dnum(p.date)-(p.win||FAC_WIN));
   if(!(s.last&&s.last>=start))return false;if(x.sub){const sb=subList(BYKEY[x.k]).find(y=>y.t===x.sub);return !sb||sb.done}return true}
 function provaPending(p){return p.items.filter(r=>refOk(r)&&!itemStudied(p,r))}
+/* prova de uma ou várias disciplinas (prova conjunta): discId = a principal; discIds = todas, só quando há mais de uma.
+   sps = SPs ligadas à prova: o que entrar nelas depois entra na prova também (facLinkSync, em saveFac). */
+function provaDids(p){const a=Array.isArray(p.discIds)?p.discIds.filter(id=>typeof id==="string"):[];if(p.discId&&!a.includes(p.discId))a.unshift(p.discId);return [...new Set(a)]}
+const provaHas=(p,id)=>provaDids(p).includes(id);
+const provaDiscs=p=>provaDids(p).map(discOf).filter(Boolean);
+const provaDiscName=p=>provaDiscs(p).map(d=>d.name).join(" + ");
+const provaSps=p=>Array.isArray(p.sps)?p.sps:[];
+function provaSetDids(p,ids){ids=[...new Set(ids)];p.discId=ids[0];if(ids.length>1)p.discIds=ids;else delete p.discIds}
+function facLinkSync(){fac.provas.forEach(p=>{if(!Array.isArray(p.items))p.items=[];if(p.discIds!==undefined)provaSetDids(p,provaDids(p));
+  if(p.sps===undefined)return;const ds=provaDiscs(p),ok=[];
+  provaSps(p).forEach(id=>{if(typeof id!=="string")return;for(const d of ds){const s=d.sps.find(x=>x.id===id);if(s){ok.push(id);s.items.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});break}}});
+  if(ok.length)p.sps=[...new Set(ok)];else delete p.sps})}
+/* em outra prova? (para não repetir o conteúdo da D2 na D3) */
+const refElse=(p,r)=>fac.provas.filter(x=>x.id!==p.id&&x.items.includes(r));
+function spElse(p,s){const refs=s.items.filter(refOk);return fac.provas.filter(x=>x.id!==p.id&&(provaSps(x).includes(s.id)||(refs.length&&refs.every(r=>x.items.includes(r)))))}
+function spInProva(p,s){const refs=s.items.filter(refOk);return provaSps(p).includes(s.id)||(!!refs.length&&refs.every(r=>p.items.includes(r)))}
+function provaSetSp(p,s,on){const ids=new Set(provaSps(p));
+  if(on){ids.add(s.id);s.items.forEach(r=>{if(!p.items.includes(r))p.items.push(r)})}
+  else{ids.delete(s.id);const keep=new Set(provaDiscs(p).flatMap(d=>d.sps.filter(x=>x!==s&&ids.has(x.id)).flatMap(x=>x.items)));p.items=p.items.filter(r=>!s.items.includes(r)||keep.has(r))}
+  if(ids.size)p.sps=[...ids];else delete p.sps}
+/* conteúdo de uma disciplina que ainda não está em nenhuma prova (para começar uma prova nova) */
+function unassigned(d,p){const refs=[],sps=[];d.sps.forEach(s=>{if(s.items.some(refOk)&&!spElse(p,s).length){sps.push(s.id);s.items.filter(refOk).forEach(r=>refs.push(r))}});
+  d.items.filter(refOk).forEach(r=>{if(!refElse(p,r).length)refs.push(r)});return {refs:[...new Set(refs)],sps}}
+/* provas em que um conteúdo novo pode entrar: as que incluem a disciplina e ainda não passaram */
+const discProvas=d=>fac.provas.filter(p=>provaHas(p,d.id)&&p.date>=today()).sort(byDate);
 function daysTo(date){return dnum(date)-dnum(today())}
 function inLabel(d){return d===0?"hoje":d===1?"amanhã":`em ${d} dias`}
 
@@ -2921,7 +2957,7 @@ function exactDup(q){const n=norm(q).trim();return FAC_ITEMS.find(it=>norm(it.t)
 const LV_DEF={disc:"Disciplina",eixo:"Eixo",sp:"SP"};
 const lv=sem=>({...LV_DEF,...((sem&&sem.lv)||{})});
 function facNormalize(){fac.discs.forEach(d=>{if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.eixos))d.eixos=[];if(!Array.isArray(d.sps))d.sps=[];
-  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})})}
+  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})});facLinkSync()}
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
 function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===id);if(s)return {d,s}}return null}
@@ -2962,16 +2998,17 @@ function addSem(name){const s={id:fuid(),name,archived:false};fac.sems.push(s);f
 function addDisc(semId,name){const d={id:fuid(),semId,name,items:[],eixos:[],sps:[],info:{}};fac.discs.push(d);facOpenDisc.add(d.id);facAddC=d.id;facNewDiscFor=null;saveFac();render();setTimeout(()=>{const x=document.getElementById("fq-c"+d.id);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.focus({preventScroll:true})}},60)}
 function addEixo(d,name){const e={id:fuid(),name,...suggestMap(name)};d.eixos.push(e);saveFac();render();return e}
 function addSP(d,eixoId,name){const s={id:fuid(),name,eixoId:eixoId||null,items:[],objs:[]};d.sps.push(s);facOpenSP.add(s.id);saveFac();render();return s}
-function addToDisc(d,ref){if(!d.items.includes(ref))d.items.push(ref);facQuery[d.id]="";saveFac();render()}
+function provaPut(pid,ref){const p=pid&&fac.provas.find(x=>x.id===pid);if(p&&!p.items.includes(ref))p.items.push(ref);return p}
+function addToDisc(d,ref,pid){if(!d.items.includes(ref))d.items.push(ref);provaPut(pid,ref);facQuery[d.id]="";saveFac();render()}
 function createOwn(d,t){const id=fuid();fac.own[id]={t:t.trim().slice(0,120),discId:d.id};d.items.push("O:"+id);facQuery[d.id]="";saveFac();render()}
 function spAdd(d,s,ref){if(!s.items.includes(ref))s.items.push(ref);facQuery["sp"+s.id]="";saveFac();syncObjs(s);commit()}
 function spCreateOwn(d,s,t){t=t.trim().slice(0,120);if(!t)return;const dup=exactDup(t);if(dup){spAdd(d,s,refOfItem(dup));return}
   const id=fuid();fac.own[id]={t,discId:d.id,spId:s.id};s.items.push("O:"+id);facQuery["sp"+s.id]="";saveFac();syncObjs(s);commit()}
 function dropRefEverywhere(d,ref){// tira o conteúdo das provas da disciplina e apaga o tema próprio se ninguém mais usa
-  if(!discRefs(d).includes(ref))fac.provas.filter(p=>p.discId===d.id).forEach(p=>{p.items=p.items.filter(r=>r!==ref);p.done=(p.done||[]).filter(r=>r!==ref)});
+  if(!discRefs(d).includes(ref))fac.provas.filter(p=>provaHas(p,d.id)&&!provaDiscs(p).some(x=>x!==d&&discRefs(x).includes(ref))).forEach(p=>{p.items=p.items.filter(r=>r!==ref);p.done=(p.done||[]).filter(r=>r!==ref)});
   if(ref.startsWith("O:")&&!refsInUse().has(ref))purgeOwn(ref.slice(2))}
 function spRemove(d,s,ref){s.items=s.items.filter(r=>r!==ref);const x=refTopic(ref);if(x)dropObjs(s,x.k);dropRefEverywhere(d,ref);saveFac();syncObjs(s);persist();render()}
-function delSP(d,s){toTrash("sp",s.name,d.name,{discId:d.id,s:JSON.parse(JSON.stringify(s)),os:ownSnap(s.items),pv:fac.provas.filter(p=>p.discId===d.id).map(p=>({id:p.id,items:[...p.items],done:[...(p.done||[])]}))});trSkip=true;
+function delSP(d,s){toTrash("sp",s.name,d.name,{discId:d.id,s:JSON.parse(JSON.stringify(s)),os:ownSnap(s.items),pv:fac.provas.filter(p=>provaHas(p,d.id)).map(p=>({id:p.id,items:[...p.items],done:[...(p.done||[])],sp:provaSps(p).includes(s.id)}))});trSkip=true;
   try{const refs=[...s.items];refs.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)});d.sps=d.sps.filter(x=>x!==s);refs.forEach(r=>dropRefEverywhere(d,r))}finally{trSkip=false}saveFac();persist();render()}
 function delEixo(d,e){d.sps.forEach(s=>{if(s.eixoId===e.id)s.eixoId=null});d.eixos=d.eixos.filter(x=>x!==e);saveFac();render()}
 function removeFromDisc(d,ref){d.items=d.items.filter(r=>r!==ref);dropRefEverywhere(d,ref);saveFac();persist();render()}
@@ -3154,7 +3191,7 @@ function facGoRef(d,r){const x=refTopic(r);if(!x||!BYKEY[x.k])return;if(!d||!dis
   facOpenSem.add(d.semId);facOpenDisc.add(d.id);const s=d.sps.find(y=>y.items.includes(r));
   if(s){facOpenSP.add(s.id);facClosedEixo.delete((s.eixoId&&eixoOf(d,s.eixoId)?s.eixoId:"none")+":"+d.id)}else facClosedEixo.delete("direct:"+d.id);
   openKey=x.k;if(view!=="fac")showView("fac");render();setTimeout(()=>{const li=document.querySelector("#viewFac li.t.open");if(li)li.scrollIntoView({behavior:"smooth",block:"start"})},40)}
-function provaStudyNext(p){const r=provaNext(p),d=discOf(p.discId);if(!r)return;const k=refTopic(r).k;
+function provaStudyNext(p){const r=provaNext(p);if(!r)return;const d=provaDiscs(p).find(x=>discRefs(x).includes(r))||discOf(p.discId);const k=refTopic(r).k;
   foPick.ref="T:"+k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}facGoRef(d,r)}
 function provaSimGo(p){simCfg={src:"prova",pid:p.id,n:10};sim=null;backStack=[];setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60)}
 /* provas já feitas (até 30 dias) sem resultado registrado */
@@ -3166,7 +3203,7 @@ function provaResEl(p){const d=discOf(p.discId),R=facRes&&facRes.pid===p.id?facR
   const w=el(`<div class="fpd fpres" id="fpr-${p.id}"><div class="fpdh"><b></b><span class="fcount">realizada</span></div><span class="ks"></span>
     <p class="gtext">Como foi? Registre a nota e leve para o caderno de erros o que caiu e você não sabia.</p>
     <div class="fpnota"><label class="qfsel"><span>Nota</span><input class="etext" type="text" inputmode="decimal" maxlength="6"></label><span class="fpde">de</span><label class="qfsel"><span>Vale</span><input class="etext" type="text" inputmode="decimal" maxlength="6"></label></div></div>`);
-  w.querySelector("b").textContent=p.name;w.querySelector(".ks").textContent=`${d?d.name+" · ":""}${dayLabel(p.date)}`;
+  w.querySelector("b").textContent=p.name;w.querySelector(".ks").textContent=`${d?provaDiscName(p)+" · ":""}${dayLabel(p.date)}`;
   const [ni,oi]=w.querySelectorAll(".fpnota input");ni.id="fpn-r-"+p.id;oi.id="fpo-r-"+p.id;ni.value=R.n;oi.value=R.of;ni.oninput=()=>R.n=ni.value;oi.oninput=()=>R.of=oi.value;
   const refs=[...new Set(p.items.filter(refOk))];
   if(refs.length){const g=el(`<div class="fpwhat"><span class="glabel">O que caiu e você não sabia?</span><div class="chips"></div></div>`),ch=g.querySelector(".chips");
@@ -3183,7 +3220,7 @@ function provaResEl(p){const d=discOf(p.discId),R=facRes&&facRes.pid===p.id?facR
 function provaDashItem(p){const st=provaStats(p),d=discOf(p.discId),nx=provaNext(p);
   const w=el(`<div class="fpd lv-${st.lvl}" id="fpd-${p.id}"><div class="fpdh"><b></b><span class="fcount${st.dd<=7?" soon":""}"></span></div><span class="ks"></span>
     <div class="meter"><i style="width:${st.tot?st.done/st.tot*100:0}%"></i></div><p class="fpdtx"></p></div>`);
-  w.querySelector("b").textContent=p.name;w.querySelector(".fcount").textContent=inLabel(st.dd);w.querySelector(".ks").textContent=`${d?d.name+" · ":""}${dayLabel(p.date)}`;
+  w.querySelector("b").textContent=p.name;w.querySelector(".fcount").textContent=inLabel(st.dd);w.querySelector(".ks").textContent=`${d?provaDiscName(p)+" · ":""}${dayLabel(p.date)}`;
   w.querySelector(".fpdtx").textContent=`${st.done} de ${st.tot} ${st.tot===1?"conteúdo pronto":"conteúdos prontos"}. ${provaRitmo(st)}`;
   if(nx){const n=el(`<p class="fpdnext">Próximo: <b></b></p>`);n.querySelector("b").textContent=refLabel(nx);w.appendChild(n)}
   const a=el(`<div class="btns"></div>`);
@@ -3318,6 +3355,9 @@ function semFolder(s){const L=lv(s),open=facOpenSem.has(s.id),ds=semDiscs(s.id),
     const nk="disc"+s.id;ndi.value=facNew[nk]||"";ndi.oninput=()=>facNew[nk]=ndi.value;
     if(ds.length){const c=el(`<button class="btn" type="button">Cancelar</button>`);c.onclick=()=>{facNewDiscFor=null;render()};nd.querySelector(".btns").appendChild(c)}
     nd.onsubmit=e=>{e.preventDefault();const t=ndi.value.trim();if(!t){ndi.focus();return}facNew[nk]="";addDisc(s.id,t.slice(0,60))};body.appendChild(nd)}
+  if(s.lv&&Object.values(s.lv).some(v=>/\d/.test(v))){const wv=el(`<div class="pnote flvwarn" role="status"><span></span> <button class="link" type="button">Voltar aos nomes padrão</button></div>`);
+    wv.querySelector("span").textContent=`O nome de um nível ficou com número (${Object.values(s.lv).filter(v=>/\d/.test(v)).map(v=>`“${v}”`).join(", ")}). Esse campo é o nome do nível para o semestre todo, por isso os textos aparecem estranhos.`;
+    wv.querySelector("button").id="flvfix-"+s.id;wv.querySelector("button").onclick=()=>{const o={};for(const k in s.lv)if(!/\d/.test(s.lv[k]))o[k]=s.lv[k];if(Object.keys(o).length)s.lv=o;else delete s.lv;saveFac();render()};body.appendChild(wv)}
   if(facSemAdj===s.id)body.appendChild(semAdjust(s,L));
   if(impHere)body.appendChild(ementaPanel(s,L));
   else if(I.done&&I.doneSem===s.id){const p=el(`<p class="gstatus" role="status"></p>`);p.textContent=I.done;body.appendChild(p)}
@@ -3337,9 +3377,11 @@ function semAdjust(s,L){const m=el(`<div class="fsemmenu"><div class="fsemacts">
   ac.append(rn,lb,a);
   if(facEdit===ks){const ne=nameEdit(ks,s.name,v=>{s.name=v.slice(0,40)});const i=ne.querySelector("input");i.maxLength=40;i.id="fr-sem";i.setAttribute("aria-label","Novo nome do semestre");se.appendChild(ne)}
   if(facEdit===kl){const L0={...lv(s),...(facDraft.lv||{})};const f=el(`<form class="flv"><p class="gtext how"></p><div class="fgrid"></div><div class="btns"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button">Cancelar</button></div></form>`);
-    f.querySelector("p").textContent=`Como o seu curso chama cada nível em ${s.name} (usado nos botões e no cadastro pela ementa).`;
+    f.querySelector("p").textContent=`Como o seu curso chama cada nível em ${s.name} (usado nos botões e no cadastro pela ementa). É o nome do nível, sem número: “SP”, não “SP 2.1 Hemostasia”. Para criar uma SP, use Organizar dentro da disciplina.`;
     [["disc","Disciplina (ex.: NCS, Módulo)"],["eixo","Eixo (ex.: Eixo, Unidade)"],["sp","SP (ex.: SP, Problema, Aula)"]].forEach(([k,lab])=>{const l=el(`<label class="ffield"><span></span><input class="etext" maxlength="20"></label>`);l.querySelector("span").textContent=lab;const i=l.querySelector("input");i.name=k;i.id="flv-"+k;i.value=L0[k];i.oninput=()=>{(facDraft.lv=facDraft.lv||{})[k]=i.value};f.querySelector(".fgrid").appendChild(l)});
-    f.onsubmit=e=>{e.preventDefault();const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)s.lv=o;else delete s.lv;closeEdit();saveFac();render()};
+    const fer=el(`<p class="err" hidden></p>`);f.insertBefore(fer,f.querySelector(".btns"));
+    f.onsubmit=e=>{e.preventDefault();const bad=[...f.querySelectorAll("input")].find(i=>/\d/.test(i.value));if(bad){fer.hidden=false;fer.textContent=`Use só o nome do nível, sem número (ex.: “${LV_DEF[bad.name]}”). Para criar uma ${LV_DEF[bad.name]}, use Organizar dentro da disciplina.`;bad.focus();return}
+      const o={};f.querySelectorAll("input").forEach(i=>{const v=i.value.trim();if(v&&v!==LV_DEF[i.name])o[i.name]=v.slice(0,20)});if(Object.keys(o).length)s.lv=o;else delete s.lv;closeEdit();saveFac();render()};
     f.querySelectorAll("button")[1].onclick=()=>{closeEdit();render()};se.appendChild(f)}
   if(!se.children.length)se.remove();
   m.appendChild(el(`<p class="gtext how">Arquivar tira o semestre do plano do dia e das provas, mas guarda tudo (temas, progresso e anotações).</p>`));
@@ -3358,15 +3400,21 @@ function semProvasBlock(s,L){const all=semProvas(s),up=all.filter(p=>p.date>=tod
   const ds=semDiscs(s.id),ad=el(`<div class="fpadd"><span class="glabel">Nova prova</span></div>`);
   if(!ds.length){ad.appendChild(el(`<p class="gtext how">Cadastre uma ${esc(L.disc.toLowerCase())} primeiro.</p>`));b.appendChild(ad);w.appendChild(b);return w}
   const N=facNew["prov"+s.id]||(facNew["prov"+s.id]={});if(!ds.some(d=>d.id===N.d))N.d=ds[0].id;
-  const pf=el(`<form class="fpform"><select class="etext"></select><input class="etext" maxlength="60" placeholder="Nome (ex.: Avaliação do Eixo de Hematologia)" aria-label="Nome da prova"><input class="etext" type="date" aria-label="Data da prova"><button class="btn primary" type="submit">Adicionar prova</button></form>`);
-  const [sel,pn,pdt]=[pf.querySelector("select"),...pf.querySelectorAll("input")];sel.id="fpdisc-"+s.id;pn.id="fpn-"+s.id;pdt.id="fpd-"+s.id;sel.setAttribute("aria-label",`${L.disc} da prova`);
-  ds.forEach(d=>{const o=document.createElement("option");o.value=d.id;o.textContent=d.name;sel.appendChild(o)});sel.value=N.d;if(ds.length===1)sel.hidden=true;
-  sel.onchange=()=>N.d=sel.value;pn.value=N.n||"";pdt.value=N.dt||"";pn.oninput=()=>N.n=pn.value;pdt.oninput=()=>N.dt=pdt.value;
+  if(!Array.isArray(N.ds)||!N.ds.length||N.ds[0]!==N.d&&!N.ds.includes(N.d))N.ds=[N.d];N.ds=N.ds.filter(id=>ds.some(d=>d.id===id));if(!N.ds.length)N.ds=[N.d];
+  const pf=el(`<form class="fpform"><input class="etext" maxlength="60" placeholder="Nome (ex.: D2 NCS 6)" aria-label="Nome da prova"><input class="etext" type="date" aria-label="Data da prova"><button class="btn primary" type="submit">Adicionar prova</button></form>`);
+  const [pn,pdt]=pf.querySelectorAll("input");pn.id="fpn-"+s.id;pdt.id="fpd-"+s.id;
+  if(ds.length>1){const fs=el(`<fieldset class="fpdiscs"><legend></legend><div class="chips"></div></fieldset>`);fs.querySelector("legend").textContent=`${plural(L.disc)} da prova (marque mais de uma se a prova for conjunta)`;
+    ds.forEach(d=>{const on=N.ds.includes(d.id),b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=`fpdisc-${s.id}-${d.id}`;b.textContent=d.name;
+      b.onclick=()=>{N.ds=on?N.ds.filter(x=>x!==d.id):[...N.ds,d.id];if(!N.ds.length)N.ds=[d.id];N.d=N.ds[0];render()};fs.querySelector(".chips").appendChild(b)});
+    pf.insertBefore(fs,pf.firstChild)}
+  pn.value=N.n||"";pdt.value=N.dt||"";pn.oninput=()=>N.n=pn.value;pdt.oninput=()=>N.dt=pdt.value;
   const er=el(`<p class="err" hidden></p>`);
-  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,d=discOf(sel.value);
-    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!d){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
-    const p={id:fuid(),discId:d.id,name:n.slice(0,60),date:dt,items:[...discRefs(d).filter(refOk)],done:[]};fac.provas.push(p);facProvaOpen.add(p.id);facNew["prov"+s.id]={d:d.id};saveFac();provaChanged(p,"nova prova")};
-  ad.append(pf,er,el(`<p class="gtext how">A prova começa com todo o conteúdo da ${esc(L.disc.toLowerCase())} marcado. Abra a prova para desmarcar o que não cai.</p>`));b.appendChild(ad);w.appendChild(b);return w}
+  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,sel=N.ds.map(discOf).filter(Boolean);
+    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!sel.length){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
+    const p={id:fuid(),discId:sel[0].id,name:n.slice(0,60),date:dt,items:[],done:[]};provaSetDids(p,sel.map(d=>d.id));
+    const sps=[];sel.forEach(d=>{const u=unassigned(d,p);u.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});sps.push(...u.sps)});if(sps.length)p.sps=sps;
+    fac.provas.push(p);facProvaOpen.add(p.id);facNew["prov"+s.id]={d:sel[0].id};saveFac();provaChanged(p,"nova prova")};
+  ad.append(pf,er,el(`<p class="gtext how">A prova começa marcada com o conteúdo que ainda não está em outra prova. Abra a prova para ajustar.</p>`));b.appendChild(ad);w.appendChild(b);return w}
 
 /* modo provas e regras do plano */
 function renderFacCrunch(target){const fc=target||$("#facCrunch");fc.innerHTML="";const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
@@ -3390,7 +3438,7 @@ function renderFacCrunch(target){const fc=target||$("#facCrunch");fc.innerHTML="
 
 function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=daysTo(p.date),tot=p.items.filter(refOk).length,pend=provaPending(p).length;
   const li=el(`<li class="fprova${dd<0?" past":""}${po?" open":""}" id="fp-${p.id}"><button class="fph" type="button" aria-expanded="${po}"><span class="fphl"><b></b><span></span></span><span class="fcount${dd>=0&&dd<=7?" soon":""}"></span><span class="meter"><i style="width:${tot?(tot-pend)/tot*100:0}%"></i></span><span class="fsub"></span></button></li>`);
-  li.querySelector(".fphl b").textContent=p.name;li.querySelector(".fphl span").textContent=`${d?d.name+" · ":""}${dayLabel(p.date)}`;
+  li.querySelector(".fphl b").textContent=p.name;li.querySelector(".fphl span").textContent=`${d?provaDiscName(p)+" · ":""}${dayLabel(p.date)}`;
   li.querySelector(".fcount").textContent=dd<0?(p.res&&typeof p.res.n==="number"?`nota ${fmtN(p.res.n)} de ${fmtN(p.res.of)}`:"realizada"):inLabel(dd);
   li.querySelector(".fsub").textContent=tot?`${tot-pend} de ${tot} conteúdos estudados${dd>=0&&dd<=FAC_WIN&&pend?" · entra no plano do dia":""}`:"Nenhum conteúdo marcado para esta prova";
   li.querySelector(".fph").onclick=()=>{po?facProvaOpen.delete(p.id):facProvaOpen.add(p.id);render()};
@@ -3402,21 +3450,44 @@ function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=da
   else{const rn=el(`<button class="link" type="button">renomear</button>`);rn.onclick=()=>{openEdit("p"+p.id);render()};
     const dl=el(`<label class="fcru">Data <input type="date" class="etext"></label>`),di=dl.querySelector("input");di.id="fpdt-"+p.id;di.value=p.date;
     di.onchange=()=>{if(/^\d{4}-\d{2}-\d{2}$/.test(di.value)&&di.value!==p.date){const old={...p};p.date=di.value;saveFac();provaChanged(daysTo(p.date)<=daysTo(old.date)?p:old,"data alterada em")}};
-    ed.append(dl,rn,armBtn("p"+p.id,"excluir prova","Toque de novo para excluir a prova",()=>{toTrash("prova",p.name,(discOf(p.discId)||{}).name,JSON.parse(JSON.stringify(p)));fac.provas=fac.provas.filter(x=>x.id!==p.id);saveFac();provaChanged(p,"prova excluída")}))}
+    ed.append(dl,rn,armBtn("p"+p.id,"excluir prova","Toque de novo para excluir a prova",()=>{toTrash("prova",p.name,provaDiscName(p),JSON.parse(JSON.stringify(p)));fac.provas=fac.provas.filter(x=>x.id!==p.id);saveFac();provaChanged(p,"prova excluída")}))}
   body.appendChild(ed);
-  body.appendChild(el(`<p class="gtext how">Marque o que cai nesta prova (por ${esc(L.sp)} ou tema a tema). Um conteúdo conta como estudado quando você o estuda ou revisa nas 3 semanas antes da prova.</p>`));
-  const groups=[...d.sps.map(s=>({t:s.name,refs:s.items.filter(refOk)})),...(d.items.filter(refOk).length?[{t:"Conteúdo avulso",refs:d.items.filter(refOk)}]:[])].filter(g=>g.refs.length);
-  const gw=el(`<div class="fpgroups"></div>`);if(!groups.length)gw.appendChild(el(`<p class="empty" style="padding:0">Ligue temas às ${esc(plural(L.sp))} da ${esc(d.name)} primeiro.</p>`));
-  let n=0;groups.forEach((g,gi)=>{const all=g.refs.every(r=>p.items.includes(r)),some=g.refs.some(r=>p.items.includes(r));
-    const gid=`fpg-${p.id}-${gi}`;const gh=el(`<div class="fpgh"><input type="checkbox" id="${gid}"${all?" checked":""}><label for="${gid}"></label></div>`);gh.querySelector("label").textContent=g.t;
-    const cb=gh.querySelector("input");cb.indeterminate=some&&!all;cb.onchange=()=>{if(all)p.items=p.items.filter(r=>!g.refs.includes(r));else g.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});saveFac();provaChanged(p,"conteúdo alterado em")};
-    gw.appendChild(gh);const cl=el(`<ul class="psubs"></ul>`);
-    g.refs.forEach(r=>{const on=p.items.includes(r),id=`fpi-${p.id}-${n++}`,st=on&&itemStudied(p,r);
-      const row=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label></li>`);row.querySelector("label").textContent=refLabel(r);
-      if(on){const tg=el(`<span class="fst ${st?"ok":""}">${st?"estudado":"pendente"}</span>`);row.querySelector("label").appendChild(tg)}
-      row.querySelector("input").onchange=()=>{if(on){p.items=p.items.filter(x=>x!==r)}else p.items.push(r);saveFac();provaChanged(p,"conteúdo alterado em")};
-      if(on&&!st){const mk=el(`<button class="link" type="button">já estudei</button>`);mk.onclick=()=>{p.done=[...(p.done||[]),r];saveFac();render()};row.appendChild(mk)}
-      cl.appendChild(row)});gw.appendChild(cl)});
+  // disciplinas da prova (prova conjunta)
+  const sd=semDiscs(d.semId),ids=provaDids(p).filter(discOf);
+  if(sd.length>1){const fs=el(`<div class="fpdiscs"><span class="glabel"></span><div class="chips"></div></div>`);fs.querySelector(".glabel").textContent=`${plural(L.disc)} desta prova`;
+    sd.forEach(x=>{const on=ids.includes(x.id),b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=`fpdd-${p.id}-${x.id}`;b.textContent=x.name;
+      if(on&&ids.length===1){b.disabled=true;b.title="A prova precisa de pelo menos uma disciplina"}
+      b.onclick=()=>{if(on){const rest=ids.filter(y=>y!==x.id).map(discOf),keep=new Set(rest.flatMap(discRefs)),xr=discRefs(x),xs=x.sps.map(y=>y.id);
+          provaSetDids(p,rest.map(y=>y.id));p.items=p.items.filter(r=>!xr.includes(r)||keep.has(r));if(p.sps){p.sps=p.sps.filter(y=>!xs.includes(y));if(!p.sps.length)delete p.sps}}
+        else{provaSetDids(p,[...ids,x.id]);const u=unassigned(x,p);u.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});if(u.sps.length)p.sps=[...provaSps(p),...u.sps]}
+        saveFac();provaChanged(p,"disciplinas alteradas em")};fs.querySelector(".chips").appendChild(b)});
+    body.appendChild(fs)}
+  body.appendChild(el(`<p class="gtext how">Marque o que cai nesta prova (por ${esc(L.sp)} inteira ou tema a tema). ${esc(L.sp)} marcada leva junto o que você adicionar nela depois. Um conteúdo conta como estudado quando você o estuda ou revisa nas 3 semanas antes da prova.</p>`));
+  const ds=provaDiscs(p),multi=ds.length>1,showAll=facProvaAll.has(p.id),gw=el(`<div class="fpgroups"></div>`);let n=0,hid=0,any=false;
+  const elseTag=(lab,list)=>{if(!list.length)return;const t=el(`<span class="fst else"></span>`);t.textContent=`também em ${list.map(x=>x.name).join(", ")}`;lab.appendChild(t)};
+  ds.forEach(dx=>{const groups=[...dx.sps.map(s=>({s,t:s.name,refs:s.items.filter(refOk)})),{s:null,t:dx.sps.length?`Outros conteúdos (sem ${L.sp})`:"Conteúdos",refs:dx.items.filter(refOk)}];
+    const vis=[];groups.forEach(g=>{if(g.s){const inP=spInProva(p,g.s)||g.refs.some(r=>p.items.includes(r)),el2=spElse(p,g.s);if(!inP&&el2.length&&!showAll){hid++;return}vis.push({...g,el2})}
+      else{const refs=g.refs.filter(r=>{const ok=p.items.includes(r)||!refElse(p,r).length||showAll;if(!ok)hid++;return ok});if(refs.length)vis.push({...g,refs,el2:[]})}});
+    if(multi){const h=el(`<p class="fpdh2"></p>`);h.textContent=dx.name;gw.appendChild(h)}
+    if(!vis.length){const e=el(`<p class="empty" style="padding:0"></p>`);e.textContent=dx.sps.length||dx.items.length?"Tudo desta disciplina já está em outra prova.":`Nenhum conteúdo em ${dx.name} ainda. Adicione na disciplina (+ Conteúdo ou Organizar › + ${L.sp}).`;gw.appendChild(e);return}
+    any=true;
+    vis.forEach((g,gi)=>{const gid=`fpg-${p.id}-${dx.id}-${gi}`,linked=g.s&&provaSps(p).includes(g.s.id),all=g.s?spInProva(p,g.s):g.refs.every(r=>p.items.includes(r)),some=g.refs.some(r=>p.items.includes(r));
+      const gh=el(`<div class="fpgh"><input type="checkbox" id="${gid}"${all?" checked":""}><label for="${gid}"></label></div>`),lab=gh.querySelector("label");lab.textContent=g.t;
+      if(showAll)elseTag(lab,g.el2);
+      const cb=gh.querySelector("input");cb.indeterminate=some&&!all;
+      cb.onchange=()=>{if(g.s)provaSetSp(p,g.s,!all);else if(all)p.items=p.items.filter(r=>!g.refs.includes(r));else g.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});saveFac();provaChanged(p,"conteúdo alterado em")};
+      gw.appendChild(gh);
+      if(g.s&&!g.refs.length){const e=el(`<p class="gtext how fpnone"></p>`);e.textContent=linked?`Sem conteúdo ainda. O que você adicionar nesta ${L.sp} entra na prova.`:`Sem conteúdo ainda. Marque para que o que você adicionar nesta ${L.sp} entre na prova.`;gw.appendChild(e);return}
+      const cl=el(`<ul class="psubs"></ul>`);
+      g.refs.forEach(r=>{const on=p.items.includes(r),id=`fpi-${p.id}-${n++}`,st=on&&itemStudied(p,r);
+        const row=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label></li>`);row.querySelector("label").textContent=refLabel(r);
+        if(on){const tg=el(`<span class="fst ${st?"ok":""}">${st?"estudado":"pendente"}</span>`);row.querySelector("label").appendChild(tg)}
+        if(showAll&&!g.s)elseTag(row.querySelector("label"),refElse(p,r));
+        row.querySelector("input").onchange=()=>{if(on){if(g.s&&linked){provaSetSp(p,g.s,false);g.refs.forEach(y=>{if(y!==r&&!p.items.includes(y))p.items.push(y)})}p.items=p.items.filter(x=>x!==r)}else p.items.push(r);saveFac();provaChanged(p,"conteúdo alterado em")};
+        if(on&&!st){const mk=el(`<button class="link" type="button">já estudei</button>`);mk.onclick=()=>{p.done=[...(p.done||[]),r];saveFac();render()};row.appendChild(mk)}
+        cl.appendChild(row)});gw.appendChild(cl)})});
+  if(hid||showAll){const t=el(`<button class="link fpall" type="button"></button>`);t.id="fpall-"+p.id;t.textContent=showAll?"Esconder o que já está em outras provas":`Mostrar também o que já está em outras provas (${hid})`;
+    t.onclick=()=>{showAll?facProvaAll.delete(p.id):facProvaAll.add(p.id);render()};gw.appendChild(t)}
   body.appendChild(gw);li.appendChild(body);return li}
 
 const INFO_F=[["tipo","Tipo","Tutoria, Habilidades, IESC, Morfofuncional…"],["ch","Carga horária","ex.: 120 h"],["prof","Professor(es)",""],["tutor","Tutor",""],["horario","Dias e horários","ex.: seg e qua, 8h–12h"],["local","Local / sala",""]];
@@ -3434,7 +3505,7 @@ function infoPanel(d,L,edit){const w=el(`<div class="finfo"></div>`);
   return w}
 
 function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.has(d.id),keys=topicKeysOf(discRefs(d)),c=lvlCounts(keys),n=keys.length;
-  const nextP=fac.provas.filter(p=>p.discId===d.id&&p.date>=today()).sort(byDate)[0];
+  const nextP=fac.provas.filter(p=>provaHas(p,d.id)&&p.date>=today()).sort(byDate)[0];
   const card=el(`<section class="area fdc${open?" open":""}${edit?" editing":""}" id="fd-${d.id}"><button class="fdsum" type="button" aria-expanded="${open}"><span class="chev" aria-hidden="true"></span>${FOLDER_SVG}<span class="aname"></span><span class="acount"></span><span class="fdmeta"></span>${n?`<div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div>`:""}</button></section>`);
   card.querySelector(".aname").textContent=d.name;card.querySelector(".acount").textContent=n?`${n-c[0]}/${n}`:"";
   const meta=card.querySelector(".fdmeta");
@@ -3492,7 +3563,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
     ei.value=facNew["e"+d.id]||"";ei.oninput=()=>facNew["e"+d.id]=ei.value;ef.onsubmit=ev=>{ev.preventDefault();const t=ei.value.trim();if(!t)return;facNew["e"+d.id]="";addEixo(d,t.slice(0,80))};
     body.append(ef,el(`<p class="gtext how">O ${esc(L.eixo.toLowerCase())} agrupa ${esc(plural(L.sp))} e define em que área e especialidade os conteúdos aparecem na aba Residência (ex.: ${esc(L.eixo)} de Hematologia = CM › Hematologia e oncologia). Tudo isso é opcional: dá para estudar só com + Conteúdo.</p>`))}
   // provas da disciplina
-  const dp=fac.provas.filter(p=>p.discId===d.id).sort(byDate);
+  const dp=fac.provas.filter(p=>provaHas(p,d.id)).sort(byDate);
   if(dp.length){const pr=el(`<div class="fdprov"><span class="glabel">Provas</span><div class="chips"></div></div>`),pc=pr.querySelector(".chips");
     dp.forEach(p=>{const dd=daysTo(p.date),b=el(`<button class="chip fpchip${dd<0?" past":dd<=7?" soon":""}" type="button"></button>`);b.textContent=`${p.name} · ${dd<0?br(p.date):inLabel(dd)}`;b.onclick=()=>goProva(p);pc.appendChild(b)});
     body.appendChild(pr)}
@@ -3500,10 +3571,13 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
     if(facEdit==="d"+d.id)ft.appendChild(nameEdit("d"+d.id,d.name,v=>{d.name=v.slice(0,60)}));
     else{const rn=el(`<button class="link" type="button"></button>`);rn.textContent=`Renomear ${L.disc.toLowerCase()}`;rn.onclick=()=>{openEdit("d"+d.id);render()};
       ft.append(rn,armBtn("d"+d.id,`Excluir ${L.disc.toLowerCase()}`,`Toque de novo: apaga a ${L.disc.toLowerCase()}, suas provas e os conteúdos da faculdade só dela`,()=>{
-        toTrash("disc",d.name,"com provas e conteúdos",{d:JSON.parse(JSON.stringify(d)),provas:JSON.parse(JSON.stringify(fac.provas.filter(p=>p.discId===d.id))),os:ownSnap(discRefs(d))});trSkip=true;try{
+        const mine=fac.provas.filter(p=>provaHas(p,d.id)&&provaDids(p).filter(discOf).length===1),shared=fac.provas.filter(p=>provaHas(p,d.id)&&!mine.includes(p)),dr=discRefs(d),dsp=d.sps.map(s=>s.id);
+        toTrash("disc",d.name,"com provas e conteúdos",{d:JSON.parse(JSON.stringify(d)),provas:JSON.parse(JSON.stringify(mine)),os:ownSnap(dr),
+          shared:shared.map(p=>({id:p.id,at:provaDids(p).indexOf(d.id),items:p.items.filter(r=>dr.includes(r)),sps:provaSps(p).filter(id=>dsp.includes(id))}))});trSkip=true;try{
+        shared.forEach(p=>{const rest=provaDiscs(p).filter(x=>x!==d),keep=new Set(rest.flatMap(discRefs));provaSetDids(p,rest.map(x=>x.id));p.items=p.items.filter(r=>!dr.includes(r)||keep.has(r));if(p.sps){p.sps=p.sps.filter(id=>!dsp.includes(id));if(!p.sps.length)delete p.sps}});
         discRefs(d).filter(r=>r.startsWith("O:")).forEach(r=>{if(!fac.discs.some(x=>x!==d&&discRefs(x).includes(r)))purgeOwn(r.slice(2))});
         d.sps.forEach(s=>s.items.forEach(r=>{const x=refTopic(r);if(x)dropObjs(s,x.k)}));
-        fac.provas=fac.provas.filter(p=>p.discId!==d.id);fac.discs=fac.discs.filter(x=>x!==d);facEditDisc.delete(d.id)}finally{trSkip=false}saveErrsLocal();saveNotesLocal();saveFac();commit()}))}
+        fac.provas=fac.provas.filter(p=>!mine.includes(p));fac.discs=fac.discs.filter(x=>x!==d);facEditDisc.delete(d.id)}finally{trSkip=false}saveErrsLocal();saveNotesLocal();saveFac();commit()}))}
     const done=el(`<button class="btn primary" type="button">Concluir</button>`);done.onclick=()=>{facEditDisc.delete(d.id);closeEdit();facArm=null;render()};ft.appendChild(done);body.appendChild(ft)}
   card.appendChild(body);return card}
 
@@ -3520,19 +3594,25 @@ function guessArea(q,d,res){const top=(res||facSearch(q)).find(r=>r.ref.startsWi
   const g=suggestMap(q);if(g.area)return g;
   const ks=topicKeysOf(discRefs(d)).map(k=>BYKEY[k]).filter(it=>it&&it.area!==FAC_AREA);if(ks.length){const c={};ks.forEach(it=>{const k=it.area.code+"|"+it.sp;c[k]=(c[k]||0)+1});const [a,sp]=Object.keys(c).sort((x,y)=>c[y]-c[x])[0].split("|");return {area:a,spec:sp}}
   const g2=suggestMap(d.name);return g2.area?g2:{area:"",spec:""}}
-function createOwnDirect(d,t,m){t=t.trim().slice(0,120);if(!t)return;const dup=exactDup(t);if(dup){addToDisc(d,refOfItem(dup));return}
-  const id=fuid(),o={t,discId:d.id};if(m&&m.area){o.area=m.area;o.spec=m.spec||""}fac.own[id]=o;d.items.push("O:"+id);facQuery["c"+d.id]="";saveFac();commit()}
+function createOwnDirect(d,t,m,pid){t=t.trim().slice(0,120);if(!t)return;const dup=exactDup(t);if(dup){addToDisc(d,refOfItem(dup),pid);return}
+  const id=fuid(),o={t,discId:d.id};if(m&&m.area){o.area=m.area;o.spec=m.spec||""}fac.own[id]=o;d.items.push("O:"+id);provaPut(pid,"O:"+id);facQuery["c"+d.id]="";saveFac();commit()}
 function contentAdder(d,L){const key="c"+d.id,q=facQuery[key]||"",dk="cdst"+d.id;if(facNew[dk]&&!d.sps.some(s=>s.id===facNew[dk]))facNew[dk]="";const dst=facNew[dk]||"";
   const w=el(`<div class="fadder"><div class="fadh"><b>Adicionar conteúdo</b><button class="link" type="button">Fechar</button></div><p class="gtext how">Digite o assunto que você precisa estudar. Se ele já existe na residência, toque em <b>Usar este</b> (o progresso é o mesmo nas duas abas). Se não existe, crie como conteúdo da faculdade.</p></div>`);
   w.querySelector(".fadh button").onclick=()=>{facAddC=null;render()};
   if(d.sps.length){const l=el(`<label class="fmove">Guardar em <select class="fmapsel"></select></label>`),se=l.querySelector("select");se.id="fdst-"+d.id;
     const o0=document.createElement("option");o0.value="";o0.textContent=`Direto na ${L.disc.toLowerCase()}`;se.appendChild(o0);
     d.sps.forEach(s=>{const o=document.createElement("option");o.value=s.id;o.textContent=s.name;se.appendChild(o)});se.value=dst;se.onchange=()=>{facNew[dk]=se.value;render()};w.appendChild(l)}
+  const dps=discProvas(d),pk="cpv"+d.id;if(facNew[pk]&&!dps.some(p=>p.id===facNew[pk]))delete facNew[pk];
+  const pid=dst?"":(facNew[pk]!==undefined?facNew[pk]:(dps[0]?dps[0].id:""));
+  if(dst){const sp=d.sps.find(x=>x.id===dst),pe=sp&&spProvaEl(d,sp,L);if(pe)w.appendChild(pe)}
+  else if(dps.length){const l=el(`<label class="fmove">Cai na prova <select class="fmapsel"></select></label>`),se=l.querySelector("select");se.id="fcpv-"+d.id;
+    [["","Nenhuma prova"],...dps.map(p=>[p.id,`${p.name} · ${br(p.date)}`])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;se.appendChild(o)});
+    se.value=pid;se.onchange=()=>{facNew[pk]=se.value;render()};w.appendChild(l)}
   const box=el(`<div class="fsearch"><input class="etext" type="search" aria-label="Assunto do conteúdo"><ul class="fres"></ul></div>`),inp=box.querySelector("input");
   inp.id="fq-"+key;inp.placeholder="Ex.: Hemostasia, ICC, Anatomia do coração";inp.value=q;inp.oninput=()=>{facQuery[key]=inp.value;render()};
   inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const b=box.querySelector(".fcreate button:not(:disabled)")||box.querySelector(".fres li:not(.fcreate) button:not(:disabled)");if(b)b.click()}};
   const ul=box.querySelector("ul"),s=d.sps.find(x=>x.id===dst),has=r=>s?s.items.includes(r):discRefs(d).includes(r);
-  const use=r=>{if(s)spAdd(d,s,r);else addToDisc(d,r);facQuery[key]="";render();setTimeout(()=>{const x=document.getElementById("fq-"+key);if(x)x.focus()},30)};
+  const use=r=>{if(s)spAdd(d,s,r);else addToDisc(d,r,pid);facQuery[key]="";render();setTimeout(()=>{const x=document.getElementById("fq-"+key);if(x)x.focus()},30)};
   if(q.trim().length>=2){const res=facSearch(q).filter(r=>!r.ref.startsWith("S:")).slice(0,6);
     res.forEach(r=>{const h=has(r.ref),li=el(`<li><div class="frl"><b></b><span></span></div><button class="mini" type="button"></button></li>`);li.querySelector("b").textContent=r.label;li.querySelector("span").textContent=r.kind+" · "+r.ctx;
       const b=li.querySelector("button");b.textContent=h?"Já está aqui":"Usar este";b.disabled=h;b.onclick=()=>use(r.ref);ul.appendChild(li)});
@@ -3542,7 +3622,7 @@ function contentAdder(d,L){const key="c"+d.id,q=facQuery[key]||"",dk="cdst"+d.id
     const e=s&&eixoOf(d,s.eixoId);
     li.querySelector("span").textContent=dup?"Já existe com esse nome: use o resultado acima.":`Aparece na aba Residência em ${s?(e?areaMapLabel(e):"Faculdade · sem área"):(m&&m.area?`${m.area} · ${m.spec}`:"Faculdade · sem área")}${res.length?" · há parecidos acima, confira antes":""}`;
     const b=li.querySelector("button");b.textContent=res.length?"Criar mesmo assim":"Criar";b.disabled=!!dup;
-    b.onclick=()=>{if(s)spCreateOwn(d,s,q);else createOwnDirect(d,q,m);facQuery[key]="";render();setTimeout(()=>{const x=document.getElementById("fq-"+key);if(x)x.focus()},30)};ul.appendChild(li);
+    b.onclick=()=>{if(s)spCreateOwn(d,s,q);else createOwnDirect(d,q,m,pid);facQuery[key]="";render();setTimeout(()=>{const x=document.getElementById("fq-"+key);if(x)x.focus()},30)};ul.appendChild(li);
     if(!s&&!dup){const pk=el(`<li class="fcarea"><span class="fexlab">Área na aba Residência:</span></li>`);pk.appendChild(mapPicker(m||{area:"",spec:""},x=>{facNew["carea"+d.id]={...x,q};render()},"c"+d.id));ul.appendChild(pk)}}
   w.appendChild(box);return w}
 
@@ -3556,6 +3636,13 @@ function addSpRow(d,e,L){const li=el(`<li class="fadd"></li>`),k="sp-"+(e?e.id:d
   i.id="fn-"+k;i.placeholder=`Nova ${L.sp} (ex.: ${L.sp} 2.1 Hemostasia)`;i.setAttribute("aria-label",`Nova ${L.sp}`+(e?` em ${e.name}`:""));f.querySelector("button").textContent=`+ ${L.sp}`;
   i.value=facNew[k]||"";i.oninput=()=>facNew[k]=i.value;f.onsubmit=ev=>{ev.preventDefault();const t=i.value.trim();if(!t)return;facNew[k]="";addSP(d,e&&e.id,t.slice(0,120))};li.appendChild(f);return li}
 
+/* SP › Cai na prova: liga a SP inteira (o que entrar nela depois vai junto) */
+function spProvaEl(d,s,L){const ps=fac.provas.filter(p=>provaHas(p,d.id)&&(p.date>=today()||spInProva(p,s))).sort(byDate);if(!ps.length)return null;
+  const w=el(`<div class="fsppv"><span class="glabel">Cai na prova</span><div class="chips"></div></div>`),c=w.querySelector(".chips");
+  ps.forEach(p=>{const on=spInProva(p,s),b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=`spv-${s.id}-${p.id}`;b.textContent=`${p.name} · ${br(p.date)}`;
+    b.onclick=()=>{provaSetSp(p,s,!on);saveFac();provaChanged(p,"conteúdo alterado em")};c.appendChild(b)});
+  if(!ps.some(p=>spInProva(p,s))){const h=el(`<p class="gtext how"></p>`);h.textContent=`Ainda não está em nenhuma prova. Toque na prova em que esta ${L.sp} cai.`;w.appendChild(h)}
+  return w}
 function spRow(d,s,L,edit,i){const open=facOpenSP.has(s.id),keys=topicKeysOf(s.items),st=spStatus(keys),[od,ot]=objStats(s),due=keys.filter(k=>isDue(get(k))).length;
   const li=el(`<li class="t fspr${open?" open":""}" id="sp-${s.id}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${st.l}"></span><span class="meta"></span></button></li>`);
   li.querySelector(".num").textContent=spNum(s,i);li.querySelector(".topic").textContent=spClean(s.name);li.querySelector(".lvl").textContent=st.t;
@@ -3582,6 +3669,7 @@ function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),l=s0.l||0,
 
 function spDetail(d,s,L,edit){const box=el(`<div class="detail fspd"></div>`),refs=s.items.filter(refOk),pr=primaryRef(s),pit=pr&&BYKEY[refTopic(pr).k];
   if(edit&&facEdit==="s"+s.id)box.appendChild(nameEdit("s"+s.id,s.name,v=>{s.name=v.slice(0,120)}));
+  {const pe=spProvaEl(d,s,L);if(pe)box.appendChild(pe)}
   box.appendChild(spFechEl(d,s,L));
   // temas
   const g=el(`<div class="grp"><span class="glabel"></span><ol class="fsptl"></ol></div>`);g.querySelector(".glabel").textContent=`Conteúdos desta ${L.sp}`;const ol=g.querySelector("ol");
@@ -4048,14 +4136,15 @@ function trRestore(id){const x=trash.find(y=>y.id===id);if(!x)return;let d;try{d
   else if(x.kind==="card"){if(!cards.some(c=>c.id===d.id)){const c=cdClean(d);cards.push(c);cdPut(c)}}
   else if(x.kind==="free"){if(!freeN.some(f=>f.id===d.id)){const f=frClean(d);freeN.push(f);frPut(f)}}
   else if(x.kind==="note"){const cur=notes[d.k]||"";saveNote(d.k,cur.trim()?cur+"\n\n---\n\n"+d.t:d.t)}
-  else if(x.kind==="prova"){if(!discOf(d.discId)){ok=false;why=`a disciplina desta prova não existe mais`}else if(!fac.provas.some(p=>p.id===d.id)){fac.provas.push(d);saveFac()}}
+  else if(x.kind==="prova"){const ids=provaDids(d).filter(discOf);if(!ids.length){ok=false;why=`a disciplina desta prova não existe mais`}else if(!fac.provas.some(p=>p.id===d.id)){provaSetDids(d,ids);fac.provas.push(d);saveFac()}}
   else if(x.kind==="sp"){const dc=discOf(d.discId);if(!dc){ok=false;why="a disciplina desta SP não existe mais"}else{
       ownRestore(d.os);if(!dc.sps.some(s=>s.id===d.s.id)){const s=d.s;if(s.eixoId&&!(dc.eixos||[]).some(e=>e.id===s.eixoId))s.eixoId=null;dc.sps.push(s)}
-      (d.pv||[]).forEach(v=>{const p=fac.provas.find(y=>y.id===v.id);if(p){p.items=[...new Set([...p.items,...v.items])];p.done=[...new Set([...(p.done||[]),...(v.done||[])])]}});
+      (d.pv||[]).forEach(v=>{const p=fac.provas.find(y=>y.id===v.id);if(p){p.items=[...new Set([...p.items,...v.items])];p.done=[...new Set([...(p.done||[]),...(v.done||[])])];if(v.sp)p.sps=[...new Set([...provaSps(p),d.s.id])]}});
       const s=dc.sps.find(y=>y.id===d.s.id);if(s)syncObjs(s);saveFac();persist()}}
   else if(x.kind==="disc"){const dc=d.d;if(fac.discs.some(y=>y.id===dc.id)){/* já voltou */}else{
       if(!fac.sems.some(s=>s.id===dc.semId)){const a=activeSems()[0]||(fac.sems[0]&&fac.sems[0].id);if(!a){ok=false;why="crie um semestre antes de devolver a disciplina"}else dc.semId=a}
-      if(ok){ownRestore(d.os);fac.discs.push(dc);(d.provas||[]).forEach(p=>{if(!fac.provas.some(y=>y.id===p.id))fac.provas.push(p)});(dc.sps||[]).forEach(syncObjs);saveFac();commit()}}}
+      if(ok){ownRestore(d.os);fac.discs.push(dc);(d.provas||[]).forEach(p=>{if(!fac.provas.some(y=>y.id===p.id)){provaSetDids(p,provaDids(p).filter(discOf));fac.provas.push(p)}});
+        (d.shared||[]).forEach(v=>{const p=fac.provas.find(y=>y.id===v.id);if(p){const ids=provaDids(p);ids.splice(Math.min(v.at||0,ids.length),0,dc.id);provaSetDids(p,ids);p.items=[...new Set([...p.items,...v.items])];if(v.sps&&v.sps.length)p.sps=[...new Set([...provaSps(p),...v.sps])]}});(dc.sps||[]).forEach(syncObjs);saveFac();commit()}}}
   if(!ok){trMsg=`Não deu para devolver: ${why}.`;render();return}
   trDrop(id);if(view==="config")trMsg=`${TR_KIND[x.kind]} devolvido${x.kind==="note"||x.kind==="prova"||x.kind==="sp"||x.kind==="disc"?"a":""}: ${x.lab}.`;hideToast();render()}
 /* aviso rápido com Desfazer */
@@ -4210,7 +4299,7 @@ function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&
 /* ----- 5. calendário (.ics) ----- */
 function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
 function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
-  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?d.name+". ":""}Trilha Médica`})});
+  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?provaDiscName(p)+". ":""}Trilha Médica`})});
   spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Trilha Médica`}));
   exList().forEach(x=>{if(x.date&&x.date>=today())ev.push({uid:"residencia-"+x.id,date:x.date,t:`Prova de residência: ${x.name||"sem nome"}`,desc:"Trilha Médica"})});
   const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Trilha Médica"];
@@ -4490,7 +4579,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
     R.sems.forEach(s=>{const L=lv(s),ds=semDiscs(s.id).filter(d=>!R.mk||selD.some(m=>m.id==="d:"+d.id));if(R.mk&&!ds.length)return;const keys=topicKeysOf(ds.flatMap(discRefs)),k=lvlCounts(keys),n=keys.length;
       h3(`${s.name} · ${ds.length} ${(ds.length===1?L.disc:plural(L.disc)).toLowerCase()} · ${n?pctS(n-k[0],n)+" do conteúdo estudado":"sem conteúdos ainda"}`);
       if(ds.length){const w=CW;table([{t:L.disc,w:w*.34},{t:"Estudados",w:w*.14,al:"r"},{t:"Progresso",w:w*.22},{t:"Próxima prova",w:w*.30}],
-        ds.map(d=>{const ks=topicKeysOf(discRefs(d)),kk=lvlCounts(ks),nn=ks.length,np=fac.provas.filter(p=>p.discId===d.id&&p.date>=today()).sort(byDate)[0];
+        ds.map(d=>{const ks=topicKeysOf(discRefs(d)),kk=lvlCounts(ks),nn=ks.length,np=fac.provas.filter(p=>provaHas(p,d.id)&&p.date>=today()).sort(byDate)[0];
           return [d.name,nn?`${nn-kk[0]}/${nn}`:"0",{bar:nn?[[kk[3]/nn,C.l3],[kk[2]/nn,C.l2],[kk[1]/nn,C.l1]]:[]},np?`${np.name} · ${br(np.date)} · ${provaPending(np).length} pend.`:"–"]}))}})}
   // questões e erros
   if(o.err){h2("Questões e erros");
@@ -4563,7 +4652,7 @@ function projModel(){const t=dnum(today()),ws0=foWeekStart(),main=exMain(),end=m
   let nW=end!==null?Math.floor((end-ws0)/7)+1:Math.ceil(total/Math.max(rate,.5))+1;nW=Math.max(1,Math.min(nW,end!==null?104:52));
   const W=[];for(let i=0;i<nW;i++){const s=ws0+i*7;W.push({s,wt:1,ev:[],rv:0,cd:0,nw:0})}
   const wi=n=>{const i=Math.floor((n-ws0)/7);return i>=0&&i<nW?i:-1};
-  upcomingProvas().forEach(p=>{const n=dnum(p.date),i=wi(n),d=discOf(p.discId);if(i>=0){W[i].ev.push({k:"fac",t:p.name,d:p.date,sub:d?d.name:""});W[i].wt=Math.min(W[i].wt,.4)}
+  upcomingProvas().forEach(p=>{const n=dnum(p.date),i=wi(n),d=discOf(p.discId);if(i>=0){W[i].ev.push({k:"fac",t:p.name,d:p.date,sub:d?provaDiscName(p):""});W[i].wt=Math.min(W[i].wt,.4)}
     const j=wi(n-7);if(j>=0&&j!==i)W[j].wt=Math.min(W[j].wt,.6)});
   spFechas(9999).forEach(f=>{const i=wi(dnum(f.s.fech));if(i>=0){W[i].ev.push({k:"sp",t:`Fechamento: ${spShort(f.s.name)}`,d:f.s.fech,sub:f.d.name});W[i].wt=Math.min(W[i].wt,.75)}});
   exList().forEach(x=>{if(!x.date||x.date<today())return;const i=wi(dnum(x.date));if(i>=0){W[i].ev.push({k:"res",t:x.name||"Prova de residência",d:x.date,main:!!main&&x.id===main.id});W[i].wt=Math.min(W[i].wt,.2)}});
@@ -4654,18 +4743,18 @@ function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=u
   hd.querySelector("span").textContent=dayLabel(p.date);
   const main=el(`<button class="ipmain" type="button"><span class="ipdays${dd<=7?" soon":""}"><b></b><span></span></span><span class="ipinfo"><b class="ipname"></b><span class="ipsub"></span><span class="meter"><i style="width:${tot?(tot-pend)/tot*100:0}%"></i></span><span class="ipst"></span></span></button>`);
   main.querySelector(".ipdays b").textContent=dd===0?"Hoje":dd===1?"1":String(dd);main.querySelector(".ipdays span").textContent=dd===0?"":dd===1?"dia":"dias";
-  main.querySelector(".ipname").textContent=p.name;main.querySelector(".ipsub").textContent=`${d.name} · ${s.name}`;
+  main.querySelector(".ipname").textContent=p.name;main.querySelector(".ipsub").textContent=`${provaDiscName(p)} · ${s.name}`;
   main.querySelector(".ipst").textContent=tot?(pend?`${tot-pend} de ${tot} conteúdos estudados · ${pend} pendente${pend>1?"s":""}`:`Todos os ${tot} conteúdos estudados`):"Nenhum conteúdo marcado para esta prova";
   main.onclick=()=>goProva(p);box.appendChild(main);
   if(CR.active){const c=el(`<p class="crunch"></p>`);c.textContent=`Modo provas ligado até ${br(CR.until)}: o plano do dia fica só com a faculdade.`;box.appendChild(c)}
   if(ups.length>1){const ul=el(`<ul class="uplist ipnext"></ul>`);ups.slice(1,4).forEach(x=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=inLabel(daysTo(x.date));
-      const bt=li.querySelector("button");bt.textContent=`${x.name} · ${discOf(x.discId).name}`;bt.onclick=()=>goProva(x);ul.appendChild(li)});
+      const bt=li.querySelector("button");bt.textContent=`${x.name} · ${provaDiscName(x)}`;bt.onclick=()=>goProva(x);ul.appendChild(li)});
     const g=el(`<div class="grp"><span class="glabel">Depois</span></div>`);g.appendChild(ul);box.appendChild(g)}}
 /* disciplina em foco no semestre: prova próxima com conteúdo pendente > mais estudada nos últimos 7 dias > mais conteúdo */
 function focusDisc(cur){const ds=semDiscs(cur.id).map(d=>({d,ks:topicKeysOf(discRefs(d))})).filter(x=>x.ks.length);if(!ds.length)return null;
   const t=dnum(today());
   const ps=semProvas(cur).filter(p=>{const dd=daysTo(p.date);return dd>=0&&dd<=FAC_WIN&&provaPending(p).length}).sort(byDate);
-  for(const p of ps){const x=ds.find(y=>y.d.id===p.discId);if(x){const dd=daysTo(p.date);return {d:x.d,why:`${p.name} ${inLabel(dd)} · ${provaPending(p).length} conteúdo${provaPending(p).length>1?"s":""} pendente${provaPending(p).length>1?"s":""}`}}}
+  for(const p of ps){const x=ds.find(y=>provaHas(p,y.d.id));if(x){const dd=daysTo(p.date);return {d:x.d,why:`${p.name} ${inLabel(dd)} · ${provaPending(p).length} conteúdo${provaPending(p).length>1?"s":""} pendente${provaPending(p).length>1?"s":""}`}}}
   const recent=k=>{const st=get(k);return st.last&&t-dnum(st.last)<=6?1:0};
   const sc=ds.map(x=>({...x,r:x.ks.reduce((a,k)=>a+recent(k),0)})).sort((a,b)=>b.r-a.r||b.ks.length-a.ks.length);
   if(sc[0].r)return {d:sc[0].d,why:`a mais estudada nos últimos 7 dias · ${sc[0].r} tema${sc[0].r>1?"s":""}`};
@@ -5220,7 +5309,7 @@ Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complica�
 ${fixedFormat(items.length)}`}
 async function simStart(U){if(!sampleFn)return;const T=simTopics(simCfg.src,U);if(!T.length)return;
   const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):[];if(simCfg.src!=="errs")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
-  if(simCfg.src==="prova"){const p=simProva(),d=p&&discOf(p.discId);if(p){simCfg.pid=p.id;items.forEach(x=>{x.ctx=`para a prova "${p.name}"${d?` da disciplina ${d.name}`:""} da faculdade`;
+  if(simCfg.src==="prova"){const p=simProva(),d=p&&discOf(p.discId);if(p){simCfg.pid=p.id;items.forEach(x=>{x.ctx=`para a prova "${p.name}"${d?` da disciplina ${provaDiscName(p)}`:""} da faculdade`;
     const sr=p.items.find(r=>r.startsWith("S:")&&refTopic(r).k===x.k);if(sr)x.sub=refTopic(sr).sub})}}
   const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0};render();
   let fails=0;
@@ -5853,13 +5942,15 @@ const HELP=[
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
 ["Faculdade e provas",`A Faculdade funciona como pastas: **Semestre › Disciplina › conteúdos**. Toque numa pasta para abrir e fechar.
-- **Semestre:** **+ Semestre** cria a pasta. Dentro dela: **+ Disciplina**, **Colar ementa** (o Claude monta disciplinas, eixos, SPs e objetivos; você revisa antes de salvar) e **Provas do semestre**. Em **⚙ Ajustes**: renomear, nomes dos níveis (NCS, Módulo, Problema…) e arquivar.
+- **Semestre:** **+ Semestre** cria a pasta. Dentro dela: **+ Disciplina**, **Colar ementa** (o Claude monta disciplinas, eixos, SPs e objetivos; você revisa antes de salvar) e **Provas do semestre**. Em **⚙ Ajustes**: renomear, nomes dos níveis (o nome do nível, como SP ou Problema, sem número) e arquivar.
 - **Disciplina:** toque em **+ Conteúdo** e digite o assunto. Se ele já existe na residência, toque em **Usar este** (o progresso é o mesmo nas duas abas). Se não existe, **Criar** faz um conteúdo da faculdade, que aparece na aba Residência com o selo **FAC** na área sugerida (dá para trocar antes de criar). **Enter** cria direto.
 - **Estudar:** toque no conteúdo dentro da disciplina para abrir tudo dele (nível, revisão, subtópicos, questões, anotações), sem sair da Faculdade.
 - **Organizar** (opcional): se o seu curso usa eixos e SPs, crie-os aqui, mova os conteúdos para a SP certa, renomeie ou exclua. O eixo define a área na aba Residência (ex.: Eixo de Hematologia = CM › Hematologia e oncologia). Cada SP mostra o estado: **Não iniciada**, **Em estudo**, **Estudada**, **Dominada** ou **Sem conteúdo**.
 - **Objetivos de aprendizagem** (opcionais, em cada SP) viram subtópicos do primeiro conteúdo da SP: entram no plano, nas revisões e no foco das questões (**gerar questões**).
 - **Detalhes:** tipo, carga horária, professor, tutor, horários, local, ementa e objetivos gerais da disciplina.
-- **Provas:** **+ Prova** na disciplina ou em **Provas do semestre**. A prova começa com todo o conteúdo da disciplina; abra para mudar a data e desmarcar o que não cai. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
+- **Provas:** **+ Prova** na disciplina ou em **Provas do semestre**. A prova começa com o conteúdo que ainda não está em outra prova (a D3 não repete a D2); abra para mudar a data e marcar ou desmarcar o que cai. O que já está em outra prova fica escondido: **Mostrar também o que já está em outras provas** serve para prova cumulativa.
+- **Prova conjunta:** marque mais de uma disciplina ao criar a prova, ou em **Disciplinas desta prova**, dentro dela.
+- **Cai na prova:** dentro de cada SP, toque na prova em que ela cai. A SP marcada leva junto o conteúdo que você adicionar nela depois. Em **+ Conteúdo**, escolha a prova em **Cai na prova**. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
 - **Próximas provas** (no topo da aba; no computador e no tablet deitado, na coluna da direita): cada prova mostra quanto já está pronto, quantos conteúdos faltam e o ritmo para chegar a tempo (a véspera fica para revisar). **Estudar o próximo** abre o conteúdo que falta e liga o Foco; **Simulado da prova** monta questões só com o conteúdo daquela prova (também aparece como **Prova: …** no Simulado misto).
 - **Depois da prova:** por até 30 dias, o painel pergunta como foi. Registre a nota (ex.: 7,5 de 10) e toque no que caiu e você não sabia: vira um erro no caderno, já ligado ao tema. A nota aparece depois na lista de provas realizadas.
 - **Fechamento da SP (tutoria):** abra a SP e preencha **Fechamento**. Em **Começar a estudar** você escolhe com quantos dias de antecedência (sugestão: 7). Nesse período, os objetivos e os conteúdos dela entram no plano do dia (1 vaga; 2 nos 2 últimos dias), a SP mostra **fecha em N dias** e aparece em **Próximas provas › Fechamentos de SP** com o que falta e **Estudar o próximo**. Conta como pronto o conteúdo estudado nesse período (e até 3 dias antes dele) e o objetivo marcado.

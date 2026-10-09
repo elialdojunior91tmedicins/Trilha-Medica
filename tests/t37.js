@@ -47,7 +47,7 @@ ok(await p.evaluate(()=>{const it=FAC_ITEMS.find(x=>x.t==="Cascata da coagulaç�
 await p.evaluate(()=>setView("temas"));ok(await p.evaluate(()=>[...document.querySelectorAll(".sphead .spname")].some(x=>x.textContent==="Hematologia básica")),"especialidade personalizada aparece como grupo em PED");
 await p.click('#tabF');await p.waitForTimeout(100);
 // prova agrupada por SP
-await p.evaluate(()=>{facOpenProv.add('s');render()});await p.selectOption('#fpdisc-s',did);await p.fill('#fpn-s','Avaliação Hemato');await p.fill('#fpd-s',await p.evaluate(()=>fromNum(dnum(today())+20)));await p.click('#fsp-s form.fpform button');await p.waitForTimeout(150);
+await p.evaluate(did=>{facOpenProv.add('s');facNew.provs={d:did};render()},did);await p.fill('#fpn-s','Avaliação Hemato');await p.fill('#fpd-s',await p.evaluate(()=>fromNum(dnum(today())+20)));await p.click('#fsp-s form.fpform button[type=submit]');await p.waitForTimeout(150);
 const pr=await p.evaluate(()=>fac.provas.find(x=>x.name==="Avaliação Hemato"));ok(pr&&pr.items.length===2,"prova nova já inclui os temas das SPs ("+(pr&&pr.items.length)+")");
 const gid=await p.evaluate(()=>document.querySelector('.fpgh input').id);await p.click('#'+gid);await p.waitForTimeout(100);
 ok(await p.evaluate(()=>fac.provas.find(x=>x.name==="Avaliação Hemato").items.length===0),"desmarcar a SP na prova tira todos os temas dela");

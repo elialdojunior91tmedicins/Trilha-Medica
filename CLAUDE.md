@@ -61,6 +61,10 @@ consultado quando há dúvida. Responda em português.
 - Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
   guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
+  Provas de várias disciplinas: `p.discId` = principal e `p.discIds` (só com 2+) = todas; use `provaDids`/`provaHas`/`provaDiscs`/`provaDiscName`
+  (nunca `p.discId===d.id`). SPs ligadas `p.sps` (`provaSetSp`; `facLinkSync` em `facNormalize` puxa o conteúdo novo delas). Prova nova começa com
+  `unassigned(d,p)` (o que não está em outra prova); no card, o que está em outra prova (`refElse`/`spElse`) fica oculto (`facProvaAll` mostra).
+  "Cai na prova": `spProvaEl` na SP e `#fcpv-<disc>` no + Conteúdo (`provaPut`). Nome de nível com número é recusado e avisado (`#flvfix-<sem>`).
   Painel `#facProvas` (`renderFacProvas`: `provaStats`/`provaRitmo`/`provaNext`, `provaStudyNext` → Foco + `facGoRef`, `provaSimGo` →
   `simCfg={src:"prova",pid}`; `simProva()`, `simSrcList()`, item `ctx` no `simPrompt`). Depois da prova: `provasToClose()` (até 30 dias,
   sem `p.res`) → `provaResEl` (`facRes`; `p.res={d,e,n?,of?,skip?}`; erros via `errFormEl` com `s`=nome da prova).
