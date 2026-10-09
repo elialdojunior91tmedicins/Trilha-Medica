@@ -64,6 +64,8 @@ consultado quando há dúvida. Responda em português.
   Provas de várias disciplinas: `p.discId` = principal e `p.discIds` (só com 2+) = todas; use `provaDids`/`provaHas`/`provaDiscs`/`provaDiscName`
   (nunca `p.discId===d.id`). SPs ligadas `p.sps` (`provaSetSp`; `facLinkSync` em `facNormalize` puxa o conteúdo novo delas). Prova nova começa com
   `unassigned(d,p)` (o que não está em outra prova); no card, o que está em outra prova (`refElse`/`spElse`) fica oculto (`facProvaAll` mostra).
+  Nova prova: `provaFormEl(key,hostSem)` = Semestre (`#fpsem-<key>`) › disciplinas (chips `#fpdisc-<key>-<disc>`) › nome/data; `key` = id do semestre (em `semProvasBlock`)
+  ou `"g"` (botão `#fpgNew` no painel Próximas provas, `facProvNew`). Estado em `facNew["prov"+key]={s,ds,n,dt}`.
   "Cai na prova": `spProvaEl` na SP e `#fcpv-<disc>` no + Conteúdo (`provaPut`). Nome de nível com número é recusado e avisado (`#flvfix-<sem>`).
   Painel `#facProvas` (`renderFacProvas`: `provaStats`/`provaRitmo`/`provaNext`, `provaStudyNext` → Foco + `facGoRef`, `provaSimGo` →
   `simCfg={src:"prova",pid}`; `simProva()`, `simSrcList()`, item `ctx` no `simPrompt`). Depois da prova: `provasToClose()` (até 30 dias,

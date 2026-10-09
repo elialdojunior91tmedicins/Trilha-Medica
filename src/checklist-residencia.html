@@ -988,7 +988,11 @@ li.fspr.open{background:var(--bg)}
 .fpform>*{flex:1 1 150px;min-width:0}
 .fpform>.btn{flex:0 0 auto}
 .fpform input[type=date]{flex:0 1 170px}
-.fpform>fieldset.fpdiscs{flex:1 1 100%}
+.fpform>fieldset.fpdiscs,.fpform>.fpsemsel,.fpform>.fpnone2{flex:1 1 100%}
+.fpsemsel select{flex:1 1 auto;min-width:0;max-width:100%}
+.fpnone2{margin:0}
+.fptools{align-items:center;margin:2px 0}
+.fpgform{margin-top:8px}
 .fpdiscs{display:flex;flex-direction:column;gap:6px;border:0;margin:0;padding:0;min-width:0}
 .fpdiscs legend{padding:0;margin-bottom:6px;font:600 .78rem var(--body);color:var(--muted)}
 .fpdiscs .chips,.fsppv .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -3150,7 +3154,7 @@ let facShown=new Set(),facSemInit=false;
 const FOLDER_SVG=`<svg class="ffold" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.2l2 2.2h8.8A1.5 1.5 0 0 1 21 8.7v9.8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></svg>`;
 
 /* ---------- Faculdade: painel de provas, simulado da prova, depois da prova, materiais e foco por disciplina ---------- */
-let facProvAll=false,facRes=null,facLinkMsg="";
+let facProvAll=false,facRes=null,facLinkMsg="",facProvNew=false;
 /* prontidão de uma prova: o que já está estudado e o ritmo para o resto (a véspera fica para revisar) */
 function provaStats(p){const refs=p.items.filter(refOk),pend=provaPending(p),dd=daysTo(p.date),tot=refs.length,done=tot-pend.length,avail=Math.max(1,dd-1),rate=pend.length/avail;
   const lvl=!tot||!pend.length?"ok":dd<=1||rate>1.5?"bad":rate>0.5?"warn":"ok";return {refs,pend,tot,done,dd,rate,lvl}}
@@ -3208,11 +3212,15 @@ function renderFacProvas(){const box=$("#facProvas");if(!box)return;box.innerHTM
   const up=upcomingProvas(),cl=provasToClose();box.hidden=!fac.sems.length;if(box.hidden)return;
   box.appendChild(el(`<div class="dhead"><h2 id="fph">Próximas provas</h2><span class="todaydate"></span></div>`));
   box.querySelector(".todaydate").textContent=up.length?`${up.length} ${up.length===1?"prova":"provas"}`:"";box.querySelector(".dhead").appendChild(helpBtn("Faculdade e provas"));
-  if(downloadsFn&&(up.length||spFechas(365).length)){const cb=el(`<button class="link fcal" type="button" id="icsB">Adicionar ao calendário</button>`);cb.title="Gera um arquivo com provas e fechamentos para o Google Agenda ou o Calendário do celular";cb.onclick=icsSave;box.appendChild(cb)}
+  {const tl=el(`<div class="ftools fptools"></div>`),nb=el(`<button class="btn" type="button" id="fpgNew" aria-expanded="${facProvNew}">+ Nova prova</button>`);
+    nb.onclick=()=>{facProvNew=!facProvNew;render();if(facProvNew)setTimeout(()=>{const x=document.getElementById("fpn-g")||document.getElementById("fpsem-g");if(x)x.scrollIntoView({block:"center",behavior:"smooth"})},60)};tl.appendChild(nb);
+    if(downloadsFn&&(up.length||spFechas(365).length)){const cb=el(`<button class="link fcal" type="button" id="icsB">Adicionar ao calendário</button>`);cb.title="Gera um arquivo com provas e fechamentos para o Google Agenda ou o Calendário do celular";cb.onclick=icsSave;tl.appendChild(cb)}
+    box.appendChild(tl);
+    if(facProvNew){const ad=el(`<div class="fpadd fpgform"><span class="glabel">Nova prova</span></div>`);ad.appendChild(provaFormEl("g"));box.appendChild(ad)}}
   if(icsMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=icsMsg;box.appendChild(m);icsMsg=""}
   cl.forEach(p=>box.appendChild(provaResEl(p)));
   const sb=spFechaBlock();
-  if(!up.length&&!sb){box.appendChild(el(`<p class="cempty">Nenhuma prova futura. Cadastre em <b>+ Prova</b>, dentro da disciplina: aqui aparece quanto falta e o ritmo para chegar pronto.</p>`));return}
+  if(!up.length&&!sb){box.appendChild(el(`<p class="cempty">Nenhuma prova futura. Cadastre em <b>+ Nova prova</b> (acima) ou em <b>+ Prova</b>, dentro da disciplina: aqui aparece quanto falta e o ritmo para chegar pronto.</p>`));return}
   const L=facProvAll?up:up.slice(0,3);L.forEach(p=>box.appendChild(provaDashItem(p)));
   if(up.length>3){const t=el(`<button class="link" type="button"></button>`);t.textContent=facProvAll?"Mostrar só as 3 próximas":`Ver todas as ${up.length} provas`;t.onclick=()=>{facProvAll=!facProvAll;render()};box.appendChild(t)}
   if(sb)box.appendChild(sb)}
@@ -3374,24 +3382,35 @@ function semProvasBlock(s,L){const all=semProvas(s),up=all.filter(p=>p.date>=tod
   else{const ol=el(`<ol class="fprovas"></ol>`);up.forEach(p=>ol.appendChild(provaCard(p,L)));b.appendChild(ol)}
   if(past.length){const t=el(`<button class="link" type="button"></button>`);const sh=facShowPast.has(s.id);t.textContent=sh?"Ocultar provas realizadas":`Ver provas realizadas (${past.length})`;t.onclick=()=>{sh?facShowPast.delete(s.id):facShowPast.add(s.id);render()};b.appendChild(t);
     if(sh){const ol=el(`<ol class="fprovas"></ol>`);past.forEach(p=>ol.appendChild(provaCard(p,L)));b.appendChild(ol)}}
-  const ds=semDiscs(s.id),ad=el(`<div class="fpadd"><span class="glabel">Nova prova</span></div>`);
-  if(!ds.length){ad.appendChild(el(`<p class="gtext how">Cadastre uma ${esc(L.disc.toLowerCase())} primeiro.</p>`));b.appendChild(ad);w.appendChild(b);return w}
-  const N=facNew["prov"+s.id]||(facNew["prov"+s.id]={});if(!ds.some(d=>d.id===N.d))N.d=ds[0].id;
-  if(!Array.isArray(N.ds)||!N.ds.length||N.ds[0]!==N.d&&!N.ds.includes(N.d))N.ds=[N.d];N.ds=N.ds.filter(id=>ds.some(d=>d.id===id));if(!N.ds.length)N.ds=[N.d];
-  const pf=el(`<form class="fpform"><input class="etext" maxlength="60" placeholder="Nome (ex.: D2 NCS 6)" aria-label="Nome da prova"><input class="etext" type="date" aria-label="Data da prova"><button class="btn primary" type="submit">Adicionar prova</button></form>`);
-  const [pn,pdt]=pf.querySelectorAll("input");pn.id="fpn-"+s.id;pdt.id="fpd-"+s.id;
-  if(ds.length>1){const fs=el(`<fieldset class="fpdiscs"><legend></legend><div class="chips"></div></fieldset>`);fs.querySelector("legend").textContent=`${plural(L.disc)} da prova (marque mais de uma se a prova for conjunta)`;
-    ds.forEach(d=>{const on=N.ds.includes(d.id),b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=`fpdisc-${s.id}-${d.id}`;b.textContent=d.name;
-      b.onclick=()=>{N.ds=on?N.ds.filter(x=>x!==d.id):[...N.ds,d.id];if(!N.ds.length)N.ds=[d.id];N.d=N.ds[0];render()};fs.querySelector(".chips").appendChild(b)});
-    pf.insertBefore(fs,pf.firstChild)}
+  const ad=el(`<div class="fpadd"><span class="glabel">Nova prova</span></div>`);ad.appendChild(provaFormEl(s.id,s.id));b.appendChild(ad);w.appendChild(b);return w}
+
+/* formulário de nova prova: Semestre › disciplina(s) desse semestre › nome e data.
+   key = onde o formulário está (id do semestre, ou "g" no painel Próximas provas); hostSem = semestre que ele abre escolhido */
+function provaFormEl(key,hostSem){const N=facNew["prov"+key]||(facNew["prov"+key]={});
+  if(!semOf(N.s)){const dd=N.d&&discOf(N.d);N.s=dd?dd.semId:(semOf(hostSem)?hostSem:(activeSems()[0]||(fac.sems[0]||{}).id))}
+  const sem=semOf(N.s),L=lv(sem),ds=semDiscs(N.s);
+  let sel=(Array.isArray(N.ds)?N.ds:(N.d?[N.d]:[])).filter(id=>ds.some(d=>d.id===id));if(!sel.length&&ds.length)sel=[ds[0].id];N.ds=sel;N.d=sel[0];
+  const box=el(`<div class="fpnewbox"></div>`),pf=el(`<form class="fpform"><label class="fcru fpsemsel">Semestre <select class="etext"></select></label></form>`),ss=pf.querySelector("select");ss.id="fpsem-"+key;
+  fac.sems.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.name+(x.archived?" (arquivado)":"");ss.appendChild(o)});ss.value=N.s;
+  ss.onchange=()=>{N.s=ss.value;N.ds=[];delete N.d;render()};
+  box.appendChild(pf);
+  if(!ds.length){pf.appendChild(el(`<p class="gtext how fpnone2">Este semestre ainda não tem ${esc(L.disc.toLowerCase())}. Cadastre uma primeiro, dentro do semestre.</p>`));return box}
+  const fs=el(`<fieldset class="fpdiscs"><legend></legend><div class="chips"></div></fieldset>`);fs.querySelector("legend").textContent=`${plural(L.disc)} da prova${ds.length>1?" (marque mais de uma se a prova for conjunta)":""}`;
+  ds.forEach(d=>{const on=sel.includes(d.id),b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.id=`fpdisc-${key}-${d.id}`;b.textContent=d.name;
+    b.onclick=()=>{N.ds=on?sel.filter(x=>x!==d.id):[...sel,d.id];if(!N.ds.length)N.ds=[d.id];N.d=N.ds[0];render()};fs.querySelector(".chips").appendChild(b)});
+  pf.appendChild(fs);
+  const pn=el(`<input class="etext" maxlength="60" placeholder="Nome (ex.: D2 NCS 6)" aria-label="Nome da prova">`),pdt=el(`<input class="etext" type="date" aria-label="Data da prova">`);pn.id="fpn-"+key;pdt.id="fpd-"+key;
+  pf.append(pn,pdt,el(`<button class="btn primary" type="submit">Adicionar prova</button>`));
   pn.value=N.n||"";pdt.value=N.dt||"";pn.oninput=()=>N.n=pn.value;pdt.oninput=()=>N.dt=pdt.value;
   const er=el(`<p class="err" hidden></p>`);
-  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,sel=N.ds.map(discOf).filter(Boolean);
-    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!sel.length){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
-    const p={id:fuid(),discId:sel[0].id,name:n.slice(0,60),date:dt,items:[],done:[]};provaSetDids(p,sel.map(d=>d.id));
-    const sps=[];sel.forEach(d=>{const u=unassigned(d,p);u.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});sps.push(...u.sps)});if(sps.length)p.sps=sps;
-    fac.provas.push(p);facProvaOpen.add(p.id);facNew["prov"+s.id]={d:sel[0].id};saveFac();provaChanged(p,"nova prova")};
-  ad.append(pf,er,el(`<p class="gtext how">A prova começa marcada com o conteúdo que ainda não está em outra prova. Abra a prova para ajustar.</p>`));b.appendChild(ad);w.appendChild(b);return w}
+  pf.onsubmit=e=>{e.preventDefault();const n=pn.value.trim(),dt=pdt.value,pick=N.ds.map(discOf).filter(Boolean);
+    if(!n||!/^\d{4}-\d{2}-\d{2}$/.test(dt)||!pick.length){er.hidden=false;er.textContent=!n?"Dê um nome à prova.":"Escolha a data da prova.";return}
+    const p={id:fuid(),discId:pick[0].id,name:n.slice(0,60),date:dt,items:[],done:[]};provaSetDids(p,pick.map(d=>d.id));
+    const sps=[];pick.forEach(d=>{const u=unassigned(d,p);u.refs.forEach(r=>{if(!p.items.includes(r))p.items.push(r)});sps.push(...u.sps)});if(sps.length)p.sps=sps;
+    fac.provas.push(p);facOpenSem.add(N.s);facOpenProv.add(N.s);facProvaOpen.add(p.id);if(sem.archived)facShowArch=true;
+    const away=key==="g"||N.s!==hostSem;facNew["prov"+key]={s:N.s,ds:[pick[0].id]};if(key==="g")facProvNew=false;
+    saveFac();provaChanged(p,"nova prova");if(away)setTimeout(()=>scrollToId("fp-"+p.id),60)};
+  box.append(er,el(`<p class="gtext how">A prova começa marcada com o conteúdo que ainda não está em outra prova. Abra a prova para ajustar.</p>`));return box}
 
 /* modo provas e regras do plano */
 function renderFacCrunch(target){const fc=target||$("#facCrunch");fc.innerHTML="";const ov=crunchOverride(),auto=examCrunchAuto(),mode=ov?ov.mode:"auto";
@@ -3496,7 +3515,7 @@ function discCard(d,L){const open=facOpenDisc.has(d.id),edit=open&&facEditDisc.h
   // ações da disciplina
   const tb=el(`<div class="fdtools"></div>`),infoOpen=facDetOpen.has(d.id),adding=facAddC===d.id;
   const ab=el(`<button class="btn primary" type="button" aria-expanded="${adding}">+ Conteúdo</button>`);ab.onclick=()=>{facAddC=adding?null:d.id;render();if(!adding)setTimeout(()=>{const x=document.getElementById("fq-c"+d.id);if(x)x.focus()},40)};
-  const pb=el(`<button class="mini" type="button">+ Prova</button>`);pb.onclick=()=>{facNew["prov"+d.semId]={d:d.id};facOpenProv.add(d.semId);render();const x=document.getElementById("fpn-"+d.semId);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.focus({preventScroll:true})}};
+  const pb=el(`<button class="mini" type="button">+ Prova</button>`);pb.onclick=()=>{facNew["prov"+d.semId]={s:d.semId,d:d.id};facOpenProv.add(d.semId);render();const x=document.getElementById("fpn-"+d.semId);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.focus({preventScroll:true})}};
   const ib=el(`<button class="mini" type="button" aria-expanded="${infoOpen}">Detalhes</button>`);ib.onclick=()=>{facDetOpen.has(d.id)?facDetOpen.delete(d.id):facDetOpen.add(d.id);render()};
   const eb=el(`<button class="mini fedbtn" type="button" aria-pressed="${edit}"></button>`);eb.textContent=edit?"Concluir":"Organizar";
   eb.onclick=()=>{edit?facEditDisc.delete(d.id):facEditDisc.add(d.id);closeEdit();facArm=null;render()};
@@ -5925,7 +5944,7 @@ const HELP=[
 - **Organizar** (opcional): se o seu curso usa eixos e SPs, crie-os aqui, mova os conteúdos para a SP certa, renomeie ou exclua. O eixo define a área na aba Residência (ex.: Eixo de Hematologia = CM › Hematologia e oncologia). Cada SP mostra o estado: **Não iniciada**, **Em estudo**, **Estudada**, **Dominada** ou **Sem conteúdo**.
 - **Objetivos de aprendizagem** (opcionais, em cada SP) viram subtópicos do primeiro conteúdo da SP: entram no plano, nas revisões e no foco das questões (**gerar questões**).
 - **Detalhes:** tipo, carga horária, professor, tutor, horários, local, ementa e objetivos gerais da disciplina.
-- **Provas:** **+ Prova** na disciplina ou em **Provas do semestre**. A prova começa com o conteúdo que ainda não está em outra prova (a D3 não repete a D2); abra para mudar a data e marcar ou desmarcar o que cai. O que já está em outra prova fica escondido: **Mostrar também o que já está em outras provas** serve para prova cumulativa.
+- **Provas:** **+ Nova prova** (no painel Próximas provas, no topo) ou **+ Prova** na disciplina ou em **Provas do semestre**. O formulário tem duas etapas: escolha o **semestre** e, depois, a(s) **disciplina(s)** desse semestre. A prova começa com o conteúdo que ainda não está em outra prova (a D3 não repete a D2); abra para mudar a data e marcar ou desmarcar o que cai. O que já está em outra prova fica escondido: **Mostrar também o que já está em outras provas** serve para prova cumulativa.
 - **Prova conjunta:** marque mais de uma disciplina ao criar a prova, ou em **Disciplinas desta prova**, dentro dela.
 - **Cai na prova:** dentro de cada SP, toque na prova em que ela cai. A SP marcada leva junto o conteúdo que você adicionar nela depois. Em **+ Conteúdo**, escolha a prova em **Cai na prova**. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
 - **Próximas provas** (no topo da aba; no computador e no tablet deitado, na coluna da direita): cada prova mostra quanto já está pronto, quantos conteúdos faltam e o ritmo para chegar a tempo (a véspera fica para revisar). **Estudar o próximo** abre o conteúdo que falta e liga o Foco; **Simulado da prova** monta questões só com o conteúdo daquela prova (também aparece como **Prova: …** no Simulado misto).

@@ -11,7 +11,7 @@ await p.evaluate(()=>{const it=BYKEY[dayPlan.items[0].k];toggleSub(it,subList(it
 const started=await p.evaluate(()=>dayPlan.items[0].k);
 // prova distante: não muda
 await p.evaluate(()=>{setView("fac");facOpenDisc.add("d");render()});
-const addProva=async(n,dd)=>{await p.evaluate(()=>{setView('fac');facOpenSem.add('s');facOpenProv.add('s');render()});await p.fill('#fpn-s',n);await p.fill('#fpd-s',await p.evaluate(dd=>fromNum(dnum(today())+dd),dd));await p.click('#fsp-s .fpform button')};
+const addProva=async(n,dd)=>{await p.evaluate(()=>{setView('fac');facOpenSem.add('s');facOpenProv.add('s');render()});await p.fill('#fpn-s',n);await p.fill('#fpd-s',await p.evaluate(dd=>fromNum(dnum(today())+dd),dd));await p.click('#fsp-s .fpform button[type=submit]')};
 await addProva("P longe",15);ok(JSON.stringify(await plan())===JSON.stringify(p0),"prova em 15 dias não mexe no plano de hoje");
 ok(await p.evaluate(()=>document.getElementById("planNote").hidden),"sem aviso");
 await addProva("P1",4);const p1=await plan();console.log("depois",p1);

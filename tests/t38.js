@@ -29,7 +29,7 @@ await p.click(`#sp-${sid} .fsug li:has-text("Distúrbios da coagulação") butto
 await p.fill('#fo-'+sid,'Descrever a cascata\nDiferenciar PTI de PTT');await p.click(`#sp-${sid} .fobjadd button`);await p.waitForTimeout(200);
 await p.click('#fd-'+did+' .fdfoot .btn');await p.waitForTimeout(150);
 ok(await p.evaluate(d=>!facEditDisc.has(d)&&!document.querySelector('#fd-'+d+' .fadd'),did),"Concluir edição esconde os campos de montar");
-await p.click('#fsp-'+sem+' .fsph');await p.fill('#fpn-'+sem,'Prova 1');await p.fill('#fpd-'+sem,await p.evaluate(()=>fromNum(dnum(today())+10)));await p.click('#fsp-'+sem+' .fpform button');await p.waitForTimeout(300);
+await p.click('#fsp-'+sem+' .fsph');await p.fill('#fpn-'+sem,'Prova 1');await p.fill('#fpd-'+sem,await p.evaluate(()=>fromNum(dnum(today())+10)));await p.click('#fsp-'+sem+' .fpform button[type=submit]');await p.waitForTimeout(300);
 await p.click(`#sp-${sid} .fobj li:has-text("Descrever") label`);await p.waitForTimeout(900);
 await p.click('#tabI');await p.waitForTimeout(200);
 const ini=await p.evaluate(()=>({days:document.querySelector('#iProva .ipdays b').textContent,name:document.querySelector('#iProva .ipname').textContent,fring:[...document.querySelectorAll('#iStats .ringc b')].map(x=>x.textContent),today:!!document.querySelector('#viewInicio .card.today').offsetParent,revs:!!document.querySelector('#viewInicio .card.revs').offsetParent}));
