@@ -598,6 +598,9 @@ html:not([data-cols="2"]) #facWeek{display:none!important}
 .flinks li a{color:var(--accent);font-weight:600;overflow-wrap:anywhere}.flhost{font-size:.76rem;color:var(--muted);flex:1}
 .flinks li .link{font-size:.78rem}
 .flform{display:flex;flex-direction:column;gap:6px}
+.fspfech{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.fpd.fpsp{border-left-color:var(--l1)}.fpd.fpsp.lv-bad{border-left-color:var(--bad)}
+.fspfd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}.fspfd .how{flex:1 1 100%;margin:0}
 .fdbody>.flinks{padding:10px 18px 12px;border-top:1px solid var(--line)}
 @media (max-width:480px){.fdbody>.flinks{padding-left:14px;padding-right:14px}}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac{max-width:none}
@@ -1769,6 +1772,7 @@ function buildPlan(){
   for(const w of [3,2,1]){const pools=AREAS.map(a=>a.items.filter(i=>isNew(get(i.key))&&wOf(i)===w));
     while(fresh.length<PLAN_N&&pools.some(p=>p.length))pools.forEach(p=>{if(p.length&&fresh.length<PLAN_N)fresh.push(p.shift())});}
   const F=facPlanPicks(),CR=examCrunch();if(CR.active)F.slots=PLAN_N;
+  spPlanPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`Fechamento ${o.lab} · ${inLabel(o.d)}`,sub:o.x.sub})}});
   F.picks.slice(0,F.slots).forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`${o.p.name} · ${inLabel(o.d)}`,sub:o.x.sub})}});
   if(CR.active)return plan;// modo provas: nada da residência
   weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
@@ -2719,7 +2723,7 @@ function refKind(r){return r.startsWith("O:")?"Próprio":r.startsWith("S:")?"Sub
 function activeSems(){return fac.sems.filter(s=>!s.archived).map(s=>s.id)}
 function upcomingProvas(){const t=today(),act=new Set(activeSems());
   return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
-function itemStudied(p,r){if((p.done||[]).includes(r))return true;const x=refTopic(r);if(!x||!BYKEY[x.k])return true;const s=get(x.k),start=fromNum(dnum(p.date)-FAC_WIN);
+function itemStudied(p,r){if((p.done||[]).includes(r))return true;const x=refTopic(r);if(!x||!BYKEY[x.k])return true;const s=get(x.k),start=fromNum(dnum(p.date)-(p.win||FAC_WIN));
   if(!(s.last&&s.last>=start))return false;if(x.sub){const sb=subList(BYKEY[x.k]).find(y=>y.t===x.sub);return !sb||sb.done}return true}
 function provaPending(p){return p.items.filter(r=>refOk(r)&&!itemStudied(p,r))}
 function daysTo(date){return dnum(date)-dnum(today())}
@@ -2782,7 +2786,7 @@ function exactDup(q){const n=norm(q).trim();return FAC_ITEMS.find(it=>norm(it.t)
 const LV_DEF={disc:"Disciplina",eixo:"Eixo",sp:"SP"};
 const lv=sem=>({...LV_DEF,...((sem&&sem.lv)||{})});
 function facNormalize(){fac.discs.forEach(d=>{if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.eixos))d.eixos=[];if(!Array.isArray(d.sps))d.sps=[];
-  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links})})}
+  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone})})}
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
 function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===id);if(s)return {d,s}}return null}
@@ -3055,9 +3059,11 @@ function renderFacProvas(){const box=$("#facProvas");if(!box)return;box.innerHTM
   box.appendChild(el(`<div class="dhead"><h2 id="fph">Próximas provas</h2><span class="todaydate"></span></div>`));
   box.querySelector(".todaydate").textContent=up.length?`${up.length} ${up.length===1?"prova":"provas"}`:"";
   cl.forEach(p=>box.appendChild(provaResEl(p)));
-  if(!up.length){box.appendChild(el(`<p class="cempty">Nenhuma prova futura. Cadastre em <b>+ Prova</b>, dentro da disciplina: aqui aparece quanto falta e o ritmo para chegar pronto.</p>`));return}
+  const sb=spFechaBlock();
+  if(!up.length&&!sb){box.appendChild(el(`<p class="cempty">Nenhuma prova futura. Cadastre em <b>+ Prova</b>, dentro da disciplina: aqui aparece quanto falta e o ritmo para chegar pronto.</p>`));return}
   const L=facProvAll?up:up.slice(0,3);L.forEach(p=>box.appendChild(provaDashItem(p)));
-  if(up.length>3){const t=el(`<button class="link" type="button"></button>`);t.textContent=facProvAll?"Mostrar só as 3 próximas":`Ver todas as ${up.length} provas`;t.onclick=()=>{facProvAll=!facProvAll;render()};box.appendChild(t)}}
+  if(up.length>3){const t=el(`<button class="link" type="button"></button>`);t.textContent=facProvAll?"Mostrar só as 3 próximas":`Ver todas as ${up.length} provas`;t.onclick=()=>{facProvAll=!facProvAll;render()};box.appendChild(t)}
+  if(sb)box.appendChild(sb)}
 /* ----- foco por disciplina ----- */
 function discFocusSec(d,from){const keys=new Set(topicKeysOf(discRefs(d)));
   return foSum(foSess.filter(x=>dnum(x.d)>=from&&(x.ref==="D:"+d.id||(x.ref||"").startsWith("T:")&&keys.has(x.ref.slice(2)))))}
@@ -3082,6 +3088,42 @@ function linksBlock(o,key,always){const L=Array.isArray(o.links)?o.links:[],fk="
     f.onsubmit=e=>{e.preventDefault();const u=normUrl(ui2.value);if(!u){F.msg="Esse link não parece válido. Cole o endereço completo.";render();return}
       o.links=[...L,{id:fuid(),u:u.slice(0,600),t:ti.value.trim().slice(0,80)}];delete facNew[fk];saveFac();render()};
     f.querySelectorAll("button")[1].onclick=()=>{delete facNew[fk];render()};w.appendChild(f)}
+  return w}
+
+/* ---------- fechamento da SP (tutoria): objetivos e conteúdos entram no plano na semana antes ---------- */
+const SP_WIN=10,SP_LEAD=7,SP_SHOW=14;
+/* a SP vira uma "mini prova": conteúdos + objetivos ainda não marcados; vale o que foi estudado nos 10 dias antes */
+function spAsProva(d,s){const pr=primaryRef(s),pk=pr&&refTopic(pr).k,obj=pk&&BYKEY[pk]?s.objs.map(o=>`S:${pk}:${o}`):[];
+  return {id:"sp:"+s.id,discId:d.id,name:`${spShort(s.name)} (fechamento)`,date:s.fech,items:[...s.items,...obj],done:s.fdone||[],win:SP_WIN,sp:s}}
+function spFechas(maxDays){const t=today(),act=new Set(activeSems()),out=[];
+  fac.discs.forEach(d=>{if(!act.has(d.semId))return;(d.sps||[]).forEach(s=>{if(typeof s.fech!=="string"||s.fech<t)return;const dd=daysTo(s.fech);if(dd<=maxDays)out.push({d,s,dd,p:spAsProva(d,s)})})});
+  return out.sort((a,b)=>a.dd-b.dd)}
+/* vagas no plano do dia: 1 por SP (2 nos 2 últimos dias), no máximo 2 no total */
+function spPlanPicks(){const out=[],seen=new Set();
+  spFechas(SP_LEAD).forEach(f=>{let n=f.dd<=2?2:1;for(const r of provaPending(f.p)){if(!n||out.length>=2)break;const x=refTopic(r);if(!x||seen.has(x.k))continue;seen.add(x.k);out.push({x,it:BYKEY[x.k],d:f.dd,lab:spShort(f.s.name)});n--}});
+  return out}
+/* ir estudar: o objetivo abre o conteúdo principal da SP (é lá que os objetivos estão) */
+function spGo(d,s,r){const x=refTopic(r);facGoRef(d,x&&x.sub?primaryRef(s):r)}
+function spStudyNext(f){const r=provaNext(f.p);if(!r)return;const k=refTopic(r).k;
+  foPick.ref="T:"+k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}spGo(f.d,f.s,r)}
+function spFechaBlock(){const L=spFechas(SP_SHOW);if(!L.length)return null;
+  const w=el(`<div class="fspfech"><span class="glabel">Fechamentos de SP</span></div>`);
+  L.forEach(f=>{const st=provaStats(f.p),nx=provaNext(f.p),[od,ot]=objStats(f.s);
+    const r=el(`<div class="fpd fpsp lv-${st.lvl}" id="fpsp-${f.s.id}"><div class="fpdh"><b></b><span class="fcount${f.dd<=3?" soon":""}"></span></div><span class="ks"></span><div class="meter"><i style="width:${st.tot?st.done/st.tot*100:0}%"></i></div><p class="fpdtx"></p></div>`);
+    r.querySelector("b").textContent=f.s.name;r.querySelector(".fcount").textContent=`fecha ${inLabel(f.dd)}`;r.querySelector(".ks").textContent=`${f.d.name} · ${dayLabel(f.s.fech)}`;
+    r.querySelector(".fpdtx").textContent=st.tot?`${st.done} de ${st.tot} prontos${ot?` (${od} de ${ot} objetivos)`:""}.${st.pend.length?` Próximo: ${refLabel(nx)}.`:" Tudo pronto para o fechamento."}`:"Ligue conteúdos ou escreva os objetivos desta SP.";
+    const a=el(`<div class="btns"></div>`);
+    if(nx){const b=el(`<button class="btn" type="button">Estudar o próximo</button>`);b.title="Abre o conteúdo e liga o Foco";b.onclick=()=>spStudyNext(f);a.appendChild(b)}
+    const v=el(`<button class="link" type="button">Ver a SP</button>`);v.onclick=()=>{facOpenSem.add(f.d.semId);facOpenDisc.add(f.d.id);facOpenSP.add(f.s.id);facClosedEixo.delete((f.s.eixoId&&eixoOf(f.d,f.s.eixoId)?f.s.eixoId:"none")+":"+f.d.id);render();scrollToId("sp-"+f.s.id)};a.appendChild(v);
+    r.appendChild(a);w.appendChild(r)});
+  return w}
+/* data de fechamento dentro da SP */
+function spFechEl(d,s,L){const w=el(`<div class="fspfd"><label class="fcru">Fechamento <input type="date" class="etext"></label></div>`),i=w.querySelector("input");i.id="fech-"+s.id;i.value=s.fech||"";
+  i.setAttribute("aria-label",`Data de fechamento da ${L.sp}`);
+  i.onchange=()=>{const v=i.value;if(v&&!/^\d{4}-\d{2}-\d{2}$/.test(v))return;if(v)s.fech=v;else{delete s.fech;delete s.fdone}saveFac();
+    const dd=v?daysTo(v):99;if(dd>=0&&dd<=SP_LEAD)provaChanged({date:v,name:spShort(s.name)},"fechamento da");else render()};
+  if(s.fech){const c=el(`<button class="link" type="button">tirar a data</button>`);c.onclick=()=>{delete s.fech;delete s.fdone;saveFac();redoPlan()};w.appendChild(c)}
+  w.appendChild(el(`<p class="gtext how">Com a data, os objetivos e os conteúdos desta ${esc(L.sp)} entram no plano do dia nos ${SP_LEAD} dias antes do fechamento (1 vaga; 2 nos últimos 2 dias) e aparecem em Próximas provas.</p>`));
   return w}
 
 function renderFac(){
@@ -3375,6 +3417,7 @@ function spRow(d,s,L,edit,i){const open=facOpenSP.has(s.id),keys=topicKeysOf(s.i
   const m=li.querySelector(".meta"),add=(t,c)=>{const x=document.createElement("span");x.textContent=t;if(c)x.className=c;m.appendChild(x)};
   if(keys.length)add(`${keys.length} conteúdo${keys.length>1?"s":""}`);else add("sem conteúdo ainda","late");
   if(ot)add(`${od}/${ot} objetivos`);if(due)add(due>1?`${due} revisões pendentes`:"revisão pendente","late");
+  if(typeof s.fech==="string"){const fd=daysTo(s.fech);if(fd>=0)add(`fecha ${inLabel(fd)}`,"fbadge"+(fd<=3?" soon":""));else if(fd>=-7)add("fechada")}
   li.querySelector(".item").onclick=()=>{open?facOpenSP.delete(s.id):facOpenSP.add(s.id);render()};
   if(open)li.appendChild(spDetail(d,s,L,edit));return li}
 
@@ -3394,6 +3437,7 @@ function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),l=s0.l||0,
 
 function spDetail(d,s,L,edit){const box=el(`<div class="detail fspd"></div>`),refs=s.items.filter(refOk),pr=primaryRef(s),pit=pr&&BYKEY[refTopic(pr).k];
   if(edit&&facEdit==="s"+s.id)box.appendChild(nameEdit("s"+s.id,s.name,v=>{s.name=v.slice(0,120)}));
+  box.appendChild(spFechEl(d,s,L));
   // temas
   const g=el(`<div class="grp"><span class="glabel"></span><ol class="fsptl"></ol></div>`);g.querySelector(".glabel").textContent=`Conteúdos desta ${L.sp}`;const ol=g.querySelector("ol");
   if(!refs.length){const p=el(`<li class="empty"></li>`);p.textContent=`Adicione os conteúdos desta ${L.sp}: use uma sugestão ou a busca abaixo; se o assunto não existir na residência, crie como conteúdo da faculdade.`;ol.appendChild(p)}
@@ -5227,6 +5271,7 @@ const HELP=[
 - **Provas:** **+ Prova** na disciplina ou em **Provas do semestre**. A prova começa com todo o conteúdo da disciplina; abra para mudar a data e desmarcar o que não cai. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
 - **Próximas provas** (no topo da aba; no computador e no tablet deitado, na coluna da direita): cada prova mostra quanto já está pronto, quantos conteúdos faltam e o ritmo para chegar a tempo (a véspera fica para revisar). **Estudar o próximo** abre o conteúdo que falta e liga o Foco; **Simulado da prova** monta questões só com o conteúdo daquela prova (também aparece como **Prova: …** no Simulado misto).
 - **Depois da prova:** por até 30 dias, o painel pergunta como foi. Registre a nota (ex.: 7,5 de 10) e toque no que caiu e você não sabia: vira um erro no caderno, já ligado ao tema. A nota aparece depois na lista de provas realizadas.
+- **Fechamento da SP (tutoria):** abra a SP e preencha **Fechamento**. Nos 7 dias antes, os objetivos e os conteúdos dela entram no plano do dia (1 vaga; 2 nos 2 últimos dias), a SP mostra **fecha em N dias** e aparece em **Próximas provas › Fechamentos de SP** com o que falta e **Estudar o próximo**. Conta como pronto o conteúdo estudado nos 10 dias antes e o objetivo marcado.
 - **Materiais:** **+ Material** guarda links (slides, Drive, artigos, vídeos) na disciplina; dentro de cada SP também há **+ Material**. Os links abrem numa nova aba.
 - **Foco por disciplina:** o cabeçalho da disciplina mostra o tempo de foco na semana (sessões vinculadas a ela ou aos conteúdos dela). No computador e no tablet deitado, o cartão **Foco nesta semana** compara as disciplinas.
 - **Foco no Início:** o anel da faculdade mostra sozinho a disciplina em foco: a que tem prova em até 21 dias com conteúdo pendente; sem isso, a mais estudada nos últimos 7 dias; sem estudo recente, a com mais conteúdo.
