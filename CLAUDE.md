@@ -60,6 +60,11 @@ consultado quando há dúvida. Responda em português.
 - Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
   guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
+  Painel `#facProvas` (`renderFacProvas`: `provaStats`/`provaRitmo`/`provaNext`, `provaStudyNext` → Foco + `facGoRef`, `provaSimGo` →
+  `simCfg={src:"prova",pid}`; `simProva()`, `simSrcList()`, item `ctx` no `simPrompt`). Depois da prova: `provasToClose()` (até 30 dias,
+  sem `p.res`) → `provaResEl` (`facRes`; `p.res={d,e,n?,of?,skip?}`; erros via `errFormEl` com `s`=nome da prova).
+  Materiais `d.links`/`s.links` = [{id,u,t}] (`linksBlock`, `normUrl`). Foco por disciplina `discFocusSec(d,from)`, cartão `#facWeek`
+  (só em 2 colunas). Layout: `.fside` (provas, foco, modo provas) é `display:contents` com `order` no celular e coluna da direita em 2 colunas.
 
 - Perfil e Configurações: páginas `perfil`/`config` abertas pelos ícones do topo (`#profBtn`, `#cfgBtn`; `goSub`/`goBack`).
   Preferências em `ui = {prefs:{layout,theme,font,planN,subN,ints,facWin,resWeek}, profile:{name,goal,goalDate}}`,
