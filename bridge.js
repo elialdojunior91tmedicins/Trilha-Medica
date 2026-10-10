@@ -342,7 +342,7 @@
     for (const k in d.notes || {}) if (BYKEY[k] && typeof d.notes[k] === "string" && d.notes[k].trim()) { nn[k] = d.notes[k].slice(0, NOTE_MAX); if (d.noteAt && d.noteAt[k]) na[k] = d.noteAt[k]; }
     notes = nn; noteAt = na;
     errors = (Array.isArray(d.errors) ? d.errors : []).filter(errOk);
-    if (typeof d.prompt === "string" && d.prompt.trim()) promptText = d.prompt;
+    if (typeof d.prompt === "string" && d.prompt.trim()) promptText = typeof promptUp === "function" ? promptUp(d.prompt) : d.prompt;
     const hasFocus = Array.isArray(d.focus) && typeof foOk === "function";
     const hasRedo = Array.isArray(d.redo) && typeof rdOk === "function";
     const hasCards = Array.isArray(d.cards) && typeof cdOk === "function";

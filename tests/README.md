@@ -39,6 +39,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t74 | Fila do dia, busca, primeiros passos, Anki, calendário, temas divididos na conta |
 | t75 | Provas de residência e projeção semanal |
 | t80 | Vários aparelhos ao mesmo tempo: atualização ao vivo entre aparelhos |
+| t81 | Gerador de questões: instruções novas, porquê de cada alternativa, alternativas embaralhadas |
 | t76 | Lixeira e intervalos ajustados pelo acerto |
 
 ## Falhas conhecidas do ambiente

@@ -1,3 +1,4 @@
+if(window.__noShuffle===undefined)window.__noShuffle=true;// testes antigos escolhem a alternativa pela posição
 try{if(!window.__wantOnb&&!localStorage.getItem("resid-onb-seen"))localStorage.setItem("resid-onb-seen","1")}catch(e){}
 /* Firebase falso para testes: mesma interface "compat" usada pelo site */
 (function(){

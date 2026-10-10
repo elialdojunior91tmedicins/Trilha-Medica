@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=27d98712">
+<link rel="stylesheet" href="site.css?v=116d2599">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=27d98712"></script>
-<script src="bridge.js?v=27d98712"></script>
+<script src="config.js?v=116d2599"></script>
+<script src="bridge.js?v=116d2599"></script>
 </head>
 <body>
 <script>
@@ -754,6 +754,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .alt span{min-width:0;overflow-wrap:anywhere}
 .alt.right{border-color:var(--l3);background:var(--accent-soft)}
 .alt.wrong{border-color:var(--due);background:var(--due-soft)}
+.altwhy{margin:-2px 0 2px calc(1.6rem + 19px);font-size:.84rem;line-height:1.4;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.altwhy.mine{color:var(--ink);border-left:2px solid var(--due);padding-left:8px;margin-left:calc(1.6rem + 9px)}
 .verdict{font-weight:700;margin:0}
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -1836,6 +1838,34 @@ let notes={}, notesStore=null, noteTimers={}, subDraft={}, subErr="", genFocus={
 const DEFAULT_PROMPT=`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
 
 Estilo
+- Cerca de 70–80% em caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP); o restante, conceito aplicado.
+- Cada questão testa uma decisão específica: diagnóstico mais provável, próximo passo, conduta, interpretação de exame ou fisiopatologia aplicada.
+- Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
+- O enunciado traz os dados necessários para decidir. A dificuldade vem do conteúdo, nunca de ambiguidade.
+
+Alternativas
+- 4 alternativas (A a D), uma única melhor resposta.
+- Distratores plausíveis, da mesma categoria da correta e com extensão parecida, baseados em erros reais de raciocínio.
+- Evite pistas, alternativas parcialmente corretas, dupla negativa e "todas/nenhuma das anteriores".
+
+Dificuldade
+- Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
+- Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
+
+Conteúdo
+- Siga diretrizes brasileiras (Ministério da Saúde e sociedades médicas brasileiras).
+- Não invente dados, doses, critérios ou referências.
+- Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
+
+Comentário
+- Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
+- Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
+- Conceito-chave: uma frase curta, boa para revisar depois.
+- Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no alerta para conferir na diretriz vigente.`;
+/* instruções padrão antigas: quem nunca mudou o texto passa a usar o padrão novo */
+const OLD_PROMPTS=[`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
+
+Estilo
 - Questões em formato de caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP).
 - Priorize raciocínio prático: conduta imediata, próximo passo, diagnóstico mais provável e interpretação de exames.
 - Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
@@ -1852,14 +1882,17 @@ Conteúdo
 Comentário
 - Explique por que a correta está certa e por que cada alternativa errada está errada, de forma direta.
 - Resuma o conceito-chave cobrado em uma frase curta, boa para revisar depois.
-- Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no campo de alerta para conferir na diretriz vigente.`;
+- Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no campo de alerta para conferir na diretriz vigente.`];
+const promptKey=t=>String(t||"").replace(/\s+/g," ").trim();
+function promptUp(t){return OLD_PROMPTS.some(o=>promptKey(o)===promptKey(t))?DEFAULT_PROMPT:t}
 const fixedFormat=(nq)=>`Responda apenas com um array JSON de ${nq} objetos, sem nenhum outro texto, cada um neste formato:
 {"enunciado": "texto do caso e da pergunta",
- "alternativas": [{"letra": "A", "texto": "..."}, {"letra": "B", "texto": "..."}],
+ "alternativas": [{"letra": "A", "texto": "...", "porque": "por que esta alternativa está errada neste caso (string vazia na correta)"}, {"letra": "B", "texto": "...", "porque": "..."}],
  "correta": "letra da alternativa correta",
- "comentario": "explicação da correta e de cada errada",
+ "comentario": "por que a correta é a melhor resposta",
  "conceito": "conceito-chave em uma frase",
  "alerta": "aviso para conferir na diretriz, ou string vazia"}
+O app embaralha a ordem das alternativas: no comentário e no campo porque, não cite letras; refira-se ao conteúdo da alternativa.
 Escreva tudo em português do Brasil.`;
 let promptText=DEFAULT_PROMPT, promptEdited=false, settingsDoc=null, sampleFn=null, sampleOff=false, gen={}, qCount=10;
 const $=s=>document.querySelector(s);
@@ -2363,9 +2396,21 @@ function validQs(data){
   const arr=Array.isArray(data)?data:(data&&Array.isArray(data.questoes)?data.questoes:[]);
   return arr.filter(q=>q&&typeof q.enunciado==="string"&&Array.isArray(q.alternativas)&&q.alternativas.length>=2&&
     q.alternativas.every(a=>a&&a.letra&&typeof a.texto==="string")&&q.alternativas.some(a=>String(a.letra).trim().toUpperCase()===String(q.correta||"").trim().toUpperCase()))
-    .map(q=>({enunciado:q.enunciado,alternativas:q.alternativas.map(a=>({letra:String(a.letra).trim().toUpperCase(),texto:a.texto})),
+    .map(q=>altShuffle({enunciado:q.enunciado,alternativas:q.alternativas.map(a=>({letra:String(a.letra).trim().toUpperCase(),texto:a.texto,porque:typeof a.porque==="string"?a.porque.trim():""})),
       correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||"")}));
 }
+/* o próprio app sorteia a posição das alternativas (o Claude tende a concentrar a correta em B e C) e renomeia as letras A, B, C…;
+   o comentário e os "porque" não citam letras (fixedFormat pede isso), então continuam valendo */
+function altShuffle(q){const L=q.alternativas;if(window.__noShuffle||L.length<2||L.length>8||new Set(L.map(a=>a.letra)).size!==L.length)return q;
+  const right=L.find(a=>a.letra===q.correta),mix=shuffle(L),AB="ABCDEFGH";
+  q.alternativas=mix.map((a,i)=>({...a,letra:AB[i]}));q.correta=AB[mix.indexOf(right)];return q}
+/* alternativas de uma questão; depois de respondida, cada errada mostra o "porque" (questões antigas não têm) */
+function altsEl(q,mine,onPick){const box=el(`<div class="alts"></div>`);
+  q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
+    if(mine){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===mine)b.classList.add("wrong")}else b.onclick=()=>onPick(a.letra);
+    box.appendChild(b);
+    if(mine&&a.porque&&a.letra!==q.correta){const w=el(`<p class="altwhy${a.letra===mine?" mine":""}"></p>`);w.textContent=a.porque;box.appendChild(w)}});
+  return box}
 const GEN_ERR={rate_limited:"Limite de uso do Claude atingido no momento. Tente de novo mais tarde.",
   session_expired:"Sua sessão expirou. Entre de novo no Claude e tente outra vez.",
   invalid_json:"As questões vieram num formato que o app não conseguiu ler. Tente gerar de novo; se repetir, simplifique suas instruções.",
@@ -2457,13 +2502,9 @@ function renderGen(it){
     const tot=g.status==="loading"?g.n:g.qs.length;
     g.qs.forEach((q,qi)=>{
       const mine=g.ans[qi];
-      const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}</span><p class="qstem"></p><div class="alts"></div></li>`);
+      const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}</span><p class="qstem"></p></li>`);
       c.querySelector(".qstem").textContent=q.enunciado;
-      q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${a.letra.replace(/[^A-Z0-9]/g,"")})</b><span></span></button>`);
-        b.querySelector("span").textContent=a.texto;
-        if(mine){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===mine)b.classList.add("wrong")}
-        else b.onclick=()=>answer(it,qi,a.letra);
-        c.querySelector(".alts").appendChild(b)});
+      c.appendChild(altsEl(q,mine,l=>answer(it,qi,l)));
       if(mine){const ok=mine===q.correta;
         c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+q.correta.replace(/[^A-Z0-9]/g,"")+"."}</p>`));
         if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
@@ -3843,7 +3884,7 @@ function eNew(k,w,r,t,s,c){const e={id:Date.now().toString(36)+Math.random().toS
 const eOneLine=s=>String(s||"").replace(/\s*\n+\s*/g," ").trim();
 /* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
 function qDraft(q,mine,src){const m=q.alternativas.find(a=>a.letra===mine),r=q.alternativas.find(a=>a.letra===q.correta),stem=q.enunciado.replace(/\s+/g," ");
-  return {w:`${m?`Marquei ${m.letra}) ${m.texto}\n`:""}Caso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,r:`${q.conceito?q.conceito+"\n":""}${r?`Correta: ${r.letra}) ${r.texto}`:""}`.trim(),t:"conhecimento",s:src||""}}
+  return {w:`${m?`Marquei ${m.letra}) ${m.texto}\n`:""}Caso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,r:`${q.conceito?q.conceito+"\n":""}${r?`Correta: ${r.letra}) ${r.texto}`:""}${m&&m.porque&&m.letra!==q.correta?`\nPor que a minha não serve: ${m.porque}`:""}`.trim(),t:"conhecimento",s:src||""}}
 /* formulário de erro reaproveitável (registro na aba, simulado, refazer) */
 function errFormEl(D,pre,onSave,ids){const I=ids||{w:pre+"w",r:pre+"r",t:pre+"t",s:pre+"s",c:pre+"c"};
   const f=el(`<form class="eform"><label for="${I.w}">O que eu errei</label><textarea id="${I.w}" maxlength="2000" rows="3" placeholder="Ex.: marquei betabloqueador na cocaína"></textarea>
@@ -5132,7 +5173,7 @@ const LSRD="resid-redo-v1",RD_MAX=600;
 let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
 function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
-  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>({letra:s(a.letra),texto:s(a.texto)})),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta)}}}
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta)}}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
 async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
@@ -5168,13 +5209,10 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
     const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{rdRun=null;render()};w.appendChild(b);return w}
   const x=redo.find(y=>y.id===R.ids[R.i])||R.snap;if(!x){R.i++;return rdPlayer()}
   R.snap=x;const it=BYKEY[x.k],q=x.q;
-  const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p><div class="alts"></div></div>`);
+  const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p></div>`);
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
   c.querySelector(".qstem").textContent=q.enunciado;
-  q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
-    if(R.ans){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===R.ans)b.classList.add("wrong")}
-    else b.onclick=()=>{R.ans=a.letra;R.done++;const ok=a.letra===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()};
-    c.querySelector(".alts").appendChild(b)});
+  c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()}));
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
@@ -5381,11 +5419,10 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     const b=el(`<button class="btn primary" type="button">Novo simulado</button>`);b.onclick=()=>{sim=null;render()};c.appendChild(b);return c}
   // em andamento
   const q=S.qs[S.i];if(!q){c.appendChild(el(`<p class="gstatus" id="simSt">Escrevendo a próxima questão…</p>`));return c}
-  const it=BYKEY[q.k],mine=S.ans[S.i],card=el(`<div class="qcard"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p><div class="alts"></div></div>`);
+  const it=BYKEY[q.k],mine=S.ans[S.i],card=el(`<div class="qcard"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p></div>`);
   card.querySelector(".qn").textContent=`QUESTÃO ${S.i+1} DE ${S.items.length}`;card.querySelector(".simtopic").textContent=mine&&it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Tema revelado depois de responder";
   card.querySelector(".qstem").textContent=q.enunciado;
-  q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
-    if(mine){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===mine)b.classList.add("wrong")}else b.onclick=()=>{simAnswer(a.letra);render()};card.querySelector(".alts").appendChild(b)});
+  card.appendChild(altsEl(q,mine,l=>{simAnswer(l);render()}));
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
@@ -5935,6 +5972,8 @@ const HELP=[
 - **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente** e **Piorando**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
+- **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
+- **Por que cada alternativa está errada:** depois de responder, cada alternativa errada mostra embaixo o erro de raciocínio (a que você marcou fica destacada). Ao levar a questão para o caderno de erros, essa explicação vai junto.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
 - **Aba Anotações** (no celular, em Mais): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
@@ -6193,7 +6232,7 @@ try{const le=JSON.parse(localStorage.getItem(LSE)||"[]");errors=Array.isArray(le
 try{const h=JSON.parse(localStorage.getItem(LSH)||"{}");if(h&&typeof h==="object")hist=h}catch(e){hist={}}
 try{const ln=JSON.parse(localStorage.getItem(LSN)||"{}");for(const k in ln)if(BYKEY[k]&&typeof ln[k]==="string"&&ln[k].trim())notes[k]=ln[k];noteAt=JSON.parse(localStorage.getItem(LSN+"-at")||"{}")||{}}catch(e){notes={}}
 try{const qc=Number(localStorage.getItem("resid-qcount"));if(qc>=1&&qc<=100)qCount=Math.round(qc)}catch(e){}
-try{const lp=localStorage.getItem(LSP);if(lp&&lp.trim())promptText=lp}catch(e){}
+try{const lp=localStorage.getItem(LSP);if(lp&&lp.trim())promptText=promptUp(lp)}catch(e){}
 $("#promptBox").value=promptText;$("#fixedFmt").textContent=`Tarefa\nCrie N questões inéditas sobre o tema "<tema>" (área: <área>).\n[Se houver erros seus neste tema, o app lista os conceitos e pede uma questão sobre eles.]\n\n`+fixedFormat("N");
 $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus("Alterações ainda não salvas.")});
 $("#promptSave").onclick=savePrompt;bindPromptReset();
@@ -6282,7 +6321,7 @@ function liveFac(snap){if(!snap||!snap.exists||facTimer||echo(snap,liveW.fac))re
 function liveUI(snap){if(!snap||!snap.exists||uiTimer||echo(snap,liveW.ui))return;const n=uiSanitize(liveClone(noUpd(snap.data())));if(stab(n)===stab(ui))return;
   ui=n;try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();liveRender()}
 function liveSettings(snap){if(!snap||!snap.exists||promptEdited||pend(snap))return;const sp=(snap.data()||{}).prompt;
-  if(typeof sp==="string"&&sp.trim()&&sp!==promptText){promptText=sp;try{localStorage.setItem(LSP,sp)}catch(e){}$("#promptBox").value=sp}}
+  if(typeof sp==="string"&&sp.trim()&&promptUp(sp)!==promptText){promptText=promptUp(sp);try{localStorage.setItem(LSP,promptText)}catch(e){}$("#promptBox").value=promptText}}
 function liveNotes(snap){if(!snap)return;let ch=false;const ids=new Set(),ae=document.activeElement,edit=k=>!!ae&&(ae.id==="nt-"+k||ae.id==="fnt-"+k);
   for(const d of snap.docs){const k=d.id;ids.add(k);if(pend(d)||!BYKEY[k]||noteTimers[k]||edit(k))continue;
     const v=d.data();if(!v||typeof v.t!=="string"||!v.t.trim()||notes[k]===v.t)continue;notes[k]=v.t;if(v.updatedAt)noteAt[k]=v.updatedAt;ch=true}
@@ -6341,7 +6380,7 @@ window.addEventListener("online",()=>liveRefresh(true));
     else{synced=true;if(Object.keys(state).length)persist()}
     settingsDoc=db.doc("data/users/"+uid+"/settings");
     try{const ss=await settingsDoc.get();const sp=ss.exists&&ss.data().prompt;
-      if(typeof sp==="string"&&sp.trim()){promptText=sp;try{localStorage.setItem(LSP,sp)}catch(e){}if(!promptEdited)$("#promptBox").value=sp}}catch(e){}
+      if(typeof sp==="string"&&sp.trim()){promptText=promptUp(sp);try{localStorage.setItem(LSP,promptText)}catch(e){}if(!promptEdited)$("#promptBox").value=promptText}}catch(e){}
     uiDoc=db.doc("data/users/"+uid+"/prefs");
     try{const us=await uiDoc.get();const ud=us.exists?us.data():null;if(ud&&!uiTouched){ui=uiSanitize(ud);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();render()}else if(uiTouched)saveUI()}catch(e){}
     errStore=store.collection("errors");

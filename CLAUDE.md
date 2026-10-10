@@ -168,6 +168,13 @@ consultado quando há dúvida. Responda em português.
   "Atualizado com seus outros aparelhos". Ao voltar ao app após 5 min em segundo plano (`liveHidAt`) ou com `online`, `liveRefresh` confere tudo com `get()`. Teste: `tests/t80.js`
   (`mockdb.js` tem `window.__remote(caminho,dados)`; no `fakefb.js` duas páginas do mesmo contexto são dois aparelhos).
 
+- Gerador de questões: instruções padrão `DEFAULT_PROMPT` (versão de 10/2026, juntando as regras de qualidade de distratores, pegadinhas e
+  comentário); `OLD_PROMPTS` + `promptUp()` trocam pelo padrão novo quem ainda tinha o texto padrão antigo salvo (localStorage, conta e backup).
+  `fixedFormat` pede `alternativas[].porque` (por que a errada está errada; vazio na correta) e proíbe citar letras no comentário, porque
+  `validQs` passa cada questão por `altShuffle` (sorteia a ordem e renomeia A, B, C…; testes antigos desligam com `window.__noShuffle`, ligado
+  por padrão em `mockdb.js`/`fakefb.js`). `altsEl(q,mine,onPick)` desenha as alternativas nos três lugares (tema, Refazer, simulado) e, depois
+  de responder, o `.altwhy` sob cada errada (`.mine` = a marcada). `rdClean` guarda o `porque`; `qDraft` leva o da marcada ao caderno de erros. Teste: `tests/t81.js`.
+
 ## Cuidados
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).
