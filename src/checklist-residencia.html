@@ -177,6 +177,12 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 .fnext .meter{grid-column:1/-1;margin:0}.fsub{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
 .fcount{font:600 .8rem var(--body);color:var(--l2);white-space:nowrap}.fcount.soon{color:var(--due)}
 .fdisc{gap:14px}
+.facchip.lnk{color:var(--l2);background:color-mix(in srgb,var(--l2) 14%,transparent)}
+.fdup{display:flex;flex-direction:column;gap:16px}
+.flinkpick{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px}
+.flinkpick>p{margin:0}
+.flinkinfo{border-left:3px solid var(--l2);padding-left:12px}
+.flkrow{display:flex;flex-direction:column;gap:6px}.flkrow p{margin:0}.flkrow .ks{font-size:.8rem;color:var(--muted)}.flkrow+.flkrow{border-top:1px dashed var(--line);padding-top:8px}
 .fdh{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;background:none;border:0;padding:0;text-align:left;color:var(--ink);cursor:pointer;font:inherit}
 .fdh .chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px;grid-row:1/3}
 .fdh[aria-expanded="true"] .chev{transform:rotate(45deg)}
@@ -2246,6 +2252,16 @@ function openTopic(key){const it=BYKEY[key];if(!it)return;
 
 function el(html){const t=document.createElement("template");t.innerHTML=html.trim();return t.content.firstChild}
 
+/* dentro do tema da residência: os conteúdos da faculdade ligados a ele, com os subtópicos ligados para marcar e Desligar */
+function linkInfoEl(it){const ids=ownLinksTo(it.key);if(!ids.length)return null;const g=el(`<div class="grp flinkinfo"><span class="glabel">Na faculdade</span></div>`);
+  ids.forEach(id=>{const o=fac.own[id],L=o.link,d=discOf(o.discId),sp=o.spId&&spOf(o.spId),row=el(`<div class="flkrow"><p class="gtext"><b></b> <span class="ks"></span></p></div>`);
+    row.querySelector("b").textContent=o.t;row.querySelector(".ks").textContent=[d&&d.name,sp&&sp.s.name].filter(Boolean).join(" · ")+(L.subs.length?"":" · tema inteiro");
+    if(L.subs.length){const ul=el(`<ul class="psubs"></ul>`),SL=subList(it);L.subs.forEach((t,n)=>{const x=SL.find(y=>y.t===t);const cid=`lki-${id}-${n}`,li=el(`<li><input type="checkbox" id="${cid}"${x&&x.done?" checked":""}${x?"":" disabled"}><label for="${cid}"></label></li>`);
+      li.querySelector("label").textContent=x?t:t+" (subtópico não existe mais)";if(x)li.querySelector("input").onchange=()=>toggleSub(it,x);ul.appendChild(li)});row.appendChild(ul)}
+    const acts=el(`<div class="btns"></div>`),ch=el(`<button class="link" type="button">Trocar ligação</button>`);ch.onclick=()=>{facLinkSt={id,k:it.key,all:!L.subs.length,subs:[...L.subs]};render()};
+    acts.append(ch,armBtn("unl"+id,"Desligar","Toque de novo para desligar: o conteúdo volta a ser só da faculdade e começa do zero (este tema fica com todo o progresso)",()=>unlinkOwn(id)));row.appendChild(acts);
+    if(facLinkSt&&facLinkSt.id===id)row.appendChild(linkPickEl(id));g.appendChild(row)});
+  return g}
 function renderDetail(it){
   const s=get(it.key), d=dueIn(s), a=acc(s);
   const box=el(`<div class="detail"></div>`);
@@ -2255,6 +2271,7 @@ function renderDetail(it){
   const ready=(s.l||0)<3&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
   g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudado: viu o conteúdo. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
   box.appendChild(g1);
+  {const lk=linkInfoEl(it);if(lk)box.insertBefore(lk,box.firstChild)}
   const fbd=facBadge(it.key);if(fbd){const x=el(`<p class="tips fbadgep"></p>`);x.textContent=`Faculdade: cai na prova “${fbd.p.name}” de ${provaDiscName(fbd.p)} (${br(fbd.p.date)}, ${inLabel(daysTo(fbd.p.date))}).`;box.insertBefore(x,box.firstChild)}
   // peso de incidência
   if(!it.own){
@@ -2880,26 +2897,27 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 let FAC_WIN=21, RES_MIN_WEEK=2;const LSF="resid-fac-v1", FAC_VESP=3, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facLinkSt=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
 function registerOwn(){facNormalize();FAC_ITEMS.forEach(it=>delete BYKEY[it.key]);FAC_ITEMS.length=0;
-  for(const id in fac.own){const o=fac.own[id],P=ownPlace(o);
+  for(const id in fac.own){const o=fac.own[id];if(o.link&&RESKEY(o.link.k))continue;const P=ownPlace(o);
     const it={key:"F-"+id,num:0,t:o.t,area:P.A||FAC_AREA,sp:P.spec,subs:[],w0:1,own:true,origin:P.origin,originFull:P.originFull};FAC_ITEMS.push(it);BYKEY[it.key]=it}}
 function facValid(x){return x&&Array.isArray(x.sems)&&Array.isArray(x.discs)&&Array.isArray(x.provas)&&x.own&&typeof x.own==="object"}
 function saveFac(){facTouched=true;registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}
   if(!facStore)return;clearTimeout(facTimer);facTimer=setTimeout(async()=>{facTimer=0;try{liveW.fac=stab(fac);await facStore.set({...fac,updatedAt:new Date().toISOString()})}catch(e){setSave("Não foi possível salvar a Faculdade na conta; ficou salva neste navegador")}},700)}
-function refTopic(r){if(!r)return null;if(r.startsWith("T:"))return {k:r.slice(2)};if(r.startsWith("O:"))return {k:"F-"+r.slice(2)};
+function refTopic(r){if(!r)return null;if(r.startsWith("T:"))return {k:r.slice(2)};if(r.startsWith("O:")){const id=r.slice(2),L=ownLink(id);return L?{k:L.k,own:id,subs:L.subs}:{k:"F-"+id}}
   if(r.startsWith("S:")){const i=r.indexOf(":",2);return {k:r.slice(2,i),sub:r.slice(i+1)}}return null}
 function refOk(r){const x=refTopic(r);return !!(x&&BYKEY[x.k])}
-function refLabel(r){const x=refTopic(r),it=x&&BYKEY[x.k];if(!it)return "";return x.sub?x.sub:it.t}
+function refLabel(r){const x=refTopic(r),it=x&&BYKEY[x.k];if(!it)return "";return x.own?fac.own[x.own].t:x.sub?x.sub:it.t}
 function refKind(r){return r.startsWith("O:")?"Próprio":r.startsWith("S:")?"Subtópico":"Residência"}
 function activeSems(){return fac.sems.filter(s=>!s.archived).map(s=>s.id)}
 function upcomingProvas(){const t=today(),act=new Set(activeSems());
   return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
 function itemStudied(p,r){if((p.done||[]).includes(r))return true;const x=refTopic(r);if(!x||!BYKEY[x.k])return true;const s=get(x.k),start=fromNum(dnum(p.date)-(p.win||FAC_WIN));
-  if(!(s.last&&s.last>=start))return false;if(x.sub){const sb=subList(BYKEY[x.k]).find(y=>y.t===x.sub);return !sb||sb.done}return true}
+  if(!(s.last&&s.last>=start))return false;const subs=x.subs&&x.subs.length?x.subs:x.sub?[x.sub]:[];
+  if(subs.length){const L=subList(BYKEY[x.k]);return subs.every(t=>{const sb=L.find(y=>y.t===t);return !sb||sb.done})}return true}
 function provaPending(p){return p.items.filter(r=>refOk(r)&&!itemStudied(p,r))}
 /* prova de uma ou várias disciplinas (prova conjunta): discId = a principal; discIds = todas, só quando há mais de uma.
    sps = SPs ligadas à prova: o que entrar nelas depois entra na prova também (facLinkSync, em saveFac). */
@@ -2986,7 +3004,14 @@ function exactDup(q){const n=norm(q).trim();return FAC_ITEMS.find(it=>norm(it.t)
 const LV_DEF={disc:"Disciplina",eixo:"Eixo",sp:"SP"};
 const lv=sem=>({...LV_DEF,...((sem&&sem.lv)||{})});
 function facNormalize(){fac.discs.forEach(d=>{if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.eixos))d.eixos=[];if(!Array.isArray(d.sps))d.sps=[];
-  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})});facLinkSync()}
+  if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})});
+  for(const id in fac.own){const o=fac.own[id];if(o&&o.link!==undefined){const L=o.link;if(!L||typeof L!=="object"||typeof L.k!=="string"||!RESKEY(L.k))delete o.link;else o.link={k:L.k,subs:Array.isArray(L.subs)?[...new Set(L.subs.filter(t=>typeof t==="string"&&t))]:[]}}}
+  facLinkSync()}
+/* conteúdo da faculdade LIGADO a um tema da residência (fac.own[id].link={k,subs}): mantém o nome da faculdade, mas o progresso é o do tema
+   (um registro só). subs vazio = o tema inteiro; com subtópicos, o conteúdo conta como estudado quando eles estão marcados. */
+const RESKEY=k=>!!BYKEY[k]&&!BYKEY[k].own;
+function ownLink(id){const o=fac.own[id],L=o&&o.link;return L&&RESKEY(L.k)?L:null}
+const ownLinksTo=k=>Object.keys(fac.own).filter(id=>{const L=ownLink(id);return L&&L.k===k});
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
 function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===id);if(s)return {d,s}}return null}
@@ -3045,16 +3070,29 @@ function removeFromDisc(d,ref){d.items=d.items.filter(r=>r!==ref);dropRefEverywh
 function purgeOwn(id){const k="F-"+id;delete fac.own[id];delete state[k];if(notes[k])saveNote(k,"");
   errors.filter(e=>e.k===k).forEach(e=>{if(errStore)errStore.doc(e.id).delete().catch(()=>{})});errors=errors.filter(e=>e.k!==k);saveErrsLocal();
   if(dayPlan&&dayPlan.items.some(x=>x.k===k)){dayPlan.items=dayPlan.items.filter(x=>x.k!==k);savePlan()}}
-function replaceOwn(id,ref){const from="O:"+id,fk="F-"+id,to=refTopic(ref);if(!to)return;
-  const swap=a=>[...new Set(a.map(r=>r===from?ref:r))];
-  fac.discs.forEach(d=>{d.items=swap(d.items);(d.sps||[]).forEach(s=>s.items=swap(s.items))});
-  fac.provas.forEach(p=>{p.items=swap(p.items);p.done=(p.done||[]).map(r=>r===from?ref:r)});
-  if(notes[fk]){const cur=(notes[to.k]||"").replace(/\s+$/,"");saveNote(to.k,(cur?cur+"\n\n---\n\n":"")+"## Da faculdade: "+fac.own[id].t+"\n"+notes[fk]);saveNote(fk,"")}
+/* passa anotações, erros, cartões, questões para refazer, sessões de foco e progresso do conteúdo próprio (F-id) para o tema da residência */
+function ownMergeInto(id,toK){const fk="F-"+id,to={k:toK};
+  if(notes[fk]){const cur=(notes[to.k]||"").replace(/\s+$/,"");saveNote(to.k,(cur?cur+"\n\n---\n\n":"")+"## Da faculdade: "+fac.own[id].t+"\n"+notes[fk]);trSkip=true;try{saveNote(fk,"")}finally{trSkip=false}}// a anotação mudou de lugar: não vai para a lixeira
   errors.forEach(e=>{if(e.k===fk){e.k=to.k;putErr(e)}});saveErrsLocal();
   const fs=state[fk];if(fs){upd(to.k,x=>{if(fs.last&&(!x.last||fs.last>x.last)){x.last=fs.last;x.step=fs.step||0}x.l=Math.max(x.l||0,fs.l||0);x.qc=(x.qc||0)+(fs.qc||0);x.qt=(x.qt||0)+(fs.qt||0);if(fs.qd){const m={...(x.qd||{})};for(const d in fs.qd){const a=m[d]||[0,0],b2=fs.qd[d]||[0,0];m[d]=[a[0]+(b2[0]||0),a[1]+(b2[1]||0)]}x.qd=m}
     const cs=[...(x.cs||[]),...(fs.cs||[]).filter(c=>!(x.cs||[]).some(y=>y.t===c.t))];if(cs.length)x.cs=cs});delete state[fk];if(!state[to.k].qt){delete state[to.k].qt;delete state[to.k].qc;delete state[to.k].qd}}
   if(dayPlan)dayPlan.items.forEach(x=>{if(x.k===fk)x.k=to.k});
+  cards.forEach(c=>{if(c.k===fk){c.k=toK;cdPut(c)}});redo.forEach(x=>{if(x.k===fk){x.k=toK;rdPut(x)}});
+  foSess.forEach(x=>{if(x.ref==="T:"+fk){x.ref="T:"+toK;foPut(x)}});}
+function replaceOwn(id,ref){const from="O:"+id,to=refTopic(ref);if(!to)return;
+  const swap=a=>[...new Set(a.map(r=>r===from?ref:r))];
+  fac.discs.forEach(d=>{d.items=swap(d.items);(d.sps||[]).forEach(s=>s.items=swap(s.items))});
+  fac.provas.forEach(p=>{p.items=swap(p.items);p.done=(p.done||[]).map(r=>r===from?ref:r)});
+  ownMergeInto(id,to.k);
   delete fac.own[id];facReplace=null;saveFac();commit()}
+/* ligar sem substituir: o nome fica, o progresso passa a ser o do tema (o que o conteúdo próprio já tinha vai para o tema) */
+function linkOwn(id,k,subs){const o=fac.own[id],it=BYKEY[k];if(!o||!RESKEY(k))return;const fk="F-"+id,had=state[fk]&&state[fk].last;
+  if(!o.link)ownMergeInto(id,k);o.link={k,subs:[...new Set(subs||[])]};
+  if(had&&o.link.subs.length)upd(k,x=>{const L=subList(it);o.link.subs.forEach(t=>{const y=L.find(z=>z.t===t);if(!y||y.done)return;
+    if(y.i!==undefined){const sd=new Set(x.sd||[]);sd.add(y.i);x.sd=[...sd].sort((a,b)=>a-b);x.sv=2}else x.cs=(x.cs||[]).map((c,j)=>j===y.j?{...c,d:true}:c)})});
+  facLinkSt=null;saveFac();commit()}
+/* desligar: volta a ser um conteúdo só da faculdade, começando do zero (o tema da residência fica com todo o progresso) */
+function unlinkOwn(id){const o=fac.own[id];if(!o||!o.link)return;delete o.link;facLinkSt=null;saveFac();commit()}
 
 /* ---------- colar a ementa: o Claude organiza, você revisa ---------- */
 function ementaPrompt(sem,txt){const L=lv(sem);
@@ -3118,18 +3156,18 @@ async function ementaRun(sem){const I=facImport;if(!sampleFn||!I.text.trim())ret
     I.status="error";I.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização. Cadastre à mão abaixo.":(GEN_ERR[code]||"Não foi possível organizar agora. Tente de novo ou cadastre à mão.");render()}}
 
 /* ---------- renderização ---------- */
-function searchBox(d,mode){// mode: "disc" (adicionar conteúdo) ou {replace:id}
-  const key=mode==="disc"?d.id:"rep-"+mode.replace;const q=facQuery[key]||"";
-  const box=el(`<div class="fsearch"><input class="etext" type="search" placeholder="${mode==="disc"?"Adicionar conteúdo: digite o assunto (ex.: ICC, Critérios de Duke, Anatomia do coração)":"Buscar o tema da residência equivalente"}" aria-label="Buscar conteúdo"><ul class="fres"></ul></div>`);
+function searchBox(d,mode){// mode: "disc" (adicionar conteúdo), {replace:id} ou {link:id}
+  const key=mode==="disc"?d.id:mode.link?"lnk-"+mode.link:"rep-"+mode.replace;const q=facQuery[key]||"";
+  const box=el(`<div class="fsearch"><input class="etext" type="search" placeholder="${mode==="disc"?"Adicionar conteúdo: digite o assunto (ex.: ICC, Critérios de Duke, Anatomia do coração)":mode.link?"Buscar o tema da residência (ex.: anemias)":"Buscar o tema da residência equivalente"}" aria-label="Buscar conteúdo"><ul class="fres"></ul></div>`);
   const inp=box.querySelector("input");inp.id="fq-"+key;inp.value=q;inp.oninput=()=>{facQuery[key]=inp.value;render()};
   const ul=box.querySelector("ul");
   if(q.trim().length>=2){
-    let res=facSearch(q);if(mode!=="disc")res=res.filter(r=>!r.ref.startsWith("O:"));
+    let res=facSearch(q);if(mode!=="disc")res=res.filter(r=>!r.ref.startsWith("O:"));if(mode.link)res=res.filter(r=>refTopic(r.ref)&&RESKEY(refTopic(r.ref).k));
     res.forEach(r=>{const has=mode==="disc"&&d.items.includes(r.ref);
       const li=el(`<li><div class="frl"><b></b><span></span></div><button class="mini" type="button"></button></li>`);
       li.querySelector("b").textContent=r.label;li.querySelector("span").textContent=r.kind+" · "+r.ctx;
-      const b=li.querySelector("button");b.textContent=has?"Já está na disciplina":mode==="disc"?"Usar este":"Substituir por este";b.disabled=has;
-      b.onclick=()=>{if(mode==="disc")addToDisc(d,r.ref);else replaceOwn(mode.replace,r.ref)};ul.appendChild(li)});
+      const b=li.querySelector("button");b.textContent=has?"Já está na disciplina":mode==="disc"?"Usar este":mode.link?"Ligar a este":"Substituir por este";b.disabled=has;
+      b.onclick=()=>{if(mode==="disc")addToDisc(d,r.ref);else if(mode.link){const x=refTopic(r.ref);facLinkSt={id:mode.link,k:x.k,all:!x.sub,subs:x.sub?[x.sub]:[]};facQuery[key]="";render()}else replaceOwn(mode.replace,r.ref)};ul.appendChild(li)});
     if(mode==="disc"){const dup=exactDup(q),near=res.length>0;
       const li=el(`<li class="fcreate"><div class="frl"><b></b><span></span></div><button class="mini" type="button"></button></li>`);
       li.querySelector("b").textContent=`Criar tema próprio: “${q.trim()}”`;
@@ -3149,7 +3187,21 @@ function ownDetailRow(it){const open=openKey===it.key,s=get(it.key),dd=dueIn(s);
   if(open){const det=renderDetail(it);det.appendChild(dupBox(it));li.appendChild(det)}
   return li}
 /* tema da faculdade repetido de um tema da residência: troca, levando tudo junto */
-function dupBox(it){const id=it.key.slice(2);const rp=el(`<div class="grp"><span class="glabel">Duplicata?</span><p class="gtext how">Se este conteúdo já existe na lista da residência, substitua: SPs, provas, anotações, erros e progresso passam para o tema existente.</p></div>`);
+function dupBox(it){const id=it.key.slice(2),w=el(`<div class="fdup"></div>`);w.appendChild(linkPickEl(id));w.appendChild(dupBox0(it,id));return w}
+function linkPickEl(id){const g=el(`<div class="grp flink"><span class="glabel">Ligar a um tema da residência</span><p class="gtext how">Mantém este nome aqui na Faculdade, mas o progresso passa a ser o do tema da residência: estudar, revisar ou fazer questões em qualquer um dos dois avança os dois. Dá para ligar ao tema inteiro ou só a alguns subtópicos dele.</p></div>`);
+  const st=facLinkSt&&facLinkSt.id===id?facLinkSt:null;
+  if(!st){const b=el(`<button class="btn" type="button" style="align-self:flex-start" id="flk-${id}">Ligar a um tema</button>`);b.onclick=()=>{facLinkSt={id,k:null,subs:[],all:true};render()};g.appendChild(b);return g}
+  if(!st.k){g.appendChild(searchBox(null,{link:id}));const c=el(`<button class="link" type="button">Cancelar</button>`);c.onclick=()=>{facLinkSt=null;render()};g.appendChild(c);return g}
+  const it=BYKEY[st.k],L=subList(it),f=el(`<div class="flinkpick"><p class="gtext"></p><div class="seg"></div><ul class="psubs"></ul><div class="btns"></div></div>`);
+  f.querySelector("p").innerHTML=`<b></b> · ${esc(it.area.code)}${it.sp?" · "+esc(it.sp):""}`;f.querySelector("b").textContent=it.t;
+  [[true,"Tema inteiro"],[false,"Só alguns subtópicos"]].forEach(([v,t])=>{const b=el(`<button type="button" aria-pressed="${st.all===v}"></button>`);b.textContent=t;b.id=`flka-${id}-${v?1:0}`;b.onclick=()=>{st.all=v;render()};f.querySelector(".seg").appendChild(b)});
+  const ul=f.querySelector("ul");if(st.all)ul.remove();else{if(!L.length)ul.appendChild(el(`<li class="empty" style="padding:0">Este tema não tem subtópicos: ligue ao tema inteiro.</li>`));
+    L.forEach((x,n)=>{const cid=`flks-${id}-${n}`,li=el(`<li><input type="checkbox" id="${cid}"${st.subs.includes(x.t)?" checked":""}><label for="${cid}"></label></li>`);li.querySelector("label").textContent=x.t;
+      li.querySelector("input").onchange=e=>{st.subs=e.target.checked?[...st.subs,x.t]:st.subs.filter(y=>y!==x.t)};ul.appendChild(li)})}
+  const go=el(`<button class="btn primary" type="button" id="flkgo-${id}">Ligar</button>`),back=el(`<button class="btn" type="button">Escolher outro tema</button>`),err=el(`<p class="err" role="alert"></p>`);
+  go.onclick=()=>{if(!st.all&&!st.subs.length){err.textContent="Marque pelo menos um subtópico, ou escolha Tema inteiro.";return}linkOwn(id,st.k,st.all?[]:st.subs)};
+  back.onclick=()=>{st.k=null;st.subs=[];render()};f.querySelector(".btns").append(go,back);f.appendChild(err);g.appendChild(f);return g}
+function dupBox0(it,id){const rp=el(`<div class="grp"><span class="glabel">Duplicata?</span><p class="gtext how">Se este conteúdo já existe na lista da residência, substitua: SPs, provas, anotações, erros e progresso passam para o tema existente.</p></div>`);
   if(facReplace===id)rp.appendChild(searchBox(null,{replace:id}));else{const b=el(`<button class="btn" type="button" style="align-self:flex-start">Substituir por tema existente</button>`);b.onclick=()=>{facReplace=id;render()};rp.appendChild(b)}
   return rp}
 
@@ -3699,12 +3751,13 @@ function spRow(d,s,L,edit,i){const open=facOpenSP.has(s.id),keys=topicKeysOf(s.i
 
 function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),l=s0.l||0,dd=dueIn(s0),open=openKey===it.key&&!facShown.has(it.key);if(open)facShown.add(it.key);
   const li=el(`<li class="t${open?" open":""}${it.own?" own":""}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${l}">${LVL[l]}</span><span class="meta"></span></button></li>`);
-  li.querySelector(".num").textContent=it.own?"FAC":it.area.code;li.querySelector(".topic").textContent=x.sub||it.t;
+  li.querySelector(".num").textContent=it.own||x.own?"FAC":it.area.code;li.querySelector(".topic").textContent=x.own?fac.own[x.own].t:x.sub||it.t;
   const m=li.querySelector(".meta");
-  if(it.own)m.appendChild(el(`<span class="facchip">FAC</span>`));else m.appendChild(incEl(wOf(it),wOf(it)===3));
-  const sp=document.createElement("span");sp.textContent=x.sub?`subtópico de ${it.t}`:it.area===FAC_AREA?"só na Faculdade":it.sp;m.appendChild(sp);
+  if(it.own)m.appendChild(el(`<span class="facchip">FAC</span>`));else if(x.own)m.appendChild(el(`<span class="facchip lnk">FAC ↔ RES</span>`));else m.appendChild(incEl(wOf(it),wOf(it)===3));
+  const sp=document.createElement("span");sp.textContent=x.own?`ligado a ${it.t}${x.subs.length?"":" (tema inteiro)"}`:x.sub?`subtópico de ${it.t}`:it.area===FAC_AREA?"só na Faculdade":it.sp;m.appendChild(sp);
+  if(x.own&&x.subs.length){const L=subList(it),n=x.subs.filter(t=>(L.find(y=>y.t===t)||{}).done).length;m.appendChild(el(`<span>${n}/${x.subs.length} subtópicos ligados</span>`))}
   if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
-  const [sd,stt]=subCount(it);if(sd)m.appendChild(el(`<span>${sd}/${stt} subtópicos</span>`));
+  const [sd,stt]=subCount(it);if(sd&&!(x.own&&x.subs.length))m.appendChild(el(`<span>${sd}/${stt} subtópicos</span>`));
   if(r===primaryRef(s)&&s.objs.length)m.appendChild(el(`<span>recebe os objetivos</span>`));
   li.querySelector(".item").onclick=()=>{openKey=open?null:it.key;formErr="";subErr="";clearArm=null;render()};
   if(open){const det=renderDetail(it);if(it.own)det.appendChild(dupBox(it));li.appendChild(det)}
@@ -5994,6 +6047,7 @@ const HELP=[
 - **Prova conjunta:** marque mais de uma disciplina ao criar a prova, ou em **Disciplinas desta prova**, dentro dela.
 - **Cai na prova:** dentro de cada SP, toque na prova em que ela cai. A SP marcada leva junto o conteúdo que você adicionar nela depois. Em **+ Conteúdo**, escolha a prova em **Cai na prova**. Conta como estudado o que você estudou ou revisou nas 3 semanas antes; **já estudei** marca à mão.
 - **Próximas provas** (no topo da aba; no computador e no tablet deitado, na coluna da direita): cada prova mostra quanto já está pronto, quantos conteúdos faltam e o ritmo para chegar a tempo (a véspera fica para revisar). **Estudar o próximo** abre o conteúdo que falta e liga o Foco; **Simulado da prova** monta questões só com o conteúdo daquela prova (também aparece como **Prova: …** no Simulado misto).
+- **Ligar um conteúdo da faculdade a um tema da residência:** abra o conteúdo (selo FAC) › **Ligar a um tema**. Ele continua aparecendo na Faculdade com o seu nome, mas o progresso passa a ser o do tema da residência: estudar, revisar ou fazer questões em qualquer um dos dois avança os dois. Escolha **Tema inteiro** ou **Só alguns subtópicos** (aí o conteúdo conta como estudado quando esses subtópicos estão marcados). Vários conteúdos podem ligar ao mesmo tema. Anotações, erros e questões que o conteúdo já tinha passam para o tema. Dentro do tema, a caixa **Na faculdade** mostra o que está ligado, com **Trocar ligação** e **Desligar** (o conteúdo volta a ser só da faculdade, começando do zero). Diferente de **Substituir**, que troca o nome pelo do tema.
 - **Depois da prova:** por até 30 dias, o painel pergunta como foi. Registre a nota (ex.: 7,5 de 10) e toque no que caiu e você não sabia: vira um erro no caderno, já ligado ao tema. A nota aparece depois na lista de provas realizadas.
 - **Fechamento da SP (tutoria):** abra a SP e preencha **Fechamento**. Em **Começar a estudar** você escolhe com quantos dias de antecedência (sugestão: 7). Nesse período, os objetivos e os conteúdos dela entram no plano do dia (1 vaga; 2 nos 2 últimos dias), a SP mostra **fecha em N dias** e aparece em **Próximas provas › Fechamentos de SP** com o que falta e **Estudar o próximo**. Conta como pronto o conteúdo estudado nesse período (e até 3 dias antes dele) e o objetivo marcado.
 - **Materiais:** **+ Material** guarda links (slides, Drive, artigos, vídeos) na disciplina; dentro de cada SP também há **+ Material**. Os links abrem numa nova aba.

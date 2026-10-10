@@ -175,6 +175,13 @@ consultado quando há dúvida. Responda em português.
   por padrão em `mockdb.js`/`fakefb.js`). `altsEl(q,mine,onPick)` desenha as alternativas nos três lugares (tema, Refazer, simulado) e, depois
   de responder, o `.altwhy` sob cada errada (`.mine` = a marcada). `rdClean` guarda o `porque`; `qDraft` leva o da marcada ao caderno de erros. Teste: `tests/t81.js`.
 
+- Faculdade ligada à Residência sem substituir: `fac.own[id].link={k,subs}` (`subs` vazio = tema inteiro). `ownLink(id)`/`RESKEY`/`ownLinksTo(k)`;
+  `facNormalize` descarta ligação inválida; `registerOwn` não registra o `F-<id>` de quem está ligado (o progresso é o do tema, um registro só).
+  `refTopic("O:id")` ligado devolve `{k:<tema>,own:id,subs}`: `refLabel` mostra o nome da faculdade, `itemStudied` exige os `subs` marcados,
+  `facTopicRow` mostra selo "FAC ↔ RES". Ligar: `linkPickEl` (dentro de `dupBox`; busca `searchBox(null,{link:id})`, depois Tema inteiro ou
+  subtópicos) → `linkOwn` (usa `ownMergeInto`, o mesmo de `replaceOwn`: notas sem ir à lixeira, erros, cartões, refazer, foco, progresso).
+  No tema: `linkInfoEl` ("Na faculdade", marcar subtópicos, Trocar ligação, `unlinkOwn`). Teste: `tests/t82.js`.
+
 ## Cuidados
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).
