@@ -10,30 +10,31 @@
     if(R.dataset.layout!==L)R.dataset.layout=L;if(R.dataset.cols!==c)R.dataset.cols=c}
   decide();addEventListener("resize",decide);addEventListener("orientationchange",()=>setTimeout(decide,120));window.__decideLayout=decide})();
 </script>
-<title>Trilha Médica</title>
+<title>Nexus - Trilha Médica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: prontuário de estudo — plano do dia no topo, resumo, e uma ficha por grande área; cada tema abre seus controles de revisão e questões */
 :root{
-  --bg:#f3f6f5; --surface:#ffffff; --ink:#15211f; --muted:#5b6a67; --line:#d7e0dd;
-  --accent:#0f6e64; --accent-soft:#d6ece8; --on-accent:#ffffff;
-  --l1:#b07a0e; --l2:#2f6fb0; --l3:#0f7a4c; --due:#b3402b; --due-soft:#f6e1dc; --danger:#b3261e;
-  --m1:#b07a0e; --m2:#2f6fb0; --m3:#0f7a4c; --good:#0f7a4c; --warn:#b07a0e; --bad:#b3402b; --track:#e2e9e6; --tipbg:#15211f; --tipfg:#f3f6f5;
-  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
-  --body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  /* Nexus: azul-marinho (confiança), dourado (conquista), off-white (clareza), grafite (apoio) */
+  --bg:#f3f0e9; --surface:#fbfaf6; --ink:#141b2d; --muted:#5c6375; --line:#e1dacb;
+  --accent:#16264a; --accent-soft:#e5e8ef; --on-accent:#f7f3ea; --gold:#b8914a; --gold-ink:#8a6a2b; --lg1:#d8b46e; --lg2:#ad8438; --lg3:#6f511c;
+  --l1:#9a6a12; --l2:#2c5896; --l3:#25724f; --due:#ad3a2b; --due-soft:#f5e3dc; --danger:#a5261d;
+  --m1:#c39a48; --m2:#3e6aa8; --m3:#2f8560; --good:#2f8560; --warn:#b07f1f; --bad:#b4483a; --track:#e8e2d5; --tipbg:#141b2d; --tipfg:#f3f0e9;
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Manrope",ui-sans-serif,system-ui,sans-serif;
+  --mono:"Manrope",ui-sans-serif,system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0f1514; --surface:#17201e; --ink:#e4ecea; --muted:#93a39f; --line:#2a3633;
-  --accent:#4fc1b2; --accent-soft:#1d3532; --on-accent:#0f1514;
-  --l1:#e2ad45; --l2:#6fa8e6; --l3:#4fcf8f; --due:#ef8a73; --due-soft:#3a2420; --danger:#f2867d;
-  --m1:#b8862a; --m2:#5a92d4; --m3:#3aa874; --good:#3aa874; --warn:#b8862a; --bad:#d0644d; --track:#26302e; --tipbg:#e4ecea; --tipfg:#0f1514; color-scheme:dark}}
+  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
+  --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
+  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
+  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f1514; --surface:#17201e; --ink:#e4ecea; --muted:#93a39f; --line:#2a3633;
-  --accent:#4fc1b2; --accent-soft:#1d3532; --on-accent:#0f1514;
-  --l1:#e2ad45; --l2:#6fa8e6; --l3:#4fcf8f; --due:#ef8a73; --due-soft:#3a2420; --danger:#f2867d;
-  --m1:#b8862a; --m2:#5a92d4; --m3:#3aa874; --good:#3aa874; --warn:#b8862a; --bad:#d0644d; --track:#26302e; --tipbg:#e4ecea; --tipfg:#0f1514; color-scheme:dark}
+  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
+  --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
+  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
+  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 .dash{gap:18px}
@@ -64,7 +65,7 @@
 .meter i{display:block;height:100%;background:var(--accent);border-radius:0 4px 4px 0}
 .dcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .chart{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0;border-top:1px solid var(--line);padding-top:14px}
-.chart figcaption{font:700 .95rem var(--display)}
+.chart figcaption{font:700 1.092rem var(--display)}
 .hrow{display:grid;grid-template-columns:2.6rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.85rem;min-height:22px}
 #qChart,#areaChart{display:flex;flex-direction:column;gap:12px}
 #areaChart{gap:8px}
@@ -113,9 +114,15 @@ body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding:24p
 .wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 .side{display:contents}
 
-h1{font:700 clamp(1.7rem,5vw,2.3rem)/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
-h2{font:700 1.2rem/1.2 var(--display);margin:0}
+h1{font:600 clamp(1.9rem,5.4vw,2.6rem)/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:.01em}
+h2{font:700 1.38rem/1.2 var(--display);margin:0}
 .lede{color:var(--muted);margin:6px 0 0;max-width:60ch}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
+.blogo{width:3.8rem;height:auto;flex:0 0 auto;margin-top:-.3rem}
+.bname{display:flex;flex-direction:column;line-height:1}
+.bn1{font:600 1.65rem/1 var(--display);letter-spacing:.32em;text-transform:uppercase;color:var(--ink);margin-right:-.32em}
+.bn2{font:600 .72rem/1.2 var(--body);letter-spacing:.14em;color:var(--gold-ink);margin-top:6px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px}
 .today{border:1.5px solid var(--accent)}
 .todayhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -136,7 +143,7 @@ h2{font:700 1.2rem/1.2 var(--display);margin:0}
 #iToday .plan{gap:6px}
 .pcard.pdone .ptitle{text-decoration:line-through;text-decoration-color:var(--muted)}
 .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.ptitle{background:none;border:0;padding:0;text-align:left;font:700 1rem/1.25 var(--display);color:var(--ink);cursor:pointer;min-width:0}
+.ptitle{background:none;border:0;padding:0;text-align:left;font:700 1.15rem/1.25 var(--display);color:var(--ink);cursor:pointer;min-width:0}
 .ptitle:hover{color:var(--accent)}
 .pcard .pa{font:500 .74rem var(--mono);color:var(--muted);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .pcard .reason{grid-row:auto;grid-column:auto;flex-shrink:0}
@@ -173,7 +180,7 @@ h2{font:700 1.2rem/1.2 var(--display);margin:0}
 .fdh{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;background:none;border:0;padding:0;text-align:left;color:var(--ink);cursor:pointer;font:inherit}
 .fdh .chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px;grid-row:1/3}
 .fdh[aria-expanded="true"] .chev{transform:rotate(45deg)}
-.fdn{font:700 1.1rem/1.2 var(--display)}.fdm{font-size:.8rem;color:var(--muted)}
+.fdn{font:700 1.265rem/1.2 var(--display)}.fdm{font-size:.8rem;color:var(--muted)}
 .fitems{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .fitems>li{border-bottom:1px solid var(--line)}.fitems>li:last-child{border-bottom:0}
 .fitem{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:9px 12px}
@@ -390,7 +397,7 @@ details.area{background:var(--surface);border:1px solid var(--line);border-radiu
 summary{list-style:none;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center}
 summary::-webkit-details-marker{display:none}
 .code{font:500 .78rem var(--mono);letter-spacing:.06em;background:var(--accent-soft);color:var(--accent);padding:4px 8px;border-radius:6px}
-.aname{font:700 1.15rem/1.2 var(--display);min-width:0}
+.aname{font:700 1.322rem/1.2 var(--display);min-width:0}
 .acount{font:500 .9rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
 summary .bar{grid-column:1/-1;height:6px;margin-top:6px}
 ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
@@ -422,7 +429,7 @@ li.t.open{background:var(--bg)}
 .link{background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;font:inherit;font-size:.85rem;cursor:pointer;align-self:flex-start}
 .link.warn{color:var(--danger)}
 li.lhead{display:flex;align-items:center;gap:8px;padding:8px 2px 2px;border-bottom:2px solid var(--accent-soft)}
-.lname{font:700 .95rem/1.2 var(--display);color:var(--accent);flex:1;min-width:0}
+.lname{font:700 1.092rem/1.2 var(--display);color:var(--accent);flex:1;min-width:0}
 .lcount{font:500 .78rem var(--mono);color:var(--muted);white-space:nowrap}
 .spchips .chip{font-size:.8rem;padding:5px 10px}
 li.sphead{border-bottom:1px solid var(--line);background:var(--bg)}
@@ -430,7 +437,7 @@ li.sphead{border-bottom:1px solid var(--line);background:var(--bg)}
 .sphead button:disabled{cursor:default;color:var(--ink)}
 .sphead .chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px}
 .sphead button[aria-expanded="true"] .chev{transform:rotate(45deg)}
-.spname{font:700 .95rem/1.2 var(--display);color:var(--accent);min-width:0}
+.spname{font:700 1.092rem/1.2 var(--display);color:var(--accent);min-width:0}
 .spcount{font:500 .8rem var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
 .sphead .bar{grid-column:2/-1;height:4px}
 .empty{padding:14px 18px;color:var(--muted);font-size:.92rem}
@@ -513,7 +520,7 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .cdmine li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;border-bottom:1px solid var(--line);padding:6px 0;font-size:.88rem}
 .cdform textarea{min-height:2.6rem}
 .fcard{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:150px}
-.fcard .fcq{margin:0;font:700 1.08rem/1.35 var(--display)}
+.fcard .fcq{margin:0;font:700 1.242rem/1.35 var(--display)}
 .fcard .fca{font-size:.98rem;border-top:1px dashed var(--line);padding-top:10px}.fcard:not(.flip) .fca{display:none}
 .fctopic{font-size:.8rem}
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg),
@@ -527,7 +534,7 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[
 .freeed .ntext{min-height:10rem}
 .frks{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.frks:empty{display:none}
 .frlinks{display:flex;flex-wrap:wrap;gap:6px}
-.frt{font:700 1rem var(--display)}
+.frt{font:700 1.15rem var(--display)}
 .frlinked details{border-top:1px solid var(--line);padding:6px 0}.frlinked summary{font-weight:600;font-size:.9rem;color:var(--ink);text-decoration:none}
 .mdview a{color:var(--accent);text-decoration:underline;overflow-wrap:anywhere}
 .mdpre{font:500 .82rem/1.5 var(--mono);background:var(--bg);border-radius:8px;padding:8px 10px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 .6em}
@@ -615,7 +622,7 @@ html:not([data-cols="2"]) #facWeek{display:none!important}
 .fpd{display:flex;flex-direction:column;gap:6px;background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--good);border-radius:12px;padding:12px 14px}
 .fpd.lv-warn{border-left-color:var(--warn)}.fpd.lv-bad{border-left-color:var(--bad)}
 .fpd.fpres{border-left-color:var(--l2)}
-.fpdh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.fpdh b{font:700 1rem/1.25 var(--display)}
+.fpdh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.fpdh b{font:700 1.15rem/1.25 var(--display)}
 .fpd .ks{font-size:.8rem;color:var(--muted)}.fpd .meter{margin:2px 0 0;height:7px}
 .fpd.lv-warn .meter i{background:var(--warn)}.fpd.lv-bad .meter i{background:var(--bad)}
 .fpdtx,.fpdnext{margin:0;font-size:.88rem}.fpdnext{color:var(--muted)}.fpdnext b{color:var(--ink)}
@@ -977,7 +984,7 @@ li.fspr.open{background:var(--bg)}
 .fprova.open{border-color:var(--accent)}
 .fph{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center}
 .fphl{display:flex;flex-direction:column;min-width:0}
-.fphl b{font:700 1rem/1.25 var(--display);overflow-wrap:anywhere}
+.fphl b{font:700 1.15rem/1.25 var(--display);overflow-wrap:anywhere}
 .fph .fphl span{font-size:.8rem;color:var(--muted)}
 .fph .meter{grid-column:1/-1;margin:2px 0 0;display:block}
 .fph .fsub{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
@@ -1019,7 +1026,7 @@ li.fspr.open{background:var(--bg)}
 .fssum .chev,.fsph .chev{width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px}
 .fssum[aria-expanded="true"] .chev,.fsph[aria-expanded="true"] .chev{transform:rotate(45deg)}
 .ffold{width:26px;height:26px;fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6;stroke-linejoin:round;flex:none}
-.fssum .aname{font:700 1.2rem/1.2 var(--display);overflow-wrap:anywhere}
+.fssum .aname{font:700 1.38rem/1.2 var(--display);overflow-wrap:anywhere}
 .fssum .acount{font:500 .9rem var(--mono);color:var(--muted)}
 .fssum .fdmeta{grid-column:3/-1}
 .fssum .bar{grid-column:1/-1;height:6px;margin-top:6px}
@@ -1033,11 +1040,11 @@ li.fspr.open{background:var(--bg)}
 .fdsum{grid-template-columns:auto auto minmax(0,1fr) auto}
 .fdsum .fdmeta{grid-column:3/-1}
 .fdsum .ffold{width:22px;height:22px}
-.fdsum .aname{font:700 1.08rem/1.2 var(--display);overflow-wrap:anywhere}
+.fdsum .aname{font:700 1.242rem/1.2 var(--display);overflow-wrap:anywhere}
 .fsprov{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:72px}
 .fsprov.open{border-color:var(--l2)}
 .fsph{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 14px}
-.fsphl{font:700 1rem/1.2 var(--display)}.fsphc{font-size:.8rem;color:var(--muted)}
+.fsphl{font:700 1.15rem/1.2 var(--display)}.fsphc{font-size:.8rem;color:var(--muted)}
 .fspbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
 .fsbody .fimp{background:var(--surface)}
 .farchbtn{align-self:flex-start}
@@ -1058,7 +1065,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{g
 .itile.ok .meter i{background:var(--good)}
 .inow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;border-top:1px solid var(--line);padding-top:12px}
 .inowtx{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 240px}
-.inowtx b{font:700 1.1rem/1.25 var(--display);overflow-wrap:anywhere}
+.inowtx b{font:700 1.265rem/1.25 var(--display);overflow-wrap:anywhere}
 .inowb{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .inowb .link{align-self:auto}
 .igoalhint{margin:0;font-size:.8rem;color:var(--muted)}.igoalhint .link{font-size:.8rem}
@@ -1109,7 +1116,7 @@ html[data-layout="phone"] .pjc i{display:block}
 .ipdays b{font:500 1.9rem/1 var(--mono);font-variant-numeric:tabular-nums}
 .ipdays span{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.06em}
 .ipinfo{display:flex;flex-direction:column;gap:3px;min-width:0}
-.ipname{font:700 1.1rem/1.2 var(--display);overflow-wrap:anywhere}
+.ipname{font:700 1.265rem/1.2 var(--display);overflow-wrap:anywhere}
 .ipsub,.ipst{font-size:.82rem;color:var(--muted)}
 .ipinfo .meter{margin:4px 0 0;display:block}
 .ipnext{margin:0}.ipnext li{align-items:baseline}
@@ -1129,7 +1136,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 @media (max-width:480px){.fsptl li.t .item{grid-template-columns:minmax(0,1fr) auto}.fsptl li.t .item .num{display:none}.fsptl .meta{grid-column:1}.fsptl .lvl{grid-column:2}.fsptl .detail{padding:4px 10px 12px}.frmrow{padding-left:12px}}
 .ifocus{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
 .ifk{font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:99px}
-.ifname{background:none;border:0;padding:0;font:700 1.05rem/1.2 var(--display);color:var(--ink);cursor:pointer;text-align:left}
+.ifname{background:none;border:0;padding:0;font:700 1.208rem/1.2 var(--display);color:var(--ink);cursor:pointer;text-align:left}
 .ifname:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .ifwhy{flex-basis:100%;font-size:.8rem;color:var(--muted)}
 .fbrow.focus .vl{font-weight:700;color:var(--accent)}
@@ -1157,14 +1164,14 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 .fback{align-self:flex-start;font-size:.9rem}
 .pfbody,.cfbody{display:flex;flex-direction:column;gap:16px;width:100%}
 .pfhead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
-.pfav{width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font:700 1.6rem var(--display)}
+.pfav{width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font:700 1.84rem var(--display)}
 .pfav svg{width:38px;height:38px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
 .pfid{display:flex;flex-direction:column;gap:4px;min-width:0}.pfid .how{margin:0}
 .pfcount{margin:0;font-weight:600;color:var(--accent)}
 .acctslot .btn{align-self:flex-start}
 .pfstats{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:560px){.pfstats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.cftitle{font:700 1.5rem/1.2 var(--display);margin:0}
+.cftitle{font:700 1.725rem/1.2 var(--display);margin:0}
 .cfrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;padding:10px 0;border-top:1px solid var(--line)}
 .cfl{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px}.cfl .how{margin:0;font-size:.82rem}
 .lays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -1188,7 +1195,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 #iMeta{order:0}
 .imetab{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
 .imetab .ikl{grid-row:1/3;font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:99px}
-.imetab b{font:700 1.05rem var(--display)}.imetab .ims{grid-column:2;font-size:.82rem;color:var(--muted)}
+.imetab b{font:700 1.208rem var(--display)}.imetab .ims{grid-column:2;font-size:.82rem;color:var(--muted)}
 html[data-font="g"]{font-size:112.5%}
 
 /* ===== layout Compacto ===== */
@@ -1357,7 +1364,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 <div class="wrap">
   <header>
     <div class="hacts" id="hacts"><button class="hbtn" id="srchBtn" type="button" aria-label="Buscar em tudo" title="Buscar em tudo (Ctrl+K)"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
-    <h1>Trilha Médica</h1>
+    <h1 class="brand"><svg class="blogo" viewBox="0 0 120 80" aria-hidden="true" focusable="false"><defs><linearGradient id="nxg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--lg1,#F1DDB0)"/><stop offset=".45" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></linearGradient><linearGradient id="nxg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--lg1,#E9D19C)"/><stop offset=".5" style="stop-color:var(--lg2,#B68D45)"/><stop offset="1" style="stop-color:var(--lg3,#6E4F1E)"/></linearGradient><radialGradient id="nxg3" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:var(--lg1,#F6E7C4)"/><stop offset=".6" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></radialGradient></defs><path d="M63 49 C70 40 77 32 89 30 C104 28 114 40 110 52 C106 64 90 68 79 62 C72 58 67 53 62 49" fill="none" stroke="url(#nxg2)" stroke-width="6.5" stroke-linecap="butt"/><path d="M8 70 C18 50 34 38 50 40 C64 42 72 54 86 62 C76 60 66 52 56 50 C42 47 28 54 8 70 Z" fill="url(#nxg1)"/><circle cx="68" cy="17" r="7.5" fill="url(#nxg3)"/></svg><span class="bname"><span class="bn1">Nexus</span><span class="vh"> - </span><span class="bn2">Trilha Médica</span></span></h1>
     <p class="lede">185 temas de alta recorrência nas 5 grandes áreas. Estude no seu ritmo: o app agenda as revisões e mostra onde você mais erra.</p>
   </header>
 
@@ -4009,7 +4016,7 @@ function eSimGo(){simCfg={src:"errs",n:Math.min(10,Math.max(5,errors.filter(e=>B
   backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60)}
 /* ----- PDF do caderno ----- */
 function errosPDF(list){const P=new MiniPDF("Caderno de erros"),M=46,CW=P.W-2*M;let y=M;
-  const C={ink:[21,33,31],mut:[91,106,103],acc:[15,110,100],due:[179,64,43],l1:[176,122,14],l2:[47,111,176],line:[215,224,221]},TC={conhecimento:C.due,interpretacao:C.l1,confusao:C.l2};
+  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],due:[179,64,43],l1:[176,122,14],l2:[47,111,176],line:[225,218,203]},TC={conhecimento:C.due,interpretacao:C.l1,confusao:C.l2};
   const need=h=>{if(y+h>P.H-M-14){P.add();y=M}};
   const para=(t,o={})=>{const s=o.size||9.6,lh=s*1.42,ind=o.indent||0;pdfWrap(String(t),s,o.bold,CW-ind).forEach(l=>{need(lh);if(o.bar)P.rect(M+ind-8,y+1,2.4,lh,o.bar);P.text(M+ind,y+s,l,{size:s,bold:o.bold,color:o.color});y+=lh});y+=o.after??2};
   P.rect(0,0,P.W,8,C.acc);P.text(M,y+22,"Caderno de erros",{size:22,bold:true});y+=32;
@@ -4022,7 +4029,7 @@ function errosPDF(list){const P=new MiniPDF("Caderno de erros"),M=46,CW=P.W-2*M;
     if(e.k!==lastK){need(56);para(it.t,{size:11.5,bold:true,after:3});lastK=e.k}
     need(48);para([ETYPES[e.t]||"",e.c,br(e.d),e.s].filter(Boolean).join(" · "),{size:8.2,color:TC[e.t]||C.mut,indent:10,after:1});
     para("Errei: "+eOneLine(e.w),{size:9.4,indent:10,color:C.mut,after:1});para("Correto: "+eOneLine(e.r),{size:9.6,indent:10,bold:true,bar:TC[e.t]||C.acc,after:9})});
-  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Trilha Médica · Caderno de erros",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
+  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Nexus - Trilha Médica · Caderno de erros",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
   return P.output()}
 async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Nenhum erro com esses filtros para exportar.";render();return}eMsg="Gerando o PDF…";render();
   try{const bytes=errosPDF(eVis);await downloadsFn.save({filename:`caderno-de-erros-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});eMsg=`PDF salvo com ${eVis.length} ${eVis.length===1?"erro":"erros"}.`}
@@ -4277,7 +4284,7 @@ function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
   const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
     if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null;render()}else{redoPlan();render()}};
   const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
-  if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo à Trilha Médica</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
+  if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo ao Nexus</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
       el(`<label class="qfsel onbf"><span>Quando é a sua prova de residência?</span><input type="date" class="etext" id="onbDate"></label>`));
     const i=b.querySelector("#onbDate");i.value=O.date||"";i.min=today();i.oninput=()=>O.date=i.value;
     const a=el(`<div class="btns"><button class="btn primary" type="button">Continuar</button><button class="btn" type="button">Ainda não sei</button></div>`),[c1,c2]=a.querySelectorAll("button");
@@ -4295,10 +4302,10 @@ function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&
 /* ----- 5. calendário (.ics) ----- */
 function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
 function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
-  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?provaDiscName(p)+". ":""}Trilha Médica`})});
-  spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Trilha Médica`}));
-  exList().forEach(x=>{if(x.date&&x.date>=today())ev.push({uid:"residencia-"+x.id,date:x.date,t:`Prova de residência: ${x.name||"sem nome"}`,desc:"Trilha Médica"})});
-  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Trilha Médica"];
+  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?provaDiscName(p)+". ":""}Nexus - Trilha Médica`})});
+  spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Nexus - Trilha Médica`}));
+  exList().forEach(x=>{if(x.date&&x.date>=today())ev.push({uid:"residencia-"+x.id,date:x.date,t:`Prova de residência: ${x.name||"sem nome"}`,desc:"Nexus - Trilha Médica"})});
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Nexus Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Nexus - Trilha Médica"];
   ev.forEach(e=>{const d=e.date.replace(/-/g,""),d2=fromNum(dnum(e.date)+1).replace(/-/g,"");L.push("BEGIN:VEVENT",`UID:${e.uid}@trilha-medica`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${d2}`,`SUMMARY:${icsEsc(e.t)}`,`DESCRIPTION:${icsEsc(e.desc)}`,
     "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsEsc(e.t)}`,"TRIGGER:-P1D","END:VALARM","END:VEVENT")});L.push("END:VCALENDAR");return {text:L.join("\r\n"),n:ev.length}}
 let icsMsg="";
@@ -4478,7 +4485,7 @@ class MiniPDF{constructor(title){this.W=595.28;this.H=841.89;this.pages=[];this.
     this.pages.forEach(ops=>{const c=ops.join("\n"),cid=add(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`);kids.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${this.W} ${this.H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${cid} 0 R >>`))});
     objs[pagesId-1]=`<< /Type /Pages /Kids [${kids.map(k=>k+" 0 R").join(" ")}] /Count ${kids.length} >>`;
     const tb=pdfBytes(this.title).map(c=>c===40||c===41||c===92?"\\"+String.fromCharCode(c):String.fromCharCode(c)).join("");
-    const info=add(`<< /Title (${tb}) /Producer (Trilha Medica) >>`),cat=add(`<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+    const info=add(`<< /Title (${tb}) /Producer (Nexus - Trilha Medica) >>`),cat=add(`<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
     let out="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";const offs=[];objs.forEach((o,i)=>{offs.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});
     const x=out.length;out+=`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`+offs.map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${objs.length+1} /Root ${cat} 0 R /Info ${info} 0 R >>\nstartxref\n${x}\n%%EOF\n`;
     const u=new Uint8Array(out.length);for(let i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;return u}}
@@ -4521,7 +4528,7 @@ function topicTips(it,list,s){const tips=[],n=t=>list.filter(x=>x.t===t).length,
   if(isDue(s))tips.push("A revisão espaçada deste tema está pendente: faça hoje.");
   return tips}
 function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos"),M=46,CW=P.W-2*M;let y=M;
-  const C={ink:[21,33,31],mut:[91,106,103],acc:[15,110,100],soft:[214,236,232],line:[215,224,221],due:[179,64,43],l1:[176,122,14],l2:[47,111,176],l3:[15,122,76],bg:[243,246,245],trk:[226,233,230]};
+  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],soft:[229,232,239],line:[225,218,203],due:[179,64,43],l1:[176,122,14],l2:[47,111,176],l3:[15,122,76],bg:[243,240,233],trk:[232,226,213]};
   const need=h=>{if(y+h>P.H-M-14){P.add();y=M}};
   const para=(t,q={})=>{const s=q.size||9.6,lh=s*1.42,ind=q.indent||0;pdfWrap(t,s,q.bold,CW-ind).forEach(l=>{need(lh);P.text(M+ind,y+s,l,{size:s,bold:q.bold,color:q.color});y+=lh});y+=q.after??3};
   const h2=t=>{need(96);y+=12;P.text(M,y+15,t,{size:15,bold:true,color:C.acc});y+=22;P.line(M,y,M+CW,y,C.line);y+=10};
@@ -4598,7 +4605,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
         y+=6;need(4);P.line(M,y,M+CW,y,C.line,0.3);y+=4});
       if(R.topics.length>25)para(`+ ${R.topics.length-25} temas com erros não listados. Veja todos no Caderno de erros do app.`,{color:C.mut})}}
   // rodapé
-  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Trilha Médica · Panorama de estudos",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
+  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Nexus - Trilha Médica · Panorama de estudos",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
   return P.output()}
 async function exportPDF(){const o=pdfOpt;if(!o.res&&!o.fac){o.msg="Escolha Residência, Faculdade ou as duas.";render();return}
   if(!downloadsFn){o.msg="Não foi possível salvar arquivos nesta visualização.";render();return}
@@ -5673,7 +5680,7 @@ function noteErrsEl(k){const mine=errors.filter(e=>e.k===k).sort(byNewest);if(!m
   if(mine.length>6)d.appendChild(el(`<p class="how">+ ${mine.length-6} no caderno de erros.</p>`));return d}
 /* ----- PDF das anotações (mesmo gerador do panorama) ----- */
 function notesPDF(keys,free){const P=new MiniPDF("Anotações"),M=46,CW=P.W-2*M;let y=M;
-  const C={ink:[21,33,31],mut:[91,106,103],acc:[15,110,100],l1:[176,122,14],line:[215,224,221],bg:[243,246,245]};
+  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],l1:[176,122,14],line:[225,218,203],bg:[243,240,233]};
   const need=h=>{if(y+h>P.H-M-14){P.add();y=M}};
   const plain=t=>String(t).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,"$1 ($2)").replace(/\*\*(.+?)\*\*/g,"$1").replace(/==(.+?)==/g,"$1").replace(/(^|[\s(])_(.+?)_/g,"$1$2").replace(/`/g,"");
   const para=(t,o={})=>{const s=o.size||9.6,lh=s*1.42,ind=o.indent||0;pdfWrap(plain(t),s,o.bold,CW-ind-(o.box?10:0)).forEach(l=>{need(lh);if(o.box){P.rect(M+ind,y+1,2.4,lh,C.l1)}P.text(M+ind+(o.box?8:0),y+s,l,{size:s,bold:o.bold,color:o.color});y+=lh});y+=o.after??2};
@@ -5693,7 +5700,7 @@ function notesPDF(keys,free){const P=new MiniPDF("Anotações"),M=46,CW=P.W-2*M;
     need(40);para(it.t,{size:11.5,bold:true,after:3});body(notes[k]);y+=8});
   if(free.length){need(60);y+=8;P.text(M,y+13,"Caderno livre",{size:13,bold:true,color:C.acc});y+=19;P.line(M,y,M+CW,y,C.line);y+=8;
     free.forEach(f=>{need(40);para(f.t||"Sem título",{size:11.5,bold:true,after:1});if(f.tags.length||f.ks.length)para([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,after:3});body(f.b);y+=8})}
-  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Trilha Médica · Anotações",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
+  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Nexus - Trilha Médica · Anotações",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
   return P.output()}
 /* ----- caderno livre: anotações que não são de um tema ----- */
 const LSFR2="resid-free-v1";
@@ -5829,7 +5836,7 @@ function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} c
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
 const HELP=[
-["Comece aqui",`Um dia de estudo na Trilha Médica, em 5 passos:
+["Comece aqui",`Um dia de estudo no Nexus, em 5 passos:
 1. **Início › Revisar hoje:** toque em **Começar a fila**. O app passa pelos erros, cartões, anotações para reler e temas para revisar, um depois do outro; a barra de baixo leva ao próximo.
 2. **Estudar hoje:** estude os 3 temas do plano. **Começar com o Foco** conta o tempo; ao terminar, marque os subtópicos que viu.
 3. **Questões:** faça questões dos temas do dia (no tema, **Gerar questões**, ou registre as de bancos em **+ Registrar questões**).

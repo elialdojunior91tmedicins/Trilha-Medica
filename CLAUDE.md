@@ -1,4 +1,8 @@
-# Trilha Médica — Checklist Residência Médica
+# Nexus - Trilha Médica — Checklist Residência Médica
+
+Marca (desde 10/2026): nome **Nexus - Trilha Médica**; símbolo dourado (fita + ponto) em SVG inline no `h1.brand` (`.blogo`, dourado por tema em `--lg1/2/3`)
+e ícones em `icons/`. Paleta: claro = off-white `#f3f0e9`, azul-marinho `#16264a` (`--accent`), dourado `--gold`; escuro = `#0a1121` com dourado `#cfab63`
+como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`--body` e `--mono`). Teste da marca: `tests/t79.js`.
 
 Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),

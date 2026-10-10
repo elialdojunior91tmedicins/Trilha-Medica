@@ -1,14 +1,14 @@
 {
-  "name": "Trilha Médica",
-  "short_name": "Trilha",
+  "name": "Nexus - Trilha Médica",
+  "short_name": "Nexus",
   "description": "185 temas de alta recorrência, plano do dia, revisões espaçadas, faculdade e caderno de erros.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f3f6f5",
-  "theme_color": "#0f6e64",
+  "background_color": "#0a1121",
+  "theme_color": "#16264a",
   "icons": [
     {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
     {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
