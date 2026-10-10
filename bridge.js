@@ -22,16 +22,24 @@
   } else authReady = Promise.resolve(null);
 
   const clean = d => JSON.parse(JSON.stringify(d)); // o Firestore não aceita "undefined"
+  const meta = s => ({ fromCache: !!(s.metadata && s.metadata.fromCache), hasPendingWrites: !!(s.metadata && s.metadata.hasPendingWrites) });
+  const wrapSnap = s => ({ exists: s.exists, id: s.id, data: () => s.data(), metadata: meta(s) });
+  const wrapQuery = q => ({ docs: q.docs.map(wrapSnap), size: q.size, empty: q.empty, metadata: meta(q),
+    docChanges: () => (q.docChanges ? q.docChanges() : []).map(c => ({ type: c.type, doc: wrapSnap(c.doc), oldIndex: c.oldIndex, newIndex: c.newIndex })) });
+  /* onSnapshot: o app ouve as mudanças feitas em outros aparelhos (mesma interface do banco do Claude) */
+  const listen = (ref, wrap) => (next, err) => ref.onSnapshot(s => next(wrap(s)), e => { if (err) err({ code: (e && e.code) || "unavailable", message: String(e && e.message || e) }); });
   const wrapDoc = ref => ({
     id: ref.id,
-    get: () => ref.get().then(s => ({ exists: s.exists, id: s.id, data: () => s.data() })),
+    get: () => ref.get().then(wrapSnap),
     set: d => ref.set(clean(d)),
     delete: () => ref.delete(),
+    onSnapshot: listen(ref, wrapSnap),
     collection: n => wrapCol(ref.collection(n))
   });
   const wrapCol = ref => ({
     doc: id => wrapDoc(ref.doc(id)),
-    get: () => ref.get().then(q => ({ docs: q.docs.map(s => ({ id: s.id, exists: true, data: () => s.data() })), size: q.size, empty: q.empty }))
+    get: () => ref.get().then(wrapQuery),
+    onSnapshot: listen(ref, wrapQuery)
   });
   const dbApi = { doc: p => wrapDoc(fs.doc(p)), collection: p => wrapCol(fs.collection(p)) };
 

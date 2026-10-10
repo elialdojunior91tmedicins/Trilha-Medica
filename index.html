@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=397b59d6">
+<link rel="stylesheet" href="site.css?v=295cd00e">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=397b59d6"></script>
-<script src="bridge.js?v=397b59d6"></script>
+<script src="config.js?v=295cd00e"></script>
+<script src="bridge.js?v=295cd00e"></script>
 </head>
 <body>
 <script>
@@ -1977,7 +1977,7 @@ function saveNote(k,v){const old=notes[k]||"";
   document.querySelectorAll(`[data-nw="${k}"]`).forEach(s=>s.textContent=noteFoot(k));
   setNoteStatus(k,notesStore?"Salvando…":"Salvo neste navegador");
   clearTimeout(noteTimers[k]);if(!notesStore)return;
-  noteTimers[k]=setTimeout(async()=>{
+  noteTimers[k]=setTimeout(async()=>{noteTimers[k]=0;
     try{const d=notesStore.doc(k);if(notes[k])await d.set({t:notes[k],updatedAt:noteAt[k]});else await d.delete();
       setNoteStatus(k,"Salvo na sua conta")}
     catch(e){setNoteStatus(k,e&&e.code==="quota_exceeded"?"Espaço da conta cheio; ficou salvo neste navegador":"Não foi possível salvar na conta; ficou salvo neste navegador")}},900)}
@@ -2871,7 +2871,7 @@ function registerOwn(){facNormalize();FAC_ITEMS.forEach(it=>delete BYKEY[it.key]
     const it={key:"F-"+id,num:0,t:o.t,area:P.A||FAC_AREA,sp:P.spec,subs:[],w0:1,own:true,origin:P.origin,originFull:P.originFull};FAC_ITEMS.push(it);BYKEY[it.key]=it}}
 function facValid(x){return x&&Array.isArray(x.sems)&&Array.isArray(x.discs)&&Array.isArray(x.provas)&&x.own&&typeof x.own==="object"}
 function saveFac(){facTouched=true;registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}
-  if(!facStore)return;clearTimeout(facTimer);facTimer=setTimeout(async()=>{try{await facStore.set({...fac,updatedAt:new Date().toISOString()})}catch(e){setSave("Não foi possível salvar a Faculdade na conta; ficou salva neste navegador")}},700)}
+  if(!facStore)return;clearTimeout(facTimer);facTimer=setTimeout(async()=>{facTimer=0;try{liveW.fac=stab(fac);await facStore.set({...fac,updatedAt:new Date().toISOString()})}catch(e){setSave("Não foi possível salvar a Faculdade na conta; ficou salva neste navegador")}},700)}
 function refTopic(r){if(!r)return null;if(r.startsWith("T:"))return {k:r.slice(2)};if(r.startsWith("O:"))return {k:"F-"+r.slice(2)};
   if(r.startsWith("S:")){const i=r.indexOf(":",2);return {k:r.slice(2,i),sub:r.slice(i+1)}}return null}
 function refOk(r){const x=refTopic(r);return !!(x&&BYKEY[x.k])}
@@ -4400,7 +4400,7 @@ function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.
   PLAN_N=P.planN;SUBS_PER_DAY=P.subN;INT.splice(0,INT.length,...INT_SETS[P.ints]);FAC_WIN=P.facWin;RES_MIN_WEEK=P.resWeek;
   if(window.__decideLayout)window.__decideLayout()}
 function saveUI(){uiTouched=true;ui=uiSanitize(ui);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();
-  if(!uiDoc)return;clearTimeout(uiTimer);uiTimer=setTimeout(async()=>{try{await uiDoc.set({...ui,updatedAt:new Date().toISOString()})}catch(e){}},600)}
+  if(!uiDoc)return;clearTimeout(uiTimer);uiTimer=setTimeout(async()=>{uiTimer=0;try{liveW.ui=stab(ui);await uiDoc.set({...ui,updatedAt:new Date().toISOString()})}catch(e){}},600)}
 function setPref(k,v){ui.prefs[k]=v;saveUI();render()}
 const initials=n=>{const w=String(n||"").trim().split(/\s+/).filter(x=>x&&!STOP.has(norm(x)));return w.length?(w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase():""};
 function goSub(v){if(view!==v){if(!["perfil","config","help","instr"].includes(view))backStack=[];backStack.push(view);if(backStack.length>6)backStack.shift()}setView(v)}
@@ -6042,6 +6042,7 @@ const HELP=[
 ["Site: instalar, conta e sem internet",`Endereço: **elialdojunior91tmedicins.github.io/Trilha-Medica**
 - **Instalar (iPad/iPhone):** abra o site no Safari › **Compartilhar** › **Adicionar à Tela de Início**. Abre em tela cheia. No computador, o Chrome oferece **Instalar** na barra de endereço.
 - **Conta:** **Entrar** no topo, com **Google** ou com **e-mail e senha** (6+ caracteres). Nos outros aparelhos, entre do mesmo jeito: tudo sincroniza.
+- **Vários aparelhos ao mesmo tempo:** pode deixar o app aberto no celular, no iPad e no computador. O que você faz num aparelho aparece nos outros em segundos, sem recarregar (se a tela estava bloqueada, ao desbloquear). Se você estiver digitando num campo, a tela só se atualiza quando você sai dele.
 - **App instalado no iPhone/iPad:** o botão do Google não funciona lá. Se sua conta é do Google, crie uma senha pelo Safari em **Conta › Criar senha** e entre no app com seu e-mail e essa senha.
 - **Esqueci minha senha:** digite o e-mail e toque no link; confira o spam.
 - **Sair** apaga os dados daquele aparelho; eles continuam na conta.
@@ -6179,7 +6180,7 @@ function persist(){
   if(!store){setSave("Progresso salvo neste navegador");return}
   setSave("Salvando…"); clearTimeout(saveTimer);
   if(!synced)return;// antes de ler a conta, só no aparelho; ao sincronizar, o que mudou é enviado
-  saveTimer=setTimeout(async()=>{try{if(topicStore){await saveTopics();await store.set({version:3,split:true,hist,plan:dayPlan,updatedAt:new Date().toISOString()})}
+  saveTimer=setTimeout(async()=>{saveTimer=0;try{if(topicStore){await saveTopics();liveW.prog=stab({version:3,split:true,hist,plan:dayPlan});await store.set({version:3,split:true,hist,plan:dayPlan,updatedAt:new Date().toISOString()})}
       else await store.set({version:2,topics:state,hist,plan:dayPlan,updatedAt:new Date().toISOString()});setSave("Progresso salvo na sua conta")}
     catch(e){setSave(e&&e.code==="unavailable"?"Sem conexão no momento. Sua próxima marcação salva tudo de novo.":"Não foi possível salvar na conta; salvo neste navegador")}},700);
 }
@@ -6234,6 +6235,84 @@ bindReset();
 
 /* recalcula o plano quando o dia vira com a página aberta */
 let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();planNote="";render()}},60000);
+
+/* ---------- aparelhos ao mesmo tempo: sincronização ao vivo ----------
+   Depois de carregar a conta, o app ouve cada documento e coleção (onSnapshot). O que outro aparelho grava chega aqui e entra na tela
+   sem esperar recarregar. Nunca passa por cima do que este aparelho ainda vai enviar (gravação pendente: saveTimer, facTimer, uiTimer,
+   noteTimers; tema com mudança não enviada: state[k] diferente de tSaved[k]) nem redesenha a tela enquanto você usa o app (liveFlush). Itens apagados em outro aparelho só somem daqui se este aparelho já os tinha visto na conta (liveSeen). */
+const stab=v=>JSON.stringify(v,(k,x)=>x&&typeof x==="object"&&!Array.isArray(x)?Object.keys(x).sort().reduce((o,kk)=>(o[kk]=x[kk],o),{}):x);
+const liveClone=x=>x==null?x:JSON.parse(JSON.stringify(x));
+const noUpd=d=>{const c={...(d||{})};delete c.updatedAt;return c};
+let liveW={},liveOn=false,liveRefs=[],liveSeen={},liveDirty=false,liveCount=0,liveRefAt=0;
+function liveEditing(){const a=document.activeElement;if(!a||a===document.body)return false;
+  return a.tagName==="TEXTAREA"||a.tagName==="SELECT"||a.isContentEditable||(a.tagName==="INPUT"&&!/^(button|checkbox|radio|range|submit|reset|file|color|image)$/i.test(a.type||""))}
+/* a tela só é redesenhada com dados de outro aparelho quando este está parado (LIVE_IDLE sem toque/tecla) e sem campo em edição:
+   o aparelho esquecido aberto se atualiza; o que está nas suas mãos não muda de repente nem perde o que você digitou num formulário */
+const LIVE_IDLE=5000;let liveAct=0,liveT=null;
+["pointerdown","keydown","input","wheel","touchstart"].forEach(t=>document.addEventListener(t,()=>{liveAct=Date.now()},{capture:true,passive:true}));
+function liveRender(){liveDirty=true;liveCount++;liveFlush()}
+function liveFlush(){if(!liveDirty)return;const idle=Date.now()-liveAct;
+  if(liveEditing()||idle<LIVE_IDLE){clearTimeout(liveT);liveT=setTimeout(liveFlush,Math.max(600,LIVE_IDLE-idle));return}
+  liveDirty=false;render();
+  setSave("Atualizado com seus outros aparelhos às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}))}
+document.addEventListener("focusout",()=>setTimeout(liveFlush,450));
+const pend=d=>!!(d&&d.metadata&&d.metadata.hasPendingWrites);
+/* documento inteiro: a volta da própria gravação (pendente, ou igual ao que este aparelho gravou por último) nunca é aplicada; senão desfaria o que mudou aqui depois */
+const echo=(snap,w)=>pend(snap)||(!!w&&stab(noUpd(snap.data()))===w);
+function liveProgress(snap){if(!snap||!snap.exists||echo(snap,liveW.prog))return;const d=snap.data()||{};let ch=false;
+  if(d.hist&&typeof d.hist==="object"){for(const k in d.hist){const r=d.hist[k]||{},l=hist[k]||{},n={};
+      for(const f of ["e","r","q","c","res","tq","ts"]){const v=Math.max(r[f]||0,l[f]||0);if(v)n[f]=v}
+      if(stab(n)!==stab(l)){hist[k]=n;ch=true}}
+    if(ch)try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
+  if(!saveTimer&&d.plan&&d.plan.d===today()&&Array.isArray(d.plan.items)&&stab(d.plan)!==stab(dayPlan)){
+    dayPlan=renamePlanLabels(liveClone(d.plan));try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}ch=true}
+  if(ch)liveRender()}
+function liveTopics(snap){if(!snap)return;let ch=false;const ids=new Set();
+  for(const d of snap.docs){const k=d.id;ids.add(k);if(pend(d)||!BYKEY[k])continue;
+    const v=d.data();if(!v||typeof v!=="object")continue;
+    if(state[k]&&stab(state[k])===stab(v))continue;
+    const dirty=state[k]?JSON.stringify(state[k])!==tSaved[k]:(k in tSaved);if(dirty)continue;// este aparelho tem mudança ainda não enviada
+    const m=migrate({[k]:liveClone(v)})[k];if(!m)continue;state[k]=m;tSaved[k]=JSON.stringify(m);ch=true}
+  const seen=liveSeen.topics;if(seen)for(const k of seen)if(!ids.has(k)&&(k in state)&&JSON.stringify(state[k])===tSaved[k]){delete state[k];delete tSaved[k];ch=true}
+  liveSeen.topics=ids;
+  if(ch){try{localStorage.setItem(LS2,JSON.stringify(state))}catch(e){}liveRender()}}
+function liveFac(snap){if(!snap||!snap.exists||facTimer||echo(snap,liveW.fac))return;const d=noUpd(snap.data());if(!facValid(d)||stab(d)===stab(fac))return;
+  const n={sems:d.sems,discs:d.discs,provas:d.provas,own:d.own};if(d.crunch&&typeof d.crunch==="object")n.crunch={mode:d.crunch.mode,until:d.crunch.until};
+  if(stab(n)===stab(fac))return;fac=liveClone(n);registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}liveRender()}
+function liveUI(snap){if(!snap||!snap.exists||uiTimer||echo(snap,liveW.ui))return;const n=uiSanitize(liveClone(noUpd(snap.data())));if(stab(n)===stab(ui))return;
+  ui=n;try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();liveRender()}
+function liveSettings(snap){if(!snap||!snap.exists||promptEdited||pend(snap))return;const sp=(snap.data()||{}).prompt;
+  if(typeof sp==="string"&&sp.trim()&&sp!==promptText){promptText=sp;try{localStorage.setItem(LSP,sp)}catch(e){}$("#promptBox").value=sp}}
+function liveNotes(snap){if(!snap)return;let ch=false;const ids=new Set(),ae=document.activeElement,edit=k=>!!ae&&(ae.id==="nt-"+k||ae.id==="fnt-"+k);
+  for(const d of snap.docs){const k=d.id;ids.add(k);if(pend(d)||!BYKEY[k]||noteTimers[k]||edit(k))continue;
+    const v=d.data();if(!v||typeof v.t!=="string"||!v.t.trim()||notes[k]===v.t)continue;notes[k]=v.t;if(v.updatedAt)noteAt[k]=v.updatedAt;ch=true}
+  const seen=liveSeen.notes;if(seen)for(const k of seen)if(!ids.has(k)&&notes[k]!=null&&!noteTimers[k]&&!edit(k)){delete notes[k];delete noteAt[k];ch=true}
+  liveSeen.notes=ids;if(ch){saveNotesLocal();liveRender()}}
+/* listas com id (erros, caderno livre, lixeira, cartões, refazer, foco): atualiza o objeto no lugar (sessões abertas continuam apontando para ele) */
+function liveList(name,snap,get,set,ok,saveLocal,after){if(!snap)return;const ids=new Set();let arr=get(),ch=false;const byId=new Map(arr.map(x=>[x.id,x]));
+  for(const d of snap.docs){ids.add(d.id);if(pend(d))continue;const v=ok(liveClone(d.data()));if(!v)continue;const cur=byId.get(v.id);
+    if(cur){if(stab(cur)!==stab(v)){for(const f of Object.keys(cur))if(!(f in v))delete cur[f];Object.assign(cur,v);ch=true}}
+    else{arr.push(v);byId.set(v.id,v);ch=true}}
+  const seen=liveSeen[name];if(seen){const gone=[...seen].filter(id=>!ids.has(id)&&byId.has(id));if(gone.length){const g=new Set(gone);arr=arr.filter(x=>!g.has(x.id));ch=true}}
+  liveSeen[name]=ids;
+  if(ch){set(arr);saveLocal();if(after)after();liveRender()}}
+function liveStart(){if(liveOn)return;liveOn=true;
+  const L=(name,get,set,ok,saveLocal,after)=>s=>liveList(name,s,get,set,ok,saveLocal,after);
+  liveRefs=[[store,liveProgress],[topicStore,liveTopics],[facStore,liveFac],[uiDoc,liveUI],[settingsDoc,liveSettings],[notesStore,liveNotes],
+    [errStore,L("err",()=>errors,v=>{errors=v},x=>errOk(x)?x:null,saveErrsLocal)],
+    [freeStore,L("free",()=>freeN,v=>{freeN=v},x=>frOk(x)?frClean(x):null,frSaveLocal)],
+    [trashStore,L("trash",()=>trash,v=>{trash=v},x=>trOk(x)?x:null,trSaveLocal)],
+    [cardStore,L("cards",()=>cards,v=>{cards=v},x=>cdOk(x)?cdClean(x):null,cdSaveLocal)],
+    [redoStore,L("redo",()=>redo,v=>{redo=v},x=>rdOk(x)?rdClean(x):null,rdSaveLocal)],
+    [focStore,L("focus",()=>foSess,v=>{foSess=v},x=>foOk(x)?foClean(x):null,foSaveLocal,()=>foSess.sort((a,b)=>a.s<b.s?1:-1))]].filter(r=>r[0]);
+  for(const [ref,fn] of liveRefs)if(typeof ref.onSnapshot==="function")try{ref.onSnapshot(s=>{try{fn(s)}catch(e){console.error(e)}},()=>{})}catch(e){}}
+/* ao voltar para o app depois de mais de 5 min em segundo plano (tela bloqueada) ou quando a internet volta, confere tudo de uma vez,
+   caso alguma conexão tenha caído (a conexão ao vivo volta sozinha; isto é só garantia, e é raro para não gastar leituras do banco) */
+let liveHidAt=0;
+async function liveRefresh(force){if(!liveOn||(!force&&Date.now()-liveRefAt<60000))return;liveRefAt=Date.now();
+  for(const [ref,fn] of liveRefs)try{fn(await ref.get())}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")liveHidAt=Date.now();else if(liveHidAt&&Date.now()-liveHidAt>300000)liveRefresh()});
+window.addEventListener("online",()=>liveRefresh(true));
 
 (async()=>{
   try{
@@ -6294,7 +6373,7 @@ let lastDay=today(); setInterval(()=>{if(today()!==lastDay){lastDay=today();plan
       for(const k in notes)if(!remoteIds.has(k))await notesStore.doc(k).set({t:notes[k],updatedAt:noteAt[k]||new Date().toISOString()});
       if(changed){saveNotesLocal();render()}
     }catch(e){}
-    setSave("Progresso salvo na sua conta");maybeOnb();
+    setSave("Progresso salvo na sua conta");maybeOnb();liveStart();
   }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");setTimeout(maybeOnb,0)}
 })();
 </script>

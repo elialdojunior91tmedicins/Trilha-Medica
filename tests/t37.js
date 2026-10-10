@@ -4,11 +4,10 @@ const EMENTA={disciplinas:[{nome:"NCS 6",tipo:"Tutoria",cargaHoraria:"120 h",pro
          {nome:"Eixo de Cardiologia",area:"",especialidade:"",sps:[{nome:"SP 3.1 Insuficiência cardíaca",objetivos:[],temas:["CM-6"],novos:["Anatomia do coração"]}]}]}]};
 (async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1366,height:900}});await ctx.route(/googleapis|gstatic/,r=>r.abort());
 await ctx.addInitScript(mock+`;window.__mock({},5);const _u=window.claude.use;window.claude.use=async n=>{if(n!=="sample")return _u(n);const f=async()=>({text:"x"});f.json=async(p)=>{window.__ementaPrompt=p;return ${JSON.stringify(EMENTA)}};return f};`);
+await ctx.addInitScript(()=>{if(!sessionStorage.getItem('__seeded')){sessionStorage.setItem('__seeded','1');localStorage.clear();localStorage.setItem("resid-fac-v1",JSON.stringify({sems:[{id:"s",name:"6° Semestre",archived:false}],discs:[{id:"old",semId:"s",name:"Cardio antiga",items:["T:CM-6","O:a"]}],provas:[{id:"p0",discId:"old",name:"P1",date:"2026-12-01",items:["T:CM-6"],done:[]}],own:{a:{t:"Anatomia do mediastino",discId:"old"}}}))}});
 const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
-await p.goto('file://'+__dirname+'/../src/checklist-residencia.html');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});
-// dados no formato antigo
-await p.evaluate(()=>{localStorage.clear();localStorage.setItem("resid-fac-v1",JSON.stringify({sems:[{id:"s",name:"6° Semestre",archived:false}],discs:[{id:"old",semId:"s",name:"Cardio antiga",items:["T:CM-6","O:a"]}],provas:[{id:"p0",discId:"old",name:"P1",date:"2026-12-01",items:["T:CM-6"],done:[]}],own:{a:{t:"Anatomia do mediastino",discId:"old"}}}))});
-await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(300);
+// dados no formato antigo (preparados antes de o app abrir)
+await p.goto('file://'+__dirname+'/../src/checklist-residencia.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(300);
 await p.click('#tabF');await p.click('#facSems .fdsum');await p.waitForTimeout(100);
 ok(await p.evaluate(()=>/Conteúdos/.test(document.getElementById("facSems").textContent)&&document.querySelectorAll("#facSems .flist li.t").length===2&&fac.discs[0].sps.length===0&&Array.isArray(fac.discs[0].eixos)),"dados antigos: carregam e aparecem como conteúdo avulso");
 ok(await p.evaluate(()=>BYKEY["F-a"]&&BYKEY["F-a"].area===FAC_AREA),"tema próprio antigo sem área fica em Faculdade · sem área");

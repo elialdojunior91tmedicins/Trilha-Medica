@@ -2,13 +2,22 @@ window.__mock=(seed,delay)=>{
   try{if(!window.__wantOnb&&!localStorage.getItem("resid-onb-seen"))localStorage.setItem("resid-onb-seen","1")}catch(e){}
   const store=JSON.parse(JSON.stringify(seed||{}));window.__store=store;
   const wait=()=>new Promise(r=>setTimeout(r,delay||0));
+  /* onSnapshot: as gravações deste app avisam com hasPendingWrites; window.__remote(caminho, dados|null) imita outro aparelho */
+  const subs=[];window.__subs=subs;
+  const inCol=(path,k)=>k.startsWith(path+"/")&&k.slice(path.length+1).indexOf("/")<0;
+  const dsnap=(path,pp)=>{const v=store[path];return {exists:!!v,id:path.split("/").pop(),data:()=>v?JSON.parse(JSON.stringify(v)):undefined,metadata:{fromCache:false,hasPendingWrites:pp===path}}};
+  const qsnap=(path,pp)=>{const docs=Object.keys(store).filter(k=>inCol(path,k)).map(k=>dsnap(k,pp));return {docs,size:docs.length,empty:!docs.length,metadata:{fromCache:false,hasPendingWrites:!!pp&&inCol(path,pp)},docChanges:()=>[]}};
+  const notify=(changed,own)=>subs.forEach(s=>{if(s.col?inCol(s.path,changed):s.path===changed)setTimeout(()=>s.fn(s.col?qsnap(s.path,own?changed:null):dsnap(s.path,own?changed:null)),0)});
+  const listen=(path,col)=>(fn,err)=>{const s={path,col,fn};subs.push(s);setTimeout(()=>fn(col?qsnap(path):dsnap(path)),0);return ()=>{const i=subs.indexOf(s);if(i>=0)subs.splice(i,1)}};
+  window.__remote=(path,d)=>{if(d==null)delete store[path];else store[path]=JSON.parse(JSON.stringify(d));notify(path,false)};
   const docRef=path=>({path,
     async get(){await wait();const v=store[path];return {exists:!!v,id:path.split("/").pop(),data:()=>JSON.parse(JSON.stringify(v))}},
-    async set(d){await wait();store[path]=JSON.parse(JSON.stringify(d))},
-    async delete(){await wait();delete store[path]},
+    async set(d){store[path]=JSON.parse(JSON.stringify(d));notify(path,true);await wait()},// como o Firestore: a gravação vale na hora para este aparelho
+    async delete(){delete store[path];notify(path,true);await wait()},
+    onSnapshot:listen(path,false),
     collection:sub=>colRef(path+"/"+sub)});
-  const colRef=path=>({path,doc:id=>docRef(path+"/"+id),
-    async get(){await wait();const docs=Object.keys(store).filter(k=>k.startsWith(path+"/")&&k.slice(path.length+1).indexOf("/")<0).map(k=>({id:k.split("/").pop(),exists:true,data:()=>JSON.parse(JSON.stringify(store[k]))}));return {docs,size:docs.length,empty:!docs.length}}});
+  const colRef=path=>({path,doc:id=>docRef(path+"/"+id),onSnapshot:listen(path,true),
+    async get(){await wait();const docs=Object.keys(store).filter(k=>inCol(path,k)).map(k=>({id:k.split("/").pop(),exists:true,data:()=>JSON.parse(JSON.stringify(store[k]))}));return {docs,size:docs.length,empty:!docs.length}}});
   const db={doc:docRef,collection:colRef};
   const user={id:async()=>"u1",isOwner:async()=>true};
   const sample=async(i,o)=>{o&&o.onText&&o.onText({text:"## R\n- a"});return {text:"## Resumo\n- **a** ==b==",truncated:false}};
