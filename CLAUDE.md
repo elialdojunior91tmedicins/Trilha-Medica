@@ -144,6 +144,9 @@ consultado quando há dúvida. Responda em português.
   `wdOf(dnum)`, `isOffDay/isNewDay/isSimDay`, `offShift`, `nextStudyLabel`, `newDaysWeek`. `dueIn` empurra a data que cai na folga para o próximo dia de estudo e,
   no dia de folga, nada vence. `buildPlan`: folga = vazio; dia sem temas novos = sem `r-new`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim` (n=20)
   ou `exam` (prova na íntegra por fazer) no topo. Prévia (`weekEl`) marca folga; projeção usa `newDaysWeek`. Teste: `tests/t85.js`.
+- Barra lateral de altura inteira (computador e tablet com `data-cols=2`): `.appnav` fixa à esquerda (`--sbw` 248px; `body` com recuo), slots `#sBrand`/`#sSearch`/`#sfProf`/`#sfCfg`;
+  `placeSide()` (em `renderHead` e num `MutationObserver` de `data-layout/data-cols`) move os MESMOS nós (`h1.brand`, `#srchBtn`, `#profBtn`, `#cfgBtn`) e devolve ao `header`
+  nas outras telas; o `header` fica escondido. Rodapé `#sFoot` com `#sfWho` (nome, abre Perfil). Teste: `tests/t86.js`.
 - Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
   cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),

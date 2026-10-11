@@ -1217,6 +1217,38 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 @media (max-width:480px){.fadder,.fguide,.fdbody>.fedtag{margin-left:12px;margin-right:12px}}
 .fhowto{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
 .fhowto b{color:var(--ink)}
+/* ===== barra lateral de altura inteira (computador e iPad deitado) ===== */
+.sbrand,.ssearch,.sfoot{display:none}
+.hacts .sstx,.hacts .sskbd{display:none}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]){--sbw:248px}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) body{padding-left:calc(var(--sbw) + 32px);padding-right:32px}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) body>.wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;column-gap:0}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) body>.wrap>header{display:none}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) body>.wrap>.wrap{grid-column:1;grid-row:auto}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav{position:fixed;left:0;top:0;bottom:0;width:var(--sbw);max-height:none;z-index:30;display:flex;flex-direction:column;gap:14px;overflow-y:auto;scrollbar-width:thin;
+  background:var(--surface);border-right:1px solid var(--line);padding:calc(22px + env(safe-area-inset-top,0px)) 14px calc(14px + env(safe-area-inset-bottom,0px))}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sbrand{display:block;padding:0 6px 14px;border-bottom:1px solid var(--line)}
+.sbrand h1.brand{gap:10px}.sbrand .blogo{width:3.3rem;margin-top:-.2rem}.sbrand .bn1{font-size:1.38rem;letter-spacing:.28em;margin-right:-.28em}.sbrand .bn2{font-size:.66rem;margin-top:5px}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .ssearch{display:block}
+.ssearch .hbtn{display:flex;align-items:center;gap:8px;width:100%;height:38px;border-radius:10px;padding:0 10px;background:var(--bg);border:1px solid var(--line);color:var(--muted);font:500 .9rem var(--body);justify-content:flex-start}
+.ssearch .hbtn:hover{border-color:var(--accent);color:var(--ink)}.ssearch .hico{width:18px;height:18px}.ssearch .sstx{flex:1;text-align:left}
+.ssearch .sskbd{font:600 .66rem var(--body);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--surface)}
+html[data-layout="tablet"] .ssearch .sskbd{display:none}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tabs{flex-direction:column;gap:2px;overflow:visible;padding:0;border:0;background:none;border-radius:0}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tab{flex:none;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;text-align:left;padding:10px 12px;min-height:0;font-size:.95rem;border-radius:10px}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tab .ti{display:block}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tab .tl{flex:1;white-space:nowrap}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tab:not([aria-selected="true"]):hover{background:var(--bg);color:var(--ink)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .ecount{position:static;margin:0;min-width:0;height:auto;font:600 .74rem var(--mono);background:var(--bg);border-radius:999px;padding:1px 8px;color:var(--muted)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav #rcount,html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav #ecount{color:var(--due)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav .tab[aria-selected="true"] .ecount{background:rgba(255,255,255,.2);color:var(--on-accent)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .navextra{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .navextra button{background:var(--bg);border-color:transparent}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sfoot{display:flex;align-items:center;gap:10px;margin-top:auto;padding:12px 4px 0;border-top:1px solid var(--line)}
+.sfslot{display:contents}.sfoot .hbtn{display:grid;flex:none}
+.sfwho{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;background:none;border:0;padding:2px 0;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.sfwho b{font-size:.92rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sfwho span{font-size:.76rem;color:var(--muted)}.sfwho:hover b{color:var(--accent)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) :is(.dqbar,.bulkbar){left:calc(50% + var(--sbw) / 2)}
 /* ===== topo: perfil e configurações ===== */
 .hbtn{display:grid;place-items:center;width:40px;height:40px;padding:0;color:var(--ink)}
 .hico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -1432,6 +1464,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </header>
 
   <nav class="appnav" aria-label="Navegação">
+  <div class="sbrand" id="sBrand"></div><div class="ssearch" id="sSearch"></div>
   <div class="tabs" role="tablist" aria-label="Seções">
     <button class="tab" role="tab" id="tabI" data-v="inicio" aria-selected="true"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2L12 4.2l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6M10 20v-5.6h4V20"/></svg><span class="tl">Início</span><span class="ecount" id="rcount"></span></button>
     <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Residência</span></button>
@@ -1443,6 +1476,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg><span class="tl">Mais</span><span class="ecount" id="mcount"></span></button>
   </div>
   <div class="navextra" id="navExtra"></div>
+  <div class="sfoot" id="sFoot"><div class="sfslot" id="sfProf"></div><button class="sfwho" id="sfWho" type="button"><b id="sfName"></b><span>Perfil e conta</span></button><div class="sfslot" id="sfCfg"></div></div>
   </nav>
   <button class="fopill" id="foPill" type="button" hidden aria-label="Voltar ao Foco"><span class="fpl">Foco</span><b>00:00</b></button>
 
@@ -4597,7 +4631,15 @@ function setPref(k,v){ui.prefs[k]=v;saveUI();render()}
 const initials=n=>{const w=String(n||"").trim().split(/\s+/).filter(x=>x&&!STOP.has(norm(x)));return w.length?(w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase():""};
 function goSub(v){if(view!==v){if(!["perfil","config","help","instr"].includes(view))backStack=[];backStack.push(view);if(backStack.length>6)backStack.shift()}setView(v)}
 function goBack(){setView(backStack.pop()||"inicio")}
-function renderHead(){const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
+/* barra lateral de altura inteira (computador e iPad deitado): a marca, a busca, o perfil e as configurações mudam de lugar (os mesmos nós, mesmos ids) */
+const sideFull=()=>{const R=document.documentElement.dataset;return R.layout==="desktop"||R.layout==="tablet"&&R.cols==="2"};
+function placeSide(){const full=sideFull(),h=document.querySelector("body>.wrap>header"),br=document.querySelector("h1.brand"),acts=$("#hacts"),sr=$("#srchBtn"),pf=$("#profBtn"),cf=$("#cfgBtn");if(!h||!br||!acts)return;
+  if(!sr.querySelector(".sstx"))sr.insertAdjacentHTML("beforeend",`<span class="sstx">Buscar</span><kbd class="sskbd">Ctrl K</kbd>`);
+  if(full){if(br.parentNode!==$("#sBrand"))$("#sBrand").appendChild(br);if(sr.parentNode!==$("#sSearch"))$("#sSearch").appendChild(sr);if(pf.parentNode!==$("#sfProf"))$("#sfProf").appendChild(pf);if(cf.parentNode!==$("#sfCfg"))$("#sfCfg").appendChild(cf)}
+  else{if(br.parentNode!==h)h.insertBefore(br,acts.nextSibling);if(sr.parentNode!==acts||pf.parentNode!==acts||cf.parentNode!==acts)acts.append(sr,pf,cf)}
+  const n=$("#sfName");if(n)n.textContent=(ui.profile.name||"").trim()||"Seu perfil"}
+new MutationObserver(()=>placeSide()).observe(document.documentElement,{attributes:true,attributeFilter:["data-layout","data-cols"]});
+function renderHead(){placeSide();const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
   b.setAttribute("aria-pressed",view==="perfil");$("#cfgBtn").setAttribute("aria-pressed",["config","help","instr"].includes(view))}
 
 /* ---------- Perfil ---------- */
@@ -6774,7 +6816,7 @@ const isTypingEl=e=>e&&(e.tagName==="TEXTAREA"||(e.tagName==="INPUT"&&!/^(checkb
 document.addEventListener("focusin",e=>{if(isTypingEl(e.target))document.body.classList.add("typing")});
 document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement))document.body.classList.remove("typing")},50));
 
-$("#srchBtn").onclick=()=>{gsOpen=true;renderGSearch()};$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
+$("#srchBtn").onclick=()=>{gsOpen=true;renderGSearch()};$("#sfWho").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
 $("#hq").addEventListener("input",debounced(e=>{helpQ=e.target.value.trim();renderHelp()},150));
 $("#bkSave").onclick=async()=>{const m=$("#bkMsg");if(!downloadsFn)return;
   try{await downloadsFn.save({filename:`checklist-backup-${today()}.json`,data:JSON.stringify(buildBackup(),null,1)});markBackup();m.textContent="Backup salvo. No iPad/iPhone ele fica no app Arquivos, em Downloads."}
