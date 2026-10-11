@@ -21,6 +21,7 @@
   --accent:#16264a; --accent-soft:#e5e8ef; --on-accent:#f7f3ea; --gold:#b8914a; --gold-ink:#8a6a2b; --lg1:#d8b46e; --lg2:#ad8438; --lg3:#6f511c;
   --l1:#9a6a12; --l2:#2c5896; --l3:#25724f; --due:#ad3a2b; --due-soft:#f5e3dc; --danger:#a5261d;
   --m1:#c39a48; --m2:#3e6aa8; --m3:#2f8560; --good:#2f8560; --warn:#b07f1f; --bad:#b4483a; --track:#e8e2d5; --tipbg:#141b2d; --tipfg:#f3f0e9;
+  --hero1:#22396b; --hero2:#16264a; --hero3:#0e1a35; --heroglow:rgb(216 180 110 / .38); --heroink:#f7f3ea; --herosub:rgb(247 243 234 / .74); --herogold:#e2c58a; --herobtn:#f7f3ea; --herobtnink:#16264a;
   --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
   --body:"Manrope",ui-sans-serif,system-ui,sans-serif;
   --mono:"Manrope",ui-sans-serif,system-ui,sans-serif;
@@ -29,12 +30,14 @@
   --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
   --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
-  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121; color-scheme:dark}}
+  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
+  --hero1:#1a2a4d; --hero2:#121d36; --hero3:#0b1324; --heroglow:rgb(207 171 99 / .30); --heroink:#f3ead8; --herosub:rgb(243 234 216 / .70); --herogold:#dcbb78; --herobtn:#cfab63; --herobtnink:#0a1121; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
   --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
-  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121; color-scheme:dark}
+  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
+  --hero1:#1a2a4d; --hero2:#121d36; --hero3:#0b1324; --heroglow:rgb(207 171 99 / .30); --heroink:#f3ead8; --herosub:rgb(243 234 216 / .70); --herogold:#dcbb78; --herobtn:#cfab63; --herobtnink:#0a1121; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 .dash{gap:18px}
@@ -1086,6 +1089,23 @@ li.fspr.open{background:var(--bg)}
 @media (max-width:480px){.fdsum{padding:14px}.fdtools,.finfo,.fdprov,.fdfoot,.fdbody>.grp{padding-left:14px;padding-right:14px}li.fexedit,li.fadd{padding-left:14px;padding-right:14px}.fdbody>.feadd{padding:12px 14px 0}.fdbody>p.gtext{padding:8px 14px 12px}
   .fsptl li.t .item{grid-template-columns:2.2rem minmax(0,1fr) auto}.frmrow{padding-left:12px}}
 /* ===== aba Início ===== */
+#iHero{order:-2;padding:0;border:0;overflow:hidden;background:radial-gradient(120% 90% at 92% -10%,var(--heroglow),transparent 55%),linear-gradient(140deg,var(--hero1) 0%,var(--hero2) 55%,var(--hero3) 100%);color:var(--heroink);box-shadow:0 10px 28px -14px rgb(10 17 33 / .55)}
+:root[data-theme="dark"] #iHero{border:1px solid var(--line)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #iHero{border:1px solid var(--line)}}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iHero{grid-column:1/-1}
+.iherob{display:flex;flex-direction:column;gap:6px;padding:24px 26px 26px}
+.hdate{font:500 .92rem var(--body);color:var(--herosub)}
+.hhi{font:700 clamp(2rem,5.2vw,2.75rem)/1.08 var(--display);color:var(--heroink);margin:2px 0 0;text-wrap:balance;letter-spacing:.005em}
+.hsum{margin:0;font-size:1.06rem;color:var(--heroink);opacity:.92;max-width:48ch}
+.hexam{margin:0;font:600 .9rem var(--body);color:var(--herogold)}
+.hline{margin:4px 0 0;font:italic 500 1.12rem/1.35 var(--display);color:var(--herosub);max-width:52ch;padding-left:12px;border-left:2px solid var(--herogold)}
+.hline.feat{font:600 .95rem/1.4 var(--body);font-style:normal;color:var(--herogold)}
+.herobtns{margin-top:12px}
+.herobtn{border:0;border-radius:99px;background:var(--herobtn);color:var(--herobtnink);font:700 1rem var(--body);padding:13px 24px;cursor:pointer;box-shadow:0 4px 14px -6px rgb(0 0 0 / .45)}
+.herobtn:hover{filter:brightness(1.04)}.herobtn:focus-visible{outline:2px solid var(--herogold);outline-offset:3px}
+html[data-layout="phone"] .iherob{padding:18px 18px 20px;gap:5px}
+html[data-layout="phone"] .hsum{font-size:.98rem}html[data-layout="phone"] .hline{font-size:1.02rem}
+html[data-layout="phone"] .herobtns{margin-top:8px}html[data-layout="phone"] .herobtn{width:100%;padding:12px 18px}
 .ihome .icol{display:contents}
 .islot:empty{display:none}
 #iProva{order:1}#iToday{order:2}#iRevs{order:3}#iStats{order:4}
@@ -1166,6 +1186,8 @@ html:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio{max-width:82
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio{max-width:none}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio:not([hidden]){display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:24px;align-items:start}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio .icol{display:flex;flex-direction:column;gap:20px;min-width:0}
+/* em duas colunas, saudação e placar ficam no topo (a ordem personalizada vale dentro de cada coluna) */
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio .icol{order:50}html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInicio #iCust{order:60}
 .ipnext .ud{text-transform:none}
 @media (max-width:480px){.fsptl li.t .item{grid-template-columns:minmax(0,1fr) auto}.fsptl li.t .item .num{display:none}.fsptl .meta{grid-column:1}.fsptl .lvl{grid-column:2}.fsptl .detail{padding:4px 10px 12px}.frmrow{padding-left:12px}}
 .ifocus{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
@@ -1528,6 +1550,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 
   <div id="viewInicio" class="wrap ihome" style="width:100%">
     <div class="islot inoticebox" id="iNotice"></div>
+    <section class="card ihero" id="iHero" aria-label="Saudação do dia"></section>
     <section class="card iboard" id="iBoard" aria-label="Seu dia"></section>
     <div class="icol icol1"><div class="islot" id="iQueue"></div><div class="islot" id="iToday"></div><div class="islot" id="iRevs"></div></div>
     <div class="icol icol2"><div class="islot" id="iWeek"></div><section class="imeta" id="iMeta" hidden></section><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
@@ -4315,8 +4338,8 @@ function iQueueCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,c=el(`
     li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
   const a=el(`<div class="btns"></div>`);
   if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
-    const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;a.append(b,x)}
-  else{const b=el(`<button class="btn primary" type="button" id="iqGo">Começar a fila</button>`);b.onclick=qStart;a.appendChild(b)}
+    const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
+  else if(!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar a fila</button>`);b.onclick=qStart;a.appendChild(b)}
   c.appendChild(a);c.appendChild(el(`<p class="how">Na ordem: erros, cartões, anotações para reler e temas. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
 function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
   if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
@@ -4352,10 +4375,60 @@ function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return nu
   const best=A.fo>B.fo&&B.fo?"Mais tempo de foco que na semana anterior.":A.q>B.q&&B.q?"Mais questões que na semana anterior.":"";
   c.querySelector("p.how").textContent=`${br(fromNum(ws))} a ${br(fromNum(ws+6))}.${best?" "+best:""}`;return c}
 /* ----- 12. Início personalizável ----- */
-const ICARDS=[["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iRevs","Revisões"],["iMeta","Meta e projeção até a prova"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
+/* ---------- Início: saudação do dia (#iHero) — data, "Bom dia, Nome.", o que espera hoje, prova perto, feito real ou frase do dia e o botão da fila ---------- */
+const HERO_FRASES=["Constância vence intensidade.","Cada questão errada hoje é um ponto a mais na prova.","Não precisa ser um dia perfeito. Precisa ser um dia de estudo.","Disciplina é fazer o combinado mesmo sem vontade.",
+"A aprovação é feita de dias comuns bem usados.","Revisar é o que transforma estudo em memória.","Um tema por vez. Uma revisão por vez.","Quem revisa no dia certo não estuda duas vezes.",
+"O cansaço passa. O que você aprendeu hoje fica.","Pequenos avanços diários somam uma especialidade inteira.","O erro de hoje é o acerto da prova.","Comece pelo mais difícil enquanto a cabeça está fresca.",
+"Vitória é a soma de manhãs em que você sentou para estudar.","Você não precisa de motivação para abrir o caderno. Precisa abrir.","Uma hora focada vale mais que três distraídas.","A prova premia quem viu o assunto muitas vezes, não uma vez só.",
+"Hoje conta. Mesmo que seja pouco.","Faça o simples bem feito: revisar, questionar, corrigir.","Seu futuro paciente agradece cada revisão de hoje.","Ritmo sustentável ganha da maratona de véspera.",
+"Errar na questão é barato. Errar no plantão não é.","Domine o básico: é ele que cai mais.","A dúvida de hoje é a pegadinha que você não vai cair.","Quem anota o próprio erro não repete o mesmo erro.",
+"Estudar cansado ainda é estudar. Parar de vez é que não.","Celebre o dia cumprido, não só a nota final.","Um passo hoje vale mais que um plano perfeito para amanhã.","Foque no que depende de você: as próximas horas.",
+"Cada tema dominado é um a menos para temer.","Respeite o descanso: ele também faz parte do plano.","A disciplina de hoje é a tranquilidade da véspera.","Questão feita com atenção ensina mais que dez feitas com pressa.",
+"Não compare o seu capítulo 3 com o capítulo 20 de ninguém.","O que é revisado no tempo certo não precisa ser reaprendido.","Persistência é voltar ao plano depois de um dia ruim.","Um dia de cada vez, um tema de cada vez.",
+"Vencer a preguiça nos primeiros cinco minutos é metade do trabalho.","Leia o enunciado inteiro. A resposta costuma estar nele.","Quem entende o porquê não precisa decorar tudo.","Organização hoje poupa desespero amanhã.",
+"Seu esforço de hoje é invisível agora e evidente na prova.","Aprender devagar ainda é aprender.","A constância transforma o difícil em rotina.","Toda especialidade parece enorme até você dividir em temas.",
+"Melhor feito do que perfeito: termine o bloco de hoje.","Cada acerto novo é prova de que o método funciona.","Desligue o celular por uma sessão e veja a diferença.","Revisão atrasada se resolve com uma por vez, não com culpa.",
+"Disciplina é escolher o que você quer mais em vez do que você quer agora.","O ritmo de hoje decide a calma de amanhã.","Estude para entender o paciente, não só para marcar a alternativa.","A cada revisão, o esquecimento perde força.",
+"Hoje é um bom dia para fechar uma lacuna antiga.","Quem mede o progresso enxerga o quanto já andou.","Dias difíceis também contam como dias de estudo.","A prova é longa; o preparo também. Vá no seu passo.",
+"Faça a parte de hoje e deixe o resto para amanhã.","Seu melhor método é o que você consegue repetir todo dia.","O hábito leva você onde a motivação não alcança.","Cada sessão concluída é uma pequena vitória. Some todas."];
+const heroDate=()=>{const s=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)};
+function heroHi(){const h=new Date().getHours();return h>=5&&h<12?"Bom dia":h>=12&&h<18?"Boa tarde":"Boa noite"}
+const heroOn=()=>!iHidden().has("iHero");
+function heroActive(d){const h=hist[d];return !!(h&&((h.e||0)+(h.r||0)+(h.q||0)>0))||foSess.some(x=>x.d===d&&x.sec>=300)}
+/* feitos reais: sequência de dias, questões de ontem, especialidade que melhorou, foco da semana */
+function heroFeats(){const out=[],t=dnum(today());
+  {const on=heroActive(today());let n=0;for(let i=on?0:1;i<400&&heroActive(fromNum(t-i));i++)n++;
+    if(n>=3)out.push(on?`${n} dias seguidos estudando. Bela sequência.`:`${n} dias seguidos estudando. Estude hoje para manter a sequência.`)}
+  {const h=hist[fromNum(t-1)];if(h&&(h.q||0)>=15)out.push(`Ontem você fez ${h.q} questões${h.c!=null?`, com ${pct(h.c||0,h.q)}% de acerto`:""}.`)}
+  {const a={},r=fromNum(t-30),o=fromNum(t-120);ALL.forEach(it=>{const s=get(it.key),sp=it.sp||it.area.name,x=a[sp]||(a[sp]={q1:0,c1:0,q0:0,c0:0});
+      for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v)||d<o)continue;if(d>r){x.q1+=v[0]||0;x.c1+=v[1]||0}else{x.q0+=v[0]||0;x.c0+=v[1]||0}}});
+    let best=null;for(const sp in a){const x=a[sp];if(x.q1<10||x.q0<10)continue;const p1=pct(x.c1,x.q1),p0=pct(x.c0,x.q0);if(p1-p0>=10&&(!best||p1-p0>best.g))best={sp,p0,p1,g:p1-p0}}
+    if(best)out.push(`Seu acerto em ${best.sp} subiu de ${best.p0}% para ${best.p1}% no último mês.`)}
+  {const ws=t-(new Date().getDay()+6)%7,s=foSum(foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t));if(s>=5*3600)out.push(`Esta semana você já soma ${fmtMin(s)} de estudo focado.`)}
+  return out}
+function heroLine(){const F=heroFeats(),n=dnum(today());return F.length?{feat:true,t:F[n%F.length]}:{feat:false,t:HERO_FRASES[((n%HERO_FRASES.length)+HERO_FRASES.length)%HERO_FRASES.length]}}
+function heroSummary(C){const tot=C.errs+C.cards+C.notes+C.revs;
+  if(dayQ){const left=dayQ.ids.slice(dayQ.i).reduce((a,id)=>a+(C[id]||0),0);return left?`Fila do dia em andamento: ${left===1?"falta 1 item":`faltam ${left} itens`}.`:"Fila do dia quase no fim."}
+  if(tot){const P=[[C.revs,"revisão","revisões"],[C.errs,"erro","erros"],[C.cards,"cartão","cartões"],[C.notes,"anotação para reler","anotações para reler"]].filter(x=>x[0]).map(([n,a,b])=>`${n} ${n===1?a:b}`);
+    const txt=P.length>1?P.slice(0,-1).join(", ")+" e "+P[P.length-1]:P[0];return `${txt} ${tot===1?"espera":"esperam"} por você hoje.`}
+  const s=nextSteps()[0];return s?`Revisões em dia. Próximo: ${s.t}.`:"Tudo feito por hoje. Bom trabalho."}
+function heroExam(){const out=[],t=dnum(today()),m=exMain();
+  if(m&&m.date){const n=dnum(m.date)-t;if(n===0)out.push(`Hoje é dia de ${m.name}. Boa prova!`);else if(n>0&&n<=365)out.push(`${n===1?"Falta 1 dia":`Faltam ${n} dias`} para ${m.name}.`)}
+  const p=upcomingProvas().find(x=>x.date&&dnum(x.date)-t>=0&&dnum(x.date)-t<=7);if(p){const n=dnum(p.date)-t;out.push(`Prova ${p.name} da faculdade ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}.`)}
+  return out.join(" · ")}
+function heroCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
+  const c=el(`<div class="iherob"><span class="hdate"></span><h2 class="hhi"></h2><p class="hsum"></p>${ex?`<p class="hexam"></p>`:""}<p class="hline"></p><div class="herobtns"></div></div>`);
+  c.querySelector(".hdate").textContent=heroDate();c.querySelector(".hhi").textContent=`${heroHi()}${nm?", "+nm:""}.`;c.querySelector(".hsum").textContent=heroSummary(C);
+  if(ex)c.querySelector(".hexam").textContent=ex;const hl=c.querySelector(".hline");hl.textContent=L.t;if(L.feat)hl.classList.add("feat");
+  const B=c.querySelector(".herobtns"),btn=(t,fn)=>{const b=el(`<button class="herobtn" type="button" id="heroGo"></button>`);b.textContent=t+" →";b.onclick=fn;B.appendChild(b)};
+  if(dayQ)btn("Continuar a fila",()=>qGoStep(dayQ.ids[dayQ.i]));
+  else if(tot)btn("Começar a fila",qStart);
+  else{const s=nextSteps()[0];if(s)btn(s.kind==="rev"?"Revisar agora":"Estudar agora",()=>startStep(s))}
+  if(!B.children.length)B.remove();return c}
+const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iRevs","Revisões"],["iMeta","Meta e projeção até a prova"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
 let iCustom=false;
 function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:[])}
-function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(id=>ICARDS.some(c=>c[0]===id)):[];ICARDS.forEach(c=>{if(!o.includes(c[0]))o.push(c[0])});return o}
+function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(id=>ICARDS.some(c=>c[0]===id)):[];if(o.length&&!o.includes("iHero"))o.unshift("iHero");ICARDS.forEach(c=>{if(!o.includes(c[0]))o.push(c[0])});return o}
 function applyICustom(){const H=iHidden(),O=iOrder();ICARDS.forEach(([id])=>{const e=document.getElementById(id);if(!e)return;e.classList.toggle("ihid",H.has(id));e.style.order=String(O.indexOf(id)+1)})}
 function iCustomEl(){const w=el(`<div class="icustom"></div>`);
   if(!iCustom){const b=el(`<button class="link" type="button" id="iCustB">Personalizar o Início</button>`);b.onclick=()=>{iCustom=true;render()};w.appendChild(b);return w}
@@ -4854,7 +4927,7 @@ function renderInicioMeta(){const box=$("#iMeta");if(!box)return;const main=exMa
 function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)return;
   if(view==="inicio"){if(t.parentNode!==$("#iToday"))$("#iToday").appendChild(t);if(r.parentNode!==$("#iRevs"))$("#iRevs").appendChild(r)}
   else if(view==="temas"){const slot=$("#todaySlot");if(slot.nextElementSibling!==t)slot.after(t);const side=$("#viewTemas .side");if(side.firstElementChild!==r)side.prepend(r)}}
-function renderInicio(){renderInicioBoard();renderInicioMeta();renderInicioProva();renderInicioStats();
+function renderInicio(){{const h=$("#iHero");h.innerHTML="";h.appendChild(heroCard())}renderInicioBoard();renderInicioMeta();renderInicioProva();renderInicioStats();
   {const n=$("#iNotice");n.innerHTML="";const x=iNoticeEl();if(x)n.appendChild(x)}
   {const q=$("#iQueue");q.innerHTML="";const c=iQueueCard();c.querySelector(".dhead").appendChild(helpBtn("Revisões"));q.appendChild(c)}
   {const w=$("#iWeek");w.innerHTML="";const x=iWeekCard();if(x)w.appendChild(x)}
@@ -6302,7 +6375,7 @@ function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai 
 
 const HELP=[
 ["Comece aqui",`Um dia de estudo no Nexus, em 5 passos:
-1. **Início › Revisar hoje:** toque em **Começar a fila**. O app passa pelos erros, cartões, anotações para reler e temas para revisar, um depois do outro; a barra de baixo leva ao próximo.
+1. **Início:** na saudação do topo, toque em **Começar a fila**. O app passa pelos erros, cartões, anotações para reler e temas para revisar, um depois do outro; a barra de baixo leva ao próximo.
 2. **Estudar hoje:** estude os 3 temas do plano. **Começar com o Foco** conta o tempo; ao terminar, marque os subtópicos que viu.
 3. **Questões:** faça questões dos temas do dia (no tema, **Gerar questões**, ou registre as de bancos em **+ Registrar questões**).
 4. **Erros:** errou? **Levar para o caderno de erros**. Ele volta para você revisar amanhã.
@@ -6310,6 +6383,7 @@ const HELP=[
 - **Buscar em tudo:** a lupa no topo (no computador, **Ctrl+K** ou **/**) procura em temas, anotações, erros, cartões e faculdade.
 - **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo por dia. Dá para mudar depois em Perfil e Configurações.
 - **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
+- **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
 - **Anki:** em Anotações › Cartões para revisar e em Erros › Mais filtros, **Exportar para o Anki** gera um arquivo .txt (no Anki: Arquivo › Importar).
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.

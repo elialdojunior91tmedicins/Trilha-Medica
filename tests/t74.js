@@ -56,7 +56,7 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  // fila
  ok(await p.evaluate(()=>{const t=document.querySelector('#iQueue').textContent;return /Erros/.test(t)&&/Cartões/.test(t)}),name+": fila mostra erros e cartões");
  await p.screenshot({path:`inicio-${name}.png`,fullPage:false});
- await p.evaluate(()=>document.querySelector('#iqGo').scrollIntoView({block:"center"}));await click('#iqGo');await p.waitForTimeout(250);
+ ok(await p.evaluate(()=>!document.querySelector('#iqGo')),name+": a fila começa pela saudação (sem botão repetido)");await p.evaluate(()=>document.querySelector('#heroGo').scrollIntoView({block:"center"}));await click('#heroGo');await p.waitForTimeout(250);
  ok(await p.evaluate(()=>view==="erros"&&!!erRun),name+": fila começa pelos erros");ok(await vis(p,'#qBar'),name+": barra da fila aparece");
  const bar=await p.evaluate(()=>{const r=document.querySelector('#qBar').getBoundingClientRect(),n=document.querySelector('.appnav');const nr=n&&n.offsetParent!==null?n.getBoundingClientRect():null;return {b:r.bottom,h:innerHeight,overlap:nr?(r.bottom>nr.top+1&&r.top<nr.bottom):false,w:r.width}});
  ok(bar.b<=bar.h+1&&!bar.overlap,name+": barra não cobre a navegação "+JSON.stringify(bar));await p.screenshot({path:`qbar-${name}.png`});
@@ -78,8 +78,8 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  await p.evaluate(()=>document.querySelector('#iCustB').click());await p.waitForTimeout(80);await p.evaluate(()=>document.querySelector('#icb-iStats').click());await p.waitForTimeout(80);
  ok(await p.evaluate(()=>{const s=document.querySelector('#iStats');return s&&s.offsetParent===null&&ui.prefs.ihide.includes("iStats")}),name+": esconder cartão do Início");
  await p.evaluate(()=>{const li=document.querySelector('#icb-iQueue').closest('li');li.querySelectorAll('button')[0].click()});await p.waitForTimeout(80);
- ok(await p.evaluate(()=>iOrder()[0]==="iQueue"),name+": mudar a ordem");
- await p.evaluate(()=>[...document.querySelectorAll('.icust .link')].pop().click());await p.waitForTimeout(80);ok(await p.evaluate(()=>!ui.prefs.ihide&&iOrder()[0]==="iBoard"),name+": voltar ao padrão");
+ ok(await p.evaluate(()=>iOrder().indexOf("iQueue")<iOrder().indexOf("iBoard")),name+": mudar a ordem");
+ await p.evaluate(()=>[...document.querySelectorAll('.icust .link')].pop().click());await p.waitForTimeout(80);ok(await p.evaluate(()=>!ui.prefs.ihide&&iOrder()[0]==="iHero"&&iOrder()[1]==="iBoard"),name+": voltar ao padrão");
  // resumo da semana (simula domingo)
  ok(await p.evaluate(()=>{const g=Date.prototype.getDay;Date.prototype.getDay=function(){return 0};hist[today()]={...(hist[today()]||{}),q:10,c:7};const c=iWeekCard();Date.prototype.getDay=g;return !!c&&/Questões/.test(c.textContent)&&/70%/.test(c.textContent)}),name+": resumo da semana");
  // calendário e Anki
