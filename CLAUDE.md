@@ -140,6 +140,10 @@ consultado quando há dúvida. Responda em português.
   `heroExam` (prova principal + prova da faculdade em até 7 dias), `heroLine` = feito real (`heroFeats`: sequência `heroActive`, questões de ontem, especialidade
   que subiu ≥10 pontos, ≥5 h de foco na semana) ou `HERO_FRASES[dnum % 60]`. Botão `#heroGo` (fila: `qStart`/`qGoStep`; sem pendência: `startStep`);
   com a saudação visível, `iQueueCard` não mostra `#iqGo`. Em duas colunas `.icol{order:50}` deixa saudação e placar no topo. Classes `.herobtn` (`.hbtn` já é do cabeçalho). Teste: `tests/t84.js`.
+- Semana de estudos: `ui.prefs.wnew/wsim/woff` (dias 0=domingo; `applyUI` → `WK_NEW/WK_SIM/WK_OFF`; editor `weekCfgEl` em Configurações › Plano, ids `#wk-<pref>-<dia>`).
+  `wdOf(dnum)`, `isOffDay/isNewDay/isSimDay`, `offShift`, `nextStudyLabel`, `newDaysWeek`. `dueIn` empurra a data que cai na folga para o próximo dia de estudo e,
+  no dia de folga, nada vence. `buildPlan`: folga = vazio; dia sem temas novos = sem `r-new`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim` (n=20)
+  ou `exam` (prova na íntegra por fazer) no topo. Prévia (`weekEl`) marca folga; projeção usa `newDaysWeek`. Teste: `tests/t85.js`.
 - Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
   cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),
