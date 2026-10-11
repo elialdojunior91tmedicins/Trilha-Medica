@@ -108,7 +108,7 @@
         : "\n\nResponda somente com o texto final, em Markdown, sem comentários antes ou depois.");
       let done = false;
       const finish = (fn, v) => { if (done) return; done = true; closeIt(); fn(v); };
-      const closeIt = modal(asJson ? "Gerar questões com o Claude" : (opts && opts.images && opts.images.length ? "Ler imagem com o Claude" : "Pedir ao Claude"), (body) => {
+      const closeIt = modal(opts && opts.title ? opts.title : asJson ? "Gerar questões com o Claude" : (opts && opts.images && opts.images.length ? "Ler imagem com o Claude" : "Pedir ao Claude"), (body) => {
         const msg = h("p", { class: "gstatus", role: "status" });
         const copy = h("button", { class: "btn primary", type: "button", text: "Copiar pedido" });
         copy.onclick = async () => {
@@ -120,7 +120,7 @@
         const err = h("p", { class: "err", role: "alert" });
         const paste = h("button", { class: "btn", type: "button", text: "Colar" });
         paste.onclick = async () => { try { ta.value = await navigator.clipboard.readText(); } catch (e) { ta.focus(); err.textContent = "Toque e segure no campo e escolha Colar."; } };
-        const use = h("button", { class: "btn primary", type: "button", text: asJson ? "Usar estas questões" : "Usar esta resposta" });
+        const use = h("button", { class: "btn primary", type: "button", text: asJson ? (opts && opts.title ? "Usar esta resposta" : "Usar estas questões") : "Usar esta resposta" });
         use.onclick = () => {
           const v = ta.value.trim();
           if (!v) { err.textContent = "Cole a resposta do Claude primeiro."; return; }
@@ -131,7 +131,7 @@
           } else finish(resolve, { text: v, truncated: false });
         };
         body.append(
-          h("p", { class: "gtext" }, h("b", { text: "1. " }), opts && opts.images && opts.images.length
+          h("p", { class: "gtext" }, h("b", { text: "1. " }), opts && opts.hint ? opts.hint : opts && opts.images && opts.images.length
             ? "Copie o pedido, abra uma conversa no app do Claude ou em claude.ai, anexe a mesma imagem que você escolheu e cole o pedido."
             : "Copie o pedido e cole numa conversa no app do Claude ou em claude.ai."),
           h("div", { class: "btns" }, copy, h("a", { class: "btn", href: "https://claude.ai/new", target: "_blank", rel: "noopener", text: "Abrir o Claude ↗" })),
@@ -324,7 +324,8 @@
       foco: Array.isArray(d.focus) ? d.focus.length : 0,
       refazer: Array.isArray(d.redo) ? d.redo.length : 0,
       cartoes: Array.isArray(d.cards) ? d.cards.length : 0,
-      livres: Array.isArray(d.free) ? d.free.length : 0
+      livres: Array.isArray(d.free) ? d.free.length : 0,
+      provasImportadas: Array.isArray(d.exams) ? d.exams.length : 0
     };
   }
   const isEmpty = c => !c.temas && !c.anotacoes && !c.erros && !c.disciplinas; // o histórico de hoje é criado pelo próprio plano do dia
@@ -347,6 +348,8 @@
     const hasRedo = Array.isArray(d.redo) && typeof rdOk === "function";
     const hasCards = Array.isArray(d.cards) && typeof cdOk === "function";
     const hasFree = Array.isArray(d.free) && typeof frOk === "function";
+    const hasEx = Array.isArray(d.exams) && typeof exOk === "function";
+    if (hasEx) { exams = d.exams.filter(exOk).map(exClean); exProg = (Array.isArray(d.examProg) ? d.examProg : []).filter(exPOk).map(exPClean); exSaveLocal(); }
     if (hasFree) { freeN = d.free.filter(frOk).map(frClean); try { localStorage.setItem(LSFR2, JSON.stringify(freeN)); } catch (e) {} }
     if (hasCards) { cards = d.cards.filter(cdOk).map(cdClean); try { localStorage.setItem(LSCD, JSON.stringify(cards)); } catch (e) {} }
     if (hasRedo) { redo = d.redo.filter(rdOk).map(rdClean); try { localStorage.setItem(LSRD, JSON.stringify(redo)); } catch (e) {} }
@@ -371,6 +374,14 @@
         const fs2 = await freeStore.get(), fids = new Set(freeN.map(x => x.id));
         await Promise.all(fs2.docs.filter(x => !fids.has(x.id)).map(x => freeStore.doc(x.id).delete()));
         await Promise.all(freeN.map(x => freeStore.doc(x.id).set({ ...x })));
+      }
+      if (hasEx && typeof exStore !== "undefined" && exStore) {
+        const xs = await exStore.get(), xids = new Set(exams.map(x => x.id));
+        await Promise.all(xs.docs.filter(x => !xids.has(x.id)).map(x => exStore.doc(x.id).delete()));
+        await Promise.all(exams.map(x => exStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))));
+        const ps = await exPStore.get(), pids = new Set(exProg.map(x => x.id));
+        await Promise.all(ps.docs.filter(x => !pids.has(x.id)).map(x => exPStore.doc(x.id).delete()));
+        await Promise.all(exProg.map(x => exPStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))));
       }
       if (hasCards && typeof cardStore !== "undefined" && cardStore) {
         const cs = await cardStore.get(), cids = new Set(cards.map(x => x.id));

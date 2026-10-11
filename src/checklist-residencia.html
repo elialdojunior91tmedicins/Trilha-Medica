@@ -362,6 +362,32 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[
 .qextra{display:flex;flex-direction:column;gap:20px}
 html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
 .qextra .qsim{grid-column:1/-1}
+.qextra .qexam{grid-column:1/-1}
+.exrows,.exqs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.exrow{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--line)}.exrow:first-child{border-top:0;padding-top:4px}
+.exrt{display:flex;flex-direction:column;gap:2px;min-width:0}.exrt b{font-size:1rem;overflow-wrap:anywhere}.exrt .meta{font-size:.82rem;color:var(--muted)}.exst{font-size:.86rem;font-weight:600;color:var(--accent)}
+.exrow .btns{flex-wrap:wrap;align-items:center}.exmode{align-self:flex-start}.exmodeh{margin:-4px 0 0}
+.exfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,9rem) 5.5rem;gap:8px}
+html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}html[data-layout="phone"] .exfields .exname{grid-column:1/-1}
+.exkey{display:flex;flex-direction:column;gap:6px}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
+.exsum{margin:0;font-size:.92rem}.exsum .w{color:var(--warn);font-weight:600}
+.exrev{display:flex;flex-direction:column;gap:10px}
+.exq{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-top:1px solid var(--line)}.exq.off{opacity:.55}
+.exqh{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.exbadges{display:flex;flex-wrap:wrap;gap:4px}
+.exb{font:700 .68rem var(--body);letter-spacing:.03em;border-radius:99px;padding:2px 8px;background:color-mix(in srgb,var(--muted) 14%,transparent);color:var(--muted)}
+.exb.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--l3)}.exb.warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--gold-ink)}.exb.im{background:color-mix(in srgb,var(--l2) 14%,transparent);color:var(--l2)}
+.exstem{margin:0;font-size:.9rem;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}.exstem.open{display:block}
+.exalts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:.86rem}.exalts li{display:flex;gap:6px;overflow-wrap:anywhere}.exalts li b{flex:none}.exalts li.right{color:var(--l3);font-weight:700}
+.exctl{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}.exsel select{min-width:6rem}.extema{text-align:left;overflow-wrap:anywhere}
+.extpick{display:flex;flex-direction:column;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.exedit,.exrow>.exkey{border-top:1px dashed var(--line);padding-top:10px}
+.explay{display:flex;flex-direction:column;gap:12px}.explay .btns{flex-wrap:wrap;align-items:center}
+.alt.pick{border-color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent);background:var(--accent-soft)}
+.exmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.6rem,1fr));gap:4px;padding-top:8px}
+.exmap button{font:600 .8rem var(--body);padding:6px 0;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.exmap button.done{background:var(--accent-soft);border-color:var(--accent)}.exmap button.ok{background:color-mix(in srgb,var(--good) 22%,var(--surface));border-color:var(--good)}
+.exmap button.no{background:var(--due-soft);border-color:var(--due)}.exmap button.an{opacity:.5;text-decoration:line-through}.exmap button[aria-current="true"]{outline:2px solid var(--gold);outline-offset:1px}
+.imgpick.dis{opacity:.5;pointer-events:none}
 .qrdsum{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:.88rem;color:var(--muted)}.qrdsum b{color:var(--ink);font-family:var(--mono)}
 .rdlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
 .rdlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
@@ -2652,7 +2678,7 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0),qGainCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qExamCard(),qRedoCard(U0),qGainCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
@@ -4208,7 +4234,7 @@ function renderErros(){
 
 /* ===================== LIXEIRA: o que é apagado fica 30 dias e pode voltar ===================== */
 const LSTR="resid-trash-v1",TR_DAYS=30,TR_MAX=300;
-const TR_KIND={err:"Erro",card:"Cartão",free:"Caderno livre",note:"Anotação",prova:"Prova",sp:"SP",disc:"Disciplina"};
+const TR_KIND={err:"Erro",card:"Cartão",free:"Caderno livre",exam:"Prova importada",note:"Anotação",prova:"Prova",sp:"SP",disc:"Disciplina"};
 let trash=[],trashStore=null,trSkip=false,trArm=null,trMsg="";
 function trOk(x){return !!x&&typeof x.id==="string"&&!!TR_KIND[x.kind]&&typeof x.j==="string"&&typeof x.at==="string"}
 try{const v=JSON.parse(localStorage.getItem(LSTR)||"[]");if(Array.isArray(v))trash=v.filter(trOk)}catch(e){trash=[]}
@@ -4232,6 +4258,7 @@ function trRestore(id){const x=trash.find(y=>y.id===id);if(!x)return;let d;try{d
   if(x.kind==="err"){if(!errors.some(e=>e.id===d.id)){errors.push(d);putErr(d)}}
   else if(x.kind==="card"){if(!cards.some(c=>c.id===d.id)){const c=cdClean(d);cards.push(c);cdPut(c)}}
   else if(x.kind==="free"){if(!freeN.some(f=>f.id===d.id)){const f=frClean(d);freeN.push(f);frPut(f)}}
+  else if(x.kind==="exam"){if(d.ex&&exOk(d.ex)&&!exams.some(e=>e.id===d.ex.id)){const e=exClean(d.ex);exams.unshift(e);exPut(e);if(d.pg&&exPOk(d.pg)&&!exProg.some(y=>y.id===e.id)){exProg.push(exPClean(d.pg));exPSave(e.id)}}}
   else if(x.kind==="note"){const cur=notes[d.k]||"";saveNote(d.k,cur.trim()?cur+"\n\n---\n\n"+d.t:d.t)}
   else if(x.kind==="prova"){const ids=provaDids(d).filter(discOf);if(!ids.length){ok=false;why=`a disciplina desta prova não existe mais`}else if(!fac.provas.some(p=>p.id===d.id)){provaSetDids(d,ids);fac.provas.push(d);saveFac()}}
   else if(x.kind==="sp"){const dc=discOf(d.discId);if(!dc){ok=false;why="a disciplina desta SP não existe mais"}else{
@@ -4314,7 +4341,7 @@ function iNoticeEl(){const box=el(`<div class="inotices"></div>`);
 function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
   foSess.forEach(x=>{const n=dnum(x.d);if(n>=ws&&n<=we)r.fo+=x.sec});
   for(let n=ws;n<=we;n++){const h=hist[fromNum(n)];if(h){r.q+=h.q||0;r.c+=h.c||0;r.e+=h.e||0;r.rv+=h.r||0}}
-  errors.forEach(e=>{const n=dnum(e.d);if(n>=ws&&n<=we)r.er++});return r}
+  errors.forEach(e=>{if(!e.d)return;const n=dnum(e.d);if(n>=ws&&n<=we)r.er++});return r}
 function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return null;const ws=dow===0?foWeekStart():foWeekStart()-7;if(lsGet("resid-wkdis","")===String(ws))return null;
   const A=weekStats(ws),B=weekStats(ws-7);if(!A.fo&&!A.q&&!A.e&&!A.rv)return null;
   const c=el(`<section class="card iweek" id="iWeek" aria-labelledby="iwh"><div class="dhead"><h2 id="iwh"></h2><button class="link" type="button">Fechar</button></div><div class="iwk"></div><p class="how"></p></section>`);
@@ -5464,6 +5491,354 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   c.appendChild(acts);c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.sim?" · Esc sai da tela inteira":""}</p>`));return c}
 function simTick(){const c=$("#simClock");if(!c||!sim||sim.status!=="run")return;const q=sim.ans[sim.i]?null:Math.floor((Date.now()-sim.shown)/1000);c.textContent=q===null?"":`${fmtPace(q)} nesta questão`}
 setInterval(simTick,1000);
+/* ---------- Provas na íntegra: importar o PDF (ou fotos) de uma prova, conferir as questões e fazer no app ----------
+   exams = [{id,name,banca,ano,at,qs:[{n,p,pe,k,q,g:"b"|"c",an,im,ck}]}]  (questões; muda pouco: importação, gabarito, tema)
+   exProg = [{id,i,mode:"p"|"e",fin,tries:[{d,hit,n,s}],a:{idx:{l,d,s}},h:{idx:[{l,d}]}}]  (respostas; documento pequeno, gravado a cada resposta)
+   Cada resposta conta no acerto do tema (addQ com a banca como fonte); mudar o gabarito, anular ou trocar o tema recalcula (exChange). */
+const LSEX="resid-exams-v1",LSEXP="resid-exprog-v1",PDFJS="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/legacy/build/",EX_AB="ABCDEFGH";
+let exams=[],exProg=[],exStore=null,exPStore=null,imp=null,exRun=null,exEdit=null,exArm=null,exKey=null;const exATimer={};
+function exQOk(r){return !!r&&typeof r==="object"&&!!r.q&&typeof r.q.enunciado==="string"&&Array.isArray(r.q.alternativas)&&r.q.alternativas.length>=2}
+function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
+  const L=q.alternativas.filter(a=>a&&typeof a.texto==="string").map(a=>({letra:String(a.letra||"").trim().toUpperCase().slice(0,3),texto:a.texto.slice(0,2000),porque:s(a.porque,1200)}));
+  const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
+  return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
+    q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:""},
+    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{})}}
+function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
+function exClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
+  return {id:x.id,name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
+function exPOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"}
+function exPClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,a={},h={},A=x.a&&typeof x.a==="object"?x.a:{},H=x.h&&typeof x.h==="object"?x.h:{};
+  for(const i in A){const v=A[i];if(v&&typeof v.l==="string"&&D.test(v.d))a[i]={l:v.l.slice(0,3),d:v.d,s:Math.max(0,Math.min(1800,Math.round(+v.s||0)))}}
+  for(const i in H){const v=H[i];if(Array.isArray(v)){const L=v.filter(y=>y&&typeof y.l==="string"&&D.test(y.d)).map(y=>({l:y.l.slice(0,3),d:y.d})).slice(-10);if(L.length)h[i]=L}}
+  return {id:x.id,i:Number.isInteger(x.i)&&x.i>=0?x.i:0,mode:x.mode==="e"?"e":"p",fin:D.test(x.fin||"")?x.fin:"",
+    tries:Array.isArray(x.tries)?x.tries.filter(t=>t&&D.test(t.d)).map(t=>({d:t.d,hit:+t.hit||0,n:+t.n||0,s:+t.s||0})).slice(-20):[],a,h}}
+try{const v=JSON.parse(localStorage.getItem(LSEX)||"[]");if(Array.isArray(v))exams=v.filter(exOk).map(exClean)}catch(e){}
+try{const v=JSON.parse(localStorage.getItem(LSEXP)||"[]");if(Array.isArray(v))exProg=v.filter(exPOk).map(exPClean)}catch(e){}
+function exSaveLocal(){try{localStorage.setItem(LSEX,JSON.stringify(exams))}catch(e){}try{localStorage.setItem(LSEXP,JSON.stringify(exProg))}catch(e){}}
+async function exPut(ex){exSaveLocal();if(!exStore)return;try{await exStore.doc(ex.id).set(JSON.parse(JSON.stringify(ex)))}catch(e){}}
+function exPg(id){let P=exProg.find(x=>x.id===id);if(!P){P=exPClean({id});exProg.push(P)}return P}
+async function exPWrite(id){const P=exProg.find(x=>x.id===id);if(P&&exPStore)try{await exPStore.doc(id).set(JSON.parse(JSON.stringify(P)))}catch(e){}}
+function exPSave(id){exSaveLocal();clearTimeout(exATimer[id]);const t=setTimeout(async()=>{await exPWrite(id);if(exATimer[id]===t)delete exATimer[id]},1500);exATimer[id]=t}
+function exFlush(){for(const id of Object.keys(exATimer)){clearTimeout(exATimer[id]);delete exATimer[id];exPWrite(id)}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")exFlush()});
+async function exDel(id){const ex=exams.find(x=>x.id===id);if(!ex)return;const P=exProg.find(x=>x.id===id);
+  toTrash("exam",ex.name,`${ex.qs.length} ${ex.qs.length===1?"questão":"questões"}${ex.banca?" · "+ex.banca:""}`,{ex,pg:P||null});
+  exams=exams.filter(x=>x!==ex);exProg=exProg.filter(x=>x.id!==id);clearTimeout(exATimer[id]);delete exATimer[id];exSaveLocal();
+  if(exRun&&exRun.id===id)exRun=null;if(exEdit&&exEdit.id===id)exEdit=null;render();
+  if(exStore)try{await exStore.doc(id).delete()}catch(e){}if(exPStore)try{await exPStore.doc(id).delete()}catch(e){}}
+/* contagem no acerto dos temas: cada resposta válida (tema, gabarito, não anulada) vale 1 questão no dia em que foi respondida */
+const exSrc=ex=>ex.banca||"Prova importada";
+function exContrib(ex,i){const r=ex.qs[i];if(!r||!r.k||!BYKEY[r.k]||r.an||!r.q.correta)return [];const P=exPg(ex.id);
+  return [...(P.h[i]||[]),...(P.a[i]?[P.a[i]]:[])].map(a=>({k:r.k,d:a.d,c:a.l===r.q.correta?1:0}))}
+function exCount(L,sign,src){L.forEach(c=>{upd(c.k,x=>addQ(x,sign,sign*c.c,c.d,src));const h=hist[c.d]||(hist[c.d]={});h.q=Math.max(0,(h.q||0)+sign);if(c.c)h.c=Math.max(0,(h.c||0)+sign*c.c)});
+  if(L.length)try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
+function exChange(ex,i,fn){const b=exContrib(ex,i);fn(ex.qs[i],exPg(ex.id));const a=exContrib(ex,i),left=[...b],add=[];
+  a.forEach(c=>{const j=left.findIndex(x=>x.k===c.k&&x.d===c.d&&x.c===c.c);if(j>=0)left.splice(j,1);else add.push(c)});
+  exCount(left,-1,exSrc(ex));exCount(add,1,exSrc(ex));return left.length+add.length>0}
+function exScore(ex){const P=exPg(ex.id);let hit=0,n=0,ans=0,s=0;ex.qs.forEach((r,i)=>{if(r.an||!r.q.correta)return;n++;const a=P.a[i];if(a){ans++;s+=a.s||0;if(a.l===r.q.correta)hit++}});return {hit,n,ans,s}}
+function exAnswer(ex,i,l){const R=exRun,P=exPg(ex.id),old=P.a[i];if(old&&old.l===l)return;
+  const sec=R&&R.shown?Math.min(1800,Math.max(1,(Date.now()-R.shown)/1000)):0;
+  exChange(ex,i,(r,P)=>{P.a[i]={l,d:old?old.d:today(),s:old?old.s:Math.round(sec)}});
+  if(!old&&sec)logPace(today(),1,sec);
+  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta)rdAdd(r.k,r.q);
+  P.i=i;exPSave(ex.id);commit()}
+function exFinish(ex){const P=exPg(ex.id),S=exScore(ex);
+  if(!P.fin){P.fin=today();P.tries.push({d:today(),hit:S.hit,n:S.ans,s:Math.round(S.s)});
+    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta)rdAdd(r.k,r.q)})}
+  exPSave(ex.id);exRun={id:ex.id,view:"res",i:0,cad:{}};commit()}
+function exRestart(ex){const P=exPg(ex.id);for(const i in P.a){P.h[i]=[...(P.h[i]||[]),{l:P.a[i].l,d:P.a[i].d}].slice(-10)}P.a={};P.fin="";P.i=0;exPSave(ex.id)}
+/* gabarito: "1-A 2-C", "01. B", "Questão 3: D", "4 ANULADA" ou tabela (linha de números + linha de letras) → {número: letra | "X" (anulada)} */
+function parseKey(t){const k={};if(!t)return k;const s=String(t).replace(/\r/g,"");let m;
+  const r1=/(?:^|[^\d])(\d{1,3})\s*(?:[-–—.:)=]\s*([A-Ea-e])|\s+([A-E]))(?![A-Za-zÀ-ÿ0-9])/g;
+  while((m=r1.exec(s))){const n=+m[1];if(n>=1&&n<=300&&!k[n])k[n]=(m[2]||m[3]).toUpperCase();r1.lastIndex=m.index+m[0].length-1}
+  const r2=/(?:^|[^\d])(\d{1,3})\s*[-–—.:)=]?\s*(anulad[ao]|nula\b|\*)/gi;while((m=r2.exec(s))){const n=+m[1];if(n>=1&&n<=300)k[n]="X"}
+  const L=s.split("\n").map(x=>x.trim().split(/\s+/).filter(Boolean));
+  for(let i=0;i+1<L.length;i++){const a=L[i],b=L[i+1];if(a.length>=3&&a.length===b.length&&a.every(x=>/^\d{1,3}$/.test(x))&&b.every(x=>/^([A-E]|X|\*|ANULADA)$/i.test(x)))a.forEach((x,j)=>{const v=b[j].toUpperCase();k[+x]=/^[A-E]$/.test(v)?v:"X"})}
+  return k}
+const keyText=k=>Object.keys(k).map(Number).sort((a,b)=>a-b).map(n=>`${n}-${k[n]==="X"?"ANULADA":k[n]}`).join(", ");
+function keyPage(t){const n=Object.keys(parseKey(t)).length;return /gabarito/i.test(t)&&n>=5||n>=25&&t.length<n*40}
+/* leitor de PDF (pdf.js, carregado só quando usado; roda na própria página, sem worker) */
+let pdfjsP=null;
+const PDFJS2="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/";// reserva: versão moderna no cdnjs
+function pdfLib(){return pdfjsP||(pdfjsP=(async()=>{let b=window.__pdfjsBase||PDFJS,lib;try{lib=await import(b+"pdf.min.mjs")}catch(e){b=PDFJS2;lib=await import(b+"pdf.min.mjs")}
+  if(!(globalThis.pdfjsWorker&&globalThis.pdfjsWorker.WorkerMessageHandler)){const w=await import(b+"pdf.worker.min.mjs");if(!(globalThis.pdfjsWorker&&globalThis.pdfjsWorker.WorkerMessageHandler))globalThis.pdfjsWorker={WorkerMessageHandler:w.WorkerMessageHandler}}
+  lib.GlobalWorkerOptions.workerSrc=b+"pdf.worker.min.mjs";return lib})().catch(e=>{pdfjsP=null;throw e}))}
+async function pdfPageText(pg){const tc=await pg.getTextContent();let s="",y0=null,x1=null;
+  for(const it of tc.items){if(typeof it.str!=="string")continue;const x=it.transform[4],y=it.transform[5];
+    if(y0!==null&&Math.abs(y-y0)>Math.max(2,(it.height||0)*0.5)){if(!s.endsWith("\n"))s+="\n"}
+    else if(x1!==null&&x-x1>1.5&&s&&!/\s$/.test(s)&&!/^\s/.test(it.str))s+=" ";
+    s+=it.str;if(it.hasEOL)s+="\n";if(it.str)y0=y;x1=x+(it.width||0)}
+  return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()}
+async function pdfPageImg(pg){const v0=pg.getViewport({scale:1}),sc=Math.min(2.2,1500/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
+  cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);
+  await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;return await new Promise(r=>cv.toBlob(b=>r(b),"image/jpeg",0.82))}
+async function pdfOpenTxt(file,onPage){const lib=await pdfLib();const doc=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer()),isEvalSupported:false,disableFontFace:true}).promise;
+  const pages=[];for(let n=1;n<=doc.numPages;n++){const t=await pdfPageText(await doc.getPage(n));pages.push({n,t,img:t.replace(/\s/g,"").length<60});if(onPage)onPage(n,doc.numPages)}return {doc,pages}}
+const BANCAS=["ENARE","UNIFESP","UNICAMP","SUS-SP","SES-DF","AMRIGS","PSU-MG","PSU-GO","SURCE","UFRJ","UERJ","HCPA","UFPR","UNESP","SANTA CASA","EINSTEIN","IAMSPE","UFMG","UFBA","UFPE","SES-PE","HCFMRP","UFSC","AREMG","USP-RP","USP"];
+function impGuess(R){const s=(R.name+" "+(R.pages[0]?R.pages[0].t.slice(0,1500):"")).toUpperCase();
+  if(!R.banca){const b=BANCAS.find(x=>new RegExp("(^|[^A-Z])"+x.replace(/-/g,"[- ]?")+"([^A-Z]|$)").test(s));if(b)R.banca=b}
+  if(!R.ano){const m=s.match(/(?:^|\D)(20[0-4]\d|199\d)(?!\d)/);if(m)R.ano=m[1]}}
+/* importação: escolher → (ler o PDF aqui) → pronto → ler com o Claude em partes → conferir → salvar */
+function impNew(){imp={st:"pick",name:"",banca:"",ano:"",pages:[],doc:null,blobs:{},keyPg:[],keyTxt:"",keyFile:"",paste:"",qs:[],done:new Set(),fail:[],msg:"",err:"",flt:"all",show:12,T:null};exRun=null;exEdit=null;render();
+  setTimeout(()=>{const p=$("#impPanel");if(p)p.scrollIntoView({behavior:"smooth",block:"center"})},60)}
+async function impPick(files){const R=imp;files=[...(files||[])];if(!R||!files.length)return;const f0=files[0],isPdf=f0.type==="application/pdf"||/\.pdf$/i.test(f0.name);
+  R.st="scan";R.err="";R.msg="Abrindo o arquivo…";R.qs=[];R.done=new Set();R.fail=[];R.keyPg=[];render();
+  try{if(isPdf){let lib=null;try{lib=await pdfLib()}catch(e){throw {code:"lib"}}
+      const o=await pdfOpenTxt(f0,(n,t)=>{R.msg=`Lendo o PDF aqui no aparelho: página ${n} de ${t}…`;const s=$("#impSt");if(s)s.textContent=R.msg});R.doc=o.doc;R.pages=o.pages}
+    else{R.doc=null;R.pages=[];R.blobs={};let n=0;for(const f of files){if(!/^image\//.test(f.type))continue;n++;R.blobs[n]=await imgShrink(f);R.pages.push({n,t:"",img:true})}}
+    if(imp!==R)return;if(!R.pages.length)throw {code:"empty"};
+    if(!R.name)R.name=f0.name.replace(/\.[a-z0-9]+$/i,"").replace(/[_]+/g," ").replace(/\s+/g," ").trim().slice(0,100);
+    impGuess(R);R.keyPg=R.pages.filter(p=>p.t&&keyPage(p.t)).map(p=>p.n);R.st="ready";R.msg=""}
+  catch(e){if(imp!==R)return;R.st="pick";R.msg="";R.err=e&&e.code==="lib"?"Não foi possível abrir o leitor de PDF. Confira a internet e tente de novo.":e&&e.code==="empty"?"Escolha um PDF ou fotos das páginas.":
+    /password/i.test(String(e&&(e.name||e.message)))?"Este PDF tem senha. Abra-o, salve uma cópia sem senha e tente de novo.":"Não consegui ler este PDF. Ele pode estar corrompido; tente outro arquivo ou fotos das páginas."}
+  render()}
+async function impKeyFile(f){const R=imp;if(!R||!f)return;R.err="";
+  if(!(f.type==="application/pdf"||/\.pdf$/i.test(f.name))){R.err="O gabarito em arquivo precisa ser PDF. Se for foto, digite as respostas em Colar o gabarito.";render();return}
+  try{const o=await pdfOpenTxt(f);R.keyTxt=o.pages.map(p=>p.t).join("\n");R.keyFile=f.name;if(!Object.keys(parseKey(R.keyTxt)).length)R.err="Não reconheci respostas neste PDF (ele pode ser uma imagem). Digite o gabarito em Colar o gabarito."}
+  catch(e){R.err="Não consegui ler o PDF do gabarito."}
+  if(R.st==="review")impApplyKey(R,impKey(R));render()}
+function impKey(R){const k={};[...R.keyPg.map(n=>(R.pages.find(p=>p.n===n)||{}).t||""),R.keyTxt,R.paste].forEach(t=>Object.assign(k,parseKey(t)));return k}
+function impBlocks(R,only){const site=!!window.__site,LIM=site?24000:11000,MAXP=site?10:5,MAXI=site?8:Math.max(1,Math.min(4,R.maxImg||4)),out=[];let cur=null;
+  for(const p of R.pages){if(R.keyPg.includes(p.n)||(only&&!only.includes(p.n)))continue;
+    const last=cur&&cur.pages[cur.pages.length-1];
+    if(!cur||cur.img!==p.img||p.n!==last+1||cur.pages.length>=(p.img?MAXI:MAXP)||!p.img&&cur.len+p.t.length>LIM){cur={img:p.img,pages:[],len:0};out.push(cur)}
+    cur.pages.push(p.n);cur.len+=p.t.length}
+  return out}
+const impTopics=()=>ALL.map(i=>`${i.key} · ${i.t} · ${i.area.code}${i.sp?" / "+i.sp:""}`).join("\n");
+function impPrompt(R,b,key){const a=b.pages[0],z=b.pages[b.pages.length-1],one=a===z,pg=one?`a página ${a}`:`as páginas ${a} a ${z}`,site=!!window.__site,kn=Object.keys(key).length;
+  const nxt=!b.img&&R.pages.find(p=>p.n===z+1&&!p.img&&!R.keyPg.includes(p.n)),rawKey=!kn&&(R.keyTxt||"").trim();
+  const src=b.img?(site?`Leia ${pg} do PDF da prova que você vai anexar a esta conversa (se forem fotos, ${one?"a foto "+a:"as fotos "+a+" a "+z}).`:one?`A imagem anexada é a página ${a} da prova.`:`As imagens anexadas são as páginas ${a} a ${z} da prova, nesta ordem.`)
+    :`Abaixo está o texto extraído ${one?"da página "+a:"das páginas "+a+" a "+z} do PDF. A extração pode ter quebras de linha fora do lugar, palavras partidas, cabeçalhos, rodapés e números de página: ignore esses restos.`;
+  return `Você vai transcrever as questões de uma prova de residência médica para um app de estudos.
+Prova: ${R.name||"sem nome"}${R.banca?` · banca ${R.banca}`:""}${R.ano?` · ${R.ano}`:""}.
+${src}
+
+O que fazer
+1. Transcreva TODAS as questões que começam ${one?"nesta página":"nestas páginas"}, na ordem, sem pular nenhuma. Copie enunciado e alternativas fielmente; só junte linhas quebradas e desfaça palavras partidas.${nxt?" Se a última questão continua na página seguinte, use o trecho CONTINUAÇÃO só para completá-la; não transcreva questões que começam lá.":""}
+2. "numero": o número da questão na prova.
+3. ${kn?`Resposta: use o GABARITO OFICIAL abaixo e marque "gabarito":"banca". Questão anulada no gabarito: "anulada":true. Se o número não estiver no gabarito, resolva você mesmo e marque "gabarito":"claude".`:rawKey?`Resposta: use o GABARITO OFICIAL (texto extraído) abaixo e marque "gabarito":"banca". Questão anulada: "anulada":true. Se não achar o número no gabarito, resolva você mesmo e marque "gabarito":"claude".`:`A prova veio sem gabarito: resolva cada questão com cuidado, pelas diretrizes brasileiras atuais, e marque "gabarito":"claude". Se tiver dúvida, escolha a mais provável assim mesmo.`}
+4. "imagem": true quando a questão depende de figura, gráfico, tabela ou exame de imagem que não dá para ler aqui (ECG, radiografia, foto de lesão). Não invente o que a imagem mostra.
+5. "tema": a chave (ex.: "CM-34") do tema da lista TEMAS que melhor corresponde ao assunto principal da questão; "" se nenhum servir.
+6. Explicações para estudo, em português: "comentario" (3 a 6 frases: por que a resposta está certa e o raciocínio para chegar nela), "conceito" (1 frase com a regra para guardar) e, em cada alternativa, "porque" (1 ou 2 frases dizendo por que está errada; "" na correta). Se a prova trouxer comentário da banca, aproveite.
+7. Se ${pg} não tiver nenhuma questão (capa, instruções, folha de respostas), responda [].
+
+Responda somente com um array JSON, sem texto antes ou depois, neste formato:
+[{"numero":12,"enunciado":"...","alternativas":[{"letra":"A","texto":"...","porque":"..."},{"letra":"B","texto":"...","porque":""}],"correta":"B","anulada":false,"gabarito":"banca","imagem":false,"tema":"CM-34","comentario":"...","conceito":"..."}]
+${kn?`
+GABARITO OFICIAL
+${keyText(key)}
+`:rawKey?`
+GABARITO OFICIAL (texto extraído)
+${rawKey.slice(0,6000)}
+`:""}
+TEMAS (chave · tema · área / especialidade)
+${impTopics()}
+${b.img?"":`
+TEXTO ${one?"DA PÁGINA "+a:"DAS PÁGINAS "+a+" A "+z}
+${b.pages.map(n=>`=== Página ${n} ===\n${(R.pages.find(p=>p.n===n)||{}).t||""}`).join("\n\n")}
+${nxt?`
+CONTINUAÇÃO (página ${nxt.n}, só para completar a última questão)
+${nxt.t.slice(0,1800)}`:""}`}`}
+function impValid(data,b){const arr=Array.isArray(data)?data:data&&Array.isArray(data.questoes)?data.questoes:[],out=[];
+  arr.forEach(x=>{if(!x||typeof x.enunciado!=="string"||!x.enunciado.trim()||!Array.isArray(x.alternativas))return;
+    const L=x.alternativas.map((a,j)=>a&&typeof a==="object"?{letra:String(a.letra||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,1)||EX_AB[j],texto:String(a.texto||"").trim(),porque:typeof a.porque==="string"?a.porque.trim():""}
+      :typeof a==="string"?{letra:EX_AB[j],texto:a.trim(),porque:""}:null).filter(a=>a&&a.texto);
+    if(L.length<2||new Set(L.map(a=>a.letra)).size!==L.length)return;const cor=String(x.correta||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,1),num=parseInt(x.numero,10);
+    out.push(exQClean({n:num>0?num:0,p:b.pages[0],pe:b.pages[b.pages.length-1],k:typeof x.tema==="string"?x.tema.trim().toUpperCase():"",
+      q:{enunciado:x.enunciado.trim(),alternativas:L,correta:cor,comentario:typeof x.comentario==="string"?x.comentario.trim():"",conceito:typeof x.conceito==="string"?x.conceito.trim():""},
+      g:x.gabarito==="banca"?"b":"c",an:x.anulada===true,im:x.imagem===true,ck:cor}))});
+  return out}
+function impMerge(R,qs){const sz=r=>r.q.enunciado.length+r.q.alternativas.reduce((a,x)=>a+x.texto.length,0);
+  qs.forEach(q=>{if(!q.n)q.n=Math.max(0,...R.qs.map(r=>r.n))+1;const j=R.qs.findIndex(r=>r.n===q.n);if(j<0)R.qs.push(q);else if(sz(q)>sz(R.qs[j])*1.1)R.qs[j]=q});R.qs.sort((a,b)=>a.n-b.n)}
+function impApplyKey(R,key){R.qs.forEach(r=>{const v=key[r.n];if(!v)return;if(v==="X"){r.an=true;r.g="b"}else if(r.q.alternativas.some(a=>a.letra===v)){r.an=false;r.q.correta=v;r.g="b"}})}
+function impStatus(R){const s=$("#impSt");if(s)s.textContent=`Lendo com o Claude: parte ${Math.min(R.prog+1,R.nb)} de ${R.nb} · ${R.qs.length} ${R.qs.length===1?"questão":"questões"} até agora…`}
+async function impRead(only){const R=imp;if(!R||!sampleFn)return;R.st="read";R.err="";R.stop=false;R.noImg=false;R.ctl=new AbortController();
+  try{const lim=sampleFn.limits?await sampleFn.limits():null;R.canImg=!!(lim&&lim.images);R.maxImg=lim&&lim.images&&lim.images.maxCount||4}catch(e){R.canImg=false}
+  const key=impKey(R),blocks=impBlocks(R,only);R.fail=R.fail.filter(n=>!blocks.some(b=>b.pages.includes(n)));R.nb=blocks.length;R.prog=0;render();
+  let next=0;const work=async()=>{while(next<blocks.length&&!R.stop&&imp===R){const b=blocks[next++];await impBlock(R,b,key,0);R.prog++;impStatus(R)}};
+  await Promise.all(Array.from({length:Math.min(window.__site?1:2,blocks.length)},work));
+  if(imp!==R)return;impApplyKey(R,key);R.st="review";R.ctl=null;R.show=12;render();
+  setTimeout(()=>{const p=$("#impPanel");if(p)p.scrollIntoView({block:"start"})},40)}
+async function impBlock(R,b,key,depth){const site=!!window.__site;
+  const opts={signal:R.ctl.signal,cache:false,modelTier:"default",title:`Ler a prova com o Claude · parte ${R.prog+1} de ${R.nb}`,
+    hint:b.img?"Copie o pedido, abra uma conversa no app do Claude ou em claude.ai, anexe o PDF da prova (ou as fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto da prova já vai junto."};
+  try{if(b.img&&!site){if(!R.canImg){R.noImg=true;b.pages.forEach(n=>R.fail.push(n));return}
+      opts.images=[];for(const n of b.pages)opts.images.push(R.doc?await pdfPageImg(await R.doc.getPage(n)):R.blobs[n])}
+    const data=await sampleFn.json(impPrompt(R,b,key),opts);if(imp!==R)return;impMerge(R,impValid(data,b));b.pages.forEach(n=>R.done.add(n))}
+  catch(e){if(imp!==R)return;const code=e&&e.code;if(code==="cancelled"){R.stop=true;return}
+    if(GEN_OFF.includes(code)||["rate_limited","session_expired","images_unavailable"].includes(code)){R.stop=true;R.err=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"O Claude não pôde ler as imagens.");return}
+    if(b.pages.length>1&&depth<3){const h=Math.ceil(b.pages.length/2);await impBlock(R,{...b,pages:b.pages.slice(0,h)},key,depth+1);if(!R.stop)await impBlock(R,{...b,pages:b.pages.slice(h)},key,depth+1)}
+    else b.pages.forEach(n=>R.fail.push(n))}}
+const impQPages=R=>R.pages.filter(p=>!R.keyPg.includes(p.n)).map(p=>p.n);
+function impGaps(R,key){const have=new Set(R.qs.map(r=>r.n)),kk=Object.keys(key).map(Number),start=kk.length?Math.min(...kk):Math.min(...R.qs.map(r=>r.n)),end=Math.max(0,...kk,...R.qs.map(r=>r.n)),g=[];
+  if(!R.qs.length)return g;for(let n=Math.max(1,start);n<=end;n++)if(!have.has(n))g.push(n);return g}
+function impGapPages(R,g){const P=new Set();g.forEach(n=>{const a=R.qs.filter(r=>r.n<n).pop(),b=R.qs.find(r=>r.n>n),from=a?a.p:1,to=b?b.pe:R.pages.length;for(let p=from;p<=to;p++)if(!R.keyPg.includes(p))P.add(p)});return [...P].sort((x,y)=>x-y)}
+const pgList=L=>{const out=[];L.forEach(n=>{const l=out[out.length-1];if(l&&n===l[1]+1)l[1]=n;else out.push([n,n])});return out.map(([a,b])=>a===b?`${a}`:`${a}–${b}`).join(", ")};
+function impSave(){const R=imp;if(!R)return;const qs=R.qs.filter(r=>!r.x);if(!qs.length)return;
+  const ex=exClean({id:"ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs});
+  exams.unshift(ex);exPut(ex);imp=null;exArm=null;render();setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
+/* uma questão para conferir (na importação e depois de salva) */
+function exFilterOk(r,f){return f==="all"||f==="chk"&&!r.an&&(r.g!=="b"||!r.q.correta||r.ck&&r.ck!==r.q.correta)||f==="tema"&&!r.k||f==="img"&&r.im||f==="x"&&r.x}
+function exTopicPick(T,onPick){const w=el(`<div class="extpick"></div>`),s=el(`<label class="ffield"><span class="glabel">Tema desta questão</span><input class="etext" id="exTq" type="search" placeholder="Buscar tema (ex.: sepse, IAM)" autocomplete="off"></label>`),i=s.querySelector("input");
+  i.value=T.q;i.oninput=debounced(()=>{T.q=i.value;render()});w.appendChild(s);const n=norm(T.q.trim());
+  if(n.length>=2){const ul=el(`<ul class="qrres"></ul>`);ALL.map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,6)
+    .forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>onPick(x.key);ul.appendChild(li)});
+    if(!ul.children.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));w.appendChild(ul)}
+  const b=el(`<div class="btns"></div>`),no=el(`<button class="link" type="button">Deixar sem tema</button>`),cl=el(`<button class="link" type="button">Cancelar</button>`);no.onclick=()=>onPick("");cl.onclick=()=>onPick(null);b.append(no,cl);w.appendChild(b);
+  setTimeout(()=>{const x=$("#exTq");if(x&&!T.q&&document.activeElement!==x)x.focus({preventScroll:true})},30);return w}
+function exRowEl(r,i,C){const li=el(`<li class="exq${r.x?" off":""}"><div class="exqh"><b></b><span class="exbadges"></span></div><p class="exstem" tabindex="0"></p><ol class="exalts"></ol><div class="exctl"></div></li>`);
+  li.querySelector("b").textContent=`Questão ${r.n||i+1}`;const bd=li.querySelector(".exbadges"),badge=(t,c)=>{const s=el(`<span class="exb ${c}"></span>`);s.textContent=t;bd.appendChild(s)};
+  if(r.an)badge("Anulada","an");else if(!r.q.correta)badge("Sem resposta","warn");else if(r.g==="b")badge("Gabarito da banca","ok");else badge("Gabarito do Claude · conferir","warn");
+  if(r.im)badge(`Com imagem · pág. ${r.p}`,"im");if(!r.k)badge("Sem tema","warn");if(r.x)badge("Descartada","an");
+  const st=li.querySelector(".exstem");st.textContent=r.q.enunciado;st.onclick=()=>st.classList.toggle("open");
+  const ol=li.querySelector(".exalts");r.q.alternativas.forEach(a=>{const x=el(`<li><b></b><span></span></li>`);x.querySelector("b").textContent=a.letra+")";x.querySelector("span").textContent=a.texto;if(!r.an&&a.letra===r.q.correta)x.classList.add("right");ol.appendChild(x)});
+  if(!r.an&&r.q.correta&&r.ck&&r.ck!==r.q.correta)li.insertBefore(el(`<p class="pnote">O comentário foi escrito pelo Claude considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(r.q.correta)}. Confira antes de estudar por ele.</p>`),li.querySelector(".exctl"));
+  const ctl=li.querySelector(".exctl"),sel=el(`<label class="qfsel exsel"><span>Resposta</span><select></select></label>`),s=sel.querySelector("select");s.id=`exk-${C.pre}-${i}`;
+  [["","—"],...r.q.alternativas.map(a=>[a.letra,a.letra]),["X","Anulada"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;s.appendChild(o)});
+  s.value=r.an?"X":r.q.correta;s.onchange=()=>C.setKey(i,s.value);ctl.appendChild(sel);
+  const tb=el(`<button class="link extema" type="button"></button>`);tb.id=`ext-${C.pre}-${i}`;tb.textContent=r.k?`Tema: ${BYKEY[r.k].t}`:"Escolher o tema";tb.onclick=()=>C.setT({i,q:""});ctl.appendChild(tb);
+  if(C.toggleX){const x=el(`<button class="link" type="button"></button>`);x.id=`exx-${C.pre}-${i}`;x.textContent=r.x?"Incluir de volta":"Descartar";x.onclick=()=>C.toggleX(i);ctl.appendChild(x)}
+  if(C.T&&C.T.i===i)li.appendChild(exTopicPick(C.T,k=>{if(k!==null)C.setTopic(i,k);C.setT(null)}));
+  return li}
+function exListEl(rows,S,C){const w=el(`<div class="exrev"></div>`),cnt=f=>rows.filter(r=>exFilterOk(r,f)).length;
+  const ch=el(`<div class="chips" role="group" aria-label="Mostrar"></div>`);[["all","Todas"],["chk","Conferir"],["tema","Sem tema"],["img","Com imagem"],...(C.toggleX?[["x","Descartadas"]]:[])].forEach(([v,l])=>{const n=cnt(v);if(v!=="all"&&!n&&S.flt!==v)return;
+    const b=el(`<button class="chip" type="button" aria-pressed="${S.flt===v}"></button>`);b.id=`exf-${C.pre}-${v}`;b.textContent=`${l} · ${n}`;b.onclick=()=>{S.flt=v;S.show=12;render()};ch.appendChild(b)});w.appendChild(ch);
+  const L=rows.map((r,i)=>[r,i]).filter(([r])=>exFilterOk(r,S.flt)),ol=el(`<ol class="exqs"></ol>`);L.slice(0,S.show).forEach(([r,i])=>ol.appendChild(exRowEl(r,i,C)));w.appendChild(ol);
+  if(!L.length)w.appendChild(el(`<p class="cempty">Nada aqui com este filtro.</p>`));
+  if(L.length>S.show){const m=el(`<button class="btn" type="button"></button>`);m.id=`exmore-${C.pre}`;m.textContent=`Mostrar mais ${Math.min(24,L.length-S.show)} de ${L.length-S.show}`;m.onclick=()=>{S.show+=24;render()};w.appendChild(m)}
+  return w}
+function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><div class="dhead"><b>Importar prova</b><button class="link" type="button">Fechar</button></div></div>`);
+  w.querySelector(".dhead .link").onclick=()=>{if(R.ctl)R.ctl.abort();imp=null;render()};
+  if(sampleOff){w.appendChild(el(`<p class="err">O Claude não está disponível nesta visualização.</p>`));return w}
+  const err=()=>{if(R.err){const p=el(`<p class="err" role="alert"></p>`);p.textContent=R.err;w.appendChild(p)}};
+  if(R.st==="pick"||R.st==="scan"){
+    w.appendChild(el(`<p class="how">Escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido aqui no aparelho e o Claude transcreve as questões em partes, com gabarito, tema e comentário. Depois você confere tudo antes de salvar. O arquivo não fica salvo, só as questões.</p>`));
+    const pk=el(`<label class="btn primary imgpick"><input type="file" id="impFile" accept="application/pdf,.pdf,image/*" multiple hidden><span>Escolher o PDF ou as fotos</span></label>`);
+    pk.querySelector("input").onchange=e=>impPick(e.target.files);if(R.st==="scan")pk.classList.add("dis");w.appendChild(pk);
+    if(R.st==="scan"){const s=el(`<p class="gstatus" id="impSt" aria-live="polite"></p>`);s.textContent=R.msg;w.appendChild(s)}
+    err();return w}
+  // dados da prova
+  const pq=impQPages(R),nImg=R.pages.filter(p=>p.img&&!R.keyPg.includes(p.n)).length,key=impKey(R),kn=Object.keys(key).length,kx=Object.values(key).filter(v=>v==="X").length;
+  const info=el(`<p class="how exinfo"></p>`);info.textContent=`${R.pages.length} ${R.pages.length===1?"página":"páginas"}${nImg?` · ${nImg} sem texto (${R.doc?"escaneadas":"fotos"}: o Claude lê como imagem)`:""}${R.keyPg.length?` · gabarito na pág. ${pgList(R.keyPg)}`:""}.`;
+  if(R.keyPg.length&&R.st==="ready"){const nb=el(`<button class="link" type="button" id="impNoKey">Não é o gabarito</button>`);nb.onclick=()=>{R.keyPg=[];render()};info.append(" ",nb)}w.appendChild(info);
+  const f=el(`<div class="exfields"><label class="ffield exname"><span class="glabel">Nome da prova</span><input class="etext" id="impName" maxlength="140"></label><label class="ffield"><span class="glabel">Banca</span><input class="etext" id="impBanca" maxlength="40" placeholder="ENARE, USP…"></label><label class="ffield exano"><span class="glabel">Ano</span><input class="etext" id="impAno" maxlength="4" inputmode="numeric"></label></div>`);
+  [["#impName","name"],["#impBanca","banca"],["#impAno","ano"]].forEach(([s,k])=>{const i=f.querySelector(s);i.value=R[k];i.oninput=()=>{R[k]=i.value}});w.appendChild(f);
+  // gabarito
+  const g=el(`<div class="exkey"><span class="glabel">Gabarito</span><p class="exkst"></p></div>`);g.querySelector(".exkst").textContent=kn?`${kn} ${kn===1?"resposta encontrada":"respostas encontradas"}${kx?` (${kx} ${kx===1?"anulada":"anuladas"})`:""}: as questões usam o gabarito da banca.`
+    :R.keyTxt.trim()?"O gabarito do arquivo vai como texto para o Claude, que confere número por número.":"Sem gabarito: o Claude resolve as questões e elas ficam marcadas para você conferir. Dá para colar o gabarito agora ou depois.";
+  const kb=el(`<div class="btns"></div>`),kf=el(`<label class="btn imgpick"><input type="file" id="impKeyF" accept="application/pdf,.pdf" hidden><span></span></label>`);kf.querySelector("span").textContent=R.keyFile?`Gabarito: ${R.keyFile}`:"Gabarito em outro PDF";kf.querySelector("input").onchange=e=>impKeyFile(e.target.files&&e.target.files[0]);kb.appendChild(kf);g.appendChild(kb);
+  const pd=el(`<details class="plain"${R.paste?" open":""}><summary>Colar ou digitar o gabarito</summary><textarea class="ntext exkta" id="impPaste" placeholder="Ex.: 1-A 2-C 3-D 4-ANULADA 5-B…"></textarea></details>`),ta=pd.querySelector("textarea");ta.value=R.paste;
+  ta.oninput=debounced(()=>{R.paste=ta.value;if(R.st==="review")impApplyKey(R,impKey(R));render()},400);g.appendChild(pd);w.appendChild(g);
+  if(R.st==="ready"){err();const go=el(`<button class="btn primary" type="button" id="impGo"></button>`),nb=impBlocks(R).length;go.textContent=`Ler ${pq.length} ${pq.length===1?"página":"páginas"} com o Claude`;go.disabled=!sampleFn||!pq.length;go.onclick=()=>impRead();
+    w.appendChild(go);w.appendChild(el(`<p class="how">${window.__site?`Vai em ${nb} ${nb===1?"parte":"partes"}: em cada uma, você copia o pedido, cola no Claude e traz a resposta de volta.`:`Vai em ${nb} ${nb===1?"parte":"partes"}; uma prova de 100 questões leva uns 10 a 15 minutos. Dá para usar o resto do app enquanto isso.`}</p>`));return w}
+  if(R.st==="read"){const s=el(`<p class="gstatus" id="impSt" aria-live="polite"></p>`);s.textContent=`Lendo com o Claude: parte ${Math.min((R.prog||0)+1,R.nb)} de ${R.nb} · ${R.qs.length} ${R.qs.length===1?"questão":"questões"} até agora…`;w.appendChild(s);
+    const c=el(`<button class="btn" type="button" id="impStop">Parar e conferir o que já veio</button>`);c.onclick=()=>{R.stop=true;if(R.ctl)R.ctl.abort()};w.appendChild(c);return w}
+  // conferir
+  err();const rows=R.qs,keep=rows.filter(r=>!r.x),nb=keep.filter(r=>r.g==="b"&&!r.an).length,nc=keep.filter(r=>r.g!=="b"&&!r.an).length,na=keep.filter(r=>r.an).length,nt=keep.filter(r=>!r.k).length;
+  const sum=el(`<p class="exsum"></p>`);sum.innerHTML=`<b>${keep.length} ${keep.length===1?"questão":"questões"}</b> · ${nb} com gabarito da banca${nc?` · <span class="w">${nc} com gabarito do Claude</span>`:""}${na?` · ${na} ${na===1?"anulada":"anuladas"}`:""}${nt?` · <span class="w">${nt} sem tema</span>`:""}`;w.appendChild(sum);
+  const unread=pq.filter(n=>!R.done.has(n)),gaps=impGaps(R,key);
+  if(R.noImg)w.appendChild(el(`<p class="pnote">Esta visualização não envia imagens ao Claude, então as páginas escaneadas não foram lidas. Use o site (copiar e colar) ou um PDF com texto.</p>`));
+  if(unread.length&&!R.noImg){const p=el(`<p class="pnote"></p>`);p.textContent=`${unread.length===1?"A página":"As páginas"} ${pgList(unread)} ainda não ${unread.length===1?"foi lida":"foram lidas"}. `;const b=el(`<button class="link" type="button" id="impRest">Ler agora</button>`);b.onclick=()=>impRead(unread);p.appendChild(b);w.appendChild(p)}
+  else if(gaps.length){const p=el(`<p class="pnote"></p>`);p.textContent=`Não encontrei ${gaps.length===1?"a questão":"as questões"} ${gaps.slice(0,12).join(", ")}${gaps.length>12?"…":""}. `;const gp=impGapPages(R,gaps),b=el(`<button class="link" type="button" id="impGap"></button>`);b.textContent=`Procurar de novo (págs. ${pgList(gp)})`;b.onclick=()=>impRead(gp);p.appendChild(b);p.append(" Se não existirem nesta prova, ignore.");w.appendChild(p)}
+  if(nc)w.appendChild(el(`<p class="how">“Gabarito do Claude”: ele resolveu a questão. Confira com o gabarito oficial quando sair: cole-o acima (ou depois, na prova salva) e o app corrige tudo de uma vez.</p>`));
+  if(!R.T||!rows[R.T.i])R.T=null;
+  w.appendChild(exListEl(rows,R,{pre:"i",T:R.T,setT:v=>{R.T=v;render()},setTopic:(i,k)=>{rows[i].k=k},setKey:(i,v)=>{const r=rows[i];if(v==="X"){r.an=true}else{r.an=false;r.q.correta=v;if(v)r.g="b"}render()},toggleX:i=>{rows[i].x=!rows[i].x;render()}}));
+  const b=el(`<div class="btns"></div>`),sv=el(`<button class="btn primary" type="button" id="impSave"></button>`);sv.textContent=`Salvar prova · ${keep.length} ${keep.length===1?"questão":"questões"}`;sv.disabled=!keep.length;sv.onclick=impSave;b.appendChild(sv);
+  const again=el(`<button class="btn" type="button">Ler tudo de novo</button>`);again.onclick=()=>{R.qs=[];R.done=new Set();R.fail=[];impRead()};b.appendChild(again);w.appendChild(b);
+  return w}
+/* fazer a prova */
+function exStart(ex,mode){const P=exPg(ex.id);if(mode&&!Object.keys(P.a).length)P.mode=mode;if(P.fin){exRestart(ex);if(mode)P.mode=mode}
+  let i=P.i;if(P.a[i])i=ex.qs.findIndex((r,j)=>!P.a[j]&&!r.an);if(i<0)i=0;exRun={id:ex.id,view:"q",i,shown:Date.now(),cad:{}};exEdit=null;imp=null;exPSave(ex.id);render();
+  setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},40)}
+function exGo(ex,i){const R=exRun;if(!R)return;R.i=Math.max(0,Math.min(ex.qs.length-1,i));R.shown=Date.now();exPg(ex.id).i=R.i;exPSave(ex.id);render();const h=$("#exh");if(h)h.scrollIntoView({block:"start"})}
+function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,mine=P.a[i]&&P.a[i].l,show=review||P.mode==="e"&&!!mine||r.an&&!!mine;
+  const card=el(`<div class="qcard exqc"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p></div>`);
+  card.querySelector(".qn").textContent=`QUESTÃO ${r.n||i+1} · ${i+1} DE ${ex.qs.length}`;
+  const it=r.k&&BYKEY[r.k];card.querySelector(".simtopic").textContent=show?(it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Sem tema"):"";
+  card.querySelector(".qstem").textContent=q.enunciado;
+  if(r.im)card.insertBefore(el(`<p class="pnote">Esta questão tem imagem: veja na prova, página ${r.p}${r.pe&&r.pe!==r.p?` a ${r.pe}`:""}.</p>`),card.querySelector(".qstem").nextSibling);
+  if(r.an)card.appendChild(el(`<p class="pnote">Questão anulada pela banca: não conta no acerto.</p>`));
+  if(show&&q.correta)card.appendChild(altsEl(q,mine||"-",()=>{}));
+  else{const box=el(`<div class="alts"></div>`);q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra)})</b><span></span></button>`);b.id=`exa-${i}-${a.letra}`;b.querySelector("span").textContent=a.texto;if(a.letra===mine)b.classList.add("pick");b.onclick=()=>{exAnswer(ex,i,a.letra)};box.appendChild(b)});card.appendChild(box)}
+  if(show){if(q.correta){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${mine?ok?"ok":"no":""}">${mine?ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta)+".":"Você não respondeu. A resposta é "+esc(q.correta)+"."}${r.g!=="b"?" <span class=\"simt\">(gabarito do Claude)</span>":""}</p>`))}
+    else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
+    if(r.ck&&q.correta&&r.ck!==q.correta)card.appendChild(el(`<p class="pnote">O comentário abaixo foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.</p>`));
+    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
+    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
+    if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name))}
+  return card}
+function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></div>`);
+  if(R.view==="res"){const S=exScore(ex),areas={};ex.qs.forEach((r,i)=>{const a=P.a[i];if(!a||r.an||!r.q.correta)return;const it=r.k&&BYKEY[r.k],lab=it?it.area.name:"Sem tema",x=areas[lab]||(areas[lab]={c:0,q:0});x.q++;if(a.l===r.q.correta)x.c++});
+    c.appendChild(el(`<div class="kpis simres"><div class="kpi"><span class="kl">Acerto</span><b>${pct(S.hit,S.ans)}%</b><span class="ks">${S.hit} de ${S.ans}</span></div><div class="kpi"><span class="kl">Tempo total</span><b>${fmtPace(S.s)}</b><span class="ks">${S.ans} respondidas</span></div><div class="kpi${S.ans&&S.s/S.ans>ui.prefs.qpace?" alert":""}"><span class="kl">Por questão</span><b>${S.ans?fmtPace(S.s/S.ans):"–"}</b><span class="ks">prova: ${fmtPace(ui.prefs.qpace)}</span></div></div>`));
+    const rows=Object.entries(areas).sort((a,b)=>b[1].q-a[1].q).map(([k,v])=>[k,v.c,v.q]);if(rows.length>1){const f=el(`<figure class="chart"><figcaption>Acerto por área</figcaption><div class="qsrows"></div></figure>`);f.querySelector("div").innerHTML=hbarRows(rows);c.appendChild(f)}
+    const ul=el(`<ol class="simlist exres"></ol>`);ex.qs.forEach((r,i)=>{const a=P.a[i],ok=a&&a.l===r.q.correta,li=el(`<li><span class="simok ${r.an?"":a?ok?"ok":"no":""}">${r.an?"·":a?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt"></span></li>`);
+      const b=li.querySelector("button");b.textContent=`Questão ${r.n||i+1}${r.k&&BYKEY[r.k]?" · "+BYKEY[r.k].t:""}`;b.onclick=()=>{exRun={id:ex.id,view:"rev",i,cad:R.cad||{}};render();const h=$("#exh");if(h)h.scrollIntoView({block:"start"})};
+      li.querySelector(".simt").textContent=r.an?"anulada":a&&a.s?fmtPace(a.s):"";ul.appendChild(li)});c.appendChild(ul);
+    const wrong=ex.qs.filter((r,i)=>P.a[i]&&r.q.correta&&!r.an&&P.a[i].l!==r.q.correta).length;
+    c.appendChild(el(`<p class="how">${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado entrou no acerto de cada tema, como “${esc(exSrc(ex))}” em Acerto por banca. Toque numa questão para ver o comentário.</p>`));
+    const b=el(`<div class="btns"></div>`),x=el(`<button class="btn" type="button">Voltar às provas</button>`);x.onclick=()=>{exRun=null;render()};b.appendChild(x);c.appendChild(b);return c}
+  const i=R.i,review=R.view==="rev";c.appendChild(exQuestionEl(ex,i,review));
+  const acts=el(`<div class="btns"></div>`),prev=el(`<button class="btn" type="button" id="exPrev">Anterior</button>`),nx=el(`<button class="btn primary" type="button" id="exNext"></button>`);
+  prev.disabled=i===0;prev.onclick=()=>exGo(ex,i-1);
+  if(review){nx.textContent="Voltar ao resultado";nx.onclick=()=>{exRun={id:ex.id,view:"res",i:0,cad:R.cad};render()};acts.append(prev);
+    const n2=el(`<button class="btn" type="button">Próxima</button>`);n2.disabled=i>=ex.qs.length-1;n2.onclick=()=>exGo(ex,i+1);acts.append(n2,nx)}
+  else{const last=i>=ex.qs.length-1;nx.textContent=last?"Finalizar prova":"Próxima";nx.onclick=()=>last?exFinish(ex):exGo(ex,i+1);acts.append(prev,nx);
+    const S=exScore(ex),fin=el(`<button class="btn" type="button" id="exEnd"></button>`);fin.textContent=exArm==="end"+ex.id?`Toque de novo: finalizar com ${S.ans} de ${S.n} respondidas`:"Finalizar agora";if(exArm==="end"+ex.id)fin.classList.add("warn");
+    fin.onclick=()=>{if(exArm==="end"+ex.id){exArm=null;exFinish(ex)}else{exArm="end"+ex.id;render()}};if(!last)acts.append(fin);
+    const pause=el(`<button class="link" type="button">Pausar (continua depois)</button>`);pause.onclick=()=>{exRun=null;exFlush();render()};acts.append(pause)}
+  c.appendChild(acts);
+  // mapa das questões
+  const map=el(`<div class="exmap" role="group" aria-label="Ir para a questão"></div>`);ex.qs.forEach((r,j)=>{const a=P.a[j],b=el(`<button type="button"></button>`);b.textContent=r.n||j+1;
+    if(j===i)b.setAttribute("aria-current","true");if(r.an)b.classList.add("an");else if(a&&(review||P.mode==="e")&&r.q.correta)b.classList.add(a.l===r.q.correta?"ok":"no");else if(a)b.classList.add("done");b.onclick=()=>exGo(ex,j);map.appendChild(b)});
+  const md=el(`<details class="plain exmapd"><summary></summary></details>`);md.querySelector("summary").textContent=`Todas as questões · ${Object.keys(P.a).length} de ${ex.qs.length} respondidas`;md.appendChild(map);c.appendChild(md);
+  if(!review)c.appendChild(el(`<p class="how erkeys">${P.mode==="p"?"Modo prova: o resultado e os comentários aparecem no fim. Dá para voltar e trocar a resposta até finalizar.":"Modo estudo: a correção aparece a cada questão."} Teclado: A a E escolhem · → próxima · ← anterior</p>`));
+  return c}
+function exEditEl(ex){const S=exEdit,w=el(`<div class="exedit"></div>`);
+  w.appendChild(el(`<p class="how">Mudar a resposta, anular ou trocar o tema recalcula o seu acerto nas questões que você já respondeu.</p>`));
+  if(!S.T||!ex.qs[S.T.i])S.T=null;
+  w.appendChild(exListEl(ex.qs,S,{pre:"e",T:S.T,setT:v=>{S.T=v;render()},
+    setTopic:(i,k)=>{exChange(ex,i,r=>{r.k=k});exPut(ex);commit()},
+    setKey:(i,v)=>{exChange(ex,i,r=>{if(v==="X")r.an=true;else{r.an=false;r.q.correta=v;if(v)r.g="b"}});exPut(ex);commit()}}));
+  const b=el(`<button class="btn" type="button">Fechar</button>`);b.onclick=()=>{exEdit=null;render()};w.appendChild(b);return w}
+function exKeyEl(ex){const K=exKey,w=el(`<div class="exkey"></div>`),pk=parseKey(K.t),n=Object.keys(pk).length;
+  const ta=el(`<textarea class="ntext exkta" id="exKeyTa" placeholder="Cole o gabarito oficial. Ex.: 1-A 2-C 3-D 4-ANULADA…"></textarea>`);ta.value=K.t;ta.oninput=debounced(()=>{K.t=ta.value;K.msg="";render()},300);
+  w.append(el(`<span class="glabel">Colar o gabarito oficial</span>`),ta);
+  const st=el(`<p class="how"></p>`);st.textContent=K.msg||(n?`${n} ${n===1?"resposta reconhecida":"respostas reconhecidas"}.`:"Aceita “1-A”, “01. B”, “3 D”, “4 ANULADA” ou uma tabela com os números numa linha e as letras na de baixo.");w.appendChild(st);
+  const b=el(`<div class="btns"></div>`),ap=el(`<button class="btn primary" type="button" id="exKeyGo">Aplicar gabarito</button>`);ap.disabled=!n;
+  ap.onclick=()=>{let m=0,ch=0;ex.qs.forEach((r,i)=>{const v=pk[r.n];if(!v)return;m++;const was=r.an+"|"+r.q.correta;
+      exChange(ex,i,r=>{if(v==="X"){r.an=true;r.g="b"}else if(r.q.alternativas.some(a=>a.letra===v)){if(!r.ck)r.ck=r.q.correta;r.an=false;r.q.correta=v;r.g="b"}});if(was!==r.an+"|"+r.q.correta)ch++});
+    const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),t=P.tries[P.tries.length-1];t.hit=S.hit;t.n=S.ans}
+    exPut(ex);exPSave(ex.id);K.t="";K.msg=`Gabarito aplicado a ${m} ${m===1?"questão":"questões"}. ${ch?`${ch} ${ch===1?"mudou":"mudaram"} (resposta ou anulação) e o seu acerto foi recalculado.`:"Nenhuma resposta mudou."}`;commit()};
+  const cl=el(`<button class="btn" type="button">Fechar</button>`);cl.onclick=()=>{exKey=null;render()};b.append(ap,cl);w.appendChild(b);return w}
+function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).length,nb=ex.qs.filter(r=>r.g==="b"||r.an).length,run=exRun&&exRun.id===ex.id;
+  const li=el(`<li class="exrow" id="exr-${ex.id}"><div class="exrt"><b></b><span class="meta"></span><span class="exst"></span></div><div class="btns"></div></li>`);
+  li.querySelector("b").textContent=ex.name;li.querySelector(".meta").textContent=[ex.banca,ex.ano,`${ex.qs.length} ${ex.qs.length===1?"questão":"questões"}`,nb===ex.qs.length?"gabarito da banca":nb?`${nb} com gabarito da banca`:"gabarito do Claude"].filter(Boolean).join(" · ");
+  const st=li.querySelector(".exst"),last=P.tries[P.tries.length-1];
+  st.textContent=P.fin?`Feita em ${br(P.fin)}: ${pct(S.hit,S.ans)}% (${S.hit} de ${S.ans})${P.tries.length>1?` · ${P.tries.length} tentativas`:""}`:nAns?`Em andamento: ${nAns} de ${ex.qs.length} respondidas`:last?`Última tentativa: ${pct(last.hit,last.n)}% em ${br(last.d)}`:"Ainda não feita";
+  const B=li.querySelector(".btns");
+  if(!P.fin&&!nAns){const sg=el(`<div class="seg exmode" role="group" aria-label="Modo"></div>`);[["p","Modo prova"],["e","Modo estudo"]].forEach(([v,l])=>{const b=el(`<button type="button" aria-pressed="${P.mode===v}"></button>`);b.id=`exm-${ex.id}-${v}`;b.textContent=l;b.onclick=()=>{P.mode=v;exPSave(ex.id);render()};sg.appendChild(b)});li.insertBefore(sg,B);
+    li.insertBefore(el(`<p class="how exmodeh">${P.mode==="p"?"Resultado e comentários no fim, como na prova de verdade.":"Correção e comentário a cada questão."}</p>`),B)}
+  const go=el(`<button class="btn primary" type="button"></button>`);go.id=`exgo-${ex.id}`;go.textContent=P.fin?"Ver resultado":nAns?"Continuar":"Começar";
+  go.onclick=()=>{if(P.fin){exRun={id:ex.id,view:"res",i:0,cad:{}};exEdit=null;render();setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},40)}else exStart(ex)};if(!run)B.appendChild(go);
+  if(P.fin){const re=el(`<button class="btn" type="button"></button>`);re.id=`exre-${ex.id}`;re.textContent=exArm==="re"+ex.id?"Toque de novo: refazer do zero":"Refazer";if(exArm==="re"+ex.id)re.classList.add("warn");re.onclick=()=>{if(exArm==="re"+ex.id){exArm=null;exStart(ex)}else{exArm="re"+ex.id;render()}};B.appendChild(re)}
+  const ed=el(`<button class="btn" type="button"></button>`);ed.id=`exed-${ex.id}`;ed.textContent="Revisar questões";ed.onclick=()=>{exEdit=exEdit&&exEdit.id===ex.id?null:{id:ex.id,flt:ex.qs.some(r=>exFilterOk(r,"chk"))?"chk":"all",show:12,T:null};exKey=null;render()};B.appendChild(ed);
+  const kb=el(`<button class="btn" type="button"></button>`);kb.id=`exkb-${ex.id}`;kb.textContent="Colar gabarito";kb.onclick=()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)};B.appendChild(kb);
+  const dl=el(`<button class="link" type="button"></button>`);dl.textContent=exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir";if(exArm==="del"+ex.id)dl.classList.add("warn");dl.onclick=()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}};B.appendChild(dl);
+  if(exKey&&exKey.id===ex.id)li.appendChild(exKeyEl(ex));
+  if(exEdit&&exEdit.id===ex.id)li.appendChild(exEditEl(ex));
+  return li}
+function qExamCard(){const c=el(`<section class="card qexam" aria-labelledby="exh"><div class="dhead"><h2 id="exh">Provas na íntegra</h2></div></section>`);
+  const run=exRun&&exams.find(x=>x.id===exRun.id);if(exRun&&!run)exRun=null;
+  if(run){const h=c.querySelector(".dhead"),s=el(`<span class="todaydate"></span>`);s.textContent=run.name;h.appendChild(s);c.appendChild(exPlayEl(run));return c}
+  if(!imp){const b=el(`<button class="btn primary" type="button" id="impNew">+ Importar prova</button>`);b.disabled=!sampleFn;if(sampleOff)b.title="O Claude não está disponível nesta visualização";b.onclick=impNew;c.querySelector(".dhead").appendChild(b)}
+  if(imp)c.appendChild(impPanel());
+  if(!exams.length){if(!imp)c.appendChild(el(`<p class="cempty">Importe o PDF de uma prova antiga (com ou sem gabarito) e faça a prova aqui, no modo prova ou no modo estudo. Cada questão entra no acerto do tema e da banca, e as erradas vão para Refazer.</p>`));return c}
+  const ol=el(`<ol class="exrows"></ol>`);exams.forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol);return c}
+document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun||exRun.view==="res")return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const ex=exams.find(x=>x.id===exRun.id);if(!ex)return;const k=ev.key;
+  if(/^[a-hA-H]$/.test(k)&&exRun.view==="q"){const r=ex.qs[exRun.i],L=k.toUpperCase();if(r&&r.q.alternativas.some(a=>a.letra===L)&&!(exPg(ex.id).mode==="e"&&exPg(ex.id).a[exRun.i])){ev.preventDefault();exAnswer(ex,exRun.i,L)}}
+  else if(k==="ArrowRight"){ev.preventDefault();if(exRun.i<ex.qs.length-1)exGo(ex,exRun.i+1)}else if(k==="ArrowLeft"){ev.preventDefault();if(exRun.i>0)exGo(ex,exRun.i-1)}});
 /* ---------- Início: placar do dia, "o que fazer agora" e projeção até a prova ---------- */
 let nowSkip=0;// quantas sugestões o "Outra sugestão" já pulou hoje
 /* candidatos ao próximo passo, do mais urgente para o menos */
@@ -5919,10 +6294,10 @@ function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div 
 /* ---------- backup ---------- */
 const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
-  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length,cartoes:cards.length,livres:freeN.length}}
+  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length,cartoes:cards.length,livres:freeN.length,provasImportadas:exams.length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN}}}
-function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}${c.cartoes?` · ${c.cartoes} ${c.cartoes===1?"cartão":"cartões"}`:""}${c.livres?` · ${c.livres} ${c.livres===1?"anotação livre":"anotações livres"}`:""}`}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg}}}
+function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}${c.cartoes?` · ${c.cartoes} ${c.cartoes===1?"cartão":"cartões"}`:""}${c.livres?` · ${c.livres} ${c.livres===1?"anotação livre":"anotações livres"}`:""}${c.provasImportadas?` · ${c.provasImportadas} ${c.provasImportadas===1?"prova importada":"provas importadas"}`:""}`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
 const HELP=[
@@ -5990,6 +6365,7 @@ const HELP=[
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
 - **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
 - **Simulado misto** (em Praticar): o Claude monta 5, 10, 20 ou 30 questões de vários temas, a partir de **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje** ou **Filtro atual**. Uma questão por vez, com o tempo medido em cada uma; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer. **Encerrar** mostra o resultado das que você já respondeu.
+- **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva.
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
@@ -6123,7 +6499,8 @@ const HELP=[
 2. **Copiar pedido** e cole numa conversa no app do Claude ou em claude.ai (**Abrir o Claude** leva até lá).
 3. Copie a resposta inteira do Claude, volte, cole no campo e toque em **Usar estas questões**.
 - Até 20 questões por pedido.
-- Resposta sem as questões? O site avisa e deixa colar de novo.`],
+- Resposta sem as questões? O site avisa e deixa colar de novo.
+- **Importar prova:** o pedido vai em partes (cada parte é um copiar e colar), com o texto da prova junto. Páginas escaneadas pedem para anexar o PDF na conversa. Se fechar uma parte, o que já veio fica guardado e o app oferece ler o resto.`],
 ["Pedir mudanças ao Claude",`Mudanças de layout, opções novas e correções são feitas pedindo ao Claude. O mesmo código gera o checklist do Claude e o site.
 - **Numa conversa nova,** diga onde está o código: o repositório do GitHub **elialdojunior91tmedicins/Trilha-Medica** e o link do checklist no Claude.
 - Para um erro: o que você fez, o que esperava, o que aconteceu, e uma captura de tela.
@@ -6374,6 +6751,8 @@ function liveStart(){if(liveOn)return;liveOn=true;
     [trashStore,L("trash",()=>trash,v=>{trash=v},x=>trOk(x)?x:null,trSaveLocal)],
     [cardStore,L("cards",()=>cards,v=>{cards=v},x=>cdOk(x)?cdClean(x):null,cdSaveLocal)],
     [redoStore,L("redo",()=>redo,v=>{redo=v},x=>rdOk(x)?rdClean(x):null,rdSaveLocal)],
+    [exStore,L("exams",()=>exams,v=>{exams=v},x=>exOk(x)?exClean(x):null,exSaveLocal)],
+    [exPStore,L("exprog",()=>exProg,v=>{exProg=v},x=>exPOk(x)&&!exATimer[x.id]?exPClean(x):null,exSaveLocal)],
     [focStore,L("focus",()=>foSess,v=>{foSess=v},x=>foOk(x)?foClean(x):null,foSaveLocal,()=>foSess.sort((a,b)=>a.s<b.s?1:-1))]].filter(r=>r[0]);
   for(const [ref,fn] of liveRefs)if(typeof ref.onSnapshot==="function")try{ref.onSnapshot(s=>{try{fn(s)}catch(e){console.error(e)}},()=>{})}catch(e){}}
 /* ao voltar para o app depois de mais de 5 min em segundo plano (tela bloqueada) ou quando a internet volta, confere tudo de uma vez,
@@ -6432,6 +6811,11 @@ window.addEventListener("online",()=>liveRefresh(true));
     redoStore=store.collection("redo");
     try{const rq=await redoStore.get(),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
       if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
+    exStore=store.collection("exams");exPStore=store.collection("exprog");
+    try{const q1=await exStore.get(),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),lo=exams.filter(x=>!ids.has(x.id));
+      if(rem.length){exams=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);exSaveLocal();render()}for(const x of lo)await exPut(x)}catch(e){}
+    try{const q2=await exPStore.get(),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),lo=exProg.filter(x=>!ids.has(x.id));
+      if(rem.length){exProg=[...rem,...lo];exSaveLocal();render()}for(const x of lo)await exPWrite(x.id)}catch(e){}
     focStore=store.collection("focus");
     try{const fq=await focStore.get(),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
       if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}

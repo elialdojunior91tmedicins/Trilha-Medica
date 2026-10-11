@@ -182,6 +182,17 @@ consultado quando há dúvida. Responda em português.
   subtópicos) → `linkOwn` (usa `ownMergeInto`, o mesmo de `replaceOwn`: notas sem ir à lixeira, erros, cartões, refazer, foco, progresso).
   No tema: `linkInfoEl` ("Na faculdade", marcar subtópicos, Trocar ligação, `unlinkOwn`). Teste: `tests/t82.js`.
 
+- Provas na íntegra (aba Questões › Praticar, `qExamCard`, logo após o simulado): importar PDF/fotos (`impNew`/`impPick`/`impRead`/`impSave`, estado `imp`).
+  pdf.js 4.10.38 carregado sob demanda por `import()` (`pdfLib`: jsdelivr legacy `PDFJS`, reserva cdnjs `PDFJS2`; roda sem worker via `globalThis.pdfjsWorker`);
+  texto por página (`pdfPageText`), página com <60 caracteres = escaneada (`pdfPageImg` → JPEG em `sample` images; no site pede para anexar o PDF).
+  Gabarito: `parseKey` ("1-A", "01. B", tabela, ANULADA → "X"), páginas achadas por `keyPage`, PDF à parte (`impKeyFile`) ou colado; `impPrompt` leva gabarito,
+  lista de temas e o texto; partes `impBlocks` (artefato 11 mil caracteres/5 págs, 2 em paralelo; site 24 mil/10 págs), falha divide a parte; `impGaps`/`impGapPages`
+  = Procurar de novo. Questão `{n,p,pe,k,q,g:"b"|"c",an,im,ck}` (sem embaralhar; `ck` = letra para a qual o comentário foi escrito).
+  Dados: `exams` (questões; `resid-exams-v1` + `progress/exams/{id}`) e `exProg` (respostas `{id,i,mode,fin,tries,a:{idx:{l,d,s}},h}`; `resid-exprog-v1` +
+  `progress/exprog/{id}`, gravado com atraso `exPSave`/`exFlush`). Contagem no tema/banca/hist só por `exChange` (resposta, gabarito colado `exKeyEl`, anular, tema):
+  tira o que contava antes e põe o novo. Jogador `exRun` (`exPlayEl`, modo prova "p" ou estudo "e", resultado `view:"res"`). Lixeira `exam`, backup `data.exams/examProg`.
+  `bridge.js`: `sample` aceita `opts.title`/`opts.hint`. Teste: `tests/t83.js` (gera um PDF de verdade com pdf-lib/sharp).
+
 ## Cuidados
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).
