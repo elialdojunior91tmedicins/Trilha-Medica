@@ -28,7 +28,7 @@ await click('.qsim .btn.primary');await p.evaluate(()=>setQSeg("resumo"));await 
 const pace=await p.$eval('#qPace',x=>x.textContent);ok(/1min\d\ds/.test(pace)&&/5 cronometradas/.test(pace),tag+": ritmo: "+pace.slice(0,80));
 // registro com tempo
 await click('#qRegB');await p.fill('#qrq','sepse');await p.waitForTimeout(500);await click('.qrpick');await p.fill('#qrt','10');await p.fill('#qrc','8');await p.fill('#qrm','30');await click('#qrSave');await p.waitForTimeout(150);
-console.log(await p.evaluate(()=>document.querySelector("#qRegBox").innerHTML.slice(0,300)),errs);ok(await p.evaluate(()=>hist[today()].tq===15),tag+": registro com tempo");ok(/3min por questão/.test(await p.$eval('#qReg .pnote',x=>x.textContent)),tag+": mostra o ritmo do registro");
+await p.waitForSelector('#qReg .pnote',{timeout:10000}).catch(()=>{});ok(await p.evaluate(()=>hist[today()].tq===15),tag+": registro com tempo");ok(/3min por questão/.test(await p.$eval('#qReg .pnote',x=>x.textContent)),tag+": mostra o ritmo do registro");
 await click('#qReg .pnote .link');await p.waitForTimeout(150);ok(await p.evaluate(()=>hist[today()].tq===5),tag+": desfazer tira o tempo");
 // encerrar no meio
 await p.evaluate(()=>{qReg=null;setQSeg("praticar")});await click('#simGo');await p.waitForTimeout(400);await click('.qsim .alt:nth-child(2)');await p.waitForTimeout(100);await click('.qsim .btn:not(.primary)');await p.waitForTimeout(150);
