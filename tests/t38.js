@@ -12,7 +12,7 @@ const boot=async p=>{await p.goto(URL0);await p.waitForFunction(()=>typeof saveF
 // ===== computador: cria conta e monta a faculdade pela interface =====
 const c1=await ctxFor(b);const p=await c1.newPage();p.on('pageerror',e=>errs.push("pc:"+e.message));await boot(p);
 await p.click('#profBtn');await p.click('#acctBtn');await p.click('.smodal button:has-text("Primeira vez? Criar conta")');
-await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','segredo123');
+await p.waitForFunction(()=>document.activeElement&&document.activeElement.type==='email',null,{timeout:10000}).catch(()=>{});await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','segredo123');
 await Promise.all([p.waitForNavigation(),p.click('.smodal button[type=submit]')]);await boot(p);
 await p.click('#tabF');await p.waitForTimeout(150);
 ok(await p.isVisible('#facHead .fsteps'),"site: Faculdade vazia mostra os 3 passos");
@@ -45,7 +45,7 @@ const st={db:JSON.stringify(db),us:await p.evaluate(()=>localStorage.getItem("__
 const c2=await ctxFor(b,{viewport:{width:390,height:844},isMobile:true,hasTouch:true});
 await c2.addInitScript(s=>{if(!sessionStorage.__seeded){localStorage.setItem("__fbdb",s.db);localStorage.setItem("__fbusers",s.us);sessionStorage.__seeded=1}},st);
 const q=await c2.newPage();q.on('pageerror',e=>errs.push("fone:"+e.message));await boot(q);
-await q.tap('#profBtn');await q.tap('#acctBtn');await q.fill('.smodal input[type=email]','eli@teste.com');await q.fill('.smodal input[type=password]','segredo123');
+await q.tap('#profBtn');await q.tap('#acctBtn');await q.waitForFunction(()=>document.activeElement&&document.activeElement.type==='email',null,{timeout:10000}).catch(()=>{});await q.fill('.smodal input[type=email]','eli@teste.com');await q.fill('.smodal input[type=password]','segredo123');
 await Promise.all([q.waitForNavigation(),q.tap('.smodal button[type=submit]')]);await boot(q);
 ok(await q.evaluate(()=>view==="inicio")&&await q.isVisible('#iProva'),"celular abre no Início");
 await q.tap('#tabF');await q.waitForTimeout(200);

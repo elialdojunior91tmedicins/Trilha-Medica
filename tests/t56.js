@@ -9,7 +9,7 @@ async function ctxFor(b,opt={}){const ctx=await b.newContext({serviceWorkers:'bl
   await ctx.route(/config\.js/,r=>r.fulfill({contentType:'text/javascript',body:CFG}));return ctx}
 const boot=async p=>{await p.goto(URL0);await p.waitForFunction(()=>typeof saveFac==='function'&&window.__site,null,{polling:100});await p.waitForFunction(()=>synced,null,{polling:100});await p.waitForTimeout(300)};
 const login=async(p,tap,create)=>{const c=s=>tap?p.tap(s):p.click(s);await c('#profBtn');await c('#acctBtn');if(create)await c('.smodal button:has-text("Primeira vez? Criar conta")');
-  await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','segredo123');await Promise.all([p.waitForNavigation(),c('.smodal button[type=submit]')]);await boot(p)};
+  await p.waitForFunction(()=>document.activeElement&&document.activeElement.type==='email',null,{timeout:10000}).catch(()=>{});await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','segredo123');await Promise.all([p.waitForNavigation(),c('.smodal button[type=submit]')]);await boot(p)};
 (async()=>{const b=await chromium.launch();const errs=[];
 const c1=await ctxFor(b);const p=await c1.newPage();p.on('pageerror',e=>errs.push("pc:"+e.message));await boot(p);await login(p,false,true);
 // registro com banca e tempo, foco, questão errada, metas

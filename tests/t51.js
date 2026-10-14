@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 const ctx=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const vis=s=>p.evaluate(s=>{const e=document.querySelector(s);return !!e&&e.offsetParent!==null},s);
 ok(await vis('#tabM')&&!(await vis('#tabN'))&&!(await vis('#tabFo')),"celular: Mais visível, Anotações e Foco escondidas");
 const tabs=await p.$$eval('.appnav .tab',a=>a.filter(x=>x.offsetParent).map(x=>x.querySelector('.tl').textContent));ok(tabs.join()==="Início,Residência,Faculdade,Questões,Erros,Mais","barra: "+tabs.join());

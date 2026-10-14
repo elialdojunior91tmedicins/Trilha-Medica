@@ -10,6 +10,7 @@ async function ctxFor(b,configured,opt={}){const ctx=await b.newContext({service
   await ctx.route(/config\.js/,r=>r.fulfill({contentType:'text/javascript',body:configured?CFG:'window.FIREBASE_CONFIG={apiKey:"COLE_AQUI"};'}));
   return ctx}
 const boot=async p=>{await p.goto(URL0);await p.waitForFunction(()=>typeof saveFac==='function'&&window.__site,null,{polling:100});await p.waitForFunction(()=>synced,null,{polling:100});await p.waitForTimeout(300)};
+const navTo=async(p,act)=>{await p.evaluate(()=>window.__navMark=1);await act();await p.waitForFunction(()=>!window.__navMark,null,{timeout:90000,polling:100})};
 (async()=>{const b=await chromium.launch();
 // ===== 1. sem Firebase configurado =====
 let ctx=await ctxFor(b,false);let p=await ctx.newPage();let errs=[];p.on('pageerror',e=>errs.push(e.message));
@@ -29,7 +30,7 @@ const [fc]=await Promise.all([p.waitForEvent('filechooser'),p.click('#bkImportRo
 await fc.setFiles({name:'checklist-backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(BK))});await p.waitForTimeout(300);
 const txt=await p.textContent('.smodal');
 ok(/Contém: 2 temas com progresso · 1 anotação · 1 erro/.test(txt)&&/ainda está vazio/.test(txt),"resumo do backup antes de importar");
-await Promise.all([p.waitForNavigation(),p.click('.smodal button:has-text("Importar")')]);await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
+await navTo(p,()=>p.click('.smodal button:has-text("Importar")'));await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
 ok(await p.evaluate(()=>state["CM-1"]&&state["CM-1"].qt===10&&notes["CM-1"].includes("pré-eclâmpsia")&&errors.length===1&&fac.own.a.t==="Anatomia"&&BYKEY["F-a"]),"dados importados (temas, anotações, erros, faculdade, tema próprio)");
 ok(await p.evaluate(()=>/Backup importado/.test((document.querySelector(".stoast")||{}).textContent||"")),"aviso de importação concluída");
 // importar de novo com dados: snapshot + desfazer
@@ -37,12 +38,12 @@ await p.evaluate(()=>{state["CM-2"]={l:1,last:today(),step:0};commit()});
 const bk2=JSON.parse(JSON.stringify(BK));delete bk2.data.topics["CM-1"].qt;bk2.data.notes={};
 await p.evaluate(t=>__site.importFlow(t),JSON.stringify(bk2));await p.waitForTimeout(300);
 ok(/vai substituir o que o site tem agora: 3 temas/.test(await p.textContent('.smodal')),"avisa que vai substituir e mostra o que existe");
-await Promise.all([p.waitForNavigation(),p.click('.smodal button:has-text("Importar")')]);await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
+await navTo(p,()=>p.click('.smodal button:has-text("Importar")'));await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
 ok(await p.evaluate(()=>!state["CM-2"]&&!notes["CM-1"]),"segunda importação substituiu");
 await p.evaluate(()=>setView("instr"));await p.waitForTimeout(3200);
 ok(await p.evaluate(()=>!document.getElementById("bkUndo").hidden),"botão Desfazer a última importação aparece");
 await p.click('#bkUndo');await p.waitForTimeout(200);
-await Promise.all([p.waitForNavigation(),p.click('.smodal button:has-text("Voltar ao que era antes")')]);await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
+await navTo(p,()=>p.click('.smodal button:has-text("Voltar ao que era antes")'));await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(400);
 ok(await p.evaluate(()=>state["CM-2"]&&notes["CM-1"]&&state["CM-1"].qt===10),"desfazer volta exatamente ao estado anterior");
 // exportar no site
 await p.evaluate(()=>setView("instr"));
@@ -56,13 +57,13 @@ await boot(p);
 ok(await p.evaluate(()=>/^Entrar/.test(document.getElementById("acctBtn").textContent)),"botão Entrar no cabeçalho");
 ok(await p.evaluate(()=>[...document.querySelectorAll(".sbanner")].some(x=>/Entre para salvar/.test(x.textContent))),"aviso para entrar");
 await p.click('#profBtn');await p.click('#acctBtn');await p.click('.smodal button:has-text("Primeira vez? Criar conta")');
-await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','123');await p.click('.smodal button[type=submit]');await p.waitForTimeout(200);
+await p.waitForFunction(()=>document.activeElement&&document.activeElement.type==='email',null,{timeout:10000}).catch(()=>{});await p.fill('.smodal input[type=email]','eli@teste.com');await p.fill('.smodal input[type=password]','123');await p.click('.smodal button[type=submit]');await p.waitForTimeout(200);
 ok(/pelo menos 6/.test(await p.textContent('.smodal form .err')),"senha curta: mensagem em português");
 await p.fill('.smodal input[type=password]','segredo123');
-await Promise.all([p.waitForNavigation(),p.click('.smodal button[type=submit]')]);await boot(p);
+await navTo(p,()=>p.click('.smodal button[type=submit]'));await boot(p);
 ok(await p.evaluate(()=>/Gerenciar conta/.test(document.getElementById("acctBtn").textContent)&&!!store),"conta criada e conectado (salvando na conta)");
 await p.evaluate(t=>__site.importFlow(t),JSON.stringify(BK));await p.waitForTimeout(300);
-await Promise.all([p.waitForNavigation(),p.click('.smodal button:has-text("Importar")')]);await boot(p);
+await navTo(p,()=>p.click('.smodal button:has-text("Importar")'));await boot(p);
 const db=await p.evaluate(()=>JSON.parse(localStorage.getItem("__fbdb")));const ks=Object.keys(db);
 ok(ks.some(k=>/progress$/.test(k))&&ks.some(k=>/faculdade$/.test(k))&&ks.some(k=>/notes\/CM-1$/.test(k))&&ks.some(k=>/errors\/e1$/.test(k))&&ks.some(k=>/settings$/.test(k)),"importação gravou tudo na conta: "+ks.length+" documentos");
 ok(db[ks.find(k=>/progress\/topics\/CM-1$/.test(k))].qt===10,"progresso na conta confere");
@@ -71,13 +72,13 @@ const st=await p.evaluate(()=>({db:localStorage.getItem("__fbdb"),us:localStorag
 const ctx2=await ctxFor(b,true,{viewport:{width:820,height:1180},isMobile:true,hasTouch:true});
 await ctx2.addInitScript(s=>{if(!sessionStorage.__seeded){localStorage.setItem("__fbdb",s.db);localStorage.setItem("__fbusers",s.us);sessionStorage.__seeded=1}},st);
 const p2=await ctx2.newPage();p2.on('pageerror',e=>errs.push("ipad:"+e.message));await boot(p2);
-await p2.tap('#profBtn');await p2.tap('#acctBtn');await p2.fill('.smodal input[type=email]','eli@teste.com');await p2.fill('.smodal input[type=password]','errada1');await p2.tap('.smodal button[type=submit]');await p2.waitForTimeout(200);
+await p2.tap('#profBtn');await p2.tap('#acctBtn');await p2.waitForFunction(()=>document.activeElement&&document.activeElement.type==='email',null,{timeout:10000}).catch(()=>{});await p2.fill('.smodal input[type=email]','eli@teste.com');await p2.fill('.smodal input[type=password]','errada1');await p2.tap('.smodal button[type=submit]');await p2.waitForTimeout(200);
 ok(/incorretos/.test(await p2.textContent('.smodal form .err')),"senha errada: mensagem clara");
-await p2.fill('.smodal input[type=password]','segredo123');await Promise.all([p2.waitForNavigation(),p2.tap('.smodal button[type=submit]')]);await boot(p2);
+await p2.fill('.smodal input[type=password]','segredo123');await navTo(p2,()=>p2.$eval('.smodal form',f=>f.requestSubmit()));await boot(p2);
 ok(await p2.evaluate(()=>state["CM-1"]&&state["CM-1"].qt===10&&notes["CM-1"]&&errors.length===1&&fac.discs.length===1),"outro aparelho: entrou e recebeu todo o progresso");
 // esqueci a senha
 // sair limpa o aparelho
-await p2.tap('#profBtn');await p2.tap('#acctBtn');await p2.tap('.smodal button:has-text("Sair deste aparelho")');await Promise.all([p2.waitForNavigation(),p2.tap('.smodal button:has-text("Toque de novo")')]);await boot(p2);
+await p2.tap('#profBtn');await p2.tap('#acctBtn');await p2.tap('.smodal button:has-text("Sair deste aparelho")');await navTo(p2,()=>p2.tap('.smodal button:has-text("Toque de novo")'));await boot(p2);
 ok(await p2.evaluate(()=>!Object.keys(localStorage).some(k=>k.startsWith("resid-")&&!/ban-/.test(k))||Object.keys(state).length===0),"ao sair, os dados saem deste aparelho");
 ok(await p2.evaluate(()=>Object.keys(state).length===0&&!notes["CM-1"]),"aparelho fica vazio depois de sair");
 await ctx2.close();
