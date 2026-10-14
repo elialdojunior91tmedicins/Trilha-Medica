@@ -32,7 +32,7 @@ await click('#eMore [data-ef="arch"]');await p.waitForTimeout(100);ok(await n()=
 await p.evaluate(()=>{document.querySelector('#elist .ecard .emenu').click()});await p.evaluate(()=>{[...document.querySelectorAll('#elist .mini')].find(x=>x.textContent==="Desarquivar").click()});await p.waitForTimeout(100);ok(await p.evaluate(()=>!errors.find(e=>e.id==="a3").arch),tag+": desarquiva");
 await click('#eMore [data-ef="arch"]');
 // arquivar na revisão
-await p.evaluate(()=>{const e=errors.find(x=>x.id==="a1");e.box=2;e.due=today();render()});await click('#erGo');await p.waitForTimeout(100);
+await p.evaluate(()=>{const e=errors.find(x=>x.id==="a1");e.box=2;e.due=today();errors.forEach(x=>{if(x.id!=='a1'){x.due=fromNum(dnum(today())+30);x.lastRev=today()}});render()});await click('#erGo');await p.waitForTimeout(100);
 let guard=0;while(guard++<5){await click('#erShow');await p.waitForTimeout(60);const cur=await p.evaluate(()=>erRun.ids[erRun.i]);if(cur==="a1"){ok(!!(await p.$('#erArch')),tag+": botão já domino");await click('#erArch');break}else await click('#erGood');await p.waitForTimeout(60)}
 ok(await p.evaluate(()=>!!errors.find(e=>e.id==="a1").arch),tag+": arquivado pela revisão");await p.evaluate(()=>{erRun=null;render()});
 // 8. PDF
