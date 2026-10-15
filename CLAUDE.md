@@ -210,7 +210,9 @@ consultado quando há dúvida. Responda em português.
 - Provas na íntegra (aba Questões › Praticar, `qExamCard`, logo após o simulado): importar PDF/fotos (`impNew`/`impPick`/`impRead`/`impSave`, estado `imp`).
   pdf.js 4.10.38 carregado sob demanda por `import()` (`pdfLib`: jsdelivr legacy `PDFJS`, reserva cdnjs `PDFJS2`; roda sem worker via `globalThis.pdfjsWorker`);
   texto por página (`pdfPageText`), página com <60 caracteres = escaneada (`pdfPageImg` → JPEG em `sample` images; no site pede para anexar o PDF).
-  Gabarito: `parseKey` ("1-A", "01. B", tabela, ANULADA → "X"), páginas achadas por `keyPage`, PDF à parte (`impKeyFile`) ou colado; `impPrompt` leva gabarito,
+  Gabarito: `parseKey` ("1-A", "01. B", tabela, ANULADA → "X"; inclui `parseKeyStrong` = gabarito comentado "RESPOSTA 1 … Correta: B"),
+  páginas achadas por `keyPage` (comentado: 1 resposta basta se a página não tiver alternativas "A)"; `impKey` também lê o comentado de páginas mistas),
+  justificativas por questão `keyComments` → bloco "GABARITO COMENTADO" no `impPrompt` (teste t92), PDF à parte (`impKeyFile`) ou colado; `impPrompt` leva gabarito,
   lista de temas e o texto; partes `impBlocks` (artefato 11 mil caracteres/5 págs, 2 em paralelo; site 24 mil/10 págs), falha divide a parte; `impGaps`/`impGapPages`
   = Procurar de novo. Questão `{n,p,pe,k,q,g:"b"|"c",an,im,ck}` (sem embaralhar; `ck` = letra para a qual o comentário foi escrito).
   Dados: `exams` (questões; `resid-exams-v1` + `progress/exams/{id}`) e `exProg` (respostas `{id,i,mode,fin,tries,a:{idx:{l,d,s}},h}`; `resid-exprog-v1` +
