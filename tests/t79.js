@@ -7,7 +7,7 @@ ok(/<title>Nexus - Trilha Médica<\/title>/.test(fs.readFileSync(__dirname+'/../
 for(const name of Object.keys(DEV))for(const scheme of ["light","dark"]){const [w,h,mob]=DEV[name];const ipad=name==="ipad578"||name.startsWith("tab");
  const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,colorScheme:scheme,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
  await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
- const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+ const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof render==='function'&&synced,null,{polling:100});await p.waitForTimeout(150);
  const r=await p.evaluate(()=>{const h=document.querySelector('h1.brand'),l=h&&h.querySelector('.blogo'),cs=getComputedStyle(document.documentElement),bb=l&&l.getBoundingClientRect(),hb=h&&h.getBoundingClientRect();
    const acts=document.querySelector('#hacts').getBoundingClientRect();

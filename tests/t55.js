@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
 const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 await p.evaluate(()=>{let c=0;window.__prompts=[];sampleFn.json=async(input)=>{__prompts.push(input);await new Promise(r=>setTimeout(r,50));const n=+input.match(/simulado com (\d+)/)[1];return Array.from({length:n},()=>({enunciado:"Caso "+(++c),alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"B",comentario:"com",conceito:"con",alerta:""}))};
   const D=n=>fromNum(dnum(today())+n);state={"CM-37":{l:1,last:D(-3),qt:10,qc:3,qd:{[D(-3)]:[10,3]}},"CM-34":{l:1,last:D(-3),qt:8,qc:2,qd:{[D(-3)]:[8,2]}}};commit();setView("quest");setQSeg("praticar")});await p.waitForTimeout(200);

@@ -4,7 +4,7 @@ const DEV={fone:[390,844,true],ipad578:[578,820,true],tabEmPe:[820,1180,true],ta
 const open=async(name,pre)=>{const [w,h,mob]=DEV[name];const ipad=name==="ipad578"||name.startsWith("tab");
   const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
   await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript((pre||"")+mock+`;window.__mock({},2);`);
-  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&downloadsFn,null,{polling:100});await p.waitForTimeout(150);
   return {ctx,p,mob,click:s=>mob?p.tap(s):p.click(s)}};
 /* migração do campo único antigo */

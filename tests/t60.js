@@ -2,14 +2,15 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
 const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";const seg=async s=>{if(mob)await p.evaluate(s=>{tSeg=s;render()},s);await p.waitForTimeout(120)};
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,last:D(-1),step:0}};commit();setView("temas")});await seg("hoje");
 const before=await p.evaluate(()=>JSON.stringify(state)+today());
 await click('#weekBox summary');await p.waitForTimeout(300);
 const rows=await p.$$eval('.pwlist li',a=>a.map(x=>x.textContent));ok(rows.length===6,tag+": prévia com 6 dias");
-const keys=await p.evaluate(()=>weekPreview().flatMap(d=>d.items.map(x=>x.k)));ok(new Set(keys).size===keys.length&&keys.length>=15,tag+": temas diferentes a cada dia ("+keys.length+")");
-ok(await p.evaluate(()=>!weekPreview().flatMap(d=>d.items.map(x=>x.k)).some(k=>ensurePlan().items.some(p=>p.k===k))),tag+": não repete os temas de hoje");
+const [WK,TD]=await p.evaluate(()=>[weekPreview().flatMap(d=>d.items.map(x=>({k:x.k,cls:x.cls}))),ensurePlan().items.map(x=>x.k)]);const keys=WK.filter(x=>x.cls!=="r-cont").map(x=>x.k);
+ok(new Set(keys).size===keys.length&&WK.length>=15&&WK.filter(x=>x.cls==="r-cont").every(x=>WK.some(y=>y.k===x.k&&y.cls!=="r-cont")||TD.includes(x.k)),tag+": temas novos diferentes a cada dia; repetem só para continuar a próxima parte ("+WK.length+")");
+ok(await p.evaluate(()=>!weekPreview().flatMap(d=>d.items.filter(x=>x.cls!=="r-cont").map(x=>x.k)).some(k=>ensurePlan().items.some(p=>p.k===k))),tag+": tema de hoje só volta como Continuar");
 ok(/revis/.test(rows.join(" ")),tag+": mostra revisões dos dias: "+rows[0].slice(0,80));
 ok(await p.evaluate(()=>JSON.stringify(state)+today())===before,tag+": a prévia não altera nada");
 ok(await p.evaluate(()=>!document.querySelector('#iToday .pweek')||!document.querySelector('#iToday .pweek').offsetParent),tag+": prévia só na Residência");

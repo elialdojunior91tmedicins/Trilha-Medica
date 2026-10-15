@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
 const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 await p.evaluate(()=>{errors=[];const q={enunciado:"Paciente com PA 150/95",alternativas:[{letra:"A",texto:"Normal"},{letra:"B",texto:"HAS estágio 1"}],correta:"B",conceito:"HAS ≥140/90",comentario:"c",alerta:""};
   redo=[{id:"r1",k:"CM-1",d:today(),n:1,q}];rdSaveLocal&&rdSaveLocal();setView("quest");setQSeg("praticar")});await p.waitForTimeout(200);

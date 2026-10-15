@@ -3,7 +3,7 @@ const DV={celular:{viewport:{width:390,height:844},isMobile:true,hasTouch:true,d
 (async()=>{const b=await chromium.launch();
 for(const [name,opt] of Object.entries(DV)){const ctx=await b.newContext(opt);await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
  const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
- await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});await p.waitForTimeout(200);
+ await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});await p.waitForTimeout(200);
  const phone=name==="celular";
  ok(await p.isVisible('#cfgBtn')&&!(await p.$('#tabH')),`${name}: ajuda dentro da engrenagem`);
  if(phone)await p.tap('#cfgBtn');else await p.click('#cfgBtn');await p.waitForTimeout(150);

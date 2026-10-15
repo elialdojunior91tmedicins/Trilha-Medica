@@ -30,7 +30,7 @@ ok(own&&own.area==="CM"&&own.sp==="Hematologia e oncologia"&&/NCS 6 · SP 2.1/.t
 await p.fill('#fo-'+sid,'- Descrever a cascata da coagulação\n- Diferenciar PTI de PTT');await p.click(`#sp-${sid} .fobjadd button`);await p.waitForTimeout(150);
 const cs=await p.evaluate(()=>(get("CM-37").cs||[]).map(c=>c.t+"|"+!!c.fac));ok(cs.length===2&&cs.every(x=>x.endsWith("|true")),"objetivos viraram subtópicos do tema principal: "+cs.join(", "));
 await p.click(`#sp-${sid} .fobj li:has-text("Descrever") label`);await p.waitForTimeout(100);
-ok(await p.evaluate(()=>{const c=(get("CM-37").cs||[]).find(x=>/Descrever/.test(x.t));return c&&c.d&&get("CM-37").last===today()}),"marcar objetivo marca o subtópico e conta como estudado (entra nas revisões)");
+ok(await p.evaluate(()=>{const c=(get("CM-37").cs||[]).find(x=>/Descrever/.test(x.t));return c&&c.d&&isIng(get("CM-37"))&&!get("CM-37").last}),"marcar objetivo marca o subtópico e põe o tema em Estudando (revisão só ao concluir)");
 // Temas
 await p.click(`#sp-${sid} .fobj li:has-text("Diferenciar") button:has-text("questões")`);await p.waitForTimeout(500);
 ok(await p.evaluate(()=>view==="temas"&&genFocus["CM-37"]==="Diferenciar PTI de PTT"&&openKey==="CM-37"),"'questões' do objetivo abre o tema com o foco das questões nele");

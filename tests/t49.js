@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 const D0=new Date();const iso=n=>{const d=new Date(D0);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
 const seed={"data/users/u1/progress":{topics:{"CM-37":{l:1,last:iso(-3),qt:30,qc:15,qd:{[iso(-1)]:[10,8]}},"CM-34":{l:0,qt:4,qc:2}}}};
 let ctx=await b.newContext({viewport:{width:1366,height:900}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock(${JSON.stringify(seed)},5);`);
-let p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(1200);
+let p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(1200);
 const m=await p.evaluate(()=>({s:get("CM-37"),z:get("CM-34"),st:window.__store["data/users/u1/progress/topics/CM-37"]}));
 ok(m.s.qd[m.s.last]&&m.s.qd[m.s.last][0]===20&&m.s.qd[m.s.last][1]===7&&m.s.qe&&m.s.qe.q===20,"20 questões antigas estimadas no dia do último estudo: "+JSON.stringify(m.s.qd));
 ok(m.st.qe&&m.st.qd[m.s.last],"estimativa gravada na conta");

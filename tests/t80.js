@@ -11,7 +11,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  await ctx.route(/googleapis|gstatic/,r=>r.abort());
  const seed={[U+"progress"]:{version:3,split:true,hist:{},plan:null},[U+"progress/topics/CM-1"]:{l:1,last:"2026-10-01",step:0}};
  await ctx.addInitScript(mock+`;window.__mock(${JSON.stringify(seed)},2);`);
- const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+ const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn&&window.__subs&&window.__subs.length>=12,null,{polling:100,timeout:15000});await p.waitForTimeout(1500);
  const remote=async(path,d,ms=250)=>{await p.evaluate(([a,x])=>window.__remote(a,x),[U+path,d]);await p.waitForTimeout(ms)};
  const T=await p.evaluate(()=>today());

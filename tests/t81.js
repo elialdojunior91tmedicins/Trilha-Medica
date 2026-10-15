@@ -9,7 +9,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  const OLD=await (async()=>{const src=fs.readFileSync(__dirname+'/../src/checklist-residencia.html','utf8');const i=src.indexOf("const OLD_PROMPTS=[`")+20;return src.slice(i,src.indexOf("`]",i))})();
  await ctx.addInitScript(([m,old])=>{if(!sessionStorage.__s){sessionStorage.__s=1;localStorage.setItem("resid-prompt-v1",old)}},[mock,OLD]);
  await ctx.addInitScript(mock+`;window.__mock({},2);window.__noShuffle=false;`);
- const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+ const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn&&sampleFn,null,{polling:100,timeout:15000});await p.waitForTimeout(300);
  const click=async s=>{await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(150)};
  /* 1. instruções */

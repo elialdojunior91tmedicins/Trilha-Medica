@@ -3,7 +3,7 @@ const DEV={fone:[390,844,true],ipad578:[578,820,true],tabEmPe:[820,1180,true],ta
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [name,[w,h,mob]] of Object.entries(DEV)){const ipad=name==="ipad578"||name.startsWith("tab");const big=["tabDeitado","note","monitor"].includes(name);
 const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const visible=s=>p.evaluate(s=>{const x=document.querySelector(s);return !!x&&x.offsetParent!==null},s);
 await p.evaluate(()=>{notes["CM-1"]="## a\n- b";for(let i=0;i<4;i++)cdAdd("CM-1","Pergunta "+i+"?","Resposta "+i,"eu");
   sampleFn.json=async(input)=>{const n=+input.match(/simulado com (\d+)/)[1];return Array.from({length:n},(_,i)=>({enunciado:"Caso "+i,alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"},{letra:"C",texto:"c"}],correta:"B",comentario:"c",conceito:"k",alerta:""}))};

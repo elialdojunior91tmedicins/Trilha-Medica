@@ -5,7 +5,7 @@ const DEV={fone:[390,844,true],ipad578:[578,820,true],tabEmPe:[820,1180,true],no
 for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name==="ipad578"||name.startsWith("tab");
   const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
   await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
-  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   const click=async s=>{await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(120)};
   const T=await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);
@@ -54,8 +54,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(await p.evaluate(()=>{exams=[];const s=nextSteps().find(x=>x.kind==="sim");startStep(s);return simCfg.n===20&&view==="quest"}),name+": tocar no simulado abre o simulado com 20 questões");
   /* 6. prévia da semana e projeção */
   const r7=await p.evaluate(wd2=>{ui.prefs.woff=[wd2];ui.prefs.wnew=[0,1,2,3,4,5,6].filter(d=>d!==wd2);ui.prefs.wsim=[];saveUI();const W=weekPreview(),d2=W[1];
-    weekOpen=true;backStack=[];setView("temas");render();const li=[...document.querySelectorAll('.pwlist li')][1];return {n:d2.items.length,txt:li&&li.textContent,cls:li&&li.classList.contains("pwoff"),cap:projModel().cap,nd:newDaysWeek(),pn:PLAN_N}},T.wd2);
+    weekOpen=true;backStack=[];setView("temas");render();const li=[...document.querySelectorAll('.pwlist li')][1];return {n:d2.items.length,txt:li&&li.textContent,cls:li&&li.classList.contains("pwoff"),cap:projModel().cap,pa:partsAvg(),nd:newDaysWeek(),pn:PLAN_N}},T.wd2);
   ok(r7.n===0&&r7.cls&&/folga/.test(r7.txt),name+": a prévia da semana mostra a folga, sem temas: "+r7.txt);
-  ok(r7.nd===6&&r7.cap===r7.pn*6&&(()=>true)(),name+": a projeção usa os dias de temas novos ("+r7.cap+")");
+  ok(r7.nd===6&&Math.abs(r7.cap-r7.pn*6/r7.pa)<1e-9&&(()=>true)(),name+": a projeção usa os dias de temas novos ("+r7.cap+")");
   await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join(" | "));await b.close()})();

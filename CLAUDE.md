@@ -204,6 +204,15 @@ consultado quando há dúvida. Responda em português.
   tira o que contava antes e põe o novo. Jogador `exRun` (`exPlayEl`, modo prova "p" ou estudo "e", resultado `view:"res"`). Lixeira `exam`, backup `data.exams/examProg`.
   `bridge.js`: `sample` aceita `opts.title`/`opts.hint`. Teste: `tests/t83.js` (gera um PDF de verdade com pdf-lib/sharp).
 
+- Estudando e plano em partes (10/2026): `s.ing={d,m:"a"|"m"}` = tema começado (`isIng`, `lvKey` → "i", `lvName`); não tem revisão (`last` só ao concluir).
+  `toggleSub` em tema sem `last`: 1º subtópico liga `ing` automático, o último conclui (`last`, `step` 0, `logAct("e")`, `s.pre.ing` permite desfazer no mesmo dia),
+  desmarcar tudo tira o automático (o manual fica). Botões de nível `setLevel` (Não iniciado, Estudando, Estudado = começa revisões, Revisado, Dominado); `upd` apaga
+  `ing` quando há `last`. `counts()` devolve `c[4]` = em estudo (dentro de `c[0]`); `lvLegend`, `donut`, mapa (`.rmc.li`), filtro `tf.lv` "i", PDF. Cores `--li`/`--mi`.
+  Partes: `subParts(L)` (até 6 subtópicos e peso ≤6 = uma parte; senão partes de peso 3–4, `PART_CAP`), `partSubs(it)` → `{subs,pt:[parte,total]}` usado em
+  `makeDayPlan` (r-new e `r-cont` "Continuar · Parte 2 de 4"), `adoptTopic` e `weekPreview` (`simStudy`). `buildPlan` põe os temas Estudando (`r-cont`, mais antigos primeiro)
+  antes dos novos (que excluem `ing`). Projeção: `partsAvg()` divide a capacidade. `SUBS_PER_DAY`/`subN` agora só vale para revisões e pontos fracos.
+  Densos: `s.dn={índice:"u"|"n"|"c"}` e `cs[j].dn` (u = usuário marcou, n = usuário tirou, c = Claude sugeriu e vale até mudar); `subW` = 2 se denso; `setDn`,
+  `dnBoxEl` no tema (`dnEdit`, selos `.dnb`), `dnSuggest(it)`/`dnSuggestAll()` (lotes `DN_CHUNK`=45 em Configurações › Plano, `dnPending`, `s.dnAt`), `dnApply` nunca troca u/n. Teste: `tests/t88.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em

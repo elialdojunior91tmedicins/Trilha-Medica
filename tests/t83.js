@@ -24,7 +24,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await ctx.route(/googleapis|gstatic/,r=>r.abort());
   await ctx.route(/cdn\.jsdelivr\.net\/npm\/pdfjs-dist@4\.10\.38\/legacy\/build\/(.+)$/,r=>{const f=r.request().url().split("/").pop();r.fulfill({contentType:"text/javascript",headers:{"Access-Control-Allow-Origin":"*"},body:fs.readFileSync(path.join(PDFJS_DIR,f))})});
   await ctx.addInitScript(mock+`;window.__mock({},2);`);
-  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn&&sampleFn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   const click=async s=>{await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(120)};
   /* Claude de mentira: devolve as questões das páginas pedidas; na 1ª leitura "esquece" a questão 3 */
@@ -130,7 +130,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
 /* reserva: se o jsdelivr falhar, o leitor vem do cdnjs */
 {const ctx=await b.newContext();await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.route(/cdn\.jsdelivr\.net/,r=>r.abort());
   await ctx.route(/cdnjs\.cloudflare\.com\/ajax\/libs\/pdf\.js\/4\.10\.38\/(.+)$/,r=>{const f=r.request().url().split("/").pop();r.fulfill({contentType:"text/javascript",headers:{"Access-Control-Allow-Origin":"*"},body:fs.readFileSync(path.join(PDFJS_DIR,"..","..","build",f))})});
-  await ctx.addInitScript(mock+`;window.__mock({},2);`);const p=await ctx.newPage();p.on('pageerror',e=>errs.push("cdnjs:"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  await ctx.addInitScript(mock+`;window.__mock({},2);`);const p=await ctx.newPage();p.on('pageerror',e=>errs.push("cdnjs:"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});
   const n=await p.evaluate(async b64=>{const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));const f=new File([bin],"x.pdf",{type:"application/pdf"});const o=await pdfOpenTxt(f);return o.pages.length},fs.readFileSync(pdf).toString("base64"));
   ok(n===5,"leitor de PDF de reserva (cdnjs) abre a prova quando o jsdelivr falha");await ctx.close()}

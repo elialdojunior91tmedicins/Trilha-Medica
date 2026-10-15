@@ -5,7 +5,7 @@ const U="data/users/u1/progress";
 const open=async(name,seed,pre)=>{const [w,h,mob]=DEV[name];const ipad=name==="ipad578"||name.startsWith("tab");
   const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
   await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript((pre||"")+mock+`;window.__mock(${JSON.stringify(seed||{})},2);`);
-  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&downloadsFn,null,{polling:100});await p.waitForTimeout(200);
   return {ctx,p,mob,click:s=>mob?p.tap(s):p.click(s)}};
 const vis=(p,s)=>p.evaluate(s=>{const x=document.querySelector(s);if(!x)return false;const r=x.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(x).visibility!=="hidden"},s);

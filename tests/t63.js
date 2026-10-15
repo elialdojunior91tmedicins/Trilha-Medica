@@ -3,7 +3,7 @@ const png=Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4n
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
 const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 const RESP="## O que a imagem mostra\n- Dor torácica típica\n## Fluxograma\n```fluxo\nDor torácica\nECG em 10 min\n? Supra de ST\n  Sim: Angioplastia → Dupla antiagregação\n  Não: Troponina seriada\nAlta ou internação\n```\n## Pegadinhas\n> Não esperar troponina para reperfundir";
 await p.evaluate(R=>{window.__imgs=null;const f=async(input,o)=>{window.__imgs=o&&o.images;window.__prompt=input;if(o&&o.onText)o.onText({text:R.slice(0,20)});return {text:R,truncated:false}};f.json=sampleFn.json;f.limits=async()=>({images:true});sampleFn=f;

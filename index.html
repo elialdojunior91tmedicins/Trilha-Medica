@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=96d755c6">
+<link rel="stylesheet" href="site.css?v=70ba9d39">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=96d755c6"></script>
-<script src="bridge.js?v=96d755c6"></script>
+<script src="config.js?v=70ba9d39"></script>
+<script src="bridge.js?v=70ba9d39"></script>
 </head>
 <body>
 <script>
@@ -42,8 +42,8 @@
   /* Nexus: azul-marinho (confiança), dourado (conquista), off-white (clareza), grafite (apoio) */
   --bg:#f3f0e9; --surface:#fbfaf6; --ink:#141b2d; --muted:#5c6375; --line:#e1dacb;
   --accent:#16264a; --accent-soft:#e5e8ef; --on-accent:#f7f3ea; --gold:#b8914a; --gold-ink:#8a6a2b; --lg1:#d8b46e; --lg2:#ad8438; --lg3:#6f511c;
-  --l1:#9a6a12; --l2:#2c5896; --l3:#25724f; --due:#ad3a2b; --due-soft:#f5e3dc; --danger:#a5261d;
-  --m1:#c39a48; --m2:#3e6aa8; --m3:#2f8560; --good:#2f8560; --warn:#b07f1f; --bad:#b4483a; --track:#e8e2d5; --tipbg:#141b2d; --tipfg:#f3f0e9;
+  --l1:#9a6a12; --l2:#2c5896; --l3:#25724f; --due:#ad3a2b; --due-soft:#f5e3dc; --danger:#a5261d; --li:#6b4c9a;
+  --mi:#9277c4; --m1:#c39a48; --m2:#3e6aa8; --m3:#2f8560; --good:#2f8560; --warn:#b07f1f; --bad:#b4483a; --track:#e8e2d5; --tipbg:#141b2d; --tipfg:#f3f0e9;
   --hero1:#22396b; --hero2:#16264a; --hero3:#0e1a35; --heroglow:rgb(216 180 110 / .38); --heroink:#f7f3ea; --herosub:rgb(247 243 234 / .74); --herogold:#e2c58a; --herobtn:#f7f3ea; --herobtnink:#16264a;
   --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
   --body:"Manrope",ui-sans-serif,system-ui,sans-serif;
@@ -52,14 +52,14 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
-  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
-  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
+  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80; --li:#bba3e8;
+  --mi:#9a80d0; --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
   --hero1:#1a2a4d; --hero2:#121d36; --hero3:#0b1324; --heroglow:rgb(207 171 99 / .30); --heroink:#f3ead8; --herosub:rgb(243 234 216 / .70); --herogold:#dcbb78; --herobtn:#cfab63; --herobtnink:#0a1121; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
-  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80;
-  --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
+  --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80; --li:#bba3e8;
+  --mi:#9a80d0; --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
   --hero1:#1a2a4d; --hero2:#121d36; --hero3:#0b1324; --heroglow:rgb(207 171 99 / .30); --heroink:#f3ead8; --herosub:rgb(243 234 216 / .70); --herogold:#dcbb78; --herobtn:#cfab63; --herobtnink:#0a1121; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -472,6 +472,12 @@ li.t.open{background:var(--bg)}
 .lvl[data-l="1"]{border-color:var(--l1);color:var(--l1)}
 .lvl[data-l="2"]{border-color:var(--l2);color:var(--l2)}
 .lvl[data-l="3"]{border-color:var(--l3);color:var(--surface);background:var(--l3)}
+.lvl[data-l="i"]{border-color:var(--li);color:var(--li);border-style:dashed}
+.r-cont{background:color-mix(in srgb,var(--mi) 20%,transparent);color:var(--li)}
+.dnb{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .7rem var(--body);padding:2px 8px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}
+.dnb[data-dn="u"],.dnb[data-dn="c"]{border-color:var(--li);color:var(--li);background:color-mix(in srgb,var(--mi) 14%,transparent)}.dnb[data-dn="c"]{border-style:dashed}
+.dnbox{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:6px;font-size:.85rem}.dnbox .how{margin:0;flex-basis:100%}
+
 .detail{padding:4px 18px 18px calc(18px + 2.6rem + 10px);display:flex;flex-direction:column;gap:16px}
 .grp{display:flex;flex-direction:column;gap:8px}
 .glabel{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -539,7 +545,7 @@ html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="
 .rmsp{display:flex;flex-direction:column;gap:3px;min-width:0}.rmsn{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rmcells{display:flex;flex-wrap:wrap;gap:3px}
 .rmc{width:16px;height:16px;border-radius:4px;border:0;padding:0;cursor:pointer;background:var(--track)}
-.rmc.l1,.rmk.l1{background:var(--m1)}.rmc.l2,.rmk.l2{background:var(--m2)}.rmc.l3,.rmk.l3{background:var(--m3)}.rmk.l0{background:var(--track)}
+.rmc.l1,.rmk.l1{background:var(--m1)}.rmc.l2,.rmk.l2{background:var(--m2)}.rmc.l3,.rmk.l3{background:var(--m3)}.rmk.l0{background:var(--track)}.rmc.li,.rmk.li{background:var(--mi)}
 .rmc.due,.rmk.due{box-shadow:inset 0 0 0 2px var(--due)}.rmc.weak,.rmk.weak{outline:2px solid var(--bad);outline-offset:1px}
 .rmc:hover{transform:scale(1.25)}
 .lvsug{border:1.5px solid var(--l3)}
@@ -1881,6 +1887,11 @@ const SUB_PERM={"CM-1":[2,7,9,13,12,5,0,1,3,6,4,8,10,11,14,15,16,17,18],"CM-3":[
 const SUB_RENAME={"CM-1":{"HAS secundária":"HAS secundária: quando investigar"},"CM-3":{"Antidiabéticos orais, iSGLT2 e aGLP-1":"Antidiabéticos não insulínicos (orais e injetáveis)","Insulinoterapia":"Insulinoterapia: quando iniciar","Complicações micro e macrovasculares":"Complicações crônicas: visão geral"},"CM-6":{"Diuréticos e peptídeos natriuréticos":"Diuréticos e controle da congestão"},"CM-7":{"ECG e marcadores de necrose":"Abordagem inicial no PS (ECG em até 10 minutos)","Definição universal de infarto":"Definição universal de infarto e tipos de IAM"},"CM-8":{"Cardioversão":"Cardioversão eletiva e anticoagulação"},"CM-15":{"TARV inicial":"TARV: quando iniciar (início rápido)"},"CM-16":{"Definições (Sepsis-3, qSOFA)":"Definições (Sepsis-3) e triagem (qSOFA, NEWS)"},"CM-29":{"Hipocalemia":"Causas de hipocalemia e reposição","Hipercalemia: ECG e tratamento":"Hipercalemia: ECG e causas"},"CM-31":{"Crise tireotóxica e coma mixedematoso":"Crise tireotóxica"},"CM-46":{"Dengue: classificação e manejo por grupos":"Dengue: fases clínicas e classificação"},"CM-50":{"Depressão e antidepressivos":"Depressão: tratamento e escolha do antidepressivo"},"CM-51":{"Poliquimioterapia":"Poliquimioterapia (PQT-U)"},"CIR-1":{"Sequência ABCDE":"Sequência XABCDE (ATLS)","Controle de hemorragia externa":"X: controle de hemorragia exsanguinante"},"CIR-8":{"Fórmula de Parkland":"Reposição volêmica: fórmulas (Parkland, ATLS) e diurese-alvo"},"PED-3":{"Pentavalente e poliomielite (VIP e VOP)":"Pentavalente e poliomielite (VIP)","Tríplice e tetraviral":"Tríplice viral, tetraviral e varicela"},"GO-17":{"Público-alvo e periodicidade":"Público-alvo e periodicidade (citologia e DNA-HPV)"},"GO-21":{"Lei do planejamento familiar":"Lei do planejamento familiar (Lei 14.443/2022)"},"PREV-14":{"Hierarquia de evidências":"Estudos observacionais x experimentais","Estudo de prevalência":"Relato e série de casos"},"PREV-19":{"Rastreamentos recomendados":"Rastreamentos recomendados no Brasil: visão geral"}};
 
 const LVL=["Não iniciado","Estudado","Revisado","Dominado"];
+/* "Estudando": tema começado e ainda não concluído (s.ing={d,m:"a"|"m"}; a = automático pelos subtópicos, m = marcado à mão).
+   Não conta como estudado: as revisões só começam ao concluir (todos os subtópicos) ou ao marcar Estudado. */
+const isIng=s=>!s.last&&!!s.ing;
+const lvKey=s=>isIng(s)?"i":(s.l||0);
+const lvName=s=>isIng(s)?"Estudando":LVL[s.l||0];
 const INT=[1,3,7,15,30,60,90];
 const WEAK_MIN=5, WEAK_PCT=0.6;
 /* peso de incidência calculado em out/2026 a partir de 1.182 questões classificadas por tema (MedEsper): ENARE 2020–2024, Enamed 2025 e Revalida INEP 2021–2026.
@@ -2008,7 +2019,7 @@ function fromNum(x){return new Date(x*864e5).toISOString().slice(0,10)}
 function br(s){const [y,m,d]=s.split("-");return d+"/"+m}
 const get=k=>state[k]||{l:0};
 let synced=false;const touchedEarly=new Set();
-function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if((s.last!==l0||s.step!==st0)&&"adj" in s){delete s.adj;delete s.adjFrom}
+function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if(s.last&&s.ing)delete s.ing;if((s.last!==l0||s.step!==st0)&&"adj" in s){delete s.adj;delete s.adjFrom}
   if(s.last===today()&&!(s.ed||[]).includes(s.last))s.ed=[...(s.ed||[]),s.last].slice(-200);// dias de estudo/revisão do tema
   state[k]=s;if(!synced)touchedEarly.add(k)}
 let estChanged=false;
@@ -2065,26 +2076,30 @@ function buildPlan(){
   const weak=ALL.filter(i=>isWeak(get(i.key))).sort((a,b)=>(acc(get(a.key))-acc(get(b.key)))-(wOf(a)-wOf(b))*0.1);
   // temas novos: maior incidência primeiro, alternando entre as áreas
   const fresh=[];
-  for(const w of [3,2,1]){const pools=AREAS.map(a=>a.items.filter(i=>isNew(get(i.key))&&wOf(i)===w));
+  for(const w of [3,2,1]){const pools=AREAS.map(a=>a.items.filter(i=>{const s=get(i.key);return isNew(s)&&!s.ing&&wOf(i)===w}));
     while(fresh.length<PLAN_N&&pools.some(p=>p.length))pools.forEach(p=>{if(p.length&&fresh.length<PLAN_N)fresh.push(p.shift())});}
   const F=facPlanPicks(),CR=examCrunch();if(CR.active)F.slots=PLAN_N;
   spPlanPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`Fechamento ${o.lab} · ${inLabel(o.d)}`,sub:o.x.sub})}});
   F.picks.slice(0,F.slots).forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`${o.p.name} · ${inLabel(o.d)}`,sub:o.x.sub})}});
   if(CR.active)return plan;// modo provas: nada da residência
   weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
-  if(NEWD)fresh.forEach(i=>add(i,"r-new",wOf(i)===3?"Novo · incidência muito alta":"Tema novo"));
+  // temas em andamento ("Estudando") vêm antes de abrir tema novo
+  if(NEWD)ALL.filter(i=>{const s=get(i.key);return isIng(s)&&(!subList(i).length||subList(i).some(x=>!x.done))}).sort((a,b)=>(get(a.key).ing.d<get(b.key).ing.d?-1:get(a.key).ing.d>get(b.key).ing.d?1:0)||wOf(b)-wOf(a))
+    .forEach(i=>{const [d,t]=subCount(i),pt=partSubs(i).pt;add(i,"r-cont",pt?`Continuar · Parte ${pt[0]} de ${pt[1]}`:t?`Continuar · ${d} de ${t} subtópicos`:"Continuar")});
+  if(NEWD)fresh.forEach(i=>{const pt=partSubs(i).pt;add(i,"r-new",(wOf(i)===3?"Novo · incidência muito alta":"Tema novo")+(pt?` · ${pt[1]} partes`:""))});
   weak.forEach(i=>add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto"));
   return plan;
 }
 
 function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i.key).l||0)>=1||get(i.key).last)dw+=w});return Math.round(dw/tw*100)}
-function counts(items){const c=[0,0,0,0];items.forEach(it=>c[get(it.key).l||0]++);return c}
+/* c[0..3] por nível; c[4] = quantos dos não iniciados estão em "Estudando" */
+function counts(items){const c=[0,0,0,0,0];items.forEach(it=>{const s=get(it.key);c[s.l||0]++;if(isIng(s)&&!(s.l>0))c[4]++});return c}
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
 /* filtros da lista: situação (vários juntos = "ou") e atalhos (todos juntos = "e"), mais área e especialidade */
 let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};
 function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.area!=="all"||tf.sp!=="all"}
 function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};filter="all"}
-const tfLevel=s=>!s.last&&!(s.l>0)?0:(s.l||1);
+const tfLevel=s=>!s.last&&!(s.l>0)?(s.ing?"i":0):(s.l||1);
 function matches(it){const s=get(it.key);
   if(tf.lv.size&&!tf.lv.has(tfLevel(s)))return false;
   if(tf.due&&!isDue(s))return false;if(tf.weak&&!isWeak(s))return false;if(tf.noq&&s.qt)return false;if(tf.high&&(it.own||wOf(it)!==3))return false;if(tf.pin&&!s.pin)return false;
@@ -2092,15 +2107,46 @@ function matches(it){const s=get(it.key);
   return !query||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")+" "+(notes[it.key]||"")).includes(query)}
 
 /* subtópicos: padrão (índice em s.sd) + próprios (s.cs) */
-function subList(it){const s=get(it.key),sd=s.sd||[];
-  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j}))]}
+function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{};
+  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||""})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||""}))]}
+/* subtópico denso: conta como dois no tamanho da parte do dia. dn: "u" = você marcou, "n" = você tirou, "c" = sugerido pelo Claude (vale até você mudar) */
+const dnHeavy=x=>x.dn==="u"||x.dn==="c";
+const subW=x=>dnHeavy(x)?2:1;
+const PART_BIG=6,PART_CAP=4;
+/* partes do tema: até 6 subtópicos (peso até 6) = uma parte só; maior que isso, partes de peso 3 a 4, na ordem da lista */
+function subParts(L){const W=L.reduce((a,x)=>a+subW(x),0);if(!L.length)return [];if(L.length<=PART_BIG&&W<=PART_BIG)return [L];
+  const n=Math.ceil(W/PART_CAP),tg=W/n,P=Array.from({length:n},()=>[]);let acc=0;
+  L.forEach(x=>{const w=subW(x),i=Math.min(n-1,Math.floor((acc+w/2)/tg));P[i].push(x);acc+=w});return P.filter(p=>p.length)}
+/* subtópicos do dia para um tema novo ou em andamento: o tema inteiro (pequeno) ou a próxima parte (grande); pt = [parte, total] */
+function partSubs(it){const L=subList(it),P=subParts(L);if(!P.length)return {subs:[],pt:null};
+  if(P.length===1){const open=L.filter(x=>!x.done);return {subs:(open.length?open:L).map(x=>x.t),pt:null}}
+  const i=P.findIndex(p=>p.some(x=>!x.done));if(i<0)return {subs:[],pt:null};
+  const pick=P[i].filter(x=>!x.done);let w=pick.reduce((a,x)=>a+subW(x),0);
+  for(let j=i+1;j<P.length&&w<3;j++)for(const x of P[j]){if(x.done)continue;if(w+subW(x)>PART_CAP){w=99;break}pick.push(x);w+=subW(x)}
+  return {subs:pick.map(x=>x.t),pt:[i+1,P.length]}}
+function setDn(it,x,v){upd(it.key,s=>{if(x.i!==undefined){const d={...(s.dn||{})};if(v)d[x.i]=v;else delete d[x.i];if(Object.keys(d).length)s.dn=d;else delete s.dn}
+  else s.cs=(s.cs||[]).map((c,j)=>{if(j!==x.j)return c;const o={...c};if(v)o.dn=v;else delete o.dn;return o})});commit()}
 function subCount(it){const L=subList(it);return [L.filter(x=>x.done).length,L.length]}
-function toggleSub(it,x){let undo=false;const first=!x.done&&!get(it.key).last;const fb=!x.done&&!first&&facBadge(it.key);const bump=fb&&daysTo(fb.p.date)<=FAC_WIN&&get(it.key).last<today();
-  upd(it.key,s=>{if(s.pre&&s.pre.d!==today())delete s.pre;if(first){s.pre={d:today(),l:s.l||0};s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}if(bump)s.last=today();if(x.i!==undefined){const sd=new Set(s.sd||[]);sd.has(x.i)?sd.delete(x.i):sd.add(x.i);s.sd=[...sd].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
-  else{s.cs=(s.cs||[]).map((c,j)=>j===x.j?{...c,d:!c.d}:c)}
-  if(x.done&&s.pre&&s.pre.d===today()&&!(s.sd||[]).length&&!(s.cs||[]).some(c=>c.d)){delete s.last;delete s.step;s.l=s.pre.l||0;delete s.pre;if(s.ed){s.ed=s.ed.filter(d=>d!==today());if(!s.ed.length)delete s.ed}undo=true}});
-  if(undo){const h=hist[today()];if(h&&h.e>0){h.e--;try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}}
-  if(first)logAct("e");if(!x.done)adoptTopic(it.key,x.t);commit()}
+function toggleSub(it,x){let promo=false,unpromo=false;const s0=get(it.key),fresh=!s0.last;const fb=!x.done&&!fresh&&facBadge(it.key);const bump=fb&&daysTo(fb.p.date)<=FAC_WIN&&s0.last<today();
+  upd(it.key,s=>{if(s.pre&&s.pre.d!==today())delete s.pre;if(bump)s.last=today();
+    if(x.i!==undefined){const sd=new Set(s.sd||[]);sd.has(x.i)?sd.delete(x.i):sd.add(x.i);s.sd=[...sd].sort((a,b)=>a-b);s.sv=2;if(!s.sd.length)delete s.sd}
+    else{s.cs=(s.cs||[]).map((c,j)=>j===x.j?{...c,d:!c.d}:c)}
+    const tot=it.subs.length+(s.cs||[]).length,dn=(s.sd||[]).length+(s.cs||[]).filter(c=>c.d).length;
+    if(fresh){// tema ainda não estudado: o primeiro subtópico põe em "Estudando"; o último conclui e começa as revisões
+      if(tot&&dn>=tot){s.pre={d:today(),l:s.l||0,ing:s.ing||null};s.last=today();s.step=0;s.l=Math.max(s.l||0,1);promo=true}
+      else if(dn>0){if(!s.ing)s.ing={d:today(),m:"a"}}
+      else if(s.ing&&s.ing.m!=="m")delete s.ing}
+    else if(s.pre&&s.pre.d===today()&&"ing" in s.pre&&dn<tot){// desmarcou depois de concluir hoje: volta a "Estudando"
+      delete s.last;delete s.step;s.l=s.pre.l||0;if(dn>0||(s.pre.ing&&s.pre.ing.m==="m"))s.ing=s.pre.ing||{d:today(),m:"a"};delete s.pre;
+      if(s.ed){s.ed=s.ed.filter(d=>d!==today());if(!s.ed.length)delete s.ed}unpromo=true}});
+  if(unpromo){const h=hist[today()];if(h&&h.e>0){h.e--;try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}}
+  if(promo)logAct("e");if(!x.done)adoptTopic(it.key,x.t);commit()}
+/* botões de nível do tema */
+function setLevel(it,v){const k=it.key,s=get(k);
+  if(v===0){if(s.last||(s.sd||[]).length||(s.cs||[]).some(c=>c.d)){resetStudy(k);return}upd(k,x=>{x.l=0;delete x.ing});commit();return}
+  if(v==="i"){upd(k,x=>{if(x.last){delete x.last;delete x.step;delete x.pre;delete x.adj;delete x.adjFrom}x.l=0;x.ing={d:(x.ing&&x.ing.d)||today(),m:"m"}});commit();return}
+  if(v===1){let first=false;upd(k,x=>{if(!x.last){x.last=today();x.step=0;first=true}x.l=1});if(first){logAct("e");adoptTopic(k)}commit();return}
+  upd(k,x=>x.l=v);commit()}
 
 /* anotações */
 const NOTE_MAX=30000;
@@ -2387,14 +2433,49 @@ function linkInfoEl(it){const ids=ownLinksTo(it.key);if(!ids.length)return null;
     acts.append(ch,armBtn("unl"+id,"Desligar","Toque de novo para desligar: o conteúdo volta a ser só da faculdade e começa do zero (este tema fica com todo o progresso)",()=>unlinkOwn(id)));row.appendChild(acts);
     if(facLinkSt&&facLinkSt.id===id)row.appendChild(linkPickEl(id));g.appendChild(row)});
   return g}
+/* subtópicos densos: marcar à mão ou pedir sugestão ao Claude (a sua escolha nunca é trocada pela sugestão) */
+let dnEdit=null,dnAsk={};
+function dnPrompt(items){return `Você ajuda um estudante de medicina a planejar os estudos para a prova de residência médica. Para cada tema abaixo, aponte os subtópicos DENSOS: os que sozinhos pedem um dia de estudo ou quase (muito conteúdo e muitos detalhes cobrados em prova). Seja seletivo: em geral 0 a 2 por tema.
+Responda só com JSON neste formato: {"densos":{"CHAVE":[números dos subtópicos densos]}}. Use as chaves e os números mostrados. Tema sem subtópico denso: lista vazia.
+
+`+items.map(it=>`${it.key} · ${it.t}\n`+subList(it).map((x,i)=>`  ${i+1}. ${x.t}`).join("\n")).join("\n\n")}
+function dnApply(items,data){const m=data&&typeof data==="object"?(data.densos&&typeof data.densos==="object"?data.densos:data):{};let n=0;
+  items.forEach(it=>{if(!Array.isArray(m[it.key]))return;const want=new Set(m[it.key].map(Number).filter(Number.isInteger).map(i=>i-1)),L=subList(it);
+    upd(it.key,s=>{const dn={...(s.dn||{})},cs=(s.cs||[]).map(c=>({...c}));
+      L.forEach((x,i)=>{if(x.dn==="u"||x.dn==="n")return;const v=want.has(i);if(v)n++;if(x.i!==undefined){if(v)dn[x.i]="c";else delete dn[x.i]}else if(cs[x.j]){if(v)cs[x.j].dn="c";else delete cs[x.j].dn}});
+      if(Object.keys(dn).length)s.dn=dn;else delete s.dn;if(cs.length)s.cs=cs;s.dnAt=today()})});return n}
+function dnErr(e){const code=e&&e.code;return code==="cancelled"?"":GEN_OFF.includes(code)?"A sugestão não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível pedir a sugestão agora.")}
+async function dnSuggest(it){if(!sampleFn)return;const k=it.key,A=dnAsk[k]={st:"loading",msg:""};render();
+  try{const data=await sampleFn.json(dnPrompt([it]),{cache:false,title:"Subtópicos densos",hint:"Cole a resposta do Claude (JSON com os subtópicos densos)."});if(dnAsk[k]!==A)return;
+    const n=dnApply([it],data);A.st="done";A.msg=n?`O Claude sugeriu ${n} subtópico${n===1?"":"s"} denso${n===1?"":"s"} (tracejado). Já vale no plano; toque no selo para tirar.`:"O Claude não viu subtópico denso neste tema.";commit()}
+  catch(e){if(dnAsk[k]!==A)return;A.st="error";A.msg=dnErr(e);render()}}
+const DN_CHUNK=45;
+function dnPending(){return ALL.filter(it=>!it.own&&subList(it).length>=4&&!get(it.key).dnAt)}
+async function dnSuggestAll(){if(!sampleFn||(dnAsk.all&&dnAsk.all.st==="loading"))return;const L=dnPending();
+  if(!L.length){dnAsk.all={st:"done",msg:"Todos os temas com 4 ou mais subtópicos já têm sugestão."};render();return}
+  const G=[];for(let i=0;i<L.length;i+=DN_CHUNK)G.push(L.slice(i,i+DN_CHUNK));let tot=0;
+  for(let i=0;i<G.length;i++){dnAsk.all={st:"loading",msg:`Pedindo ao Claude: parte ${i+1} de ${G.length}…`};render();
+    try{const data=await sampleFn.json(dnPrompt(G[i]),{cache:false,title:`Subtópicos densos (${i+1} de ${G.length})`,hint:"Cole a resposta do Claude (JSON com os subtópicos densos)."});tot+=dnApply(G[i],data);commit()}
+    catch(e){dnAsk.all={st:"error",msg:(dnErr(e)||"Interrompido.")+(i?` As partes anteriores ficaram salvas (${tot} sugeridos); peça de novo para continuar.`:"")};render();return}}
+  dnAsk.all={st:"done",msg:`Pronto: ${tot} subtópico${tot===1?"":"s"} denso${tot===1?"":"s"} sugerido${tot===1?"":"s"} em ${L.length} temas. Confira em cada tema (tracejado).`};render()}
+function dnBoxEl(it,L){const k=it.key,ed=dnEdit===k,P=subParts(L),s=get(k),bx=el(`<div class="dnbox"></div>`);
+  if(P.length>1){const pi=P.findIndex(p=>p.some(x=>!x.done));bx.appendChild(el(`<p class="how">Tema grande: o plano do dia divide em ${P.length} partes de 3 a 4 subtópicos${pi>=0&&!s.last&&pi>0?` (você está na parte ${pi+1})`:""}. Subtópico denso conta como dois.</p>`))}
+  const t=el(`<button class="link" type="button" id="dnEd-${k}"></button>`);t.textContent=ed?"Pronto":"Marcar subtópicos densos";t.onclick=()=>{dnEdit=ed?null:k;render()};bx.appendChild(t);
+  const A=dnAsk[k];
+  if(sampleFn&&!sampleOff){const b=el(`<button class="link" type="button" id="dnAsk-${k}"></button>`);b.textContent=A&&A.st==="loading"?"Perguntando ao Claude…":s.dnAt?"Pedir nova sugestão ao Claude":"Pedir sugestão ao Claude";b.disabled=!!(A&&A.st==="loading");b.onclick=()=>dnSuggest(it);bx.appendChild(b)}
+  if(L.some(x=>x.dn==="c")){const c=el(`<button class="link" type="button" id="dnOk-${k}">Confirmar sugestões</button>`);c.onclick=()=>{upd(k,s=>{const d={...(s.dn||{})};for(const i in d)if(d[i]==="c")d[i]="u";s.dn=d;if(s.cs)s.cs=s.cs.map(x=>x.dn==="c"?{...x,dn:"u"}:x)});commit()};bx.appendChild(c)}
+  if(A&&A.msg){const m=el(`<p class="how dnmsg"></p>`);m.textContent=A.msg;bx.appendChild(m)}
+  else if(ed)bx.appendChild(el(`<p class="how">Toque em “normal” ou “denso” ao lado de cada subtópico. Tracejado = sugerido pelo Claude; a sua escolha sempre vale.</p>`));
+  return bx}
 function renderDetail(it){
   const s=get(it.key), d=dueIn(s), a=acc(s);
   const box=el(`<div class="detail"></div>`);
   // nível
   const g1=el(`<div class="grp"><span class="glabel">Nível de domínio</span><div class="seg"></div></div>`);
-  LVL.forEach((name,i)=>{const b=el(`<button aria-pressed="${(s.l||0)===i}">${name}</button>`);b.onclick=()=>{if(i===0&&(get(it.key).last||(get(it.key).sd||[]).length)){resetStudy(it.key);return}upd(it.key,x=>x.l=i);commit()};g1.querySelector(".seg").appendChild(b)});
+  const lk=lvKey(s);
+  [[0,"Não iniciado"],["i","Estudando"],[1,"Estudado"],[2,"Revisado"],[3,"Dominado"]].forEach(([i,name])=>{const b=el(`<button aria-pressed="${lk===i}" data-lv="${i}">${name}</button>`);b.onclick=()=>setLevel(it,i);g1.querySelector(".seg").appendChild(b)});
   const ready=(s.l||0)<3&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
-  g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudado: viu o conteúdo. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
+  g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudando: começou e ainda não terminou (as revisões só começam ao concluir). Estudado: viu o conteúdo inteiro. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
   box.appendChild(g1);
   {const lk=linkInfoEl(it);if(lk)box.insertBefore(lk,box.firstChild)}
   const fbd=facBadge(it.key);if(fbd){const x=el(`<p class="tips fbadgep"></p>`);x.textContent=`Faculdade: cai na prova “${fbd.p.name}” de ${provaDiscName(fbd.p)} (${br(fbd.p.date)}, ${inLabel(daysTo(fbd.p.date))}).`;box.insertBefore(x,box.firstChild)}
@@ -2413,7 +2494,7 @@ function renderDetail(it){
   // revisão
   const g2=el(`<div class="grp"><span class="glabel">Revisão espaçada</span><p class="gtext"></p><div class="btns"></div></div>`);
   const p=g2.querySelector("p"), bt=g2.querySelector(".btns");
-  if(!s.last){p.textContent="Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
+  if(!s.last){p.textContent=isIng(s)?`Estudando desde ${br(s.ing.d)}. A primeira revisão fica agendada quando você marcar todos os subtópicos ou tocar em Estudei hoje.`:"Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
     const b=el(`<button class="btn primary">Estudei hoje</button>`);b.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");adoptTopic(it.key);commit()};bt.appendChild(b);}
   else{const next=fromNum(dnum(today())+d);
     const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;p.textContent=`Último estudo em ${br(s.last)}. Próxima revisão em ${br(next)} (${dueLabel(d)}). Intervalo atual: ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
@@ -2431,7 +2512,10 @@ function renderDetail(it){
       const rm=el(`<button class="link" type="button" aria-label="Remover subtópico">remover</button>`);
       rm.onclick=()=>{upd(it.key,s=>{s.cs=(s.cs||[]).filter((_,j)=>j!==x.j);if(!s.cs.length)delete s.cs});commit()};li.appendChild(rm)}
     li.querySelector("input").onchange=()=>toggleSub(it,x);
+    if(dnEdit===it.key||dnHeavy(x)){const db=el(`<button class="dnb" type="button" data-dn="${x.dn}"></button>`);db.textContent=dnHeavy(x)?(x.dn==="c"?"denso · Claude":"denso"):"normal";
+      db.title=dnHeavy(x)?"Subtópico denso: conta como dois no plano. Toque para tirar.":"Toque para marcar como denso";db.onclick=()=>setDn(it,x,dnHeavy(x)?"n":"u");li.appendChild(db)}
     gs.querySelector("ul").appendChild(li)});
+  if(L.length>=2)gs.appendChild(dnBoxEl(it,L));
   const af=el(`<form class="addsub"><input class="etext" id="as-${it.key}" maxlength="120" placeholder="Adicionar subtópico próprio" aria-label="Novo subtópico"><button class="btn" type="submit">Adicionar</button></form>`);
   const ai=af.querySelector("input");ai.value=subDraft[it.key]||"";ai.oninput=()=>subDraft[it.key]=ai.value;
   af.addEventListener("submit",ev=>{ev.preventDefault();const t=ai.value.trim();
@@ -2477,7 +2561,7 @@ function renderDetail(it){
   [...box.children].forEach(c=>{c.dataset.tab=tabOf(c);c.hidden=c.dataset.tab!==tab});
   const fo=foSum(foSess.filter(x=>x.ref==="T:"+it.key)),nt=(notes[it.key]||"").trim();
   const sum=el(`<div class="dsum"></div>`),chip=(lab,val,t,cls)=>{const b=el(`<button type="button" class="dchip${cls?" "+cls:""}"><span></span><b></b></button>`);b.querySelector("span").textContent=lab;b.querySelector("b").textContent=val;b.onclick=()=>{detTab[it.key]=t;render()};sum.appendChild(b)};
-  chip("Nível",LVL[s.l||0],"estudo");chip("Revisão",s.last?dueLabel(d):"sem estudo","estudo",s.last&&d<=0?"late":"");
+  chip("Nível",lvName(s),"estudo");chip("Revisão",s.last?dueLabel(d):"sem estudo","estudo",s.last&&d<=0?"late":"");
   chip("Acerto",s.qt?`${Math.round(a*100)}% em ${s.qt}`:"sem questões","questoes",s.qt&&isWeak(s)?"late":"");chip("Foco",fo?fmtMin(fo):"0 min","estudo");chip("Erros",String(mine.length),"erros");
   const tb=el(`<div class="seg dtabs" role="tablist" aria-label="Partes do tema"></div>`);
   [["estudo","Estudo"],["questoes","Questões"],["notas","Anotações"],["erros","Erros"]].forEach(([v,l])=>{const b=el(`<button type="button" role="tab" aria-pressed="${tab===v}" aria-selected="${tab===v}"></button>`);
@@ -2678,18 +2762,19 @@ document.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")placeTip(
 addEventListener("scroll",()=>{tip.hidden=true},{passive:true});
 document.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")tip.hidden=true});
 
+function lvLegend(c){return [["m3","Dominados",c[3]],["m2","Revisados",c[2]],["m1","Estudados",c[1]],...(c[4]?[["mi","Estudando",c[4]]]:[]),["track","Não iniciados",c[0]-(c[4]||0)]]}
 function donut(c,tot=TOTAL,unit="temas"){const R=52,C=2*Math.PI*R,gap=2;let off=0;
-  const segs=[[c[3],"var(--m3)","Dominados"],[c[2],"var(--m2)","Revisados"],[c[1],"var(--m1)","Estudados"]];
+  const segs=[[c[3],"var(--m3)","Dominados"],[c[2],"var(--m2)","Revisados"],[c[1],"var(--m1)","Estudados"],[c[4]||0,"var(--mi)","Estudando"]];
   const arcs=segs.filter(s=>s[0]).map(([v,col,lab])=>{const len=v/tot*C,draw=Math.max(len-(len>gap*2?gap:0),0.5);
     const a=`<circle r="${R}" cx="64" cy="64" fill="none" stroke="${col}" stroke-width="14" stroke-dasharray="${draw} ${C}" stroke-dashoffset="${-off}" transform="rotate(-90 64 64)" data-tip="${lab}: ${v} de ${tot} ${unit} (${pct(v,tot)}%)"></circle>`;off+=len;return a}).join("");
-  return `<svg viewBox="0 0 128 128" class="donut" role="img" aria-label="${c[3]} dominados, ${c[2]} revisados, ${c[1]} estudados, ${c[0]} não iniciados"><circle r="${R}" cx="64" cy="64" fill="none" stroke="var(--track)" stroke-width="14"></circle>${arcs}</svg>`}
+  return `<svg viewBox="0 0 128 128" class="donut" role="img" aria-label="${c[3]} dominados, ${c[2]} revisados, ${c[1]} estudados, ${c[4]?c[4]+" estudando, ":""}${c[0]-(c[4]||0)} não iniciados"><circle r="${R}" cx="64" cy="64" fill="none" stroke="var(--track)" stroke-width="14"></circle>${arcs}</svg>`}
 
 function renderDash(){
   const c=counts(ALL);let qc=0,qt=0,due=0,late=0;
   ALL.forEach(i=>{const s=get(i.key);qc+=s.qc||0;qt+=s.qt||0;if(isDue(s)){due++;if(dueIn(s)<0)late++}});
   const ac=qt?pct(qc,qt):null,[bk,bl]=ac===null?["",""]:band(ac),wp=weighted();
   $("#ring").innerHTML=donut(c)+`<div class="ringc"><b>${pct(c[3],TOTAL)}%</b><span>dominado</span></div>`;
-  const L=[["m3","Dominados",c[3]],["m2","Revisados",c[2]],["m1","Estudados",c[1]],["track","Não iniciados",c[0]]];
+  const L=lvLegend(c);
   $("#glegend").innerHTML=L.map(([t,lab,v])=>`<li><i class="sw" style="background:var(--${t})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,TOTAL)}%</em></li>`).join("");
   $("#stats").innerHTML=`
     <div class="kpi${due?" alert":""}"><span class="kl">Revisões pendentes</span><b>${due}</b><span class="ks">${due?(late?`${late} atrasada${late>1?"s":""}`:"vencem hoje"):"tudo em dia"}</span></div>
@@ -2700,7 +2785,7 @@ function renderDash(){
   $("#areaChart").innerHTML=AREAS.map(a=>{const k=counts(a.items),n=a.items.length,seen=k[1]+k[2]+k[3];
     const seg=(v,t,lab)=>v?`<i style="width:${v/n*100}%;background:var(--${t})" data-tip="${a.name} · ${lab}: ${v} de ${n}"></i>`:"";
     let sd=0,st=0;a.items.forEach(it=>{const [x,y]=subCount(it);sd+=x;st+=y});const sp=pct(sd,st);
-    return `<div class="hrow"><span class="hl">${a.code}</span><div class="hbar" role="img" aria-label="${a.name}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}</div><span class="hv">${pct(seen,n)}%</span></div>
+    return `<div class="hrow"><span class="hl">${a.code}</span><div class="hbar" role="img" aria-label="${a.name}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}${seg(k[4],"mi","estudando")}</div><span class="hv">${pct(seen,n)}%</span></div>
       <div class="hrow hsub"><span class="hl"></span><div class="hbar sbar2" role="img" aria-label="${a.name}: ${sd} de ${st} subtópicos marcados"><i style="width:${st?sd/st*100:0}%" data-tip="${a.name} · subtópicos: ${sd} de ${st}"></i></div><span class="hv">${sp}%</span></div>`}).join("")+
     `<p class="cnote">Barra grossa: temas já estudados em cada área (cores da legenda acima). Barra fina: subtópicos marcados, que mostram o quanto do conteúdo você realmente cobriu.</p>`;
   // atividade
@@ -2831,7 +2916,8 @@ function pickSubs(it,kind){const L=subList(it),s=get(it.key);if(!L.length)return
   return pool.slice(0,SUBS_PER_DAY).map(x=>x.t)}
 const WEAK_DAY_Q=5;
 function markResDay(P){const has=P.items.some(x=>x.cls!=="r-fac"&&!(BYKEY[x.k]||{}).own);const d=today(),h=hist[d]||(hist[d]={});if(has)h.res=1;else{delete h.res;if(!Object.keys(h).length)delete hist[d]}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
-function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub})=>{const x={k:it.key,cls,txt,subs:cls==="r-fac"&&sub?[sub]:pickSubs(it,cls==="r-fac"?"r-new":cls)};if(cls==="r-weak")x.q0=get(it.key).qt||0;return x})}}
+function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub})=>{const x={k:it.key,cls,txt,subs:cls==="r-fac"&&sub?[sub]:pickSubs(it,cls==="r-fac"?"r-new":cls)};if(cls==="r-weak")x.q0=get(it.key).qt||0;
+    if(cls==="r-new"||cls==="r-cont"){const P=partSubs(it);x.subs=P.subs;if(P.pt){x.pt=P.pt;x.txt=(cls==="r-new"?"Tema novo":"Continuar")+` · Parte ${P.pt[0]} de ${P.pt[1]}`}}return x})}}
 function ensurePlan(){if(!dayPlan||dayPlan.d!==today()||!Array.isArray(dayPlan.items)){dayPlan=makeDayPlan();markResDay(dayPlan);savePlan(false)}
   else if(dayPlan.items.some(x=>x.cls==="r-rev")){// planos antigos: revisões agora ficam na seção Revisões
     dayPlan.items=dayPlan.items.filter(x=>x.cls!=="r-rev");const f=makeDayPlan().items.filter(x=>!dayPlan.items.some(y=>y.k===x.k));
@@ -2847,7 +2933,7 @@ function itemDone(p){const it=BYKEY[p.k],L=subList(it),s=get(p.k);
   return !!(p.subs.length&&p.subs.every(t=>{const x=L.find(y=>y.t===t);return !x||x.done}));}
 function weakDone(p){if(p.q0===undefined)p.q0=get(p.k).qt||0;return Math.max(0,(get(p.k).qt||0)-p.q0)}
 /* "Não estudei": tira das revisões e volta para não iniciado (mantém questões, anotações e erros) */
-function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete x.ed;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
+function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete x.ed;delete x.ing;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
   if(dayPlan){if(dayPlan.rchk)delete dayPlan.rchk[k];if(Array.isArray(dayPlan.revd))dayPlan.revd=dayPlan.revd.filter(y=>y!==k);savePlan()}revArm=null;commit()}
 let revArm=null;
 function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
@@ -2868,7 +2954,7 @@ function renderPlan(){
     const li=el(`<li class="pcard${done?" pdone":""}" data-k="${p.k}"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason ${p.cls}"></span></div>
       <div class="pa"></div><div class="pbody"></div><div class="pacts"></div></li>`);
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
-    li.querySelector(".reason").textContent=done?"Concluído":(p.cls==="r-new"?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
+    li.querySelector(".reason").textContent=done?(isIng(get(p.k))?"Parte concluída":"Concluído"):(p.cls==="r-new"&&!p.pt?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
     const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · ${String(it.num).padStart(3,"0")} · `;pa.appendChild(incEl(wOf(it),false));
     if(compact&&!editing){const rev=p.cls==="r-rev";let prog,started=false;
       if(p.cls==="r-weak"){const n=weakDone(p);started=n>0;prog=`${Math.min(n,WEAK_DAY_Q)} de ${WEAK_DAY_Q} questões`}
@@ -2922,7 +3008,8 @@ function itemStarted(p){if(itemDone(p))return true;if(p.cls==="r-weak")return we
 function adoptTopic(k,sub){
   const P=ensurePlan();if(P.items.some(x=>x.k===k))return;
   const it=BYKEY[k],L=subList(it);
-  const subs=sub?[sub,...L.filter(x=>!x.done&&x.t!==sub).map(x=>x.t)].slice(0,SUBS_PER_DAY):pickSubs(it,"r-new");
+  const ps=get(k).last?pickSubs(it,"r-new"):partSubs(it).subs;
+  const subs=sub?[sub,...ps.filter(t=>t!==sub)].slice(0,Math.max(ps.length,1)):ps;
   const item={k,cls:"r-own",txt:"Você iniciou",subs};
   let idx=-1;for(const cls of ["r-new","r-weak"]){for(let i=P.items.length-1;i>=0;i--){const x=P.items[i];if(x.cls===cls&&!itemStarted(x)){idx=i;break}}if(idx>=0)break}
   if(idx>=0){const old={...P.items[idx]};delete old.prev;item.prev=old;P.items[idx]=item}else P.items.push(item);
@@ -3303,7 +3390,7 @@ function searchBox(d,mode){// mode: "disc" (adicionar conteúdo), {replace:id} o
   return box}
 
 function ownDetailRow(it){const open=openKey===it.key,s=get(it.key),dd=dueIn(s);
-  const li=el(`<li class="t${open?" open":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">FAC</span><span class="topic"></span><span class="lvl" data-l="${s.l||0}">${LVL[s.l||0]}</span><span class="meta"></span></button></li>`);
+  const li=el(`<li class="t${open?" open":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">FAC</span><span class="topic"></span><span class="lvl" data-l="${lvKey(s)}">${lvName(s)}</span><span class="meta"></span></button></li>`);
   li.querySelector(".topic").textContent=it.t;const m=li.querySelector(".meta");
   if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
   const [sd,st]=subCount(it);if(st)m.appendChild(el(`<span>${sd}/${st} subtópicos</span>`));if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
@@ -3361,7 +3448,7 @@ const semDiscs=id=>fac.discs.filter(d=>d.semId===id);
 function semProvas(cur){return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&d.semId===cur.id}).sort(byDate)}
 const topicKeysOf=refs=>[...new Set(refs.filter(refOk).map(r=>refTopic(r).k))];
 const lvlOf=k=>{const s=get(k);return s.l||(s.last?1:0)};
-function lvlCounts(keys){const c=[0,0,0,0];keys.forEach(k=>c[lvlOf(k)]++);return c}
+function lvlCounts(keys){const c=[0,0,0,0,0];keys.forEach(k=>{const l=lvlOf(k);c[l]++;if(!l&&isIng(get(k)))c[4]++});return c}
 function objStats(s){const pr=primaryRef(s),pit=pr&&BYKEY[refTopic(pr).k];if(!pit)return [0,s.objs.length];const L0=subList(pit);return [s.objs.filter(o=>(L0.find(x=>x.t===o)||{}).done).length,s.objs.length]}
 function spStatus(keys){if(!keys.length)return {l:"x",t:"Sem conteúdo"};const c=lvlCounts(keys),n=keys.length;
   if(c[3]===n)return {l:3,t:"Dominada"};if(!c[0])return {l:2,t:"Estudada"};if(c[0]<n)return {l:1,t:"Em estudo"};return {l:0,t:"Não iniciada"}}
@@ -3874,8 +3961,8 @@ function spRow(d,s,L,edit,i){const open=facOpenSP.has(s.id),keys=topicKeysOf(s.i
   li.querySelector(".item").onclick=()=>{open?facOpenSP.delete(s.id):facOpenSP.add(s.id);render()};
   if(open)li.appendChild(spDetail(d,s,L,edit));return li}
 
-function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),l=s0.l||0,dd=dueIn(s0),open=openKey===it.key&&!facShown.has(it.key);if(open)facShown.add(it.key);
-  const li=el(`<li class="t${open?" open":""}${it.own?" own":""}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${l}">${LVL[l]}</span><span class="meta"></span></button></li>`);
+function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),l=s0.l||0,lsv=s0,dd=dueIn(s0),open=openKey===it.key&&!facShown.has(it.key);if(open)facShown.add(it.key);
+  const li=el(`<li class="t${open?" open":""}${it.own?" own":""}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${lvKey(lsv)}">${lvName(lsv)}</span><span class="meta"></span></button></li>`);
   li.querySelector(".num").textContent=it.own||x.own?"FAC":it.area.code;li.querySelector(".topic").textContent=x.own?fac.own[x.own].t:x.sub||it.t;
   const m=li.querySelector(".meta");
   if(it.own)m.appendChild(el(`<span class="facchip">FAC</span>`));else if(x.own)m.appendChild(el(`<span class="facchip lnk">FAC ↔ RES</span>`));else m.appendChild(incEl(wOf(it),wOf(it)===3));
@@ -4552,7 +4639,7 @@ function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
   if(!ov){ov=el(`<div class="gsearch onbov" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbh"><div class="gsbox onbbox"></div></div>`);document.body.appendChild(ov)}
   const b=ov.querySelector(".onbbox");b.innerHTML="";const O=onb,dots=el(`<p class="onbdots"></p>`);for(let i=0;i<3;i++)dots.appendChild(el(`<i class="${i<=O.step?"on":""}"></i>`));b.appendChild(dots);
   const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
-    if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null;render()}else{redoPlan();render()}};
+    if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null;render()}else{redoPlan();render()}};
   const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
   if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo ao Nexus</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
       el(`<label class="qfsel onbf"><span>Quando é a sua prova de residência?</span><input type="date" class="etext" id="onbDate"></label>`));
@@ -4731,9 +4818,12 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   const pl=el(`<section class="card"><div class="dhead"><h2>Plano do dia e revisões</h2></div></section>`);
   const planChange=(k,v)=>{ui.prefs[k]=v;saveUI();uiNote="O plano de hoje continua como estava. Toque em Refazer o plano de hoje para aplicar agora, ou espere até amanhã.";render()};
   pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
-    segRow("Subtópicos por tema","Quantos subtópicos de cada tema entram no dia.",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
+    segRow("Subtópicos por tema","Quantos subtópicos entram nas revisões e nos pontos fracos. Tema novo vem inteiro até 6 subtópicos; maior que isso, em partes de 3 a 4 por dia (subtópico denso conta como dois).",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
   const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
   pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%; abaixo de 65% encurta para 75%, abaixo de 50% para a metade. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
+  {const A=dnAsk.all,n=dnPending().length,g=el(`<div class="grp" id="dnAllBox"><span class="glabel">Subtópicos densos</span><p class="gtext how">Denso conta como dois na parte do dia. O Claude pode sugerir quais são, nos temas com 4 ou mais subtópicos (${n?`${n} ainda sem sugestão`:"todos já sugeridos"}). Você corrige em cada tema, e a sua escolha nunca é trocada.</p></div>`);
+    if(sampleFn&&!sampleOff&&n){const b=el(`<button class="btn" type="button" id="dnAll">Pedir sugestões ao Claude</button>`);b.disabled=!!(A&&A.st==="loading");b.onclick=dnSuggestAll;g.appendChild(b)}
+    if(A&&A.msg){const m=el(`<p class="gstatus" id="dnAllMsg"></p>`);m.textContent=A.msg;g.appendChild(m)}pl.appendChild(g)}
   pl.appendChild(weekCfgEl());
   const rp=el(`<button class="btn" type="button">Refazer o plano de hoje</button>`);rp.onclick=()=>{redoPlan("Plano de hoje refeito com a nova configuração. O que você já tinha começado foi mantido.");uiNote="Plano de hoje refeito com a nova configuração.";render()};pl.appendChild(rp);
   box.appendChild(pl);
@@ -4864,7 +4954,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
         return [`${m.code} · ${m.label}`,`${ks.length-k[0]}/${ks.length}`,{bar:[[k[3]/n,C.l3],[k[2]/n,C.l2],[k[1]/n,C.l1]]},String(k[3]),String(q),pctS(cc,q)]}));
     if(R.from)para("Questões e acerto: só as respondidas no período.",{size:7.6,color:C.mut})}
   else if(o.res&&!R.mk){h2("Residência");const c=counts(ALL),seen=c[1]+c[2]+c[3];
-    para(`${TOTAL} temas: ${c[3]} dominado${c[3]===1?"":"s"}, ${c[2]} revisado${c[2]===1?"":"s"}, ${c[1]} estudado${c[1]===1?"":"s"} e ${c[0]} não iniciado${c[0]===1?"":"s"}. ${pctS(seen,TOTAL)} dos temas já foram vistos; ${weighted()}% do peso das provas já foi estudado.`,{after:6});
+    para(`${TOTAL} temas: ${c[3]} dominado${c[3]===1?"":"s"}, ${c[2]} revisado${c[2]===1?"":"s"}, ${c[1]} estudado${c[1]===1?"":"s"}${c[4]?`, ${c[4]} em estudo`:""} e ${c[0]-c[4]} não iniciado${c[0]-c[4]===1?"":"s"}. ${pctS(seen,TOTAL)} dos temas já foram vistos; ${weighted()}% do peso das provas já foi estudado.`,{after:6});
     need(16);bar(M,y,CW,9,[[c[3]/TOTAL,C.l3],[c[2]/TOTAL,C.l2],[c[1]/TOTAL,C.l1]]);y+=14;
     para("Verde: dominados · azul: revisados · amarelo: estudados · cinza: não iniciados.",{size:7.6,color:C.mut,after:8});
     const w=CW;table([{t:"Área",w:w*.37},{t:"Vistos",w:w*.10,al:"r"},{t:"Progresso",w:w*.21},{t:"Domin.",w:w*.10,al:"r"},{t:"Questões",w:w*.11,al:"r"},{t:"Acerto",w:w*.11,al:"r"}],
@@ -4943,8 +5033,10 @@ let projOpen=lsGet("resid-projopen","")==="1",projAll=false;
 const PJ_SHOW=8;
 /* modelo: temas não vistos distribuídos pelas semanas (semanas de prova pesam menos), revisões já agendadas + as dos temas
    novos planejados, cartões vencendo, meta de questões e marcos (faculdade, SP, residência) */
+/* média de dias (partes) por tema ainda não estudado: tema grande ocupa uma vaga do plano em vários dias */
+function partsAvg(){let n=0,p=0;ALL.forEach(it=>{const s=get(it.key);if(s.last||s.l>0)return;n++;const L=subList(it),P=subParts(L);p+=Math.max(1,P.filter(q=>q.some(x=>!x.done)).length)});return n?p/n:1}
 function projModel(){const t=dnum(today()),ws0=foWeekStart(),main=exMain(),end=main&&main.date&&main.date>=today()?dnum(main.date):null;
-  const left=counts(ALL)[0];let e4=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e4+=h.e||0}const pace=e4/4,cap=PLAN_N*Math.min(6,newDaysWeek());
+  const left=counts(ALL)[0];let e4=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e4+=h.e||0}const pace=e4/4,cap=PLAN_N*Math.min(6,newDaysWeek())/partsAvg();
   let done0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)done0+=h.e||0}
   let q0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)q0+=h.q||0}
   const rate=pace>0?pace:cap,total=left+done0;
@@ -5065,7 +5157,7 @@ function renderInicioStats(){const box=$("#iStats");box.innerHTML="";
   const c=counts(ALL);let qc=0,qt=0,due=0;ALL.forEach(i=>{const st=get(i.key);qc+=st.qc||0;qt+=st.qt||0;if(isDue(st))due++});
   const r=el(`<div class="ipart"><div class="iph"><span class="glabel">Residência · ${TOTAL} temas</span><button class="link" type="button">Abrir</button></div><div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div><div class="ikpis"></div></div>`);
   r.querySelector(".ring").innerHTML=donut(c)+`<div class="ringc"><b>${pct(c[3],TOTAL)}%</b><span>dominado</span></div>`;
-  r.querySelector(".glegend").innerHTML=[["m3","Dominados",c[3]],["m2","Revisados",c[2]],["m1","Estudados",c[1]],["track","Não iniciados",c[0]]].map(([t,lab,v])=>`<li><i class="sw" style="background:var(--${t})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,TOTAL)}%</em></li>`).join("");
+  r.querySelector(".glegend").innerHTML=lvLegend(c).map(([t,lab,v])=>`<li><i class="sw" style="background:var(--${t})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,TOTAL)}%</em></li>`).join("");
   r.querySelector(".ikpis").innerHTML=`<span><b>${due}</b> revis${due===1?"ão":"ões"} pendente${due===1?"":"s"}</span><span><b>${qt.toLocaleString("pt-BR")}</b> questões</span><span><b>${qt?pct(qc,qt)+"%":"–"}</b> de acerto</span><span><b>${weighted()}%</b> do peso da prova estudado</span>`;
   r.querySelector(".iph button").onclick=()=>{tSeg="prog";try{localStorage.setItem("resid-tseg","prog")}catch(e){}setView("temas")};
   box.appendChild(r);
@@ -5080,7 +5172,7 @@ function renderInicioStats(){const box=$("#iStats");box.innerHTML="";
     fh.querySelector(".ifname").textContent=F.d.name;fh.querySelector(".ifname").onclick=()=>goDisc(F.d);fh.querySelector(".ifwhy").textContent=F.why;f.appendChild(fh)}
   const t=el(`<div class="dtop"><div class="ring"></div><ul class="glegend"></ul></div>`);
   t.querySelector(".ring").innerHTML=donut(fc,fn,F?`temas de ${esc(F.d.name)}`:"conteúdos do semestre")+`<div class="ringc"><b>${pct(fseen,fn)}%</b><span>estudado</span></div>`;
-  t.querySelector(".glegend").innerHTML=[["m3","Dominados",fc[3]],["m2","Revisados",fc[2]],["m1","Estudados",fc[1]],["track","Não iniciados",fc[0]]].map(([k,lab,v])=>`<li><i class="sw" style="background:var(--${k})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,fn)}%</em></li>`).join("");
+  t.querySelector(".glegend").innerHTML=lvLegend(fc).map(([k,lab,v])=>`<li><i class="sw" style="background:var(--${k})"></i><span>${lab}</span><b>${v}</b><em>${pct(v,fn)}%</em></li>`).join("");
   f.appendChild(t);
   const L=lv(cur),fb=el(`<div class="fbars"></div>`);
   if(F&&S.ds.length>1){const st=el(`<p class="cnote"></p>`);st.textContent=`Semestre inteiro: ${pct(S.seen,n)}% estudado (${S.seen} de ${n} temas).`;f.appendChild(st)}
@@ -6066,7 +6158,7 @@ function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML=
   const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length;
   const row=(lab,items)=>{const r=el(`<div class="tfrow"><span class="glabel"></span><div class="chips"></div></div>`);r.querySelector(".glabel").textContent=lab;items.forEach(b=>r.querySelector(".chips").appendChild(b));box.appendChild(r)};
   const chip=(t,on,fn,id)=>{const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.textContent=t;if(id)b.id=id;b.onclick=()=>{fn();render()};return b};
-  row("Situação",[[0,"Não iniciados"],[1,"Estudados"],[2,"Revisados"],[3,"Dominados"]].map(([v,t])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v)));
+  row("Situação",[[0,"Não iniciados"],["i","Estudando"],[1,"Estudados"],[2,"Revisados"],[3,"Dominados"]].map(([v,t])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v)));
   row("Atalhos",[chip(`Revisão pendente · ${cnt(i=>isDue(get(i.key)))}`,tf.due,()=>{tf.due=!tf.due},"tfdue"),chip(`Pontos fracos · ${cnt(i=>isWeak(get(i.key)))}`,tf.weak,()=>{tf.weak=!tf.weak},"tfweak"),
     chip("Sem questões",tf.noq,()=>{tf.noq=!tf.noq},"tfnoq"),chip("Incidência muito alta",tf.high,()=>{tf.high=!tf.high},"tfhigh"),chip(`★ Fixados · ${cnt(i=>get(i.key).pin)}`,tf.pin,()=>{tf.pin=!tf.pin},"tfpin")]);
   const sr=el(`<div class="qfrow"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
@@ -6077,7 +6169,7 @@ function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML=
   box.appendChild(sr);
   const n=pool.filter(matches).length,ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=tfOn()||query?`${n} ${n===1?"tema":"temas"} com esses filtros`:`${pool.length} temas`;
   if(tfOn()){const c=el(`<button class="link" type="button" id="tfClear">Limpar filtros</button>`);c.onclick=()=>{tfReset();render()};ft.appendChild(c)}
-  const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0]);openKey=null}render()};ft.appendChild(bk);
+  const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null}render()};ft.appendChild(bk);
   box.appendChild(ft);
   renderBulkBar()}
 /* ----- "Já estudei antes": marcar vários temas de uma vez, com a primeira revisão espalhada ----- */
@@ -6137,11 +6229,11 @@ function renderResMap(){const box=$("#resMap");if(!box)return;box.innerHTML="";
   AREAS.forEach(a=>{const g=el(`<div class="rmarea"><span class="rmh"><b>${a.code}</b> <span></span></span><div class="rmspecs"></div></div>`);g.querySelector(".rmh span").textContent=a.name;
     (a.specs||[{name:"",items:a.items}]).forEach(sp=>{const r=el(`<div class="rmsp"><span class="rmsn"></span><div class="rmcells"></div></div>`);r.querySelector(".rmsn").textContent=sp.name;
       sp.items.forEach(it=>{const s=get(it.key),l=tfLevel(s),c=el(`<button type="button" class="rmc l${l}${isDue(s)?" due":""}${isWeak(s)?" weak":""}"></button>`);
-        c.dataset.tip=`${it.t} · ${LVL[s.l||0]}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}${isDue(s)?" · revisão pendente":""}`;c.setAttribute("aria-label",c.dataset.tip);c.onclick=()=>openTopic(it.key);r.querySelector(".rmcells").appendChild(c)});
+        c.dataset.tip=`${it.t} · ${lvName(s)}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}${isDue(s)?" · revisão pendente":""}`;c.setAttribute("aria-label",c.dataset.tip);c.onclick=()=>openTopic(it.key);r.querySelector(".rmcells").appendChild(c)});
       g.querySelector(".rmspecs").appendChild(r)});
     wrap.appendChild(g)});
   box.appendChild(wrap);
-  box.appendChild(el(`<div class="clegend"><span><i class="sw rmk l0"></i>não iniciado</span><span><i class="sw rmk l1"></i>estudado</span><span><i class="sw rmk l2"></i>revisado</span><span><i class="sw rmk l3"></i>dominado</span><span><i class="sw rmk l0 due"></i>revisão pendente</span><span><i class="sw rmk l0 weak"></i>ponto fraco</span></div>`));
+  box.appendChild(el(`<div class="clegend"><span><i class="sw rmk l0"></i>não iniciado</span><span><i class="sw rmk li"></i>estudando</span><span><i class="sw rmk l1"></i>estudado</span><span><i class="sw rmk l2"></i>revisado</span><span><i class="sw rmk l3"></i>dominado</span><span><i class="sw rmk l0 due"></i>revisão pendente</span><span><i class="sw rmk l0 weak"></i>ponto fraco</span></div>`));
   box.appendChild(el(`<p class="cnote">Cada quadrado é um tema. Toque para abrir.</p>`))}
 /* domínio automático: propõe subir para Dominado quando bate os critérios, e voltar para Revisado quando o acerto cai */
 const lvMeets=s=>(s.l||0)===2&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
@@ -6162,13 +6254,18 @@ function renderLvSug(){const box=$("#lvSug");if(!box)return;box.innerHTML="";con
 /* ---------- Residência: prévia da semana e temas fixados ---------- */
 let weekOpen=false;
 /* simula os próximos 6 dias supondo que você cumpre o plano e faz as revisões de cada dia (nada é salvo) */
+/* simulação: estuda os subtópicos do dia; o tema só conta como estudado quando todos estiverem marcados */
+function simStudy(k,subs){const it=BYKEY[k];if(!it)return;const s={...get(k)};if(s.last)return;
+  if(subs&&subs.length){const sd=new Set(s.sd||[]),cs=(s.cs||[]).map(c=>({...c}));subs.forEach(t=>{const i=it.subs.indexOf(t);if(i>=0)sd.add(i);else{const j=cs.findIndex(c=>c.t===t);if(j>=0)cs[j].d=true}});
+    s.sd=[...sd].sort((a,b)=>a-b);if(cs.length)s.cs=cs;if(sd.size+cs.filter(c=>c.d).length<it.subs.length+cs.length){s.ing=s.ing||{d:today(),m:"a"};state[k]=s;return}}
+  s.last=today();s.step=0;s.l=Math.max(s.l||0,1);delete s.ing;state[k]=s}
 function weekPreview(){const snap=state,out=[];
   try{state=JSON.parse(JSON.stringify(state));const POOL=[...ALL,...FAC_ITEMS];
-    ensurePlan().items.forEach(p=>{const s={...get(p.k)};if(!s.last){s.last=today();s.step=0;s.l=Math.max(s.l||0,1);state[p.k]=s}});
+    ensurePlan().items.forEach(p=>simStudy(p.k,p.subs));
     POOL.filter(x=>isDue(get(x.key))).forEach(x=>{const s={...get(x.key)};s.last=today();s.step=Math.min((s.step||0)+1,INT.length-1);delete s.adj;state[x.key]=s});
     for(let i=1;i<=6;i++){dayOff=i;const plan=buildPlan(),revs=POOL.filter(x=>isDue(get(x.key)));
       out.push({d:today(),items:plan.map(x=>({k:x.it.key,cls:x.cls,txt:x.txt})),rev:revs.length});
-      plan.forEach(x=>{const s={...get(x.it.key)};if(!s.last){s.last=today();s.step=0;s.l=Math.max(s.l||0,1)}state[x.it.key]=s});
+      plan.forEach(x=>simStudy(x.it.key,x.cls==="r-new"||x.cls==="r-cont"?partSubs(x.it).subs:null));
       revs.forEach(x=>{const s={...get(x.key)};s.last=today();s.step=Math.min((s.step||0)+1,INT.length-1);delete s.adj;state[x.key]=s})}}
   finally{dayOff=0;state=snap}return out}
 function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}><summary>Ver os próximos 6 dias</summary></details>`);w.addEventListener("toggle",()=>{if(w.open!==weekOpen){weekOpen=w.open;render()}});
@@ -6182,7 +6279,7 @@ function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}
 function togglePin(k){upd(k,s=>{if(s.pin)delete s.pin;else s.pin=1});commit()}
 function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";const P=[...ALL,...FAC_ITEMS].filter(i=>get(i.key).pin);box.hidden=!P.length||!!bulk;if(box.hidden)return;
   box.appendChild(el(`<div class="dhead"><h2>★ Fixados</h2><span class="todaydate">${P.length}</span></div>`));
-  const ul=el(`<ul class="pinlist"></ul>`);P.forEach(it=>{const s=get(it.key),d=dueIn(s),li=el(`<li><button class="pint" type="button"><b></b><span></span></button><span class="lvl" data-l="${s.l||0}">${LVL[s.l||0]}</span><button class="pinx" type="button" aria-label="Desafixar" title="Desafixar">★</button></li>`);
+  const ul=el(`<ul class="pinlist"></ul>`);P.forEach(it=>{const s=get(it.key),d=dueIn(s),li=el(`<li><button class="pint" type="button"><b></b><span></span></button><span class="lvl" data-l="${lvKey(s)}">${lvName(s)}</span><button class="pinx" type="button" aria-label="Desafixar" title="Desafixar">★</button></li>`);
     li.querySelector("b").textContent=it.t;li.querySelector(".pint span").textContent=`${it.own?"FAC":it.area.code} · ${it.sp||""}${d!==null?" · "+dueLabel(d):""}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}`;
     li.querySelector(".pint").onclick=()=>openTopic(it.key);li.querySelector(".pinx").onclick=()=>togglePin(it.key);ul.appendChild(li)});box.appendChild(ul)}
 /* ---------- Anotações: reler hoje, pegadinhas, cartões e cobertura ---------- */
@@ -6501,7 +6598,9 @@ const HELP=[
 - Marque os subtópicos conforme estuda. O tema estudado volta sozinho para revisão.
 - Na aba **Faculdade**, crie o semestre (uma pasta) e, dentro dele, as disciplinas e as provas: elas passam a ocupar vagas no plano quando se aproximam.
 - Registre erros no **caderno de erros** e escreva **anotações** dentro de cada tema.`],
-["Estudar hoje",`O plano tem **3 temas com 3 subtópicos cada** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver) e temas novos de maior incidência.
+["Estudar hoje",`O plano tem **3 temas** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver), depois os temas que você está **Estudando** (para terminar antes de abrir outro) e temas novos de maior incidência.
+- **Temas grandes em partes:** tema com até 6 subtópicos vem inteiro no dia. Maior que isso vem em **partes de 3 a 4 subtópicos** ("Tema novo · Parte 1 de 4"); no dia seguinte, o plano traz a próxima parte ("Continuar · Parte 2 de 4"). O tema fica **Estudando** até a última parte e só então entra nas revisões.
+- **Subtópico denso** (ex.: Anemias carenciais) conta como dois no tamanho da parte. Marque dentro do tema (**Marcar subtópicos densos**) ou peça ao Claude: no tema (**Pedir sugestão ao Claude**) ou em todos de uma vez (**⚙ Configurações › Plano › Subtópicos densos**). A sugestão aparece tracejada e já vale; toque no selo para tirar ou em **Confirmar sugestões**. A sua escolha nunca é trocada por uma sugestão nova.
 - **Placar do dia** (topo do Início): plano, revisões, questões da semana e foco de hoje, cada um com barra; toque para ir até a parte certa.
 - **O que fazer agora:** o app escolhe o próximo passo (revisão atrasada → tema do plano já começado → revisão de hoje → tema novo do plano → refazer erradas → simulado para a meta da semana). **Começar com o Foco** liga o relógio naquele tema e abre o cartão; **Outra sugestão** mostra a próxima opção.
 - **Meta e projeção:** com as provas de residência cadastradas no Perfil, o Início mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.
@@ -6517,7 +6616,8 @@ const HELP=[
 - **Tive dificuldade:** volta para 1 dia.
 - **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo; abaixo de 65% = mais curto; abaixo de 50% = metade. O tema mostra quando o intervalo foi ajustado. Desliga em Configurações.
 - **Não estudei este tema:** tira o tema das revisões e volta para "não iniciado" (questões, anotações e erros ficam). Escolher o nível **Não iniciado** dentro do tema faz o mesmo.
-- Marcou um subtópico sem querer? Desmarque no mesmo dia: o tema deixa de contar como estudado e a revisão é cancelada.
+- **Quando começa:** a primeira revisão é agendada quando o tema fica **Estudado**: ao marcar o último subtópico ou ao tocar em **Estudei hoje** (ou no nível Estudado). Enquanto está **Estudando**, não há revisão.
+- Desmarcou um subtópico logo depois de concluir? No mesmo dia, o tema volta para Estudando e a revisão é cancelada.
 - **Véspera de prova:** nos 3 dias antes, aparece aqui só o que você já estudou para a prova; o que falta continua no Estudar hoje.
 - Cada revisão sugere alguns subtópicos já estudados, em rodízio.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
@@ -6525,12 +6625,13 @@ const HELP=[
 ["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele. No topo, um resumo (nível, próxima revisão, acerto, tempo de foco e erros); abaixo, as partes **Estudo** (nível, incidência, revisão e subtópicos), **Questões** (registrar e gerar), **Anotações** e **Erros**, além do botão **⏱ Foco**.
 | Nível | Quando |
 |---|---|
-| Estudado | Você viu o conteúdo |
+| Estudando | Começou e ainda não terminou (sozinho ao marcar o 1º subtópico, ou à mão). Não tem revisão |
+| Estudado | Você viu o conteúdo inteiro (todos os subtópicos, Estudei hoje ou o nível Estudado) |
 | Revisado | Lembrou bem numa revisão |
 | Dominado | 80%+ em 10 ou mais questões e duas revisões seguidas sem dificuldade |
 - **Barrinhas de incidência:** peso calculado a partir de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026). Ajustável dentro do tema.
 - **Subtópicos próprios:** adicione no fim da lista do tema.
-- **Filtros:** **Situação** (Não iniciados, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**, **★ Fixados**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
+- **Filtros:** **Situação** (Não iniciados, Estudando, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**, **★ Fixados**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
 - **Mapa da residência** (parte Progresso): os 185 temas como quadradinhos por especialidade, na cor do nível; borda vermelha = revisão pendente, contorno = ponto fraco. Toque para abrir o tema.
 - **Progresso por área:** a barra grossa mostra os temas já estudados; a fina, os subtópicos marcados (o quanto do conteúdo você cobriu de verdade).
 - **Linha de cada tema:** acerto colorido (verde, amarelo ou vermelho), tempo de foco (⏱), subtópicos, anotações e erros, sem precisar abrir.
@@ -6755,8 +6856,8 @@ function renderAll(){
     if(!isFac)bar(d.querySelector("summary .bar"),ac,a.items.length);
     const ol=document.createElement("ol");
     if(!vis.length&&!facIn.length)ol.appendChild(el(`<li class="empty">Nenhum tema desta área neste filtro.</li>`));
-    const row=it=>{const s=get(it.key),l=s.l||0,dd=dueIn(s),open=openKey===it.key;
-      const li=el(`<li class="t${open?" open":""}${it.own?" own":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">${it.own?"FAC":String(it.num).padStart(3,"0")}</span><span class="topic"></span><span class="lvl" data-l="${l}">${LVL[l]}</span><span class="meta"></span></button></li>`);
+    const row=it=>{const s=get(it.key),l=s.l||0,lsv=s,dd=dueIn(s),open=openKey===it.key;
+      const li=el(`<li class="t${open?" open":""}${it.own?" own":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">${it.own?"FAC":String(it.num).padStart(3,"0")}</span><span class="topic"></span><span class="lvl" data-l="${lvKey(lsv)}">${lvName(lsv)}</span><span class="meta"></span></button></li>`);
       li.querySelector(".topic").textContent=(s.pin?"★ ":"")+it.t;
       const m=li.querySelector(".meta");
       if(it.own){const x=el(`<span class="facchip"></span>`);x.textContent="FAC"+(it.origin?" · "+it.origin:"");if(it.originFull)x.title=it.originFull;m.appendChild(x)}else m.appendChild(incEl(wOf(it),wOf(it)===3));

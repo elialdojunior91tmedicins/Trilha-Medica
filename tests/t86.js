@@ -5,7 +5,7 @@ const DEV={fone:[390,844,true],ipad578:[578,820,true],tabEmPe:[820,1180,true],ta
 for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name==="ipad578"||name.startsWith("tab"),full=name==="tabDeitado"||name==="note"||name==="monitor";
   const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
   await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
-  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');
+  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});
   await p.evaluate(()=>{ui.profile.name="Elialdo Junior";saveUI();render()});await p.waitForTimeout(200);
   const r=await p.evaluate(()=>{const nav=document.querySelector('.appnav'),nb=nav.getBoundingClientRect(),vi=document.querySelector('#viewInicio').getBoundingClientRect();
@@ -32,7 +32,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   await ctx.close()}
 /* girar o aparelho: computador → largura de celular devolve tudo ao topo */
 {const ctx=await b.newContext({viewport:{width:1366,height:800}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);const p=await ctx.newPage();p.on('pageerror',e=>errs.push("resize:"+e.message));
-  await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});
+  await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});
   ok(await p.evaluate(()=>document.querySelector('.appnav').contains(document.querySelector('h1.brand'))),"largo: marca na barra");
   await p.setViewportSize({width:600,height:800});await p.waitForTimeout(300);
   ok(await p.evaluate(()=>document.querySelector('body>.wrap>header').contains(document.querySelector('h1.brand'))&&document.querySelector('#hacts').children.length===3),"estreito: marca e os 3 botões voltam ao topo");

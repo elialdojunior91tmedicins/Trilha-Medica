@@ -1,7 +1,7 @@
 const {chromium,devices}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 const ctx=await b.newContext({...devices['iPhone 13'],viewport:{width:390,height:844}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 await p.evaluate(()=>{localStorage.clear();fac={sems:[],discs:[],provas:[],own:{}};saveFac();render()});
 await p.tap('#tabF');await p.waitForTimeout(200);
 await p.tap('#facNewSem');await p.keyboard.type('6° Semestre');await p.tap('#facHead form button');await p.waitForTimeout(300);

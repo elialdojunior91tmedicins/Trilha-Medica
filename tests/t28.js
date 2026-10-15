@@ -3,7 +3,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 // ===== celular =====
 let ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
 let p=await ctx.newPage();let errs=[];p.on('pageerror',e=>errs.push(e.message));
-const go=async()=>{await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});await p.waitForTimeout(200)};
+const go=async()=>{await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function',null,{polling:100});await p.waitForTimeout(200)};
 await go();await p.evaluate(()=>{localStorage.removeItem("resid-tseg");tSeg="hoje";const D=n=>fromNum(dnum(today())+n);state["CM-7"]={l:1,last:D(-4),step:0,sd:[0],sv:2};commit();setView("temas")});
 ok(await p.evaluate(()=>{const r=document.querySelector(".appnav").getBoundingClientRect();return Math.round(r.bottom)===innerHeight}),"barra de abas presa embaixo");
 ok(await p.evaluate(()=>!!document.querySelector(".today").offsetParent&&!document.querySelector(".revs").offsetParent&&!document.querySelector("#areas").offsetParent),"Hoje mostra só o plano");

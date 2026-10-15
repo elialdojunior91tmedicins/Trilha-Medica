@@ -2,7 +2,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [name,opt] of [["fone",{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2}],["desk",{viewport:{width:1366,height:1000}}]]){
 const ctx=await b.newContext(opt);await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const setup=async provaDays=>p.evaluate(pd=>{localStorage.clear();state={};fac={sems:[{id:"s",name:"6° Semestre",archived:false}],discs:[
  {id:"a",semId:"s",name:"NCS 6",items:[],info:{},eixos:[],sps:[{id:"sa",name:"SP 1",eixoId:null,items:["T:CM-37","T:CM-34","T:CM-35"],objs:[]}]},
  {id:"b",semId:"s",name:"Habilidades Médicas 6",items:[],info:{},eixos:[],sps:[{id:"sb",name:"SP 1",eixoId:null,items:["T:CM-4"],objs:[]}]}],

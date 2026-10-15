@@ -4,7 +4,7 @@ const only=process.argv[2];
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [name,[w,h,mob]] of Object.entries(DEV)){if(only&&!only.split(",").includes(name))continue;const ipad=name==="ipad578"||name.startsWith("tab");const big=["tabDeitado","note","monitor"].includes(name);
 const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const txt=s=>p.$eval(s,x=>x.textContent);const box=s=>p.$eval(s,x=>{const r=x.getBoundingClientRect();return {t:r.top+scrollY,b:r.bottom+scrollY,l:r.left,r:r.right}});
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);for(let i=0;i<30;i++)foSess.push({id:"h"+i,d:D(-i*2),s:new Date(Date.now()-i*2*864e5-3*3600e3).toISOString(),sec:1500+i*60,m:"p",ref:"",lab:""});
   ui.prefs.fevery=2;ui.prefs.flong=12;ui.prefs.fb=3;saveUI();foSeries={n:0,t:0};commit();setView("foco")});await p.waitForTimeout(200);

@@ -1,6 +1,6 @@
 const {chromium}=require('playwright');const fs=require('fs');const {execSync}=require('child_process');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];const ctx=await b.newContext({viewport:{width:1366,height:900}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
-const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 // registrar pelo campo do tema
 await p.evaluate(()=>{localStorage.clear();state={};hist={};errors=[];commit();detTab["CM-37"]="questoes";openTopic("CM-37")});await p.waitForTimeout(200);
 await p.fill('#qt-CM-37','10');await p.fill('#qc-CM-37','6');await p.click('#t-CM-37 .qform button');await p.waitForTimeout(150);
