@@ -797,6 +797,13 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .qexp b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.qfonte{margin:0;font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.qfonte b{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em}
+.qmat{color:var(--accent);font-weight:700}
+.gmat{width:100%}
+.gmatb{display:flex;flex-direction:column;gap:8px;padding-top:6px}
+.gmatb .how,.gmatb .gstatus{margin:0}
+.gmatt{display:flex;align-items:center;gap:8px;font-size:.9rem}
 .alerta{margin:0;font-size:.88rem;border-left:3px solid var(--l1);padding:6px 10px;background:var(--bg);border-radius:0 6px 6px 0}
 .ptext{min-height:20rem;font-size:.93rem;line-height:1.5}
 .fixed{font:500 .8rem/1.5 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border-radius:8px;padding:10px 12px;margin:8px 0 0;color:var(--muted)}
@@ -1988,9 +1995,9 @@ Dificuldade
 - Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
 - Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
 
-Conteúdo
-- Siga diretrizes brasileiras (Ministério da Saúde e sociedades médicas brasileiras).
-- Não invente dados, doses, critérios ou referências.
+Conteúdo e fontes
+- Use só fontes confiáveis e vigentes: diretrizes e protocolos brasileiros (Ministério da Saúde, PCDTs, sociedades médicas brasileiras como SBC, SBD, SBP, FEBRASGO, SBPT, SBEM, AMIB), o que as bancas brasileiras cobram e, quando não houver diretriz brasileira, diretrizes internacionais de referência (OMS, ACC/AHA, ESC, KDIGO, GOLD, GINA, ADA, IDSA, Surviving Sepsis) e livros-texto clássicos (Harrison, Sabiston, Nelson, Williams, Guyton).
+- Nada inventado: nenhum dado, dose, critério, valor de corte, estudo ou referência que você não tenha certeza de que existe e está correto. Se não tiver certeza de um detalhe, não o use na questão.
 - Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
 
 Comentário
@@ -2000,6 +2007,32 @@ Comentário
 - Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no alerta para conferir na diretriz vigente.`;
 /* instruções padrão antigas: quem nunca mudou o texto passa a usar o padrão novo */
 const OLD_PROMPTS=[`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
+
+Estilo
+- Cerca de 70–80% em caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP); o restante, conceito aplicado.
+- Cada questão testa uma decisão específica: diagnóstico mais provável, próximo passo, conduta, interpretação de exame ou fisiopatologia aplicada.
+- Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
+- O enunciado traz os dados necessários para decidir. A dificuldade vem do conteúdo, nunca de ambiguidade.
+
+Alternativas
+- 4 alternativas (A a D), uma única melhor resposta.
+- Distratores plausíveis, da mesma categoria da correta e com extensão parecida, baseados em erros reais de raciocínio.
+- Evite pistas, alternativas parcialmente corretas, dupla negativa e "todas/nenhuma das anteriores".
+
+Dificuldade
+- Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
+- Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
+
+Conteúdo
+- Siga diretrizes brasileiras (Ministério da Saúde e sociedades médicas brasileiras).
+- Não invente dados, doses, critérios ou referências.
+- Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
+
+Comentário
+- Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
+- Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
+- Conceito-chave: uma frase curta, boa para revisar depois.
+- Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no alerta para conferir na diretriz vigente.`,`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
 
 Estilo
 - Questões em formato de caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP).
@@ -2027,7 +2060,8 @@ const fixedFormat=(nq)=>`Responda apenas com um array JSON de ${nq} objetos, sem
  "correta": "letra da alternativa correta",
  "comentario": "por que a correta é a melhor resposta",
  "conceito": "conceito-chave em uma frase",
- "alerta": "aviso para conferir na diretriz, ou string vazia"}
+ "alerta": "aviso para conferir na diretriz, ou string vazia",
+ "fonte": "a referência que sustenta a resposta: nome da diretriz ou protocolo, com a sociedade ou órgão e o ano (ex.: Diretriz Brasileira de Insuficiência Cardíaca, SBC, 2021), ou o livro-texto e o capítulo. Cite só o que você tem certeza de que existe; se não tiver certeza do ano ou do título exato, cite de forma geral (ex.: diretriz da SBC sobre insuficiência cardíaca), nunca invente"}
 O app embaralha a ordem das alternativas: no comentário e no campo porque, não cite letras; refira-se ao conteúdo da alternativa.
 Escreva tudo em português do Brasil.`;
 let promptText=DEFAULT_PROMPT, promptEdited=false, settingsDoc=null, sampleFn=null, sampleOff=false, gen={}, qCount=10;
@@ -2622,18 +2656,64 @@ Uma questão para cada um destes subtópicos, nesta ordem: ${o.subs.map(s=>`"${s
   (o.avoid&&o.avoid.length?`
 Já foram feitas questões sobre os conceitos abaixo. Não repita esses conceitos nem casos parecidos:
 ${o.avoid.slice(-30).map(c=>"- "+c).join("\n")}`:"")+
-  (past.length&&o.first?`
+  (past.length&&o.first&&!o.mat?`
 O estudante já errou questões sobre estes pontos deste tema. Inclua pelo menos uma questão que cobre um deles por outro ângulo:
-${past.join("\n")}`:"")+`
+${past.join("\n")}`:"")+(o.mat?genMatPrompt(o.mat):"")+`
 
 ${fixedFormat(nq)}`;
 }
+/* ---------- material do estudante (opcional) para gerar questões ---------- */
+let genMat={};const GM_MAX=30000,GM_IMG=4;
+const genMatOn=m=>!!(m&&!m.busy&&(m.txt||m.imgs&&m.imgs.length||m.attach));
+function genMatPrompt(m){const site=!!window.__site,anexo=site&&(m.attach||m.imgs&&m.imgs.length||m.scan);
+  return `
+
+Material do estudante
+O estudante enviou um material de estudo${m.name?` (${m.name})`:""}. Baseie as questões nele: cubra o que o material ensina, com os critérios, condutas e valores que ele traz, e não cobre o que não está no material. Se algum ponto do material divergir da diretriz brasileira vigente, siga a diretriz e explique a divergência no alerta. No campo fonte, cite o material e onde está o trecho (ex.: "Material do estudante, slide 12") e, se usar também uma diretriz, cite-a.`+
+  (m.cut?` O material foi cortado por tamanho: use só o trecho abaixo.`:"")+
+  (anexo?`
+O material (ou parte dele) está anexado a esta conversa (PDF, slides ou fotos). Se não houver nenhum anexo nesta conversa, use só o texto abaixo; se não houver texto, ignore esta seção e faça as questões apenas com fontes confiáveis.`:"")+
+  (!site&&m.imgs&&m.imgs.length?`
+As imagens anexadas são páginas do material.`:"")+
+  (m.txt?`
+TEXTO DO MATERIAL (extraído do arquivo)
+${m.txt}`:"")}
+async function genMatPick(it,files){files=[...(files||[])];if(!files.length)return;const site=!!window.__site,f0=files[0],isPdf=f0.type==="application/pdf"||/\.pdf$/i.test(f0.name);
+  const m=genMat[it.key]={name:files.length>1?`${files.length} arquivos`:f0.name,txt:"",imgs:[],busy:true,attach:false,note:"",err:""};render();
+  try{let canImg=!site;if(!site)try{const lim=sampleFn&&sampleFn.limits?await sampleFn.limits():null;canImg=!!(lim&&lim.images)}catch(e){canImg=false}
+    if(isPdf){const o=await pdfOpenTxt(f0);let txt="",nt=0,sc=[];o.pages.forEach(p=>{if(p.img){sc.push(p.n);return}const add=`=== Página ${p.n} ===\n${p.t}\n\n`;if(txt.length+add.length<=GM_MAX){txt+=add;nt++}else m.cut=true});
+      m.txt=txt.trim();m.pages=o.pages.length;m.ntext=nt;
+      if(sc.length){if(!site&&canImg){for(const n of sc.slice(0,GM_IMG))m.imgs.push(await pdfPageImg(await o.doc.getPage(n)));if(sc.length>GM_IMG)m.note=`Só as ${GM_IMG} primeiras páginas sem texto vão como imagem.`}
+        else if(site){m.scan=true;m.note=`${sc.length} ${sc.length===1?"página sem texto":"páginas sem texto"} (escaneadas): anexe o PDF na conversa do Claude quando colar o pedido.`}
+        else m.note=`${sc.length} ${sc.length===1?"página sem texto ficou":"páginas sem texto ficaram"} de fora: esta visualização não envia imagens ao Claude.`}}
+    else{const im=files.filter(f=>/^image\//.test(f.type));if(!im.length)throw new Error("tipo");
+      if(site){m.imgs=im.map(()=>true);m.note="No site, anexe estas mesmas imagens na conversa do Claude quando colar o pedido."}
+      else if(canImg){for(const f of im.slice(0,GM_IMG))m.imgs.push(await imgShrink(f));if(im.length>GM_IMG)m.note=`Só as ${GM_IMG} primeiras imagens vão junto.`}
+      else{m.err="Esta visualização não envia imagens ao Claude. Use um PDF com texto, ou o site.";m.imgs=[]}}
+    if(!m.txt&&!(m.imgs&&m.imgs.length)&&!m.scan&&!m.err)m.err="Não achei texto neste arquivo. As questões saem sem o material.";}
+  catch(e){m.err="Não consegui ler este arquivo. As questões saem sem o material (dá para escolher outro)."}
+  m.busy=false;if(genMat[it.key]===m)render()}
+function genMatEl(it){const m=genMat[it.key],site=!!window.__site,on=genMatOn(m);
+  const d=el(`<details class="plain gmat"${m?" open":""}><summary></summary><div class="gmatb"><p class="how"></p><div class="btns"></div></div></details>`);
+  d.querySelector("summary").textContent=on?`Material: ${m.name||"anexado na conversa"}`:"Usar um material meu (opcional)";
+  d.querySelector(".how").textContent=`Opcional. Com um material (PDF da aula, slides, resumo ou fotos), as questões saem dele e a fonte cita a página ou o slide. Sem material, o Claude usa só diretrizes e fontes confiáveis.`;
+  const bx=d.querySelector(".btns"),pk=el(`<label class="btn imgpick"><input type="file" accept="application/pdf,.pdf,image/*" multiple hidden><span></span></label>`),inp=pk.querySelector("input");
+  inp.id="gmf-"+it.key;pk.querySelector("span").textContent=m&&(m.txt||m.imgs&&m.imgs.length)?"Trocar o material":"Escolher PDF ou fotos";inp.onchange=e=>genMatPick(it,e.target.files);bx.appendChild(pk);
+  if(m){const x=el(`<button class="link" type="button">Tirar o material</button>`);x.id="gmx-"+it.key;x.onclick=()=>{delete genMat[it.key];render()};bx.appendChild(x)}
+  const b=d.querySelector(".gmatb");
+  if(m&&m.busy)b.appendChild(el(`<p class="gstatus">Lendo o arquivo aqui no aparelho…</p>`));
+  else if(m&&(m.txt||m.imgs&&m.imgs.length)){const p=el(`<p class="gstatus gmok"></p>`);p.textContent=m.txt?`${m.name} · ${m.ntext} de ${m.pages} ${m.pages===1?"página lida":"páginas lidas"}${m.cut?" (cortado por tamanho: as questões usam só o começo)":""}${m.imgs.length&&!site?` · ${m.imgs.length} como imagem`:""}`:`${m.name} · ${site?m.imgs.length+" imagens para anexar":m.imgs.length+" imagens"}`;b.appendChild(p)}
+  if(m&&m.note){const p=el(`<p class="pnote"></p>`);p.textContent=m.note;b.appendChild(p)}
+  if(m&&m.err){const p=el(`<p class="err" role="alert"></p>`);p.textContent=m.err;b.appendChild(p)}
+  if(site&&!(m&&(m.txt||m.imgs&&m.imgs.length))){const l=el(`<label class="gmatt"><input type="checkbox"> Vou anexar o material direto na conversa do Claude</label>`),c=l.querySelector("input");c.id="gma-"+it.key;c.checked=!!(m&&m.attach);
+    c.onchange=()=>{if(c.checked)genMat[it.key]={name:"",attach:true,imgs:[],txt:""};else delete genMat[it.key];render()};b.appendChild(l)}
+  return d}
 function validQs(data){
   const arr=Array.isArray(data)?data:(data&&Array.isArray(data.questoes)?data.questoes:[]);
   return arr.filter(q=>q&&typeof q.enunciado==="string"&&Array.isArray(q.alternativas)&&q.alternativas.length>=2&&
     q.alternativas.every(a=>a&&a.letra&&typeof a.texto==="string")&&q.alternativas.some(a=>String(a.letra).trim().toUpperCase()===String(q.correta||"").trim().toUpperCase()))
     .map(q=>altShuffle({enunciado:q.enunciado,alternativas:q.alternativas.map(a=>({letra:String(a.letra).trim().toUpperCase(),texto:a.texto,porque:typeof a.porque==="string"?a.porque.trim():""})),
-      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||"")}));
+      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||""),fonte:String(q.fonte||"").trim().slice(0,400)}));
 }
 /* o próprio app sorteia a posição das alternativas (o Claude tende a concentrar a correta em B e C) e renomeia as letras A, B, C…;
    o comentário e os "porque" não citam letras (fixedFormat pede isso), então continuam valendo */
@@ -2662,16 +2742,18 @@ async function generate(it){
   // ordem dos subtópicos: primeiro os ainda não marcados, depois os demais, embaralhados
   const L=subList(it);let order=[...shuffle(L.filter(x=>!x.done)),...shuffle(L.filter(x=>x.done))].map(x=>x.t);
   if(focus==="__hoje"){order=todaySubs(it);focus=""}
-  const g=gen[it.key]={status:"loading",qs:[],ans:{},msg:"",ctl:new AbortController(),n:qCount,focus,order,pos:0};render();
+  const M=genMatOn(genMat[it.key])?genMat[it.key]:null;
+  const g=gen[it.key]={status:"loading",qs:[],ans:{},msg:"",ctl:new AbortController(),n:qCount,focus,order,pos:0,mat:!!M};render();
   let fails=0;
   while(g.qs.length<g.n){
     const k=Math.min(BATCH,g.n-g.qs.length);
-    let subs=[];if(!focus&&order.length){for(let i=0;i<k;i++)subs.push(order[(g.pos+i)%order.length])}
+    let subs=[];if(!focus&&order.length&&!M){for(let i=0;i<k;i++)subs.push(order[(g.pos+i)%order.length])}
+    const site=!!window.__site,mo=M?(site?{title:"Gerar questões do seu material",hint:(M.attach||M.scan||M.imgs&&M.imgs.length)?"Copie o pedido, abra uma conversa nova no app do Claude ou em claude.ai, ANEXE o seu material (PDF, slides ou fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto do seu material já vai junto."}:(M.imgs&&M.imgs.length?{images:M.imgs}:{})):{};
     try{
-      const data=await sampleFn.json(buildPrompt(it,k,{focus,subs,avoid:g.qs.map(q=>q.conceito||q.enunciado.slice(0,120)),first:g.qs.length===0}),{signal:g.ctl.signal,cache:false,
+      const data=await sampleFn.json(buildPrompt(it,k,{focus,subs,avoid:g.qs.map(q=>q.conceito||q.enunciado.slice(0,120)),first:g.qs.length===0,mat:M}),{...mo,signal:g.ctl.signal,cache:false,
         onText:()=>{const s=document.getElementById("gs-"+it.key);if(s)s.textContent=`Escrevendo as questões ${g.qs.length+1} a ${g.qs.length+k} de ${g.n}…`}});
       if(gen[it.key]!==g)return;
-      const qs=validQs(data).slice(0,k);
+      const qs=validQs(data).slice(0,k);if(M)qs.forEach(q=>{q.mat=true});
       if(!qs.length){if(++fails>=2){g.msg=GEN_ERR.invalid_json;break}continue}
       fails=0;g.pos+=k;g.qs.push(...qs);render();
     }catch(e){
@@ -2719,7 +2801,8 @@ function renderGen(it){
     [5,10,20].forEach(v=>{const b=el(`<button class="mini" type="button" data-v="${v}" aria-pressed="${v===qCount}">${v}${v===10?" · sugerido":""}</button>`);
       b.onclick=()=>{setQCount(v);inp.value=v;pre.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b))};pre.appendChild(b)});
     box.appendChild(row);
-    const b=el(`<button class="btn primary" type="button" style="align-self:flex-start">${g&&g.status==="done"?"Gerar novas questões":"Gerar questões"}</button>`);
+    box.appendChild(genMatEl(it));
+    const b=el(`<button class="btn primary" type="button" style="align-self:flex-start">${g&&g.status==="done"?"Gerar novas questões":"Gerar questões"}${genMatOn(genMat[it.key])?" do material":""}</button>`);
     b.onclick=()=>{setQCount(Number(inp.value));generate(it)};
     if(!sampleFn){b.disabled=true;b.title="Conectando ao Claude…"}
     box.appendChild(b);
@@ -2738,14 +2821,14 @@ function renderGen(it){
     const tot=g.status==="loading"?g.n:g.qs.length;
     g.qs.forEach((q,qi)=>{
       const mine=g.ans[qi];
-      const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}</span><p class="qstem"></p></li>`);
+      const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}${q.mat?` · <span class="qmat">do seu material</span>`:""}</span><p class="qstem"></p></li>`);
       c.querySelector(".qstem").textContent=q.enunciado;
       c.appendChild(altsEl(q,mine,l=>answer(it,qi,l)));
       if(mine){const ok=mine===q.correta;
         c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+q.correta.replace(/[^A-Z0-9]/g,"")+"."}</p>`));
         if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
         if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
-        if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
+        if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
         const acts=el(`<div class="btns"></div>`);
         if(!ok){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>toCaderno(it,qi);acts.appendChild(b)}
         if(q.conceito){const b=el(`<button class="btn" type="button">Adicionar conceito às anotações</button>`);
@@ -5615,7 +5698,7 @@ const LSRD="resid-redo-v1",RD_MAX=600;
 let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
 function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
-  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta)}}}
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(q.mat?{mat:true}:{})}}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
 async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
@@ -5658,7 +5741,7 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
-    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
+    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
     if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"))}
   w.appendChild(c);
   const acts=el(`<div class="btns"></div>`);
@@ -5868,7 +5951,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
     if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
-    if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
+    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
     if(!ok)card.appendChild(q.err?el(`<p class="pnote">Este ponto já está no seu caderno de erros: ele volta para revisão amanhã.</p>`):eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
   if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
@@ -6891,6 +6974,8 @@ const HELP=[
 - **Filtros da aba Questões:** **busca** por tema ou assunto (procura também nos subtópicos), **área** e **especialidade**, **período** (7 a 90 dias ou tudo), **acerto** (fraco, regular, bom), **disciplina** da faculdade, **ordem**, e os atalhos **Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente** e **Piorando**. O gráfico, os números e a lista seguem os filtros; **Limpar filtros** volta a tudo. No celular, os filtros ficam recolhidos no botão **Filtros** (o número mostra quantos estão ligados); a busca fica sempre à vista.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
+- **Fontes:** as questões geradas seguem só fontes confiáveis (diretrizes e protocolos brasileiros, sociedades médicas, diretrizes internacionais de referência e livros-texto clássicos), sem dados ou referências inventados. Depois de responder, cada questão mostra a **Fonte** que sustenta a resposta.
+- **Usar um material meu** (opcional, no gerador do tema): escolha um PDF da aula, slides, resumo ou fotos e toque em **Gerar questões do material**: as questões saem do material e a fonte cita a página ou o slide. O PDF é lido no aparelho. No site, fotos e PDFs escaneados você anexa na conversa do Claude (a janela lembra); dá também para marcar **Vou anexar o material direto na conversa**. Sem material, o gerador funciona como sempre.
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
 - **Por que cada alternativa está errada:** depois de responder, cada alternativa errada mostra embaixo o erro de raciocínio (a que você marcou fica destacada). Ao levar a questão para o caderno de erros, essa explicação vai junto.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
@@ -7156,7 +7241,7 @@ try{const h=JSON.parse(localStorage.getItem(LSH)||"{}");if(h&&typeof h==="object
 try{const ln=JSON.parse(localStorage.getItem(LSN)||"{}");for(const k in ln)if(BYKEY[k]&&typeof ln[k]==="string"&&ln[k].trim())notes[k]=ln[k];noteAt=JSON.parse(localStorage.getItem(LSN+"-at")||"{}")||{}}catch(e){notes={}}
 try{const qc=Number(localStorage.getItem("resid-qcount"));if(qc>=1&&qc<=100)qCount=Math.round(qc)}catch(e){}
 try{const lp=localStorage.getItem(LSP);if(lp&&lp.trim())promptText=promptUp(lp)}catch(e){}
-$("#promptBox").value=promptText;$("#fixedFmt").textContent=`Tarefa\nCrie N questões inéditas sobre o tema "<tema>" (área: <área>).\n[Se houver erros seus neste tema, o app lista os conceitos e pede uma questão sobre eles.]\n\n`+fixedFormat("N");
+$("#promptBox").value=promptText;$("#fixedFmt").textContent=`Tarefa\nCrie N questões inéditas sobre o tema "<tema>" (área: <área>).\n[Se houver erros seus neste tema, o app lista os conceitos e pede uma questão sobre eles.]\n[Se você escolher um material seu, o app manda o texto dele e pede que as questões saiam dele, citando a página ou o slide.]\n\n`+fixedFormat("N");
 $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus("Alterações ainda não salvas.")});
 $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}

@@ -193,6 +193,10 @@ consultado quando há dúvida. Responda em português.
   `validQs` passa cada questão por `altShuffle` (sorteia a ordem e renomeia A, B, C…; testes antigos desligam com `window.__noShuffle`, ligado
   por padrão em `mockdb.js`/`fakefb.js`). `altsEl(q,mine,onPick)` desenha as alternativas nos três lugares (tema, Refazer, simulado) e, depois
   de responder, o `.altwhy` sob cada errada (`.mine` = a marcada). `rdClean` guarda o `porque`; `qDraft` leva o da marcada ao caderno de erros. Teste: `tests/t81.js`.
+  Fontes (10/2026): `DEFAULT_PROMPT` › "Conteúdo e fontes" (só fontes confiáveis, nada inventado; o padrão anterior está em `OLD_PROMPTS[0]`) e campo `fonte`
+  no `fixedFormat` → `validQs` → `.qfonte` (gerador, Refazer, simulado; `rdClean` guarda). Material do estudante opcional `genMat[k]` = {name,txt,imgs,attach,scan,cut}
+  (`genMatEl` no gerador, `genMatPick`: PDF lido por `pdfOpenTxt` até `GM_MAX` caracteres, páginas sem texto/fotos como imagem até `GM_IMG` no artefato;
+  no site, anexar na conversa) → `genMatPrompt` no `buildPrompt` (sem a ordem de subtópicos), `q.mat` = selo "do seu material". Teste: `tests/t94.js`.
 
 - Faculdade ligada à Residência sem substituir: `fac.own[id].links=[{k,subs}]` (1º = principal; `subs` vazio = tema inteiro; o antigo `link`
   é migrado em `facNormalize`). `ownLinks(id)`/`ownLink(id)` (= o 1º)/`RESKEY`/`ownLinksTo(k)`/`linkDone(L)`; `facNormalize` descarta ligação inválida; `registerOwn` não registra o `F-<id>` de quem está ligado (o progresso é o do tema, um registro só).

@@ -6,7 +6,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,screen:name==="ipad578"?{width:1180,height:820}:undefined});
  await ctx.route(/googleapis|gstatic/,r=>r.abort());
  /* instruções padrão ANTIGAS salvas no aparelho (quem nunca mudou o texto) */
- const OLD=await (async()=>{const src=fs.readFileSync(__dirname+'/../src/checklist-residencia.html','utf8');const i=src.indexOf("const OLD_PROMPTS=[`")+20;return src.slice(i,src.indexOf("`]",i))})();
+ const OLD=await (async()=>{const src=fs.readFileSync(__dirname+'/../src/checklist-residencia.html','utf8');const i=src.indexOf("const OLD_PROMPTS=[`")+20;const e=[src.indexOf("`,`",i),src.indexOf("`]",i)].filter(x=>x>0);return src.slice(i,Math.min(...e))})();
  await ctx.addInitScript(([m,old])=>{if(!sessionStorage.__s){sessionStorage.__s=1;localStorage.setItem("resid-prompt-v1",old)}},[mock,OLD]);
  await ctx.addInitScript(mock+`;window.__mock({},2);window.__noShuffle=false;`);
  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
