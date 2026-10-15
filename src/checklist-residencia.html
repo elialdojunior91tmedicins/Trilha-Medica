@@ -340,6 +340,12 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .simlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
 .simlist li{display:grid;grid-template-columns:1.4rem minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
 .simlist .link{font-size:.88rem;text-align:left}
+.imploc{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:6px 0}
+.imploc .exsum{margin:0}
+.implocw{display:flex;flex-direction:column;gap:6px}
+.implocw ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:2px}
+.implocw p{margin:0}
+.implocw .btn{align-self:flex-start}
 .exlost{border:1px solid var(--line);border-left:3px solid var(--due);border-radius:12px;padding:12px 14px;margin:12px 0;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
 .exlost h3{margin:0;font:700 1rem var(--body)}
 .exlost .how{margin:0}
@@ -5962,7 +5968,7 @@ function parseKey(t){const k={};if(!t)return k;const s=String(t).replace(/\r/g,"
 const keyText=k=>Object.keys(k).map(Number).sort((a,b)=>a-b).map(n=>`${n}-${k[n]==="X"?"ANULADA":k[n]}`).join(", ");
 /* página só de gabarito (não vai para o Claude como questões). Gabarito comentado conta com 1 resposta, desde que a página não tenha alternativas "A)" */
 function keyPage(t){const n=Object.keys(parseKey(t)).length,alts=(String(t).match(/(?:^|\n)\s*\(?[A-E]\)\s/g)||[]).length;
-  return /gabarito/i.test(t)&&n>=5||n>=25&&t.length<n*40||Object.keys(parseKeyStrong(t)).length>=1&&alts<2}
+  return /gabarito/i.test(t)&&n>=3||n>=25&&t.length<n*40||Object.keys(parseKeyStrong(t)).length>=1&&alts<2}
 /* leitor de PDF (pdf.js, carregado só quando usado; roda na própria página, sem worker) */
 let pdfjsP=null;
 const PDFJS2="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/";// reserva: versão moderna no cdnjs
@@ -6013,7 +6019,7 @@ function impBlocks(R,only){const site=!!window.__site,LIM=site?24000:11000,MAXP=
   return out}
 const impTopics=()=>ALL.map(i=>`${i.key} · ${i.t} · ${i.area.code}${i.sp?" / "+i.sp:""}`).join("\n");
 /* gabarito comentado: o trecho de cada resposta (justificativas da prova), para o Claude usar como base do comentário */
-function keyComments(R){const txt=[...R.keyPg.map(n=>(R.pages.find(p=>p.n===n)||{}).t||""),R.keyTxt||""].join("\n"),out={};
+function keyComments(R){const txt=[...R.pages.map(p=>p.t||""),R.keyTxt||""].join("\n"),out={};
   const re=/(?:^|\n)[ \t]*(?:resposta|quest[aã]o)\s*(\d{1,3})\b/gi,cuts=[];let m;while((m=re.exec(txt)))cuts.push({n:+m[1],i:m.index});
   cuts.forEach((c,j)=>{const seg=txt.slice(c.i,j+1<cuts.length?cuts[j+1].i:txt.length).trim();if(!out[c.n]&&Object.keys(parseKeyStrong(seg)).length&&seg.length>40)out[c.n]=seg.slice(0,1600)});
   return out}
@@ -6095,7 +6101,7 @@ function impSave(){const R=imp;if(!R)return;const qs=R.qs.filter(r=>!r.x);if(!qs
   const ex=exClean({id:"ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs});
   exams.unshift(ex);exPut(ex);imp=null;exArm=null;render();setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 /* uma questão para conferir (na importação e depois de salva) */
-function exFilterOk(r,f){return f==="all"||f==="chk"&&!r.an&&(r.g!=="b"||!r.q.correta||r.ck&&r.ck!==r.q.correta)||f==="tema"&&!r.k||f==="img"&&r.im||f==="x"&&r.x}
+function exFilterOk(r,f){return f==="all"||f==="chk"&&!r.an&&(r.g!=="b"||!r.q.correta||r.ck&&r.ck!==r.q.correta)||f==="tema"&&!r.k||f==="kg"&&r.kg&&!!r.k||f==="img"&&r.im||f==="x"&&r.x}
 function exTopicPick(T,onPick){const w=el(`<div class="extpick"></div>`),s=el(`<label class="ffield"><span class="glabel">Tema desta questão</span><input class="etext" id="exTq" type="search" placeholder="Buscar tema (ex.: sepse, IAM)" autocomplete="off"></label>`),i=s.querySelector("input");
   i.value=T.q;i.oninput=debounced(()=>{T.q=i.value;render()});w.appendChild(s);const n=norm(T.q.trim());
   if(n.length>=2){const ul=el(`<ul class="qrres"></ul>`);ALL.map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,6)
@@ -6106,7 +6112,7 @@ function exTopicPick(T,onPick){const w=el(`<div class="extpick"></div>`),s=el(`<
 function exRowEl(r,i,C){const li=el(`<li class="exq${r.x?" off":""}"><div class="exqh"><b></b><span class="exbadges"></span></div><p class="exstem" tabindex="0"></p><ol class="exalts"></ol><div class="exctl"></div></li>`);
   li.querySelector("b").textContent=`Questão ${r.n||i+1}`;const bd=li.querySelector(".exbadges"),badge=(t,c)=>{const s=el(`<span class="exb ${c}"></span>`);s.textContent=t;bd.appendChild(s)};
   if(r.an)badge("Anulada","an");else if(!r.q.correta)badge("Sem resposta","warn");else if(r.g==="b")badge("Gabarito da banca","ok");else badge("Gabarito do Claude · conferir","warn");
-  if(r.im)badge(`Com imagem · pág. ${r.p}`,"im");if(!r.k)badge("Sem tema","warn");if(r.x)badge("Descartada","an");
+  if(r.im)badge(`Com imagem · pág. ${r.p}`,"im");if(!r.k)badge("Sem tema","warn");else if(r.kg)badge("Tema sugerido · conferir","warn");if(r.x)badge("Descartada","an");
   const st=li.querySelector(".exstem");st.textContent=r.q.enunciado;st.onclick=()=>st.classList.toggle("open");
   const ol=li.querySelector(".exalts");r.q.alternativas.forEach(a=>{const x=el(`<li><b></b><span></span></li>`);x.querySelector("b").textContent=a.letra+")";x.querySelector("span").textContent=a.texto;if(!r.an&&a.letra===r.q.correta)x.classList.add("right");ol.appendChild(x)});
   if(!r.an&&r.q.correta&&r.ck&&r.ck!==r.q.correta)li.insertBefore(el(`<p class="pnote">O comentário foi escrito pelo Claude considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(r.q.correta)}. Confira antes de estudar por ele.</p>`),li.querySelector(".exctl"));
@@ -6118,7 +6124,7 @@ function exRowEl(r,i,C){const li=el(`<li class="exq${r.x?" off":""}"><div class=
   if(C.T&&C.T.i===i)li.appendChild(exTopicPick(C.T,k=>{if(k!==null)C.setTopic(i,k);C.setT(null)}));
   return li}
 function exListEl(rows,S,C){const w=el(`<div class="exrev"></div>`),cnt=f=>rows.filter(r=>exFilterOk(r,f)).length;
-  const ch=el(`<div class="chips" role="group" aria-label="Mostrar"></div>`);[["all","Todas"],["chk","Conferir"],["tema","Sem tema"],["img","Com imagem"],...(C.toggleX?[["x","Descartadas"]]:[])].forEach(([v,l])=>{const n=cnt(v);if(v!=="all"&&!n&&S.flt!==v)return;
+  const ch=el(`<div class="chips" role="group" aria-label="Mostrar"></div>`);[["all","Todas"],["chk","Conferir"],["tema","Sem tema"],["kg","Tema sugerido"],["img","Com imagem"],...(C.toggleX?[["x","Descartadas"]]:[])].forEach(([v,l])=>{const n=cnt(v);if(v!=="all"&&!n&&S.flt!==v)return;
     const b=el(`<button class="chip" type="button" aria-pressed="${S.flt===v}"></button>`);b.id=`exf-${C.pre}-${v}`;b.textContent=`${l} · ${n}`;b.onclick=()=>{S.flt=v;S.show=12;render()};ch.appendChild(b)});w.appendChild(ch);
   const L=rows.map((r,i)=>[r,i]).filter(([r])=>exFilterOk(r,S.flt)),ol=el(`<ol class="exqs"></ol>`);L.slice(0,S.show).forEach(([r,i])=>ol.appendChild(exRowEl(r,i,C)));w.appendChild(ol);
   if(!L.length)w.appendChild(el(`<p class="cempty">Nada aqui com este filtro.</p>`));
@@ -6126,10 +6132,9 @@ function exListEl(rows,S,C){const w=el(`<div class="exrev"></div>`),cnt=f=>rows.
   return w}
 function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><div class="dhead"><b>Importar prova</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{if(R.ctl)R.ctl.abort();imp=null;render()};
-  if(sampleOff){w.appendChild(el(`<p class="err">O Claude não está disponível nesta visualização.</p>`));return w}
   const err=()=>{if(R.err){const p=el(`<p class="err" role="alert"></p>`);p.textContent=R.err;w.appendChild(p)}};
   if(R.st==="pick"||R.st==="scan"){
-    w.appendChild(el(`<p class="how">Escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido aqui no aparelho e o Claude transcreve as questões em partes, com gabarito, tema e comentário. Depois você confere tudo antes de salvar. O arquivo não fica salvo, só as questões.</p>`));
+    w.appendChild(el(`<p class="how">Escolha o PDF da prova (ou fotos das páginas, na ordem). O app tenta ler as questões aqui mesmo, sem o Claude; se a prova for difícil de ler (duas colunas, páginas escaneadas, sem gabarito), ele avisa para passar pelo Claude, que transcreve com gabarito, tema e comentário. Depois você confere tudo antes de salvar. O arquivo não fica salvo, só as questões.</p>`));
     const pk=el(`<label class="btn primary imgpick"><input type="file" id="impFile" accept="application/pdf,.pdf,image/*" multiple hidden><span>Escolher o PDF ou as fotos</span></label>`);
     pk.querySelector("input").onchange=e=>impPick(e.target.files);if(R.st==="scan")pk.classList.add("dis");w.appendChild(pk);
     if(R.st==="scan"){const s=el(`<p class="gstatus" id="impSt" aria-live="polite"></p>`);s.textContent=R.msg;w.appendChild(s)}
@@ -6146,23 +6151,99 @@ function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><
   const kb=el(`<div class="btns"></div>`),kf=el(`<label class="btn imgpick"><input type="file" id="impKeyF" accept="application/pdf,.pdf" hidden><span></span></label>`);kf.querySelector("span").textContent=R.keyFile?`Gabarito: ${R.keyFile}`:"Gabarito em outro PDF";kf.querySelector("input").onchange=e=>impKeyFile(e.target.files&&e.target.files[0]);kb.appendChild(kf);g.appendChild(kb);
   const pd=el(`<details class="plain"${R.paste?" open":""}><summary>Colar ou digitar o gabarito</summary><textarea class="ntext exkta" id="impPaste" placeholder="Ex.: 1-A 2-C 3-D 4-ANULADA 5-B…"></textarea></details>`),ta=pd.querySelector("textarea");ta.value=R.paste;
   ta.oninput=debounced(()=>{R.paste=ta.value;if(R.st==="review")impApplyKey(R,impKey(R));render()},400);g.appendChild(pd);w.appendChild(g);
-  if(R.st==="ready"){err();const go=el(`<button class="btn primary" type="button" id="impGo"></button>`),nb=impBlocks(R).length;go.textContent=`Ler ${pq.length} ${pq.length===1?"página":"páginas"} com o Claude`;go.disabled=!sampleFn||!pq.length;go.onclick=()=>impRead();
-    w.appendChild(go);w.appendChild(el(`<p class="how">${window.__site?`Vai em ${nb} ${nb===1?"parte":"partes"}: em cada uma, você copia o pedido, cola no Claude e traz a resposta de volta.`:`Vai em ${nb} ${nb===1?"parte":"partes"}; uma prova de 100 questões leva uns 10 a 15 minutos. Dá para usar o resto do app enquanto isso.`}</p>`));return w}
+  if(R.st==="ready"){err();const L=impLocalGet(R),okL=L.qs.length&&!L.probs.length,go=el(`<button class="btn${okL?"":" primary"}" type="button" id="impGo"></button>`),nb=impBlocks(R).length;
+    go.textContent=okL?"Ler com o Claude mesmo assim":`Ler ${pq.length} ${pq.length===1?"página":"páginas"} com o Claude`;go.disabled=sampleOff||!sampleFn||!pq.length;go.onclick=()=>impRead();
+    const lw=el(`<div class="imploc"><span class="glabel">Leitura aqui no aparelho</span></div>`);
+    if(okL){const p=el(`<p class="exsum"></p>`);const nk=L.qs.filter(r=>r.k).length;p.innerHTML=`<b>${L.qs.length} ${L.qs.length===1?"questão lida":"questões lidas"}</b>, todas com alternativas e gabarito${L.qs.some(r=>r.q.comentario)?", com o comentário da própria prova":""}. Tema sugerido pelo nome em ${nk} de ${L.qs.length}: confira antes de salvar.`;lw.appendChild(p)}
+    else if(L.qs.length)lw.appendChild(impProbEl(L,`Li ${L.qs.length} ${L.qs.length===1?"questão":"questões"}, mas com dificuldades:`));
+    else lw.appendChild(impProbEl(L,"Não consegui ler esta prova aqui no aparelho:"));
+    const lb=el(`<div class="btns"></div>`);if(L.qs.length){const u=el(`<button class="btn${okL?" primary":""}" type="button" id="impLocal"></button>`);u.textContent=okL?`Conferir e salvar · ${L.qs.length} ${L.qs.length===1?"questão":"questões"}`:"Conferir o que foi lido mesmo assim";u.onclick=()=>impUseLocal(R);lb.appendChild(u)}
+    if(okL)lb.appendChild(go);else lb.prepend(go);lw.appendChild(lb);w.appendChild(lw);
+    if(sampleOff){w.appendChild(el(`<p class="how">O Claude não está disponível nesta visualização.</p>`));return w}
+    if(!okL)w.appendChild(el(`<p class="how">${window.__site?`Vai em ${nb} ${nb===1?"parte":"partes"}: em cada uma, você copia o pedido, cola no Claude e traz a resposta de volta.`:`Vai em ${nb} ${nb===1?"parte":"partes"}; uma prova de 100 questões leva uns 10 a 15 minutos. Dá para usar o resto do app enquanto isso.`}</p>`));return w}
   if(R.st==="read"){const s=el(`<p class="gstatus" id="impSt" aria-live="polite"></p>`);s.textContent=`Lendo com o Claude: parte ${Math.min((R.prog||0)+1,R.nb)} de ${R.nb} · ${R.qs.length} ${R.qs.length===1?"questão":"questões"} até agora…`;w.appendChild(s);
     const c=el(`<button class="btn" type="button" id="impStop">Parar e conferir o que já veio</button>`);c.onclick=()=>{R.stop=true;if(R.ctl)R.ctl.abort()};w.appendChild(c);return w}
   // conferir
   err();const rows=R.qs,keep=rows.filter(r=>!r.x),nb=keep.filter(r=>r.g==="b"&&!r.an).length,nc=keep.filter(r=>r.g!=="b"&&!r.an).length,na=keep.filter(r=>r.an).length,nt=keep.filter(r=>!r.k).length;
   const sum=el(`<p class="exsum"></p>`);sum.innerHTML=`<b>${keep.length} ${keep.length===1?"questão":"questões"}</b> · ${nb} com gabarito da banca${nc?` · <span class="w">${nc} com gabarito do Claude</span>`:""}${na?` · ${na} ${na===1?"anulada":"anuladas"}`:""}${nt?` · <span class="w">${nt} sem tema</span>`:""}`;w.appendChild(sum);
-  const unread=pq.filter(n=>!R.done.has(n)),gaps=impGaps(R,key);
+  if(R.src==="local"){const L=impLocalGet(R);if(L.probs.length){const pw=impProbEl(L,"Lido aqui no aparelho, com dificuldades:");if(!sampleOff){const b=el(`<button class="btn primary" type="button" id="impToClaude">Passar pelo Claude</button>`);b.onclick=()=>{R.qs=[];R.done=new Set();R.fail=[];R.src="";impRead()};pw.appendChild(b)}w.appendChild(pw)}
+    else w.appendChild(el(`<p class="how">Lido aqui no aparelho, sem o Claude. O gabarito e os comentários são os da prova; o tema foi sugerido pelo nome (selo “Tema sugerido”): confira.</p>`))}
+  const unread=pq.filter(n=>!R.done.has(n)),gaps=R.src==="local"?[]:impGaps(R,key);
   if(R.noImg)w.appendChild(el(`<p class="pnote">Esta visualização não envia imagens ao Claude, então as páginas escaneadas não foram lidas. Use o site (copiar e colar) ou um PDF com texto.</p>`));
   if(unread.length&&!R.noImg){const p=el(`<p class="pnote"></p>`);p.textContent=`${unread.length===1?"A página":"As páginas"} ${pgList(unread)} ainda não ${unread.length===1?"foi lida":"foram lidas"}. `;const b=el(`<button class="link" type="button" id="impRest">Ler agora</button>`);b.onclick=()=>impRead(unread);p.appendChild(b);w.appendChild(p)}
   else if(gaps.length){const p=el(`<p class="pnote"></p>`);p.textContent=`Não encontrei ${gaps.length===1?"a questão":"as questões"} ${gaps.slice(0,12).join(", ")}${gaps.length>12?"…":""}. `;const gp=impGapPages(R,gaps),b=el(`<button class="link" type="button" id="impGap"></button>`);b.textContent=`Procurar de novo (págs. ${pgList(gp)})`;b.onclick=()=>impRead(gp);p.appendChild(b);p.append(" Se não existirem nesta prova, ignore.");w.appendChild(p)}
   if(nc)w.appendChild(el(`<p class="how">“Gabarito do Claude”: ele resolveu a questão. Confira com o gabarito oficial quando sair: cole-o acima (ou depois, na prova salva) e o app corrige tudo de uma vez.</p>`));
   if(!R.T||!rows[R.T.i])R.T=null;
-  w.appendChild(exListEl(rows,R,{pre:"i",T:R.T,setT:v=>{R.T=v;render()},setTopic:(i,k)=>{rows[i].k=k},setKey:(i,v)=>{const r=rows[i];if(v==="X"){r.an=true}else{r.an=false;r.q.correta=v;if(v)r.g="b"}render()},toggleX:i=>{rows[i].x=!rows[i].x;render()}}));
+  w.appendChild(exListEl(rows,R,{pre:"i",T:R.T,setT:v=>{R.T=v;render()},setTopic:(i,k)=>{rows[i].k=k;rows[i].kg=false},setKey:(i,v)=>{const r=rows[i];if(v==="X"){r.an=true}else{r.an=false;r.q.correta=v;if(v)r.g="b"}render()},toggleX:i=>{rows[i].x=!rows[i].x;render()}}));
   const b=el(`<div class="btns"></div>`),sv=el(`<button class="btn primary" type="button" id="impSave"></button>`);sv.textContent=`Salvar prova · ${keep.length} ${keep.length===1?"questão":"questões"}`;sv.disabled=!keep.length;sv.onclick=impSave;b.appendChild(sv);
-  const again=el(`<button class="btn" type="button">Ler tudo de novo</button>`);again.onclick=()=>{R.qs=[];R.done=new Set();R.fail=[];impRead()};b.appendChild(again);w.appendChild(b);
+  if(!sampleOff){const again=el(`<button class="btn" type="button">${R.src==="local"?"Ler com o Claude":"Ler tudo de novo"}</button>`);again.onclick=()=>{R.qs=[];R.done=new Set();R.fail=[];R.src="";impRead()};b.appendChild(again)}w.appendChild(b);
   return w}
+/* ---------- leitura no aparelho, sem o Claude (PDF com texto, questões numeradas, alternativas A) B) …) ---------- */
+/* tema sugerido pelo nome: palavras do tema e dos subtópicos que aparecem no título/enunciado */
+let impTIdx=null;
+const IMP_SYN=[[/\bmigran[a-z]*/g," enxaqueca "],[/\btipo tensao\b/g," tensional "],[/\bcefaleias?\b/g," cefaleia cefaleias "],[/\bavc\b/g," acidente vascular "],[/\biam\b/g," infarto "],[/\bdpoc\b/g," doenca pulmonar obstrutiva "],[/\bitu\b/g," infeccao urinaria "]];
+const impNT=s=>{let x=" "+norm(s||"").replace(/[^a-z0-9\s]/g," ")+" ";IMP_SYN.forEach(([r,v])=>{x=x.replace(r,v)});return x.replace(/\s+/g," ")};
+/* pontua cada tema pelas palavras do nome e dos subtópicos que aparecem no título/enunciado; palavras comuns a muitos temas valem menos */
+function impTemaScores(title,txt){if(!impTIdx){const w=s=>new Set(impNT(s).split(" ").filter(x=>x.length>=5&&!STOP.has(x)));const L=ALL.map(it=>({k:it.key,name:w(it.t),subs:w(subList(it).map(x=>x.t).join(" "))})),df={};
+    L.forEach(o=>new Set([...o.name,...o.subs]).forEach(x=>{df[x]=(df[x]||0)+1}));L.forEach(o=>{o.idf=x=>Math.log(ALL.length/(df[x]||1))});impTIdx=L}
+  const T=impNT(title),X=impNT(txt),has=(S,w)=>S.includes(" "+w)||w.length>7&&S.includes(" "+w.slice(0,w.length-2)),sc={};
+  impTIdx.forEach(o=>{let s=0;o.name.forEach(w=>{const f=o.idf(w);if(has(T,w))s+=3*f;else if(has(X,w))s+=1.2*f});o.subs.forEach(w=>{if(o.name.has(w))return;const f=o.idf(w);if(has(T,w))s+=1.5*f;else if(has(X,w))s+=.4*f});if(s>0)sc[o.k]=s});
+  return sc}
+/* tema por questão, com o "assunto da prova" (nome do arquivo + títulos) como desempate */
+function impTemas(list,examName){const raw=list.map(x=>impTemaScores(x.title,x.txt)),ctx=impTemaScores(examName+" "+list.map(x=>x.title).join(" "),"");
+  const top=Object.entries(ctx).sort((a,b)=>b[1]-a[1])[0],prior=top&&top[1]>=6?top[0]:"";
+  return raw.map(sc=>{if(prior&&sc[prior])sc[prior]=sc[prior]*2.2+3;const b=Object.entries(sc).sort((a,c)=>c[1]-a[1])[0];return b&&b[1]>=4?b[0]:""})}
+/* justificativas do gabarito comentado → porquê de cada alternativa, comentário e conceito */
+function impKCParse(seg,cor){const o={porq:{},com:"",con:""};if(!seg)return o;const s=seg.replace(/\s+/g," ");let m;
+  const rj=/Justificativa\s+([A-E])\b\s*(?:\(\s*correta\s*\))?\s*[:\-–—]\s*([\s\S]*?)(?=Justificativa\s+[A-E]\b|Ponto[- ]chave|Take[- ]home|Fonte\s*:|$)/gi;
+  while((m=rj.exec(s)))o.porq[m[1].toUpperCase()]=m[2].trim();
+  const pk=(s.match(/Ponto[- ]chave\s*:\s*([\s\S]*?)(?=Take[- ]home|Fonte\s*:|$)/i)||[])[1],th=(s.match(/Take[- ]home(?:\s+message)?\s*:\s*([\s\S]*?)(?=Fonte\s*:|$)/i)||[])[1];
+  const cj=cor&&o.porq[cor];o.com=[cj,pk&&pk.trim()].filter(Boolean).join(" ")||(Object.keys(o.porq).length?"":s.replace(/^(?:resposta|quest[aã]o)\s*\d{1,3}\s*/i,"").replace(/^[\s\S]{0,60}?correta\s*[:=\-–—]\s*[A-E]\b\s*/i,"").trim().slice(0,1500));
+  o.con=(th||pk||"").trim().slice(0,600);if(cor)delete o.porq[cor];return o}
+function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
+  const QP=R.pages.filter(p=>!R.keyPg.includes(p.n)),scanned=QP.filter(p=>p.img).map(p=>p.n);
+  if(scanned.length)probs.push(`${scanned.length===1?"a página":"as páginas"} ${pgList(scanned)} não ${scanned.length===1?"tem":"têm"} texto (${R.doc?"escaneadas":"fotos"}): só o Claude lê imagem`);
+  const pages=QP.filter(p=>!p.img&&p.t);if(!pages.length)return {qs,probs:probs.length?probs:["não achei texto nas páginas"]};
+  /* cabeçalhos e rodapés repetidos saem */
+  const PAG=/\s*\b(?:p[aá]g(?:ina)?\.?)\s*\d+\s*(?:(?:de|\/)\s*\d+)?\s*$/i,cl=x=>x.replace(/\s+/g," ").trim().replace(PAG,"").trim();
+  const AP=R.pages.filter(p=>p.t),cnt={};AP.forEach(p=>new Set(p.t.split("\n").map(cl).filter(Boolean)).forEach(x=>{cnt[x]=(cnt[x]||0)+1}));
+  const rep=new Set(Object.keys(cnt).filter(x=>AP.length>=3&&cnt[x]>=Math.max(3,AP.length*.4)&&x.length<120&&!/^\(?[A-Ea-e]\s*[).:\-–]\s/.test(x)&&!/^(?:quest[aã]o|resposta)\s*\d/i.test(x)));
+  const junk=x=>!x||rep.has(x)||/^p[aá]gina\s*\d+(\s*(de|\/)\s*\d+)?$/i.test(x)||/^\d{1,3}$/.test(x)||/^\[[^\]]{1,30}\]$/.test(x);
+  const lines=[];pages.forEach(p=>p.t.split("\n").forEach(x=>{x=cl(x);if(!junk(x))lines.push({p:p.n,x})}));
+  const QA=/^(?:quest[aã]o|QUEST[AÃ]O)\s*(?:n[ºo°.]\s*)?(\d{1,3})\b\s*[—–\-:.)]?\s*(.*)$/i,QB=/^(\d{1,3})\s*[.)–—-]\s+(\S.*)$/,STOPL=/^(?:parte\s*\d+\s*[—–-]\s*)?(?:gabarito\b|resposta\s*\d{1,3}\b)/i;
+  const starts=re=>{const out=[];let prev=0;lines.forEach((l,i)=>{const m=l.x.match(re);if(!m)return;const n=+m[1];if(n>=1&&n<=300&&(!prev||n===prev+1||n>prev&&n<=prev+3)){out.push({i,n,rest:m[2]||""});prev=n}});return out};
+  let S=starts(QA);if(S.length<2){const b=starts(QB);if(b.length>S.length)S=b}
+  if(!S.length)return {qs,probs:[...probs,"não consegui achar onde começa cada questão (esperava \"Questão 1\" ou \"1.\")"]};
+  const join=arr=>arr.reduce((a,x)=>!a?x:/[A-Za-zÀ-ÿ]-$/.test(a)&&/^[a-zà-ÿ]/.test(x)?a.slice(0,-1)+x:a+" "+x,"").trim();
+  const bad=[],few=[],noKey=[],dup=new Set();
+  S.forEach((s,j)=>{const end=j+1<S.length?S[j+1].i:lines.length;let L=lines.slice(s.i+1,end);const stop=L.findIndex(l=>STOPL.test(l.x));if(stop>=0)L=L.slice(0,stop);
+    const rest=s.rest.trim(),title=rest&&rest.length<=90&&!/[?]$/.test(rest)?rest.replace(/^[—–\-:]\s*/,""):"",stem=[];if(rest&&!title)stem.push(rest);
+    const alts=[];let cur=null;
+    L.forEach(l=>{const m=l.x.match(/^\(?([A-Ea-e])\s*[).:\-–]\s*(.*)$/),want=EX_AB[alts.length];
+      if(m&&m[1].toUpperCase()===want&&(alts.length||stem.length)){cur={letra:want,tx:[m[2]]};alts.push(cur)}else if(cur)cur.tx.push(l.x);else stem.push(l.x)});
+    const A=alts.map(a=>({letra:a.letra,texto:join(a.tx),porque:""})).filter(a=>a.texto),en=join(stem);
+    if(qs.some(r=>r.n===s.n)){dup.add(s.n);return}
+    if(A.length<4||!en||en.length<15){few.push(s.n);if(A.length<2||!en)return}
+    if(A.some(a=>a.texto.length>900)||en.length>6000)bad.push(s.n);
+    const v=key[s.n],an=v==="X",cor=v&&v!=="X"&&A.some(a=>a.letra===v)?v:"";if(!v)noKey.push(s.n);else if(!an&&!cor&&!few.includes(s.n))bad.push(s.n);
+    const kc=impKCParse(KC[s.n]&&KC[s.n].split("\n").map(cl).filter(x=>!junk(x)).join("\n"),cor);A.forEach(a=>{a.porque=(kc.porq[a.letra]||"").slice(0,1200)});
+    const k="",im=/\b(imagem|figura|foto(?:grafia)?|gr[aá]fico|tabela|eletrocardiograma|ecg|radiografia|tomografia|resson[aâ]ncia|ultrassonografia)\b[^.?]{0,40}\b(abaixo|a seguir|ao lado|seguinte|anexa|apresentad[ao])/i.test(en);
+    const r=exQClean({n:s.n,p:s.i<lines.length?lines[s.i].p:0,pe:(L[L.length-1]||lines[s.i]).p,k,q:{enunciado:en,alternativas:A,correta:cor,comentario:kc.com,conceito:kc.con},g:v?"b":"c",an,im,ck:cor});r.tt=title;qs.push(r)});
+  impTemas(qs.map(r=>({title:r.tt,txt:r.q.enunciado+" "+r.q.alternativas.map(a=>a.texto).join(" ")})),R.name||"").forEach((k,i)=>{const r=qs[i];delete r.tt;if(k&&BYKEY[k]){r.k=k;r.kg=true}});
+  const nums=qs.map(r=>r.n),mx=Math.max(0,...nums,...Object.keys(key).map(Number)),miss=[];for(let n=Math.min(...nums,1);n<=mx;n++)if(!nums.includes(n)&&!few.includes(n))miss.push(n);
+  const lst=a=>a.slice(0,10).join(", ")+(a.length>10?"…":"");
+  if(miss.length)probs.push(`não achei ${miss.length===1?"a questão":"as questões"} ${lst(miss)}`);
+  if(few.length)probs.push(`${few.length===1?"a questão":"as questões"} ${lst(few)} ${few.length===1?"saiu":"saíram"} com menos de 4 alternativas ou sem enunciado (PDF em duas colunas costuma embaralhar)`);
+  if(bad.length)probs.push(`${bad.length===1?"a questão":"as questões"} ${lst(bad)} ${bad.length===1?"parece":"parecem"} misturada${bad.length===1?"":"s"} com outro texto ou com o gabarito fora das alternativas`);
+  if(dup.size)probs.push(`número de questão repetido: ${lst([...dup])}`);
+  if(noKey.length)probs.push(noKey.length===qs.length?"a prova veio sem gabarito: sem ele, só o Claude resolve as questões (ou cole o gabarito acima)":`sem resposta no gabarito para ${noKey.length===1?"a questão":"as questões"} ${lst(noKey)}`);
+  return {qs,probs}}
+function impLocalGet(R){const sig=[R.keyPg.join(),keyText(impKey(R)),R.pages.length,R.keyTxt.length].join("|");if(!R.loc||R.loc.sig!==sig){R.loc=impLocal(R);R.loc.sig=sig}return R.loc}
+function impUseLocal(R){const L=impLocalGet(R);R.qs=L.qs.map(r=>({...r}));R.done=new Set(impQPages(R));R.fail=[];R.src="local";R.st="review";R.show=12;R.flt="all";render();
+  setTimeout(()=>{const p=$("#impPanel");if(p)p.scrollIntoView({block:"start"})},40)}
+function impProbEl(L,title){const w=el(`<div class="pnote implocw"><b></b><ul></ul><p></p></div>`);w.querySelector("b").textContent=title;
+  L.probs.forEach(x=>{const li=document.createElement("li");li.textContent=x.charAt(0).toUpperCase()+x.slice(1)+".";w.querySelector("ul").appendChild(li)});
+  w.querySelector("p").textContent=sampleOff?"Para ler direito, abra a prova pelo app do Claude ou pelo site, que passam pelo Claude.":"Passe a prova pelo Claude para ler direito: ele separa as questões, escolhe o tema e escreve o comentário.";return w}
 /* fazer a prova */
 function exStart(ex,mode){const P=exPg(ex.id);if(mode&&!Object.keys(P.a).length)P.mode=mode;if(P.fin){exRestart(ex);if(mode)P.mode=mode}
   let i=P.i;if(P.a[i])i=ex.qs.findIndex((r,j)=>!P.a[j]&&!r.an);if(i<0)i=0;exRun={id:ex.id,view:"q",i,shown:Date.now(),cad:{}};exEdit=null;imp=null;exPSave(ex.id);render();
