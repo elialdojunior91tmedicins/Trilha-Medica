@@ -10,7 +10,8 @@ await p.fill('#pfName','Elialdo Júnior');await p.dispatchEvent('#pfName','chang
 const gd=await p.evaluate(()=>fromNum(dnum(today())+100));await p.fill('#pfExDate-'+xid,gd);await p.dispatchEvent('#pfExDate-'+xid,'change');await p.waitForTimeout(150);
 ok(await p.textContent('#profIni')==="EJ","iniciais no ícone: "+await p.textContent('#profIni'));
 await p.tap('#viewPerfil .fback');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="inicio"),"Voltar retorna ao Início");
-ok(/ENARE 2027/.test(await p.textContent('#iMeta'))&&/faltam 100 dias/.test(await p.textContent('#iMeta')),"meta no Início com contagem");
+await p.evaluate(()=>{tSeg="prog";setView("temas")});await p.waitForTimeout(150);
+ok(/ENARE 2027/.test(await p.textContent('#iMeta'))&&/faltam 100 dias/.test(await p.textContent('#iMeta'))&&await p.evaluate(()=>!!document.querySelector('#iMeta').offsetParent),"meta na Residência (Progresso) com contagem");await p.evaluate(()=>setView("inicio"));
 // config
 await p.tap('#cfgBtn');await p.waitForTimeout(150);
 await p.tap('#cfBody button.lay:has-text("Compacto")');ok(await p.evaluate(()=>document.documentElement.dataset.skin==="compact"),"layout Compacto aplicado");

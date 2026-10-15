@@ -35,6 +35,17 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  /* voltar ao Início não leva o cartão junto */
  await p.evaluate(()=>{if(foRun){foRun=null;try{localStorage.removeItem("resid-focus-run")}catch(e){}}setView("inicio")});await p.waitForTimeout(150);
  ok(await p.evaluate(()=>!document.querySelector('#viewInicio .card.revs')&&!!document.querySelector('#viewTemas .card.revs')),name+": de volta ao Início, o cartão continua só na Residência");
+ /* item 1: Meta e projeção saem do Início e vão para a Residência */
+ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);ui.profile.exams=[{id:"e1",name:"ENARE 2027",date:D(200)},{id:"e2",name:"USP-SP",date:D(120)}];ui.profile.mainEx="e1";saveUI();backStack=[];setView("inicio")});await p.waitForTimeout(200);
+ ok(await p.evaluate(()=>!document.querySelector('#viewInicio #iMeta')&&!ICARDS.some(c=>c[0]==="iMeta")&&/a Residência mostra/.test(document.querySelector('#viewInicio').textContent)===false),name+": Início sem a Meta");
+ const seg=mob&&(name==="fone"||name==="ipad578"||name==="ipad820");
+ await p.evaluate(()=>{tSeg="rev";setView("temas")});await p.waitForTimeout(150);
+ const rv=await p.evaluate(()=>!!document.querySelector('#iMeta').offsetParent);
+ await p.evaluate(()=>{tSeg="prog";setView("temas")});await p.waitForTimeout(200);
+ const m=await p.evaluate(()=>{const x=document.querySelector('#iMeta');return {vis:!!x.offsetParent,t:x.textContent,inSide:!!x.closest('#viewTemas .side')}});
+ ok(m.vis&&m.inSide&&/ENARE 2027/.test(m.t)&&/faltam 200 dias/.test(m.t)&&/\+1 prova/.test(m.t)&&/precisa de/.test(m.t),name+": Meta e projeção na Residência "+m.t.slice(0,90));
+ ok(seg?!rv:rv,name+(seg?": no celular, a Meta fica na parte Progresso (não em Revisões)":": em duas colunas, a Meta aparece junto das revisões"));
+ if(["fone","ipad578","note","full","tabDeitado"].includes(name)){await p.evaluate(()=>{const x=document.querySelector('#iMeta');x.scrollIntoView({block:"start"});scrollBy(0,-80)});await p.waitForTimeout(150);await p.screenshot({path:`t95-meta-${name}.png`})}
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
  await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join(" | "));await b.close()})();

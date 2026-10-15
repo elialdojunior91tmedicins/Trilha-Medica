@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=d17af304">
+<link rel="stylesheet" href="site.css?v=2f3e795e">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=d17af304"></script>
-<script src="bridge.js?v=d17af304"></script>
+<script src="config.js?v=2f3e795e"></script>
+<script src="bridge.js?v=2f3e795e"></script>
 </head>
 <body>
 <script>
@@ -79,6 +79,7 @@
 .glegend em{font:500 .8rem var(--mono);font-style:normal;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
 .sw{display:inline-block;width:12px;height:12px;border-radius:3px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.dash{container-type:inline-size}@container (max-width:460px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .kpi{background:var(--bg);border-radius:10px;padding:11px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
 .kpi.alert{box-shadow:inset 3px 0 0 var(--due)}
 .kl{font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
@@ -1375,7 +1376,7 @@ html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) :is(.dqba
 .cfcrunch{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px}
 .cfcrunch .dhead h2{font-size:1rem}
 .imeta[hidden]{display:none}
-#iMeta{order:0}
+html[data-layout="phone"] #viewTemas[data-seg="rev"] #iMeta,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="rev"] #iMeta{display:none}
 .imetab{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
 .imetab .ikl{grid-row:1/3;font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:99px}
 .imetab b{font:700 1.208rem var(--display)}.imetab .ims{grid-column:2;font-size:.82rem;color:var(--muted)}
@@ -1410,7 +1411,7 @@ html[data-skin="focus"] .pcard{padding:16px 18px;background:var(--surface)}
 html[data-skin="focus"] .psubs li{padding:11px 12px}
 html[data-skin="focus"] #viewInicio:not([hidden]){display:flex!important;flex-direction:column;gap:22px;max-width:700px!important;margin-inline:auto;width:100%}
 html[data-skin="focus"] #viewInicio .icol{display:contents!important}
-html[data-skin="focus"] #iMeta{order:0}html[data-skin="focus"] #iToday{order:1}html[data-skin="focus"] #iProva{order:3}
+html[data-skin="focus"] #iToday{order:1}html[data-skin="focus"] #iProva{order:3}
 html[data-skin="focus"] .ipmain{background:var(--surface)}
 html[data-layout="phone"] header{padding-right:84px}
 html[data-layout="phone"] header h1{font-size:1.16rem;letter-spacing:-.015em;line-height:1.15;padding-top:6px}
@@ -1682,7 +1683,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <section class="card ihero" id="iHero" aria-label="Saudação do dia"></section>
     <section class="card iboard" id="iBoard" aria-label="Seu dia"></section>
     <div class="icol icol1"><div class="islot" id="iQueue"></div><div class="islot" id="iToday"></div></div>
-    <div class="icol icol2"><div class="islot" id="iWeek"></div><section class="imeta" id="iMeta" hidden></section><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="icol icol2"><div class="islot" id="iWeek"></div><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
     <div class="islot icustbox" id="iCust"></div>
   </div>
 
@@ -1712,6 +1713,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <div id="revup"></div>
     <p class="how">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar. As revisões não ocupam vaga no plano do dia e ficam acumuladas até você fazer. “Lembrei bem” avança para o próximo intervalo; “Tive dificuldade” volta para 1 dia.</p>
   </section>
+
+  <section class="imeta rmeta" id="iMeta" aria-label="Meta e projeção até a prova" hidden></section>
 
   <section class="card dash" aria-labelledby="ph">
     <div class="dhead"><h2 id="ph">Seu progresso</h2><span class="save" id="save">Carregando progresso…</span></div>
@@ -4811,7 +4814,7 @@ function heroCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,nm=(ui.p
   else if(tot)btn("Começar a fila",qStart);
   else if(!isOffDay()){const s=nextSteps()[0];if(s)btn(s.kind==="rev"?"Revisar agora":s.kind==="sim"||s.kind==="exam"?"Fazer agora":"Estudar agora",()=>startStep(s))}
   if(!B.children.length)B.remove();return c}
-const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iMeta","Meta e projeção até a prova"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
+const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
 let iCustom=false;
 function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:[])}
 function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(id=>ICARDS.some(c=>c[0]===id)):[];if(o.length&&!o.includes("iHero"))o.unshift("iHero");ICARDS.forEach(c=>{if(!o.includes(c[0]))o.push(c[0])});return o}
@@ -5345,7 +5348,7 @@ function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)retu
   if(view==="inicio"){if(t.parentNode!==$("#iToday"))$("#iToday").appendChild(t)}
   {const side=$("#viewTemas .side");if(side&&side.firstElementChild!==r)side.prepend(r)}
   if(view==="temas"){const slot=$("#todaySlot");if(slot.nextElementSibling!==t)slot.after(t);const side=$("#viewTemas .side");if(side.firstElementChild!==r)side.prepend(r)}}
-function renderInicio(){{const h=$("#iHero");h.innerHTML="";h.appendChild(heroCard())}renderInicioBoard();renderInicioMeta();renderInicioProva();renderInicioStats();
+function renderInicio(){{const h=$("#iHero");h.innerHTML="";h.appendChild(heroCard())}renderInicioBoard();renderInicioProva();renderInicioStats();
   {const n=$("#iNotice");n.innerHTML="";const x=iNoticeEl();if(x)n.appendChild(x)}
   {const q=$("#iQueue");q.innerHTML="";const c=iQueueCard();c.querySelector(".dhead").appendChild(helpBtn("Revisões"));q.appendChild(c)}
   {const w=$("#iWeek");w.innerHTML="";const x=iWeekCard();if(x)w.appendChild(x)}
@@ -6494,7 +6497,7 @@ function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML
     if(steps.length>1){const o=el(`<button class="link" type="button" id="nowSkip">Outra sugestão</button>`);o.onclick=()=>{nowSkip++;render()};a.appendChild(o)}
     nw.appendChild(a)}
   box.appendChild(nw);
-  if(!exList().length){const h=el(`<p class="how igoalhint">Quer saber se chega a tempo na prova de residência? <button class="link" type="button">Cadastre as provas no Perfil</button> e o Início mostra o ritmo necessário.</p>`);h.querySelector("button").onclick=()=>goSub("perfil");box.appendChild(h)}}
+  if(!exList().length){const h=el(`<p class="how igoalhint">Quer saber se chega a tempo na prova de residência? <button class="link" type="button">Cadastre as provas no Perfil</button> e a Residência mostra o ritmo necessário.</p>`);h.querySelector("button").onclick=()=>goSub("perfil");box.appendChild(h)}}
 /* ---------- Residência: filtros, agenda de revisões e "Já estudei antes" ---------- */
 function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML="";filter=tfOn()?"on":"all";
   const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length;
@@ -6945,7 +6948,7 @@ const HELP=[
 - **Subtópico denso** (ex.: Anemias carenciais) conta como dois no tamanho da parte. **O Claude já revisou os 185 temas** e deixou marcados os densos (selo tracejado "denso · Claude"); temas curtos mas pesados, como Valvopatias e Endemias, já vêm em partes. Corrija dentro do tema (**Marcar subtópicos densos**) ou peça ao Claude: no tema (**Pedir sugestão ao Claude**) ou em todos de uma vez (**⚙ Configurações › Plano › Subtópicos densos**). A sugestão aparece tracejada e já vale; toque no selo para tirar ou em **Confirmar sugestões**. A sua escolha nunca é trocada por uma sugestão nova.
 - **Placar do dia** (topo do Início): plano, revisões, questões da semana e foco de hoje, cada um com barra; toque para ir até a parte certa.
 - **O que fazer agora:** o app escolhe o próximo passo (revisão atrasada → tema do plano já começado → revisão de hoje → tema novo do plano → refazer erradas → simulado para a meta da semana). **Começar com o Foco** liga o relógio naquele tema e abre o cartão; **Outra sugestão** mostra a próxima opção.
-- **Meta e projeção:** com as provas de residência cadastradas no Perfil, o Início mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.
+- **Meta e projeção** (na Residência; no celular, na parte **Progresso**): com as provas de residência cadastradas no Perfil, o app mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.
 - **Ver semanas:** abre a linha do tempo até a prova, semana a semana: temas novos, revisões previstas (⚠ = semana pesada), cartões vencendo e a meta de questões. Semanas com prova da faculdade, fechamento de SP ou outra prova de residência aparecem marcadas e recebem menos temas novos; as outras compensam. Tudo se recalcula a cada dia, com o que você fez.
 - **Cartões recolhidos:** cada tema do plano (Início e Residência) e cada revisão (Residência) aparecem resumidos (quantos subtópicos já fez e quais são). Toque na linha do resumo para abrir os subtópicos e os botões. O tema que você começou (marcou algo e ainda não concluiu) fica aberto sozinho; ao concluir, fecha. Dá para abrir e fechar à mão a qualquer momento.
 - **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. Ponto fraco: faça 5 questões dele no dia.
@@ -7183,7 +7186,7 @@ function renderAll(){
   renderPlan();
   renderRevs();renderAgenda();
   // resumo
-  renderDash();renderResMap();renderLvSug();renderPins();
+  renderDash();renderInicioMeta();renderResMap();renderLvSug();renderPins();
   renderTFilters();
   // áreas
   const errN={};errors.forEach(e=>errN[e.k]=(errN[e.k]||0)+1);

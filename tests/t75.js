@@ -27,8 +27,8 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name);
  const d2=await p.evaluate(()=>fromNum(dnum(today())+60));await p.fill('#pfExDate-'+id2,d2);await p.dispatchEvent('#pfExDate-'+id2,'change');await p.waitForTimeout(100);
  ok(await p.evaluate(([a,b])=>exList().length===2&&exMain().name==="ENARE"&&ui.profile.goalDate===a&&exList()[1].date===b,[d1,d2]),name+": cadastra duas provas, a primeira é a principal");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": Perfil sem rolagem lateral");await p.screenshot({path:`pf-${name}.png`});
- // Início
- await p.evaluate(()=>{backStack=[];setView("inicio")});await p.waitForTimeout(100);
+ // Residência (a meta saiu do Início)
+ await p.evaluate(()=>{backStack=[];tSeg="prog";setView("temas")});await p.waitForTimeout(100);
  ok(await p.evaluate(()=>/ENARE/.test(document.querySelector('#iMeta .imetab').textContent)&&/\+1 prova/.test(document.querySelector('#iMeta .imetab').textContent)),name+": meta mostra a principal e as outras");
  ok(await p.evaluate(()=>/precisa de/.test(document.querySelector('#iMeta .iproj').textContent)),name+": ritmo necessário");
  await p.evaluate(()=>document.querySelector('#projTog').scrollIntoView({block:"center"}));await click('#projTog');await p.waitForTimeout(150);
@@ -46,7 +46,7 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name);
  await p.evaluate(()=>goSub("perfil"));await p.waitForTimeout(100);await p.evaluate(id=>document.getElementById('pfExMain-'+id).click(),id2);await p.waitForTimeout(100);
  ok(await p.evaluate(d=>exMain().name==="USP-SP"&&ui.profile.goalDate===d&&projModel().W.length<=10,d2),name+": trocar a principal muda o prazo");
  // sem data: só ritmo
- await p.evaluate(id=>{const x=exList().find(e=>e.id===id);delete x.date;saveUI();backStack=[];setView("inicio")},id2);await p.waitForTimeout(100);
+ await p.evaluate(id=>{const x=exList().find(e=>e.id===id);delete x.date;saveUI();backStack=[];tSeg="prog";setView("temas")},id2);await p.waitForTimeout(100);
  ok(await p.evaluate(()=>/Sem data de prova/.test(document.querySelector('#iMeta .iproj').textContent)&&/data ainda não definida/.test(document.querySelector('#iMeta').textContent)),name+": sem data mostra só o ritmo");
  ok(await p.evaluate(()=>{const M=projModel();return M.end===null&&M.W.reduce((a,w)=>a+w.nw,0)===M.total}),name+": sem data, semanas pelo ritmo");
  // atrasado
