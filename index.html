@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=922bdbd7">
+<link rel="stylesheet" href="site.css?v=1e48870a">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=922bdbd7"></script>
-<script src="bridge.js?v=922bdbd7"></script>
+<script src="config.js?v=1e48870a"></script>
+<script src="bridge.js?v=1e48870a"></script>
 </head>
 <body>
 <script>
@@ -783,10 +783,10 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>
 .fullhide{display:none!important}
 .fullpath{display:block!important;max-width:none!important}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull:not([hidden]){display:block!important;max-width:860px!important;margin-inline:auto}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim){padding:26px 30px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim,.qexam){padding:26px 30px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard{padding:22px 24px;min-height:260px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard .fcq{font-size:1.3rem}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .qsim .qstem{font-size:1.08rem;line-height:1.55}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.qsim,.qexam) .qstem{font-size:1.08rem;line-height:1.55}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .erfullb{display:inline-block}
 html[data-layout="desktop"] .erkeys{display:block}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull:not([hidden]){display:block;max-width:860px;margin-inline:auto}
@@ -4452,10 +4452,10 @@ document.addEventListener("keydown",ev=>{if(view!=="erros"||!erRun)return;const 
   if(ev.key==="1"){b("#erGood");return}if(ev.key==="2"){b("#erBad");return}
   if(ev.key==="Escape"&&erFull&&document.documentElement.dataset.cols==="2"){ev.preventDefault();erFullSet(false)}});
 /* tela inteira também nos cartões (Anotações) e no simulado (Questões); cada um lembra a própria escolha */
-const FULLK={cd:"resid-cdfull",sim:"resid-simfull",fo:"resid-fofull"},fullOn={cd:false,sim:false,fo:false};
+const FULLK={cd:"resid-cdfull",sim:"resid-simfull",fo:"resid-fofull",ex:"resid-exfull"},fullOn={cd:false,sim:false,fo:false,ex:false};
 try{for(const k in FULLK)fullOn[k]=localStorage.getItem(FULLK[k])==="1"}catch(x){}
 const twoCols=()=>{const R=document.documentElement.dataset;return R.cols==="2"&&(R.layout==="desktop"||R.layout==="tablet")};
-function fullSet(k,v){fullOn[k]=v;try{localStorage.setItem(FULLK[k],v?"1":"0")}catch(x){}render();const h=$(k==="cd"?"#nch":k==="sim"?"#simh":"#foh");if(h)h.scrollIntoView({block:"start"})}
+function fullSet(k,v){fullOn[k]=v;try{localStorage.setItem(FULLK[k],v?"1":"0")}catch(x){}render();const h=$(k==="cd"?"#nch":k==="sim"?"#simh":k==="ex"?"#exh":"#foh");if(h)h.scrollIntoView({block:"start"})}
 function fullBtn(k){const on=fullOn[k],b=el(`<button class="mini erfullb" type="button"></button>`);b.id=k+"FullB";b.textContent=on?"Sair da tela inteira":"⛶ Tela inteira";b.setAttribute("aria-pressed",on);
   b.title=on?"Volta a mostrar o resto da aba (Esc)":"Esconde o resto da aba e mostra só isto";b.onclick=()=>fullSet(k,!on);return b}
 /* esconde tudo da aba menos o cartão (marca os irmãos de cada nível até a aba) */
@@ -4464,6 +4464,7 @@ function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").for
   if(view==="notas"&&cdRun&&fullOn.cd){v=$("#viewNotas");card=v&&v.querySelector(".ncards")}
   else if(view==="quest"&&sim&&sim.status!=="error"&&fullOn.sim){v=$("#viewQuest");card=v&&v.querySelector(".qsim")}
   else if(view==="foco"&&foRun&&fullOn.fo){v=$("#viewFoco");card=v&&v.querySelector(".fotimer")}
+  else if(view==="quest"&&exRun&&fullOn.ex){v=$("#viewQuest");card=v&&v.querySelector(".qexam")}
   if(!v||!card)return;v.classList.add("vfull");let n=card;
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
@@ -6470,7 +6471,7 @@ function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></di
   const map=el(`<div class="exmap" role="group" aria-label="Ir para a questão"></div>`);ex.qs.forEach((r,j)=>{const a=P.a[j],b=el(`<button type="button"></button>`);b.textContent=r.n||j+1;
     if(j===i)b.setAttribute("aria-current","true");if(r.an)b.classList.add("an");else if(a&&(review||P.mode==="e")&&r.q.correta)b.classList.add(a.l===r.q.correta?"ok":"no");else if(a)b.classList.add("done");b.onclick=()=>exGo(ex,j);map.appendChild(b)});
   const md=el(`<details class="plain exmapd"><summary></summary></details>`);md.querySelector("summary").textContent=`Todas as questões · ${Object.keys(P.a).length} de ${ex.qs.length} respondidas`;md.appendChild(map);c.appendChild(md);
-  if(!review)c.appendChild(el(`<p class="how erkeys">${P.mode==="p"?"Modo prova: o resultado e os comentários aparecem no fim. Dá para voltar e trocar a resposta até finalizar.":"Modo estudo: a correção aparece a cada questão."} Teclado: A a E escolhem · → próxima · ← anterior</p>`));
+  if(!review)c.appendChild(el(`<p class="how erkeys">${P.mode==="p"?"Modo prova: o resultado e os comentários aparecem no fim. Dá para voltar e trocar a resposta até finalizar.":"Modo estudo: a correção aparece a cada questão."} Teclado: A a E escolhem · → próxima · ← anterior${fullOn.ex&&twoCols()?" · Esc sai da tela inteira":""}</p>`));
   return c}
 function exEditEl(ex){const S=exEdit,w=el(`<div class="exedit"></div>`);
   w.appendChild(el(`<p class="how">Mudar a resposta, anular ou trocar o tema recalcula o seu acerto nas questões que você já respondeu.</p>`));
@@ -6508,12 +6509,13 @@ function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).l
   return li}
 function qExamCard(){const c=el(`<section class="card qexam" aria-labelledby="exh"><div class="dhead"><h2 id="exh">Provas na íntegra</h2></div></section>`);
   const run=exRun&&exams.find(x=>x.id===exRun.id);if(exRun&&!run)exRun=null;
-  if(run){const h=c.querySelector(".dhead"),s=el(`<span class="todaydate"></span>`);s.textContent=run.name;h.appendChild(s);c.appendChild(exPlayEl(run));return c}
+  if(run){const h=c.querySelector(".dhead"),s=el(`<span class="todaydate"></span>`);s.textContent=run.name;h.appendChild(s);if(twoCols())h.appendChild(fullBtn("ex"));c.appendChild(exPlayEl(run));return c}
   if(!imp){const b=el(`<button class="btn primary" type="button" id="impNew">+ Importar prova</button>`);b.disabled=!sampleFn;if(sampleOff)b.title="O Claude não está disponível nesta visualização";b.onclick=impNew;c.querySelector(".dhead").appendChild(b)}
   if(imp)c.appendChild(impPanel());
   if(!exams.length){if(!imp)c.appendChild(el(`<p class="cempty">Importe o PDF de uma prova antiga (com ou sem gabarito) e faça a prova aqui, no modo prova ou no modo estudo. Cada questão entra no acerto do tema e da banca, e as erradas vão para Refazer.</p>`));return c}
   const ol=el(`<ol class="exrows"></ol>`);exams.forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol);return c}
-document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun||exRun.view==="res")return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun)return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  if(ev.key==="Escape"&&fullOn.ex&&twoCols()){ev.preventDefault();fullSet("ex",false);return}if(exRun.view==="res")return;
   const ex=exams.find(x=>x.id===exRun.id);if(!ex)return;const k=ev.key;
   if(/^[a-hA-H]$/.test(k)&&exRun.view==="q"){const r=ex.qs[exRun.i],L=k.toUpperCase();if(r&&r.q.alternativas.some(a=>a.letra===L)&&!(exPg(ex.id).mode==="e"&&exPg(ex.id).a[exRun.i])){ev.preventDefault();exAnswer(ex,exRun.i,L)}}
   else if(k==="ArrowRight"){ev.preventDefault();if(exRun.i<ex.qs.length-1)exGo(ex,exRun.i+1)}else if(k==="ArrowLeft"){ev.preventDefault();if(exRun.i>0)exGo(ex,exRun.i-1)}});
@@ -7169,7 +7171,7 @@ const HELP=[
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.
 - **Encontrar erros:** busca no tema, no que errou, na fonte e na causa. **Filtros** abre **Tipo de erro**, **Situação** (para revisar hoje, que se repetem, sem cartão, arquivados), **Quando e de onde** (período do registro, fonte, causa) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, próxima revisão ou mais teimosos. No rodapé do cartão, **Exportar PDF destes erros** e **Exportar para o Anki** usam os filtros atuais.
-- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões para revisar** (Anotações; teclado: espaço, 1 Lembrei, 2 Não lembrei) e no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
+- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões para revisar** (Anotações; teclado: espaço, 1 Lembrei, 2 Não lembrei) no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima) e nas **Provas na íntegra**, no Modo prova e no Modo estudo (teclado: A a E respondem, → próxima, ← anterior), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
 - O número na aba Erros mostra quantos erros você tem para revisar hoje.
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
