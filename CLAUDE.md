@@ -212,7 +212,10 @@ consultado quando há dúvida. Responda em português.
   texto por página (`pdfPageText`), página com <60 caracteres = escaneada (`pdfPageImg` → JPEG em `sample` images; no site pede para anexar o PDF).
   Gabarito: `parseKey` ("1-A", "01. B", tabela, ANULADA → "X"; inclui `parseKeyStrong` = gabarito comentado "RESPOSTA 1 … Correta: B"),
   páginas achadas por `keyPage` (comentado: 1 resposta basta se a página não tiver alternativas "A)"; `impKey` também lê o comentado de páginas mistas),
-  justificativas por questão `keyComments` → bloco "GABARITO COMENTADO" no `impPrompt` (teste t92), PDF à parte (`impKeyFile`) ou colado; `impPrompt` leva gabarito,
+  justificativas por questão `keyComments` → bloco "GABARITO COMENTADO" no `impPrompt` (teste t92),
+  leitura no aparelho sem o Claude `impLocal` (cabeçalho/rodapé repetidos e "Página x de y" saem; início "Questão N" ou "N." em sequência; alternativas A) em ordem;
+  `impKCParse` = Justificativa X → porquê, correta + Ponto-chave → comentário, Take home → conceito; tema `impTemas` com IDF e o assunto da prova como desempate,
+  `r.kg` = selo/filtro "Tema sugerido"; `probs` → aviso "Passe a prova pelo Claude" `impProbEl`; `impLocalGet` com cache; `impUseLocal` → conferir com `R.src="local"`; teste t93), PDF à parte (`impKeyFile`) ou colado; `impPrompt` leva gabarito,
   lista de temas e o texto; partes `impBlocks` (artefato 11 mil caracteres/5 págs, 2 em paralelo; site 24 mil/10 págs), falha divide a parte; `impGaps`/`impGapPages`
   = Procurar de novo. Questão `{n,p,pe,k,q,g:"b"|"c",an,im,ck}` (sem embaralhar; `ck` = letra para a qual o comentário foi escrito).
   Dados: `exams` (questões; `resid-exams-v1` + `progress/exams/{id}`) e `exProg` (respostas `{id,i,mode,fin,tries,a:{idx:{l,d,s}},h}`; `resid-exprog-v1` +
