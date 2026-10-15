@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
-const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
+const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;try{['resid-qfpanel','resid-efpanel','resid-nfpanel'].forEach(k=>localStorage.setItem(k,'1'))}catch(e){};;window.__mock({},5);`);
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 await p.evaluate(()=>{let c=0;window.__prompts=[];sampleFn.json=async(input)=>{__prompts.push(input);await new Promise(r=>setTimeout(r,50));const n=+input.match(/simulado com (\d+)/)[1];return Array.from({length:n},()=>({enunciado:"Caso "+(++c),alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"B",comentario:"com",conceito:"con",alerta:""}))};

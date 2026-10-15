@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
-const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
+const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;try{['resid-qfpanel','resid-efpanel','resid-nfpanel'].forEach(k=>localStorage.setItem(k,'1'))}catch(e){};;window.__mock({},5);`);
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 // dados: CM-37 piorando, CM-34 melhorando, erros em CM-37
@@ -14,7 +14,7 @@ const ex=await p.$$eval('#qlistT .qrow',a=>a.map(r=>({n:r.querySelector('.qname'
 const r37=ex.find(x=>/coagula/.test(x.n)),r34=ex.find(x=>/Anemias/.test(x.n));
 ok(r37&&/▼ 40 pts/.test(r37.tr),tag+": tendência piorando: "+(r37&&r37.tr));ok(r34&&/▲ 30 pts/.test(r34.tr),tag+": tendência melhorando: "+(r34&&r34.tr));
 ok(r37&&/2 erros no caderno: 1 não sabia · 1 confundi/.test(r37.er),tag+": erros no tema: "+(r37&&r37.er));
-if(mob)await click('#qFBtn');await p.waitForTimeout(100);await click('#qWorseB');await p.waitForTimeout(150);
+await click('#qWorseB');await p.waitForTimeout(150);
 const n1=await p.$$eval('#qlistT .qname',a=>a.map(x=>x.textContent));ok(n1.length===1&&/coagula/.test(n1[0]),tag+": filtro Piorando");
 await click('#qClear');await p.waitForTimeout(150);
 await click('#qlistT .qrow .qer');await p.waitForTimeout(200);ok(await p.evaluate(()=>view==="erros"&&eTopicKey==="CM-37"),tag+": erros abre o caderno do tema");

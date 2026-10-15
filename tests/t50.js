@@ -8,7 +8,7 @@ ok(await vis('#qq'),"busca visível");ok(await vis('#qFBtn'),"botão Filtros vis
 await p.tap('#qFBtn');await p.waitForTimeout(200);ok(await vis('#qPer')&&await vis('#qArea'),"Filtros abre o painel");
 await p.selectOption('#qAccSel','good');await p.waitForTimeout(200);ok(await vis('#qPer'),"painel continua aberto ao filtrar");
 await p.screenshot({path:'q-fone-open.png'});
-await p.tap('.qfdone');await p.waitForTimeout(300);ok(!(await vis('#qPer')),"Ver resultados recolhe");
+await p.tap('.tfdone');await p.waitForTimeout(300);ok(!(await vis('#qPer')),"Ver resultados recolhe");
 ok(await p.$eval('#qFBtn b',x=>x.textContent)==="1","contador de filtros ativos: 1");ok(await vis('#qClear'),"Limpar filtros visível com painel fechado");
 ok((await p.$$eval('#qlistT .qname',a=>a.length))===1,"filtro aplicado na lista");
 await p.tap('#qClear');await p.waitForTimeout(200);ok(!(await p.$('#qFBtn b')),"limpar zera o contador");

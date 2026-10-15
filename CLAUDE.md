@@ -66,6 +66,10 @@ consultado quando há dúvida. Responda em português.
   o tema aberto (`openKey`) sempre abre a área e a especialidade dele. Cartão "Encontrar temas" `#tFind` (busca `#q`, `#tfCount`, painel `#tfPanel`
   aberto/fechado por `#tfTog` e lembrado em `resid-tfpanel`, grupos Situação `TF_LV` / Mostrar só `TF_SHORT` / Onde, pílulas dos ativos `tfActive()`
   com ×, `#tfClear` "Limpar tudo", Ordem `#sortSel` dentro da barra, "Como ler a lista" em `details.tfhow`). Teste: `tests/t96.js`.
+  O mesmo cartão em Questões (`#qFind`, `renderQFilters`), Erros (`#eFind`, `renderEMore` em `#eMore`) e Anotações (`#nFind`, `renderNFlags(keys,vis)` em `#nFBody`):
+  peças comuns `fcBody(box,o)` (barra Filtros + Ordem, etiquetas, painel com grupos, "Ver resultados" `.tfdone` só no celular, rodapé), `fcSel`, `fcChip`, `fcChips`,
+  `fcWhere(pre,...)` (selects `#<pre>Area`/`#<pre>Sp` com contagem), `fcAreaName`. Ids: `#qFBtn/#eFBtn/#nFBtn`, painéis `#qFPanel/#eFPanel/#nFPanel` (lembrados em
+  `resid-qfpanel/efpanel/nfpanel`), limpar `#qClear/#eClear/#nClear`, ordem `#qSort/#eOrder/#nSortSel`; chips com `data-ef`/`data-et`/`data-nf`. Teste: `tests/t98.js`.
   Filtros `tf` (`renderTFilters`, `matches`; situação `tf.lv` por `tfLevel`, atalhos, área/especialidade), tema em abas
   (`renderDetail` marca `data-tab` = estudo|questoes|notas|erros; `detTab[k]`; `detGet(pre,k)` abre a aba antes de focar um campo),
   agenda `#revAgenda` (`renderAgenda`, `agBalance`) e marcação em lote `bulk` ("Já estudei antes"). Ajuste de data da revisão:

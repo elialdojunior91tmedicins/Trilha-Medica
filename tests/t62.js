@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 for(const [vw,vh,mob] of [[390,844,true],[1366,900,false]]){
-const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
+const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobile:mob});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;try{['resid-qfpanel','resid-efpanel','resid-nfpanel'].forEach(k=>localStorage.setItem(k,'1'))}catch(e){};;window.__mock({},5);`);
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,last:D(-1),step:0}};
@@ -10,10 +10,10 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,las
   errors=[{id:"e1",k:"CM-1",t:"conhecimento",w:"marquei 130/80",r:"é 140/90",s:"",d:today()}];commit();setView("notas");setNSeg("todas")});await p.waitForTimeout(200);
 const names=()=>p.$$eval('#nlist .ncard .etopic',a=>a.map(x=>x.textContent));
 // 6. filtros e ordem
-await click('#nFlags [data-nf="week"]');await p.waitForTimeout(120);ok((await names()).length===2,tag+": editadas nesta semana");
-await click('#nFlags [data-nf="week"]');await click('#nFlags [data-nf="tab"]');await p.waitForTimeout(120);ok((await names()).length===1,tag+": com tabela");
-await click('#nFlags [data-nf="tab"]');await click('#nFlags [data-nf="peg"]');await p.waitForTimeout(120);ok((await names()).length===1,tag+": com pegadinhas");
-await click('#nFlags [data-nf="peg"]');await p.selectOption('#nSortSel','big');await p.waitForTimeout(120);const n1=await names();ok(n1[0]===await p.evaluate(()=>BYKEY["CM-1"].t)||n1[0]===await p.evaluate(()=>BYKEY["CM-6"].t),tag+": maiores primeiro: "+n1[0]);
+await click('#nFPanel [data-nf="week"]');await p.waitForTimeout(120);ok((await names()).length===2,tag+": editadas nesta semana");
+await click('#nFPanel [data-nf="week"]');await click('#nFPanel [data-nf="tab"]');await p.waitForTimeout(120);ok((await names()).length===1,tag+": com tabela");
+await click('#nFPanel [data-nf="tab"]');await click('#nFPanel [data-nf="peg"]');await p.waitForTimeout(120);ok((await names()).length===1,tag+": com pegadinhas");
+await click('#nFPanel [data-nf="peg"]');await p.selectOption('#nSortSel','big');await p.waitForTimeout(120);const n1=await names();ok(n1[0]===await p.evaluate(()=>BYKEY["CM-1"].t)||n1[0]===await p.evaluate(()=>BYKEY["CM-6"].t),tag+": maiores primeiro: "+n1[0]);
 await p.selectOption('#nSortSel','recent');await p.waitForTimeout(120);ok((await names())[0]===await p.evaluate(()=>BYKEY["CM-1"].t),tag+": mais recentes");await p.selectOption('#nSortSel','sp');
 // 7. erros junto
 ok(/1 erro no caderno deste tema/.test(await p.$eval('#nlist',x=>x.textContent)),tag+": erros junto da anotação");
