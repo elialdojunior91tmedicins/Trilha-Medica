@@ -19,11 +19,12 @@ await click('#nowSkip');await p.waitForTimeout(150);await click('#nowSkip');awai
 const s6=await p.$eval('#iBoard .inowtx',x=>x.textContent);ok(/Simulado|plano|Revisão/.test(s6),tag+": continua sugerindo: "+s6.slice(0,60));
 await p.evaluate(()=>{nowSkip=0;render()});await click('#nowGo');await p.waitForTimeout(400);
 ok(await p.evaluate(()=>foRun&&foRun.ref==="T:CM-1"),tag+": Começar liga o Foco no tema");
-ok(await p.evaluate(()=>{const c=document.querySelector('#viewInicio .rcard[data-k="CM-1"]');return c&&!c.classList.contains('pmini')}),tag+": cartão da revisão abre");
+ok(await p.evaluate(()=>{const c=document.querySelector('#viewTemas .rcard[data-k="CM-1"]');return view==="temas"&&c&&!c.classList.contains('pmini')}),tag+": revisão abre o cartão do tema na Residência");
 // revisões recolhidas
-ok(await p.evaluate(()=>document.querySelector('#viewInicio .rcard[data-k="CM-2"]').classList.contains('pmini')),tag+": outras revisões recolhidas");
-await click('#viewInicio .rcard[data-k="CM-2"] .psum');await p.waitForTimeout(150);ok(await p.evaluate(()=>!document.querySelector('#viewInicio .rcard[data-k="CM-2"]').classList.contains('pmini')),tag+": revisão abre ao toque");
+ok(await p.evaluate(()=>document.querySelector('#viewTemas .rcard[data-k="CM-2"]').classList.contains('pmini')),tag+": outras revisões recolhidas");
+await click('#viewTemas .rcard[data-k="CM-2"] .psum');await p.waitForTimeout(150);ok(await p.evaluate(()=>!document.querySelector('#viewTemas .rcard[data-k="CM-2"]').classList.contains('pmini')),tag+": revisão abre ao toque");
 // projeção
+await p.evaluate(()=>{setView("inicio")});await p.waitForTimeout(150);
 const pj=await p.$eval('#iMeta .iproj',x=>x.textContent);ok(/Faltam 18\d temas/.test(pj)&&/2,5 por semana/.test(pj),tag+": projeção: "+pj.slice(0,160));
 // atalhos do placar
 await click('#iBoard .itile:nth-child(3)');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="quest"),tag+": questões leva à aba Questões");

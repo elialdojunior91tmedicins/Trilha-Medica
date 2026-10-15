@@ -13,18 +13,18 @@ ok(r2.last&&r2.l===1,"desmarcar tema estudado em outro dia não apaga o estudo: 
 const r3=await p.evaluate(()=>{const it=BYKEY["CM-8"];toggleSub(it,subList(it)[0]);toggleSub(it,subList(it)[1]);toggleSub(it,subList(it)[0]);return isIng(get("CM-8"))&&!get("CM-8").last});
 ok(r3,"desmarcar um de dois subtópicos mantém Estudando");
 // 2) Não estudei na revisão
-await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state["CM-9"]={l:1,last:D(-2),step:0,sd:[0,1],sv:2,qt:5,qc:3};commit();setView("inicio")});await p.waitForTimeout(200);
-const card=p.locator('#viewInicio .rcard',{hasText:BYKEY_T="x"}).first();
+await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state["CM-9"]={l:1,last:D(-2),step:0,sd:[0,1],sv:2,qt:5,qc:3};commit();goRevs()});await p.waitForTimeout(200);
+const card=p.locator('#viewTemas .rcard',{hasText:BYKEY_T="x"}).first();
 const txt=await p.evaluate(()=>BYKEY["CM-9"].t);
-await p.locator('#viewInicio .rcard',{hasText:txt}).locator('.psum').tap();await p.waitForTimeout(150);await p.locator('#viewInicio .rcard',{hasText:txt}).locator('button:has-text("Não estudei")').tap();await p.waitForTimeout(150);
-await p.locator('#viewInicio .rcard',{hasText:txt}).locator('button:has-text("Toque de novo")').tap();await p.waitForTimeout(200);
-const r4=await p.evaluate(()=>{const s=get("CM-9");return {last:s.last||null,l:s.l,sd:s.sd||null,qt:s.qt,due:isDue(s),card:[...document.querySelectorAll('#viewInicio .rcard .ptitle')].some(x=>x.textContent===BYKEY["CM-9"].t)}});
+await p.locator('#viewTemas .rcard',{hasText:txt}).locator('.psum').tap();await p.waitForTimeout(150);await p.locator('#viewTemas .rcard',{hasText:txt}).locator('button:has-text("Não estudei")').tap();await p.waitForTimeout(150);
+await p.locator('#viewTemas .rcard',{hasText:txt}).locator('button:has-text("Toque de novo")').tap();await p.waitForTimeout(200);
+const r4=await p.evaluate(()=>{const s=get("CM-9");return {last:s.last||null,l:s.l,sd:s.sd||null,qt:s.qt,due:isDue(s),card:[...document.querySelectorAll('#viewTemas .rcard .ptitle')].some(x=>x.textContent===BYKEY["CM-9"].t)}});
 ok(!r4.last&&r4.l===0&&!r4.sd&&r4.qt===5&&!r4.due&&!r4.card,"Não estudei tira da revisão e mantém questões: "+JSON.stringify(r4));
 // nível Não iniciado também
 const r5=await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state["CM-10"]={l:1,last:D(-2),step:0};openTopic("CM-10");const b=[...document.querySelectorAll('#t-CM-10 .seg button')].find(x=>x.textContent==="Não iniciado");b.click();const s=get("CM-10");return {last:s.last||null,due:isDue(s)}});
 ok(!r5.last&&!r5.due,"nível Não iniciado cancela a revisão");
 // 3) véspera só com o estudado
-await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={};state["CM-37"]={l:1,last:D(-1),step:0};fac={sems:[{id:"s",name:"6°",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:["T:CM-37","T:CM-34","T:CM-35"],info:{},eixos:[],sps:[]}],provas:[{id:"p",discId:"d",name:"Prova 1",date:D(2),items:["T:CM-37","T:CM-34","T:CM-35"],done:[]}],own:{}};saveFac();commit();setView("inicio")});await p.waitForTimeout(200);
-const v=await p.evaluate(()=>{const c=document.querySelector('#viewInicio .vcard');return c&&{n:c.querySelectorAll('.psubs li').length,txt:c.textContent}});
+await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={};state["CM-37"]={l:1,last:D(-1),step:0};fac={sems:[{id:"s",name:"6°",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:["T:CM-37","T:CM-34","T:CM-35"],info:{},eixos:[],sps:[]}],provas:[{id:"p",discId:"d",name:"Prova 1",date:D(2),items:["T:CM-37","T:CM-34","T:CM-35"],done:[]}],own:{}};saveFac();commit();goRevs()});await p.waitForTimeout(200);
+const v=await p.evaluate(()=>{const c=document.querySelector('#viewTemas .vcard');return c&&{n:c.querySelectorAll('.psubs li').length,txt:c.textContent}});
 ok(v&&v.n===1&&/2 conteúdos ainda não estudados/.test(v.txt)&&!/ainda pendente/.test(v.txt),"véspera mostra só o já estudado e avisa o resto: "+(v&&v.n));
 ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();

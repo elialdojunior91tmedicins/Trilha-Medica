@@ -36,7 +36,7 @@ p=await ctx.newPage();errs=[];p.on('pageerror',e=>errs.push(e.message));await go
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"Cardio",items:["T:CM-4"]}],provas:[{id:"p",discId:"d",name:"P2",date:D(5),items:["T:CM-4"],done:[]}],own:{}};saveFac();setView("erros")});
 await p.click('#navExtra button:has-text("Próxima prova")');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>view==="fac"&&facProvaOpen.has("p")&&!!document.getElementById("fp-p")),"atalho Próxima prova abre a prova na Faculdade");
-await p.click('#navExtra button:has-text("Revisões")');ok(await p.evaluate(()=>view==="inicio"&&!!document.querySelector("#viewInicio .card.revs").offsetParent),"atalho Revisões vai para o Início");await p.evaluate(()=>setView("temas"));
+await p.click('#navExtra button:has-text("Revisões")');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector("#viewTemas .card.revs").offsetParent&&!document.querySelector("#viewInicio .card.revs")),"atalho Revisões vai para a Residência");await p.evaluate(()=>setView("temas"));
 ok(await p.evaluate(()=>getComputedStyle(document.getElementById("tSeg")).display==="none"&&!!document.querySelector(".revs").offsetParent&&!!document.querySelector("#areas").offsetParent),"computador mostra tudo (sem seções do celular)");
 ok(!errs.length,"computador sem erros JS "+errs.join("|"));await ctx.close();
 // ===== tablet =====
