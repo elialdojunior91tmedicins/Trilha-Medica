@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=70ba9d39">
+<link rel="stylesheet" href="site.css?v=9e10e120">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=70ba9d39"></script>
-<script src="bridge.js?v=70ba9d39"></script>
+<script src="config.js?v=9e10e120"></script>
+<script src="bridge.js?v=9e10e120"></script>
 </head>
 <body>
 <script>
@@ -2107,12 +2107,14 @@ function matches(it){const s=get(it.key);
   return !query||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")+" "+(notes[it.key]||"")).includes(query)}
 
 /* subtópicos: padrão (índice em s.sd) + próprios (s.cs) */
-function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{};
-  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||""})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||""}))]}
+function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{},df=DN_DEF[it.key]||[];
+  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||(df.includes(i)?"c":"")})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||""}))]}
 /* subtópico denso: conta como dois no tamanho da parte do dia. dn: "u" = você marcou, "n" = você tirou, "c" = sugerido pelo Claude (vale até você mudar) */
 const dnHeavy=x=>x.dn==="u"||x.dn==="c";
 const subW=x=>dnHeavy(x)?2:1;
 const PART_BIG=6,PART_CAP=4;
+/* revisão do Claude (10/2026) dos 185 temas: subtópicos densos por índice. Valem como sugestão ("c") até você mudar; tema listado aqui já foi revisado */
+const DN_DEF={"CM-1":[10],"CM-2":[2],"CM-5":[],"CM-6":[14,17],"CM-7":[13,15],"CM-8":[0,13],"CM-10":[0,1,2,3],"CM-11":[],"CM-12":[],"CM-3":[7,16],"CM-4":[],"CM-31":[6],"CM-32":[0,1],"CM-33":[],"CM-17":[2],"CM-18":[1],"CM-19":[],"CM-20":[3],"CM-13":[6],"CM-14":[7],"CM-15":[5,11],"CM-48":[9],"CM-46":[3],"CM-47":[0,1,2,3,4],"CM-51":[0,7],"CM-9":[],"CM-16":[11],"CM-49":[0],"CM-21":[0,14],"CM-22":[1],"CM-23":[0,2],"CM-24":[0],"CM-25":[],"CM-52":[0,1,3],"CM-26":[0],"CM-27":[2],"CM-28":[0,1,2],"CM-29":[2],"CM-30":[4,11],"CM-34":[2,5,7,11],"CM-35":[0,1,2,3],"CM-36":[0,1,2],"CM-37":[0,1,3],"CM-53":[],"CM-40":[0,3],"CM-41":[0,2],"CM-38":[2,6],"CM-39":[2,3],"CM-42":[0,2,4],"CM-43":[0,3],"CM-44":[0,3],"CM-45":[0,3],"CM-50":[1,8,10,14],"CM-54":[0],"CIR-1":[0],"CIR-2":[],"CIR-3":[],"CIR-4":[7],"CIR-5":[5],"CIR-6":[0,2],"CIR-7":[0],"CIR-8":[2],"CIR-9":[1],"CIR-10":[],"CIR-15":[],"CIR-16":[],"CIR-17":[0],"CIR-11":[3],"CIR-12":[],"CIR-13":[2,6],"CIR-14":[0,2],"CIR-18":[],"CIR-19":[],"CIR-22":[],"CIR-23":[0,1],"CIR-21":[2,7],"CIR-26":[0,2],"CIR-20":[0],"CIR-24":[0],"CIR-25":[0],"CIR-27":[0,1],"CIR-28":[],"CIR-31":[],"CIR-32":[],"CIR-30":[0,1,2],"CIR-29":[0,1],"CIR-33":[],"CIR-34":[],"PED-6":[4],"PED-7":[5],"PED-8":[0],"PED-9":[0],"PED-10":[],"PED-11":[],"PED-12":[],"PED-1":[6],"PED-2":[0],"PED-3":[0],"PED-4":[],"PED-5":[],"PED-20":[2],"PED-25":[1],"PED-13":[],"PED-14":[],"PED-15":[4],"PED-16":[],"PED-17":[3],"PED-18":[0,2],"PED-19":[3],"PED-26":[],"PED-21":[2],"PED-22":[0,1],"PED-30":[1,2],"PED-29":[],"PED-23":[],"PED-24":[],"PED-28":[0,1],"PED-32":[0],"PED-33":[],"PED-27":[2],"PED-31":[],"GO-1":[6],"GO-2":[2,5],"GO-31":[1],"GO-32":[],"GO-14":[],"GO-3":[2,6],"GO-4":[1],"GO-12":[],"GO-13":[0],"GO-33":[0],"GO-5":[4],"GO-6":[7],"GO-7":[2,5],"GO-8":[4],"GO-9":[4],"GO-10":[1],"GO-11":[2,5],"GO-15":[],"GO-16":[],"GO-17":[7],"GO-18":[1,3],"GO-19":[1],"GO-20":[3,6],"GO-30":[1,2],"GO-21":[1,3],"GO-24":[0],"GO-25":[],"GO-26":[0,1],"GO-27":[],"GO-28":[],"GO-22":[],"GO-23":[],"GO-29":[1],"PREV-1":[],"PREV-2":[0],"PREV-3":[],"PREV-6":[],"PREV-7":[],"PREV-8":[],"PREV-29":[],"PREV-30":[],"PREV-4":[],"PREV-5":[],"PREV-27":[],"PREV-28":[],"PREV-9":[3],"PREV-10":[],"PREV-11":[],"PREV-24":[],"PREV-12":[1],"PREV-13":[],"PREV-23":[],"PREV-31":[],"PREV-14":[5,6],"PREV-15":[],"PREV-16":[],"PREV-17":[],"PREV-21":[],"PREV-22":[4],"PREV-18":[0],"PREV-19":[],"PREV-20":[],"PREV-25":[],"PREV-26":[4]};
 /* partes do tema: até 6 subtópicos (peso até 6) = uma parte só; maior que isso, partes de peso 3 a 4, na ordem da lista */
 function subParts(L){const W=L.reduce((a,x)=>a+subW(x),0);if(!L.length)return [];if(L.length<=PART_BIG&&W<=PART_BIG)return [L];
   const n=Math.ceil(W/PART_CAP),tg=W/n,P=Array.from({length:n},()=>[]);let acc=0;
@@ -2450,7 +2452,7 @@ async function dnSuggest(it){if(!sampleFn)return;const k=it.key,A=dnAsk[k]={st:"
     const n=dnApply([it],data);A.st="done";A.msg=n?`O Claude sugeriu ${n} subtópico${n===1?"":"s"} denso${n===1?"":"s"} (tracejado). Já vale no plano; toque no selo para tirar.`:"O Claude não viu subtópico denso neste tema.";commit()}
   catch(e){if(dnAsk[k]!==A)return;A.st="error";A.msg=dnErr(e);render()}}
 const DN_CHUNK=45;
-function dnPending(){return ALL.filter(it=>!it.own&&subList(it).length>=4&&!get(it.key).dnAt)}
+function dnPending(){return ALL.filter(it=>!it.own&&!DN_DEF[it.key]&&subList(it).length>=4&&!get(it.key).dnAt)}
 async function dnSuggestAll(){if(!sampleFn||(dnAsk.all&&dnAsk.all.st==="loading"))return;const L=dnPending();
   if(!L.length){dnAsk.all={st:"done",msg:"Todos os temas com 4 ou mais subtópicos já têm sugestão."};render();return}
   const G=[];for(let i=0;i<L.length;i+=DN_CHUNK)G.push(L.slice(i,i+DN_CHUNK));let tot=0;
@@ -2463,7 +2465,7 @@ function dnBoxEl(it,L){const k=it.key,ed=dnEdit===k,P=subParts(L),s=get(k),bx=el
   const t=el(`<button class="link" type="button" id="dnEd-${k}"></button>`);t.textContent=ed?"Pronto":"Marcar subtópicos densos";t.onclick=()=>{dnEdit=ed?null:k;render()};bx.appendChild(t);
   const A=dnAsk[k];
   if(sampleFn&&!sampleOff){const b=el(`<button class="link" type="button" id="dnAsk-${k}"></button>`);b.textContent=A&&A.st==="loading"?"Perguntando ao Claude…":s.dnAt?"Pedir nova sugestão ao Claude":"Pedir sugestão ao Claude";b.disabled=!!(A&&A.st==="loading");b.onclick=()=>dnSuggest(it);bx.appendChild(b)}
-  if(L.some(x=>x.dn==="c")){const c=el(`<button class="link" type="button" id="dnOk-${k}">Confirmar sugestões</button>`);c.onclick=()=>{upd(k,s=>{const d={...(s.dn||{})};for(const i in d)if(d[i]==="c")d[i]="u";s.dn=d;if(s.cs)s.cs=s.cs.map(x=>x.dn==="c"?{...x,dn:"u"}:x)});commit()};bx.appendChild(c)}
+  if(L.some(x=>x.dn==="c")){const c=el(`<button class="link" type="button" id="dnOk-${k}">Confirmar sugestões</button>`);c.onclick=()=>{upd(k,s=>{const d={...(s.dn||{})};L.forEach(x=>{if(x.dn==="c"&&x.i!==undefined)d[x.i]="u"});s.dn=d;if(s.cs)s.cs=s.cs.map(x=>x.dn==="c"?{...x,dn:"u"}:x)});commit()};bx.appendChild(c)}
   if(A&&A.msg){const m=el(`<p class="how dnmsg"></p>`);m.textContent=A.msg;bx.appendChild(m)}
   else if(ed)bx.appendChild(el(`<p class="how">Toque em “normal” ou “denso” ao lado de cada subtópico. Tracejado = sugerido pelo Claude; a sua escolha sempre vale.</p>`));
   return bx}
@@ -6600,7 +6602,7 @@ const HELP=[
 - Registre erros no **caderno de erros** e escreva **anotações** dentro de cada tema.`],
 ["Estudar hoje",`O plano tem **3 temas** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver), depois os temas que você está **Estudando** (para terminar antes de abrir outro) e temas novos de maior incidência.
 - **Temas grandes em partes:** tema com até 6 subtópicos vem inteiro no dia. Maior que isso vem em **partes de 3 a 4 subtópicos** ("Tema novo · Parte 1 de 4"); no dia seguinte, o plano traz a próxima parte ("Continuar · Parte 2 de 4"). O tema fica **Estudando** até a última parte e só então entra nas revisões.
-- **Subtópico denso** (ex.: Anemias carenciais) conta como dois no tamanho da parte. Marque dentro do tema (**Marcar subtópicos densos**) ou peça ao Claude: no tema (**Pedir sugestão ao Claude**) ou em todos de uma vez (**⚙ Configurações › Plano › Subtópicos densos**). A sugestão aparece tracejada e já vale; toque no selo para tirar ou em **Confirmar sugestões**. A sua escolha nunca é trocada por uma sugestão nova.
+- **Subtópico denso** (ex.: Anemias carenciais) conta como dois no tamanho da parte. **O Claude já revisou os 185 temas** e deixou marcados os densos (selo tracejado "denso · Claude"); temas curtos mas pesados, como Valvopatias e Endemias, já vêm em partes. Corrija dentro do tema (**Marcar subtópicos densos**) ou peça ao Claude: no tema (**Pedir sugestão ao Claude**) ou em todos de uma vez (**⚙ Configurações › Plano › Subtópicos densos**). A sugestão aparece tracejada e já vale; toque no selo para tirar ou em **Confirmar sugestões**. A sua escolha nunca é trocada por uma sugestão nova.
 - **Placar do dia** (topo do Início): plano, revisões, questões da semana e foco de hoje, cada um com barra; toque para ir até a parte certa.
 - **O que fazer agora:** o app escolhe o próximo passo (revisão atrasada → tema do plano já começado → revisão de hoje → tema novo do plano → refazer erradas → simulado para a meta da semana). **Começar com o Foco** liga o relógio naquele tema e abre o cartão; **Outra sugestão** mostra a próxima opção.
 - **Meta e projeção:** com as provas de residência cadastradas no Perfil, o Início mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.

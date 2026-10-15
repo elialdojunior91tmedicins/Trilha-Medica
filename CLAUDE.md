@@ -212,7 +212,7 @@ consultado quando há dúvida. Responda em português.
   `makeDayPlan` (r-new e `r-cont` "Continuar · Parte 2 de 4"), `adoptTopic` e `weekPreview` (`simStudy`). `buildPlan` põe os temas Estudando (`r-cont`, mais antigos primeiro)
   antes dos novos (que excluem `ing`). Projeção: `partsAvg()` divide a capacidade. `SUBS_PER_DAY`/`subN` agora só vale para revisões e pontos fracos.
   Densos: `s.dn={índice:"u"|"n"|"c"}` e `cs[j].dn` (u = usuário marcou, n = usuário tirou, c = Claude sugeriu e vale até mudar); `subW` = 2 se denso; `setDn`,
-  `dnBoxEl` no tema (`dnEdit`, selos `.dnb`), `dnSuggest(it)`/`dnSuggestAll()` (lotes `DN_CHUNK`=45 em Configurações › Plano, `dnPending`, `s.dnAt`), `dnApply` nunca troca u/n. Teste: `tests/t88.js`.
+  revisão embutida `DN_DEF` = {chave:[índices]} dos 185 temas (vira "c" em `subList` quando não há `s.dn[i]`; `dnPending` ignora temas em `DN_DEF`; 91 temas em partes), `dnBoxEl` no tema (`dnEdit`, selos `.dnb`), `dnSuggest(it)`/`dnSuggestAll()` (lotes `DN_CHUNK`=45 em Configurações › Plano, `dnPending`, `s.dnAt`), `dnApply` nunca troca u/n. Teste: `tests/t88.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em

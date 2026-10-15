@@ -69,7 +69,10 @@ await p.evaluate(k=>{const it=BYKEY[k];setDn(it,subList(it)[2],"n")},K.big);ok(a
 await click(`#dnEd-${K.big}`);await p.waitForTimeout(150);const nb=await p.$$eval(`#t-${K.big} .dnb`,a=>a.length);ok(nb===await p.evaluate(k=>subList(BYKEY[k]).length,K.big),tag+": modo marcar mostra todos os subtópicos");
 await p.screenshot({path:`t88-${mob?"fone":"desk"}-tema.png`,fullPage:false});
 // lote em Configurações
-calls=[];await p.evaluate(()=>{goSub("config")});await p.waitForTimeout(300);
+ok(await p.evaluate(()=>dnPending().length===0&&ALL.every(i=>i.own||DN_DEF[i.key])),tag+": os 185 temas já vêm revisados pelo Claude");
+ok(await p.evaluate(()=>{const it=BYKEY["CM-47"];return subList(it).filter(dnHeavy).length===5&&subParts(subList(it)).length===3}),tag+": Endemias vem em 3 partes");
+await p.evaluate(()=>{goSub("config")});await p.waitForTimeout(300);ok(!(await p.$('#dnAll'))&&/todos já sugeridos/.test(await p.$eval('#dnAllBox',x=>x.textContent)),tag+": sem pendentes, sem botão de lote");
+calls=[];await p.evaluate(()=>{Object.keys(DN_DEF).slice(0,60).forEach(k=>delete DN_DEF[k]);goSub("config")});await p.waitForTimeout(300);
 const pend=await p.evaluate(()=>dnPending().length);await click('#dnAll');await p.waitForFunction(()=>dnAsk.all&&dnAsk.all.st!=="loading",null,{timeout:20000});
 ok(calls.length===Math.ceil(pend/45)&&await p.evaluate(()=>dnPending().length===0),tag+`: lote em ${calls.length} partes (${pend} temas)`);
 ok(/Pronto/.test(await p.$eval('#dnAllMsg',x=>x.textContent)),tag+": mensagem do lote");
