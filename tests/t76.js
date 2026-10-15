@@ -31,8 +31,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  await p.evaluate(()=>{fac={sems:[{id:"s",name:"6",archived:false}],discs:[{id:"d1",semId:"s",name:"NCS 6",items:["T:CM-1"],info:{},links:[],eixos:[{id:"e1",name:"Cardio",area:"CM",spec:"Cardiologia"}],sps:[{id:"sp1",name:"SP 1",eixoId:"e1",items:["T:CM-4"],objs:["Diagnosticar IC"]},{id:"sp2",name:"SP 2",eixoId:"e1",items:["T:CM-9"],objs:[]}]}],provas:[{id:"p1",discId:"d1",name:"Prova 1",date:fromNum(dnum(today())+20),items:["T:CM-1","T:CM-4"]}],own:{}};registerOwn();saveFac();
    syncObjs(fac.discs[0].sps[0]);delSP(fac.discs[0],fac.discs[0].sps[1])});await p.waitForTimeout(100);
  ok(await p.evaluate(()=>fac.discs[0].sps.length===1&&trash.length===1&&trash[0].kind==="sp"),name+": SP vai para a lixeira");
- await p.evaluate(()=>trRestore(trash[0].id));ok(await p.evaluate(()=>fac.discs[0].sps.some(s=>s.id==="sp2")&&fac.discs[0].sps.find(s=>s.id==="sp2").eixoId==="e1"),name+": SP volta para o eixo");
- await p.evaluate(()=>{backStack=[];facOpenSem.add("s");facOpenDisc.add("d1");facEditDisc.add("d1");setView("fac")});await p.waitForTimeout(150);
+ await p.evaluate(()=>trRestore(trash[0].id));ok(await p.evaluate(()=>{const s=fac.discs[0].sps.find(s=>s.id==="sp2");return !!s&&s.items[0]==="O:sp2"&&!!fac.own.sp2&&ownLinks("sp2").map(L=>L.k).join()==="CM-9"&&!s.eixoId}),name+": SP volta com o próprio conteúdo e a ligação");
+ await p.evaluate(()=>{backStack=[];facOpenSem.add("s");facOpenDisc.add("d1");facDetOpen.add("d1");setView("fac")});await p.waitForTimeout(150);
  const del=async()=>p.evaluate(()=>{const b=[...document.querySelectorAll('#viewFac button')].find(x=>/^Excluir disciplina|^Toque de novo: apaga a disciplina/.test(x.textContent));if(b){b.click();return true}return false});
  ok(await del(),name+": botão excluir disciplina");await p.waitForTimeout(100);await del();await p.waitForTimeout(150);
  ok(await p.evaluate(()=>!fac.discs.length&&!fac.provas.length&&trash.length===1&&trash[0].kind==="disc"),name+": disciplina e prova vão juntas para a lixeira (um item só)");

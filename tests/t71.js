@@ -18,7 +18,7 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);
  facOpenSem.add("s");facOpenDisc.add("d");facOpenSP.add("sp1");commit();setView("fac")});await p.waitForTimeout(250);
 // 1. painel
 const pan=await txt('#facProvas');ok(/Prova do NCS 6/.test(pan)&&/2 de 4 conteúdos prontos/.test(pan)&&/1 a cada 4 dias/.test(pan),name+": painel com prontidão e ritmo");
-ok(/Próximo: Cetoacidose diabética|Próximo: Cascata da coagulação/.test(pan),name+": próximo conteúdo "+(pan.match(/Próximo: [^E]+/)||[""])[0]);
+ok(/Próximo: Cetoacidose diabética|Próximo: Cascata da coagulação|Próximo: SP 3.1 Insuficiência cardíaca/.test(pan),name+": próximo conteúdo "+(pan.match(/Próximo: [^E]+/)||[""])[0]);
 ok(await p.evaluate(()=>{const a=document.getElementById("facProvas").getBoundingClientRect(),b=document.getElementById("facSems").getBoundingClientRect();return a.top<b.top||a.left>b.left}),name+": painel acima (ou ao lado) das pastas");
 if(big)ok(await p.evaluate(()=>document.getElementById("facProvas").getBoundingClientRect().left>document.getElementById("facSems").getBoundingClientRect().right-5),name+": duas colunas");
 // 8. limpeza
@@ -27,7 +27,7 @@ ok(!(await p.$('.fhowto')),name+": sem caixa de explicação");ok(!/Prova do NCS
 ok(/1h00 na semana/.test(await txt('#fd-d .fdmeta')),name+": foco da semana na disciplina");
 ok(await p.evaluate(()=>!!document.getElementById("facWeek").offsetParent)===big,name+": cartão foco da semana "+(big?"visível":"oculto"));
 // 6. materiais
-await click('#fd-d .fdtools .mini:nth-child(3)');await p.waitForTimeout(100);await p.fill('#flu-dd','drive.google.com/pasta-ncs');await p.fill('#flt-dd','Slides do NCS');await click('#fd-d .flform button[type=submit]');await p.waitForTimeout(100);
+await click('#fd-d .fdtools .mini:nth-child(4)');await p.waitForTimeout(100);await p.fill('#flu-dd','drive.google.com/pasta-ncs');await p.fill('#flt-dd','Slides do NCS');await click('#fd-d .flform button[type=submit]');await p.waitForTimeout(100);
 const lk=await p.evaluate(()=>fac.discs[0].links);ok(lk&&lk[0].u==="https://drive.google.com/pasta-ncs"&&lk[0].t==="Slides do NCS",name+": material salvo");
 ok(await p.evaluate(()=>{const a=document.querySelector('#fd-d .flinks a');return a&&a.target==="_blank"&&/Slides do NCS/.test(a.textContent)}),name+": link abre em nova aba");
 await p.evaluate(()=>{facNew["lkssp1"]={t:"",u:"x"};render()});await p.fill('#flu-ssp1','nada');await click('#sp-sp1 .flform button[type=submit]');await p.waitForTimeout(80);ok(/não parece válido/.test(await txt('#sp-sp1 .flinks')),name+": link inválido avisa");

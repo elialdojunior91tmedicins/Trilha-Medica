@@ -9,7 +9,8 @@ const sid=await p.evaluate(()=>fac.sems[0].id);
 ok(await p.isVisible('#facNewDisc-'+sid),"semestre vazio já mostra o campo da 1ª disciplina");
 await p.tap('#facNewDisc-'+sid);await p.keyboard.type('NCS 6');await p.tap('#fs-'+sid+' .fnewdisc button[type=submit]');await p.waitForTimeout(400);
 const did=await p.evaluate(()=>fac.discs[0].id);
-ok(await p.isVisible('#fq-c'+did),"disciplina nova abre direto no + Conteúdo");
+ok(await p.isVisible('#fq-c'+did)&&await p.evaluate(d=>facNew["ckind"+d]==="sp",did),"disciplina NCS nova abre direto no + SP");
+await p.tap('#fck-'+did+'-c');await p.waitForTimeout(100);
 // conteúdo da residência
 await p.tap('#fq-c'+did);await p.keyboard.type('coagulação');await p.waitForTimeout(250);
 await p.tap(`#fd-${did} .fadder .fres li:has-text("Distúrbios da coagulação") button`);await p.waitForTimeout(250);
@@ -32,11 +33,12 @@ await p.tap(`#fd-${did} .fadder .fadh button`).catch(()=>{});await p.waitForTime
 await p.evaluate(d=>{facOpenDisc.add(d);facAddC=null;render()},did);
 await p.tap(`#fd-${did} .flist li.t:has-text("Cascata") > .item`);await p.waitForTimeout(200);
 ok(await p.isVisible(`#fd-${did} .flist li.t.open .detail`),"conteúdo abre para estudar dentro da disciplina");
-// organizar: criar SP e mover
-await p.tap(`#fd-${did} .fdtools button:has-text("Organizar")`);await p.waitForTimeout(150);
-await p.tap('#fn-sp-'+did);await p.keyboard.type('SP 2.1 Hemostasia');await p.keyboard.press('Enter');await p.waitForTimeout(250);
-const spid=await p.evaluate(d=>discOf(d).sps[0]&&discOf(d).sps[0].id,did);ok(!!spid,"criou SP em Organizar");
-await p.selectOption(`#fd-${did} .flist li.t:has-text("Cascata") .frmrow select`,spid);await p.waitForTimeout(250);
+// + SP e Mover para
+await p.tap('#faddsp-'+did);await p.waitForTimeout(150);
+await p.tap('#fq-c'+did);await p.keyboard.type('SP 2.1 Hemostasia');await p.waitForTimeout(250);await p.keyboard.press('Enter');await p.waitForTimeout(250);
+const spid=await p.evaluate(d=>discOf(d).sps[0]&&discOf(d).sps[0].id,did);ok(!!spid,"criou SP pelo + SP");
+await p.evaluate(()=>{facAddC=null;const it=FAC_ITEMS.find(y=>y.t==="Cascata da coagulação");openKey=it.key;render()});await p.waitForTimeout(150);
+await p.selectOption(`#fd-${did} .flist li.t.open .fracts select`,"s:"+spid);await p.waitForTimeout(250);
 ok(await p.evaluate(([d,s])=>{const x=discOf(d),sp=x.sps[0];const it=FAC_ITEMS.find(y=>y.t==="Cascata da coagulação");return sp.items.some(r=>r==="O:"+it.key.slice(2))&&!x.items.includes("O:"+it.key.slice(2))},[did,spid]),"moveu conteúdo para a SP");
 await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:'t41.png',fullPage:true});
 ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),"sem rolagem horizontal");

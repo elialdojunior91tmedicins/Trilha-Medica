@@ -20,15 +20,18 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  ok(await p.evaluate(()=>facNew.provs.ds.join()==="d1,d2"),name+": escolhe duas disciplinas na prova nova");
  await click('#fsp-s form.fpform button[type=submit]');
  const D2=await p.evaluate(()=>{const x=fac.provas.find(y=>y.name==="D2 NCS 6");return x&&{id:x.id,ids:provaDids(x),items:[...x.items].sort(),sps:x.sps}});
- ok(D2&&D2.ids.join()==="d1,d2"&&D2.items.join()==="T:CM-1,T:CM-4,T:CM-9"&&D2.sps.join()==="sp21,sp22",name+": prova conjunta com o conteúdo das duas "+JSON.stringify(D2));
+ ok(D2&&D2.ids.join()==="d1,d2"&&D2.items.join()==="O:sp21,O:sp22,O:sp31,T:CM-9"&&D2.sps.join()==="sp21,sp22,sp31",name+": prova conjunta com o conteúdo das duas "+JSON.stringify(D2));
  ok(await p.evaluate(id=>document.querySelectorAll(`#fp-${id} .fpdh2`).length===2&&/NCS 6 - Tutoria \+ NCS 6 - Morfofuncional/.test(document.querySelector(`#fp-${id} .fphl span`).textContent),D2.id),name+": card mostra as duas disciplinas");
+ /* a SP 3.1 não cai na D2: desmarcar a SP no card */
+ await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);provaSetSp(x,spOf("sp31").s,false);saveFac();render()},D2.id);
+ ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return x.items.join()==="O:sp21,O:sp22,T:CM-9"&&x.sps.join()==="sp21,sp22"},D2.id),name+": tirar a SP 3.1 da D2 tira o conteúdo dela");
  await noScroll("prova conjunta");if(name==="fone")await p.screenshot({path:`t77-conj-${name}.png`,fullPage:false});
  /* 2. D3 só da Tutoria: começa sem o que já está na D2 e esconde a SP 2.x */
  await p.evaluate(()=>{facNew.provs={d:"d1"};render()});await p.waitForTimeout(80);
  await p.fill('#fpn-s','D3 NCS 6');await p.fill('#fpd-s',await p.evaluate(()=>fromNum(dnum(today())+55)));await p.dispatchEvent('#fpd-s','input');
  await click('#fsp-s form.fpform button[type=submit]');
  const D3=await p.evaluate(()=>fac.provas.find(y=>y.name==="D3 NCS 6").id);
- ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return provaDids(x).join()==="d1"&&!x.items.length&&!x.sps},D3),name+": D3 começa sem o conteúdo da D2");
+ ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return provaDids(x).join()==="d1"&&x.items.join()==="O:sp31"},D3),name+": D3 começa sem o conteúdo da D2 (só a SP 3.1)");
  const lab=()=>p.evaluate(id=>[...document.querySelectorAll(`#fp-${id} .fpgh label`)].map(l=>l.textContent).join("|"),D3);
  ok(!/SP 2\.1|SP 2\.2/.test(await lab())&&/SP 3\.1/.test(await lab()),name+": D3 não mostra as SPs da D2 ("+await lab()+")");
  ok(await p.evaluate(id=>/\(2\)/.test(document.querySelector('#fpall-'+id).textContent),D3),name+": link para mostrar o que está em outras provas (2)");
@@ -37,7 +40,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  /* 3. SP › Cai na prova; o que entra depois na SP vai para a prova */
  await p.evaluate(()=>{facOpenDisc.add("d1");facOpenSP.add("sp31");render()});await p.waitForTimeout(100);
  ok(await p.evaluate(()=>!!document.querySelector('#sp-sp31 .fsppv')&&document.querySelectorAll('#sp-sp31 .fsppv .chip').length===2),name+": SP mostra 'Cai na prova' com as duas provas");
- await click(`#spv-sp31-${D3}`);
+ if(!(await p.evaluate(id=>(fac.provas.find(y=>y.id===id).sps||[]).includes("sp31"),D3)))await click(`#spv-sp31-${D3}`);
  ok(await p.evaluate(id=>fac.provas.find(y=>y.id===id).sps.join()==="sp31",D3),name+": SP ligada à D3");
  await p.evaluate(()=>{const d=discOf("d1");spAdd(d,d.sps[2],"T:CM-6")});await p.waitForTimeout(100);
  ok(await p.evaluate(([a,b])=>fac.provas.find(y=>y.id===b).items.includes("T:CM-6")&&!fac.provas.find(y=>y.id===a).items.includes("T:CM-6"),[D2.id,D3]),name+": conteúdo novo da SP entra só na D3");
@@ -47,7 +50,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  await p.evaluate(()=>{const d=discOf("d1");spAdd(d,d.sps[2],"T:CM-7")});await p.waitForTimeout(80);
  const cb=await p.evaluate(id=>{const li=[...document.querySelectorAll(`#fp-${id} .psubs li`)].find(l=>/^\S/.test(l.textContent)&&l.querySelector("input").checked);return li&&li.querySelector("input").id},D3);
  await click('#'+cb);
- ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return !x.sps&&x.items.length===1},D3),name+": desmarcar um tema tira só ele (a SP deixa de puxar conteúdo novo)");
+ ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return !x.sps&&x.items.length===2},D3),name+": desmarcar um tema tira só ele (a SP deixa de puxar conteúdo novo)");
  /* 4. + Conteúdo direto: escolhe a prova (padrão = a próxima) */
  await p.evaluate(()=>{facOpenDisc.add("d2");facAddC="d2";render()});await p.waitForTimeout(100);
  ok(await p.evaluate(id=>{const s=document.querySelector('#fcpv-d2');return s&&s.value===id},D2.id),name+": + Conteúdo mostra 'Cai na prova' com a próxima prova");
@@ -63,10 +66,10 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  ok(await p.evaluate(id=>{const x=fac.provas.find(y=>y.id===id);return provaDids(x).join()==="d1,d2"&&discRefs(discOf("d2")).every(r=>x.items.includes(r))},D2.id),name+": pôr de volta traz o conteúdo dela");
  /* 6. excluir a Tutoria: a D3 (só dela) vai para a lixeira; a D2 conjunta fica com a Morfofuncional */
  await p.evaluate(()=>{trash=[];const d=discOf("d1");const shared=fac.provas.filter(p=>provaHas(p,"d1")&&provaDids(p).filter(discOf).length>1);
-   facEditDisc.add("d1");render();const btn=()=>[...document.querySelectorAll('#fd-d1 button')].find(x=>/^Excluir disciplina|^Toque de novo: apaga/.test(x.textContent));btn().click();btn().click()});await p.waitForTimeout(150);
- ok(await p.evaluate(([a,b])=>!discOf("d1")&&!fac.provas.some(y=>y.id===b)&&provaDids(fac.provas.find(y=>y.id===a)).join()==="d2"&&!fac.provas.find(y=>y.id===a).items.includes("T:CM-1"),[D2.id,D3]),name+": excluir disciplina mantém a prova conjunta com a outra");
+   facOpenDisc.add("d1");facDetOpen.add("d1");render();const btn=()=>[...document.querySelectorAll('#fd-d1 button')].find(x=>/^Excluir disciplina|^Toque de novo: apaga/.test(x.textContent));btn().click();btn().click()});await p.waitForTimeout(150);
+ ok(await p.evaluate(([a,b])=>!discOf("d1")&&!fac.provas.some(y=>y.id===b)&&provaDids(fac.provas.find(y=>y.id===a)).join()==="d2"&&!fac.provas.find(y=>y.id===a).items.includes("O:sp21"),[D2.id,D3]),name+": excluir disciplina mantém a prova conjunta com a outra");
  await p.evaluate(()=>trRestore(trash[0].id));await p.waitForTimeout(100);
- ok(await p.evaluate(([a,b])=>{const x=fac.provas.find(y=>y.id===a);return !!discOf("d1")&&fac.provas.some(y=>y.id===b)&&provaDids(x).join()==="d1,d2"&&x.items.includes("T:CM-1")&&(x.sps||[]).includes("sp21")},[D2.id,D3]),name+": desfazer devolve a disciplina às duas provas");
+ ok(await p.evaluate(([a,b])=>{const x=fac.provas.find(y=>y.id===a);return !!discOf("d1")&&fac.provas.some(y=>y.id===b)&&provaDids(x).join()==="d1,d2"&&x.items.includes("O:sp21")&&(x.sps||[]).includes("sp21")},[D2.id,D3]),name+": desfazer devolve a disciplina às duas provas");
  /* 7. nome do nível com número */
  await p.evaluate(()=>{fac.sems[0].lv={sp:"SP 2.1 - Hemostasia"};saveFac();render()});await p.waitForTimeout(80);
  ok(await p.evaluate(()=>!!document.querySelector('#flvfix-s')),name+": avisa que o nome do nível ficou com número");

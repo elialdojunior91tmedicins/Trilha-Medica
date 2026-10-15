@@ -24,7 +24,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  await click('#flka-a-0');await click('#flkgo-a');
  ok(await p.evaluate(()=>/pelo menos um subtópico/.test(document.querySelector('.flink .err').textContent)),name+": só alguns subtópicos sem marcar nenhum avisa");
  await click('#flks-a-0');await click('#flks-a-1');await click('#flkgo-a');
- const r1=await p.evaluate(([k,s0,s1,qt0])=>{const L=fac.own.a.link;return {link:!!L&&L.k===k&&L.subs.join("|")===[s0,s1].join("|"),fGone:!state["F-a"]&&!BYKEY["F-a"]&&!FAC_ITEMS.some(i=>i.key==="F-a"),
+ const r1=await p.evaluate(([k,s0,s1,qt0])=>{const L=fac.own.a.links&&fac.own.a.links[0];return {link:!!L&&L.k===k&&L.subs.join("|")===[s0,s1].join("|"),fGone:!state["F-a"]&&!BYKEY["F-a"]&&!FAC_ITEMS.some(i=>i.key==="F-a"),
    qt:get(k).qt===qt0+5,note:/Da faculdade: SP 2.3/.test(notes[k]||"")&&!notes["F-a"],err:errors.find(e=>e.id==="ea").k===k,
    subsDone:subList(BYKEY[k]).filter(x=>x.t===s0||x.t===s1).every(x=>x.done),label:refLabel("O:a")==="SP 2.3 – Anemias hemolíticas"}},[T.k,T.subs[0],T.subs[1],T.qt0]);
  ok(await p.evaluate(()=>!trash.some(x=>x.kind==="note")&&!document.querySelector("#trToast:not([hidden])")),name+": a anotação muda de lugar sem ir para a lixeira");
@@ -43,12 +43,30 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  await click('#lki-a-0');ok(await p.evaluate(([k,s0])=>subList(BYKEY[k]).find(y=>y.t===s0).done,[T.k,T.subs[0]]),name+": marcar o subtópico ali marca no tema (mesmo registro)");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
  if(name==="fone"||name==="note")await p.screenshot({path:`t82-${name}.png`});
+ /* 3b. ligado a dois temas: só conta como estudado com os dois; cada tema com as suas anotações */
+ const k2="CM-35";
+ await p.evaluate(k2=>{const D=n=>fromNum(dnum(today())+n);state[k2]={};notes[k2]="Nota do segundo tema";linkOwn("a",k2,[]);
+   const k=fac.own.a.links[0].k;subList(BYKEY[k]).forEach(x=>{if(!x.done)toggleSub(BYKEY[k],x)});state[k]={...get(k),l:1,last:today()};commit();
+   facOpenSem.add("s6");facOpenDisc.add("d1");facOpenSP.add("sp1");openKey=null;setView("fac")},k2);await p.waitForTimeout(200);
+ const m1=await p.evaluate(k2=>{const pr=fac.provas[0];const li=[...document.querySelectorAll('#facSems li.t')].find(l=>l.querySelector('.topic').textContent==="SP 2.3 – Anemias hemolíticas");
+   return {n:fac.own.a.links.length,second:fac.own.a.links[1].k===k2,keepNote:notes[k2]==="Nota do segundo tema",studied:itemStudied(pr,"O:a"),miss:refMissing(pr,"O:a").map(x=>x.k).join(),meta:li&&li.querySelector('.meta').textContent}},k2);
+ ok(m1.n===2&&m1.second&&m1.keepNote&&!m1.studied&&m1.miss===k2&&/ligado a 2 temas/.test(m1.meta)&&/1 de 2 ligados estudados/.test(m1.meta),name+": ligado a 2 temas, conta como estudado só com os dois e diz qual falta "+JSON.stringify(m1));
+ await p.evaluate(()=>{const b=[...document.querySelectorAll('#facSems li.t .item')].find(x=>x.querySelector('.topic').textContent==="SP 2.3 – Anemias hemolíticas");b.click()});await p.waitForTimeout(200);
+ const all=await p.evaluate(()=>{const g=document.querySelector('#facSems li.t.open .flinkall');return g&&g.textContent});
+ ok(all&&/Nota do segundo tema|com anotação/.test(all)&&/principal/.test(all),name+": aberto na Faculdade, mostra junto as anotações dos temas ligados "+(all||"").slice(0,80));
+ ok(await p.isVisible('#flk-a')&&/Ligar a mais um tema/.test(await p.textContent('#flk-a')),name+": oferece ligar a mais um tema");
+ if(name==="fone"||name==="note")await p.screenshot({path:`t82-multi-${name}.png`,fullPage:false});
+ await p.evaluate(k2=>{state[k2]={l:1,last:today()};commit()},k2);
+ ok(await p.evaluate(()=>itemStudied(fac.provas[0],"O:a")),name+": com os dois temas estudados, conta como estudado");
+ await p.evaluate(k2=>{detTab[k2]="estudo";openTopic(k2)},k2);await p.waitForTimeout(250);
+ ok(await p.evaluate(()=>{const g=document.querySelector('.flinkinfo');return !!g&&/Também ligado a/.test(g.textContent)}),name+": no segundo tema, Na faculdade diz a que outro tema está ligado");
+ await p.evaluate(k2=>unlinkOwn("a",k2),k2);ok(await p.evaluate(k=>fac.own.a.links.length===1&&fac.own.a.links[0].k===k,T.k),name+": desligar um tema mantém o outro");
  /* 4. desligar */
  await p.evaluate(()=>unlinkOwn("a"));await p.waitForTimeout(100);
- ok(await p.evaluate(k=>!fac.own.a.link&&!!BYKEY["F-a"]&&!(state["F-a"]&&state["F-a"].last)&&get(k).qt>=5&&refTopic("O:a").k==="F-a",T.k),name+": desligar volta a ser conteúdo só da faculdade, do zero; o tema fica com o progresso");
+ ok(await p.evaluate(k=>!ownLinks("a").length&&!fac.own.a.links&&!!BYKEY["F-a"]&&!(state["F-a"]&&state["F-a"].last)&&get(k).qt>=5&&refTopic("O:a").k==="F-a",T.k),name+": desligar volta a ser conteúdo só da faculdade, do zero; o tema fica com o progresso");
  /* 5. ligação inválida é limpa; dados válidos */
- await p.evaluate(()=>{fac.own.b.link={k:"XX-999",subs:[]};registerOwn()});
- ok(await p.evaluate(()=>!fac.own.b.link&&!!BYKEY["F-b"]),name+": ligação para tema que não existe é descartada");
- ok(await p.evaluate(()=>JSON.stringify(fac).indexOf("undefined")<0&&Object.values(fac.own).every(o=>!o.link||Array.isArray(o.link.subs))),name+": dados da Faculdade válidos");
+ await p.evaluate(()=>{delete fac.own.b.links;fac.own.b.link={k:"XX-999",subs:[]};registerOwn()});
+ ok(await p.evaluate(()=>!fac.own.b.link&&!(fac.own.b.links||[]).length&&!!BYKEY["F-b"]),name+": ligação para tema que não existe é descartada");
+ ok(await p.evaluate(()=>JSON.stringify(fac).indexOf("undefined")<0&&Object.values(fac.own).every(o=>!o.link&&(!o.links||o.links.every(L=>Array.isArray(L.subs)&&BYKEY[L.k])))),name+": dados da Faculdade válidos");
  await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join(" | "));await b.close()})();

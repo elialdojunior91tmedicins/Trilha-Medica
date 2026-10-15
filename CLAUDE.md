@@ -41,11 +41,16 @@ consultado quando há dúvida. Responda em português.
 - `firestore.rules`: cada usuário só acessa `data/users/{uid}/**`.
 - Dados no Firestore: `data/users/{uid}/progress` (hist, plan; temas em `progress/topics/{chave}`), `/faculdade`, `/settings`,
   `progress/errors/{id}`, `progress/notes/{key}`.
-- Faculdade: `fac.discs[]` = {name, info:{tipo,ch,prof,tutor,horario,local,ementa,objetivos}, items (conteúdo avulso antigo),
-  eixos:[{id,name,area,spec}], sps:[{id,name,eixoId,items:[ref],objs:[texto]}]}; `sem.lv` renomeia os níveis.
+- Faculdade: `fac.sems[]` = {id,name,archived,lv,ucs?:[{id,name}]} (UC opcional, só o nome: `ucLabel` mostra "NCS 6" pelo número do semestre);
+  `fac.discs[]` = {name, ucId?, div:"sp"|"" (com SPs ou só lista), info:{tipo,ch,prof,tutor,horario,local,ementa,objetivos}, items (conteúdos diretos),
+  sps:[{id,name,items:[ref],objs:[texto]}]}; `sem.lv` renomeia os níveis (disc, sp). Não há mais eixo.
+  SP = conteúdo: cada SP tem `fac.own[s.id]={t:s.name,discId,spId:s.id}` e `"O:"+s.id` sempre como 1º item (`isSelf`); os outros itens são
+  conteúdos dentro dela. Renomear a SP muda `own.t` junto. `facMigrateSP` (em `facNormalize`) converte o formato antigo: cria o próprio da SP,
+  copia a área do eixo para a SP (e para conteúdos FAC aninhados sem área), apaga `eixos`/`eixoId`/`lv.eixo` e define `div`.
   Refs: `T:<chave>` tema da residência, `S:<chave>:<subtópico>`, `O:<id>` tema da faculdade (progresso em `F-<id>`).
-  O eixo define área/especialidade dos temas FAC (`ownPlace`), que aparecem na aba Temas com selo FAC e não contam no % dominado.
-  Objetivos da SP viram subtópicos (`cs` com `fac:<id da SP>`) do primeiro tema ligado (`syncObjs`).
+  A área dos temas FAC (`ownPlace`) é a do próprio conteúdo ou a da SP dele; que aparecem na aba Temas com selo FAC e não contam no % dominado.
+  Objetivos da SP viram subtópicos (`cs` com `fac:<id da SP>`) do tema principal da SP (`primaryRef`: o primeiro ligado, ou o `F-<sid>`; `syncObjs`
+  limpa dos outros e devolve se mudou; `facSyncAll` roda ao carregar).
   "Colar ementa": `ementaPrompt` → `sample.json` → `ementaParse` (revisão) → `ementaApply` (junta por nome, sem duplicar).
 - Backup: JSON `{app:"checklist-residencia", format:1, exportedAt, data:{topics,hist,plan,notes,noteAt,errors,fac,prompt,sort}}`.
 
@@ -62,8 +67,11 @@ consultado quando há dúvida. Responda em português.
   por 14 dias), linha do tema com acerto colorido e foco (`foTot`), barra fina de subtópicos no gráfico por área.
   Prévia da semana `weekPreview()` (simula 6 dias com `dayOff`, que desloca `today()`; clona e restaura `state`) em `#weekBox`;
   temas fixados `s.pin` (`togglePin`, `#pinBox`, filtro `tf.pin`).
-- Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › disciplina (`facOpenDisc`; + Conteúdo em `facAddC`
-  guarda em `d.items` ou numa SP; "Organizar" = `facEditDisc`) › eixo › SP;
+- Faculdade em pastas: semestre (`facOpenSem`, + Disciplina em `facNewDiscFor`) › UC (cabeçalho `.fuch`, opcional) › disciplina (`facOpenDisc`;
+  `contentAdder` em `facAddC`, tipo em `facNew["ckind"+d]` = "sp"|"c": + SP (`addSP(d,name,{area,links,pid})`) ou + Conteúdo (direto ou
+  dentro de uma SP), chips de ligação em `facNew["clk"+d]`; "Detalhes e ajustes" = `infoPanel` + `discSettings` (UC, Divisões, renomear,
+  `delDisc`)) › SP (`spRow`/`spDetail`) e "Outros conteúdos". Ações do conteúdo aberto: `rowActs` (Mover para… `moveEl`/`moveRef`,
+  Transformar em SP `toSP`, renomear, tirar); SP: `moveSP`. Conteúdos com nome de SP (`SP_RE`) ganham o aviso "Transformar em SPs".
   "Colar ementa" e "Provas do semestre" (`facOpenProv`) ficam dentro de cada semestre.
   Provas de várias disciplinas: `p.discId` = principal e `p.discIds` (só com 2+) = todas; use `provaDids`/`provaHas`/`provaDiscs`/`provaDiscName`
   (nunca `p.discId===d.id`). SPs ligadas `p.sps` (`provaSetSp`; `facLinkSync` em `facNormalize` puxa o conteúdo novo delas). Prova nova começa com
@@ -117,7 +125,7 @@ consultado quando há dúvida. Responda em português.
   `foRun` só no aparelho (`resid-focus-run`, conta por horário de início). Preferências `ui.prefs.fw/fb/fsnd/fgoal/fwake`.
   `foMat` agrupa por especialidade/disciplina; entra no PDF (`R.Fo`) e no backup (`data.focus`). Pílula `#foPill` fora da aba.
   Depois da sessão: `foAfter` ({k,sec,d,id}, localStorage `resid-focus-after`, `foAfterSet` em `foTick`/`foFinish`) → `foAfterCard` (subtópicos via
-  `toggleSub`, Estudei/Revisei, questões). Vínculo rápido `foQuickEl`. Ciclos `foSeries` (`resid-focus-series`, zera após 1 h) e pausa longa
+  `toggleSub`, Estudei/Revisei, questões). Vínculo rápido `foQuickEl` (plano, revisões e disciplinas ativas ainda sem conteúdo `#foqd-<id>`, ref `D:`; teste t90). Ciclos `foSeries` (`resid-focus-series`, zera após 1 h) e pausa longa
   `ui.prefs.flong/fevery` (`foRun.lb`), bolinhas `foDotsEl`. Distrações `foRun.dist` → sessão `dz`. Ruído `ui.prefs.fnoise` w|b|r e `fvol`
   (`foNoiseSync` no fim de `render()`, WebAudio). Tela inteira `fullOn.fo`. Mapa `foHeatCard` (12 semanas + melhor horário), `foWeekExtra`
   (meta semanal `ui.prefs.fwgoal` em minutos, recorde, distrações). Layout: `.focol` (esquerda: depois, relógio, sessões; direita: semana, mapa, matéria).
@@ -186,12 +194,18 @@ consultado quando há dúvida. Responda em português.
   por padrão em `mockdb.js`/`fakefb.js`). `altsEl(q,mine,onPick)` desenha as alternativas nos três lugares (tema, Refazer, simulado) e, depois
   de responder, o `.altwhy` sob cada errada (`.mine` = a marcada). `rdClean` guarda o `porque`; `qDraft` leva o da marcada ao caderno de erros. Teste: `tests/t81.js`.
 
-- Faculdade ligada à Residência sem substituir: `fac.own[id].link={k,subs}` (`subs` vazio = tema inteiro). `ownLink(id)`/`RESKEY`/`ownLinksTo(k)`;
-  `facNormalize` descarta ligação inválida; `registerOwn` não registra o `F-<id>` de quem está ligado (o progresso é o do tema, um registro só).
-  `refTopic("O:id")` ligado devolve `{k:<tema>,own:id,subs}`: `refLabel` mostra o nome da faculdade, `itemStudied` exige os `subs` marcados,
+- Faculdade ligada à Residência sem substituir: `fac.own[id].links=[{k,subs}]` (1º = principal; `subs` vazio = tema inteiro; o antigo `link`
+  é migrado em `facNormalize`). `ownLinks(id)`/`ownLink(id)` (= o 1º)/`RESKEY`/`ownLinksTo(k)`/`linkDone(L)`; `facNormalize` descarta ligação inválida; `registerOwn` não registra o `F-<id>` de quem está ligado (o progresso é o do tema, um registro só).
+  `refTopic("O:id")` ligado devolve `{k:<principal>,own:id,subs,links}`; `refTopics(r)` lista todos: `itemStudied` exige todos estudados
+  (`topicStudied`, com os `subs` marcados), `refMissing` diz o que falta (painel da prova), plano/badges/`topicKeysOf` usam todos.
+  `refLabel` mostra o nome da faculdade,
   `facTopicRow` mostra selo "FAC ↔ RES". Ligar: `linkPickEl` (dentro de `dupBox`; busca `searchBox(null,{link:id})`, depois Tema inteiro ou
-  subtópicos) → `linkOwn` (usa `ownMergeInto`, o mesmo de `replaceOwn`: notas sem ir à lixeira, erros, cartões, refazer, foco, progresso).
-  No tema: `linkInfoEl` ("Na faculdade", marcar subtópicos, Trocar ligação, `unlinkOwn`). Teste: `tests/t82.js`.
+  subtópicos; "Ligar a mais um tema") → `linkOwn(id,k,subs,from)` / `linkOwnRaw` (só na 1ª ligação usa `ownMergeInto`, o mesmo de `replaceOwn`:
+  notas sem ir à lixeira, erros, cartões, refazer, foco, progresso, tudo para o principal; `from` = trocar). Cada tema guarda os seus;
+  aberto na Faculdade (`renderDetail(it,{fac:true})`), `linkedAllEl` mostra junto (só leitura) anotações/erros/cartões de todos.
+  No tema: `linkInfoEl` ("Na faculdade", "também ligado a", marcar subtópicos, Trocar ligação, `unlinkOwn(id,k)`; sem k desliga todos).
+  Atalho "Ligar à residência" (`#flq-<id>`) no conteúdo FAC fechado. Testes: `tests/t82.js` (ligação, vários temas) e `tests/t89.js`
+  (UC, SP como conteúdo, + SP/+ Conteúdo com ligação, Mover para, migração dos eixos).
 
 - Provas na íntegra (aba Questões › Praticar, `qExamCard`, logo após o simulado): importar PDF/fotos (`impNew`/`impPick`/`impRead`/`impSave`, estado `imp`).
   pdf.js 4.10.38 carregado sob demanda por `import()` (`pdfLib`: jsdelivr legacy `PDFJS`, reserva cdnjs `PDFJS2`; roda sem worker via `globalThis.pdfjsWorker`);
@@ -201,7 +215,8 @@ consultado quando há dúvida. Responda em português.
   = Procurar de novo. Questão `{n,p,pe,k,q,g:"b"|"c",an,im,ck}` (sem embaralhar; `ck` = letra para a qual o comentário foi escrito).
   Dados: `exams` (questões; `resid-exams-v1` + `progress/exams/{id}`) e `exProg` (respostas `{id,i,mode,fin,tries,a:{idx:{l,d,s}},h}`; `resid-exprog-v1` +
   `progress/exprog/{id}`, gravado com atraso `exPSave`/`exFlush`). Contagem no tema/banca/hist só por `exChange` (resposta, gabarito colado `exKeyEl`, anular, tema):
-  tira o que contava antes e põe o novo. Jogador `exRun` (`exPlayEl`, modo prova "p" ou estudo "e", resultado `view:"res"`). Lixeira `exam`, backup `data.exams/examProg`.
+  tira o que contava antes e põe o novo. Jogador `exRun` (`exPlayEl`, modo prova "p" ou estudo "e", resultado `view:"res"`, com "Onde você perdeu pontos" `exLost`/`exLostEl`: especialidade com `EX_DROP_MIN`=3+ questões e acerto < `EX_DROP`=60%,
+  temas errados e questões (abrem a revisão com `eCadEl`); só sugestão, não mexe no plano; teste t91). Lixeira `exam`, backup `data.exams/examProg`.
   `bridge.js`: `sample` aceita `opts.title`/`opts.hint`. Teste: `tests/t83.js` (gera um PDF de verdade com pdf-lib/sharp).
 
 - Estudando e plano em partes (10/2026): `s.ing={d,m:"a"|"m"}` = tema começado (`isIng`, `lvKey` → "i", `lvName`); não tem revisão (`last` só ao concluir).

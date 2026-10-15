@@ -27,7 +27,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  await p.fill('#fpn-g','D2 NCS 6');await p.fill('#fpd-g',await p.evaluate(()=>fromNum(dnum(today())+13)));await p.dispatchEvent('#fpd-g','input');
  await p.evaluate(()=>document.querySelector('#facProvas form.fpform button[type=submit]').click());await p.waitForTimeout(250);
  const P1=await p.evaluate(()=>{const x=fac.provas.find(y=>y.name==="D2 NCS 6");return x&&{id:x.id,ids:provaDids(x),items:[...x.items]}});
- ok(P1&&P1.ids.join()==="d1,d2"&&P1.items.join()==="T:CM-1",name+": prova criada no semestre escolhido, com as duas disciplinas "+JSON.stringify(P1));
+ ok(P1&&P1.ids.join()==="d1,d2"&&P1.items.join()==="O:sp21",name+": prova criada no semestre escolhido, com as duas disciplinas "+JSON.stringify(P1));
  ok(await p.evaluate(id=>!document.querySelector('#fpsem-g')&&facOpenSem.has("s6")&&facOpenProv.has("s6")&&!!document.getElementById('fp-'+id),P1.id),name+": formulário fecha e a prova aparece aberta no semestre 6");
  /* 2. formulário dentro do semestre também escolhe o semestre */
  await p.evaluate(()=>{facOpenSem.add("s5");facOpenProv.add("s5");render()});await p.waitForTimeout(100);
