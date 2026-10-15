@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=2f3e795e">
+<link rel="stylesheet" href="site.css?v=c22cfc6d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=2f3e795e"></script>
-<script src="bridge.js?v=2f3e795e"></script>
+<script src="config.js?v=c22cfc6d"></script>
+<script src="bridge.js?v=c22cfc6d"></script>
 </head>
 <body>
 <script>
@@ -537,6 +537,44 @@ li.sphead{border-bottom:1px solid var(--line);background:var(--bg)}
 .tfilters{display:flex;flex-direction:column;gap:8px}
 .tfrow{display:flex;flex-direction:column;gap:5px}
 .tfres{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;font-size:.85rem;color:var(--muted)}.tfres .link{font-size:.85rem}
+
+/* Residência: cartão Encontrar temas (busca + filtros) */
+.tfind{display:flex;flex-direction:column;gap:12px;padding:16px 18px}
+.tfhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.tfhead h2{margin:0;font:600 1.3rem var(--display)}
+.tfcount{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tfsearch{position:relative}
+.tfsearch .tfsico{position:absolute;left:13px;top:50%;width:18px;height:18px;transform:translateY(-50%);fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;pointer-events:none}
+.tfsearch .search{padding-left:40px;font-size:1rem;background:var(--bg)}
+.tfsearch .search:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--surface)}
+.tfbar{display:flex;align-items:center;justify-content:space-between;gap:8px 12px}
+.tftog{display:inline-flex;align-items:center;gap:7px;padding:7px 14px 7px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9rem var(--body);cursor:pointer;min-height:38px}
+.tftog svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.tftog[aria-expanded="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.tfn{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--on-accent);font-size:.75rem}
+.tfsort{display:inline-flex;align-items:center;gap:7px;min-width:0;flex:0 1 auto;font-size:.82rem;color:var(--muted);font-weight:600}
+.tfsort select{width:auto;min-width:0;max-width:min(190px,44vw);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:400;font-size:.88rem;min-height:38px}
+.tfact{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.tfpill{display:inline-flex;align-items:center;gap:6px;padding:5px 8px 5px 12px;border-radius:99px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font:600 .82rem var(--body);cursor:pointer}
+.tfpill b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;font-size:.9rem;line-height:1}
+.tfpill:hover b{background:var(--accent);color:var(--on-accent)}
+.tfpanel{display:flex;flex-direction:column;gap:14px;padding:14px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.tfgrp{display:flex;flex-direction:column;gap:7px}
+.tfgh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.tfhint{font-size:.78rem;color:var(--muted)}
+.tfchip{display:inline-flex;align-items:center;gap:6px}
+.tfdot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--line);border:1.5px solid var(--muted)}
+.tfdot.li{background:transparent;border:1.5px dashed var(--li)}.tfdot.l1{background:var(--l1);border-color:var(--l1)}.tfdot.l2{background:var(--l2);border-color:var(--l2)}.tfdot.l3{background:var(--l3);border-color:var(--l3)}
+.tfsels{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.tfsels select:disabled{opacity:.6}
+.tfind .tfres{border-top:1px dashed var(--line);padding-top:10px}
+.tfhow{font-size:.84rem;color:var(--muted)}
+.tfhow summary{cursor:pointer;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:7px;padding:0}
+.tfhow summary::before{content:"i";display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1.5px solid currentColor;font:700 .7rem var(--body)}
+.tfhow[open] summary{color:var(--ink)}
+.tfhow p{margin:8px 0 0;line-height:1.5}
+html[data-layout="phone"] .tfsels{grid-template-columns:1fr 1fr}
+.achev{display:inline-block;width:8px;height:8px;margin-left:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-3px) rotate(45deg);transition:transform .15s}
+details.area[open]>summary .achev{transform:translateY(1px) rotate(-135deg)}
 .bulkrow .item:disabled{opacity:.45;cursor:default}
 .bchk{display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--accent);border-radius:5px;color:var(--on-accent);font-size:.8rem;font-weight:700}
 .bsel .bchk{background:var(--accent)}
@@ -1439,7 +1477,8 @@ html[data-layout="phone"] .hico{width:20px;height:20px}
 /* ---------- Foco ---------- */
 .fobody{display:flex;flex-direction:column;gap:20px}
 .focol{display:contents}
-#foBody .foafter{order:0}#foBody .fotimer{order:1}#foBody .foweekc{order:2}#foBody .foheat{order:3}#foBody .fomatc{order:4}#foBody .folistc{order:5}
+#foBody .foafter{order:0}#foBody .fotimer{order:1}#foBody .foweekc{order:2}#foBody .fomatc{order:4}#foBody .folistc{order:5}#foBody .foheat{order:6}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .foheat{grid-column:1/-1}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fobody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .focol{display:flex;flex-direction:column;gap:20px;min-width:0}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fotimer{grid-row:auto}
@@ -1459,14 +1498,41 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 .fowg .qgtop b{font:500 1.2rem var(--mono)}.fowg .qgtop span{font-size:.84rem;color:var(--muted)}.fowg .meter{height:8px;margin-top:4px}.fowg.ok .meter i{background:var(--good)}
 .forec,.fodz{margin:0}
 .foweekx .fogsel{flex:none;max-width:260px}
-.fohm{display:grid;grid-template-columns:1.2rem repeat(12,minmax(0,1fr));gap:3px;align-items:center}
-.fohm i{display:block;aspect-ratio:1;border-radius:3px;background:var(--track);max-width:100%}
-.fohm i.l1{background:color-mix(in srgb,var(--accent) 28%,var(--track))}.fohm i.l2{background:color-mix(in srgb,var(--accent) 52%,var(--track))}
-.fohm i.l3{background:color-mix(in srgb,var(--accent) 76%,var(--track))}.fohm i.l4{background:var(--accent)}
+.foheat{container-type:inline-size}
+.fohwrap{display:flex;flex-direction:column;gap:14px}
+.fohmain{display:flex;flex-direction:column;gap:10px;min-width:0}
+.fohm{display:grid;grid-template-columns:1.3rem repeat(12,minmax(0,1fr));gap:3px;align-items:center}
+.fohm i{display:grid;place-items:center;aspect-ratio:1;border-radius:3px;background:var(--track);max-width:100%;font-style:normal}
+.fohm i em{display:none;font:600 .7rem var(--mono);font-style:normal;letter-spacing:-.02em}
+.fohm i.l1,.fohli i.l1{background:color-mix(in srgb,var(--accent) 28%,var(--track))}.fohm i.l2,.fohli i.l2{background:color-mix(in srgb,var(--accent) 52%,var(--track))}
+.fohm i.l3,.fohli i.l3{background:color-mix(in srgb,var(--accent) 76%,var(--track))}.fohm i.l4,.fohli i.l4{background:var(--accent)}
+.fohm i.l1 em,.fohm i.l2 em{color:var(--ink)}.fohm i.l3 em,.fohm i.l4 em{color:var(--on-accent)}
 .fohm i.now{outline:2px solid var(--ink);outline-offset:1px}.fohm i.fut{background:transparent;border:1px dashed var(--line)}
-.fohl{font:500 .62rem var(--mono);color:var(--muted);white-space:nowrap;overflow:visible}.fohd{font:600 .62rem var(--body);color:var(--muted)}
-.fohleg{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:.72rem;color:var(--muted)}.fohleg i{width:11px;height:11px;border-radius:3px;display:inline-block}
-.fohleg i.l1{background:color-mix(in srgb,var(--accent) 28%,var(--track))}.fohleg i.l2{background:color-mix(in srgb,var(--accent) 52%,var(--track))}.fohleg i.l3{background:color-mix(in srgb,var(--accent) 76%,var(--track))}.fohleg i.l4{background:var(--accent)}
+.fohl{font:500 .62rem var(--mono);color:var(--muted);white-space:nowrap;overflow:visible}.fohl.cur{color:var(--ink);font-weight:700}
+.fohd{font:600 .62rem var(--body);color:var(--muted)}
+.fohw{display:none}
+.fohtot{align-self:end}
+.fohwt{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px}
+.fohwb{display:none;width:100%;height:34px;align-items:flex-end;background:var(--track);border-radius:3px;overflow:hidden}.fohwb i{display:block;width:100%;background:var(--gold)}
+.fohwt b{font:500 .58rem var(--mono);color:var(--muted)}
+.fohleg{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px 12px;font-size:.72rem;color:var(--muted)}
+.fohli{display:inline-flex;align-items:center;gap:5px}.fohli i{width:12px;height:12px;border-radius:3px;display:inline-block;background:var(--track)}
+.fohstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fohst{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:10px;background:var(--bg);min-width:0}
+@container (max-width:639px){.fohstats{grid-template-columns:1fr;gap:0;border-radius:10px;background:var(--bg);padding:2px 12px}.fohst{flex-direction:row;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;background:none;border-radius:0}.fohst+.fohst{border-top:1px solid var(--line)}.fohst b{text-align:right}}.fohst span{font-size:.72rem;color:var(--muted)}.fohst b{font:600 .88rem var(--body)}
+@container (min-width:640px){
+  .fohm{grid-template-columns:2.6rem repeat(12,minmax(0,1fr));gap:4px}
+  .fohm i{aspect-ratio:auto;height:30px;border-radius:5px}.fohm i em{display:block}
+  .fohl .fohn,.fohd .fohn{display:none}.fohw{display:inline}
+  .fohl{font-size:.7rem;text-align:center}.fohd{font-size:.74rem}
+  .fohwb{display:flex}.fohwt b{font-size:.68rem;color:var(--ink)}
+  .fohleg{justify-content:flex-start}
+}
+@container (min-width:900px){
+  .fohwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+  .fohstats{grid-template-columns:1fr}
+  .fohside{display:flex;flex-direction:column;gap:12px}
+}
 .fohb{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}.fohb .gtext{margin:0}
 .fohp{display:flex;flex-direction:column;gap:5px}.fohpr{display:grid;grid-template-columns:6rem 1fr 2.6rem;gap:8px;align-items:center;font-size:.84rem}.fohpr b{font:500 .78rem var(--mono);text-align:right}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fotimer .foring{width:min(52vh,380px);height:min(52vh,380px)}
@@ -1729,11 +1795,15 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
   </div>
 
   <section class="controls">
-    <input class="search" id="q" type="search" placeholder="Buscar tema, subtópico ou anotação (ex.: sepse, HELLP, SUS)" aria-label="Buscar tema, subtópico ou anotação">
-    <div id="tFilters" class="tfilters"></div>
-    <div class="sortrow"><label for="sortSel">Ordenar</label><select id="sortSel"><option value="num">Pela ordem da lista</option><option value="inc">Maior incidência primeiro</option></select></div>
-    <p class="how">As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
-    <p class="how">Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
+    <div class="card tfind" id="tFind" role="search" aria-labelledby="tfh">
+      <div class="tfhead"><h2 id="tfh">Encontrar temas</h2><span class="tfcount" id="tfCount"></span></div>
+      <div class="tfsearch"><svg class="tfsico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="search" id="q" type="search" placeholder="Buscar tema, subtópico ou anotação" aria-label="Buscar tema, subtópico ou anotação" autocomplete="off"></div>
+      <div id="tFilters" class="tfilters"></div>
+      <details class="tfhow"><summary>Como ler a lista</summary>
+        <p>As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
+        <p>Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
+      </details>
+    </div>
     <section class="card lvsug" id="lvSug" aria-label="Sugestões de nível" hidden></section>
     <section class="card pinbox" id="pinBox" aria-label="Temas fixados" hidden></section>
   </section>
@@ -1990,11 +2060,11 @@ PREV:[["SUS e políticas de saúde",[1,2,3,6,7,8,29,30]],["Atenção primária e
     a.items=a.specs.flatMap(x=>x.items)});
   let k=0;AREAS.forEach(a=>a.items.forEach(it=>it.num=++k))})();
 const spKey=it=>it.area.code+":"+it.sp;
-let openSpecs=new Set(AREAS.flatMap(a=>a.specs.map(x=>a.code+":"+x.name)));
+let openSpecs=new Set();/* tudo começa recolhido: área › especialidades › temas */
 const areaLabel=it=>it.area.name+(it.sp?" — "+it.sp:"");
 const ALL=AREAS.flatMap(a=>a.items), BYKEY=Object.fromEntries(ALL.map(i=>[i.key,i])), TOTAL=ALL.length;
 
-let state={}, filter="all", query="", store=null, saveTimer=null, openKey=null, openAreas=new Set(["CM"]), formErr="", clearArm=null;
+let state={}, filter="all", query="", store=null, saveTimer=null, openKey=null, openAreas=new Set(), formErr="", clearArm=null;
 const LS2="resid-checklist-v2", LS1="resid-checklist-v1";
 const ETYPES={conhecimento:"Não sabia o conteúdo",interpretacao:"Li errado / desatenção",confusao:"Confundi ou esqueci"};
 const ETIPS={conhecimento:"A maioria dos seus erros é por falta de conteúdo. Volte à teoria desses temas antes de fazer mais questões.",
@@ -2186,6 +2256,7 @@ function counts(items){const c=[0,0,0,0,0];items.forEach(it=>{const s=get(it.key
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
 /* filtros da lista: situação (vários juntos = "ou") e atalhos (todos juntos = "e"), mais área e especialidade */
 let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};
+function tfNarrow(){return !!(tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin)}
 function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.area!=="all"||tf.sp!=="all"}
 function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};filter="all"}
 const tfLevel=s=>!s.last&&!(s.l>0)?(s.ing?"i":0):(s.l||1);
@@ -5676,16 +5747,31 @@ function foNoiseEl(){const P=ui.prefs,w=el(`<div class="fonoise"><span class="gl
     w.appendChild(el(`<p class="how">Toca só durante o foco; para na pausa. Use fones para não incomodar ninguém.</p>`))}
   return w}
 /* ----- 7. mapa das 12 semanas e melhor horário ----- */
+/* mapa das últimas 12 semanas: fica no fim da aba; em tela larga (computador, iPad deitado) ocupa as duas colunas,
+   com os minutos dentro de cada dia, o total de cada semana e o melhor horário ao lado */
+const foHM=v=>{const m=Math.round(v/60);return m<60?String(m):Math.floor(m/60)+"h"+(m%60?String(m%60).padStart(2,"0"):"")};
 function foHeatCard(){const m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),start=ws-7*11,g=ui.prefs.fgoal*60;
   const vals=[];for(let n=start;n<=ws+6;n++)vals.push(m[fromNum(n)]||0);const mx=Math.max(1,...vals),ref=g||mx;
-  const lvl=v=>!v?0:v>=ref?4:v>=ref*0.66?3:v>=ref*0.33?2:1;
-  const c=el(`<section class="card foheat" aria-labelledby="fohh"><div class="dhead"><h2 id="fohh">Últimas 12 semanas</h2><span class="todaydate"></span></div><div class="fohm" role="img"></div><div class="fohleg"><span>menos</span><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>${g?"meta batida":"mais"}</span></div><div class="fohour"></div></section>`);
+  const r3=Math.max(60,Math.round(ref/3/300)*300),r6=Math.max(120,Math.round(ref*2/3/300)*300),lvl=v=>!v?0:v>=ref?4:v>=r6?3:v>=r3?2:1;
+  const c=el(`<section class="card foheat" aria-labelledby="fohh"><div class="dhead"><h2 id="fohh">Nas últimas 12 semanas</h2><span class="todaydate"></span></div><div class="fohwrap"><div class="fohmain"><div class="fohm" role="img"></div><div class="fohleg"></div></div><div class="fohside"><div class="fohstats"></div><div class="fohour"></div></div></div></section>`);
   const days=vals.filter((v,i)=>start+i<=t),act=days.filter(Boolean).length,tot=days.reduce((a,b)=>a+b,0);
-  c.querySelector(".todaydate").textContent=`${act} dias com foco · ${fmtMin(tot)}`;
+  c.querySelector(".todaydate").textContent=`${act} ${act===1?"dia":"dias"} com foco · ${fmtMin(tot)}`;
   const box=c.querySelector(".fohm");box.setAttribute("aria-label",`Foco por dia nas últimas 12 semanas: ${act} dias com foco, total ${fmtMin(tot)}`);
-  const wd=["S","T","Q","Q","S","S","D"];let h=`<span class="fohl"></span>`;for(let w=0;w<12;w++){const d0=fromNum(start+7*w);h+=`<span class="fohl">${w%2===0?br(d0).slice(0,5):""}</span>`}
-  for(let r=0;r<7;r++){h+=`<span class="fohd">${wd[r]}</span>`;for(let w=0;w<12;w++){const n=start+7*w+r,v=m[fromNum(n)]||0;h+=n>t?`<i class="fut"></i>`:`<i class="l${lvl(v)}${n===t?" now":""}" data-tip="${dayLabel(fromNum(n))}: ${v?fmtMin(v):"sem foco"}"></i>`}}
+  const wd=[["S","seg"],["T","ter"],["Q","qua"],["Q","qui"],["S","sex"],["S","sáb"],["D","dom"]],MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  let h=`<span class="fohl"></span>`;for(let w=0;w<12;w++){const d0=fromNum(start+7*w),dd=+d0.slice(8,10),mo=+d0.slice(5,7)-1,cur=start+7*w===ws;
+    h+=`<span class="fohl${cur?" cur":""}"><span class="fohn">${w%2===0?br(d0).slice(0,5):""}</span><span class="fohw">${cur?"esta":dd+" "+MES[mo]}</span></span>`}
+  for(let r=0;r<7;r++){h+=`<span class="fohd"><span class="fohn">${wd[r][0]}</span><span class="fohw">${wd[r][1]}</span></span>`;
+    for(let w=0;w<12;w++){const n=start+7*w+r,v=m[fromNum(n)]||0;h+=n>t?`<i class="fut"></i>`:`<i class="l${lvl(v)}${n===t?" now":""}" data-tip="${dayLabel(fromNum(n))}: ${v?fmtMin(v):"sem foco"}">${v?`<em>${foHM(v)}</em>`:""}</i>`}}
+  const wk=[];for(let w=0;w<12;w++){let s2=0;for(let r=0;r<7;r++)s2+=m[fromNum(start+7*w+r)]||0;wk.push(s2)}const wmx=Math.max(1,...wk);
+  h+=`<span class="fohd fohtot"><span class="fohw">semana</span></span>`;wk.forEach((v,w)=>{h+=`<span class="fohwt" title="Semana de ${br(fromNum(start+7*w))}: ${v?fmtMin(v):"sem foco"}"><span class="fohwb"><i style="height:${Math.round(v/wmx*100)}%"></i></span><b>${v?foHM(v):"–"}</b></span>`});
   box.innerHTML=h;
+  /* legenda com os minutos de cada tom */
+  {const L=c.querySelector(".fohleg"),Lb=[`menos de ${fmtMin(r3)}`,`${fmtMin(r3)} a ${fmtMin(r6)}`,`${fmtMin(r6)} a ${fmtMin(ref)}`,g?`${fmtMin(ref)} ou mais (meta)`:`perto do seu maior dia`];
+    L.innerHTML=`<span class="fohli"><i class="l0"></i>sem foco</span>`+Lb.map((x,i)=>`<span class="fohli"><i class="l${i+1}"></i>${x}</span>`).join("")}
+  /* resumo */
+  {const S=c.querySelector(".fohstats"),bw=wk.indexOf(Math.max(...wk)),avg=act?tot/act:0,now=wk[11];let prev=0;for(let n=ws-7;n<=t-7;n++)prev+=m[fromNum(n)]||0;
+    const row=(k,v)=>{const x=el(`<div class="fohst"><span></span><b></b></div>`);x.querySelector("span").textContent=k;x.querySelector("b").textContent=v;S.appendChild(x)};
+    row("Média nos dias com foco",act?fmtMin(avg):"–");row("Melhor semana",wk[bw]?`${fmtMin(wk[bw])} (${br(fromNum(start+7*bw)).slice(0,5)})`:"–");row("Esta semana",`${fmtMin(now)}${prev||now?` · ${now>=prev?"+":"−"}${fmtMin(Math.abs(now-prev))} que a anterior até ${["domingo","segunda","terça","quarta","quinta","sexta","sábado"][new Date(today()+"T12:00:00").getDay()]}`:""}`)}
   // melhor horário: minutos por hora do dia nos últimos 30 dias (sessões cronometradas)
   const H=new Array(24).fill(0);foSess.filter(x=>x.m!=="x"&&dnum(x.d)>=t-29).forEach(x=>{let a=Date.parse(x.s),left=x.sec*1000;if(!isFinite(a))return;
     while(left>0){const d=new Date(a),hr=d.getHours(),next=new Date(d.getFullYear(),d.getMonth(),d.getDate(),hr+1).getTime(),part=Math.min(left,next-a);H[hr]+=part/1000;left-=part;a=next}});
@@ -5714,7 +5800,7 @@ function foWeekExtra(){const P=ui.prefs,W=foWeekTotals(),ws=foWeekStart(),cur=W[
 
 function renderFoco(){const b=$("#foBody");b.innerHTML="";const L=el(`<div class="focol foleft"></div>`),R=el(`<div class="focol foright"></div>`);
   const A=foAfterCard(),t=foTimerCard(),w=foWeekCard(),h=foHeatCard(),m=foMatCard(),l=foListCard();w.classList.add("foweekc");m.classList.add("fomatc");l.classList.add("folistc");
-  if(A)L.appendChild(A);L.append(t,l);R.append(w,h,m);b.append(L,R);foPaint()}
+  if(A)L.appendChild(A);L.append(t,l);R.append(w,m);b.append(L,R,h);foPaint()}
 function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h2 class="cftitle">Mais</h2>`));
   const c=el(`<section class="card"><div class="cflinks"></div></section>`),l=c.querySelector(".cflinks");
   const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,td=foSum(foSess.filter(x=>x.d===today()));
@@ -6499,21 +6585,42 @@ function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML
   box.appendChild(nw);
   if(!exList().length){const h=el(`<p class="how igoalhint">Quer saber se chega a tempo na prova de residência? <button class="link" type="button">Cadastre as provas no Perfil</button> e a Residência mostra o ritmo necessário.</p>`);h.querySelector("button").onclick=()=>goSub("perfil");box.appendChild(h)}}
 /* ---------- Residência: filtros, agenda de revisões e "Já estudei antes" ---------- */
+/* busca e filtros da Residência: cartão "Encontrar temas" com o painel Filtros (aberto/fechado lembrado no aparelho),
+   pílulas dos filtros ativos (× tira um) e a ordem; ids dos chips/seletores: #tfl<nível>, #tfdue/#tfweak/#tfnoq/#tfhigh/#tfpin, #tfArea, #tfSp, #sortSel */
+let tfPanel=lsGet("resid-tfpanel","")==="1";
+const TF_SHORT=[["due","Revisão pendente","Temas com revisão vencida hoje ou atrasada"],["weak","Pontos fracos","Acerto abaixo de 60% em 5 ou mais questões"],["noq","Sem questões","Temas sem nenhuma questão registrada"],["high","Incidência muito alta","Os que mais caem nas provas (3 barrinhas)"],["pin","★ Fixados","Temas que você fixou com a estrela"]];
+const TF_LV=[[0,"Não iniciados","l0"],["i","Estudando","li"],[1,"Estudados","l1"],[2,"Revisados","l2"],[3,"Dominados","l3"]];
+function tfActive(){const L=[];TF_LV.forEach(([v,t])=>{if(tf.lv.has(v))L.push([t,()=>tf.lv.delete(v)])});TF_SHORT.forEach(([k,t])=>{if(tf[k])L.push([t,()=>{tf[k]=false}])});
+  if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area);L.push([A?A.name:"Faculdade (sem área)",()=>{tf.area="all";tf.sp="all"}])}if(tf.sp!=="all")L.push([tf.sp,()=>{tf.sp="all"}]);return L}
 function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML="";filter=tfOn()?"on":"all";
-  const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length;
-  const row=(lab,items)=>{const r=el(`<div class="tfrow"><span class="glabel"></span><div class="chips"></div></div>`);r.querySelector(".glabel").textContent=lab;items.forEach(b=>r.querySelector(".chips").appendChild(b));box.appendChild(r)};
-  const chip=(t,on,fn,id)=>{const b=el(`<button class="chip" type="button" aria-pressed="${on}"></button>`);b.textContent=t;if(id)b.id=id;b.onclick=()=>{fn();render()};return b};
-  row("Situação",[[0,"Não iniciados"],["i","Estudando"],[1,"Estudados"],[2,"Revisados"],[3,"Dominados"]].map(([v,t])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v)));
-  row("Atalhos",[chip(`Revisão pendente · ${cnt(i=>isDue(get(i.key)))}`,tf.due,()=>{tf.due=!tf.due},"tfdue"),chip(`Pontos fracos · ${cnt(i=>isWeak(get(i.key)))}`,tf.weak,()=>{tf.weak=!tf.weak},"tfweak"),
-    chip("Sem questões",tf.noq,()=>{tf.noq=!tf.noq},"tfnoq"),chip("Incidência muito alta",tf.high,()=>{tf.high=!tf.high},"tfhigh"),chip(`★ Fixados · ${cnt(i=>get(i.key).pin)}`,tf.pin,()=>{tf.pin=!tf.pin},"tfpin")]);
-  const sr=el(`<div class="qfrow"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
-    opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;x.onchange=()=>{on(x.value);render()};sr.appendChild(l)};
-  sel("tfArea","Área",[["all","Todas"],...AREAS.map(a=>[a.code,a.name]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","Faculdade (sem área)"]]:[])],tf.area,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)});
-  if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area)||FAC_AREA,names=[...new Set([...(A.specs||[]).map(x=>x.name),...FAC_ITEMS.filter(i=>i.area===A).map(i=>i.sp)])].filter(Boolean);
-    sel("tfSp","Especialidade",[["all","Todas"],...names.map(n=>[n,n])],tf.sp,v=>{tf.sp=v})}
-  box.appendChild(sr);
-  const n=pool.filter(matches).length,ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=tfOn()||query?`${n} ${n===1?"tema":"temas"} com esses filtros`:`${pool.length} temas`;
-  if(tfOn()){const c=el(`<button class="link" type="button" id="tfClear">Limpar filtros</button>`);c.onclick=()=>{tfReset();render()};ft.appendChild(c)}
+  const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length,act=tfActive(),n=pool.filter(matches).length;
+  {const c=$("#tfCount");if(c)c.textContent=tfOn()||query?`${n} de ${pool.length} ${pool.length===1?"tema":"temas"}`:`${pool.length} temas`}
+  const chip=(t,on,fn,id,dot,tip)=>{const b=el(`<button class="chip tfchip" type="button" aria-pressed="${on}">${dot?`<i class="tfdot ${dot}" aria-hidden="true"></i>`:""}<span></span></button>`);b.querySelector("span").textContent=t;if(id)b.id=id;if(tip)b.title=tip;b.onclick=()=>{fn();render()};return b};
+  /* barra: Filtros (com o número de ativos) e Ordem */
+  const bar=el(`<div class="tfbar"><button class="tftog" type="button" id="tfTog" aria-expanded="${tfPanel}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span></button><label class="tfsort"><span>Ordem</span><select id="sortSel"><option value="num">Da lista</option><option value="inc">Mais cobrados primeiro</option></select></label></div>`);
+  if(act.length)bar.querySelector(".tftog").appendChild(el(`<b class="tfn">${act.length}</b>`));
+  bar.querySelector(".tftog").onclick=()=>{tfPanel=!tfPanel;lsSet("resid-tfpanel",tfPanel?"1":null);render()};
+  {const so=bar.querySelector("#sortSel");so.value=sortBy;so.onchange=()=>{sortBy=so.value;try{localStorage.setItem("resid-sort",sortBy)}catch(x){}render()}}
+  box.appendChild(bar);
+  /* filtros ativos (sempre à vista, mesmo com o painel fechado) */
+  if(act.length){const w=el(`<div class="tfact" aria-label="Filtros ativos"></div>`);act.forEach(([t,fn])=>{const b=el(`<button class="tfpill" type="button"><span></span><b aria-hidden="true">×</b></button>`);b.querySelector("span").textContent=t;b.setAttribute("aria-label","Tirar o filtro "+t);b.onclick=()=>{fn();render()};w.appendChild(b)});
+    const c=el(`<button class="link" type="button" id="tfClear">Limpar tudo</button>`);c.onclick=()=>{tfReset();render()};w.appendChild(c);box.appendChild(w)}
+  /* painel */
+  if(tfPanel){const pn=el(`<div class="tfpanel" id="tfPanel"></div>`);
+    const grp=(lab,hint,body)=>{const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel"></span><span class="tfhint"></span></div></div>`);g.querySelector(".glabel").textContent=lab;g.querySelector(".tfhint").textContent=hint;g.appendChild(body);pn.appendChild(g)};
+    const chips=L=>{const c=el(`<div class="chips"></div>`);L.forEach(x=>c.appendChild(x));return c};
+    grp("Situação","em que ponto o tema está",chips(TF_LV.map(([v,t,dc])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v,dc))));
+    grp("Mostrar só","atalhos, combinam com o resto",chips(TF_SHORT.map(([k,t,tip])=>{const c={due:i=>isDue(get(i.key)),weak:i=>isWeak(get(i.key)),pin:i=>get(i.key).pin}[k];return chip(c?`${t} · ${cnt(c)}`:t,tf[k],()=>{tf[k]=!tf[k]},"tf"+k,null,tip)})));
+    const sr=el(`<div class="qfrow tfsels"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
+      opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;x.onchange=()=>{on(x.value);render()};sr.appendChild(l)};
+    sel("tfArea","Grande área",[["all","Todas as áreas"],...AREAS.map(a=>[a.code,a.name]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","Faculdade (sem área)"]]:[])],tf.area,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)});
+    if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area)||FAC_AREA,names=[...new Set([...(A.specs||[]).map(x=>x.name),...FAC_ITEMS.filter(i=>i.area===A).map(i=>i.sp)])].filter(Boolean);
+      sel("tfSp","Especialidade",[["all","Todas"],...names.map(n=>[n,n])],tf.sp,v=>{tf.sp=v;if(v!=="all")openSpecs.add(tf.area+":"+v)})}
+    else{const l=el(`<label class="qfsel"><span>Especialidade</span><select disabled><option>Escolha a área antes</option></select></label>`);sr.appendChild(l)}
+    grp("Onde","grande área e especialidade",sr);
+    box.appendChild(pn)}
+  /* rodapé: resultado e marcação em lote */
+  const ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=tfOn()||query?(n?`${n} ${n===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com esses filtros"):"Toque numa grande área para ver as especialidades.";
   const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null}render()};ft.appendChild(bk);
   box.appendChild(ft);
   renderBulkBar()}
@@ -6976,7 +7083,10 @@ const HELP=[
 | Dominado | 80%+ em 10 ou mais questões e duas revisões seguidas sem dificuldade |
 - **Barrinhas de incidência:** peso calculado a partir de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026). Ajustável dentro do tema.
 - **Subtópicos próprios:** adicione no fim da lista do tema.
-- **Filtros:** **Situação** (Não iniciados, Estudando, Estudados, Revisados, Dominados; dá para marcar mais de uma), atalhos (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**, **★ Fixados**), **Área** e **Especialidade**. Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). A busca procura também nas anotações.
+- **Lista em camadas:** as 5 grandes áreas começam recolhidas. Toque na área para ver as especialidades, na especialidade para ver os temas e no tema para abrir. O que você abriu fica aberto enquanto o app estiver aberto.
+- **Encontrar temas** (acima da lista): a **busca** procura no nome do tema, nos subtópicos e nas suas anotações, e abre sozinha as áreas com resultado. Ao apagar a busca, a lista volta como estava.
+- **Filtros:** toque em **Filtros** para abrir o painel: **Situação** (Não iniciados, Estudando, Estudados, Revisados, Dominados, com a cor de cada nível; dá para marcar mais de uma), **Mostrar só** (**Revisão pendente**, **Pontos fracos**, **Sem questões**, **Incidência muito alta**, **★ Fixados**) e **Onde** (grande área e especialidade). Os filtros se combinam (ex.: Cardiologia + Não iniciados + Incidência muito alta). Os ativos aparecem como etiquetas embaixo da busca, mesmo com o painel fechado: o **×** tira só aquele, **Limpar tudo** tira todos. O número no botão Filtros diz quantos estão ligados.
+- **Ordem:** **Da lista** (a numeração) ou **Mais cobrados primeiro** (maior incidência). **Como ler a lista** explica as barrinhas de incidência.
 - **Mapa da residência** (parte Progresso): os 185 temas como quadradinhos por especialidade, na cor do nível; borda vermelha = revisão pendente, contorno = ponto fraco. Toque para abrir o tema.
 - **Progresso por área:** a barra grossa mostra os temas já estudados; a fina, os subtópicos marcados (o quanto do conteúdo você cobriu de verdade).
 - **Linha de cada tema:** acerto colorido (verde, amarelo ou vermelho), tempo de foco (⏱), subtópicos, anotações e erros, sem precisar abrir.
@@ -7079,7 +7189,7 @@ const HELP=[
 - **Som de fundo:** ruído branco, marrom ou chuva, gerado pelo próprio app (funciona sem internet), com volume. Toca só durante o foco e para na pausa.
 - **Tela inteira** (tablet deitado e computador): com o relógio correndo, esconde o resto da aba. No computador: espaço pausa e continua, D conta distração, Esc sai.
 - **Esta semana:** hoje, total, sessões e um gráfico de segunda a domingo. Com uma **meta diária**, aparecem a linha da meta e a sequência de dias na meta. Com uma **meta semanal**, aparece a barra da semana; embaixo, o seu **recorde** semanal.
-- **Últimas 12 semanas:** um quadradinho por dia, mais escuro quanto mais foco (cheio = meta diária batida), e o seu **melhor horário** nos últimos 30 dias.
+- **Nas últimas 12 semanas** (no fim da aba): um quadradinho por dia, mais escuro quanto mais foco. A legenda diz quantos minutos vale cada tom (o mais escuro = meta diária batida). No computador e no iPad deitado, o cartão ocupa a largura toda e mostra os minutos dentro de cada dia, com o nome do dia e a data de cada semana. Embaixo, o **total de cada semana** em barras. Ao lado vêm a média nos dias com foco, a melhor semana, esta semana comparada à anterior até o mesmo dia e o seu **melhor horário** nos últimos 30 dias.
 - **Tempo por matéria:** semana, 30 dias ou tudo; temas contam na especialidade e disciplinas pelo nome.
 - **Sessões recentes:** toque no × para excluir. **+ Adicionar tempo** registra estudo feito sem o relógio (aula, ambulatório, leitura).
 - A contagem usa a hora de início: continua certa com a tela bloqueada ou o app fechado. O **alarme** só toca com o app aberto; com o app em segundo plano, ele toca quando você volta. No iPhone, o som segue a chave de silencioso. **Tela acesa** mantém a tela ligada durante o foco, quando o aparelho permite.
@@ -7193,16 +7303,18 @@ function renderAll(){
   const foTot={};foSess.forEach(x=>{if(x.ref&&x.ref[0]==="T"){const k=x.ref.slice(2);foTot[k]=(foTot[k]||0)+x.sec}});
   const box=$("#areas"); box.innerHTML="";
   const facL=facLinkMap();
+  /* tema aberto fica sempre à vista: abre a área e a especialidade dele */
+  if(openKey&&BYKEY[openKey]){const it=BYKEY[openKey];openAreas.add(it.area.code);if(it.sp)openSpecs.add(spKey(it))}
   [...AREAS,FAC_AREA].forEach(a=>{if(tf.area!=="all"&&a.code!==tf.area)return;
     const isFac=a===FAC_AREA, facIn=FAC_ITEMS.filter(it=>it.area===a&&matches(it)).sort((x,y)=>x.t.localeCompare(y.t,"pt"));
     if(isFac&&!facIn.length)return;
     const ac=counts(isFac?[]:a.items), vis=isFac?[]:a.items.filter(matches);
     if(sortBy==="inc")vis.sort((x,y)=>wOf(y)-wOf(x)||x.num-y.num);
     const d=document.createElement("details"); d.className="area";
-    d.open=openAreas.has(a.code)||!!query||filter!=="all";
-    d.addEventListener("toggle",()=>{d.open?openAreas.add(a.code):openAreas.delete(a.code)});
-    d.innerHTML=isFac?`<summary><span class="code">FAC</span><span class="aname">Faculdade · sem área definida</span><span class="acount">${facIn.length}</span></summary>`:
-      `<summary><span class="code">${a.code}</span><span class="aname">${a.name}</span><span class="acount">${ac[3]}/${a.items.length}${facIn.length?` <span class="facchip">+${facIn.length} FAC</span>`:""}</span><div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div></summary>`;
+    d.open=openAreas.has(a.code)||!!query||tfNarrow()||tf.area===a.code;
+    {const fo=!!query||tfNarrow()||tf.area===a.code;d.addEventListener("toggle",()=>{if(fo&&d.open)return;d.open?openAreas.add(a.code):openAreas.delete(a.code);if(!d.open&&openKey&&BYKEY[openKey]&&BYKEY[openKey].area===a){openKey=null;render()}if(!d.open&&tf.area===a.code){tf.area="all";tf.sp="all";render()}})}
+    d.innerHTML=isFac?`<summary><span class="code">FAC</span><span class="aname">Faculdade · sem área definida</span><span class="acount">${facIn.length}<i class="achev" aria-hidden="true"></i></span></summary>`:
+      `<summary><span class="code">${a.code}</span><span class="aname">${a.name}</span><span class="acount">${ac[3]}/${a.items.length}${facIn.length?` <span class="facchip">+${facIn.length} FAC</span>`:""}<i class="achev" aria-hidden="true"></i></span><div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div></summary>`;
     if(!isFac)bar(d.querySelector("summary .bar"),ac,a.items.length);
     const ol=document.createElement("ol");
     if(!vis.length&&!facIn.length)ol.appendChild(el(`<li class="empty">Nenhum tema desta área neste filtro.</li>`));
@@ -7228,10 +7340,10 @@ function renderAll(){
       return li};
     const extraSpecs=[...new Set(facIn.map(it=>it.sp))].filter(n=>!(a.specs||[]).some(x=>x.name===n)).map(name=>({name,items:[],extra:true}));
     if(a.specs||isFac){[...(a.specs||[]),...extraSpecs].forEach(sp=>{const fs=facIn.filter(it=>it.sp===sp.name),sv=[...vis.filter(it=>it.sp===sp.name),...fs];if(!sv.length)return;
-        const forced=!!query||filter!=="all", op=forced||openSpecs.has(a.code+":"+sp.name)||(sp.extra&&!openSpecs.has("~"+a.code+":"+sp.name)), sc=counts(sp.items);
+        const forced=!!query||tfNarrow(), op=forced||openSpecs.has(a.code+":"+sp.name)||tf.sp===sp.name, sc=counts(sp.items);
         const h=el(`<li class="sphead"><button type="button" aria-expanded="${op}"><span class="chev" aria-hidden="true"></span><span class="spname"></span><span class="spcount">${sp.items.length?`${sc[3]}/${sp.items.length}`:""}${fs.length?` <span class="facchip">${sp.items.length?"+":""}${fs.length} FAC</span>`:""}</span>${sp.items.length?`<div class="bar"><i class="d3"></i><i class="d2"></i><i class="d1"></i></div>`:""}</button></li>`);
         h.querySelector(".spname").textContent=sp.name;if(sp.items.length)bar(h.querySelector(".bar"),sc,sp.items.length);
-        h.querySelector("button").onclick=()=>{if(forced)return;if(sp.extra){const sk="~"+a.code+":"+sp.name;openSpecs.has(sk)?openSpecs.delete(sk):openSpecs.add(sk)}else{const sk=a.code+":"+sp.name;openSpecs.has(sk)?openSpecs.delete(sk):openSpecs.add(sk)}render()};
+        h.querySelector("button").onclick=()=>{if(forced)return;const sk=a.code+":"+sp.name;if(openSpecs.has(sk)){openSpecs.delete(sk);if(tf.sp===sp.name)tf.sp="all";if(openKey&&BYKEY[openKey]&&BYKEY[openKey].area===a&&BYKEY[openKey].sp===sp.name)openKey=null}else openSpecs.add(sk);render()};
         if(forced)h.querySelector("button").disabled=true;
         ol.appendChild(h);
         if(op&&bulk){const free=sv.filter(it=>tfLevel(get(it.key))===0);if(free.length){const all=free.every(it=>bulk.sel.has(it.key)),x=el(`<li class="bulkall"><button class="link" type="button"></button></li>`);x.querySelector("button").textContent=all?`Desmarcar os ${free.length} desta especialidade`:`Selecionar os ${free.length} não iniciados desta especialidade`;
@@ -7239,7 +7351,7 @@ function renderAll(){
         if(op)sv.forEach(it=>ol.appendChild(row(it)))})}
     else vis.forEach(it=>ol.appendChild(row(it)));
     d.appendChild(ol); box.appendChild(d);
-    if(isFac)d.open=openAreas.has("FAC")||!!query||filter!=="all";
+    if(isFac)d.open=openAreas.has("FAC")||!!query||tfNarrow()||tf.area==="FAC";
   });
 }
 
@@ -7303,7 +7415,7 @@ $("#eOrder").onchange=e=>{eOrder=e.target.value;render()};
 $("#eq").addEventListener("input",debounced(e=>{eQuery=norm(e.target.value.trim());render()}));
 
 try{const sb=localStorage.getItem("resid-sort");if(sb==="inc")sortBy="inc"}catch(e){}
-$("#sortSel").value=sortBy;$("#sortSel").onchange=e=>{sortBy=e.target.value;try{localStorage.setItem("resid-sort",sortBy)}catch(x){}render()};
+
 $("#q").addEventListener("input",debounced(e=>{query=norm(e.target.value.trim());render()}));
 
 function bindReset(){$("#resetBtn").onclick=()=>{$("#resetBox").innerHTML=`<div class="confirm"><span>Apagar níveis, revisões, questões e marcações de subtópicos de todos os temas? Anotações, subtópicos próprios, pesos ajustados e caderno de erros são mantidos.</span><button class="danger" id="yes">Apagar tudo</button><button id="no">Cancelar</button></div>`;

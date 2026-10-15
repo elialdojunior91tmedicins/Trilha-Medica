@@ -18,7 +18,7 @@ ok(await p.evaluate(()=>!document.querySelector('#iToday .pweek')||!document.que
 await p.evaluate(()=>openTopic("CM-37"));await p.waitForTimeout(200);await click('#t-CM-37 .dpin');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>get("CM-37").pin===1),tag+": fixar pelo tema");ok(/★/.test(await p.$eval('#t-CM-37 .topic',x=>x.textContent)),tag+": estrela na linha");
 await seg("lista");ok(await p.isVisible('#pinBox'),tag+": seção Fixados");ok((await p.$$eval('#pinBox li',a=>a.length))===1,tag+": 1 fixado");
-await click('#tfpin');await p.waitForTimeout(150);ok(await p.evaluate(()=>[...ALL,...FAC_ITEMS].filter(matches).length===1),tag+": filtro Fixados");await click('#tfClear');
+await p.evaluate(()=>{tfPanel=true;render()});await click('#tfpin');await p.waitForTimeout(150);ok(await p.evaluate(()=>[...ALL,...FAC_ITEMS].filter(matches).length===1),tag+": filtro Fixados");await click('#tfClear');
 await click('#pinBox .pinx');await p.waitForTimeout(150);ok(await p.evaluate(()=>!get("CM-37").pin&&document.getElementById("pinBox").hidden),tag+": desafixar");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=0,tag+": sem rolagem horizontal");
 await p.evaluate(()=>{togglePin("CM-4");setView("temas")});await seg("hoje");await p.evaluate(()=>{weekOpen=true;render()});await p.waitForTimeout(200);await p.evaluate(()=>document.querySelector('#weekBox').scrollIntoView());await p.screenshot({path:`wk-${mob?"fone":"desk"}.png`});

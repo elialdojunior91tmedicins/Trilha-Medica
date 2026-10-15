@@ -31,7 +31,7 @@ await click(`#t-${K.small} .detail button[data-lv="i"]`);await p.waitForTimeout(
 await click(`#t-${K.small} .detail button[data-lv="0"]`);await p.waitForTimeout(150);ok(await p.evaluate(k=>lvKey(get(k))===0,K.small),tag+": Não iniciado");
 // 4. filtro de Situação e gráfico
 await p.evaluate(k=>{const it=BYKEY[k];toggleSub(it,subList(it)[0]);setView("temas");render()},K.small);await p.waitForTimeout(200);
-ok(await p.evaluate(()=>!!document.getElementById("tflI")||[...document.querySelectorAll("button")].some(b=>/^Estudando · 1$/.test(b.textContent.trim()))),tag+": filtro Situação tem Estudando · 1");
+await p.evaluate(()=>{tfPanel=true;render()});ok(await p.evaluate(()=>!!document.getElementById("tflI")||[...document.querySelectorAll("button")].some(b=>/^Estudando · 1$/.test(b.textContent.trim()))),tag+": filtro Situação tem Estudando · 1");
 ok(await p.evaluate(()=>{tf.lv=new Set(["i"]);render();return ALL.filter(matches).length===1}),tag+": filtrar Estudando mostra só o tema");
 await p.evaluate(()=>{tf.lv=new Set();render()});
 ok(await p.evaluate(()=>[...document.querySelectorAll("#glegend li")].some(li=>/Estudando/.test(li.textContent)&&/1/.test(li.querySelector("b").textContent))&&!!document.querySelector('#ring circle[stroke="var(--mi)"]')),tag+": legenda e anel com Estudando");

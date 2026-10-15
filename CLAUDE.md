@@ -54,12 +54,19 @@ consultado quando há dúvida. Responda em português.
   "Colar ementa": `ementaPrompt` → `sample.json` → `ementaParse` (revisão) → `ementaApply` (junta por nome, sem duplicar).
 - Backup: JSON `{app:"checklist-residencia", format:1, exportedAt, data:{topics,hist,plan,notes,noteAt,errors,fac,prompt,sort}}`.
 
-- Início: os cartões "Estudar hoje" (`.card.today`) e "Revisões" (`.card.revs`) são os mesmos nós da aba Residência;
-  `placeShared()` os move para `#iToday`/`#iRevs` quando a aba Início está aberta e de volta ao abrir a Residência.
-  Placar do dia `#iBoard` (`renderInicioBoard`), próximo passo `nextSteps()`/`startStep()` (liga o Foco no tema), projeção `projEl()`
-  dentro de `#iMeta` (temas não vistos × `hist[d].e` das últimas 4 semanas). Cartões do plano (`planOpen`) e das revisões (`revOpen`)
+- Início: o cartão "Estudar hoje" (`.card.today`) é o mesmo nó da aba Residência; `placeShared()` o move para `#iToday` com a aba Início
+  aberta e de volta ao abrir a Residência. As revisões dos temas (`.card.revs`) ficam SÓ na Residência (10/2026): a fila "Revisar hoje", o placar,
+  o atalho da barra e "Revisar agora" usam `goRevs(k?)` (Residência, parte `rev` no celular, rola até o tema). Teste: `tests/t95.js`.
+  Placar do dia `#iBoard` (`renderInicioBoard`), próximo passo `nextSteps()`/`startStep()` (liga o Foco no tema). A meta e a projeção
+  (`#iMeta`, `renderInicioMeta`, `projEl()`: temas não vistos × `hist[d].e` das últimas 4 semanas) ficam na Residência, na `.side` antes do `.dash`
+  (no celular, parte Progresso). Cartões do plano (`planOpen`) e das revisões (`revOpen`)
   ficam recolhidos e abrem sozinhos quando começados.
-- Residência: filtros `tf` (`renderTFilters`, `matches`; situação `tf.lv` por `tfLevel`, atalhos, área/especialidade), tema em abas
+- Residência: lista em camadas, tudo recolhido ao abrir (`openAreas`/`openSpecs` começam vazios): área › especialidades › temas › tema;
+  busca ou filtro de situação/atalho (`tfNarrow()`) abre o que achou sem mexer no que o usuário abriu; `tf.area`/`tf.sp` abrem só a área/especialidade;
+  o tema aberto (`openKey`) sempre abre a área e a especialidade dele. Cartão "Encontrar temas" `#tFind` (busca `#q`, `#tfCount`, painel `#tfPanel`
+  aberto/fechado por `#tfTog` e lembrado em `resid-tfpanel`, grupos Situação `TF_LV` / Mostrar só `TF_SHORT` / Onde, pílulas dos ativos `tfActive()`
+  com ×, `#tfClear` "Limpar tudo", Ordem `#sortSel` dentro da barra, "Como ler a lista" em `details.tfhow`). Teste: `tests/t96.js`.
+  Filtros `tf` (`renderTFilters`, `matches`; situação `tf.lv` por `tfLevel`, atalhos, área/especialidade), tema em abas
   (`renderDetail` marca `data-tab` = estudo|questoes|notas|erros; `detTab[k]`; `detGet(pre,k)` abre a aba antes de focar um campo),
   agenda `#revAgenda` (`renderAgenda`, `agBalance`) e marcação em lote `bulk` ("Já estudei antes"). Ajuste de data da revisão:
   `s.adj` (dias) vale só enquanto `s.adjFrom===s.last` (`dueIn`); `upd` apaga o ajuste quando `last`/`step` mudam.
@@ -127,7 +134,9 @@ consultado quando há dúvida. Responda em português.
   Depois da sessão: `foAfter` ({k,sec,d,id}, localStorage `resid-focus-after`, `foAfterSet` em `foTick`/`foFinish`) → `foAfterCard` (subtópicos via
   `toggleSub`, Estudei/Revisei, questões). Vínculo rápido `foQuickEl` (plano, revisões e disciplinas ativas ainda sem conteúdo `#foqd-<id>`, ref `D:`; teste t90). Ciclos `foSeries` (`resid-focus-series`, zera após 1 h) e pausa longa
   `ui.prefs.flong/fevery` (`foRun.lb`), bolinhas `foDotsEl`. Distrações `foRun.dist` → sessão `dz`. Ruído `ui.prefs.fnoise` w|b|r e `fvol`
-  (`foNoiseSync` no fim de `render()`, WebAudio). Tela inteira `fullOn.fo`. Mapa `foHeatCard` (12 semanas + melhor horário), `foWeekExtra`
+  (`foNoiseSync` no fim de `render()`, WebAudio). Tela inteira `fullOn.fo`. Mapa `foHeatCard` ("Nas últimas 12 semanas", no fim da aba e com `grid-column:1/-1` em 2 colunas; `container-type` no cartão: a partir de 640px
+  escreve os minutos em cada dia (`foHM`), nome do dia e data da semana, total da semana em barras; a partir de 900px o resumo `.fohstats` e o melhor
+  horário vão para a direita; legenda com minutos por terços da meta; "Esta semana" compara com a anterior até o mesmo dia; teste t97), `foWeekExtra`
   (meta semanal `ui.prefs.fwgoal` em minutos, recorde, distrações). Layout: `.focol` (esquerda: depois, relógio, sessões; direita: semana, mapa, matéria).
 
 - Erros (view `erros`): objeto do erro `{id,k,w,r,t,s,d,rev,lastRev,box,due,miss,lastMiss,cd,nt}`. Revisão ativa `eRevCard`/`erRun`

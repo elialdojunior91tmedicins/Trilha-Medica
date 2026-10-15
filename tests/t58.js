@@ -8,7 +8,7 @@ const seg=async s=>{if(mob)await p.evaluate(s=>{tSeg=s;render()},s);await p.wait
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={};
   state["CM-1"]={l:1,last:D(-3),step:0,qt:10,qc:4};state["CM-2"]={l:2,last:D(-1),step:1,qt:12,qc:11};state["CM-6"]={l:3,last:D(-2),step:3};
   for(let i=10;i<22;i++)state["CM-"+i]={l:1,last:D(-1),step:1};// 12 revisões no mesmo dia (daqui a 2 dias)
-  ui.prefs.adapt=false;commit();setView("temas")});await seg("lista");
+  ui.prefs.adapt=false;tfPanel=true;commit();setView("temas")});await seg("lista");
 // 1. filtros
 const vis=async()=>p.evaluate(()=>[...ALL,...FAC_ITEMS].filter(matches).map(i=>i.key));
 await click('#tfl1');await p.waitForTimeout(120);let v=await vis();ok(v.length===13&&v.includes("CM-1"),tag+": situação Estudados ("+v.length+")");
@@ -17,7 +17,7 @@ await click('#tfweak');await p.waitForTimeout(120);v=await vis();ok(v.length===1
 await click('#tfClear');await p.waitForTimeout(120);await p.selectOption('#tfArea','PED');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>[...document.querySelectorAll('#areas details.area')].length===1),tag+": filtro de área mostra só Pediatria");
 await p.selectOption('#tfSp',await p.evaluate(()=>AREAS.find(a=>a.code==="PED").specs[0].name));await p.waitForTimeout(150);v=await vis();ok(v.length>0&&v.every(k=>k.startsWith("PED")),tag+": especialidade ("+v.length+")");
-await click('#tfl0');await click('#tfhigh');await p.waitForTimeout(150);ok(/temas? com esses filtros/.test(await p.$eval('.tfres',x=>x.textContent)),tag+": contagem de resultados");
+await click('#tfl0');await click('#tfhigh');await p.waitForTimeout(150);ok(/temas? encontrados?|Nenhum tema com esses filtros/.test(await p.$eval('.tfres',x=>x.textContent)),tag+": contagem de resultados");
 await click('#tfClear');await p.waitForTimeout(120);
 // 2. abas do tema
 await p.evaluate(()=>openTopic("CM-1"));await p.waitForTimeout(250);
