@@ -16,7 +16,7 @@ await click('#nFPanel [data-nf="tab"]');await click('#nFPanel [data-nf="peg"]');
 await click('#nFPanel [data-nf="peg"]');await p.selectOption('#nSortSel','big');await p.waitForTimeout(120);const n1=await names();ok(n1[0]===await p.evaluate(()=>BYKEY["CM-1"].t)||n1[0]===await p.evaluate(()=>BYKEY["CM-6"].t),tag+": maiores primeiro: "+n1[0]);
 await p.selectOption('#nSortSel','recent');await p.waitForTimeout(120);ok((await names())[0]===await p.evaluate(()=>BYKEY["CM-1"].t),tag+": mais recentes");await p.selectOption('#nSortSel','sp');
 // 7. erros junto
-ok(/1 erro no caderno deste tema/.test(await p.$eval('#nlist',x=>x.textContent)),tag+": erros junto da anotação");
+ok(/1 erro neste tema/.test(await p.$eval("#nlist",x=>x.textContent)),tag+": erros junto da anotação (linha de resumo)");
 // 8. caderno livre
 await click('#frNew');await p.fill('#frT','Aula de cardio');await p.fill('#frB','# IAM\n> troponina em 3 h');await p.fill('#frTags','aula, cardio');
 await p.fill('#frQ','hipertens');await p.waitForTimeout(500);await click('.frres .qrpick');await p.waitForTimeout(120);await click('#frSave');await p.waitForTimeout(200);

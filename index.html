@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=1e48870a">
+<link rel="stylesheet" href="site.css?v=3f9b82e1">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=1e48870a"></script>
-<script src="bridge.js?v=1e48870a"></script>
+<script src="config.js?v=3f9b82e1"></script>
+<script src="bridge.js?v=3f9b82e1"></script>
 </head>
 <body>
 <script>
@@ -351,6 +351,12 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .qer{background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.78rem;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;text-align:left}
 .qrsrc{flex:2 1 170px!important}
 .qrsrc input{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}
+.qsrcfix{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.qsrcsug{margin:0;font-size:.86rem;line-height:1.9}.qsrcsug span{color:var(--muted)}.qsrcsug .mini{margin-left:6px}
+.qsrcform{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px 10px;align-items:end}
+.qsrcform input{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem}
+.qsrcform .qsrcnote{grid-column:1/-1}
+html[data-layout="phone"] .qsrcform{grid-template-columns:1fr}
 .qsrows{display:flex;flex-direction:column;gap:12px}
 .qpace{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;border-top:1px solid var(--line);padding-top:12px}
 .meter.pace{position:relative;overflow:visible}.meter.pace i{border-radius:99px}.meter.pace.ok i{background:var(--good)}.meter.pace.slow i{background:var(--warn)}
@@ -650,9 +656,12 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg),
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-rev),
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-rev,.ns-peg){display:none!important}
-.nerrs{margin-top:4px;font-size:.85rem}.nerrs summary{cursor:pointer;color:var(--due);font-weight:600;font-size:.82rem}
-.nerrs ul{list-style:none;margin:6px 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
-.nerrs li{display:flex;flex-direction:column;gap:1px;border-left:3px solid var(--due);padding-left:8px}.ne-w{color:var(--muted)}.ne-r{color:var(--ink)}
+.nerrs{margin-top:8px;font-size:.85rem;display:flex;flex-direction:column;gap:6px}
+.nerrh{margin:0;font-size:.82rem;color:var(--muted)}.nerrs.live .nerrh>span{color:var(--due);font-weight:600}.nerrh .link{font-size:.82rem}
+.nerrs ul{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
+.nerr{width:100%;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px;text-align:left;background:none;border:0;border-left:3px solid var(--due);padding:3px 0 3px 9px;color:var(--ink);font:inherit;font-size:.86rem;cursor:pointer}
+.nerr:hover .ne-r{text-decoration:underline}.ne-r{flex:1 1 220px;min-width:0}.ne-m{font-size:.74rem;color:var(--due);font-weight:600;white-space:nowrap}
+.ecard.eflash{outline:2px solid var(--accent);outline-offset:2px;transition:outline-color .6s}
 .nfree .dhead .btn{padding:6px 12px;font-size:.85rem}
 .freeed{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px}
 .freeed .ntext{min-height:10rem}
@@ -2709,10 +2718,11 @@ function renderDetail(it,o={}){
   // gerar questões
   const genEl=!sampleOff?renderGen(it):null;if(genEl)box.appendChild(genEl);
   // caderno de erros
-  const mine=errors.filter(e=>e.k===it.key).sort(byNewest);
+  const mine=errors.filter(e=>e.k===it.key&&!e.arch).sort(byNewest),nArch=errors.filter(e=>e.k===it.key&&e.arch).length;
   const g4=el(`<div class="grp"><span class="glabel">Caderno de erros${mine.length?" · "+mine.length:""}</span></div>`);
+  if(nArch){const a=el(`<button class="link" type="button"></button>`);a.textContent=`${nArch} ${nArch===1?"arquivado":"arquivados"} (resolvidos) · ver`;a.onclick=()=>{eGoTopic(it.key);eFlags.add("arch");setView("erros")};g4.appendChild(a)}
   if(mine.length){const ul=el(`<ol class="elist"></ol>`);mine.slice(0,3).forEach(e=>ul.appendChild(ecardEl(e,false)));g4.appendChild(ul);
-    if(mine.length>3){const more=el(`<button class="link" type="button">Ver os ${mine.length} erros deste tema</button>`);more.onclick=()=>{eTopicKey=it.key;eArea="all";eSp="all";eType="all";eQuery="";$("#eq").value="";setView("erros")};g4.appendChild(more)}}
+    if(mine.length>3){const more=el(`<button class="link" type="button">Ver os ${mine.length} erros deste tema</button>`);more.onclick=()=>{eGoTopic(it.key);setView("erros")};g4.appendChild(more)}}
   const dr=drafts[it.key]||(drafts[it.key]={w:"",r:"",t:"conhecimento",s:""});dr.k=it.key;if(eErr){dr.msg=eErr;eErr=""}
   g4.appendChild(errFormEl(dr,"",()=>{drafts[it.key]={w:"",r:"",t:dr.t,s:dr.s,c:dr.c};render()},{w:"ew-"+it.key,r:"er-"+it.key,t:"et-"+it.key,s:"es-"+it.key,c:"ec-"+it.key}));
   box.appendChild(g4);
@@ -4363,7 +4373,7 @@ function appendGrouped(list,items,keyOf,render1,unit){let cur=null;
 const byNewest=(a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.id<b.id?1:-1);
 function ecardEl(e,withTopic){
   const it=BYKEY[e.k];
-  const c=el(`<li class="ecard" data-t="${ETYPES[e.t]?e.t:"conhecimento"}"><div class="ehead"></div><p class="ebody"><b>Errei</b><span class="w"></span></p><p class="ebody"><b>Correto</b><span class="r"></span></p><div class="efoot"><span class="rv"></span><span class="sp"></span></div></li>`);
+  const c=el(`<li class="ecard" data-eid="${e.id}" data-t="${ETYPES[e.t]?e.t:"conhecimento"}"><div class="ehead"></div><p class="ebody"><b>Errei</b><span class="w"></span></p><p class="ebody"><b>Correto</b><span class="r"></span></p><div class="efoot"><span class="rv"></span><span class="sp"></span></div></li>`);
   const h=c.querySelector(".ehead");
   if(withTopic&&it){const tb=el(`<button class="etopic" type="button"></button>`);tb.textContent=it.t;tb.onclick=()=>openTopic(e.k);h.appendChild(tb);h.appendChild(el(`<span>${it.area.code}</span>`))}
   h.appendChild(el(`<span class="etype">${ETYPES[e.t]||""}</span>`));h.appendChild(el(`<span>${br(e.d)}</span>`));
@@ -4513,7 +4523,7 @@ function eRepCard(){const {tem,stub}=eRepeat();if(!tem.length&&!stub.length)retu
       const li=el(`<li><button class="link" type="button"></button><span class="ks"></span><button class="mini" type="button">Ver erros</button><button class="mini" type="button">Estudar de novo</button></li>`);
       li.querySelector(".link").textContent=it.t;li.querySelector(".link").onclick=()=>openTopic(k);
       li.querySelector(".ks").textContent=`${l.length} erros · mais: ${(ETYPES[main]||"").toLowerCase()}`;
-      const [v,s]=li.querySelectorAll(".mini");v.onclick=()=>{eTopicKey=k;eArea="all";eSp="all";eType="all";render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
+      const [v,s]=li.querySelectorAll(".mini");v.onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
       s.onclick=()=>{detTab[k]=(notes[k]||"").trim()?"notas":"estudo";openTopic(k)};ul.appendChild(li)});
     if(tem.length>6)ul.appendChild(el(`<li class="how">+ ${tem.length-6} temas.</li>`));c.appendChild(ul)}
   if(stub.length){c.appendChild(el(`<span class="glabel">Ainda não firmaram na revisão</span>`));
@@ -4571,7 +4581,9 @@ function eExtraOk(e,R){
   if(eCause!=="all"&&(e.c||"")!==eCause)return false;return true}
 const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all";
 let eFOpen=(()=>{try{return localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
-function eClearAll(){eFlags.clear();ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;$("#eq").value=""}
+function eClearAll(){eFlags.clear();ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
+/* mostrar os erros de um tema: limpa os outros filtros (senão podia não sobrar nada) e, se o tema só tem arquivados, abre os arquivados */
+function eGoTopic(k){eClearAll();eTopicKey=k;eLimit=E_PAGE;if(!errors.some(e=>e.k===k&&!e.arch)&&errors.some(e=>e.k===k&&e.arch))eFlags.add("arch")}
 function renderEMore(){const box=$("#eMore");if(!box)return;
   const R=eRepKeys(),act=errors.filter(e=>BYKEY[e.k]),EA=act.filter(e=>eFlags.has("arch")?e.arch:!e.arch);
   {const c=$("#eFCount");if(c)c.textContent=`${EA.length} ${EA.length===1?"erro":"erros"}${eFlags.has("arch")?" arquivados":""}`}
@@ -4650,30 +4662,31 @@ function renderErros(){
   const ins=$("#insight");ins.innerHTML="";
   if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Errou uma questão? Toque em <b>+ Registrar erro</b> (ou abra o tema, aba Erros) e anote o que errou e o conceito correto. Os erros voltam para você revisar em intervalos crescentes.</p>`))}
   else{
-    const tc={conhecimento:0,interpretacao:0,confusao:0};errors.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
+    const AE=errors.filter(e=>BYKEY[e.k]&&!e.arch),nA=Math.max(1,AE.length);
+    const tc={conhecimento:0,interpretacao:0,confusao:0};AE.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);
     const dist=el(`<div class="tdist"><span class="glabel">Tipo de erro</span></div>`);
     const colors={conhecimento:"var(--due)",interpretacao:"var(--l1)",confusao:"var(--l2)"};
-    Object.keys(ETYPES).forEach(k=>{const r=el(`<div class="trow"><span>${ETYPES[k]}</span><div class="bar"><i style="width:${tc[k]/errors.length*100}%;background:${colors[k]}"></i></div><b>${tc[k]}</b></div>`);dist.appendChild(r)});
+    Object.keys(ETYPES).forEach(k=>{const r=el(`<div class="trow"><span>${ETYPES[k]}</span><div class="bar"><i style="width:${tc[k]/nA*100}%;background:${colors[k]}"></i></div><b>${tc[k]}</b></div>`);dist.appendChild(r)});
     ins.appendChild(dist);
     {const wk=eWeeksEl();if(wk)ins.appendChild(wk)}
     const dom=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
     const tip=el(`<p class="tips" style="margin-top:12px"></p>`);tip.textContent=ETIPS[dom];ins.appendChild(tip);
-    {const cs={};errors.forEach(e=>{if(e.c)cs[e.c]=(cs[e.c]||0)+1});const top=Object.entries(cs).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    {const cs={};AE.forEach(e=>{if(e.c)cs[e.c]=(cs[e.c]||0)+1});const top=Object.entries(cs).sort((a,b)=>b[1]-a[1]).slice(0,3);
       if(top.length){const g=el(`<div class="grp ecauses" style="margin-top:14px"><span class="glabel">Por que você erra</span><ul></ul></div>`);
         top.forEach(([c,n])=>{const li=el(`<li><button type="button" class="link"></button><b></b><span></span></li>`);li.querySelector("button").textContent=c;li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};li.querySelector("b").textContent=`${n} ${n===1?"erro":"erros"}`;li.querySelector("span").textContent=ECTIPS[c]||"";g.querySelector("ul").appendChild(li)});ins.appendChild(g)}
       else if(errors.length>=3)ins.appendChild(el(`<p class="how" style="margin-top:10px">Dica: ao registrar, marque <b>Por que errei</b>. Com isso o app mostra as causas mais comuns e o que fazer com cada uma.</p>`))}
-    const per={};errors.forEach(e=>per[e.k]=(per[e.k]||0)+1);
+    const per={};AE.forEach(e=>per[e.k]=(per[e.k]||0)+1);
     const top=Object.entries(per).sort((a,b)=>b[1]-a[1]).slice(0,5);
     const tw=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Temas com mais erros</span><ol class="toplist"></ol></div>`);
     top.forEach(([k,c])=>{const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=BYKEY[k].t;
-      li.querySelector("button").onclick=()=>{eTopicKey=k;render()};tw.querySelector("ol").appendChild(li)});
-    ins.appendChild(tw);
-    const ps={};errors.forEach(e=>{const it=BYKEY[e.k];if(it){const g=spKey(it);ps[g]=(ps[g]||0)+1}});
+      li.querySelector("button").onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};tw.querySelector("ol").appendChild(li)});
+    if(top.length)ins.appendChild(tw);
+    const ps={};AE.forEach(e=>{const it=BYKEY[e.k];if(it){const g=spKey(it);ps[g]=(ps[g]||0)+1}});
     const ts=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Especialidades com mais erros</span><ol class="toplist"></ol></div>`);
     Object.entries(ps).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([g,c])=>{const [ac,sp]=[g.slice(0,g.indexOf(":")),g.slice(g.indexOf(":")+1)];
       const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=`${ac} · ${sp}`;
-      li.querySelector("button").onclick=()=>{eArea=ac;eSp=sp;eTopicKey=null;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};ts.querySelector("ol").appendChild(li)});
-    ins.appendChild(ts);
+      li.querySelector("button").onclick=()=>{eClearAll();eArea=ac;eSp=sp;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};ts.querySelector("ol").appendChild(li)});
+    if(Object.keys(ps).length)ins.appendChild(ts);
   }
   // lista
   const list=$("#elist");list.innerHTML="";
@@ -4684,7 +4697,11 @@ function renderErros(){
     if(eTopicKey&&e.k!==eTopicKey)return false;if(eArea!=="all"&&it.area.code!==eArea)return false;if(eArea!=="all"&&eSp!=="all"&&it.sp!==eSp)return false;if(eType!=="all"&&e.t!==eType)return false;
     return !eQuery||norm(it.t+" "+e.w+" "+e.r+" "+(e.s||"")+" "+(e.c||"")).includes(eQuery)}).sort(byNewest);
   eVis=vis;{const r=$("#eRes");if(r)r.textContent=`${vis.length} ${vis.length===1?"erro":"erros"}${eFlags.has("arch")?" arquivados":""}`}
-  if(errors.length&&!vis.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhum erro com esses filtros.</li>`));
+  if(errors.length&&!vis.length){const li=el(`<li class="empty" style="padding:0"></li>`);
+    const nArch=!eFlags.has("arch")&&eTopicKey?errors.filter(e=>e.k===eTopicKey&&e.arch).length:0;
+    if(nArch){li.append(`Este tema só tem ${nArch} ${nArch===1?"erro arquivado":"erros arquivados"} (marcados como resolvidos). `);const b=el(`<button class="link" type="button" id="eSeeArch">Ver arquivados</button>`);b.onclick=()=>{eFlags.add("arch");render()};li.appendChild(b)}
+    else{li.append("Nenhum erro com esses filtros. ");const b=el(`<button class="link" type="button">Limpar filtros</button>`);b.onclick=()=>{eClearAll();render()};li.appendChild(b)}
+    list.appendChild(li)}
   if(eOrder==="sp")vis.sort((a,b)=>BYKEY[a.k].num-BYKEY[b.k].num||byNewest(a,b));
   else if(eOrder==="due")vis.sort((a,b)=>eDue(a).localeCompare(eDue(b))||byNewest(a,b));
   else if(eOrder==="miss")vis.sort((a,b)=>(b.miss||0)-(a.miss||0)||byNewest(a,b));
@@ -4890,7 +4907,7 @@ function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],
   [...ALL,...FAC_ITEMS].forEach(it=>{const subs=subList(it).map(x=>x.t).join(" · ");if(norm(it.t).includes(n)||norm(subs).includes(n))add("Temas",it.t,norm(it.t).includes(n)?`${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`:gsSnip(subs,n),()=>openTopic(it.key))});
   Object.keys(notes).forEach(k=>{if(BYKEY[k]&&norm(notes[k]).includes(n))add("Anotações",BYKEY[k].t,gsSnip(notes[k],n),()=>{detTab[k]="notas";openTopic(k)})});
   freeN.forEach(f=>{if(norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(n))add("Caderno livre",f.t||"Sem título",gsSnip(f.b,n),()=>{freeOpen.add(f.id);backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("todas");setTimeout(()=>{const x=document.getElementById("fr-"+f.id);if(x)x.scrollIntoView({block:"center"})},80)})});
-  errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eTopicKey=e.k;eArea="all";eSp="all";eType="all";eFlags.clear();backStack=[];setView("erros")})});
+  errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros")})});
   cards.forEach(x=>{if(BYKEY[x.k]&&norm(x.q+" "+x.a).includes(n))add("Cartões",x.q.slice(0,90),BYKEY[x.k].t,()=>{detTab[x.k]="notas";openTopic(x.k)})});
   fac.discs.forEach(d=>{if(norm(d.name).includes(n))add("Faculdade",d.name,"disciplina",()=>goDisc(d));
     (d.sps||[]).forEach(s=>{if(norm(s.name+" "+s.objs.join(" ")).includes(n))add("Faculdade",s.name,d.name,()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(s.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+s.id),60)})});
@@ -5938,11 +5955,11 @@ function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
   for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=t-dnum(d);if(n<0)continue;if(n<30){rq+=v[0]||0;rc+=v[1]||0}else if(n<120){pq+=v[0]||0;pc+=v[1]||0}}
   if(rq<5||pq<5)return null;const r=rc/rq*100,p=pc/pq*100;return {d:Math.round(r-p),r:Math.round(r),p:Math.round(p),rq,pq}}
 /* linha extra de cada tema na lista: tendência, erros no caderno e atalhos */
-function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key),ex=el(`<div class="qrx"></div>`);
+function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key&&!e.arch),ex=el(`<div class="qrx"></div>`);
   if(tr&&Math.abs(tr.d)>=5){const b=el(`<span class="qtr ${tr.d>0?"up":"down"}"></span>`);b.textContent=`${tr.d>0?"▲":"▼"} ${Math.abs(tr.d)} pts`;b.dataset.tip=`Últimos 30 dias: ${tr.r}% em ${tr.rq} questões · antes: ${tr.p}% em ${tr.pq}`;b.title=b.dataset.tip;ex.appendChild(b)}
   if(en.length){const tc={};en.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const b=el(`<button class="qer" type="button"></button>`);
     b.textContent=`${en.length} ${en.length===1?"erro":"erros"} no caderno: ${Object.keys(ETYPES).filter(t=>tc[t]).map(t=>`${tc[t]} ${ESHORT[t]}`).join(" · ")}`;
-    b.onclick=()=>{eTopicKey=it.key;eArea="all";eSp="all";eType="all";backStack=[];setView("erros")};ex.appendChild(b)}
+    b.onclick=()=>{eGoTopic(it.key);backStack=[];setView("erros")};ex.appendChild(b)}
   const sp=el(`<span class="qrxsp"></span>`);ex.appendChild(sp);
   const ae=el(`<button class="link" type="button">+ erro</button>`);ae.onclick=()=>{openTopic(it.key);setTimeout(()=>{const f=detGet("ew-",it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}},350)};
   const ar=el(`<button class="link" type="button">+ registrar</button>`);ar.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};
@@ -5958,7 +5975,44 @@ function qSrcCard(U,from){const by={};let tq=0,tc=0;
   const nq=rows.reduce((a,r)=>a+r[2],0),nc=rows.reduce((a,r)=>a+r[1],0);if(tq-nq>0)rows.push(["Não informado",Math.max(0,tc-nc),tq-nq]);
   const box=el(`<div class="qsrows"></div>`);box.innerHTML=hbarRows(rows);c.appendChild(box);
   c.appendChild(el(`<p class="how">${from?`Nos últimos ${qPer} dias. `:""}“Não informado”: questões registradas sem banca ou antes deste campo existir. Compare a banca da sua prova com a média: se estiver bem abaixo, faça mais questões dela.</p>`));
+  c.appendChild(qSrcFixEl());
   return c}
+/* juntar ou renomear fontes (ex.: "Questões no Claude" e "Claude"): soma os dias de state[k].qb[de] em qb[para], em todos os temas,
+   troca a banca das provas na íntegra que contavam com o nome antigo e a última fonte lembrada; Desfazer guarda o antes */
+let qsrcOpen=false,qsrcUndo=null,qsrcPick={f:"",t:""};
+const QSRC_FIXED="Claude";
+function qSrcTotals(){const T={};[...ALL,...FAC_ITEMS].forEach(it=>{const qb=(state[it.key]||{}).qb||{};for(const k in qb){let n=0;for(const d in qb[k]){const v=qb[k][d];if(Array.isArray(v))n+=v[0]||0}T[k]=(T[k]||0)+n}});return T}
+const qsrcNorm=x=>norm(String(x||"")).replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+function qSrcSuggest(T){const ks=Object.keys(T).filter(k=>T[k]>0),out=[],seen=new Set();
+  for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){const a=ks[i],b=ks[j],na=qsrcNorm(a),nb=qsrcNorm(b);if(!na||!nb)continue;
+    const inside=(x,y)=>(" "+y+" ").includes(" "+x+" ");if(!(na===nb||inside(na,nb)||inside(nb,na)))continue;
+    const to=a===QSRC_FIXED?a:b===QSRC_FIXED?b:T[a]>=T[b]?a:b,fr=to===a?b:a;if(seen.has(fr))continue;seen.add(fr);out.push([fr,to])}
+  return out.slice(0,3)}
+function qSrcMerge(fr,to){fr=qSrcKey(fr);to=qSrcKey(to);if(!fr||!to||fr===to)return;const snap={qb:{},ex:{},last:null};
+  [...ALL,...FAC_ITEMS].forEach(it=>{const x=state[it.key];if(!x||!x.qb||!x.qb[fr])return;snap.qb[it.key]=JSON.stringify(x.qb);
+    const b={...x.qb},m={...(b[to]||{})};for(const d in b[fr]){const v=b[fr][d],w=m[d]||[0,0];if(Array.isArray(v))m[d]=[w[0]+(v[0]||0),w[1]+(v[1]||0)]}b[to]=m;delete b[fr];x.qb=b});
+  exams.forEach(ex=>{if(qSrcKey(exSrc(ex))===fr){snap.ex[ex.id]=ex.banca;ex.banca=to;exPut(ex)}});
+  try{if(localStorage.getItem("resid-qsrc")===fr){snap.last=fr;localStorage.setItem("resid-qsrc",to)}}catch(e){}
+  qsrcUndo={fr,to,snap};qsrcPick={f:"",t:""};commit()}
+function qSrcUndoNow(){const u=qsrcUndo;if(!u)return;for(const k in u.snap.qb){if(state[k])state[k].qb=JSON.parse(u.snap.qb[k])}
+  exams.forEach(ex=>{if(ex.id in u.snap.ex){ex.banca=u.snap.ex[ex.id];exPut(ex)}});try{if(u.snap.last)localStorage.setItem("resid-qsrc",u.snap.last)}catch(e){}
+  qsrcUndo=null;commit()}
+function qSrcFixEl(){const T=qSrcTotals(),w=el(`<div class="qsrcfix"></div>`);
+  if(qsrcUndo){const m=el(`<p class="pnote" role="status"><span></span> <button class="link" type="button" id="qsrcUndo">Desfazer</button></p>`);m.querySelector("span").textContent=`“${qsrcUndo.fr}” agora conta como “${qsrcUndo.to}”${T[qsrcUndo.to]?` (${T[qsrcUndo.to]} questões)`:""}.`;m.querySelector("button").onclick=qSrcUndoNow;w.appendChild(m)}
+  qSrcSuggest(T).forEach(([fr,to],i)=>{const p=el(`<p class="qsrcsug">Parece a mesma fonte: <b></b> (<span></span>) e <b></b> (<span></span>). <button class="mini" type="button"></button></p>`),B=p.querySelectorAll("b"),S=p.querySelectorAll("span");
+    B[0].textContent=fr;S[0].textContent=T[fr];B[1].textContent=to;S[1].textContent=T[to];const b=p.querySelector("button");b.id="qsrcSug"+i;b.textContent=`Juntar em “${to}”`;b.onclick=()=>qSrcMerge(fr,to);w.appendChild(p)});
+  const names=Object.keys(T).filter(k=>T[k]>0).sort((a,b)=>T[b]-T[a]);if(names.length<1)return w;
+  const tg=el(`<button class="link" type="button" id="qsrcTog"></button>`);tg.textContent=qsrcOpen?"Fechar":"Juntar ou renomear fontes";tg.onclick=()=>{qsrcOpen=!qsrcOpen;render()};w.appendChild(tg);
+  if(qsrcOpen){const f=el(`<div class="qsrcform"><label class="qfsel"><span>Fonte</span><select id="qsrcFrom"></select></label><label class="qfsel"><span>Passa a se chamar</span><input id="qsrcTo" list="qsrcList" autocomplete="off" maxlength="30" placeholder="Ex.: ENARE"></label><datalist id="qsrcList"></datalist><button class="btn primary" type="button" id="qsrcGo"></button><p class="how qsrcnote"></p></div>`);
+    const sf=f.querySelector("#qsrcFrom"),ti=f.querySelector("#qsrcTo"),go=f.querySelector("#qsrcGo"),nt=f.querySelector(".qsrcnote");
+    if(!names.includes(qsrcPick.f))qsrcPick.f=names.find(n=>n!==QSRC_FIXED)||names[0];
+    names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=`${n} (${T[n]})`;sf.appendChild(o);const d=document.createElement("option");d.value=n;f.querySelector("datalist").appendChild(d)});
+    sf.value=qsrcPick.f;ti.value=qsrcPick.t;
+    const upd=()=>{const fr=sf.value,to=qSrcKey(ti.value),ex=to&&T[to]>0&&to!==fr;go.textContent=ex?`Juntar em “${to}”`:"Renomear";
+      go.disabled=!to||to===fr||fr===QSRC_FIXED;
+      nt.textContent=fr===QSRC_FIXED?"“Claude” é o nome das questões geradas pelo app: junte outras fontes nele, mas ele mesmo não muda de nome.":ex?`As ${T[fr]} questões de “${fr}” passam a contar em “${to}” (que já tem ${T[to]}). Vale para todos os temas e períodos.`:to&&to!==fr?`“${fr}” passa a se chamar “${to}”, em todos os temas e períodos.`:"Escolha a fonte e o novo nome (ou o nome de outra fonte, para juntar as duas)."};
+    sf.onchange=()=>{qsrcPick.f=sf.value;upd()};ti.oninput=()=>{qsrcPick.t=ti.value;upd()};go.onclick=()=>{qsrcOpen=false;qSrcMerge(sf.value,ti.value)};upd();w.appendChild(f)}
+  return w}
 /* ---------- Questões: partes (Resumo, Praticar, Temas), simulado misto e ritmo por questão ---------- */
 let qSeg="resumo";try{const v=localStorage.getItem("resid-qseg");if(["resumo","praticar","temas"].includes(v))qSeg=v}catch(e){}
 function setQSeg(v){qSeg=v;try{localStorage.setItem("resid-qseg",v)}catch(e){}render();window.scrollTo({top:0})}
@@ -6890,10 +6944,25 @@ function renderNFlags(keys,vis){const box=$("#nFBody");if(!box)return;keys=keys|
     foot:nQuery||A.length?(vis.length?`${vis.length} ${vis.length===1?"anotação encontrada":"anotações encontradas"}`:"Nenhuma anotação com esses filtros"):"",
     onDone:()=>{nFOpen=false;lsSet("resid-nfpanel",null);render();const l=$("#nlist");if(l)l.scrollIntoView({block:"start"})}})}
 /* erros do caderno junto da anotação */
-function noteErrsEl(k){const mine=errors.filter(e=>e.k===k).sort(byNewest);if(!mine.length)return null;
-  const d=el(`<details class="nerrs"><summary>${mine.length} ${mine.length===1?"erro":"erros"} no caderno deste tema</summary><ul></ul></details>`);
-  mine.slice(0,6).forEach(e=>{const li=el(`<li><span class="ne-w"></span><span class="ne-r"></span></li>`);li.querySelector(".ne-w").textContent="Errei: "+e.w.replace(/\s+/g," ").slice(0,200);li.querySelector(".ne-r").textContent="Correto: "+e.r.replace(/\s+/g," ").slice(0,240);d.querySelector("ul").appendChild(li)});
-  if(mine.length>6)d.appendChild(el(`<p class="how">+ ${mine.length-6} no caderno de erros.</p>`));return d}
+/* erros do tema junto da anotação: uma linha de resumo e só os erros "vivos" (vencem hoje ou teimosos), no máximo 3,
+   sem os que já foram levados para a anotação (e.nt) nem os arquivados; uma linha por erro, com o conceito certo */
+const eAlive=e=>!e.arch&&(eDue(e)<=today()||(e.miss||0)>=1);
+function eConcept(e){const L=String(e.r||"").split(/\n+/).map(x=>x.trim()).filter(Boolean),t=(L.find(x=>!/^Correta:|^Por que a minha/i.test(x))||L[0]||"").replace(/\s+/g," ");
+  if(t.length<=150)return t;const c=t.slice(0,150),sp=c.lastIndexOf(" ");let o=sp>90?c.slice(0,sp):c;
+  for(let i=0;i<3;i++)o=o.replace(/[,;:.\s]+$/,"").replace(/\s+(e|ou|de|da|do|das|dos|a|o|as|os|em|no|na|com|para|por|que|um|uma)$/i,"");return o+"…"}
+function eOpenOne(e){eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros");
+  setTimeout(()=>{const x=document.querySelector(`#elist .ecard[data-eid="${e.id}"]`);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.classList.add("eflash");setTimeout(()=>x.classList.remove("eflash"),1600)}},80)}
+function noteErrsEl(k){const act=errors.filter(e=>e.k===k&&!e.arch);if(!act.length)return null;
+  const alive=act.filter(eAlive),show=alive.filter(e=>!e.nt).sort((a,b)=>(b.miss||0)-(a.miss||0)||eDue(a).localeCompare(eDue(b))).slice(0,3);
+  const d=el(`<div class="nerrs"><p class="nerrh"><span></span> <button class="link" type="button">ver no caderno</button></p></div>`);
+  d.querySelector("span").textContent=`${act.length} ${act.length===1?"erro neste tema":"erros neste tema"}${alive.length?` · ${alive.length} ${alive.length===1?"ainda pede":"ainda pedem"} atenção`:" · nenhum pedindo atenção agora"}`;
+  if(alive.length)d.classList.add("live");
+  d.querySelector("button").onclick=()=>{eGoTopic(k);backStack=[];setView("erros")};
+  if(show.length){const ul=el(`<ul></ul>`);show.forEach(e=>{const li=el(`<li><button type="button" class="nerr"><span class="ne-r"></span><span class="ne-m"></span></button></li>`);
+      li.querySelector(".ne-r").textContent=eConcept(e)||e.w.replace(/\s+/g," ").slice(0,120);
+      li.querySelector(".ne-m").textContent=(e.miss||0)>=1?`errou de novo ${e.miss}×`:"revisar hoje";
+      li.querySelector("button").onclick=()=>eOpenOne(e);ul.appendChild(li)});d.appendChild(ul)}
+  return d}
 /* ----- PDF das anotações (mesmo gerador do panorama) ----- */
 function notesPDF(keys,free){const P=new MiniPDF("Anotações"),M=46,CW=P.W-2*M;let y=M;
   const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],l1:[176,122,14],line:[225,218,203],bg:[243,240,233]};
@@ -7135,7 +7204,7 @@ const HELP=[
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
 - **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
-- **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros.
+- **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros. Se a mesma fonte aparecer com dois nomes (ex.: "Questões no Claude" e "Claude"), o cartão sugere **Juntar**; em **Juntar ou renomear fontes** você escolhe a fonte e o novo nome (ou o nome de outra, para somar as duas), em todos os temas e nas provas importadas. Dá para **Desfazer** logo depois. "Claude" não muda de nome, porque é onde caem as geradas.
 - **Filtrar questões** (parte Temas no celular): o mesmo cartão da Residência. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
@@ -7151,7 +7220,7 @@ const HELP=[
 - **Cartões de memorização:** dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em 5 a 10 perguntas e respostas (você confere antes de salvar), ou crie à mão em **+ Cartão manual**. Na aba, **Cartões para revisar**: veja a pergunta, toque em **Mostrar resposta** e marque **Lembrei** (o cartão volta em 1, 2, 4, 8, 16, 32 e 64 dias) ou **Não lembrei** (volta amanhã).
 - **Cobertura:** em Todas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
 - **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
-- **Erros junto:** cada anotação mostra, abaixo, os erros do caderno daquele tema (o que errou e o correto).
+- **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, uma linha cada com o conceito certo; toque para abrir o erro no caderno. Erros arquivados e os que você já levou para a anotação não se repetem ali.
 - **Baixar PDF:** gera um PDF com as anotações que estão na tela (seguindo os filtros), por especialidade, com títulos, listas, tabelas e pegadinhas; sem filtros, inclui o caderno livre.
 - **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
@@ -7167,6 +7236,7 @@ const HELP=[
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
 - **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
 - **Virar cartão** cria um cartão de memorização (frente: o que você errou; verso: o correto). **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
+- **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.

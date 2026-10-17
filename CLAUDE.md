@@ -117,7 +117,7 @@ consultado quando há dúvida. Responda em português.
   `rdRun` = sessão de refazer, não conta no acerto) e "Onde ganhar pontos" (`qGainCard`: incidência² × distância de 80%).
   Meta semanal `ui.prefs.qgoal` (`qGoalEl`, conta `hist[d].q`), tendência `qTrend(k)` (30 dias × 90 antes; filtro `qWorse`),
   linha extra por tema `qRowExtra` (erros do caderno, + erro, + registrar), banca/fonte por tema em `state[k].qb={fonte:{dia:[q,c]}}`
-  (`addQ(...,src)`; geradas = "Claude"; `qSrcCard`).
+  (`addQ(...,src)`; geradas = "Claude"; `qSrcCard`; juntar/renomear fontes `qSrcFixEl`/`qSrcMerge(de,para)`/`qSrcUndoNow`, sugestão `qSrcSuggest` por nome parecido, troca também `ex.banca` e `resid-qsrc`; "Claude" não é renomeado; teste t100).
   Partes no celular/tablet em pé: `qSeg` = resumo|praticar|temas (`#viewQuest[data-qseg]`, classes `.qs-res/.qs-prac/.qs-tem`, `setQSeg`).
   Simulado misto `sim` (`qSimCard`, `simStart` com `simPrompt` multi-tema, `simAnswer`); ritmo em `hist[d].ts/tq` (`logPace`, `qPaceEl`,
   meta `ui.prefs.qpace` em segundos).
@@ -125,7 +125,7 @@ consultado quando há dúvida. Responda em português.
   "Para reler hoje" (`nTodayCard`, `s.nread`), pegadinhas `pegOf(k)` (linhas "> ", ==destaque==, seção "Pegadinhas"), cobertura
   `noNoteKeys()`/`nNoNote`, cartões `cards` = [{id,k,q,a,box,due,n,ok,src}] (`resid-cards-v1` + Firestore `progress/cards/{id}`,
   `cardsBlock` no tema, `cdGenerate` via `sample.json`, revisão Leitner `CD_INT` em `nCardsCard`; backup `data.cards`).
-  Filtros extras `nFlags` (week|peg|tab|cards, `nFlagOk`) e ordem `nSort`; erros junto `noteErrsEl(k)`; PDF `notesPDF(keys,free)`;
+  Filtros extras `nFlags` (week|peg|tab|cards, `nFlagOk`) e ordem `nSort`; erros junto `noteErrsEl(k)` (linha "N erros neste tema · M ainda pedem atenção · ver no caderno" + até 3 vivos `eAlive` = vence hoje ou `miss`≥1, sem `e.nt` nem arquivados; `eConcept(e)` = 1ª linha do correto sem "Correta:"; `eOpenOne` abre o erro no caderno, `.ecard[data-eid]`); PDF `notesPDF(keys,free)`;
   caderno livre `freeN` = [{id,t,b,tags,ks,at}] (`resid-free-v1` + Firestore `progress/free/{id}`, `freeCard`/`freeEditor`,
   `freeLinkedEl(k)` dentro do tema; backup `data.free`).
   Markdown: links `[t](url)` e URLs soltas em `inl`; bloco ```fluxo → `flowHTML` (etapas, "? decisão", caminhos recuados "Rótulo: a → b").
@@ -151,7 +151,7 @@ consultado quando há dúvida. Responda em português.
   Também: causa `e.c` (`ECAUSES` por tipo, dicas `ECTIPS`, "Por que você erra"), arquivar `e.arch` (`eArchive`; arquivados saem de
   `eDueList`/`eRepeat`), filtros `#eMore` (`renderEMore`: `eFlags` due|rep|nocard|arch, `ePer`, `eSrc`, `eCause`; `eExtraOk`), ordem
   `eOrder` sp|new|due|miss, PDF `errosPDF(eVis)`/`ePdfSave`, simulado `simCfg.src="errs"` (`eSimItems`, questão com `err` → `eAnswer`).
-  O selo `#ecount` mostra os erros para revisar hoje.
+  O selo `#ecount` mostra os erros para revisar hoje. Ir para os erros de um tema: sempre `eGoTopic(k)` (limpa filtros com `eClearAll`; tema só com arquivados liga `eFlags` arch); "Onde melhorar" (tipos, causas, temas, especialidades) conta só ativos; lista vazia com tema só arquivado mostra `#eSeeArch`; no tema da Residência os arquivados ficam à parte. Teste t100.
   Em duas colunas (`data-cols=2`, tablet/desktop): `.eside` (eTop + Onde melhorar) à direita, filtros e lista à esquerda; no celular `.side` é `display:contents`.
   Revisão em tela inteira: `erFull` (localStorage `resid-erfull`, `erFullSet`), classe `#viewErros.erfull` só com `erRun`; atalhos espaço/1/2/Esc.
   Igual nos cartões, no simulado e nas provas na íntegra (`#exFullB` no `qExamCard` com `exRun`, Modo prova e estudo; teste t99): `fullOn.cd/sim/ex` (localStorage `resid-cdfull`/`resid-simfull`/`resid-exfull`, `fullSet`, `fullBtn`), `applyFull()` no fim de `render()`
