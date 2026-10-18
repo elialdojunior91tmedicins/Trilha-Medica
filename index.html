@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=50070180">
+<link rel="stylesheet" href="site.css?v=4bbc670c">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=50070180"></script>
-<script src="bridge.js?v=50070180"></script>
+<script src="config.js?v=4bbc670c"></script>
+<script src="bridge.js?v=4bbc670c"></script>
 </head>
 <body>
 <script>
@@ -1686,10 +1686,18 @@ html[data-layout="tablet"][data-cols="1"] body>.wrap>header{padding-left:54px;mi
 /* menu ≡ (celular: folha de baixo; iPad em pé: gaveta à esquerda) */
 .navmenu{position:fixed;inset:0;z-index:95;background:rgb(10 17 33 / .4);display:flex;align-items:flex-end;justify-content:flex-start}
 .navmenu[hidden]{display:none}
-.nmpanel{background:var(--surface);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-height:88vh;border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgb(0 0 0 / .2);animation:nmup .18s ease}
+.nmpanel{background:var(--surface);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-height:88vh;border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgb(0 0 0 / .2);animation:nmup .34s cubic-bezier(.22,1,.36,1)}
 html[data-layout="tablet"] .navmenu{align-items:stretch}
-html[data-layout="tablet"] .nmpanel{width:min(360px,88vw);max-height:none;height:100%;border-radius:0 18px 18px 0;padding-top:calc(18px + env(safe-area-inset-top,0px));animation:nmleft .18s ease}
-@keyframes nmup{from{transform:translateY(24px);opacity:.4}}@keyframes nmleft{from{transform:translateX(-24px);opacity:.4}}
+html[data-layout="tablet"] .nmpanel{width:min(360px,88vw);max-height:none;height:100%;border-radius:0 18px 18px 0;padding-top:calc(18px + env(safe-area-inset-top,0px));animation:nmleft .3s cubic-bezier(.22,1,.36,1)}
+@keyframes nmup{from{transform:translateY(100%)}}@keyframes nmleft{from{transform:translateX(-100%)}}
+@keyframes nmfade{from{background:rgb(10 17 33 / 0)}}
+.navmenu{animation:nmfade .3s ease}
+/* fechar: a barra desce (ou volta para a esquerda) antes de sumir */
+.navmenu.nmclosing{animation:nmfade .24s ease reverse forwards;pointer-events:none}
+.navmenu.nmclosing .nmpanel{animation:nmdown .24s cubic-bezier(.4,0,1,1) forwards}
+html[data-layout="tablet"] .navmenu.nmclosing .nmpanel{animation:nmout .22s cubic-bezier(.4,0,1,1) forwards}
+@keyframes nmdown{to{transform:translateY(100%)}}@keyframes nmout{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.navmenu,.nmpanel,.navmenu.nmclosing,.navmenu.nmclosing .nmpanel{animation-duration:.01s!important}}
 .nmgrab{width:40px;height:4px;border-radius:99px;background:var(--line);align-self:center;margin:-4px 0 2px}
 html[data-layout="tablet"] .nmgrab{display:none}
 .nmhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -5533,11 +5541,13 @@ function navMenuOpen(){const M=$("#navMenu"),P=$("#nmPanel");P.innerHTML="";
   P.appendChild(navListEl(navMenuClose));P.appendChild(el(`<div class="nmsep"></div>`));
   const sec=el(`<div class="nmsec"></div>`);[["nmProf","Perfil",`<circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/>`,()=>goSub("perfil")],["nmCfg","Configurações",`<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>`,()=>goSub("config")],["nmHelp","Ajuda",`<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/>`,()=>goSub("help")]].forEach(([id,t,ic,fn])=>{
     const b=el(`<button type="button"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg><span></span></button>`);b.id=id;b.querySelector("span").textContent=t;b.onclick=()=>{navMenuClose();fn()};sec.appendChild(b)});P.appendChild(sec);
-  M.hidden=false;document.body.classList.add("nmopen");$("#tabM").setAttribute("aria-expanded","true");$("#navMenuBtn").setAttribute("aria-expanded","true");setTimeout(()=>{const c=$("#nmClose");if(c)c.focus({preventScroll:true})},30)}
-function navMenuClose(){const M=$("#navMenu");if(M.hidden)return;M.hidden=true;document.body.classList.remove("nmopen");$("#tabM").setAttribute("aria-expanded","false");$("#navMenuBtn").setAttribute("aria-expanded","false")}
+  clearTimeout(nmTimer);M.classList.remove("nmclosing");M.hidden=false;document.body.classList.add("nmopen");$("#tabM").setAttribute("aria-expanded","true");$("#navMenuBtn").setAttribute("aria-expanded","true");setTimeout(()=>{const c=$("#nmClose");if(c)c.focus({preventScroll:true})},30)}
+let nmTimer=0;
+function navMenuClose(){const M=$("#navMenu");if(M.hidden||M.classList.contains("nmclosing"))return;
+  M.classList.add("nmclosing");clearTimeout(nmTimer);nmTimer=setTimeout(()=>{M.classList.remove("nmclosing");M.hidden=true},240);document.body.classList.remove("nmopen");$("#tabM").setAttribute("aria-expanded","false");$("#navMenuBtn").setAttribute("aria-expanded","false")}
 $("#navMenu").addEventListener("click",e=>{if(e.target.id==="navMenu")navMenuClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#navMenu").hidden){navMenuClose();e.stopPropagation()}else if(document.querySelector(".appnav.peek"))sbPeek(false)}},true);
-$("#navMenuBtn").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
+$("#navMenuBtn").onclick=()=>(($("#navMenu").hidden||$("#navMenu").classList.contains("nmclosing"))?navMenuOpen():navMenuClose());
 
 function renderHead(){placeSide();const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
   b.setAttribute("aria-pressed",view==="perfil");$("#cfgBtn").setAttribute("aria-pressed",["config","help","instr"].includes(view))}
@@ -8285,7 +8295,7 @@ $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus(
 $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});$("#tabM").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});$("#tabM").onclick=()=>(($("#navMenu").hidden||$("#navMenu").classList.contains("nmclosing"))?navMenuOpen():navMenuClose());
 $("#foPill").onclick=()=>{backStack=[];setView("foco")};
 if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
