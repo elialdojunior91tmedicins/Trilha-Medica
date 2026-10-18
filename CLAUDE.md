@@ -194,7 +194,8 @@ consultado quando há dúvida. Responda em português.
   trilho `--sbw:76px`, `.appnav.peek` abre por cima (mouse com `sbHover()`, ou `#sbMenu` ≡ no toque com `#sbBack`); `#sbPins` (`#sbPinOpen` Fixar, `#sbPinRail` Recolher;
   tocar de novo = automático) e `segRow` "Barra lateral" em Configurações › Aparência (só com `sideFull()`). Menu ≡ `#navMenu`/`#nmPanel` (`navMenuOpen/Close`,
   `navListEl` com `nmInfo(v)` = resumo e selo de cada seção, ids `#go-<view>`, `#nmSearch`, `#nmProf/#nmCfg/#nmHelp`): folha de baixo no celular (`#tabM` "Menu"),
-  gaveta à esquerda no iPad em pé (`#navMenuBtn` no header; a `.appnav` some em `tablet` + `cols=1`). Teste: `tests/t102.js`.
+  gaveta à esquerda no iPad em pé (`#navMenuBtn` no header; a `.appnav` some em `tablet` + `cols=1`). Animação: `.nmpanel` sobe (`nmup`) no celular e desliza (`nmleft`) na gaveta;
+  fechar põe `.nmclosing` e esconde depois de 240 ms (`nmTimer`), por isso os toggles tratam "fechando" como fechado e os testes esperam ~300 ms. Teste: `tests/t102.js`.
 - Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
   cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),
@@ -298,6 +299,13 @@ consultado quando há dúvida. Responda em português.
   Partes: `subParts(L)` (até 6 subtópicos e peso ≤6 = uma parte; senão partes de peso 3–4, `PART_CAP`), `partSubs(it)` → `{subs,pt:[parte,total]}` usado em
   `makeDayPlan` (r-new e `r-cont` "Continuar · Parte 2 de 4"), `adoptTopic` e `weekPreview` (`simStudy`). `buildPlan` põe os temas Estudando (`r-cont`, mais antigos primeiro)
   antes dos novos (que excluem `ing`). Projeção: `partsAvg()` divide a capacidade. `SUBS_PER_DAY`/`subN` agora só vale para revisões e pontos fracos.
+- Semana da prova (10/2026): `provaWeek()` = provas da faculdade em até `rvDays()` (= `Math.round(FAC_WIN/3)`, 7 por padrão) com conteúdo válido. Nesses dias o
+  `buildPlan` põe o pendente (`r-fac`) e depois `provaRvPicks()` (`r-pfr` "Revisar · prova em N dias"): conteúdo já estudado, até `FAC_RV_MAX`=2 vezes, com
+  `FAC_RV_GAP`=2 dias entre elas, menor acerto primeiro (`refAcc`, sem questões = 0,55); e retorna sem `r-new`/`r-cont`/`r-weak`. Revisões feitas ficam em
+  `p.rv={ref:[datas]}` na própria prova (vai com `fac`, backup e sync); `provaRvMark` grava (botão `.pfrdone` "Revisei para a prova" e o checkbox da véspera,
+  que também conta). Não mexe na revisão espaçada. Vaga sobrando: `li.pweek` com "Ir para as revisões". `replaceOwn` leva `p.rv`. Teste: `tests/t106.js`.
+- Cartões do plano (`.pcard`): título com line-height 1,3, `.phint` justificado com hifenização (`lang="pt-BR"` posto no início do script), `.pbody` em coluna
+  com gap 8px; no celular (≤560px) o selo `.reason` fica acima do título (`column-reverse`).
   Densos: `s.dn={índice:"u"|"n"|"c"}` e `cs[j].dn` (u = usuário marcou, n = usuário tirou, c = Claude sugeriu e vale até mudar); `subW` = 2 se denso; `setDn`,
   revisão embutida `DN_DEF` = {chave:[índices]} dos 185 temas (vira "c" em `subList` quando não há `s.dn[i]`; `dnPending` ignora temas em `DN_DEF`; 91 temas em partes), `dnBoxEl` no tema (`dnEdit`, selos `.dnb`), `dnSuggest(it)`/`dnSuggestAll()` (lotes `DN_CHUNK`=45 em Configurações › Plano, `dnPending`, `s.dnAt`), `dnApply` nunca troca u/n. Teste: `tests/t88.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
