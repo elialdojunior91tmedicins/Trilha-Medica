@@ -31,7 +31,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   /* 3. com um PDF de aula */
   await p.setInputFiles('#gmf-CM-34',pdf);await p.waitForFunction(()=>genMat["CM-34"]&&!genMat["CM-34"].busy,null,{timeout:20000});await p.waitForTimeout(150);
   const m1=await p.evaluate(()=>({st:(document.querySelector('.gmok')||{}).textContent,btn:[...document.querySelectorAll('.qgen ~ .btn.primary, .grp .btn.primary')].map(x=>x.textContent).join("|")}));
-  ok(/t94-aula\.pdf · 2 de 2 páginas lidas/.test(m1.st||"")&&/questões do material/.test(m1.btn),name+": PDF lido no aparelho; o botão vira Gerar questões do material "+JSON.stringify(m1));
+  ok(/^2 de 2 páginas lidas/.test(m1.st||"")&&/questões do material/.test(m1.btn),name+": PDF lido no aparelho; o botão vira Gerar questões do material "+JSON.stringify(m1));
   await p.evaluate(()=>{__P=[];__O=[];generate(BYKEY["CM-34"])});await p.waitForFunction(()=>gen["CM-34"]&&gen["CM-34"].status==="done",null,{timeout:10000});await p.waitForTimeout(150);
   const r3=await p.evaluate(()=>({p:__P[0],q:gen["CM-34"].qs[0],badge:!!document.querySelector('.qmat')}));
   ok(/Material do estudante/.test(r3.p)&&/TEXTO DO MATERIAL/.test(r3.p)&&/ferritina baixa e RDW alto/.test(r3.p)&&/=== Página 2 ===/.test(r3.p)&&!/Uma questão para cada um destes subtópicos/.test(r3.p),name+": o pedido leva o texto do material e pede as questões a partir dele");
@@ -39,12 +39,12 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   if(name==="fone"||name==="note"){await p.evaluate(()=>{answer(BYKEY["CM-34"],0,"A");render();document.querySelector('.gmat').scrollIntoView({block:"start"});scrollBy(0,-80)});await p.waitForTimeout(200);await p.screenshot({path:`t94-mat-${name}.png`});
     await p.evaluate(()=>{const f=document.querySelector('.qcard .qfonte');f&&f.scrollIntoView({block:"center"})});await p.waitForTimeout(150);await p.screenshot({path:`t94-fonte-${name}.png`})}
   /* 4. foto de slide: vai como imagem */
-  await p.setInputFiles('#gmf-CM-34',png);await p.waitForFunction(()=>genMat["CM-34"]&&!genMat["CM-34"].busy,null,{timeout:20000});
+  await p.evaluate(()=>{delete genMat["CM-34"];render()});await p.setInputFiles('#gmf-CM-34',png);await p.waitForFunction(()=>genMat["CM-34"]&&!genMat["CM-34"].busy,null,{timeout:20000});
   await p.evaluate(()=>{__P=[];__O=[];generate(BYKEY["CM-34"])});await p.waitForFunction(()=>gen["CM-34"]&&gen["CM-34"].status==="done",null,{timeout:10000});
   ok(await p.evaluate(()=>__O[0].images&&__O[0].images.length===1&&__O[0].images[0].type==="image/jpeg"&&/As imagens anexadas são páginas do material/.test(__P[0])),name+": foto do slide vai como imagem junto com o pedido");
   /* 5. arquivo que não dá para ler: avisa, mas não impede */
-  await p.setInputFiles('#gmf-CM-34',txt);await p.waitForFunction(()=>genMat["CM-34"]&&!genMat["CM-34"].busy,null,{timeout:20000});await p.waitForTimeout(100);
-  ok(await p.evaluate(()=>/sem o material/.test((document.querySelector('.gmat .err')||{}).textContent||"")&&!/do material/.test([...document.querySelectorAll('.grp .btn.primary')].map(x=>x.textContent).join())),name+": arquivo ilegível avisa e o botão continua gerando sem material");
+  await p.evaluate(()=>{delete genMat["CM-34"];render()});await p.setInputFiles('#gmf-CM-34',txt);await p.waitForFunction(()=>genMat["CM-34"]&&!genMat["CM-34"].busy,null,{timeout:20000});await p.waitForTimeout(100);
+  ok(await p.evaluate(()=>/fica de fora/.test((document.querySelector('.gmat .err')||{}).textContent||"")&&!/do material/.test([...document.querySelectorAll('.grp .btn.primary')].map(x=>x.textContent).join())),name+": arquivo ilegível avisa e o botão continua gerando sem material");
   await p.evaluate(()=>{__P=[];generate(BYKEY["CM-34"])});await p.waitForFunction(()=>gen["CM-34"]&&gen["CM-34"].status==="done",null,{timeout:10000});
   ok(await p.evaluate(()=>!/Material do estudante/.test(__P[0])),name+": gera normalmente sem o material");
   await click('#gmx-CM-34');ok(await p.evaluate(()=>!genMat["CM-34"]),name+": Tirar o material");

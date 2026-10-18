@@ -233,6 +233,12 @@ consultado quando há dúvida. Responda em português.
   Caderno a partir da questão: `qDraft(q,mine,src)` → `{w:"Marquei X; a certa era Y", p:qClue(q), r:conceito + 1–2 frases do comentário + "Por que não…", q:{…}}`
   (`qClue` pontua as frases do enunciado pelas palavras da certa/comentário, números e exames; ignora a pergunta). `errFormEl` tem o campo Pista (`<pre>p`).
   "✦ Resumir com o Claude" no `eCadEl`: `eSumRun(D)`/`eSumPrompt(D)` (JSON {errei,pista,conceito}; `D.sum.prev` = Voltar ao do app). Teste: `tests/t101.js`.
+  Vários materiais (Lote 4, 10/2026): conjunto `{items:[{id,name,txt,imgs,pages,ntext,scan,busy,err,note}],attach,busy}` em `genMat[chave]` (gerador) e `simMat` (simulado);
+  `msAdd(get,set,files)` lê cada arquivo (`msReadOne`), `msPack(S)` junta no limite (`GM_MAX`/`GM_IMG`; divide o espaço por igual, os pequenos ficam inteiros, `parts[].pct`;
+  imagens revezando) e devolve o objeto que `genMatPrompt` usa (`n`, `names`, `txt` com "##### Material: nome"); `genMatOn(S)`; quadro `msEl(S,{id,get,set,open,title,how})` (lista `.mslist`
+  com `.msx` ×, `.msuse`/`.msbar`, `.mscut`; ids do tema `#gmf-/#gmx-/#gma-<chave>`, `#gmr-<chave>-<i>`; simulado `#smf/#smx/#sma/#smr-<i>`).
+  Simulado misto em passos: `simCfg.mode` = "temas"|"mat" (`.simmode`, `#simM-temas/#simM-mat`), fontes em cartões `.simsrcb` com `SIM_DESC`, tempo `.simeta`; material → `simStartMat()`
+  (`simMatPrompt(n,P,avoid)` com a lista `impTopics()` e o campo "tema"; `validQs` guarda `q.tema`; tema inválido → `simGuessK` por `impTemaScores`), questões com `mat` (selo "do seu material").
   Fontes (10/2026): `DEFAULT_PROMPT` › "Conteúdo e fontes" (só fontes confiáveis, nada inventado; o padrão anterior está em `OLD_PROMPTS[0]`) e campo `fonte`
   no `fixedFormat` → `validQs` → `.qfonte` (gerador, Refazer, simulado; `rdClean` guarda). Material do estudante opcional `genMat[k]` = {name,txt,imgs,attach,scan,cut}
   (`genMatEl` no gerador, `genMatPick`: PDF lido por `pdfOpenTxt` até `GM_MAX` caracteres, páginas sem texto/fotos como imagem até `GM_IMG` no artefato;
@@ -270,6 +276,10 @@ consultado quando há dúvida. Responda em português.
   Lista (10/2026): `exRowCard` desenha um cartão `.excard[data-st=new|run|fin]` (nome `.exname`, selo `.exstat`, `.exmeta`, barra `.exbar` em andamento,
   modo `.exmode` + `.exmodeh` só antes de começar, ação principal `.exgo`, secundárias `.exsb` no rodapé `.exsec`) dentro de `ol.excards` (grade).
   Não use `.exrow` aqui: é a linha das provas de residência no Perfil (`exEditorEl`). Teste: `tests/t101.js`.
+  Ligações (Lote 4): `ex.links=["T:<chave>","O:<id>"]` (`exClean` guarda até 12). `exContrib` soma, para cada resposta, uma contribuição extra `x:1` em cada conteúdo FAC
+  ligado (`exRefKey` = `refTopic(...).k`; pula se for o mesmo tema da questão), e `exCount` não põe `x` no `hist` do dia; `exRelink(ex,links)` tira e põe pela diferença.
+  Painel `exLinksEl` (`exLinkEd={id,q}`; botão `#exlk-<id>`; chips `#exlx-`, sugestões `#exls-`, busca `#exlq-<id>`, resultados `#exlr-`), linha `.exlk` "Ligada a:". No tema (aba Questões)
+  `exTopicEl(it)` = provas com questões dele ou ligadas (`exForTopic(k)`), com o acerto nelas e "Ver a prova". Teste: `tests/t104.js`.
 
 - Estudando e plano em partes (10/2026): `s.ing={d,m:"a"|"m"}` = tema começado (`isIng`, `lvKey` → "i", `lvName`); não tem revisão (`last` só ao concluir).
   `toggleSub` em tema sem `last`: 1º subtópico liga `ing` automático, o último conclui (`last`, `step` 0, `logAct("e")`, `s.pre.ing` permite desfazer no mesmo dia),

@@ -21,7 +21,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  ok(L.length===3&&L.every(x=>x.nameW>=150&&x.lines<=4&&x.pillH<30&&!x.overlap),name+": nome da prova em linhas normais e selo sem sobrepor botões "+JSON.stringify(L.map(x=>[x.nameW,x.lines,x.pillH,x.overlap])));
  ok(L[0].st==="new"&&L[0].pill==="Não iniciada"&&L[0].mode&&/só no fim/.test(L[0].how)&&L[0].go==="Começar",name+": prova nova: modo com explicação e Começar em destaque");
  ok(L[1].st==="run"&&L[1].pill==="Em andamento"&&L[1].prog&&L[1].go==="Continuar"&&!L[1].mode,name+": em andamento: barra de progresso e Continuar");
- ok(L[2].st==="fin"&&/^Feita · 50%$/.test(L[2].pill)&&L[2].go==="Ver resultado"&&L[2].sec.join()==="Refazer,Revisar questões,Colar gabarito,Excluir",name+": feita: nota no selo, ações secundárias discretas "+JSON.stringify(L[2]));
+ ok(L[2].st==="fin"&&/^Feita · 50%$/.test(L[2].pill)&&L[2].go==="Ver resultado"&&L[2].sec.join()==="Refazer,Revisar questões,Ligar a temas,Colar gabarito,Excluir",name+": feita: nota no selo, ações secundárias discretas "+JSON.stringify(L[2]));
  await click('#exm-e1-e');ok(await p.evaluate(()=>exPg("e1").mode==="e"&&/a cada questão|depois de cada questão/.test(document.querySelector('#exr-e1 .exmodeh').textContent)),name+": trocar o modo muda a explicação");
  await click('#exkb-e1');ok(await p.evaluate(()=>!!document.querySelector('#exr-e1 .exkey')&&document.querySelector('#exkb-e1').getAttribute("aria-expanded")==="true"),name+": Colar gabarito abre dentro do cartão");await click('#exkb-e1');
  if(name==="fone"||name==="note"){await p.evaluate(()=>document.querySelector('.qexam').scrollIntoView({block:"start"}));await p.waitForTimeout(120);await p.screenshot({path:`t101-lista-${name}.png`})}
