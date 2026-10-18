@@ -40,7 +40,7 @@ const before=await p.evaluate(()=>cards.length);await p.evaluate(()=>{document.q
 ok(await p.evaluate(()=>cards.length)===before+1,tag+": virou cartão");ok(await p.evaluate(()=>[...document.querySelectorAll('#elist .mini')].some(b=>b.textContent==="Cartão criado ✓")),tag+": marca cartão criado");
 await p.evaluate(()=>{notes["CM-4"]="## Resumo\n- a\n\n## Meus erros\n- antigo\n\n## Outra\n- b";const e=errors.find(x=>x.id==="a3");eToNote(e);eToNote(errors.find(x=>x.id==="a1"))});
 const n4=await p.evaluate(()=>notes["CM-4"]),n1=await p.evaluate(()=>notes["CM-1"]);
-ok(/## Meus erros\n- antigo\n- era EXCETO \(errei: li errado\)\n\n## Outra/.test(n4),tag+": insere na seção existente "+JSON.stringify(n4));
+ok(/## Meus erros\n- antigo\n- era EXCETO \(errei: li errado\) \{\{e:a3\}\}\n\n## Outra/.test(n4),tag+": insere na seção existente "+JSON.stringify(n4));
 ok(/## Meus erros\n- é 140\/90/.test(n1),tag+": cria a seção");
 // próximo passo no Início
 await p.evaluate(()=>{const e=errors.find(x=>x.id==="a3");e.due=today();state={};commit();setView("inicio")});await p.waitForTimeout(150);

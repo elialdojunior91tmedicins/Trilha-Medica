@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=826d43a0">
+<link rel="stylesheet" href="site.css?v=153a0687">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=826d43a0"></script>
-<script src="bridge.js?v=826d43a0"></script>
+<script src="config.js?v=153a0687"></script>
+<script src="bridge.js?v=153a0687"></script>
 </head>
 <body>
 <script>
@@ -1699,6 +1699,51 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .nmsec button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 .8rem var(--body);cursor:pointer}
 .nmsec svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #maisBody .nmlist{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px}
+
+/* ===== Lote 3: anotações (links entre temas, tópicos que recolhem, selos, sumário) ===== */
+.npdfopt{display:flex;flex-direction:column;gap:8px;border:1px solid var(--accent);border-radius:12px;padding:12px 14px;background:var(--bg);max-width:520px}.npdfopt .how{margin:0}
+#viewNotas.hastoc{max-width:1200px!important;padding-right:290px;box-sizing:border-box}
+.ntoc{position:fixed;top:24px;right:28px;width:250px;max-height:calc(100vh - 48px);overflow-y:auto;scrollbar-width:thin;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 12px;z-index:5}
+.ntoch{display:flex;flex-direction:column;gap:2px;padding:0 4px 8px;border-bottom:1px solid var(--line);margin-bottom:6px}.ntoch b{font:600 1.15rem var(--display)}.ntoch span{font-size:.75rem;color:var(--muted)}
+.ntocl{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:1px}
+.nta{font:700 .72rem var(--body);letter-spacing:.06em;color:var(--accent);padding:10px 4px 3px;text-transform:uppercase}.nta span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+.nts{font:700 .8rem var(--body);color:var(--gold-ink);padding:6px 4px 2px}
+.ntt button,.ntfree button{width:100%;text-align:left;border:0;background:none;padding:4px 8px;border-radius:7px;font:500 .84rem var(--body);color:var(--ink);cursor:pointer;border-left:2px solid transparent}
+.ntt button:hover{background:var(--bg)}.ntt button[aria-current]{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+.ntfree button{font:700 .72rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding:10px 4px 3px}
+
+.mdview a.wk{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1.5px solid color-mix(in srgb,var(--accent) 40%,transparent);padding:0 1px;cursor:pointer}
+.mdview a.wk:hover{background:var(--accent-soft)}
+.mdview .wk.miss{color:var(--muted);border-bottom:1.5px dashed var(--line);cursor:help}
+.mdview details.mdsec{margin:0}.mdview details.mdsec>summary{display:flex;align-items:baseline;gap:6px;padding:0;list-style:none;cursor:pointer;grid-template-columns:none}
+.mdview details.mdsec>summary::-webkit-details-marker{display:none}
+.mdview details.mdsec>summary::before{content:"";flex:none;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px 2px 0;align-self:center}
+.mdview details.mdsec[open]>summary::before{transform:rotate(45deg)}
+.mdview details.mdsec>summary .mdh{margin:.7em 0 .3em}
+.mdview .mdsb{padding-left:15px}
+.mdview li.haskids{position:relative}.mdview .lfold{position:absolute;left:-1.55em;top:.35em;width:1.1em;height:1.1em;border:0;background:none;padding:0;cursor:pointer;color:var(--muted)}
+.mdview .lfold::before{content:"";display:block;width:6px;height:6px;margin:auto;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg)}
+.mdview li.folded>.lfold::before{transform:rotate(-45deg)}.mdview li.haskids{list-style:none}
+.mdview li.sub3{margin-left:2.4em}
+.nbadge{display:inline-flex;align-items:center;gap:4px;vertical-align:1px;margin:0 2px;padding:1px 8px;border-radius:99px;font:600 .74rem var(--body);cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.nbadge.ne{border-color:color-mix(in srgb,var(--due) 45%,transparent);color:var(--due);background:var(--due-soft)}
+.nbadge.nq{border-color:color-mix(in srgb,var(--l2) 45%,transparent);color:var(--l2);background:color-mix(in srgb,var(--l2) 10%,transparent)}
+.nbadge.gone{opacity:.55;cursor:default;text-decoration:line-through}
+.wkpop{display:flex;flex-direction:column;gap:2px;border:1px solid var(--accent);border-radius:12px;background:var(--surface);padding:6px;box-shadow:0 8px 24px rgb(0 0 0 / .12);max-width:520px}
+.wkpop[hidden]{display:none}.wkpop .how{margin:4px 6px}
+.wkopt{display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:0;background:none;padding:7px 10px;border-radius:8px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.wkopt b{font-size:.92rem}.wkopt span{font-size:.75rem;color:var(--muted)}.wkopt[aria-selected="true"],.wkopt:hover{background:var(--accent-soft)}
+.wkback{display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.wkrow{display:flex;flex-direction:column;align-items:flex-start;gap:6px}.wkrow .how{margin:0;font-size:.82rem}.wkrow code{font-size:.8rem;background:var(--bg);padding:0 4px;border-radius:4px}
+.wkchips{display:flex;flex-wrap:wrap;gap:6px}
+.wkchip{border:1px solid var(--line);background:var(--bg);color:var(--accent);font:600 .8rem var(--body);padding:4px 10px;border-radius:99px;cursor:pointer}.wkchip:hover{border-color:var(--accent)}
+.wkunl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.wkunl li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;justify-content:space-between;background:var(--bg);border-radius:10px;padding:8px 10px}
+.wkctx{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;min-width:0;flex:1 1 260px}.wkctx q{font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+.nbpick{display:flex;flex-direction:column;gap:6px;border:1px solid var(--accent);border-radius:12px;padding:10px 12px;background:var(--surface);max-height:340px;overflow:auto}
+.nbpick .how{margin:0}.nbopts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.nbopts button{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:6px 10px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.nbopts button:hover{border-color:var(--accent)}.nbopts b{font-size:.84rem}.nbopts span{font-size:.76rem;color:var(--muted);overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
@@ -1765,6 +1810,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
       <h2 id="nh">Minhas anotações</h2>
       <p class="gtext" id="nsum"></p>
       <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button><button class="btn" id="nImg" type="button">📷 Ler imagem</button></div>
+      <div id="nPdfBox"></div>
       <div id="nImgBox"></div>
       <p class="gstatus" id="nmsg" aria-live="polite"></p>
       <textarea id="nFallback" class="ntext" hidden readonly aria-label="Anotações em Markdown"></textarea>
@@ -1779,6 +1825,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <div id="nPegBox" class="ns-peg"></div>
     <ol class="elist ns-all" id="nlist"></ol>
     <div id="nFreeBox" class="ns-all"></div>
+    <aside class="ntoc" id="nToc" aria-label="Sumário das anotações" hidden></aside>
   </div>
 
   <div id="viewFoco" class="wrap" style="width:100%" hidden><div id="foBody" class="fobody"></div></div>
@@ -2428,9 +2475,11 @@ function replaceNote(k,v){noteUndo[k]=notes[k]||"";saveNote(k,v)}
 
 /* markdown simples → HTML seguro */
 function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function inl(s){return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>').replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>")}
-function md(src){
-  const L=src.replace(/\r/g,"").split("\n"),out=[];let i=0;
+function inl(s){const keep=[],ph=h=>{keep.push(h);return "\u0000"+(keep.length-1)+"\u0000"};
+  s=String(s).replace(/\[\[([^\[\]\n|]{1,120})(?:\|([^\[\]\n]{1,120}))?\]\]/g,(m,a,b)=>ph(wkHTML(a.trim(),(b||"").trim()))).replace(/\{\{([eq]):([A-Za-z0-9:_-]{1,80})\}\}/g,(m,t,id)=>ph(nbHTML(t,id)));
+  return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>').replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/\u0000(\d+)\u0000/g,(m,i)=>keep[+i])}
+function md(src,o){o=o||{};
+  const L=String(src).replace(/\r/g,"").split("\n"),out=[];let i=0;
   const isRow=l=>/^\s*\|.*\|\s*$/.test(l), isSep=l=>/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
   const cells=l=>l.trim().replace(/^\||\|$/g,"").split("|").map(c=>inl(c.trim()));
   while(i<L.length){const l=L[i];
@@ -2438,7 +2487,7 @@ function md(src){
     if(/^\s*```/.test(l)){const lang=l.trim().slice(3).trim().toLowerCase(),b=[];i++;while(i<L.length&&!/^\s*```/.test(L[i])){b.push(L[i]);i++}i++;
       out.push(lang==="fluxo"?flowHTML(b):`<pre class="mdpre">${esc(b.join("\n"))}</pre>`);continue}
     let m;
-    if(m=l.match(/^(#{1,3})\s+(.*)/)){const n=m[1].length;out.push(`<h${n+2} class="mdh">${inl(m[2])}</h${n+2}>`);i++;continue}
+    if(m=l.match(/^(#{1,3})\s+(.*)/)){const n=m[1].length;out.push(`\u0001${n}<h${n+2} class="mdh">${inl(m[2])}</h${n+2}>`);i++;continue}
     if(/^\s*(-{3,}|\*{3,})\s*$/.test(l)){out.push("<hr>");i++;continue}
     if(isRow(l)){const rows=[];while(i<L.length&&isRow(L[i])){rows.push(L[i]);i++}
       let head=null;if(rows.length>1&&isSep(rows[1])){head=cells(rows[0]);rows.splice(0,2)}
@@ -2446,16 +2495,107 @@ function md(src){
       out.push(`<div class="mdtable"><table>${head?`<thead><tr>${head.map(c=>`<th>${c}</th>`).join("")}</tr></thead>`:""}<tbody>${body.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);continue}
     if(/^\s*>/.test(l)){const b=[];while(i<L.length&&/^\s*>/.test(L[i])){b.push(inl(L[i].replace(/^\s*>\s?/,"")));i++}
       out.push(`<div class="callout">${b.join("<br>")}</div>`);continue}
-    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const sub=/^\s{2,}/.test(L[i]);b.push(`<li${sub?' class="sub2"':""}>${inl(L[i].replace(/^\s*[-*\u2022]\s*/,""))}</li>`);i++}
-      out.push(`<ul>${b.join("")}</ul>`);continue}
+    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const ind=L[i].match(/^\s*/)[0].replace(/\t/g,"  ").length,cls=ind>=4?"sub3":ind>=2?"sub2":"";b.push({cls,h:inl(L[i].replace(/^\s*[-*\u2022]\s*/,""))});i++}
+      out.push(`<ul>${b.map((x,j)=>{const kid=o.fold&&b[j+1]&&(x.cls===""?b[j+1].cls!=="":x.cls==="sub2"&&b[j+1].cls==="sub3");return `<li${x.cls||kid?` class="${[x.cls,kid?"haskids":""].filter(Boolean).join(" ")}"`:""}>${kid?`<button type="button" class="lfold" aria-expanded="true" aria-label="Recolher os subitens"></button>`:""}${x.h}</li>`}).join("")}</ul>`);continue}
     if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){b.push(`<li>${inl(L[i].replace(/^\s*\d+[.)]\s*/,""))}</li>`);i++}
       out.push(`<ol>${b.join("")}</ol>`);continue}
     const p=[];while(i<L.length&&L[i].trim()&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
     if(p.length)out.push(`<p>${p.join("<br>")}</p>`);else i++;
   }
-  return out.join("");
+  return mdFold(out,o.fold);
 }
+/* tópicos que recolhem: cada título (#, ##, ###) vira uma seção que abre e fecha; o app lembra o que ficou fechado */
+const LSFOLD="resid-fold-v1";let foldSt={};try{const v=JSON.parse(localStorage.getItem(LSFOLD)||"{}");if(v&&typeof v==="object")foldSt=v}catch(e){}
+function foldSave(){try{localStorage.setItem(LSFOLD,JSON.stringify(foldSt))}catch(e){}}
+function mdFold(out,key){if(!key)return out.map(x=>x.replace(/^\u0001\d/,"")).join("");const closed=new Set(foldSt[key]||[]);let idx=0;
+  const build=(from,lv)=>{let html="",i=from;while(i<out.length){const x=out[i],m=x.match(/^\u0001(\d)/);
+      if(m){const n=+m[1];if(n<=lv)break;const my=idx++;const r=build(i+1,n);html+=`<details class="mdsec" data-fk="${esc(String(key))}" data-fi="${my}"${closed.has(my)?"":" open"}><summary>${x.slice(2)}</summary><div class="mdsb">${r.html}</div></details>`;i=r.i;continue}
+      html+=x;i++}
+    return {html,i}};
+  return build(0,0).html}
+document.addEventListener("toggle",e=>{const d=e.target;if(!d||!d.matches||!d.matches("details.mdsec[data-fk]"))return;const k=d.dataset.fk,i=+d.dataset.fi,set=new Set(foldSt[k]||[]);
+  if(d.open)set.delete(i);else set.add(i);if(set.size)foldSt[k]=[...set];else delete foldSt[k];foldSave()},true);
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button.lfold");if(b){e.preventDefault();const li=b.closest("li"),lv=li.classList.contains("sub2")?2:0,open=b.getAttribute("aria-expanded")!=="true";
+    b.setAttribute("aria-expanded",open);b.setAttribute("aria-label",open?"Recolher os subitens":"Mostrar os subitens");li.classList.toggle("folded",!open);
+    let n=li.nextElementSibling;while(n&&(lv===0?n.matches(".sub2,.sub3"):n.matches(".sub3"))){n.hidden=!open;if(open&&n.classList.contains("folded")){let m=n.nextElementSibling;while(m&&m.matches(".sub3")){m.hidden=true;m=m.nextElementSibling}}n=n.nextElementSibling}return}
+  const a=e.target.closest&&e.target.closest("a.wk[data-wk]");if(a){e.preventDefault();wkGo(a.dataset.wk);return}
+  const nb=e.target.closest&&e.target.closest("button.nbadge[data-nb]");if(nb){e.preventDefault();nbGo(nb.dataset.nb)}});
+/* links entre temas: [[Nome do tema]] ou [[Nome|texto]] liga a um tema da residência, da faculdade ou a uma página do caderno livre */
+let wkIdx=null,wkSig="";
+function wkIndex(){const sig=FAC_ITEMS.length+"|"+freeN.map(f=>f.id+":"+f.t).join(",");if(wkIdx&&sig===wkSig)return wkIdx;wkSig=sig;const m=new Map(),all=[];
+  [...ALL,...FAC_ITEMS].forEach(it=>{const n=norm(it.t).trim();if(!m.has(n))m.set(n,{kind:"t",id:it.key,t:it.t});all.push({n,r:{kind:"t",id:it.key,t:it.t}})});
+  freeN.forEach(f=>{const n=norm(f.t||"").trim();if(n&&!m.has(n))m.set(n,{kind:"f",id:f.id,t:f.t});if(n)all.push({n,r:{kind:"f",id:f.id,t:f.t}})});
+  if(typeof mdCache!=="undefined")mdCache.clear();wkIdx={m,all};return wkIdx}
+function wkFind(name){const I=wkIndex(),n=norm(String(name||"")).trim();if(!n)return null;if(I.m.has(n))return I.m.get(n);
+  const c=I.all.filter(x=>x.n.startsWith(n));return c.length===1?c[0].r:null}
+function wkHTML(name,alias){const r=wkFind(name),lab=alias||name;
+  return r?`<a class="wk" href="#" data-wk="${esc(r.kind+":"+r.id)}" title="${esc(r.kind==="f"?"Caderno livre: ":"Abrir ")+esc(r.t||"")}">${esc(lab)}</a>`:`<span class="wk miss" title="Nenhum tema ou página com este nome">${esc(lab)}</span>`}
+function wkGo(ref){const i=ref.indexOf(":"),kind=ref.slice(0,i),id=ref.slice(i+1);
+  if(kind==="t"&&BYKEY[id]){detTab[id]="notas";noteMode[id]="ler";openTopic(id);return}
+  if(kind==="f"&&freeN.some(f=>f.id===id)){backStack=[];freeOpen.add(id);if(typeof setNSeg==="function")nSeg="todas";setView("notas");setTimeout(()=>{const x=document.getElementById("fr-"+id);if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
+/* links de uma anotação (para "Mencionado em") */
+function wkLinksIn(txt){const out=[];String(txt||"").replace(/\[\[([^\[\]\n|]{1,120})(?:\|[^\[\]\n]{1,120})?\]\]/g,(m,a)=>{const r=wkFind(a.trim());if(r)out.push(r);return m});return out}
+function wkSources(){const L=[];Object.keys(notes).forEach(k=>{if(BYKEY[k]&&(notes[k]||"").trim())L.push({kind:"t",id:k,t:BYKEY[k].t,txt:notes[k]})});freeN.forEach(f=>{if((f.b||"").trim())L.push({kind:"f",id:f.id,t:f.t||"Sem título",txt:f.b})});return L}
+function wkBack(ref){const name=ref.kind==="t"?(BYKEY[ref.id]||{}).t:(freeN.find(f=>f.id===ref.id)||{}).t,nn=norm(name||"").trim(),men=[],unl=[];
+  wkSources().forEach(S=>{if(S.kind===ref.kind&&S.id===ref.id)return;const links=wkLinksIn(S.txt);
+    if(links.some(r=>r.kind===ref.kind&&r.id===ref.id)){men.push(S);return}
+    if(nn.length>=5){const at=wkPlainAt(S.txt,nn);if(at>=0)unl.push({...S,at,len:nn.length})}});
+  return {men,unl}}
+/* posição do nome escrito sem link (fora de [[…]], de links e de títulos de código), com limites de palavra */
+function wkPlainAt(txt,nn){const t=norm(txt);let from=0;while(true){const i=t.indexOf(nn,from);if(i<0)return -1;from=i+1;
+  const pre=t[i-1]||" ",post=t[i+nn.length]||" ";if(/[a-z0-9]/.test(pre)||/[a-z0-9]/.test(post))continue;
+  const o=t.lastIndexOf("[[",i),c=t.lastIndexOf("]]",i);if(o>=0&&o>c)continue;const ln=t.lastIndexOf("\n",i)+1;if(/^\s*```/.test(t.slice(ln)))continue;return i}}
+function wkLinkify(S,ref){const name=ref.kind==="t"?BYKEY[ref.id].t:(freeN.find(f=>f.id===ref.id)||{}).t||"",at=S.at,orig=S.txt.slice(at,at+S.len),tok=orig===name?`[[${name}]]`:`[[${name}|${orig}]]`,v=S.txt.slice(0,at)+tok+S.txt.slice(at+S.len);
+  if(S.kind==="t")replaceNote(S.id,v);else{const f=freeN.find(x=>x.id===S.id);if(f){f.b=v;f.at=new Date().toISOString();frPut(f)}}render()}
+function wkBackEl(ref){const B=wkBack(ref),w=el(`<div class="wkback"></div>`);
+  const go=S=>{const b=el(`<button class="wkchip" type="button"></button>`);b.textContent=(S.kind==="f"?"📓 ":"")+S.t;b.onclick=()=>wkGo(S.kind+":"+S.id);return b};
+  const h=el(`<div class="wkrow"><span class="glabel">Mencionado em</span></div>`);if(B.men.length){const c=el(`<div class="wkchips"></div>`);B.men.forEach(S=>c.appendChild(go(S)));h.appendChild(c)}
+  else h.appendChild(el(`<span class="how">Nenhuma anotação liga para cá ainda. Em outra anotação, escreva <code>[[${esc(ref.kind==="t"?BYKEY[ref.id].t:"Nome")}]]</code> para criar um link.</span>`));w.appendChild(h);
+  if(B.unl.length){const u=el(`<div class="wkrow"><span class="glabel">Citado sem link · ${B.unl.length}</span><ul class="wkunl"></ul></div>`),ul=u.querySelector("ul");
+    B.unl.slice(0,8).forEach((S,j)=>{const li=el(`<li><span class="wkctx"></span><button class="mini" type="button">Transformar em link</button></li>`),cx=li.querySelector(".wkctx");cx.appendChild(go(S));
+      const a=Math.max(0,S.at-50),q=el(`<q></q>`);q.textContent=(a?"…":"")+S.txt.slice(a,S.at+S.len+50).replace(/\s+/g," ")+"…";cx.appendChild(q);const b=li.querySelector("button");b.id=`wkl-${j}`;b.onclick=()=>wkLinkify(S,ref);ul.appendChild(li)});
+    w.appendChild(u)}
+  return w}
+/* selos de erro e de questão dentro do texto: {{e:<id do erro>}} e {{q:<id da prova>:<nº>}} */
+function nbInfo(t,id){if(t==="e"){const e=errors.find(x=>x.id===id);return e?{lab:`Erro · ${br(e.d).slice(0,5)}`,tip:eOneLine(e.r).slice(0,120),ok:true}:{lab:"Erro apagado",ok:false}}
+  const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid),r=ex&&ex.qs[+ix];return r?{lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||+ix+1}`,tip:r.q.enunciado.replace(/\s+/g," ").slice(0,120),ok:true}:{lab:"Questão apagada",ok:false}}
+function nbHTML(t,id){const I=nbInfo(t,id);return `<button type="button" class="nbadge n${t}${I.ok?"":" gone"}" data-nb="${esc(t+":"+id)}"${I.tip?` title="${esc(I.tip)}"`:""}${I.ok?"":" disabled"}>${t==="e"?"⚠":"?"} ${esc(I.lab)}</button>`}
+function nbGo(ref){const t=ref[0],id=ref.slice(2);if(t==="e"){const e=errors.find(x=>x.id===id);if(e)eOpenOne(e);return}
+  const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid);if(!ex||!ex.qs[+ix])return;exRun={id:xid,view:"rev",i:+ix,cad:{}};exEdit=null;backStack=[];qSeg="praticar";setView("quest");setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},60)}
+/* o que pode virar selo num tema: erros ativos e questões de provas na íntegra desse tema */
+function nbChoices(k){const E=errors.filter(e=>e.k===k&&!e.arch).sort(byNewest).slice(0,20).map(e=>({tok:`{{e:${e.id}}}`,lab:`Erro · ${br(e.d).slice(0,5)}`,sub:eOneLine(e.w||e.r).slice(0,90)}));
+  const Q=[];exams.forEach(ex=>ex.qs.forEach((r,i)=>{if(r.k===k&&Q.length<30){const a=exPg(ex.id).a[i];Q.push({tok:`{{q:${ex.id}:${i}}}`,lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||i+1}`,sub:(a?(a.l===r.q.correta?"✓ acertou · ":"✗ errou · "):"")+r.q.enunciado.replace(/\s+/g," ").slice(0,80),w:a&&a.l!==r.q.correta})}}));
+  Q.sort((a,b)=>(b.w?1:0)-(a.w?1:0));return {E,Q}}
 
+
+/* editor: [[ abre a lista de temas; Tab/Shift+Tab mudam o recuo; Selo insere {{e:…}} ou {{q:…}} */
+function wkPopUpdate(ta,k,pop){const c=ta.selectionStart,v=ta.value,m=/\[\[([^\[\]\n|]{0,40})$/.exec(v.slice(0,c));
+  if(!m||c!==ta.selectionEnd){pop.hidden=true;ta._wk=null;return}
+  const q=norm(m[1]).trim(),I=wkIndex(),seen=new Set(),L=[];
+  const push=x=>{const id=x.r.kind+":"+x.r.id;if(!seen.has(id)&&!(x.r.kind==="t"&&x.r.id===k)){seen.add(id);L.push(x.r)}};
+  I.all.filter(x=>!q||x.n.startsWith(q)).forEach(push);if(q)I.all.filter(x=>x.n.includes(q)).forEach(push);
+  const list=L.slice(0,7);ta._wk={start:c-m[1].length-2,sel:Math.min((ta._wk&&ta._wk.sel)||0,Math.max(0,list.length-1)),list};
+  pop.innerHTML="";pop.hidden=false;
+  if(!list.length){pop.appendChild(el(`<p class="how">${q?"Nenhum tema ou página com esse nome.":"Digite o nome do tema."} Esc fecha.</p>`));return}
+  list.forEach((r,i)=>{const b=el(`<button type="button" class="wkopt" role="option"><b></b><span></span></button>`);b.id=`wko-${i}`;b.setAttribute("aria-selected",i===ta._wk.sel);
+    b.querySelector("b").textContent=r.t;const it=r.kind==="t"&&BYKEY[r.id];b.querySelector("span").textContent=r.kind==="f"?"Caderno livre":it?`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · FAC":""}`:"";
+    b.onmousedown=e=>e.preventDefault();b.onclick=()=>wkPick(ta,k,pop,i);pop.appendChild(b)})}
+function wkPick(ta,k,pop,i){const W=ta._wk;if(!W||!W.list[i])return;const r=W.list[i],c=ta.selectionStart,v=ta.value,after=v.slice(c).startsWith("]]")?c+2:c,tok=`[[${r.t}]]`;
+  edit(ta,k,()=>({v:v.slice(0,W.start)+tok+v.slice(after),s:W.start+tok.length,e:W.start+tok.length}));pop.hidden=true;ta._wk=null}
+function wkPopKey(e,ta,k,pop){const W=ta._wk;if(!W||pop.hidden)return false;
+  if(e.key==="Escape"){pop.hidden=true;ta._wk=null;e.preventDefault();e.stopPropagation();return true}
+  if(!W.list.length)return false;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();W.sel=(W.sel+(e.key==="ArrowDown"?1:W.list.length-1))%W.list.length;pop.querySelectorAll(".wkopt").forEach((b,j)=>b.setAttribute("aria-selected",j===W.sel));return true}
+  if(e.key==="Enter"||e.key==="Tab"){e.preventDefault();wkPick(ta,k,pop,W.sel);return true}return false}
+function indentLines(ta,k,out){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e>s&&v[e-1]==="\n"?e-1:e);if(le<0)le=v.length;
+  const lines=v.slice(ls,le).split("\n");let d0=0,dt=0;const nl=lines.map((l,i)=>{let n;if(out){const r=l.match(/^ {1,2}|^\t/);n=r?l.slice(r[0].length):l;const d=n.length-l.length;if(i===0)d0=d;dt+=d}else{n="  "+l;if(i===0)d0=2;dt+=2}return n});
+  const blk=nl.join("\n");return {v:v.slice(0,ls)+blk+v.slice(le),s:Math.max(ls,s+d0),e:Math.max(ls,e+dt)}})}
+function nbPickEl(ta,k,close){const C=nbChoices(k),w=el(`<div class="nbpick" role="dialog" aria-label="Marcar questão ou erro"><div class="dhead"><b>Marcar questão ou erro na linha</b><button class="link" type="button">Fechar</button></div></div>`);
+  w.querySelector(".link").onclick=close;
+  const grp=(lab,L,empty)=>{w.appendChild(el(`<span class="glabel">${lab}</span>`));if(!L.length){w.appendChild(el(`<p class="how">${empty}</p>`));return}
+    const ul=el(`<ul class="nbopts"></ul>`);L.forEach((x,i)=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`),b=li.querySelector("button");b.querySelector("b").textContent=x.lab;b.querySelector("span").textContent=x.sub;
+      b.onmousedown=e=>e.preventDefault();b.onclick=()=>{edit(ta,k,(v,s,e)=>{const ins=(s>0&&!/\s/.test(v[s-1])?" ":"")+x.tok;return {v:v.slice(0,s)+ins+v.slice(e),s:s+ins.length,e:s+ins.length}});close()};ul.appendChild(li)});w.appendChild(ul)};
+  grp("Erros deste tema",C.E,"Nenhum erro ativo deste tema no caderno.");grp("Questões de provas na íntegra",C.Q,"Nenhuma questão de prova importada ligada a este tema.");return w}
 /* edição na textarea */
 function edit(ta,k,fn){const s=ta.selectionStart,e=ta.selectionEnd,v=ta.value;const r=fn(v,s,e);
   ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);saveNote(k,ta.value)}
@@ -2548,27 +2688,32 @@ function renderNotes(it,full){
     const ta=el(`<textarea class="ntext" maxlength="${NOTE_MAX}" placeholder="Escreva seu resumo, macetes e pegadinhas. Use a barra acima para formatar ou um dos modelos."></textarea>`);
     ta.id=(full?"fnt-":"nt-")+k;ta.setAttribute("aria-label","Anotações de "+it.t);ta.value=notes[k]||"";
     const T=[["Título","H",()=>prefix(ta,k,"## ")],["Negrito","B",()=>wrap(ta,k,"**","**","texto")],["Destaque","==",()=>wrap(ta,k,"==","==","cai na prova")],
-      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>prefix(ta,k,"> ")],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)]];
+      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>prefix(ta,k,"> ")],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)],["Link para outro tema ou página: digite [[ e escolha na lista","[[ ]]",()=>{edit(ta,k,(v,s0,e0)=>{const ins="[[";return {v:v.slice(0,s0)+ins+v.slice(e0),s:s0+2,e:s0+2}});wkPopUpdate(ta,k,pop)}],["Marcar uma questão ou um erro deste tema na linha","Selo",()=>{const o=box.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(ta,k,()=>{const x=box.querySelector(".nbpick");if(x)x.remove();ta.focus()}))}]];
+    const pop=el(`<div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div>`);
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
     [["Modelo de resumo",()=>insertBlock(ta,k,TPL_RESUMO)],["Seções dos subtópicos",()=>insertBlock(ta,k,tplSubs(it))],["Meus erros",()=>{const t=tplErros(it);if(t)insertBlock(ta,k,t)}]].forEach(([lab,fn])=>{
       const b=el(`<button type="button" class="tool txt"></button>`);b.textContent=lab;b.onmousedown=e=>e.preventDefault();b.onclick=fn;
       if(lab==="Meus erros"&&!errors.some(e=>e.k===k)){b.disabled=true;b.title="Nenhum erro deste tema no caderno"}tb.appendChild(b)});
-    ta.oninput=()=>saveNote(k,ta.value);
-    ta.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="b"){e.preventDefault();wrap(ta,k,"**","**","texto")}
+    ta.oninput=()=>{saveNote(k,ta.value);wkPopUpdate(ta,k,pop)};ta.onblur=()=>setTimeout(()=>{if(document.activeElement!==ta){pop.hidden=true;ta._wk=null}},150);ta.onclick=()=>wkPopUpdate(ta,k,pop);
+    ta.onkeydown=e=>{if(wkPopKey(e,ta,k,pop))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="b"){e.preventDefault();wrap(ta,k,"**","**","texto")}
+      if(e.key==="Tab"&&!e.ctrlKey&&!e.altKey&&!e.metaKey){const s0=ta.selectionStart,e0=ta.selectionEnd,v=ta.value,ls=v.lastIndexOf("\n",s0-1)+1,line=v.slice(ls,(v.indexOf("\n",s0)+1||v.length+1)-1);
+        if(v.slice(s0,e0).includes("\n")||/^\s*([-*\u2022]|\d+[.)]|>)(\s|$)/.test(line)){e.preventDefault();indentLines(ta,k,e.shiftKey);return}}
       if(e.key==="Enter"&&!e.shiftKey){const s=ta.selectionStart,v=ta.value,ls=v.lastIndexOf("\n",s-1)+1,line=v.slice(ls,s);const m=line.match(/^(\s*)([-*\u2022]|\d+[.)]|>)\s+/);
         if(m&&s===ta.selectionEnd){e.preventDefault();if(line.trim()===m[0].trim()){edit(ta,k,(v)=>({v:v.slice(0,ls)+v.slice(s),s:ls,e:ls}));return}
           const nx=/\d/.test(m[2])?(parseInt(m[2])+1)+m[2].replace(/\d+/,""):m[2];const ins="\n"+m[1]+nx+" ";edit(ta,k,(v)=>({v:v.slice(0,s)+ins+v.slice(s),s:s+ins.length,e:s+ins.length}))}}};
-    box.append(tb,ta);
+    box.append(tb,ta,pop);
   }else{
     const rv=el(`<div class="mdview"></div>`);
-    if(has)rv.innerHTML=md(notes[k]);else{rv.classList.add("mdempty");rv.textContent="Nada anotado ainda. Toque em Editar para escrever, usar um modelo ou pedir um resumo ao Claude."}
+    if(has){rv.innerHTML=md(notes[k],{fold:k});if(rv.querySelector("details.mdsec")){const all=el(`<button class="mini" type="button" id="nfold-${k}"></button>`),anyClosed=!!rv.querySelector("details.mdsec:not([open])");all.textContent=anyClosed?"Abrir tudo":"Fechar tudo";
+        all.onclick=()=>{const D=[...document.querySelectorAll(`details.mdsec[data-fk="${k}"]`)],op=D.some(d=>!d.open);D.forEach(d=>{d.open=op});all.textContent=op?"Fechar tudo":"Abrir tudo"};head.insertBefore(all,fb)}}else{rv.classList.add("mdempty");rv.textContent="Nada anotado ainda. Toque em Editar para escrever, usar um modelo ou pedir um resumo ao Claude."}
     box.appendChild(rv);
   }
   const foot=el(`<div class="nfoot"><span data-nw="${k}"></span><span class="nstat" data-ns="${k}"></span></div>`);
   foot.firstChild.textContent=noteFoot(k);
   if(noteUndo[k]!==undefined){const u=el(`<button class="link" type="button">Desfazer última substituição</button>`);u.onclick=()=>{const v=noteUndo[k];delete noteUndo[k];saveNote(k,v);render()};foot.appendChild(u)}
   box.appendChild(foot);
+  box.appendChild(wkBackEl({kind:"t",id:k}));
   // Claude
   if(!sampleOff){const a=noteAI[k];
     const cb=el(`<div class="nai"></div>`);
@@ -2616,6 +2761,24 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&focusKey){focusKey=
 /* aba Anotações */
 function notesMarkdown(keys){return [...keys].sort((x,y)=>BYKEY[x].num-BYKEY[y].num).map(k=>{const it=BYKEY[k];return `# ${it.t}\n_${it.area.name} · ${it.sp}_\n\n${notes[k].trim()}`}).join("\n\n---\n\n")}
 const N_PAGE=30;let nLimit=N_PAGE;
+/* sumário lateral das anotações (computador com espaço à direita): área › especialidade › tema, acompanha a rolagem */
+let nTocObs=null,nPdfOpt=null;
+function nTocRender(shown,more){nTocRender.last=[shown,more];const T=$("#nToc"),V=$("#viewNotas");if(nTocObs){nTocObs.disconnect();nTocObs=null}
+  const pl=parseFloat(getComputedStyle(document.body).paddingLeft)||0,room=window.innerWidth-pl-32,on=view==="notas"&&twoCols()&&!nNoNote&&shown.length>=2&&room>=900+290&&!V.classList.contains("vfull");
+  V.classList.toggle("hastoc",on);T.hidden=!on;T.innerHTML="";if(!on)return;
+  T.appendChild(el(`<div class="ntoch"><b>Nesta página</b><span>${shown.length} ${shown.length===1?"tema":"temas"}${more?" (mostre mais para ver o resto)":""}</span></div>`));
+  const ul=el(`<ul class="ntocl"></ul>`);let la="",ls="";
+  const ord=[...shown];if(nSort!=="sp"){}else{}
+  ord.forEach(k=>{const it=BYKEY[k];if(it.area.code!==la){la=it.area.code;ls="";ul.appendChild(el(`<li class="nta">${esc(it.area.code)} <span>${esc(it.area.name)}</span></li>`))}
+    if(nSort==="sp"&&(it.sp||"")!==ls){ls=it.sp||"";if(ls)ul.appendChild(el(`<li class="nts">${esc(ls)}</li>`))}
+    const li=el(`<li class="ntt"><button type="button"></button></li>`),b=li.querySelector("button");b.textContent=it.t;b.dataset.k=k;b.onclick=()=>{const c=document.getElementById("nc-"+k);if(c)window.scrollTo({top:c.getBoundingClientRect().top+scrollY-16,behavior:"smooth"})};ul.appendChild(li)});
+  if(freeN.length&&$("#nFreeBox").firstChild){const li=el(`<li class="nta ntfree"><button type="button">Caderno livre</button></li>`);li.querySelector("button").onclick=()=>{const c=$("#nFreeBox");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})};ul.appendChild(li)}
+  T.appendChild(ul);
+  if("IntersectionObserver" in window){const seen=new Map();nTocObs=new IntersectionObserver(es=>{es.forEach(e=>seen.set(e.target.id,e.isIntersecting?e.boundingClientRect.top:null));
+      let best=null,bt=1e9;seen.forEach((t,id)=>{if(t!==null&&Math.abs(t)<bt){bt=Math.abs(t);best=id}});if(!best)return;const k=best.slice(3);
+      T.querySelectorAll(".ntt button").forEach(b=>{const on=b.dataset.k===k;b.toggleAttribute("aria-current",on);if(on){const r=b.getBoundingClientRect(),tr=T.getBoundingClientRect();if(r.top<tr.top+40||r.bottom>tr.bottom-10)T.scrollTop+=r.top-tr.top-T.clientHeight/2}})},{rootMargin:"-10% 0px -60% 0px"});
+    shown.forEach(k=>{const c=document.getElementById("nc-"+k);if(c)nTocObs.observe(c)})}}
+addEventListener("resize",()=>{if(view==="notas"){clearTimeout(nTocRender._t);nTocRender._t=setTimeout(()=>render(),200)}});
 function renderNotasView(){
   const keys=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).map(i=>i.key);
   $("#ncount").textContent=keys.length?String(keys.length):"";
@@ -2637,7 +2800,7 @@ function renderNotasView(){
     nn.sort((a,b)=>wOf(BYKEY[b])-wOf(BYKEY[a])||BYKEY[a].num-BYKEY[b].num);appendGrouped(list,nn,k=>BYKEY[k],k=>{const it=BYKEY[k],s=get(k),c=el(`<li class="ncard nnone"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span></div><div class="efoot"><button class="mini" type="button">Escrever resumo</button>${sampleOff?"":`<button class="mini" type="button">Resumo com o Claude</button>`}</div></li>`);
       const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>{detTab[k]="notas";openTopic(k)};c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · estudado em ${br(s.last)}`;
       const bs=c.querySelectorAll(".efoot .mini");bs[0].onclick=()=>{detTab[k]="notas";noteMode[k]="editar";openTopic(k)};if(bs[1])bs[1].onclick=()=>{detTab[k]="notas";openTopic(k);setTimeout(()=>{const b=[...document.querySelectorAll("#t-"+k+" button")].find(x=>/Gerar resumo com o Claude/.test(x.textContent));if(b)b.click()},300)};return c},["tema","temas"]);
-    $("#nCopy").disabled=$("#nDown").disabled=true;return}
+    $("#nCopy").disabled=$("#nDown").disabled=true;nTocRender([],false);return}
   const list=$("#nlist");list.innerHTML="";
   if(!keys.length)list.appendChild(el(`<li class="tips">Abra um tema na aba Residência e escreva no campo Anotações, use um modelo ou peça um resumo ao Claude. Tudo o que você anotar aparece aqui, reunido por área.</li>`));
   else if(!vis.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhuma anotação com esses filtros.</li>`));
@@ -2646,17 +2809,28 @@ function renderNotasView(){
     const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);
     c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}`;
     c.querySelector(".ehead span:last-child").textContent=`${wordCount(notes[k])} palavras${noteAt[k]?" · "+whenLabel(noteAt[k]):""}`;
-    const mv=c.querySelector(".mdview");mv.innerHTML=mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}
+    const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
     ed.onclick=()=>{noteMode[k]="editar";focusKey=k;render()};
     return c};
   nSortKeys(vis);const nShow=vis.slice(0,nLimit);if(nSort==="sp")appendGrouped(list,nShow,k=>BYKEY[k],card,["tema","temas"]);else nShow.forEach(k=>list.appendChild(card(k)));
   if(vis.length>nShow.length){const m=el(`<li><button class="btn" type="button" id="nMore"></button></li>`);m.querySelector("button").textContent=`Mostrar mais ${Math.min(N_PAGE,vis.length-nShow.length)} (de ${vis.length-nShow.length} restantes)`;m.querySelector("button").onclick=()=>{nLimit+=N_PAGE;render()};list.appendChild(m)}
-  $("#nPdf").hidden=!downloadsFn;$("#nPdf").disabled=!vis.length&&!freeN.length;
-  $("#nPdf").onclick=async()=>{if(!downloadsFn)return;$("#nmsg").textContent="Gerando o PDF…";
-    try{const fr=nArea==="all"&&!nFlags.size?freeVisible():[],bytes=notesPDF(nSort==="sp"?vis:[...vis].sort((x,y)=>BYKEY[x].num-BYKEY[y].num),fr);
-      await downloadsFn.save({filename:`anotacoes-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});$("#nmsg").textContent=`PDF salvo com ${vis.length} ${vis.length===1?"tema":"temas"}${fr.length?` e ${fr.length} do caderno livre`:""}.`}
-    catch(e){$("#nmsg").textContent=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o PDF agora."}};
+  $("#nPdf").hidden=!downloadsFn;$("#nPdf").disabled=!keys.length&&!freeN.length;$("#nPdf").setAttribute("aria-expanded",!!nPdfOpt);
+  $("#nPdf").onclick=()=>{nPdfOpt=nPdfOpt?null:{scope:vis.length<keys.length?"screen":"all",free:true};render()};
+  {const bx=$("#nPdfBox");bx.innerHTML="";if(nPdfOpt&&downloadsFn){const O=nPdfOpt,w=el(`<div class="npdfopt"><span class="glabel">PDF das anotações</span><label class="qfsel"><span>O que entra</span><select id="nPdfScope"></select></label><label class="fcru"><input type="checkbox" id="nPdfFree"> <span></span></label><p class="how">Capa com o seu nome e a data, sumário com as páginas, área › especialidade › tema, destaques em cor e links entre temas com a página.</p><div class="btns"><button class="btn primary" type="button" id="nPdfGo">Gerar PDF</button><button class="link" type="button" id="nPdfX">Cancelar</button></div></div>`);
+    const sel=w.querySelector("select"),cnt=c=>keys.filter(k=>BYKEY[k].area.code===c).length,opts=[];
+    if(vis.length<keys.length)opts.push(["screen",`Como está na tela (${vis.length} ${vis.length===1?"tema":"temas"})`]);
+    opts.push(["all",`Caderno todo (${keys.length} ${keys.length===1?"tema":"temas"})`]);AREAS.forEach(a=>{const n=cnt(a.code);if(n)opts.push([a.code,`${a.name} (${n})`])});
+    opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o)});if(!opts.some(x=>x[0]===O.scope))O.scope=opts[0][0];sel.value=O.scope;sel.onchange=()=>{O.scope=sel.value;render()};
+    const fv=freeVisible(),cb=w.querySelector("#nPdfFree"),fl=w.querySelector(".fcru span");cb.checked=!!O.free&&O.scope==="all";cb.disabled=O.scope!=="all"||!fv.length;fl.textContent=fv.length?`Incluir o caderno livre (${fv.length} ${fv.length===1?"página":"páginas"})`:"Caderno livre vazio";cb.onchange=()=>{O.free=cb.checked};
+    w.querySelector("#nPdfX").onclick=()=>{nPdfOpt=null;render()};
+    w.querySelector("#nPdfGo").onclick=async()=>{const sc=O.scope,ks=sc==="screen"?vis:sc==="all"?keys:keys.filter(k=>BYKEY[k].area.code===sc),fr=sc==="all"&&cb.checked?fv:[],A=AREAS.find(a=>a.code===sc);
+      const scope=sc==="screen"?"Seleção da tela":A?A.name:"Todas as áreas";$("#nmsg").textContent="Gerando o PDF…";
+      try{const bytes=notesPDF(ks,fr,{scope});await downloadsFn.save({filename:`anotacoes-${A?A.code.toLowerCase()+"-":""}${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});
+        nPdfOpt=null;render();$("#nmsg").textContent=`PDF salvo com ${ks.length} ${ks.length===1?"tema":"temas"}${fr.length?` e ${fr.length} do caderno livre`:""}.`}
+      catch(e){$("#nmsg").textContent=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o PDF agora."}};
+    bx.appendChild(w)}}
+  nTocRender(nShow,vis.length>nShow.length);
   $("#nCopy").disabled=$("#nDown").disabled=!vis.length;
   $("#nDown").hidden=!downloadsFn;
   $("#nCopy").onclick=async()=>{const txt=notesMarkdown(vis);
@@ -4787,7 +4961,7 @@ async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Ne
 function eCardBtn(e){const has=e.cd&&cards.some(x=>x.id===e.cd),b=el(`<button class="mini" type="button"></button>`);b.textContent=has?"Cartão criado ✓":"Virar cartão";b.disabled=has;
   b.title="Cria um cartão de memorização: na frente o que você errou, no verso o correto";
   b.onclick=()=>{const x=cdAdd(e.k,`${e.w}${e.p?`\nPista: ${e.p}`:""}\n\nQual é o certo?`,e.r,"eu");e.cd=x.id;putErr(e);render()};return b}
-function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
+function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""} {{e:${e.id}}}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
   if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
   else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
   replaceNote(k,v);e.nt=today();putErr(e);render()}
@@ -5127,7 +5301,7 @@ function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-labe
 
 function render(){
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
-  renderAll();applyFull();sbApply();foNoiseSync();renderQBar();maybeOnb();
+  renderAll();applyFull();sbApply();if(view==="notas"&&nTocRender.last)nTocRender(...nTocRender.last);foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
@@ -7159,29 +7333,75 @@ function noteErrsEl(k){const act=errors.filter(e=>e.k===k&&!e.arch);if(!act.leng
       li.querySelector("button").onclick=()=>eOpenOne(e);ul.appendChild(li)});d.appendChild(ul)}
   return d}
 /* ----- PDF das anotações (mesmo gerador do panorama) ----- */
-function notesPDF(keys,free){const P=new MiniPDF("Anotações"),M=46,CW=P.W-2*M;let y=M;
-  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],l1:[176,122,14],line:[225,218,203],bg:[243,240,233]};
-  const need=h=>{if(y+h>P.H-M-14){P.add();y=M}};
-  const plain=t=>String(t).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,"$1 ($2)").replace(/\*\*(.+?)\*\*/g,"$1").replace(/==(.+?)==/g,"$1").replace(/(^|[\s(])_(.+?)_/g,"$1$2").replace(/`/g,"");
-  const para=(t,o={})=>{const s=o.size||9.6,lh=s*1.42,ind=o.indent||0;pdfWrap(plain(t),s,o.bold,CW-ind-(o.box?10:0)).forEach(l=>{need(lh);if(o.box){P.rect(M+ind,y+1,2.4,lh,C.l1)}P.text(M+ind+(o.box?8:0),y+s,l,{size:s,bold:o.bold,color:o.color});y+=lh});y+=o.after??2};
-  const body=txt=>{let fence=null;String(txt).replace(/\r/g,"").split("\n").forEach(l=>{
-    if(/^\s*```/.test(l)){fence=fence===null?l.trim().slice(3).trim().toLowerCase():null;if(fence==="fluxo"){y+=2;para("Fluxograma:",{size:9,bold:true,color:C.acc,after:1})}return}
-    if(fence!==null){if(!l.trim())return;if(fence==="fluxo"){const ind=/^\s{2,}/.test(l)?26:10;para((/^\s*\?/.test(l)?"? ":ind>10?"":"-> ")+l.trim().replace(/^\?\s*/,""),{indent:ind,size:9.2,bold:/^\s*\?/.test(l)})}else para(l,{size:8.6,indent:8});return}
-    if(!l.trim()){y+=3;return}let m;
-    if(m=l.match(/^(#{1,3})\s+(.*)/)){need(26);y+=4;para(m[2],{size:m[1].length===1?11.5:10.5,bold:true,color:C.acc,after:1});return}
-    if(/^\s*\|.*\|\s*$/.test(l)){if(/^\s*\|?\s*:?-{2,}/.test(l))return;para(l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()).join("  ·  "),{size:8.8,indent:6});return}
-    if(/^\s*>/.test(l)){para(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
-    if(m=l.match(/^(\s*)([-*•]|\d+[.)])\s+(.*)/)){const ind=m[1].length>=2?22:10;para((/\d/.test(m[2])?m[2]+" ":"• ")+m[3],{indent:ind});return}
-    para(l)})};
-  P.rect(0,0,P.W,8,C.acc);P.text(M,y+22,"Minhas anotações",{size:22,bold:true});y+=32;
-  P.text(M,y+10,`${keys.length} ${keys.length===1?"tema":"temas"}${free.length?` · ${free.length} do caderno livre`:""} · gerado em ${new Date().toLocaleDateString("pt-BR")}`,{size:9,color:C.mut});y+=22;
-  let lastG="";keys.forEach(k=>{const it=BYKEY[k],g=`${it.area.name}${it.sp?" · "+it.sp:""}`;
-    if(g!==lastG){need(60);y+=8;P.text(M,y+13,g,{size:13,bold:true,color:C.acc});y+=19;P.line(M,y,M+CW,y,C.line);y+=8;lastG=g}
-    need(40);para(it.t,{size:11.5,bold:true,after:3});body(notes[k]);y+=8});
-  if(free.length){need(60);y+=8;P.text(M,y+13,"Caderno livre",{size:13,bold:true,color:C.acc});y+=19;P.line(M,y,M+CW,y,C.line);y+=8;
-    free.forEach(f=>{need(40);para(f.t||"Sem título",{size:11.5,bold:true,after:1});if(f.tags.length||f.ks.length)para([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,after:3});body(f.b);y+=8})}
-  const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Nexus - Trilha Médica · Anotações",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
-  return P.output()}
+function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
+  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],gold:[184,145,74],goldInk:[138,106,43],l2:[44,88,150],line:[225,218,203],bg:[243,240,233],hl:[247,228,170],white:[247,243,234],soft:[214,206,190]};
+  const M=50,AI=new Map(AREAS.map((a,i)=>[a.code,i])),SPO=new Map();ALL.forEach(it=>{const s=it.area.code+"|"+(it.sp||"");if(!SPO.has(s))SPO.set(s,SPO.size)});
+  const K=[...keys].filter(k=>BYKEY[k]).sort((a,b)=>{const x=BYKEY[a],y=BYKEY[b];return (AI.get(x.area.code)??9)-(AI.get(y.area.code)??9)||(SPO.get(x.area.code+"|"+(x.sp||""))??999)-(SPO.get(y.area.code+"|"+(y.sp||""))??999)||(x.own?1:0)-(y.own?1:0)||x.num-y.num});
+  const groups=[];K.forEach(k=>{const it=BYKEY[k];let A=groups[groups.length-1];if(!A||A.code!==it.area.code){A={code:it.area.code,name:it.area.name,sps:[]};groups.push(A)}let S=A.sps[A.sps.length-1];if(!S||S.name!==(it.sp||"")){S={name:it.sp||"",keys:[]};A.sps.push(S)}S.keys.push(k)});
+  /* texto com estilos: **negrito**, ==destaque==, [[link]] (p. N), [texto](url), selos */
+  const runsOf=(t,pmap,base)=>{const R=[],re=/\*\*(.+?)\*\*|==(.+?)==|\[\[([^\[\]\n|]{1,120})(?:\|([^\[\]\n]{1,120}))?\]\]|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\{\{([eq]):([A-Za-z0-9:_-]{1,80})\}\}/g;let last=0,m;
+    const plain=x=>x.replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1$2").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1$2").replace(/`/g,"");
+    t=String(t);while((m=re.exec(t))){if(m.index>last)R.push({t:plain(t.slice(last,m.index)),...base});
+      if(m[1]!==undefined)R.push({t:plain(m[1]),...base,b:true});else if(m[2]!==undefined)R.push({t:plain(m[2]),...base,hl:true});
+      else if(m[3]!==undefined){const r=wkFind(m[3].trim()),lab=(m[4]||m[3]).trim();R.push({t:lab,...base,lk:true});const pk=r?(r.kind==="t"?r.id:"f:"+r.id):null;if(pk&&pmap[pk])R.push({t:` (p. ${pmap[pk]})`,...base,mut:true})}
+      else if(m[5]!==undefined){R.push({t:m[5],...base,lk:true});R.push({t:` (${m[6]})`,...base,mut:true,sm:true})}
+      else if(m[7]!==undefined){R.push({t:` [${nbInfo(m[7],m[8]).lab}]`,...base,mut:true,sm:true})}
+      last=m.index+m[0].length}
+    if(last<t.length)R.push({t:plain(t.slice(last)),...base});return R};
+  const content=pmap=>{const P=new MiniPDF("Anotações"),CW=P.W-2*M,starts={};let y=M,first=true;
+    const need=h=>{if(y+h>P.H-M-18){P.add();y=M}};
+    const rich=(t,o={})=>{const s=o.size||9.6,lh=s*1.45,ind=(o.indent||0)+(o.box?10:0),W=CW-ind,R=runsOf(t,pmap,{b:!!o.bold,c:o.color}),toks=[];
+      R.forEach(r=>r.t.split(/(\s+)/).forEach(w=>{if(!w)return;const sp=/^\s+$/.test(w),sz=r.sm?s*.86:s;toks.push({w:sp?" ":w,sp,r,sz,wd:pdfW(sp?" ":w,sz,r.b||r.hl)})}));
+      const lines=[];let cur=[],cw=0;toks.forEach(k=>{if(k.sp&&!cur.length)return;if(!k.sp&&cw+k.wd>W&&cur.length){while(cur.length&&cur[cur.length-1].sp)cur.pop();lines.push(cur);cur=[];cw=0}
+        if(!k.sp&&k.wd>W){let piece="";[...k.w].forEach(ch=>{const t2=piece+ch;if(pdfW(t2,k.sz,k.r.b||k.r.hl)>W&&piece){lines.push([{...k,w:piece,wd:pdfW(piece,k.sz,k.r.b||k.r.hl)}]);piece=ch}else piece=t2});cur=[{...k,w:piece,wd:pdfW(piece,k.sz,k.r.b||k.r.hl)}];cw=cur[0].wd;return}
+        cur.push(k);cw+=k.wd});while(cur.length&&cur[cur.length-1].sp)cur.pop();if(cur.length)lines.push(cur);
+      lines.forEach(L=>{need(lh);if(o.box)P.rect(M+(o.indent||0),y+1,2.4,lh,C.gold);let x=M+ind;
+        L.forEach((k,i)=>{const r=k.r;if(r.hl){const nx=L[i+1],w=k.wd+(nx&&nx.r.hl&&k.sp?0:0);P.rect(x-.6,y+1.2,w+1.2,lh-1.4,C.hl)}
+          if(!k.sp)P.text(x,y+s,k.w,{size:k.sz,bold:r.b||r.hl,color:r.lk?C.l2:r.mut?C.mut:r.c||C.ink});x+=k.wd});y+=lh});y+=o.after??2};
+    const body=txt=>{let fence=null;String(txt).replace(/\r/g,"").split("\n").forEach(l=>{
+      if(/^\s*```/.test(l)){fence=fence===null?l.trim().slice(3).trim().toLowerCase():null;if(fence==="fluxo"){y+=2;rich("Fluxograma:",{size:9,bold:true,color:C.acc,after:1})}return}
+      if(fence!==null){if(!l.trim())return;if(fence==="fluxo"){const ind=/^\s{2,}/.test(l)?26:10;rich((/^\s*\?/.test(l)?"? ":ind>10?"":"-> ")+l.trim().replace(/^\?\s*/,""),{indent:ind,size:9.2,bold:/^\s*\?/.test(l)})}else rich(l,{size:8.6,indent:8});return}
+      if(!l.trim()){y+=3;return}let m;
+      if(m=l.match(/^(#{1,3})\s+(.*)/)){need(28);y+=5;rich(m[2],{size:m[1].length===1?11.2:10.4,bold:true,color:C.acc,after:1});return}
+      if(/^\s*\|.*\|\s*$/.test(l)){if(/^\s*\|?\s*:?-{2,}/.test(l))return;rich(l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()).join("  ·  "),{size:8.8,indent:6});return}
+      if(/^\s*>/.test(l)){rich(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
+      if(m=l.match(/^(\s*)([-*•]|\d+[.)])\s+(.*)/)){const lv=m[1].replace(/\t/g,"  ").length,ind=lv>=4?34:lv>=2?22:10;rich((/\d/.test(m[2])?m[2]+" ":lv>=2?"– ":"• ")+m[3],{indent:ind});return}
+      rich(l)})};
+    groups.forEach(A=>{if(!first){P.add();y=M}first=false;starts["a:"+A.code]=P.pages.length-1;
+      P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,A.name,{size:21,bold:true,color:C.acc});y+=30;
+      const n=A.sps.reduce((s,S)=>s+S.keys.length,0);P.text(M,y+9,`${n} ${n===1?"tema":"temas"} · ${A.sps.filter(S=>S.name).length} ${A.sps.filter(S=>S.name).length===1?"especialidade":"especialidades"}`,{size:9,color:C.mut});y+=22;P.line(M,y,M+CW,y,C.line,.8);y+=12;
+      A.sps.forEach(S=>{if(S.name){need(80);starts["s:"+A.code+"|"+S.name]=P.pages.length-1;y+=6;P.text(M,y+13,S.name,{size:14,bold:true,color:C.goldInk});y+=19;P.line(M,y,M+90,y,C.gold,1);y+=10}
+        S.keys.forEach(k=>{const it=BYKEY[k];need(64);starts[k]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(it.t,{size:12.6,bold:true,color:C.l2,indent:8,after:0});
+          P.text(M+8,y+8,`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · Faculdade":" · "+String(it.num).padStart(3,"0")}`,{size:7.8,color:C.mut});y+=16;body(notes[k]);y+=10})})});
+    if(free.length){if(!first){P.add();y=M}starts["a:FREE"]=P.pages.length-1;P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,"Caderno livre",{size:21,bold:true,color:C.acc});y+=30;P.line(M,y,M+CW,y,C.line,.8);y+=12;
+      free.forEach(f=>{need(60);starts["f:"+f.id]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(f.t||"Sem título",{size:12.6,bold:true,color:C.l2,indent:8,after:1});
+        if(f.tags.length||f.ks.length)rich([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,indent:8,after:3});body(f.b);y+=10})}
+    return {P,starts}};
+  /* sumário: área › especialidade › tema, com a página */
+  const tocRows=[];groups.forEach(A=>{tocRows.push({lv:1,t:A.name,id:"a:"+A.code});A.sps.forEach(S=>{if(S.name)tocRows.push({lv:2,t:S.name,id:"s:"+A.code+"|"+S.name});S.keys.forEach(k=>tocRows.push({lv:3,t:BYKEY[k].t,id:k}))})});
+  if(free.length){tocRows.push({lv:1,t:"Caderno livre",id:"a:FREE"});free.forEach(f=>tocRows.push({lv:3,t:f.t||"Sem título",id:"f:"+f.id}))}
+  const RH={1:24,2:18,3:15},tocPaged=()=>{const pg=[[]];let y=M+70;tocRows.forEach(r=>{const h=RH[r.lv]+(r.lv===1&&pg[pg.length-1].length?6:0);if(y+h>841.89-M-18){pg.push([]);y=M}pg[pg.length-1].push(r);y+=h});return pg};
+  const TP=tocPaged(),off=1+TP.length;
+  const mapOf=st=>{const m={};Object.keys(st).forEach(k=>m[k]=st[k]+off+1);return m};
+  let pm={};tocRows.forEach(r=>pm[r.id]=99);let R=content(pm);for(let i=0;i<3;i++){const nm=mapOf(R.starts);if(JSON.stringify(nm)===JSON.stringify(pm))break;pm=nm;R=content(pm)}
+  /* documento final: capa + sumário + conteúdo */
+  const D=new MiniPDF(opt.title||"Anotações"),W=D.W,H=D.H,CW=W-2*M;
+  D.rect(0,0,W,H,C.acc);D.rect(0,H-10,W,10,C.gold);
+  D.line(M,150,M+70,150,C.gold,1.4);D.text(M,178,"CADERNO  ·  REVISÃO GERAL",{size:10,bold:true,color:C.gold});
+  pdfWrap(opt.title||"Minhas anotações",34,true,CW).forEach((l,i)=>D.text(M,226+i*40,l,{size:34,bold:true,color:C.white}));
+  D.text(M,272,opt.scope||"Todas as áreas",{size:15,color:C.soft});
+  const nT=K.length;D.text(M,300,`${nT} ${nT===1?"tema":"temas"}${free.length?` · ${free.length} ${free.length===1?"página":"páginas"} do caderno livre`:""} · ${groups.length} ${groups.length===1?"área":"áreas"}`,{size:10.5,color:C.soft});
+  D.text(M,H-150,"DOCUMENTO PESSOAL",{size:8.5,bold:true,color:C.gold});D.text(M,H-128,(ui.profile.name||"").trim()||"Estudante",{size:15,bold:true,color:C.white});
+  D.text(M,H-110,`Gerado em ${new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})}`,{size:9.5,color:C.soft});
+  D.text(M,H-60,"NEXUS",{size:12,bold:true,color:C.gold});D.text(M+pdfW("NEXUS ",12,true)+4,H-60,"Trilha Médica",{size:10,color:C.soft});
+  TP.forEach((rows,pi)=>{D.add();let y=M;if(pi===0){D.rect(M,y,36,3,C.gold);y+=14;D.text(M,y+22,"Sumário",{size:24,bold:true,color:C.acc});y+=56}
+    rows.forEach(r=>{if(r.lv===1&&y>M+70)y+=6;const sz=r.lv===1?12:r.lv===2?10.4:9.4,ind=r.lv===1?0:r.lv===2?12:24,b=r.lv<3,col=r.lv===1?C.acc:r.lv===2?C.goldInk:C.ink,pg=String(pm[r.id]||""),pw=pdfW(pg,sz,b);
+      let t=r.t;const maxW=CW-ind-pw-24;while(pdfW(t,sz,b)>maxW&&t.length>4)t=t.slice(0,-2);if(t!==r.t)t=t.replace(/\s*\S?$/,"")+"…";
+      D.text(M+ind,y+sz,t,{size:sz,bold:b,color:col});const tw=pdfW(t,sz,b),x0=M+ind+tw+6,x1=M+CW-pw-6;if(x1>x0){let dots="";while(pdfW(dots+" .",sz*.8,false)<x1-x0)dots+=" .";D.text(x0,y+sz,dots,{size:sz*.8,color:C.soft})}
+      D.text(M+CW-pw,y+sz,pg,{size:sz,bold:b,color:col});y+=RH[r.lv]})});
+  R.P.pages.forEach(pg=>D.pages.push(pg));
+  const n=D.pages.length;D.pages.forEach((pg,i)=>{if(i===0)return;D.cur=pg;D.line(M,D.H-M+4,M+CW,D.H-M+4,C.line,0.4);D.text(M,D.H-M+16,`Nexus - Trilha Médica · ${opt.scope||"Anotações"}`,{size:7.6,color:C.mut});const t=`${i+1}`;D.text(M+CW-pdfW(t,7.6,false),D.H-M+16,t,{size:7.6,color:C.mut})});
+  D.__pm=pm;D.__toc=tocRows;return opt.raw?D:D.output()}
 /* ----- caderno livre: anotações que não são de um tema ----- */
 const LSFR2="resid-free-v1";
 let freeN=[],freeStore=null,freeEdit=null,freeTag="all",freeOpen=new Set(),freeArm=null;
@@ -7203,7 +7423,7 @@ function freeCard(){const c=el(`<section class="card nfree ns-all" aria-labelled
 function freeItem(f){const open=freeOpen.has(f.id),li=el(`<li class="ncard" id="fr-${f.id}"><div class="ehead"><b class="frt"></b><span class="nloc"></span></div><div class="frlinks"></div><div class="mdview${open?"":" clamp"}"></div><div class="efoot"><button class="mini" type="button"></button><button class="mini" type="button">Editar</button><span class="sp"></span><button class="mini" type="button"></button></div></li>`);
   li.querySelector(".frt").textContent=f.t||"Sem título";li.querySelector(".nloc").textContent=`${f.tags.map(t=>"#"+t).join(" ")}${f.tags.length?" · ":""}${whenLabel(f.at)}`;
   const lk=li.querySelector(".frlinks");f.ks.filter(k=>BYKEY[k]).forEach(k=>{const b=el(`<button class="fchip" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};lk.appendChild(b)});if(!lk.children.length)lk.remove();
-  li.querySelector(".mdview").innerHTML=f.b.trim()?mdC(f.b):`<p class="mdempty">Sem texto.</p>`;
+  li.querySelector(".mdview").innerHTML=f.b.trim()?(open?md(f.b,{fold:"f:"+f.id}):mdC(f.b)):`<p class="mdempty">Sem texto.</p>`;if(open&&f.t)li.querySelector(".mdview").after(wkBackEl({kind:"f",id:f.id}));
   const [tg,ed,dl]=li.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?freeOpen.delete(f.id):freeOpen.add(f.id);render()};
   ed.onclick=()=>{freeEdit={id:f.id,t:f.t,b:f.b,tags:f.tags.join(", "),ks:[...f.ks],q:""};render();setTimeout(()=>{const e=$("#frB"),ae=document.activeElement;if(e&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))e.focus()},40)};
   const armed=freeArm===f.id;dl.textContent=armed?"Toque de novo para excluir":"Excluir";if(armed)dl.classList.add("warn");dl.onclick=()=>{if(armed){freeArm=null;frDel(f.id)}else{freeArm=f.id;render()}};return li}
@@ -7417,10 +7637,14 @@ const HELP=[
 - **Cobertura:** em Todas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
 - **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
 - **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, uma linha cada com o conceito certo; toque para abrir o erro no caderno. Erros arquivados e os que você já levou para a anotação não se repetem ali.
-- **Baixar PDF:** gera um PDF com as anotações que estão na tela (seguindo os filtros), por especialidade, com títulos, listas, tabelas e pegadinhas; sem filtros, inclui o caderno livre.
+- **Baixar PDF:** escolha **o caderno todo**, **uma área** ou **como está na tela** (com os filtros) e, no caderno todo, se entra o caderno livre. O PDF tem **capa** com o seu nome e a data, **sumário** com as páginas, área › especialidade › tema, destaques em cor, pegadinhas em caixa e links entre temas com a página (ex.: "Anemias (p. 12)").
+- **Sumário lateral** (computador com tela larga): "Nesta página" lista área › especialidade › tema das anotações mostradas; toque para ir até o tema. O tema que você está lendo fica marcado.
 - **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
 - **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
+- **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. No fim de cada anotação, **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.
+- **Tópicos que recolhem:** na leitura, cada título (##) abre e fecha pela seta, e o app lembra o que ficou fechado; **Abrir tudo/Fechar tudo** no topo. Item de lista com subitens tem seta para recolher. No editor, **Tab** e **Shift+Tab** aumentam e diminuem o recuo do item (ou das linhas selecionadas).
+- **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele; escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro. **Levar para a anotação** (no caderno de erros) já deixa o selo do erro na linha.
 - **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
 - **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Anotações): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
 - Modelos: **Modelo de resumo**, **Seções dos subtópicos**, **Meus erros**.
@@ -7690,7 +7914,7 @@ document.querySelectorAll("#tSeg button").forEach(b=>b.onclick=()=>setTSeg(b.dat
 /* celular: esconde a barra de baixo enquanto o teclado está aberto */
 const isTypingEl=e=>e&&(e.tagName==="TEXTAREA"||(e.tagName==="INPUT"&&!/^(checkbox|radio|button|submit|range|color|file)$/.test(e.type)));
 document.addEventListener("focusin",e=>{if(isTypingEl(e.target))document.body.classList.add("typing")});
-document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement)){document.body.classList.remove("typing");vvSettle()}},50));
+document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement)){const was=document.body.classList.contains("typing");document.body.classList.remove("typing");if(was&&document.documentElement.dataset.layout==="phone")vvSettle()}},50));
 /* iOS: ao fechar o teclado, a página fica fora do lugar até a próxima rolagem; vvSettle força o realinhamento e vvFix calcula quanto
    a área visível (visualViewport) está acima do fundo da janela, para os elementos fixos embaixo ficarem colados no que se vê */
 function vvFix(){const vv=window.visualViewport,R=document.documentElement;if(!vv){return}
