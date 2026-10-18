@@ -20,7 +20,7 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);fac.provas.push({id:"q
 ok(await p.evaluate(()=>examCrunch().active&&!examCrunch().manual),"automático liga com 3 provas");
 await p.click('#facCrunch .seg button:has-text("Desligado")');
 ok(await p.evaluate(()=>!examCrunch().active&&fac.crunch.until===examCrunchAuto().until),"desligado até o fim do grupo de provas");
-ok(await p.evaluate(()=>dayPlan.items.some(x=>x.cls!=="r-fac")),"plano volta a ter residência");
+ok(await p.evaluate(()=>dayPlan.items.length>0&&!dayPlan.items.some(x=>/r-new|r-cont|r-weak/.test(x.cls))),"modo provas desligado, mas semana da prova: plano sem temas novos da residência");
 // expira
 await p.evaluate(()=>{fac.crunch={mode:"off",until:fromNum(dnum(today())-1)};saveFac()});
 ok(await p.evaluate(()=>examCrunch().active&&!examCrunch().manual),"override vencido volta ao automático");
