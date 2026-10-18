@@ -15,15 +15,16 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=ee68cfea">
+<link rel="stylesheet" href="site.css?v=50070180">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=ee68cfea"></script>
-<script src="bridge.js?v=ee68cfea"></script>
+<script src="config.js?v=50070180"></script>
+<script src="bridge.js?v=50070180"></script>
 </head>
 <body>
 <script>
+if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifenização do texto justificado
 /* reconhece o aparelho pelo tamanho da tela física e decide o layout (antes de desenhar a página) */
 (function(){const R=document.documentElement;
   function decide(){const w=innerWidth,coarse=matchMedia("(pointer:coarse)").matches,
@@ -170,6 +171,13 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 #iToday .plan{gap:6px}
 .pcard.pdone .ptitle{text-decoration:line-through;text-decoration-color:var(--muted)}
 .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.pcard .ptitle{line-height:1.3}
+.pcard .ptop+.pa{margin-top:4px}
+@media (pointer:coarse){.pcard .ptop+.pa{margin-top:8px}}
+.pcard .phint{line-height:1.55;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.pcard .pbody{display:flex;flex-direction:column;gap:8px}
+/* celular: o selo vai para cima do título, que ganha a largura toda */
+@media (max-width:560px){.pcard .ptop{flex-direction:column-reverse;align-items:flex-start;gap:10px}.pcard .reason{white-space:normal;max-width:100%}}
 .ptitle{background:none;border:0;padding:0;text-align:left;font:700 1.15rem/1.25 var(--display);color:var(--ink);cursor:pointer;min-width:0}
 .ptitle:hover{color:var(--accent)}
 .pcard .pa{font:500 .74rem var(--mono);color:var(--muted);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
@@ -197,7 +205,7 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 #revVesp:empty{display:none}
 .r-fac{background:var(--l2);color:var(--on-accent)}
 .r-pfr{background:var(--l2);color:var(--on-accent)}
-.pweek{list-style:none;padding:0}.pweek .phint{margin:0}.pfrt .link{font-size:inherit}
+.pweek{list-style:none;padding:0}.pfrnote{font-size:.76rem}.pweek .phint{margin:0}.pfrt .link{font-size:inherit}
 .fbadge{font:600 .72rem var(--body);color:var(--l2);border:1px solid var(--l2);border-radius:99px;padding:0 7px}
 .fbadgep{margin:0;font-size:.85rem;border-left:3px solid var(--l2);border-radius:0 8px 8px 0}
 .ftools{display:flex;gap:12px;flex-wrap:wrap}
@@ -3536,7 +3544,8 @@ function renderPlan(){
         b.onclick=()=>{if(on)p.subs=p.subs.filter(t=>t!==x.t);else if(p.subs.length<6)p.subs=[...p.subs,x.t];savePlan();render()};wrap.appendChild(b)});
       body.appendChild(wrap);
     }else if(pfr){const PV=fac.provas.find(x=>x.id===p.pid),a=refAcc(p.ref),T=refTopics(p.ref).filter(x=>BYKEY[x.k]);
-      body.appendChild(el(`<p class="phint">Você já estudou este conteúdo. Revisão ${p.n||1} de ${FAC_RV_MAX} antes da prova: releia a anotação, refaça os erros do caderno e faça algumas questões${a!==null?` (acerto até aqui: ${Math.round(a*100)}%)`:""}. Não altera as revisões espaçadas.</p>`));
+      body.appendChild(el(`<p class="phint">Você já estudou este conteúdo. Releia a anotação, refaça os erros do caderno e faça algumas questões.</p>`));
+      body.appendChild(el(`<p class="phint pfrnote">${a!==null?`Acerto até aqui: ${Math.round(a*100)}%. `:""}Não altera as revisões espaçadas.</p>`));
       if(T.length>1||(T.length&&T[0].own)){const w=el(`<p class="phint pfrt">Temas: </p>`);T.forEach((x,j)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[x.k].t;b.onclick=()=>openTopic(x.k);if(j)w.appendChild(document.createTextNode(" · "));w.appendChild(b)});body.appendChild(w)}
       if(PV){const rb=el(`<div class="pacts"></div>`);
         if(done){const u=el(`<button class="link" type="button">Desfazer “revisei”</button>`);u.onclick=()=>{provaRvMark(PV,p.ref,false);render()};rb.appendChild(u)}
