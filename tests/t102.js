@@ -50,7 +50,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
   ok(m.open&&m.items.join()==="go-inicio,go-temas,go-fac,go-quest,go-notas,go-foco,go-erros"&&m.cur==="go-quest"&&m.sec.join()==="Perfil,Configurações,Ajuda"&&m.search,name+": menu com todas as seções, busca, Perfil, Configurações e Ajuda "+JSON.stringify(m));
   if(name==="fone"||name==="ipad820")await p.screenshot({path:`t102-menu-${name}.png`});
   await p.keyboard.press('Escape');await p.waitForTimeout(320);ok((await st()).menu===false,name+": Esc fecha");
-  await click(phone?'#tabM':'#navMenuBtn');await click('#go-foco');
+  await click(phone?'#tabM':'#navMenuBtn');await click('#go-foco');await p.waitForTimeout(320);
   ok(await p.evaluate(ph=>view==="foco"&&document.querySelector('#navMenu').hidden&&(!ph||document.querySelector('#tabM').getAttribute("aria-selected")==="true"),phone),name+": escolher Foco abre a aba e fecha o menu");
   await click(phone?'#tabM':'#navMenuBtn');await p.evaluate(()=>{document.querySelector('#navMenu').click()});await p.waitForTimeout(320);
   ok((await st()).menu===false,name+": tocar fora fecha");

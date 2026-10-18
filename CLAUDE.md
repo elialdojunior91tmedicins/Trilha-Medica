@@ -194,8 +194,8 @@ consultado quando há dúvida. Responda em português.
   trilho `--sbw:76px`, `.appnav.peek` abre por cima (mouse com `sbHover()`, ou `#sbMenu` ≡ no toque com `#sbBack`); `#sbPins` (`#sbPinOpen` Fixar, `#sbPinRail` Recolher;
   tocar de novo = automático) e `segRow` "Barra lateral" em Configurações › Aparência (só com `sideFull()`). Menu ≡ `#navMenu`/`#nmPanel` (`navMenuOpen/Close`,
   `navListEl` com `nmInfo(v)` = resumo e selo de cada seção, ids `#go-<view>`, `#nmSearch`, `#nmProf/#nmCfg/#nmHelp`): folha de baixo no celular (`#tabM` "Menu"),
-  gaveta à esquerda no iPad em pé (`#navMenuBtn` no header; a `.appnav` some em `tablet` + `cols=1`). Animação: `.nmpanel` sobe (`nmup`) no celular e desliza (`nmleft`) na gaveta;
-  fechar põe `.nmclosing` e esconde depois de 240 ms (`nmTimer`), por isso os toggles tratam "fechando" como fechado e os testes esperam ~300 ms. Teste: `tests/t102.js`.
+  gaveta à esquerda no iPad em pé (`#navMenuBtn` no header; a `.appnav` some em `tablet` + `cols=1`). Animação por transição: o painel começa fora da tela (translate) e `.nmin`, posta dois quadros
+  depois (`nmRaf`, duplo requestAnimationFrame, para o iPhone pintar o início), faz subir/deslizar; fechar tira `.nmin`, põe `.nmclosing` e esconde depois de 260 ms (`nmTimer`), por isso os toggles tratam "fechando" como fechado e os testes esperam ~300 ms. Teste: `tests/t102.js`.
 - Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
   cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),
