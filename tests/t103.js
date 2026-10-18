@@ -63,6 +63,19 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  ok(await p.evaluate(()=>notes["CM-34"].split("\n")[0]==="- item {{q:exN:0}}"&&!document.querySelector('#t-CM-34 .nbpick')),name+": escolher insere o selo na linha "+JSON.stringify(await p.evaluate(()=>notes["CM-34"].split("\n")[0])));
  /* 7. Levar para a anotação põe o selo do erro */
  await p.evaluate(()=>{const e=errors[errors.length-1];eToNote(e)});ok(await p.evaluate(id=>notes["CM-34"].includes(`{{e:${id}}}`),eid),name+": Levar para a anotação deixa o selo do erro na linha");
+ /* 7b. aba Anotações: cartão aberto com Mencionado em; Para reler hoje com tópicos; editor do caderno livre com [[, Tab e Selo */
+ await p.evaluate(()=>{notes["CM-34"]="## Um\nTexto\n## Dois\nMais";notes["CM-1"]="Ver [[Anemias]].";commit();nOpen.add("CM-34");backStack=[];nSeg="todas";setView("notas")});await p.waitForTimeout(300);
+ ok(await p.evaluate(()=>{const c=document.querySelector('#nc-CM-34');return c&&c.querySelectorAll('details.mdsec').length===2&&[...c.querySelectorAll('.wkback .wkchip')].some(x=>x.textContent==="Hipertensão arterial sistêmica")}),name+": cartão aberto na aba Anotações tem tópicos que recolhem e Mencionado em");
+ ok(await p.evaluate(()=>{nTodayOpen.add("CM-34");const keys=notesTodayKeys().map(x=>x.k);render();const c=[...document.querySelectorAll('.ntoday .ncard')].find(x=>/Anemias/.test(x.textContent));return !keys.includes("CM-34")||(c&&c.querySelectorAll('details.mdsec').length===2)}),name+": Para reler hoje aberto também recolhe por títulos");
+ await p.evaluate(()=>{freeEdit={id:"",t:"Aula",b:"- um",tags:"",ks:["CM-34"],q:""};render();document.querySelector('#frB').scrollIntoView({block:"center"})});await p.waitForTimeout(200);
+ ok(await p.evaluate(()=>[...document.querySelectorAll('.freeed .frtools .tool')].map(x=>x.textContent).join()==="H,B,==,•,>,[[ ]],Selo"),name+": editor do caderno livre com barra (inclui [[ ]] e Selo)");
+ await p.evaluate(()=>{const t=document.querySelector('#frB');t.focus();t.setSelectionRange(t.value.length,t.value.length)});await p.keyboard.type(' [[anem');await p.waitForTimeout(150);
+ ok(await p.evaluate(()=>{const x=document.querySelector('.freeed .wkpop');return !x.hidden&&x.querySelector('.wkopt b').textContent==="Anemias"}),name+": [[ abre a lista também no caderno livre");
+ await p.keyboard.press('Enter');await p.waitForTimeout(100);ok(await p.evaluate(()=>freeEdit.b==="- um [[Anemias]]"),name+": escolher escreve o link "+JSON.stringify(await p.evaluate(()=>freeEdit.b)));
+ await p.keyboard.press('Tab');await p.waitForTimeout(80);ok(await p.evaluate(()=>freeEdit.b.startsWith("  - um")),name+": Tab recua no caderno livre");
+ await p.evaluate(()=>{const b=[...document.querySelectorAll('.freeed .frtools .tool')].find(x=>x.textContent==="Selo");b.id="__fs"});await click('#__fs');
+ ok(await p.evaluate(()=>{const b=[...document.querySelectorAll('.freeed .nbpick .nbopts button b')].map(x=>x.textContent);return b.length===2&&/^Erro/.test(b[0])&&b[1]==="ENARE · 2024 · Q12"}),name+": Selo lista erros e questões dos temas ligados à página");
+ await p.evaluate(()=>{freeEdit=null;render()});
  /* 8. PDF: capa, sumário com páginas, três níveis */
  const D=await p.evaluate(()=>{notes["CM-1"]="## HAS\nVer [[Anemias]].";notes["PED-1"]="Texto";commit();const d=notesPDF(["CM-34","CM-1","PED-1"],[],{raw:true,scope:"Todas as áreas"});const u=d.output();let s="";for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);
    return {pages:d.pages.length,pm:d.__pm,toc:d.__toc.map(r=>r.lv+":"+r.t),hasName:s.includes("Elialdo J"),hasSum:s.includes("(Sum"),link:/\(Anemias\) Tj[\s\S]{0,300}\(\\\(p\.\) Tj/.test(s)}});

@@ -2540,8 +2540,8 @@ function nbHTML(t,id){const I=nbInfo(t,id);return `<button type="button" class="
 function nbGo(ref){const t=ref[0],id=ref.slice(2);if(t==="e"){const e=errors.find(x=>x.id===id);if(e)eOpenOne(e);return}
   const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid);if(!ex||!ex.qs[+ix])return;exRun={id:xid,view:"rev",i:+ix,cad:{}};exEdit=null;backStack=[];qSeg="praticar";setView("quest");setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},60)}
 /* o que pode virar selo num tema: erros ativos e questões de provas na íntegra desse tema */
-function nbChoices(k){const E=errors.filter(e=>e.k===k&&!e.arch).sort(byNewest).slice(0,20).map(e=>({tok:`{{e:${e.id}}}`,lab:`Erro · ${br(e.d).slice(0,5)}`,sub:eOneLine(e.w||e.r).slice(0,90)}));
-  const Q=[];exams.forEach(ex=>ex.qs.forEach((r,i)=>{if(r.k===k&&Q.length<30){const a=exPg(ex.id).a[i];Q.push({tok:`{{q:${ex.id}:${i}}}`,lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||i+1}`,sub:(a?(a.l===r.q.correta?"✓ acertou · ":"✗ errou · "):"")+r.q.enunciado.replace(/\s+/g," ").slice(0,80),w:a&&a.l!==r.q.correta})}}));
+function nbChoices(k){const KS=new Set(Array.isArray(k)?k:[k]),many=KS.size>1,E=errors.filter(e=>KS.has(e.k)&&!e.arch).sort(byNewest).slice(0,20).map(e=>({tok:`{{e:${e.id}}}`,lab:`Erro · ${br(e.d).slice(0,5)}${many&&BYKEY[e.k]?" · "+BYKEY[e.k].t:""}`,sub:eOneLine(e.w||e.r).slice(0,90)}));
+  const Q=[];exams.forEach(ex=>ex.qs.forEach((r,i)=>{if(KS.has(r.k)&&Q.length<30){const a=exPg(ex.id).a[i];Q.push({tok:`{{q:${ex.id}:${i}}}`,lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||i+1}`,sub:(a?(a.l===r.q.correta?"✓ acertou · ":"✗ errou · "):"")+r.q.enunciado.replace(/\s+/g," ").slice(0,80),w:a&&a.l!==r.q.correta})}}));
   Q.sort((a,b)=>(b.w?1:0)-(a.w?1:0));return {E,Q}}
 
 
@@ -2567,15 +2567,16 @@ function wkPopKey(e,ta,k,pop){const W=ta._wk;if(!W||pop.hidden)return false;
 function indentLines(ta,k,out){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e>s&&v[e-1]==="\n"?e-1:e);if(le<0)le=v.length;
   const lines=v.slice(ls,le).split("\n");let d0=0,dt=0;const nl=lines.map((l,i)=>{let n;if(out){const r=l.match(/^ {1,2}|^\t/);n=r?l.slice(r[0].length):l;const d=n.length-l.length;if(i===0)d0=d;dt+=d}else{n="  "+l;if(i===0)d0=2;dt+=2}return n});
   const blk=nl.join("\n");return {v:v.slice(0,ls)+blk+v.slice(le),s:Math.max(ls,s+d0),e:Math.max(ls,e+dt)}})}
-function nbPickEl(ta,k,close){const C=nbChoices(k),w=el(`<div class="nbpick" role="dialog" aria-label="Marcar questão ou erro"><div class="dhead"><b>Marcar questão ou erro na linha</b><button class="link" type="button">Fechar</button></div></div>`);
+function nbPickEl(ta,k,close,keys){const C=nbChoices(keys||k),w=el(`<div class="nbpick" role="dialog" aria-label="Marcar questão ou erro"><div class="dhead"><b>Marcar questão ou erro na linha</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".link").onclick=close;
   const grp=(lab,L,empty)=>{w.appendChild(el(`<span class="glabel">${lab}</span>`));if(!L.length){w.appendChild(el(`<p class="how">${empty}</p>`));return}
     const ul=el(`<ul class="nbopts"></ul>`);L.forEach((x,i)=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`),b=li.querySelector("button");b.querySelector("b").textContent=x.lab;b.querySelector("span").textContent=x.sub;
       b.onmousedown=e=>e.preventDefault();b.onclick=()=>{edit(ta,k,(v,s,e)=>{const ins=(s>0&&!/\s/.test(v[s-1])?" ":"")+x.tok;return {v:v.slice(0,s)+ins+v.slice(e),s:s+ins.length,e:s+ins.length}});close()};ul.appendChild(li)});w.appendChild(ul)};
-  grp("Erros deste tema",C.E,"Nenhum erro ativo deste tema no caderno.");grp("Questões de provas na íntegra",C.Q,"Nenhuma questão de prova importada ligada a este tema.");return w}
+  const fr=Array.isArray(keys);if(fr&&!keys.length){w.appendChild(el(`<p class="how">Ligue esta página a um ou mais temas (em Ligar a temas, abaixo) para listar os erros e as questões deles.</p>`));return w}
+  grp(fr?"Erros dos temas ligados":"Erros deste tema",C.E,fr?"Nenhum erro ativo nos temas ligados.":"Nenhum erro ativo deste tema no caderno.");grp("Questões de provas na íntegra",C.Q,fr?"Nenhuma questão de prova importada nos temas ligados.":"Nenhuma questão de prova importada ligada a este tema.");return w}
 /* edição na textarea */
 function edit(ta,k,fn){const s=ta.selectionStart,e=ta.selectionEnd,v=ta.value;const r=fn(v,s,e);
-  ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);saveNote(k,ta.value)}
+  ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);if(typeof k==="function")k(ta.value);else saveNote(k,ta.value)}
 function wrap(ta,k,a,b,ph){edit(ta,k,(v,s,e)=>{const sel=v.slice(s,e)||ph;return {v:v.slice(0,s)+a+sel+b+v.slice(e),s:s+a.length,e:s+a.length+sel.length}})}
 function prefix(ta,k,pre,numbered){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;
   let n=0;const block=v.slice(ls,le).split("\n").map(l=>(numbered?(++n)+". ":pre)+l.replace(/^(#{1,3}\s|>\s?|[-*]\s|\d+[.)]\s)/,"")).join("\n");
@@ -2786,7 +2787,7 @@ function renderNotasView(){
     const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);
     c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}`;
     c.querySelector(".ehead span:last-child").textContent=`${wordCount(notes[k])} palavras${noteAt[k]?" · "+whenLabel(noteAt[k]):""}`;
-    const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}
+    const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}if(open)c.querySelector(".efoot").before(wkBackEl({kind:"t",id:k}));
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
     ed.onclick=()=>{noteMode[k]="editar";focusKey=k;render()};
     return c};
@@ -7163,7 +7164,7 @@ function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||""
   const ol=el(`<ol class="elist"></ol>`);withN.forEach(({k,why})=>{const it=BYKEY[k],done=get(k).nread===T,open=nTodayOpen.has(k);
     const li=el(`<li class="ncard${done?" nread":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span></div><div class="mdview${open?"":" clamp"}"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini nreadb" type="button"></button></div></li>`);
     const tb=li.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);li.querySelector(".nloc").textContent=`${why} · ${it.area.code}${it.sp?" · "+it.sp:""}`;
-    li.querySelector(".mdview").innerHTML=mdC(notes[k]);{const ne=noteErrsEl(k);if(ne)li.querySelector(".mdview").after(ne)}const [tg,rb]=li.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nTodayOpen.delete(k):nTodayOpen.add(k);render()};
+    li.querySelector(".mdview").innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);{const ne=noteErrsEl(k);if(ne)li.querySelector(".mdview").after(ne)}const [tg,rb]=li.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nTodayOpen.delete(k):nTodayOpen.add(k);render()};
     rb.textContent=done?"✓ Reli":"Reli";rb.setAttribute("aria-pressed",done);rb.onclick=()=>{upd(k,s=>{if(s.nread===T)delete s.nread;else s.nread=T});if(!done)nTodayOpen.delete(k);commit()};ol.appendChild(li)});
   c.appendChild(ol);
   if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
@@ -7405,12 +7406,21 @@ function freeItem(f){const open=freeOpen.has(f.id),li=el(`<li class="ncard" id="
   ed.onclick=()=>{freeEdit={id:f.id,t:f.t,b:f.b,tags:f.tags.join(", "),ks:[...f.ks],q:""};render();setTimeout(()=>{const e=$("#frB"),ae=document.activeElement;if(e&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))e.focus()},40)};
   const armed=freeArm===f.id;dl.textContent=armed?"Toque de novo para excluir":"Excluir";if(armed)dl.classList.add("warn");dl.onclick=()=>{if(armed){freeArm=null;frDel(f.id)}else{freeArm=f.id;render()}};return li}
 function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="ffield">Título<input class="etext" id="frT" maxlength="120" placeholder="Ex.: Aula de cardiologia — IAM"></label>
-  <label class="ffield">Texto<textarea class="ntext" id="frB" maxlength="${NOTE_MAX}" placeholder="Use a mesma formatação das anotações: # título, - lista, > pegadinha, ==destaque==, **negrito**."></textarea></label>
+  <div class="ffield">Texto<div class="ntools frtools" role="toolbar" aria-label="Formatação"></div><textarea class="ntext" id="frB" aria-label="Texto" maxlength="${NOTE_MAX}" placeholder="Use a mesma formatação das anotações: # título, - lista, > pegadinha, ==destaque==, **negrito**, [[tema]]."></textarea><div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div></div>
   <label class="ffield">Etiquetas (separe por vírgula)<input class="etext" id="frTags" maxlength="120" placeholder="aula, plantão"></label>
   <div class="ffield">Ligar a temas<input class="etext" id="frQ" type="search" placeholder="Buscar tema para ligar" autocomplete="off"><div class="frks"></div><ul class="qrres frres"></ul></div>
   <div class="btns"><button class="btn primary" type="button" id="frSave">Salvar</button><button class="btn" type="button">Cancelar</button></div></div>`);
   const t=w.querySelector("#frT"),b=w.querySelector("#frB"),tg=w.querySelector("#frTags"),q=w.querySelector("#frQ");t.value=E.t;b.value=E.b;tg.value=E.tags;q.value=E.q;
-  t.oninput=()=>E.t=t.value;b.oninput=()=>E.b=b.value;tg.oninput=()=>E.tags=tg.value;q.oninput=debounced(()=>{if(freeEdit!==E)return;E.q=q.value;render()});
+  t.oninput=()=>E.t=t.value;
+  {const K=v=>{E.b=v},pop=w.querySelector(".wkpop"),tb=w.querySelector(".frtools");
+    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>prefix(b,K,"> ")],
+     ["Link para um tema ou outra página: digite [[ e escolha na lista","[[ ]]",()=>{edit(b,K,(v,s0,e0)=>({v:v.slice(0,s0)+"[["+v.slice(e0),s:s0+2,e:s0+2}));wkPopUpdate(b,K,pop)}],
+     ["Marcar uma questão ou um erro dos temas ligados","Selo",()=>{const o=w.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(b,K,()=>{const x=w.querySelector(".nbpick");if(x)x.remove();b.focus()},E.ks.filter(x=>BYKEY[x])))}]].forEach(([title,lab,fn])=>{
+      const x=el(`<button type="button" class="tool"></button>`);x.textContent=lab;x.title=title;x.setAttribute("aria-label",title);x.onmousedown=e=>e.preventDefault();x.onclick=fn;tb.appendChild(x)});
+    b.oninput=()=>{E.b=b.value;wkPopUpdate(b,K,pop)};b.onclick=()=>wkPopUpdate(b,K,pop);b.onblur=()=>setTimeout(()=>{if(document.activeElement!==b){pop.hidden=true;b._wk=null}},150);
+    b.onkeydown=e=>{if(wkPopKey(e,b,K,pop))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="b"){e.preventDefault();wrap(b,K,"**","**","texto")}
+      if(e.key==="Tab"&&!e.ctrlKey&&!e.altKey&&!e.metaKey){const s0=b.selectionStart,e0=b.selectionEnd,v=b.value,ls=v.lastIndexOf("\n",s0-1)+1,line=v.slice(ls,(v.indexOf("\n",s0)+1||v.length+1)-1);
+        if(v.slice(s0,e0).includes("\n")||/^\s*([-*\u2022]|\d+[.)]|>)(\s|$)/.test(line)){e.preventDefault();indentLines(b,K,e.shiftKey)}}}}tg.oninput=()=>E.tags=tg.value;q.oninput=debounced(()=>{if(freeEdit!==E)return;E.q=q.value;render()});
   const ks=w.querySelector(".frks");E.ks.filter(k=>BYKEY[k]).forEach(k=>{const c=el(`<button class="fchip" type="button"></button>`);c.textContent=BYKEY[k].t+" ×";c.onclick=()=>{E.ks=E.ks.filter(x=>x!==k);render()};ks.appendChild(c)});
   const n=norm((E.q||"").trim()),rs=w.querySelector(".frres");if(n.length>=2)[...ALL,...FAC_ITEMS].filter(x=>!E.ks.includes(x.key)&&norm(x.t+" "+(x.sp||"")).includes(n)).slice(0,6).forEach(x=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||""}`;li.querySelector("button").onclick=()=>{E.ks.push(x.key);E.q="";render()};rs.appendChild(li)});
   const [sv,cc]=w.querySelectorAll(".btns .btn");
@@ -7619,9 +7629,9 @@ const HELP=[
 - **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
 - **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
-- **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. No fim de cada anotação, **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.
+- **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. Funciona no tema, na aba Anotações (Editar) e no caderno livre. No fim de cada anotação (no tema, no cartão aberto da aba Anotações e na página aberta do caderno livre), **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.
 - **Tópicos que recolhem:** na leitura, cada título (##) abre e fecha pela seta, e o app lembra o que ficou fechado; **Abrir tudo/Fechar tudo** no topo. Item de lista com subitens tem seta para recolher. No editor, **Tab** e **Shift+Tab** aumentam e diminuem o recuo do item (ou das linhas selecionadas).
-- **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele; escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro. **Levar para a anotação** (no caderno de erros) já deixa o selo do erro na linha.
+- **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele (no caderno livre, os dos temas ligados à página); escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro. **Levar para a anotação** (no caderno de erros) já deixa o selo do erro na linha.
 - **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
 - **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Anotações): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
 - Modelos: **Modelo de resumo**, **Seções dos subtópicos**, **Meus erros**.

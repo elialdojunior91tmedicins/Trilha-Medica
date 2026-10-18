@@ -133,7 +133,7 @@ consultado quando há dúvida. Responda em português.
   `wkIndex` com temas da residência/FAC e páginas do caderno livre; limpa `mdCache` quando muda), clique delegado → `wkGo("t:<chave>"|"f:<id>")`; `{{e:<id>}}`/`{{q:<prova>:<i>}}` → `nbHTML`/`nbGo`
   (erro → `eOpenOne`; questão → `exRun` view "rev"). `md(src,{fold:chave})` marca títulos com `\u0001N` e `mdFold` monta `details.mdsec[data-fk][data-fi]` (fechados em `foldSt`,
   localStorage `resid-fold-v1`, evento `toggle` em captura); listas com `sub2`/`sub3` e `li.haskids` + `button.lfold`. Usado no tema (modo Ler, `#nfold-<chave>` Abrir/Fechar tudo),
-  nos cartões abertos de Anotações e no caderno livre aberto. Editor: `wkPopUpdate`/`wkPopKey`/`wkPick` (lista `.wkpop` ao digitar `[[`), `indentLines` (Tab/Shift+Tab em item de lista
+  nos cartões abertos de Anotações (com `wkBackEl`), em "Para reler hoje" aberto e no caderno livre aberto. `edit(ta,k,…)` aceita `k` = função (o caderno livre usa `v=>freeEdit.b=v`): o `freeEditor` tem a barra `.frtools` (H, B, ==, •, >, [[ ]], Selo), `.wkpop` e Tab; `nbPickEl(ta,k,close,keys)` + `nbChoices([chaves])` usam os temas ligados (`E.ks`). Editor: `wkPopUpdate`/`wkPopKey`/`wkPick` (lista `.wkpop` ao digitar `[[`), `indentLines` (Tab/Shift+Tab em item de lista
   ou seleção de várias linhas), botões `[[ ]]` e `Selo` (`nbPickEl` com `nbChoices(k)`). `wkBackEl(ref)`: "Mencionado em" (`wkBack`, `wkLinksIn`) e "Citado sem link" (`wkPlainAt`,
   nome ≥5 letras com limite de palavra, fora de `[[…]]`; `wkLinkify` usa `replaceNote`). `eToNote` acrescenta `{{e:<id>}}` à linha.
   PDF: `notesPDF(keys,free,{scope,title,raw})` = capa (nome do Perfil, data) + sumário (área › especialidade › tema, páginas) + conteúdo (área em página nova, especialidade, tema em azul)
