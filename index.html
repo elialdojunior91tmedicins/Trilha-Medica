@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=3f9b82e1">
+<link rel="stylesheet" href="site.css?v=0b67f6ee">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=3f9b82e1"></script>
-<script src="bridge.js?v=3f9b82e1"></script>
+<script src="config.js?v=0b67f6ee"></script>
+<script src="bridge.js?v=0b67f6ee"></script>
 </head>
 <body>
 <script>
@@ -416,9 +416,23 @@ html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{d
 .qextra .qsim{grid-column:1/-1}
 .qextra .qexam{grid-column:1/-1}
 .exrows,.exqs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.exrow{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--line)}.exrow:first-child{border-top:0;padding-top:4px}
-.exrt{display:flex;flex-direction:column;gap:2px;min-width:0}.exrt b{font-size:1rem;overflow-wrap:anywhere}.exrt .meta{font-size:.82rem;color:var(--muted)}.exst{font-size:.86rem;font-weight:600;color:var(--accent)}
-.exrow .btns{flex-wrap:wrap;align-items:center}.exmode{align-self:flex-start}.exmodeh{margin:-4px 0 0}
+.excards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px;align-items:start}
+.excard{display:flex;flex-direction:column;gap:10px;min-width:0;border:1px solid var(--line);border-radius:14px;padding:14px;}
+.excard[data-st="run"]{border-color:color-mix(in srgb,var(--gold) 55%,var(--line))}
+.exch{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}
+.exname{font-size:1.02rem;line-height:1.3;min-width:0;flex:1 1 auto;overflow-wrap:break-word}
+.exstat{flex:0 0 auto;white-space:nowrap;font-size:.74rem;font-weight:700;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--muted) 14%,transparent);color:var(--muted)}
+.excard[data-st="run"] .exstat{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold-ink)}
+.excard[data-st="fin"] .exstat{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.exmeta{margin:-6px 0 0;font-size:.82rem;color:var(--muted)}
+.exmain2{display:flex;flex-direction:column;gap:8px}.exmain2 .exgo{align-self:stretch;min-height:42px;font-weight:700}
+.exline{margin:0;font-size:.84rem;color:var(--muted)}
+.exprog{display:flex;flex-direction:column;gap:5px}.exbar{display:block;height:6px;border-radius:99px;background:color-mix(in srgb,var(--muted) 18%,transparent);overflow:hidden}.exbar i{display:block;height:100%;background:var(--accent);border-radius:inherit}
+.exmode{align-self:stretch;display:flex}.exmode button{flex:1 1 0}.exmodeh{margin:-2px 0 0;font-size:.8rem}
+.exsec{display:flex;flex-wrap:wrap;gap:4px 14px;border-top:1px solid var(--line);padding-top:8px}
+.exsb{background:none;border:0;padding:4px 0;font:inherit;font-size:.84rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--muted) 40%,transparent);text-underline-offset:3px}
+.exsb:hover,.exsb[aria-expanded="true"]{color:var(--ink)}.exsb.exdelb{margin-left:auto}.exsb.warn{color:var(--bad);text-decoration-color:currentColor}
+.excard>.exkey,.excard>.exedit{border-top:1px dashed var(--line);padding-top:10px}
 .exfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,9rem) 5.5rem;gap:8px}
 html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}html[data-layout="phone"] .exfields .exname{grid-column:1/-1}
 .exkey{display:flex;flex-direction:column;gap:6px}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
@@ -432,7 +446,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .exalts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:.86rem}.exalts li{display:flex;gap:6px;overflow-wrap:anywhere}.exalts li b{flex:none}.exalts li.right{color:var(--l3);font-weight:700}
 .exctl{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}.exsel select{min-width:6rem}.extema{text-align:left;overflow-wrap:anywhere}
 .extpick{display:flex;flex-direction:column;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
-.exedit,.exrow>.exkey{border-top:1px dashed var(--line);padding-top:10px}
+.exedit{border-top:1px dashed var(--line);padding-top:10px}
 .explay{display:flex;flex-direction:column;gap:12px}.explay .btns{flex-wrap:wrap;align-items:center}
 .alt.pick{border-color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent);background:var(--accent-soft)}
 .exmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.6rem,1fr));gap:4px;padding-top:8px}
@@ -699,6 +713,7 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .eform label{font-size:.85rem;font-weight:600}
 .erow2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .elist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.esum{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}.esum .how{margin:0;font-size:.8rem}.eform .opt{font-weight:400;color:var(--muted)}
 .ecard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--tc,var(--line));border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
 .ecard[data-t="conhecimento"]{--tc:var(--due)}
 .ecard[data-t="interpretacao"]{--tc:var(--l1)}
@@ -865,7 +880,10 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .alt.right{border-color:var(--l3);background:var(--accent-soft)}
 .alt.wrong{border-color:var(--due);background:var(--due-soft)}
 .altwhy{margin:-2px 0 2px calc(1.6rem + 19px);font-size:.84rem;line-height:1.4;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
-.altwhy.mine{color:var(--ink);border-left:2px solid var(--due);padding-left:8px;margin-left:calc(1.6rem + 9px)}
+.altwhy.mine{color:var(--ink);border-left:2px solid var(--due);padding-left:8px;margin-left:calc(1.6rem + 9px)}.altwhy.mine b{display:block;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--due);margin-bottom:1px}
+.qexpl{display:flex;flex-direction:column;gap:10px;margin-top:4px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--good) 7%,transparent);border:1px solid color-mix(in srgb,var(--good) 22%,var(--line))}
+.qgab{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}.qgab span{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--good)}.qgab b{font-size:.95rem;overflow-wrap:anywhere}
+.qexpl .qexp{margin:0}.qexpl .pnote{margin:0}
 .verdict{font-weight:700;margin:0}
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -993,6 +1011,8 @@ html[data-layout="phone"] .appnav .ecount{position:absolute;margin:0;min-width:1
 html[data-layout="phone"] .appnav .ecount:empty,html[data-layout="tablet"] .appnav .ecount:empty,html[data-layout="desktop"] .appnav .ecount:empty{display:none}
 html[data-layout="phone"] .appnav #ncount,html[data-layout="tablet"] .appnav #ncount{background:var(--muted)}
 html[data-layout="phone"] body.typing .appnav{display:none}
+/* iPhone (app instalado): depois do teclado a área visível fica deslocada e os elementos fixos embaixo "pulam"; --vvy (vvFix) os prende ao que se vê */
+html[data-layout="phone"] .appnav,.bulkbar,.dqbar,.trtoast,.fopill{translate:0 var(--vvy,0px)}
 
 /* --- TABLET: faixa de navegação à esquerda --- */
 html[data-layout="tablet"] body>.wrap{max-width:1180px;display:grid;grid-template-columns:84px minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:20px;row-gap:20px;align-items:start}
@@ -2825,11 +2845,29 @@ function altShuffle(q){const L=q.alternativas;if(window.__noShuffle||L.length<2|
   const right=L.find(a=>a.letra===q.correta),mix=shuffle(L),AB="ABCDEFGH";
   q.alternativas=mix.map((a,i)=>({...a,letra:AB[i]}));q.correta=AB[mix.indexOf(right)];return q}
 /* alternativas de uma questão; depois de respondida, cada errada mostra o "porque" (questões antigas não têm) */
+/* comentário organizado: separa "Alternativa X — por que…" do texto e leva para baixo de cada alternativa (sem mudar o que está salvo) */
+const CM_MARK=/(^|\n|[.;!?]\s+)\s*(?:[-•*]\s*)?(?:(?:[Aa]lternativa|[Ll]etra|[Oo]p[çc][ãa]o)\s*\(?([A-H])\)?(?![A-Za-zÀ-ú])|\(([A-H])\)|([A-H])\))\s*(?:[—–:-]\s*|,\s*)?/g;
+function cmParse(txt,letters){const t=String(txt||"");if(!t)return null;const M=[];let m;CM_MARK.lastIndex=0;
+  while((m=CM_MARK.exec(t))){const L=m[2]||m[3]||m[4];if(letters.includes(L))M.push({L,at:m.index+m[1].length,end:m.index+m[0].length})}
+  if(new Set(M.map(x=>x.L)).size<2)return null;
+  return {intro:t.slice(0,M[0].at).trim(),segs:M.map((x,i)=>({L:x.L,t:t.slice(x.end,i+1<M.length?M[i+1].at:t.length).trim()}))}}
+function cmClean(t){return t.replace(/^(?:(?:est[áa]|[ée])\s+)?(?:(?:in)?corret[ao]|errad[ao]|falsa|verdadeira)\b\s*(?:[.:;,—–-]\s*)?/i,"").replace(/^(?:porque|pois)\s+/i,"").trim().replace(/^./,c=>c.toUpperCase())}
+function qSplit(q){if(!q||!q.comentario||!Array.isArray(q.alternativas))return q;const P=cmParse(q.comentario,q.alternativas.map(a=>a.letra));if(!P)return q;
+  const why={},main=[P.intro];P.segs.forEach(x=>{if(x.L===q.correta||!x.t)main.push(x.t&&cmClean(x.t));else why[x.L]=(why[x.L]?why[x.L]+" ":"")+cmClean(x.t)});
+  if(!Object.keys(why).length)return q;
+  return {...q,comentario:main.filter(Boolean).join("\n\n"),alternativas:q.alternativas.map(a=>a.porque||!why[a.letra]?a:{...a,porque:why[a.letra]})}}
+/* explicação: Gabarito no topo, por que a certa está certa, conceito-chave (o porquê das erradas fica sob cada alternativa) */
+function qExplEl(q,o){o=o||{};const f=document.createDocumentFragment(),C=String(q.correta||"").replace(/[^A-Z0-9]/g,""),r=q.alternativas.find(a=>a.letra===q.correta);
+  if(!C)return f;const box=el(`<div class="qexpl"><p class="qgab"><span>Gabarito</span><b></b></p></div>`);box.querySelector("b").textContent=r?`${C}) ${r.texto}`:C;
+  if(o.note)box.appendChild(el(`<p class="pnote">${o.note}</p>`));
+  if(q.comentario){const p=el(`<p class="qexp qwhy"><b></b><span></span></p>`);p.querySelector("b").textContent=`Por que ${C} está certa`;p.querySelector("span").textContent=q.comentario;box.appendChild(p)}
+  if(q.conceito){const p=el(`<p class="qexp qck"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;box.appendChild(p)}
+  f.appendChild(box);return f}
 function altsEl(q,mine,onPick){const box=el(`<div class="alts"></div>`);
   q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
     if(mine){b.disabled=true;if(a.letra===q.correta)b.classList.add("right");else if(a.letra===mine)b.classList.add("wrong")}else b.onclick=()=>onPick(a.letra);
     box.appendChild(b);
-    if(mine&&a.porque&&a.letra!==q.correta){const w=el(`<p class="altwhy${a.letra===mine?" mine":""}"></p>`);w.textContent=a.porque;box.appendChild(w)}});
+    if(mine&&a.porque&&a.letra!==q.correta){const w=el(`<p class="altwhy${a.letra===mine?" mine":""}">${a.letra===mine?"<b>Por que a sua não serve</b>":""}<span></span></p>`);w.querySelector("span").textContent=a.porque;box.appendChild(w)}});
   return box}
 const GEN_ERR={rate_limited:"Limite de uso do Claude atingido no momento. Tente de novo mais tarde.",
   session_expired:"Sua sessão expirou. Entre de novo no Claude e tente outra vez.",
@@ -2927,11 +2965,10 @@ function renderGen(it){
       const mine=g.ans[qi];
       const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}${q.mat?` · <span class="qmat">do seu material</span>`:""}</span><p class="qstem"></p></li>`);
       c.querySelector(".qstem").textContent=q.enunciado;
-      c.appendChild(altsEl(q,mine,l=>answer(it,qi,l)));
+      c.appendChild(altsEl(qSplit(q),mine,l=>answer(it,qi,l)));
       if(mine){const ok=mine===q.correta;
         c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+q.correta.replace(/[^A-Z0-9]/g,"")+"."}</p>`));
-        if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
-        if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
+        c.appendChild(qExplEl(qSplit(q)));
         if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
         const acts=el(`<div class="btns"></div>`);
         if(!ok){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>toCaderno(it,qi);acts.appendChild(b)}
@@ -4373,14 +4410,14 @@ function appendGrouped(list,items,keyOf,render1,unit){let cur=null;
 const byNewest=(a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.id<b.id?1:-1);
 function ecardEl(e,withTopic){
   const it=BYKEY[e.k];
-  const c=el(`<li class="ecard" data-eid="${e.id}" data-t="${ETYPES[e.t]?e.t:"conhecimento"}"><div class="ehead"></div><p class="ebody"><b>Errei</b><span class="w"></span></p><p class="ebody"><b>Correto</b><span class="r"></span></p><div class="efoot"><span class="rv"></span><span class="sp"></span></div></li>`);
+  const c=el(`<li class="ecard" data-eid="${e.id}" data-t="${ETYPES[e.t]?e.t:"conhecimento"}"><div class="ehead"></div><p class="ebody"><b>Errei</b><span class="w"></span></p><p class="ebody epista" hidden><b>Pista do caso</b><span class="p"></span></p><p class="ebody"><b>Correto</b><span class="r"></span></p><div class="efoot"><span class="rv"></span><span class="sp"></span></div></li>`);
   const h=c.querySelector(".ehead");
   if(withTopic&&it){const tb=el(`<button class="etopic" type="button"></button>`);tb.textContent=it.t;tb.onclick=()=>openTopic(e.k);h.appendChild(tb);h.appendChild(el(`<span>${it.area.code}</span>`))}
   h.appendChild(el(`<span class="etype">${ETYPES[e.t]||""}</span>`));h.appendChild(el(`<span>${br(e.d)}</span>`));
   if(e.s){const s=el(`<span></span>`);s.textContent=e.s;h.appendChild(s)}
   if(e.c){const s=el(`<span class="ecause"></span>`);s.textContent=e.c;h.appendChild(s)}
   if(e.arch)c.classList.add("arch");
-  c.querySelector(".w").textContent=e.w;c.querySelector(".r").textContent=e.r;
+  c.querySelector(".w").textContent=e.w;c.querySelector(".r").textContent=e.r;if(e.p){c.querySelector(".p").textContent=e.p;c.querySelector(".epista").hidden=false}
   if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e);c.querySelector(".rv").textContent=`${du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
   const rb=eCardBtn(e),nb=eNoteBtn(e);
@@ -4407,35 +4444,81 @@ function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
   if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
   else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
   putErr(e)}
-function eNew(k,w,r,t,s,c){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
-  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;errors.push(e);putErr(e);return e}
+function eNew(k,w,r,t,s,c,p){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
+  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);errors.push(e);putErr(e);return e}
 const eOneLine=s=>String(s||"").replace(/\s*\n+\s*/g," ").trim();
 /* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
-function qDraft(q,mine,src){const m=q.alternativas.find(a=>a.letra===mine),r=q.alternativas.find(a=>a.letra===q.correta),stem=q.enunciado.replace(/\s+/g," ");
-  return {w:`${m?`Marquei ${m.letra}) ${m.texto}\n`:""}Caso: ${stem.length>280?stem.slice(0,280)+"…":stem}`,r:`${q.conceito?q.conceito+"\n":""}${r?`Correta: ${r.letra}) ${r.texto}`:""}${m&&m.porque&&m.letra!==q.correta?`\nPor que a minha não serve: ${m.porque}`:""}`.trim(),t:"conhecimento",s:src||""}}
+const CL_STOP=new Set("para pelo pela pelos pelas como mais menos sobre entre quando qual quais deve devem pode podem esta este essa esse isso isto está estão com sem que uma umas uns dos das nos nas aos foi era são ser ter tem tinha após antes desde paciente anos idade sexo masculino feminino feminina masculina apresenta apresentando refere queixa história quadro caso seguinte seguintes alternativa correta conduta diagnóstico provável mais adequada assinale".split(" "));
+const clWords=t=>new Set(norm(String(t||"")).split(/[^a-z0-9]+/).filter(w=>w.length>=4&&!CL_STOP.has(w)));
+const clCut=(t,n)=>{t=String(t||"").replace(/\s+/g," ").trim().replace(/[.;:]+$/,"");if(t.length<=n)return t;const c=t.slice(0,n),i=c.lastIndexOf(" ");return (i>n*.6?c.slice(0,i):c).replace(/[,;:]$/,"")+"…"};
+const clSents=t=>String(t||"").replace(/\s+/g," ").trim().replace(/([.!?])\s+(?=[A-ZÀ-Ú0-9"(])/g,"$1\u0001").split("\u0001").map(x=>x.trim()).filter(Boolean);
+/* pista do caso: a frase do enunciado que mais aponta para a resposta certa (palavras da correta/comentário, números e exames) */
+function qClue(q){const S=clSents(q.enunciado);if(!S.length)return "";const isAsk=x=>/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x);
+  let C=S.filter(x=>!isAsk(x));if(!C.length)C=S;if(C.length===1)return clCut(C[0],220);
+  const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito].join(" ")),W=[...q.alternativas.filter(a=>a.letra!==q.correta)].reduce((m,a)=>{clWords(a.texto).forEach(w=>m.add(w));return m},new Set());
+  const sc=C.map((x,i)=>{const ws=clWords(x);let v=0;ws.forEach(w=>{if(K.has(w))v+=W.has(w)?0.5:2});
+    if(/\d/.test(x))v+=0.8;if(/\b(exame|mostra|revela|evidencia|laborat|hemograma|tomografia|radiografia|ultrass|bi[óo]psia|ecg|eletrocardio|resson|sorologia|cultura|gasometria|achado|ausculta|palpa)/i.test(x))v+=1;
+    if(i===0&&ws.size<5)v-=1;return {x,v,i}}).sort((a,b)=>b.v-a.v||a.i-b.i);
+  return clCut(sc[0].x,220)}
+/* rascunho a partir de uma questão respondida, montado pelo app (sem o Claude) */
+function qDraft(q,mine,src){const Q=qSplit(q),m=Q.alternativas.find(a=>a.letra===mine),r=Q.alternativas.find(a=>a.letra===Q.correta);
+  const w=m&&r?`Marquei ${clCut(m.texto,90)}; a certa era ${clCut(r.texto,90)}`:r?`A certa era ${clCut(r.texto,110)}`:"";
+  const why=clSents(Q.comentario).slice(0,2).join(" "),parts=[];
+  if(Q.conceito)parts.push(Q.conceito.trim());
+  if(why&&!(Q.conceito&&norm(why).includes(norm(Q.conceito).slice(0,40))))parts.push(clCut(why,320)+(why.length>320?"":"."));
+  if(!parts.length&&r)parts.push(`Correta: ${r.texto}`);
+  if(m&&m.porque&&m.letra!==Q.correta){const pq=clCut(m.porque,240)+".",mt=norm(m.texto).slice(0,18);parts.push(mt&&norm(pq).startsWith(mt)?`Por que não a minha: ${pq}`:`Por que não ${clCut(m.texto,60)}: ${pq}`)}
+  return {w,p:qClue(Q),r:parts.join("\n").replace(/\.\.$/,".").trim(),t:"conhecimento",s:src||"",q:{e:Q.enunciado,m:m?m.texto:"",c:r?r.texto:"",cm:Q.comentario,co:Q.conceito||"",pq:m&&m.porque||""}}}
+/* "Resumir com o Claude" (opcional): reescreve o rascunho curto, com a pista e o conceito */
+function eSumPrompt(D){const x=D.q||{};return `Você ajuda um estudante de medicina a montar o caderno de erros. A partir da questão abaixo, escreva em português do Brasil, curto e direto:
+- "errei": 1 frase, no formato "Marquei <o que marquei>; a certa era <a certa>" (só o essencial de cada alternativa).
+- "pista": a frase ou o dado do enunciado que deveria ter levado à resposta certa (copie do enunciado, até 200 caracteres).
+- "conceito": 1 a 3 frases: a regra que faz a certa estar certa e por que a marcada não serve neste caso. Nada de inventar dado que não está na questão ou no comentário.
+Responda só com JSON: {"errei":"...","pista":"...","conceito":"..."}
+
+ENUNCIADO: ${String(x.e||"").slice(0,3000)}
+MARQUEI: ${x.m||"(não respondi)"}
+CORRETA: ${x.c||""}
+${x.cm?`COMENTÁRIO: ${String(x.cm).slice(0,2500)}\n`:""}${x.co?`CONCEITO-CHAVE: ${x.co}\n`:""}${x.pq?`POR QUE A MARCADA ESTÁ ERRADA: ${x.pq}\n`:""}`}
+async function eSumRun(D){if(!sampleFn||!D.q)return;D.sum={st:"loading",ctl:new AbortController()};render();const S=D.sum;
+  try{const r=await sampleFn.json(eSumPrompt(D),{signal:S.ctl.signal,cache:false,title:"Resumir o erro",hint:"Cole aqui a resposta do Claude (o JSON com errei, pista e conceito)."});if(D.sum!==S)return;
+    const o=r&&typeof r==="object"?r:{},t=v=>typeof v==="string"?v.trim():"";
+    if(!t(o.errei)&&!t(o.conceito)){S.st="error";S.msg="O Claude não devolveu o resumo num formato que o app reconheça. Tente de novo."}
+    else{S.prev={w:D.w,p:D.p,r:D.r};if(t(o.errei))D.w=t(o.errei).slice(0,2000);if(t(o.pista))D.p=t(o.pista).slice(0,600);if(t(o.conceito))D.r=t(o.conceito).slice(0,2000);S.st="done"}}
+  catch(e){if(D.sum!==S)return;const code=e&&e.code;if(code==="cancelled"){delete D.sum;render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível resumir agora.")}
+  render()}
 /* formulário de erro reaproveitável (registro na aba, simulado, refazer) */
-function errFormEl(D,pre,onSave,ids){const I=ids||{w:pre+"w",r:pre+"r",t:pre+"t",s:pre+"s",c:pre+"c"};
+function errFormEl(D,pre,onSave,ids){const I={w:pre+"w",r:pre+"r",t:pre+"t",s:pre+"s",c:pre+"c",p:pre+"p",...(ids||{})};
   const f=el(`<form class="eform"><label for="${I.w}">O que eu errei</label><textarea id="${I.w}" maxlength="2000" rows="3" placeholder="Ex.: marquei betabloqueador na cocaína"></textarea>
+    <label for="${I.p}">Pista do caso <span class="opt">(opcional)</span></label><textarea id="${I.p}" maxlength="600" rows="2" placeholder="O dado do enunciado que deveria ter levado à resposta. Ex.: massa mediastinal em adolescente com hiperleucocitose"></textarea>
     <label for="${I.r}">Conceito correto / o que lembrar</label><textarea id="${I.r}" maxlength="2000" rows="3" placeholder="Ex.: na dor torácica por cocaína, evitar betabloqueador; usar benzodiazepínico e nitrato"></textarea>
     <div class="erow2"><div class="eform"><label for="${I.t}">Tipo de erro</label><select id="${I.t}">${Object.entries(ETYPES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></div>
     <div class="eform"><label for="${I.c}">Por que errei (opcional)</label><select id="${I.c}"></select></div></div>
     <div class="eform"><label for="${I.s}">Fonte (opcional)</label><input class="etext" id="${I.s}" maxlength="120" placeholder="Ex.: ENARE 2024, Q35"></div>
     <button class="btn primary" type="submit" style="align-self:flex-start">Salvar no caderno</button></form>`);
-  const fw=f.querySelector(`[id="${I.w}"]`),fr=f.querySelector(`[id="${I.r}"]`),ft=f.querySelector(`[id="${I.t}"]`),fc=f.querySelector(`[id="${I.c}"]`),fs=f.querySelector(`[id="${I.s}"]`);
+  const fw=f.querySelector(`[id="${I.w}"]`),fr=f.querySelector(`[id="${I.r}"]`),ft=f.querySelector(`[id="${I.t}"]`),fc=f.querySelector(`[id="${I.c}"]`),fs=f.querySelector(`[id="${I.s}"]`),fp=f.querySelector(`[id="${I.p}"]`);
   const fillC=()=>{fc.innerHTML="";[["","—"],...(ECAUSES[ft.value]||[]).map(c=>[c,c])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;fc.appendChild(o)});fc.value=(ECAUSES[ft.value]||[]).includes(D.c)?D.c:"";D.c=fc.value};
-  fw.value=D.w||"";fr.value=D.r||"";ft.value=ETYPES[D.t]?D.t:"conhecimento";fs.value=D.s||"";fillC();
+  fw.value=D.w||"";fr.value=D.r||"";ft.value=ETYPES[D.t]?D.t:"conhecimento";fs.value=D.s||"";fp.value=D.p||"";fp.oninput=()=>D.p=fp.value;fillC();
+  {const fit=t=>{if(!t.isConnected)return;t.style.height="auto";t.style.height=Math.min(t.scrollHeight+2,320)+"px"};[fw,fp,fr].forEach(t=>{t.addEventListener("input",()=>fit(t));requestAnimationFrame(()=>fit(t))})}
   fw.oninput=()=>D.w=fw.value;fr.oninput=()=>D.r=fr.value;ft.onchange=()=>{D.t=ft.value;fillC()};fc.onchange=()=>D.c=fc.value;fs.oninput=()=>D.s=fs.value;
   if(D.msg){const p=el(`<p class="err"></p>`);p.textContent=D.msg;f.appendChild(p)}
   f.addEventListener("submit",ev=>{ev.preventDefault();
     if(!(D.w||"").trim()||!(D.r||"").trim()){D.msg="Preencha o que você errou e o conceito correto para salvar.";render();return}
-    D.msg="";onSave(eNew(D.k,D.w,D.r,ft.value,D.s,fc.value))});
+    D.msg="";onSave(eNew(D.k,D.w,D.r,ft.value,D.s,fc.value,D.p))});
   return f}
 /* "Levar para o caderno" dentro do simulado e do refazer */
 function eCadEl(H,idx,k,q,mine,src){const st=H[idx],w=el(`<div class="ecad"></div>`);
   if(st&&st.saved){w.appendChild(el(`<p class="pnote" role="status">No caderno de erros. Ele volta para você revisar amanhã.</p>`));return w}
   if(!st){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>{H[idx]={...qDraft(q,mine,src),k};render();setTimeout(()=>{const f=$("#ecq-r");if(f)f.focus()},30)};w.classList.add("bare");w.appendChild(b);return w}
   w.appendChild(el(`<span class="glabel">Levar para o caderno de erros</span>`));
-  w.appendChild(el(`<p class="how">Já veio preenchido com a questão. Reescreva o conceito correto com as suas palavras: é isso que você vai revisar.</p>`));
+  w.appendChild(el(`<p class="how">O app já resumiu a questão. Ajuste com as suas palavras: é isso que você vai revisar.</p>`));
+  if(st.q&&!sampleOff){const S=st.sum,bx=el(`<div class="esum"></div>`);
+    if(S&&S.st==="loading"){bx.appendChild(el(`<p class="gstatus">Resumindo com o Claude…</p>`));const x=el(`<button class="link" type="button">Cancelar</button>`);x.onclick=()=>S.ctl.abort();bx.appendChild(x)}
+    else{const b=el(`<button class="btn" type="button" id="ecqSum">✦ Resumir com o Claude</button>`);b.disabled=!sampleFn;b.onclick=()=>eSumRun(st);bx.appendChild(b);
+      if(S&&S.st==="done"){bx.appendChild(el(`<span class="pnote" role="status">Resumido pelo Claude.</span>`));const u=el(`<button class="link" type="button" id="ecqSumUndo">Voltar ao do app</button>`);u.onclick=()=>{Object.assign(st,S.prev);delete st.sum;render()};bx.appendChild(u)}
+      if(S&&S.st==="error"){const e=el(`<span class="err"></span>`);e.textContent=S.msg;bx.appendChild(e)}
+      else if(!S)bx.appendChild(el(`<span class="how">Opcional. ${window.__site?"No site, você copia o pedido, cola no Claude e traz a resposta.":"Reescreve mais curto, com a pista e o conceito."}</span>`))}
+    w.appendChild(bx)}
   w.appendChild(errFormEl(st,"ecq-",()=>{H[idx]={saved:true};render()}));
   const c=el(`<button class="link" type="button">Cancelar</button>`);c.onclick=()=>{delete H[idx];render()};w.appendChild(c);return w}
 /* ----- registro rápido na própria aba ----- */
@@ -4495,10 +4578,10 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
     if(!e||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: você já sabe ${R.ok} de ${R.done}.</p>`));
       c.appendChild(el(`<p class="how">Os que você ainda erraria voltam amanhã; os que já sabe voltam em 3, 7, 15 e 30 dias.${R.done-R.ok?" Se o mesmo erro voltar várias vezes, ele aparece em Erros que se repetem.":""}</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{erRun=null;render()};c.appendChild(b);return c}
-    const it=BYKEY[e.k],card=el(`<div class="fcard erfc${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="ebody"><b>Você errou</b><span class="w"></span></p><p class="how ehint">Antes de abrir: qual é o certo? Responda de cabeça.</p><div class="fca"><p class="ebody"><b>Correto</b><span class="r"></span></p></div></div>`);
+    const it=BYKEY[e.k],card=el(`<div class="fcard erfc${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="ebody"><b>Você errou</b><span class="w"></span></p><p class="ebody epista" hidden><b>Pista do caso</b><span class="p"></span></p><p class="how ehint">Antes de abrir: qual é o certo? Responda de cabeça.</p><div class="fca"><p class="ebody"><b>Correto</b><span class="r"></span></p></div></div>`);
     card.querySelector(".qn").textContent=`ERRO ${R.i+1} DE ${R.ids.length} · ${(ETYPES[e.t]||"").toUpperCase()}${e.s?" · "+e.s.toUpperCase():""}`;
     const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(e.k);
-    card.querySelector(".w").textContent=e.w;card.querySelector(".r").textContent=e.r;if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
+    card.querySelector(".w").textContent=e.w;card.querySelector(".r").textContent=e.r;if(e.p){card.querySelector(".p").textContent=e.p;card.querySelector(".epista").hidden=false}if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
     const a=el(`<div class="btns"></div>`);
     if(!R.show){const s=el(`<button class="btn primary" type="button" id="erShow">Mostrar o correto</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
     else{const g=el(`<button class="btn primary" type="button" id="erGood">Agora sei</button>`),b=el(`<button class="btn" type="button" id="erBad">Ainda erraria</button>`);
@@ -4630,7 +4713,7 @@ function errosPDF(list){const P=new MiniPDF("Caderno de erros"),M=46,CW=P.W-2*M;
     if(g!==lastG){need(70);y+=8;P.text(M,y+13,g,{size:13,bold:true,color:C.acc});y+=19;P.line(M,y,M+CW,y,C.line);y+=8;lastG=g;lastK=""}
     if(e.k!==lastK){need(56);para(it.t,{size:11.5,bold:true,after:3});lastK=e.k}
     need(48);para([ETYPES[e.t]||"",e.c,br(e.d),e.s].filter(Boolean).join(" · "),{size:8.2,color:TC[e.t]||C.mut,indent:10,after:1});
-    para("Errei: "+eOneLine(e.w),{size:9.4,indent:10,color:C.mut,after:1});para("Correto: "+eOneLine(e.r),{size:9.6,indent:10,bold:true,bar:TC[e.t]||C.acc,after:9})});
+    para("Errei: "+eOneLine(e.w),{size:9.4,indent:10,color:C.mut,after:1});if(e.p)para("Pista: "+eOneLine(e.p),{size:9.2,indent:10,color:C.mut,after:1});para("Correto: "+eOneLine(e.r),{size:9.6,indent:10,bold:true,bar:TC[e.t]||C.acc,after:9})});
   const n=P.pages.length;P.pages.forEach((pg,i)=>{P.cur=pg;P.line(M,P.H-M+4,M+CW,P.H-M+4,C.line,0.4);P.text(M,P.H-M+16,"Nexus - Trilha Médica · Caderno de erros",{size:7.6,color:C.mut});const t=`página ${i+1} de ${n}`;P.text(M+CW-pdfW(t,7.6,false),P.H-M+16,t,{size:7.6,color:C.mut})});
   return P.output()}
 async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Nenhum erro com esses filtros para exportar.";render();return}eMsg="Gerando o PDF…";render();
@@ -4639,7 +4722,7 @@ async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Ne
 /* ----- virar cartão e levar para a anotação ----- */
 function eCardBtn(e){const has=e.cd&&cards.some(x=>x.id===e.cd),b=el(`<button class="mini" type="button"></button>`);b.textContent=has?"Cartão criado ✓":"Virar cartão";b.disabled=has;
   b.title="Cria um cartão de memorização: na frente o que você errou, no verso o correto";
-  b.onclick=()=>{const x=cdAdd(e.k,`${e.w}\n\nQual é o certo?`,e.r,"eu");e.cd=x.id;putErr(e);render()};return b}
+  b.onclick=()=>{const x=cdAdd(e.k,`${e.w}${e.p?`\nPista: ${e.p}`:""}\n\nQual é o certo?`,e.r,"eu");e.cd=x.id;putErr(e);render()};return b}
 function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
   if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
   else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
@@ -4695,7 +4778,7 @@ function renderErros(){
   renderEMore();const ER=eRepKeys();
   const vis=errors.filter(e=>{const it=BYKEY[e.k];if(!it)return false;if(!eExtraOk(e,ER))return false;
     if(eTopicKey&&e.k!==eTopicKey)return false;if(eArea!=="all"&&it.area.code!==eArea)return false;if(eArea!=="all"&&eSp!=="all"&&it.sp!==eSp)return false;if(eType!=="all"&&e.t!==eType)return false;
-    return !eQuery||norm(it.t+" "+e.w+" "+e.r+" "+(e.s||"")+" "+(e.c||"")).includes(eQuery)}).sort(byNewest);
+    return !eQuery||norm(it.t+" "+e.w+" "+(e.p||"")+" "+e.r+" "+(e.s||"")+" "+(e.c||"")).includes(eQuery)}).sort(byNewest);
   eVis=vis;{const r=$("#eRes");if(r)r.textContent=`${vis.length} ${vis.length===1?"erro":"erros"}${eFlags.has("arch")?" arquivados":""}`}
   if(errors.length&&!vis.length){const li=el(`<li class="empty" style="padding:0"></li>`);
     const nArch=!eFlags.has("arch")&&eTopicKey?errors.filter(e=>e.k===eTopicKey&&e.arch).length:0;
@@ -4970,7 +5053,7 @@ const ankiClean=s=>String(s||"").replace(/\t/g," ").replace(/\r?\n/g,"<br>");
 function ankiText(rows){return "#separator:tab\n#html:true\n#tags column:3\n"+rows.map(r=>`${ankiClean(r[0])}\t${ankiClean(r[1])}\t${r[2]}`).join("\n")}
 const ankiTag=k=>{const it=BYKEY[k];if(!it)return "trilha";return ["trilha",(it.own?"FAC":it.area.code),(it.sp||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_")].filter(Boolean).join(" ")};
 async function ankiSave(kind){if(!downloadsFn)return null;
-  const rows=kind==="cards"?cards.filter(x=>BYKEY[x.k]).map(x=>[x.q,`${x.a}<br><small>${BYKEY[x.k].t}</small>`,ankiTag(x.k)]):errors.filter(e=>BYKEY[e.k]&&!e.arch).map(e=>[`${e.w}<br><br><i>Qual é o certo?</i>`,`${e.r}<br><small>${BYKEY[e.k].t}</small>`,ankiTag(e.k)+" erro"]);
+  const rows=kind==="cards"?cards.filter(x=>BYKEY[x.k]).map(x=>[x.q,`${x.a}<br><small>${BYKEY[x.k].t}</small>`,ankiTag(x.k)]):errors.filter(e=>BYKEY[e.k]&&!e.arch).map(e=>[`${e.w}${e.p?`<br><small>Pista: ${e.p}</small>`:""}<br><br><i>Qual é o certo?</i>`,`${e.r}<br><small>${BYKEY[e.k].t}</small>`,ankiTag(e.k)+" erro"]);
   if(!rows.length)return "Nada para exportar ainda.";
   try{await downloadsFn.save({filename:kind==="cards"?"trilha-cartoes-anki.txt":"trilha-erros-anki.txt",data:new Blob([ankiText(rows)],{type:"text/plain"})});return `${rows.length} ${kind==="cards"?(rows.length===1?"cartão exportado":"cartões exportados"):(rows.length===1?"erro exportado":"erros exportados")}. No Anki: Arquivo › Importar e escolha o arquivo.`}
   catch(e){return e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível exportar agora."}}
@@ -5852,10 +5935,9 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
   const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p></div>`);
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
   c.querySelector(".qstem").textContent=q.enunciado;
-  c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()}));
+  c.appendChild(altsEl(qSplit(q),R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()}));
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
-    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;c.appendChild(p)}
-    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;c.appendChild(p)}
+    c.appendChild(qExplEl(qSplit(q)));
     if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
     if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"))}
   w.appendChild(c);
@@ -6099,10 +6181,9 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   const it=BYKEY[q.k],mine=S.ans[S.i],card=el(`<div class="qcard"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p></div>`);
   card.querySelector(".qn").textContent=`QUESTÃO ${S.i+1} DE ${S.items.length}`;card.querySelector(".simtopic").textContent=mine&&it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Tema revelado depois de responder";
   card.querySelector(".qstem").textContent=q.enunciado;
-  card.appendChild(altsEl(q,mine,l=>{simAnswer(l);render()}));
+  card.appendChild(altsEl(qSplit(q),mine,l=>{simAnswer(l);render()}));
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
-    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
-    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
+    card.appendChild(qExplEl(qSplit(q)));
     if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
     if(!ok)card.appendChild(q.err?el(`<p class="pnote">Este ponto já está no seu caderno de erros: ele volta para revisão amanhã.</p>`):eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
@@ -6274,7 +6355,7 @@ O que fazer
 3. ${kn?`Resposta: use o GABARITO OFICIAL abaixo e marque "gabarito":"banca". Questão anulada no gabarito: "anulada":true. Se o número não estiver no gabarito, resolva você mesmo e marque "gabarito":"claude".`:rawKey?`Resposta: use o GABARITO OFICIAL (texto extraído) abaixo e marque "gabarito":"banca". Questão anulada: "anulada":true. Se não achar o número no gabarito, resolva você mesmo e marque "gabarito":"claude".`:`A prova veio sem gabarito: resolva cada questão com cuidado, pelas diretrizes brasileiras atuais, e marque "gabarito":"claude". Se tiver dúvida, escolha a mais provável assim mesmo.`}
 4. "imagem": true quando a questão depende de figura, gráfico, tabela ou exame de imagem que não dá para ler aqui (ECG, radiografia, foto de lesão). Não invente o que a imagem mostra.
 5. "tema": a chave (ex.: "CM-34") do tema da lista TEMAS que melhor corresponde ao assunto principal da questão; "" se nenhum servir.
-6. Explicações para estudo, em português: "comentario" (3 a 6 frases: por que a resposta está certa e o raciocínio para chegar nela), "conceito" (1 frase com a regra para guardar) e, em cada alternativa, "porque" (1 ou 2 frases dizendo por que está errada; "" na correta). Se a prova trouxer comentário da banca, aproveite.${kc?" Abaixo, em GABARITO COMENTADO, estão as justificativas da própria prova: use-as como base do comentário e do porquê de cada alternativa (reescreva com clareza, sem inventar o que não está lá).":""}
+6. Explicações para estudo, em português: "comentario" (3 a 6 frases: só por que a resposta está certa e o raciocínio para chegar nela, sem comentar as outras alternativas), "conceito" (1 frase com a regra para guardar) e, em cada alternativa errada, "porque" (1 ou 2 frases dizendo por que ela está errada ou em que caso ela seria a resposta; "" na correta). O porquê de cada alternativa vai SEMPRE no "porque" dela, nunca dentro do "comentario". Se a prova trouxer comentário da banca, aproveite.${kc?" Abaixo, em GABARITO COMENTADO, estão as justificativas da própria prova: use-as como base do comentário e do porquê de cada alternativa (reescreva com clareza, sem inventar o que não está lá).":""}
 7. Se ${pg} não tiver nenhuma questão (capa, instruções, folha de respostas), responda [].
 
 Responda somente com um array JSON, sem texto antes ou depois, neste formato:
@@ -6491,13 +6572,11 @@ function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,
   card.querySelector(".qstem").textContent=q.enunciado;
   if(r.im)card.insertBefore(el(`<p class="pnote">Esta questão tem imagem: veja na prova, página ${r.p}${r.pe&&r.pe!==r.p?` a ${r.pe}`:""}.</p>`),card.querySelector(".qstem").nextSibling);
   if(r.an)card.appendChild(el(`<p class="pnote">Questão anulada pela banca: não conta no acerto.</p>`));
-  if(show&&q.correta)card.appendChild(altsEl(q,mine||"-",()=>{}));
+  if(show&&q.correta)card.appendChild(altsEl(qSplit(q),mine||"-",()=>{}));
   else{const box=el(`<div class="alts"></div>`);q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra)})</b><span></span></button>`);b.id=`exa-${i}-${a.letra}`;b.querySelector("span").textContent=a.texto;if(a.letra===mine)b.classList.add("pick");b.onclick=()=>{exAnswer(ex,i,a.letra)};box.appendChild(b)});card.appendChild(box)}
   if(show){if(q.correta){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${mine?ok?"ok":"no":""}">${mine?ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta)+".":"Você não respondeu. A resposta é "+esc(q.correta)+"."}${r.g!=="b"?" <span class=\"simt\">(gabarito do Claude)</span>":""}</p>`))}
     else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
-    if(r.ck&&q.correta&&r.ck!==q.correta)card.appendChild(el(`<p class="pnote">O comentário abaixo foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.</p>`));
-    if(q.conceito){const p=el(`<p class="qexp"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;card.appendChild(p)}
-    if(q.comentario){const p=el(`<p class="qexp"><b>Comentário</b><span></span></p>`);p.querySelector("span").textContent=q.comentario;card.appendChild(p)}
+    card.appendChild(qExplEl(qSplit(q),{note:r.ck&&q.correta&&r.ck!==q.correta?`O comentário foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.`:""}));
     if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name))}
   return card}
 function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></div>`);
@@ -6544,20 +6623,26 @@ function exKeyEl(ex){const K=exKey,w=el(`<div class="exkey"></div>`),pk=parseKey
     const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),t=P.tries[P.tries.length-1];t.hit=S.hit;t.n=S.ans}
     exPut(ex);exPSave(ex.id);K.t="";K.msg=`Gabarito aplicado a ${m} ${m===1?"questão":"questões"}. ${ch?`${ch} ${ch===1?"mudou":"mudaram"} (resposta ou anulação) e o seu acerto foi recalculado.`:"Nenhuma resposta mudou."}`;commit()};
   const cl=el(`<button class="btn" type="button">Fechar</button>`);cl.onclick=()=>{exKey=null;render()};b.append(ap,cl);w.appendChild(b);return w}
-function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).length,nb=ex.qs.filter(r=>r.g==="b"||r.an).length,run=exRun&&exRun.id===ex.id;
-  const li=el(`<li class="exrow" id="exr-${ex.id}"><div class="exrt"><b></b><span class="meta"></span><span class="exst"></span></div><div class="btns"></div></li>`);
-  li.querySelector("b").textContent=ex.name;li.querySelector(".meta").textContent=[ex.banca,ex.ano,`${ex.qs.length} ${ex.qs.length===1?"questão":"questões"}`,nb===ex.qs.length?"gabarito da banca":nb?`${nb} com gabarito da banca`:"gabarito do Claude"].filter(Boolean).join(" · ");
-  const st=li.querySelector(".exst"),last=P.tries[P.tries.length-1];
-  st.textContent=P.fin?`Feita em ${br(P.fin)}: ${pct(S.hit,S.ans)}% (${S.hit} de ${S.ans})${P.tries.length>1?` · ${P.tries.length} tentativas`:""}`:nAns?`Em andamento: ${nAns} de ${ex.qs.length} respondidas`:last?`Última tentativa: ${pct(last.hit,last.n)}% em ${br(last.d)}`:"Ainda não feita";
-  const B=li.querySelector(".btns");
-  if(!P.fin&&!nAns){const sg=el(`<div class="seg exmode" role="group" aria-label="Modo"></div>`);[["p","Modo prova"],["e","Modo estudo"]].forEach(([v,l])=>{const b=el(`<button type="button" aria-pressed="${P.mode===v}"></button>`);b.id=`exm-${ex.id}-${v}`;b.textContent=l;b.onclick=()=>{P.mode=v;exPSave(ex.id);render()};sg.appendChild(b)});li.insertBefore(sg,B);
-    li.insertBefore(el(`<p class="how exmodeh">${P.mode==="p"?"Resultado e comentários no fim, como na prova de verdade.":"Correção e comentário a cada questão."}</p>`),B)}
-  const go=el(`<button class="btn primary" type="button"></button>`);go.id=`exgo-${ex.id}`;go.textContent=P.fin?"Ver resultado":nAns?"Continuar":"Começar";
-  go.onclick=()=>{if(P.fin){exRun={id:ex.id,view:"res",i:0,cad:{}};exEdit=null;render();setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},40)}else exStart(ex)};if(!run)B.appendChild(go);
-  if(P.fin){const re=el(`<button class="btn" type="button"></button>`);re.id=`exre-${ex.id}`;re.textContent=exArm==="re"+ex.id?"Toque de novo: refazer do zero":"Refazer";if(exArm==="re"+ex.id)re.classList.add("warn");re.onclick=()=>{if(exArm==="re"+ex.id){exArm=null;exStart(ex)}else{exArm="re"+ex.id;render()}};B.appendChild(re)}
-  const ed=el(`<button class="btn" type="button"></button>`);ed.id=`exed-${ex.id}`;ed.textContent="Revisar questões";ed.onclick=()=>{exEdit=exEdit&&exEdit.id===ex.id?null:{id:ex.id,flt:ex.qs.some(r=>exFilterOk(r,"chk"))?"chk":"all",show:12,T:null};exKey=null;render()};B.appendChild(ed);
-  const kb=el(`<button class="btn" type="button"></button>`);kb.id=`exkb-${ex.id}`;kb.textContent="Colar gabarito";kb.onclick=()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)};B.appendChild(kb);
-  const dl=el(`<button class="link" type="button"></button>`);dl.textContent=exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir";if(exArm==="del"+ex.id)dl.classList.add("warn");dl.onclick=()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}};B.appendChild(dl);
+function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).length,nb=ex.qs.filter(r=>r.g==="b"||r.an).length,run=exRun&&exRun.id===ex.id,N=ex.qs.length;
+  const stt=P.fin?"fin":nAns?"run":"new";
+  const li=el(`<li class="excard" data-st="${stt}" id="exr-${ex.id}"><div class="exch"><b class="exname"></b><span class="exstat"></span></div><p class="exmeta"></p><div class="exmain2"></div><div class="exsec"></div></li>`);
+  li.querySelector(".exname").textContent=ex.name;
+  li.querySelector(".exmeta").textContent=[[ex.banca,ex.ano].filter(Boolean).join(" "),`${N} ${N===1?"questão":"questões"}`,nb===N?"gabarito da banca":nb?`gabarito da banca em ${nb}`:"gabarito do Claude"].filter(Boolean).join(" · ");
+  const st=li.querySelector(".exstat"),last=P.tries[P.tries.length-1];
+  st.textContent=P.fin?`Feita · ${pct(S.hit,S.ans)}%`:nAns?"Em andamento":"Não iniciada";
+  const M=li.querySelector(".exmain2"),B=li.querySelector(".exsec");
+  if(P.fin){const d=el(`<p class="exline"></p>`);d.textContent=`${S.hit} de ${S.ans} certas em ${br(P.fin)}${P.tries.length>1?` · ${P.tries.length} tentativas`:""}`;M.appendChild(d)}
+  else if(nAns){const w=Math.round(nAns/N*100),pg=el(`<div class="exprog"><span class="exbar"><i style="width:${w}%"></i></span><span class="exline"></span></div>`);pg.querySelector(".exline").textContent=`${nAns} de ${N} respondidas · ${P.mode==="e"?"Modo estudo":"Modo prova"}`;M.appendChild(pg)}
+  else{const sg=el(`<div class="seg exmode" role="group" aria-label="Modo"></div>`);[["p","Modo prova"],["e","Modo estudo"]].forEach(([v,l])=>{const b=el(`<button type="button" aria-pressed="${P.mode===v}"></button>`);b.id=`exm-${ex.id}-${v}`;b.textContent=l;b.onclick=()=>{P.mode=v;exPSave(ex.id);render()};sg.appendChild(b)});M.appendChild(sg);
+    M.appendChild(el(`<p class="how exmodeh">${P.mode==="p"?"Resultado e comentários só no fim, como na prova de verdade.":"Correção e comentário logo depois de cada questão."}</p>`));
+    if(last){const d=el(`<p class="exline"></p>`);d.textContent=`Última tentativa: ${pct(last.hit,last.n)}% em ${br(last.d)}`;M.appendChild(d)}}
+  const go=el(`<button class="btn primary exgo" type="button"></button>`);go.id=`exgo-${ex.id}`;go.textContent=P.fin?"Ver resultado":nAns?"Continuar":"Começar";
+  go.onclick=()=>{if(P.fin){exRun={id:ex.id,view:"res",i:0,cad:{}};exEdit=null;render();setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},40)}else exStart(ex)};if(!run)M.appendChild(go);
+  const sb=(id,t,on,warn)=>{const b=el(`<button class="exsb" type="button"></button>`);b.id=id;b.textContent=t;b.onclick=on;if(warn)b.classList.add("warn");B.appendChild(b);return b};
+  if(P.fin)sb(`exre-${ex.id}`,exArm==="re"+ex.id?"Toque de novo: refazer do zero":"Refazer",()=>{if(exArm==="re"+ex.id){exArm=null;exStart(ex)}else{exArm="re"+ex.id;render()}},exArm==="re"+ex.id);
+  const ed=sb(`exed-${ex.id}`,"Revisar questões",()=>{exEdit=exEdit&&exEdit.id===ex.id?null:{id:ex.id,flt:ex.qs.some(r=>exFilterOk(r,"chk"))?"chk":"all",show:12,T:null};exKey=null;render()});ed.setAttribute("aria-expanded",!!(exEdit&&exEdit.id===ex.id));
+  const kb=sb(`exkb-${ex.id}`,"Colar gabarito",()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)});kb.setAttribute("aria-expanded",!!(exKey&&exKey.id===ex.id));
+  sb(`exdel-${ex.id}`,exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir",()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}},exArm==="del"+ex.id).classList.add("exdelb");
   if(exKey&&exKey.id===ex.id)li.appendChild(exKeyEl(ex));
   if(exEdit&&exEdit.id===ex.id)li.appendChild(exEditEl(ex));
   return li}
@@ -6567,7 +6652,7 @@ function qExamCard(){const c=el(`<section class="card qexam" aria-labelledby="ex
   if(!imp){const b=el(`<button class="btn primary" type="button" id="impNew">+ Importar prova</button>`);b.disabled=!sampleFn;if(sampleOff)b.title="O Claude não está disponível nesta visualização";b.onclick=impNew;c.querySelector(".dhead").appendChild(b)}
   if(imp)c.appendChild(impPanel());
   if(!exams.length){if(!imp)c.appendChild(el(`<p class="cempty">Importe o PDF de uma prova antiga (com ou sem gabarito) e faça a prova aqui, no modo prova ou no modo estudo. Cada questão entra no acerto do tema e da banca, e as erradas vão para Refazer.</p>`));return c}
-  const ol=el(`<ol class="exrows"></ol>`);exams.forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol);return c}
+  const ol=el(`<ol class="excards"></ol>`);exams.forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol);return c}
 document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun)return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   if(ev.key==="Escape"&&fullOn.ex&&twoCols()){ev.preventDefault();fullSet("ex",false);return}if(exRun.view==="res")return;
   const ex=exams.find(x=>x.id===exRun.id);if(!ex)return;const k=ev.key;
@@ -7194,7 +7279,7 @@ const HELP=[
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
 - **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
 - **Simulado misto** (em Praticar): o Claude monta 5, 10, 20 ou 30 questões de vários temas, a partir de **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje** ou **Filtro atual**. Uma questão por vez, com o tempo medido em cada uma; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer. **Encerrar** mostra o resultado das que você já respondeu.
-- **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**. Também vale gabarito comentado ("RESPOSTA 1 · Correta: B" com as justificativas): as páginas dele não vão como questões e as justificativas viram a base do comentário; **Leitura no aparelho:** se o PDF tiver texto, questões numeradas, alternativas A) a E) e gabarito, o app lê tudo sozinho, sem o Claude (o comentário é o da prova e o tema é sugerido pelo nome, com o selo **Tema sugerido** para conferir); se faltar questão ou alternativa, a página for escaneada ou não houver gabarito, ele avisa e pede para **passar pelo Claude**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva.
+- **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**. Também vale gabarito comentado ("RESPOSTA 1 · Correta: B" com as justificativas): as páginas dele não vão como questões e as justificativas viram a base do comentário; **Leitura no aparelho:** se o PDF tiver texto, questões numeradas, alternativas A) a E) e gabarito, o app lê tudo sozinho, sem o Claude (o comentário é o da prova e o tema é sugerido pelo nome, com o selo **Tema sugerido** para conferir); se faltar questão ou alternativa, a página for escaneada ou não houver gabarito, ele avisa e pede para **passar pelo Claude**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva. Cada prova aparece num cartão: nome, banca, número de questões, de onde veio o gabarito e a situação (Não iniciada, Em andamento com a barra de progresso, ou Feita com a nota). Antes de começar, escolha **Modo prova** ou **Modo estudo** (a linha embaixo explica a diferença); Revisar questões, Colar gabarito, Refazer e Excluir ficam no rodapé do cartão.
 - **Onde você perdeu pontos** (no resultado da prova): as especialidades com 3 ou mais questões e acerto abaixo de 60% naquela prova, com os temas que você errou (o que mais errou primeiro). Toque no tema para estudar, em **gerar questões** para praticar, ou numa questão (Q12) para ver o comentário e, se quiser, **Levar para o caderno de erros** (as levadas ficam com ✓). É só sugestão: o plano do dia não muda.
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
@@ -7211,7 +7296,7 @@ const HELP=[
 - **Fontes:** as questões geradas seguem só fontes confiáveis (diretrizes e protocolos brasileiros, sociedades médicas, diretrizes internacionais de referência e livros-texto clássicos), sem dados ou referências inventados. Depois de responder, cada questão mostra a **Fonte** que sustenta a resposta.
 - **Usar um material meu** (opcional, no gerador do tema): escolha um PDF da aula, slides, resumo ou fotos e toque em **Gerar questões do material**: as questões saem do material e a fonte cita a página ou o slide. O PDF é lido no aparelho. No site, fotos e PDFs escaneados você anexa na conversa do Claude (a janela lembra); dá também para marcar **Vou anexar o material direto na conversa**. Sem material, o gerador funciona como sempre.
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
-- **Por que cada alternativa está errada:** depois de responder, cada alternativa errada mostra embaixo o erro de raciocínio (a que você marcou fica destacada). Ao levar a questão para o caderno de erros, essa explicação vai junto.
+- **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa** e o **Conceito-chave**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
 - **Aba Anotações** (no celular, em Mais): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
@@ -7232,7 +7317,7 @@ const HELP=[
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.
 - A aba **Anotações** reúne todas, com busca, e exporta em Markdown (bom para o Notion).`],
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
-- **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: já vem preenchido com a questão (reescreva o conceito com as suas palavras).
+- **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
 - **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
 - **Virar cartão** cria um cartão de memorização (frente: o que você errou; verso: o correto). **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
@@ -7494,7 +7579,14 @@ document.querySelectorAll("#tSeg button").forEach(b=>b.onclick=()=>setTSeg(b.dat
 /* celular: esconde a barra de baixo enquanto o teclado está aberto */
 const isTypingEl=e=>e&&(e.tagName==="TEXTAREA"||(e.tagName==="INPUT"&&!/^(checkbox|radio|button|submit|range|color|file)$/.test(e.type)));
 document.addEventListener("focusin",e=>{if(isTypingEl(e.target))document.body.classList.add("typing")});
-document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement))document.body.classList.remove("typing")},50));
+document.addEventListener("focusout",()=>setTimeout(()=>{if(!isTypingEl(document.activeElement)){document.body.classList.remove("typing");vvSettle()}},50));
+/* iOS: ao fechar o teclado, a página fica fora do lugar até a próxima rolagem; vvSettle força o realinhamento e vvFix calcula quanto
+   a área visível (visualViewport) está acima do fundo da janela, para os elementos fixos embaixo ficarem colados no que se vê */
+function vvFix(){const vv=window.visualViewport,R=document.documentElement;if(!vv){return}
+  let gap=document.body.classList.contains("typing")||Math.abs((vv.scale||1)-1)>0.01?0:Math.round(window.innerHeight-(vv.height+vv.offsetTop));if(Math.abs(gap)<2||Math.abs(gap)>window.innerHeight*.6)gap=0;
+  const v=gap?`${-gap}px`:"";if(R.style.getPropertyValue("--vvy")!==v){if(v)R.style.setProperty("--vvy",v);else R.style.removeProperty("--vvy")}}
+function vvSettle(){if(!window.visualViewport)return;const y=window.scrollY;requestAnimationFrame(()=>{window.scrollTo(window.scrollX,y);vvFix();setTimeout(vvFix,250);setTimeout(vvFix,600)})}
+if(window.visualViewport){visualViewport.addEventListener("resize",vvFix);visualViewport.addEventListener("scroll",vvFix);addEventListener("scroll",vvFix,{passive:true});addEventListener("orientationchange",()=>setTimeout(vvFix,300))}
 
 $("#srchBtn").onclick=()=>{gsOpen=true;renderGSearch()};$("#sfWho").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#profBtn").onclick=()=>{view==="perfil"?goBack():goSub("perfil")};$("#cfgBtn").onclick=()=>{view==="config"?goBack():goSub("config")};$("#backHelp").onclick=goBack;
 $("#hq").addEventListener("input",debounced(e=>{helpQ=e.target.value.trim();renderHelp()},150));

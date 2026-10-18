@@ -37,7 +37,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  ok(vis.n===3&&vis.mineOk&&vis.noRight&&vis.com,name+": depois de errar, cada errada mostra o porquê (a marcada em destaque) e a correta mantém o comentário "+JSON.stringify(vis));
  ok(await p.evaluate(()=>{const r=redo.find(x=>x.k==="CM-34");return r&&r.q.alternativas.filter(a=>a.porque).length===3}),name+": a questão errada vai para Refazer com os porquês");
  await p.evaluate(()=>toCaderno(BYKEY["CM-34"],0));await p.waitForTimeout(200);
- ok(await p.evaluate(()=>/Por que a minha não serve:/.test(drafts["CM-34"].r)),name+": levar ao caderno de erros inclui o porquê da alternativa marcada");
+ ok(await p.evaluate(()=>/Por que não (a minha|.+?): /.test(drafts["CM-34"].r)),name+": levar ao caderno de erros inclui o porquê da alternativa marcada");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
  if(name==="fone")await p.screenshot({path:`t81-${name}.png`,fullPage:false});
  /* 4. Refazer mostra os porquês; questão antiga sem porquê continua normal */

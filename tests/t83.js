@@ -84,7 +84,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   /* 5. gabarito colado depois: a 2 passa a ser B → acerto recalculado */
   await p.evaluate(()=>{exRun=null;render()});await click(`#exkb-${ex.id}`);await p.fill('#exKeyTa','01-A 02-B 03-B 04-B 05-ANULADA');await p.waitForTimeout(400);await click('#exKeyGo');
   const r5=await p.evaluate(([st0])=>{const e=exams[0],S=exScore(e);const d=st0.ks.map(k=>[(get(k).qt||0)-st0.qt[k][0],(get(k).qc||0)-st0.qt[k][1]]);
-    return {S,dq:d.reduce((a,x)=>a+x[0],0),dc:d.reduce((a,x)=>a+x[1],0),msg:document.querySelector('.exrow .exkey').textContent,tries:exPg(e.id).tries[0].hit}},[st0]);
+    return {S,dq:d.reduce((a,x)=>a+x[0],0),dc:d.reduce((a,x)=>a+x[1],0),msg:document.querySelector('.excard .exkey').textContent,tries:exPg(e.id).tries[0].hit}},[st0]);
   ok(r5.S.hit===3&&r5.dq===3&&r5.dc===3&&r5.tries===3&&/1 mudou/.test(r5.msg),name+": colar o gabarito corrige a resposta e recalcula o acerto (sem contar de novo) "+JSON.stringify(r5));
   /* 6. trocar o tema de uma questão já respondida move a contagem */
   await p.evaluate(()=>{exKey=null;render()});await click(`#exed-${ex.id}`);

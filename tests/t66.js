@@ -8,7 +8,7 @@ await p.evaluate(()=>{errors=[];const q={enunciado:"Paciente com PA 150/95",alte
   redo=[{id:"r1",k:"CM-1",d:today(),n:1,q}];rdSaveLocal&&rdSaveLocal();setView("quest");setQSeg("praticar")});await p.waitForTimeout(200);
 await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(1)');await p.waitForTimeout(150);
 await p.click('.rdplay .ecad .btn');await p.waitForTimeout(150);
-ok(/Marquei A\) Normal/.test(await p.inputValue('#ecq-w'))&&/HAS ≥140\/90/.test(await p.inputValue('#ecq-r')),tag+": refazer pré-preenche");
+ok(/^Marquei Normal; a certa era/.test(await p.inputValue("#ecq-w"))&&/HAS ≥140\/90/.test(await p.inputValue('#ecq-r')),tag+": refazer pré-preenche");
 await p.click('.rdplay .ecad button[type=submit]');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>errors.length===1&&errors[0].s==="Refazer as que errei"&&errors[0].k==="CM-1"),tag+": salvo do refazer");
 ok(/No caderno de erros/.test(await p.$eval('.rdplay',x=>x.textContent)),tag+": confirmação no refazer");

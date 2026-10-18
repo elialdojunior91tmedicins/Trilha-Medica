@@ -143,7 +143,7 @@ consultado quando há dúvida. Responda em português.
   horário vão para a direita; legenda com minutos por terços da meta; "Esta semana" compara com a anterior até o mesmo dia; teste t97), `foWeekExtra`
   (meta semanal `ui.prefs.fwgoal` em minutos, recorde, distrações). Layout: `.focol` (esquerda: depois, relógio, sessões; direita: semana, mapa, matéria).
 
-- Erros (view `erros`): objeto do erro `{id,k,w,r,t,s,d,rev,lastRev,box,due,miss,lastMiss,cd,nt}`. Revisão ativa `eRevCard`/`erRun`
+- Erros (view `erros`): objeto do erro `{id,k,w,r,p?,t,s,d,rev,lastRev,box,due,miss,lastMiss,cd,nt}` (`p` = Pista do caso, mostrada no `.ecard` e na revisão antes da resposta). Revisão ativa `eRevCard`/`erRun`
   (`E_INT=[1,3,7,15,30]`, `eAnswer`; `eDue(e)` calcula a data para erros antigos sem `due`), registro `eRegPanel`/`eReg` e
   `errFormEl(D,pre,onSave)` + `eNew` (também usados por `eCadEl` no simulado e no Refazer, com `qDraft`), `eRepCard`/`eRepeat`
   (mesmo tema ≥2 em 30 dias; `miss`≥2), `eWeeksEl` (8 semanas por tipo), `eCardBtn` (→ `cdAdd`, guarda `cd`) e `eToNote`
@@ -191,6 +191,9 @@ consultado quando há dúvida. Responda em português.
   `progress` guarda `{version:3,split:true,hist,plan}`. Conta antiga (v2, `topics` no documento) migra sozinha; se uma versão antiga do app
   regravar v2, a carga junta os dois ficando com o registro mais novo (`tNewer`).
 
+- Barra de baixo no iPhone instalado: depois do teclado, o iOS deixa o `visualViewport` deslocado e a barra fixa "flutuava". `vvFix()` mede a diferença
+  (`innerHeight - (vv.height + vv.offsetTop)`, ignorada com teclado aberto ou zoom) e aplica `--vvy` como `translate` em `.appnav/.bulkbar/.dqbar/.trtoast/.fopill`
+  no celular; `vvSettle()` roda no `focusout`. Só dá para confirmar no aparelho.
 - Vários aparelhos ao mesmo tempo (módulo antes do `(async()=>{` de carga): depois de carregar a conta, `liveStart()` ouve com `onSnapshot`
   o `progress`, `progress/topics`, `faculdade`, `prefs`, `settings`, `notes` e as listas (errors, free, trash, cards, redo, focus) — 12 assinaturas;
   `bridge.js` repassa o `onSnapshot` do Firestore com `metadata`. Regras: nunca aplica a volta da própria gravação (`pend`/`echo`, `liveW` guarda o
@@ -206,6 +209,13 @@ consultado quando há dúvida. Responda em português.
   `validQs` passa cada questão por `altShuffle` (sorteia a ordem e renomeia A, B, C…; testes antigos desligam com `window.__noShuffle`, ligado
   por padrão em `mockdb.js`/`fakefb.js`). `altsEl(q,mine,onPick)` desenha as alternativas nos três lugares (tema, Refazer, simulado) e, depois
   de responder, o `.altwhy` sob cada errada (`.mine` = a marcada). `rdClean` guarda o `porque`; `qDraft` leva o da marcada ao caderno de erros. Teste: `tests/t81.js`.
+  Comentário organizado (10/2026): `qExplEl(q,{note})` = Gabarito (alternativa certa) › "Por que X está certa" › Conceito-chave, nos quatro lugares (gerador,
+  Refazer, simulado, prova). `qSplit(q)` (só na exibição; nada é regravado) usa `cmParse`/`CM_MARK` para separar "Alternativa X — …", "Letra X:", "X)" do
+  comentário (exige 2+ letras diferentes) e põe o texto no `porque` das erradas (`cmClean` tira "Incorreta."/"porque"). `altsEl` rotula a marcada
+  "Por que a sua não serve". O `impPrompt` pede o porquê só no `porque` de cada alternativa.
+  Caderno a partir da questão: `qDraft(q,mine,src)` → `{w:"Marquei X; a certa era Y", p:qClue(q), r:conceito + 1–2 frases do comentário + "Por que não…", q:{…}}`
+  (`qClue` pontua as frases do enunciado pelas palavras da certa/comentário, números e exames; ignora a pergunta). `errFormEl` tem o campo Pista (`<pre>p`).
+  "✦ Resumir com o Claude" no `eCadEl`: `eSumRun(D)`/`eSumPrompt(D)` (JSON {errei,pista,conceito}; `D.sum.prev` = Voltar ao do app). Teste: `tests/t101.js`.
   Fontes (10/2026): `DEFAULT_PROMPT` › "Conteúdo e fontes" (só fontes confiáveis, nada inventado; o padrão anterior está em `OLD_PROMPTS[0]`) e campo `fonte`
   no `fixedFormat` → `validQs` → `.qfonte` (gerador, Refazer, simulado; `rdClean` guarda). Material do estudante opcional `genMat[k]` = {name,txt,imgs,attach,scan,cut}
   (`genMatEl` no gerador, `genMatPick`: PDF lido por `pdfOpenTxt` até `GM_MAX` caracteres, páginas sem texto/fotos como imagem até `GM_IMG` no artefato;
@@ -240,6 +250,9 @@ consultado quando há dúvida. Responda em português.
   tira o que contava antes e põe o novo. Jogador `exRun` (`exPlayEl`, modo prova "p" ou estudo "e", resultado `view:"res"`, com "Onde você perdeu pontos" `exLost`/`exLostEl`: especialidade com `EX_DROP_MIN`=3+ questões e acerto < `EX_DROP`=60%,
   temas errados e questões (abrem a revisão com `eCadEl`); só sugestão, não mexe no plano; teste t91). Lixeira `exam`, backup `data.exams/examProg`.
   `bridge.js`: `sample` aceita `opts.title`/`opts.hint`. Teste: `tests/t83.js` (gera um PDF de verdade com pdf-lib/sharp).
+  Lista (10/2026): `exRowCard` desenha um cartão `.excard[data-st=new|run|fin]` (nome `.exname`, selo `.exstat`, `.exmeta`, barra `.exbar` em andamento,
+  modo `.exmode` + `.exmodeh` só antes de começar, ação principal `.exgo`, secundárias `.exsb` no rodapé `.exsec`) dentro de `ol.excards` (grade).
+  Não use `.exrow` aqui: é a linha das provas de residência no Perfil (`exEditorEl`). Teste: `tests/t101.js`.
 
 - Estudando e plano em partes (10/2026): `s.ing={d,m:"a"|"m"}` = tema começado (`isIng`, `lvKey` → "i", `lvName`); não tem revisão (`last` só ao concluir).
   `toggleSub` em tema sem `last`: 1º subtópico liga `ing` automático, o último conclui (`last`, `step` 0, `logAct("e")`, `s.pre.ing` permite desfazer no mesmo dia),
