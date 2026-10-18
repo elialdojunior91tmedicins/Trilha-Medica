@@ -1617,16 +1617,77 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fobody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco .fotimer{grid-row:span 2}
 @media (max-width:480px){.foacts .btn{padding:10px 14px}.fowk{height:130px;gap:3px}.fov{font-size:.62rem}}
+
+/* ===== Lote 2: navegação (barra lateral recolhível, menu ≡) ===== */
+#sbMenu,.sbpins,.hmenu{display:none}
+.sbb{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:34px;height:34px;border-radius:9px;border:1px solid transparent;background:none;color:var(--muted);cursor:pointer;padding:0 8px;font:600 .78rem var(--body)}
+.sbb svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sbb:hover{background:var(--bg);color:var(--ink)}.sbb[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav{transition:width .16s ease,box-shadow .16s ease}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sbpins{display:flex;align-items:center;gap:4px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}.sbpins .sbb{flex:1 1 0;white-space:nowrap;padding:0 6px}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sbpins+.sfoot{margin-top:0}
+.sbpl{font:600 .68rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-right:auto;padding-left:4px}
+html[data-sb]{transition:none}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"])[data-sb="rail"]{--sbw:76px}
+html[data-sb="rail"] #sbMenu{display:inline-flex;align-self:center;flex:none}
+html[data-sb="rail"] .appnav:not(.peek){padding-left:10px;padding-right:10px;overflow-x:hidden;gap:10px}
+html[data-sb="rail"] .appnav:not(.peek) :is(.bname,.sstx,.sskbd,.tab .tl,.navextra,.sfwho,.sbpins){display:none}
+html[data-sb="rail"] .appnav:not(.peek) .sbrand{padding:0 0 10px;display:flex;justify-content:center}
+html[data-sb="rail"] .appnav:not(.peek) .sbrand h1.brand{gap:0}
+html[data-sb="rail"] .appnav:not(.peek) .blogo{width:2.7rem;margin:0}
+html[data-sb="rail"] .appnav:not(.peek) .ssearch .hbtn{justify-content:center;padding:0;width:44px;margin:0 auto}
+html[data-sb="rail"] .appnav:not(.peek) .tab{justify-content:center;padding:11px 0;position:relative}
+html[data-sb="rail"] .appnav:not(.peek) .tab .ecount{position:absolute;top:2px;right:3px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;font:700 .6rem/16px var(--body);text-align:center;background:var(--due)!important;color:#fff!important}
+html[data-sb="rail"] .appnav:not(.peek) .tab :is(#ncount){background:var(--muted)!important}
+html[data-sb="rail"] .appnav:not(.peek) .tab :is(#focount,#mcount){background:var(--accent)!important;color:var(--on-accent)!important}
+html[data-sb="rail"] .appnav:not(.peek) .ecount:empty{display:none}
+html[data-sb="rail"] .appnav:not(.peek) .sfoot{flex-direction:column;gap:8px;padding:10px 0 0;margin-top:auto}
+html[data-sb="rail"] .appnav.peek{width:248px;box-shadow:10px 0 34px rgb(10 17 33 / .18)}
+html[data-sb="rail"] .appnav.peek #sbMenu{display:none}
+.sbback{position:fixed;inset:0;z-index:29;background:rgb(10 17 33 / .22)}
+/* iPad em pé: ≡ no topo, sem a faixa lateral */
+html[data-layout="tablet"][data-cols="1"] body>.wrap{display:flex;flex-direction:column;align-items:stretch;max-width:860px}
+html[data-layout="tablet"][data-cols="1"] .appnav{display:none}
+html[data-layout="tablet"][data-cols="1"] .hmenu{display:grid;position:absolute;left:0;top:0}
+html[data-layout="tablet"][data-cols="1"] body>.wrap>header{padding-left:54px;min-height:42px;display:flex;align-items:center}
+/* menu ≡ (celular: folha de baixo; iPad em pé: gaveta à esquerda) */
+.navmenu{position:fixed;inset:0;z-index:95;background:rgb(10 17 33 / .4);display:flex;align-items:flex-end;justify-content:flex-start}
+.navmenu[hidden]{display:none}
+.nmpanel{background:var(--surface);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-height:88vh;border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgb(0 0 0 / .2);animation:nmup .18s ease}
+html[data-layout="tablet"] .navmenu{align-items:stretch}
+html[data-layout="tablet"] .nmpanel{width:min(360px,88vw);max-height:none;height:100%;border-radius:0 18px 18px 0;padding-top:calc(18px + env(safe-area-inset-top,0px));animation:nmleft .18s ease}
+@keyframes nmup{from{transform:translateY(24px);opacity:.4}}@keyframes nmleft{from{transform:translateX(-24px);opacity:.4}}
+.nmgrab{width:40px;height:4px;border-radius:99px;background:var(--line);align-self:center;margin:-4px 0 2px}
+html[data-layout="tablet"] .nmgrab{display:none}
+.nmhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nmhead h2{font:600 1.45rem var(--display);margin:0}
+.nmsearch{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;border-radius:12px;padding:0 14px;background:var(--bg);border:1px solid var(--line);color:var(--muted);font:500 .95rem var(--body);cursor:pointer;text-align:left}
+.nmsearch svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.nmlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:2px}
+.nmit{width:100%;display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:2px 12px;padding:9px 10px;border-radius:12px;border:0;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer;min-height:54px}
+.nmit:hover{background:var(--bg)}.nmit[aria-current="page"]{background:var(--accent-soft)}
+.nmic{grid-row:1/3;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--bg);color:var(--accent)}
+.nmit[aria-current="page"] .nmic{background:var(--accent);color:var(--on-accent)}
+.nmic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nmt{font-weight:700;font-size:.98rem}.nms{grid-column:2;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nms.late{color:var(--due);font-weight:600}
+.nmb{grid-row:1/3;grid-column:3;min-width:22px;height:22px;padding:0 7px;border-radius:99px;background:var(--due);color:#fff;font:700 .72rem/22px var(--body);text-align:center}.nmb.soft{background:var(--accent);color:var(--on-accent)}
+.nmsep{height:1px;background:var(--line);margin:4px 2px}
+.nmsec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.nmsec button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 .8rem var(--body);cursor:pointer}
+.nmsec svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#maisBody .nmlist{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px}
 </style>
 
 <div class="wrap">
   <header>
+    <button class="hbtn hmenu" id="navMenuBtn" type="button" aria-label="Abrir o menu" title="Menu" aria-expanded="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="hacts" id="hacts"><button class="hbtn" id="srchBtn" type="button" aria-label="Buscar em tudo" title="Buscar em tudo (Ctrl+K)"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
     <h1 class="brand"><svg class="blogo" viewBox="0 0 120 80" aria-hidden="true" focusable="false"><defs><linearGradient id="nxg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--lg1,#F1DDB0)"/><stop offset=".45" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></linearGradient><linearGradient id="nxg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--lg1,#E9D19C)"/><stop offset=".5" style="stop-color:var(--lg2,#B68D45)"/><stop offset="1" style="stop-color:var(--lg3,#6E4F1E)"/></linearGradient><radialGradient id="nxg3" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:var(--lg1,#F6E7C4)"/><stop offset=".6" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></radialGradient></defs><path d="M63 49 C70 40 77 32 89 30 C104 28 114 40 110 52 C106 64 90 68 79 62 C72 58 67 53 62 49" fill="none" stroke="url(#nxg2)" stroke-width="6.5" stroke-linecap="butt"/><path d="M8 70 C18 50 34 38 50 40 C64 42 72 54 86 62 C76 60 66 52 56 50 C42 47 28 54 8 70 Z" fill="url(#nxg1)"/><circle cx="68" cy="17" r="7.5" fill="url(#nxg3)"/></svg><span class="bname"><span class="bn1">Nexus</span><span class="vh"> - </span><span class="bn2">Trilha Médica</span></span></h1>
     <p class="lede">185 temas de alta recorrência nas 5 grandes áreas. Estude no seu ritmo: o app agenda as revisões e mostra onde você mais erra.</p>
   </header>
 
   <nav class="appnav" aria-label="Navegação">
+  <button class="sbb" id="sbMenu" type="button" aria-label="Abrir o menu" title="Abrir o menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <div class="sbrand" id="sBrand"></div><div class="ssearch" id="sSearch"></div>
   <div class="tabs" role="tablist" aria-label="Seções">
     <button class="tab" role="tab" id="tabI" data-v="inicio" aria-selected="true"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2L12 4.2l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6M10 20v-5.6h4V20"/></svg><span class="tl">Início</span><span class="ecount" id="rcount"></span></button>
@@ -1636,11 +1697,14 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Anotações</span><span class="ecount" id="ncount"></span></button>
     <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
     <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
-    <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg><span class="tl">Mais</span><span class="ecount" id="mcount"></span></button>
+    <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false" aria-haspopup="dialog"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="tl">Menu</span><span class="ecount" id="mcount"></span></button>
   </div>
   <div class="navextra" id="navExtra"></div>
+  <div class="sbpins" id="sbPins"><button class="sbb" id="sbPinOpen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3H7l3-3z"/><path d="M12 12v8"/></svg><span>Fixar aberta</span></button><button class="sbb" id="sbPinRail" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"/></svg><span>Recolher</span></button></div>
   <div class="sfoot" id="sFoot"><div class="sfslot" id="sfProf"></div><button class="sfwho" id="sfWho" type="button"><b id="sfName"></b><span>Perfil e conta</span></button><div class="sfslot" id="sfCfg"></div></div>
   </nav>
+  <div class="sbback" id="sbBack" hidden></div>
+  <div class="navmenu" id="navMenu" hidden><div class="nmpanel" role="dialog" aria-modal="true" aria-label="Menu" id="nmPanel"></div></div>
   <button class="fopill" id="foPill" type="button" hidden aria-label="Voltar ao Foco"><span class="fpl">Foco</span><b>00:00</b></button>
 
   <div id="viewFac" class="wrap" style="width:100%" hidden>
@@ -5040,7 +5104,7 @@ function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-labe
 
 function render(){
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
-  renderAll();applyFull();foNoiseSync();renderQBar();maybeOnb();
+  renderAll();applyFull();sbApply();foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
 }
 /* revisões pendentes (sem as pausadas pelo modo provas) */
@@ -5105,6 +5169,57 @@ function placeSide(){const full=sideFull(),h=document.querySelector("body>.wrap>
   else{if(br.parentNode!==h)h.insertBefore(br,acts.nextSibling);if(sr.parentNode!==acts||pf.parentNode!==acts||cf.parentNode!==acts)acts.append(sr,pf,cf)}
   const n=$("#sfName");if(n)n.textContent=(ui.profile.name||"").trim()||"Seu perfil"}
 new MutationObserver(()=>placeSide()).observe(document.documentElement,{attributes:true,attributeFilter:["data-layout","data-cols"]});
+/* ===== Lote 2: barra lateral recolhível (computador e iPad deitado) e menu ≡ (celular e iPad em pé) ===== */
+const LSSB="resid-sbpin";let sbPin=(()=>{try{const v=localStorage.getItem(LSSB);return v==="open"||v==="rail"?v:""}catch(e){return ""}})(),sbTouch=false,sbT=0;
+const sbHover=()=>matchMedia("(hover:hover) and (pointer:fine)").matches;
+function sbMode(){if(!sideFull())return "";if(document.querySelector(".vfull")||(document.querySelector("#viewErros.erfull:not([hidden])")))return "rail";if(sbPin)return sbPin;return view==="inicio"?"open":"rail"}
+function sbPeek(on,touch){const n=document.querySelector(".appnav");if(!n)return;const R=document.documentElement;on=!!on&&R.dataset.sb==="rail";n.classList.toggle("peek",on);sbTouch=on&&!!touch;$("#sbBack").hidden=!sbTouch;$("#sbMenu").setAttribute("aria-expanded",on)}
+function sbApply(){const R=document.documentElement,m=sbMode();if(m){if(R.dataset.sb!==m)R.dataset.sb=m}else if(R.dataset.sb)delete R.dataset.sb;if(m!=="rail")sbPeek(false);
+  const po=$("#sbPinOpen"),pr=$("#sbPinRail");if(po){po.setAttribute("aria-pressed",sbPin==="open");po.title=sbPin==="open"?"Fixada aberta. Toque para voltar ao automático (aberta no Início, recolhida nas outras abas)":"Fixar a barra sempre aberta";po.querySelector("span").textContent=sbPin==="open"?"Fixada":"Fixar"}
+  if(pr){pr.setAttribute("aria-pressed",sbPin==="rail");pr.title=sbPin==="rail"?"Sempre recolhida. Toque para voltar ao automático":"Deixar a barra sempre recolhida (abre ao passar o mouse)";pr.querySelector("span").textContent=sbPin==="rail"?"Recolhida":"Recolher"}}
+function sbSetPin(v){sbPin=v;try{v?localStorage.setItem(LSSB,v):localStorage.removeItem(LSSB)}catch(e){}sbPeek(false);sbApply();if(view==="config")render()}
+new MutationObserver(()=>sbApply()).observe(document.documentElement,{attributes:true,attributeFilter:["data-layout","data-cols"]});
+{const n=document.querySelector(".appnav");
+  n.addEventListener("mouseenter",()=>{if(!sbHover()||document.documentElement.dataset.sb!=="rail")return;clearTimeout(sbT);sbT=setTimeout(()=>sbPeek(true),120)});
+  n.addEventListener("mouseleave",()=>{clearTimeout(sbT);if(!sbTouch)sbPeek(false)});
+  n.addEventListener("focusin",e=>{if(document.documentElement.dataset.sb==="rail"&&e.target.matches(":focus-visible"))sbPeek(true)});
+  n.addEventListener("focusout",()=>setTimeout(()=>{if(!n.contains(document.activeElement)&&!sbTouch&&!n.matches(":hover"))sbPeek(false)},0));
+  n.addEventListener("click",e=>{if(e.target.closest(".tab,.navextra button,#srchBtn,#sfWho,#profBtn,#cfgBtn"))sbPeek(false)});
+  $("#sbMenu").onclick=()=>{const on=!n.classList.contains("peek");sbPeek(on,true)};
+  $("#sbBack").onclick=()=>sbPeek(false);
+  $("#sbPinOpen").onclick=()=>sbSetPin(sbPin==="open"?"":"open");
+  $("#sbPinRail").onclick=()=>sbSetPin(sbPin==="rail"?"":"rail")}
+/* menu ≡: lista de todas as seções com um resumo de cada */
+const NM_SUB={inicio:"Painel do dia",temas:"185 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Praticar, simulados e provas",notas:"Resumos dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros"};
+function nmInfo(v){try{
+  if(v==="inicio"){const P=ensurePlan();if(P.items.length){const d=P.items.filter(itemDone).length;return [`Estudar hoje: ${d} de ${P.items.length} temas`,""]}}
+  if(v==="temas"){const n=dueCount();return [n?`${n} ${n===1?"revisão pendente":"revisões pendentes"}`:"Revisões em dia",n?"late":"",n]}
+  if(v==="fac"){const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);return [`${up.name} · ${inLabel(dd)}`,dd<=7?"late":""]}}
+  if(v==="quest"){const h=hist[today()];if(h&&h.q)return [`Hoje: ${h.q} ${h.q===1?"questão":"questões"}, ${pct(h.c||0,h.q)}% de acerto`,""]}
+  if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;if(nk)return [`${nk} ${nk===1?"tema":"temas"} com anotações`,""]}
+  if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"",foRun?"●":0]}
+  if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}}catch(e){}return [NM_SUB[v]||"",""]}
+function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
+  document.querySelectorAll(".appnav .tabs .tab").forEach(t=>{const v=t.dataset.v;if(!v||v==="mais"||v==="help")return;
+    const [sub,cls,badge]=nmInfo(v),li=el(`<li><button class="nmit" type="button"><span class="nmic"></span><span class="nmt"></span><span class="nms"></span></button></li>`),b=li.querySelector("button");
+    b.id="go-"+v;const ic=t.querySelector(".ti");if(ic)b.querySelector(".nmic").appendChild(ic.cloneNode(true));b.querySelector(".nmt").textContent=t.querySelector(".tl").textContent;
+    const sp=b.querySelector(".nms");sp.textContent=sub;if(cls)sp.classList.add(cls);if(v==="foco")sp.id="maisFoco";if(v==="notas")sp.id="maisNotas";
+    if(badge){const x=el(`<span class="nmb"></span>`);x.textContent=String(badge);if(v==="foco")x.classList.add("soft");b.appendChild(x)}
+    if(v===cur)b.setAttribute("aria-current","page");b.onclick=()=>{onGo&&onGo();backStack=[];setView(v)};ul.appendChild(li)});
+  return ul}
+function navMenuOpen(){const M=$("#navMenu"),P=$("#nmPanel");P.innerHTML="";
+  P.appendChild(el(`<span class="nmgrab" aria-hidden="true"></span>`));
+  const hd=el(`<div class="nmhead"><h2>Menu</h2><button class="sbb" id="nmClose" type="button" aria-label="Fechar o menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`);hd.querySelector("button").onclick=navMenuClose;P.appendChild(hd);
+  const sr=el(`<button class="nmsearch" id="nmSearch" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>Buscar em temas, anotações e erros</button>`);sr.onclick=()=>{navMenuClose();gsOpen=true;renderGSearch()};P.appendChild(sr);
+  P.appendChild(navListEl(navMenuClose));P.appendChild(el(`<div class="nmsep"></div>`));
+  const sec=el(`<div class="nmsec"></div>`);[["nmProf","Perfil",`<circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/>`,()=>goSub("perfil")],["nmCfg","Configurações",`<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>`,()=>goSub("config")],["nmHelp","Ajuda",`<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/>`,()=>goSub("help")]].forEach(([id,t,ic,fn])=>{
+    const b=el(`<button type="button"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg><span></span></button>`);b.id=id;b.querySelector("span").textContent=t;b.onclick=()=>{navMenuClose();fn()};sec.appendChild(b)});P.appendChild(sec);
+  M.hidden=false;document.body.classList.add("nmopen");$("#tabM").setAttribute("aria-expanded","true");$("#navMenuBtn").setAttribute("aria-expanded","true");setTimeout(()=>{const c=$("#nmClose");if(c)c.focus({preventScroll:true})},30)}
+function navMenuClose(){const M=$("#navMenu");if(M.hidden)return;M.hidden=true;document.body.classList.remove("nmopen");$("#tabM").setAttribute("aria-expanded","false");$("#navMenuBtn").setAttribute("aria-expanded","false")}
+$("#navMenu").addEventListener("click",e=>{if(e.target.id==="navMenu")navMenuClose()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#navMenu").hidden){navMenuClose();e.stopPropagation()}else if(document.querySelector(".appnav.peek"))sbPeek(false)}},true);
+$("#navMenuBtn").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
+
 function renderHead(){placeSide();const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
   b.setAttribute("aria-pressed",view==="perfil");$("#cfgBtn").setAttribute("aria-pressed",["config","help","instr"].includes(view))}
 
@@ -5169,6 +5284,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
     b.onclick=()=>setPref("layout",v);ly.appendChild(b)});
   ap.append(segRow("Tema","Automático segue o aparelho.",[["auto","Automático"],["light","Claro"],["dark","Escuro"]],P.theme,v=>setPref("theme",v)),
     segRow("Tamanho da letra","",[["n","Normal"],["g","Grande"]],P.font,v=>setPref("font",v)));
+  if(sideFull())ap.appendChild(segRow("Barra lateral","Automática: aberta no Início e recolhida nas outras abas e na tela inteira; recolhida, abre ao passar o mouse (no iPad, toque em ≡). Vale para este aparelho.",[["","Automática"],["open","Sempre aberta"],["rail","Sempre recolhida"]],sbPin,v=>sbSetPin(v)));
   box.appendChild(ap);
   // plano e revisões
   const pl=el(`<section class="card"><div class="dhead"><h2>Plano do dia e revisões</h2></div></section>`);
@@ -5860,13 +5976,7 @@ function foWeekExtra(){const P=ui.prefs,W=foWeekTotals(),ws=foWeekStart(),cur=W[
 function renderFoco(){const b=$("#foBody");b.innerHTML="";const L=el(`<div class="focol foleft"></div>`),R=el(`<div class="focol foright"></div>`);
   const A=foAfterCard(),t=foTimerCard(),w=foWeekCard(),h=foHeatCard(),m=foMatCard(),l=foListCard();w.classList.add("foweekc");m.classList.add("fomatc");l.classList.add("folistc");
   if(A)L.appendChild(A);L.append(t,l);R.append(w,m);b.append(L,R,h);foPaint()}
-function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h2 class="cftitle">Mais</h2>`));
-  const c=el(`<section class="card"><div class="cflinks"></div></section>`),l=c.querySelector(".cflinks");
-  const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,td=foSum(foSess.filter(x=>x.d===today()));
-  [["Foco",foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Pomodoro e cronômetro · hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"foco","maisFoco"],
-   ["Anotações",nk?`${nk} tema${nk>1?"s":""} com anotações`:"Resumos e anotações dos temas","notas","maisNotas"]].forEach(([t,d,v,id])=>{
-    const x=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);x.id="go-"+v;x.querySelector("b").textContent=t;const sp=x.querySelector("span");sp.textContent=d;sp.id=id;x.onclick=()=>setView(v);l.appendChild(x)});
-  b.appendChild(c)}
+function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h2 class="cftitle">Menu</h2>`));b.appendChild(navListEl())}
 /* ---------- Questões: refazer erradas, registro rápido, onde ganhar pontos, evolução ---------- */
 /* questões geradas que você errou: {id, k, d, n (vezes errada), q:{enunciado, alternativas:[{letra,texto}], correta, comentario, conceito, alerta}} */
 const LSRD="resid-redo-v1",RD_MAX=600;
@@ -7190,6 +7300,7 @@ const HELP=[
 4. **Erros:** errou? **Levar para o caderno de erros**. Ele volta para você revisar amanhã.
 5. **Faculdade:** com prova ou fechamento de SP por perto, o painel **Próximas provas** mostra o que falta e o ritmo.
 - **Buscar em tudo:** a lupa no topo (no computador, **Ctrl+K** ou **/**) procura em temas, anotações, erros, cartões e faculdade.
+- **Navegar:** no celular, a barra de baixo traz as abas principais e **≡ Menu** abre todas as seções (com o resumo de cada uma), a busca, Perfil, Configurações e Ajuda. No iPad em pé, o **≡** fica no canto de cima. No computador e no iPad deitado, a **barra lateral** fica aberta no Início e vira um trilho de ícones nas outras abas e na tela inteira; passe o mouse (no iPad, toque em ≡) para abrir por cima. **Fixar** deixa sempre aberta e **Recolher** sempre recolhida; toque de novo para voltar ao automático (também em Configurações › Aparência).
 - **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo por dia. Dá para mudar depois em Perfil e Configurações.
 - **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
 - **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
@@ -7276,7 +7387,7 @@ const HELP=[
 - **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa** e o **Conceito-chave**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
-- **Aba Anotações** (no celular, em Mais): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
+- **Aba Anotações** (no celular, em ≡ Menu): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
 - **Para reler hoje:** as anotações dos temas com revisão hoje ou no plano do dia; toque em **Reli** depois de ler. Os temas de hoje sem anotação aparecem embaixo.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
 - **Cartões de memorização:** dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em 5 a 10 perguntas e respostas (você confere antes de salvar), ou crie à mão em **+ Cartão manual**. Na aba, **Cartões para revisar**: veja a pergunta, toque em **Mostrar resposta** e marque **Lembrei** (o cartão volta em 1, 2, 4, 8, 16, 32 e 64 dias) ou **Não lembrei** (volta amanhã).
@@ -7334,7 +7445,7 @@ const HELP=[
 - **+1 vaga** se o conteúdo também cai muito na residência. **Residência protegida:** 2 dias por semana com um tema dela, exceto nos 7 dias finais antes de uma prova.
 - **Modo provas:** 3+ provas em 7 dias liga sozinho. Controle manual em **Faculdade › Modo provas**.
 - Os temas FAC não entram no "% dominado", que mede só os 185 temas da residência.`],
-["Foco: tempo de estudo",`A aba **Foco** (no celular, dentro de **Mais**) conta os minutos que você estuda.
+["Foco: tempo de estudo",`A aba **Foco** (no celular, dentro de **≡ Menu**) conta os minutos que você estuda.
 - **Pomodoro:** 25 + 5 ou 50 + 10 minutos, ou **Personalizar**. Ao terminar o ciclo, o tempo é salvo e a pausa começa sozinha; **Pular pausa** encerra a pausa.
 - **Pausa longa:** a cada 4 ciclos seguidos, a pausa é de 15 minutos (mude em **Personalizar**: pausa longa e a cada quantos ciclos). As bolinhas embaixo do relógio mostram em que ciclo você está; a contagem recomeça se você ficar mais de 1 hora sem fechar um ciclo.
 - **Cronômetro:** conta até você tocar em **Encerrar e salvar**. Menos de 1 minuto não é salvo. **Descartar** apaga a sessão em andamento.
@@ -7545,7 +7656,7 @@ $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus(
 $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});$("#tabM").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
 $("#foPill").onclick=()=>{backStack=[];setView("foco")};
 if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();

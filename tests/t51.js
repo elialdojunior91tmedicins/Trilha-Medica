@@ -4,7 +4,7 @@ const ctx=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMo
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 const vis=s=>p.evaluate(s=>{const e=document.querySelector(s);return !!e&&e.offsetParent!==null},s);
 ok(await vis('#tabM')&&!(await vis('#tabN'))&&!(await vis('#tabFo')),"celular: Mais visível, Anotações e Foco escondidas");
-const tabs=await p.$$eval('.appnav .tab',a=>a.filter(x=>x.offsetParent).map(x=>x.querySelector('.tl').textContent));ok(tabs.join()==="Início,Residência,Faculdade,Questões,Erros,Mais","barra: "+tabs.join());
+const tabs=await p.$$eval('.appnav .tab',a=>a.filter(x=>x.offsetParent).map(x=>x.querySelector('.tl').textContent));ok(tabs.join()==="Início,Residência,Faculdade,Questões,Erros,Menu","barra: "+tabs.join());
 await p.tap('#tabM');await p.waitForTimeout(200);ok(await vis('#go-foco')&&await vis('#go-notas'),"Mais lista Foco e Anotações");
 await p.tap('#go-foco');await p.waitForTimeout(200);ok(await vis('#foStart'),"aba Foco aberta");ok(await p.$eval('#tabM',x=>x.getAttribute('aria-selected'))==="true","Mais fica marcada");
 ok(await p.$eval('#foClock',x=>x.textContent)==="25:00","relógio 25:00");

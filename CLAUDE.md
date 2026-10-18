@@ -6,7 +6,7 @@ como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`
 
 Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
-Faculdade, Questões, Anotações, Foco, Erros; no celular Anotações e Foco ficam em Mais (view `mais`, `#tabM`). Existe em duas versões com o MESMO código:
+Faculdade, Questões, Anotações, Foco, Erros; no celular Anotações e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
 - **Artefato no Claude**: https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
@@ -168,6 +168,12 @@ consultado quando há dúvida. Responda em português.
 - Barra lateral de altura inteira (computador e tablet com `data-cols=2`): `.appnav` fixa à esquerda (`--sbw` 248px; `body` com recuo), slots `#sBrand`/`#sSearch`/`#sfProf`/`#sfCfg`;
   `placeSide()` (em `renderHead` e num `MutationObserver` de `data-layout/data-cols`) move os MESMOS nós (`h1.brand`, `#srchBtn`, `#profBtn`, `#cfgBtn`) e devolve ao `header`
   nas outras telas; o `header` fica escondido. Rodapé `#sFoot` com `#sfWho` (nome, abre Perfil). Teste: `tests/t86.js`.
+- Navegação (10/2026, Lote 2; módulo logo depois de `placeSide`): barra lateral recolhível em `html[data-sb=open|rail]` (`sbMode()`: tela inteira `.vfull`/`erfull` = rail;
+  fixada `sbPin` em localStorage `resid-sbpin` = "open"|"rail"|""; automático = aberta só no Início), `sbApply()` no fim de `render()` e no observer de layout;
+  trilho `--sbw:76px`, `.appnav.peek` abre por cima (mouse com `sbHover()`, ou `#sbMenu` ≡ no toque com `#sbBack`); `#sbPins` (`#sbPinOpen` Fixar, `#sbPinRail` Recolher;
+  tocar de novo = automático) e `segRow` "Barra lateral" em Configurações › Aparência (só com `sideFull()`). Menu ≡ `#navMenu`/`#nmPanel` (`navMenuOpen/Close`,
+  `navListEl` com `nmInfo(v)` = resumo e selo de cada seção, ids `#go-<view>`, `#nmSearch`, `#nmProf/#nmCfg/#nmHelp`): folha de baixo no celular (`#tabM` "Menu"),
+  gaveta à esquerda no iPad em pé (`#navMenuBtn` no header; a `.appnav` some em `tablet` + `cols=1`). Teste: `tests/t102.js`.
 - Geral (módulo antes de `function render(){`): fila do dia `dayQ` (`resid-dayq`; `QSTEPS` erros→cartões→anotações→temas, `qStart`/`qNext`/`qStop`,
   cartão `#iQueue`, barra fixa `#qBar` classe `.dqbar` — `.qbar` já é a barrinha das linhas de Questões), avisos `iNoticeEl` (artefato: `resid-artnote-v1`;
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),

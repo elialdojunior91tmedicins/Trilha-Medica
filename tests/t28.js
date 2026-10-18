@@ -34,7 +34,7 @@ ok(!errs.length,"celular sem erros JS "+errs.join("|"));await ctx.close();
 ctx=await b.newContext({viewport:{width:1366,height:768}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
 p=await ctx.newPage();errs=[];p.on('pageerror',e=>errs.push(e.message));await go();
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"Cardio",items:["T:CM-4"]}],provas:[{id:"p",discId:"d",name:"P2",date:D(5),items:["T:CM-4"],done:[]}],own:{}};saveFac();setView("erros")});
-await p.click('#navExtra button:has-text("Próxima prova")');await p.waitForTimeout(150);
+await p.mouse.move(800,400);await p.mouse.move(30,300,{steps:5});await p.waitForTimeout(300);await p.click('#navExtra button:has-text("Próxima prova")');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>view==="fac"&&facProvaOpen.has("p")&&!!document.getElementById("fp-p")),"atalho Próxima prova abre a prova na Faculdade");
 await p.click('#navExtra button:has-text("Revisões")');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector("#viewTemas .card.revs").offsetParent&&!document.querySelector("#viewInicio .card.revs")),"atalho Revisões vai para a Residência");await p.evaluate(()=>setView("temas"));
 ok(await p.evaluate(()=>getComputedStyle(document.getElementById("tSeg")).display==="none"&&!!document.querySelector(".revs").offsetParent&&!!document.querySelector("#areas").offsetParent),"computador mostra tudo (sem seções do celular)");
@@ -42,7 +42,7 @@ ok(!errs.length,"computador sem erros JS "+errs.join("|"));await ctx.close();
 // ===== tablet =====
 ctx=await b.newContext({viewport:{width:820,height:1180},isMobile:true,hasTouch:true});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
 p=await ctx.newPage();errs=[];p.on('pageerror',e=>errs.push(e.message));await go();
-await p.tap('#tabQ');ok(await p.evaluate(()=>view==="quest"),"tablet: toque na faixa lateral troca de aba");
-const h=await p.locator('#tabQ').boundingBox();ok(h.height>=56,"tablet: botões da faixa com "+Math.round(h.height)+"px de altura");
+await p.tap('#navMenuBtn');await p.waitForTimeout(200);await p.tap('#go-quest');await p.waitForTimeout(200);ok(await p.evaluate(()=>view==="quest"),"tablet em pé: ≡ no topo abre o menu e troca de aba");
+const h=await p.locator('#navMenuBtn').boundingBox();ok(h.height>=40,"tablet: botão ≡ com "+Math.round(h.height)+"px de altura");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),"tablet sem rolagem lateral");
 ok(!errs.length,"tablet sem erros JS "+errs.join("|"));await b.close()})();
