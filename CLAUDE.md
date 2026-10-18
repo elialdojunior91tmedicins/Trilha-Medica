@@ -125,6 +125,16 @@ consultado quando há dúvida. Responda em português.
   "Para reler hoje" (`nTodayCard`, `s.nread`), pegadinhas `pegOf(k)` (linhas "> ", ==destaque==, seção "Pegadinhas"), cobertura
   `noNoteKeys()`/`nNoNote`, cartões `cards` = [{id,k,q,a,box,due,n,ok,src}] (`resid-cards-v1` + Firestore `progress/cards/{id}`,
   `cardsBlock` no tema, `cdGenerate` via `sample.json`, revisão Leitner `CD_INT` em `nCardsCard`; backup `data.cards`).
+  Cartões (Lote 5, 10/2026; módulo que começa em `const LSCD`): cada cartão `{id,k,q,a,ref?,h?,kind?,eid?,src,due,n,ok,box,at?,f:{st,s,d,last,reps,lapses,first}}`
+  (`h`=1 = campos em HTML simples do padrão Osler, mostrados por `cdSafe`; `st` 0 novo, 1 aprendendo, 2 revisão, 3 reaprendendo). FSRS-4.5 em dias (`FW`, `fsNext(x,g)` → `{f,days}`,
+  `days`=0 = volta na mesma sessão; `fsPreview`, `fsLab`); `cdClean` migra os antigos pelo `box` (revisão com `s`=`CD_INT[box]`). `cdDue()` = vencidos + novos até `cdNewLimit()`
+  (`ui.prefs.cdNew`, padrão 14; `cdNewToday` pelo `f.first`). Tela `nCardsCard0` (título "Cartões"): resumo `.cdsum`, previsão `.cdfc` (`cdForecast`, 7 dias), `#cdGo` → `cdRunStart`,
+  cartão `.oscard` (`.osq`, `.osa`, `.osref`), botões `#cdR1..4` (`cdRate`; teclas 1–4), `cdCfgEl`. Do erro: `eCardBtn` (`#ecd-<id>`) abre `cdErrEl(e)` (`cdErr[id]`, rascunho do app
+  `cdErrDrafts`: discriminador + por que não a sua; `cdErrClaude` com `cdErrPrompt` = regras do Osler, 4 tipos, `CD_TIPO`/`CDK`), `cdErrSave(e)` guarda com `eid`/`kind`.
+  Anki: `cdReady()` (revisão a ≥ `CD_ANKI`=40 dias) → `cdAnkiEl` → `apkgBuild(L)` (banco SQLite escrito à mão em `sqliteBuild`: tabelas col/notes/cards/revlog/graves do esquema 11,
+  páginas internas e transbordo; `zipStore` sem compressão + `crc32`; tipo de nota fixo "Osler Flashcard (Nexus)" `APKG_MID`, baralho "Nexus::Cartões dos erros" `APKG_DID`, `guid`="nx"+id,
+  tags `apkgTags`) → `cdExp` (localStorage `resid-cdexp`) → `#cdAnkiDone` `cdAnkiDone()` = lixeira `kind:"cards"` (um item com todos) + `e.ak` no erro. Armazenamento continua 1 documento por
+  cartão (`progress/cards/{id}`): os pacotes + IndexedDB ficaram para quando o volume pedir. Teste: `tests/t105.js` (confere o .apkg com o sqlite3 e o zipfile do Python).
   Filtros extras `nFlags` (week|peg|tab|cards, `nFlagOk`) e ordem `nSort`; erros junto `noteErrsEl(k)` (linha "N erros neste tema · M ainda pedem atenção · ver no caderno" + até 3 vivos `eAlive` = vence hoje ou `miss`≥1, sem `e.nt` nem arquivados; `eConcept(e)` = 1ª linha do correto sem "Correta:"; `eOpenOne` abre o erro no caderno, `.ecard[data-eid]`); PDF `notesPDF(keys,free)`;
   caderno livre `freeN` = [{id,t,b,tags,ks,at}] (`resid-free-v1` + Firestore `progress/free/{id}`, `freeCard`/`freeEditor`,
   `freeLinkedEl(k)` dentro do tema; backup `data.free`).

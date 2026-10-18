@@ -36,8 +36,8 @@ const rep=await p.$eval('.erep',x=>x.textContent);ok(/2 erros/.test(rep)||/3 err
 ok(await p.$$eval('.ewk .ewcol',a=>a.length)===8,tag+": gráfico 8 semanas");
 // 4. cartão e anotação
 await p.evaluate(()=>{eOrder="new";render()});
-const before=await p.evaluate(()=>cards.length);await p.evaluate(()=>{document.querySelector('#elist .ecard .emenu').click()});await p.evaluate(()=>{[...document.querySelectorAll('#elist .ecard .mini')].find(b=>b.textContent==="Virar cartão").click()});await p.waitForTimeout(100);
-ok(await p.evaluate(()=>cards.length)===before+1,tag+": virou cartão");ok(await p.evaluate(()=>[...document.querySelectorAll('#elist .mini')].some(b=>b.textContent==="Cartão criado ✓")),tag+": marca cartão criado");
+const before=await p.evaluate(()=>cards.length);await p.evaluate(()=>{document.querySelector('#elist .ecard .emenu').click()});await p.evaluate(()=>{[...document.querySelectorAll('#elist .ecard .mini')].find(b=>b.textContent==="Criar cartões").click()});await p.waitForTimeout(100);await p.evaluate(()=>{document.querySelector('#elist [id^="cdSave-"]').click()});await p.waitForTimeout(100);
+ok(await p.evaluate(()=>cards.length)>before,tag+": virou cartão");ok(await p.evaluate(()=>{const e=errors.find(x=>x.cd);return !!e&&cards.some(c=>c.eid===e.id)}),tag+": marca cartão criado");
 await p.evaluate(()=>{notes["CM-4"]="## Resumo\n- a\n\n## Meus erros\n- antigo\n\n## Outra\n- b";const e=errors.find(x=>x.id==="a3");eToNote(e);eToNote(errors.find(x=>x.id==="a1"))});
 const n4=await p.evaluate(()=>notes["CM-4"]),n1=await p.evaluate(()=>notes["CM-1"]);
 ok(/## Meus erros\n- antigo\n- era EXCETO \(errei: li errado\) \{\{e:a3\}\}\n\n## Outra/.test(n4),tag+": insere na seção existente "+JSON.stringify(n4));

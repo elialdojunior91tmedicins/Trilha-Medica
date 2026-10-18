@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=a81b9594">
+<link rel="stylesheet" href="site.css?v=c161c6e8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=a81b9594"></script>
-<script src="bridge.js?v=a81b9594"></script>
+<script src="config.js?v=c161c6e8"></script>
+<script src="bridge.js?v=c161c6e8"></script>
 </head>
 <body>
 <script>
@@ -1768,6 +1768,34 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .msx{grid-row:1/3;grid-column:2;width:34px;height:34px;border-radius:8px;border:0;background:none;color:var(--muted);font-size:1.2rem;cursor:pointer}.msx:hover{background:var(--bg);color:var(--danger)}
 .msuse{display:flex;flex-direction:column;gap:4px}.msbar{height:7px;border-radius:99px;background:var(--track);overflow:hidden}.msbar i{display:block;height:100%;background:var(--accent);border-radius:inherit}.msbar.over i{background:var(--warn)}
 .mst{font-size:.78rem;color:var(--muted)}
+
+/* ===== Lote 5: cartões (visual Osler, 4 botões) ===== */
+.oscard{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.oshead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.osq,.osa{border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--surface);text-align:center;font-size:1.05rem;line-height:1.5;overflow-wrap:anywhere}
+.osq{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.osa i{color:var(--ink)}.osa ul,.osa ol,.osq ul,.osq ol{display:inline-block;text-align:left;margin:4px 0;padding-left:1.2em}
+.osref{text-align:right;font-size:.82rem;color:#8b1a1a;padding:0 4px}
+:root[data-theme="dark"] .osref{color:#e58a8a}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .osref{color:#e58a8a}}
+.oscard.mini .osq,.oscard.mini .osa{font-size:.9rem;padding:10px 12px;border-radius:10px}.oscard.mini{gap:6px}
+.osbtns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.osbtns .osshow{grid-column:1/-1;min-height:46px}
+.osb{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
+.osb b{font-size:.92rem}.osi{font:600 .74rem var(--body);color:var(--muted)}
+.osb1{border-color:color-mix(in srgb,var(--due) 55%,var(--line))}.osb1 b{color:var(--due)}
+.osb2 b{color:var(--warn)}.osb3{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}.osb3 b{color:var(--good)}.osb4 b{color:var(--l2)}
+.osb:hover{background:var(--bg)}
+.cdsum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cdfc{margin:0;display:flex;flex-direction:column;gap:6px}.cdfc figcaption{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.cdfcb{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;align-items:end;height:92px}
+.cdfcc{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%}
+.cdfcc i{display:block;width:70%;min-height:2px;background:var(--accent);border-radius:4px 4px 0 0}.cdfcc:first-child i{background:var(--gold)}
+.cdfn{font:600 .74rem var(--mono);color:var(--ink)}.cdfd{font-size:.7rem;color:var(--muted);text-transform:capitalize}
+.cdanki{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}.cdanki .how{margin:0}.cdanki .btn{align-self:flex-start}
+.cdcfg>summary{font-size:.86rem}
+.cderr{display:flex;flex-direction:column;gap:8px;border:1px solid var(--accent);border-radius:12px;padding:12px;background:var(--bg);margin-top:6px}.cderr .how{margin:0}
+.cdlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px}
+.cdit{display:flex;flex-direction:column;gap:6px}.cdck{display:flex;align-items:center;gap:8px;font:600 .82rem var(--body)}.cdck input{width:18px;height:18px;accent-color:var(--accent)}
 </style>
 
 <div class="wrap">
@@ -4710,7 +4738,7 @@ function ecardEl(e,withTopic){
   db.onclick=()=>{if(delArm===e.id){delArm=null;delErr(e.id)}else{delArm=e.id;render()}};
   const ab=el(`<button class="mini" type="button"></button>`);ab.textContent=e.arch?"Desarquivar":"Resolvido";ab.title=e.arch?"Volta para as revisões":"Arquiva: sai das revisões e da lista (fica em Arquivados)";ab.onclick=()=>eArchive(e,!e.arch);
   const mb=el(`<button class="mini emenu" type="button" aria-expanded="${eMenu===e.id}"></button>`);mb.textContent=eMenu===e.id?"Fechar ações":"⋯ Ações";mb.onclick=()=>{eMenu=eMenu===e.id?null:e.id;render()};
-  if(eMenu===e.id)ft.append(rb,nb,ab,db,mb);else ft.append(mb);
+  if(eMenu===e.id)ft.append(rb,nb,ab,db,mb);else ft.append(mb);if(cdErr[e.id])c.appendChild(cdErrEl(e));
   return c;
 }
 function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();return true}
@@ -4847,7 +4875,7 @@ function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").for
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
-  if(view==="notas"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(ev.key==="1"){b("#cdGood");return}if(ev.key==="2"){b("#cdBad");return}
+  if(view==="notas"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
     if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
   if(view==="foco"&&foRun){if(ev.key===" "){b("#foPauseB");return}if(ev.key==="d"||ev.key==="D"){b("#foDist");return}
     if(ev.key==="Escape"&&fullOn.fo&&twoCols()){ev.preventDefault();fullSet("fo",false)}return}
@@ -4897,7 +4925,7 @@ function eRepCard(){const {tem,stub}=eRepeat();if(!tem.length&&!stub.length)retu
   if(stub.length){c.appendChild(el(`<span class="glabel">Ainda não firmaram na revisão</span>`));
     const ul=el(`<ul class="ereplist"></ul>`);stub.slice(0,5).forEach(e=>{const it=BYKEY[e.k],li=el(`<li><span class="ew"><b></b><span></span></span><span class="ks"></span></li>`);
       li.querySelector("b").textContent=it.t+": ";li.querySelector(".ew span").textContent=eOneLine(e.w).slice(0,140)+(eOneLine(e.w).length>140?"…":"");li.querySelector(".ks").textContent=`"ainda erraria" ${e.miss}×`;
-      li.appendChild(eCardBtn(e));ul.appendChild(li)});c.appendChild(ul);
+      li.appendChild(eCardBtn(e));if(cdErr[e.id])li.appendChild(cdErrEl(e));ul.appendChild(li)});c.appendChild(ul);
     c.appendChild(el(`<p class="how">Para estes, um cartão de memorização ajuda: ele volta mais vezes que a revisão do erro.</p>`))}
   return c}
 /* ----- erros por semana, por tipo ----- */
@@ -5005,9 +5033,9 @@ async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Ne
   try{const bytes=errosPDF(eVis);await downloadsFn.save({filename:`caderno-de-erros-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});eMsg=`PDF salvo com ${eVis.length} ${eVis.length===1?"erro":"erros"}.`}
   catch(e){eMsg=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o PDF agora."}render()}
 /* ----- virar cartão e levar para a anotação ----- */
-function eCardBtn(e){const has=e.cd&&cards.some(x=>x.id===e.cd),b=el(`<button class="mini" type="button"></button>`);b.textContent=has?"Cartão criado ✓":"Virar cartão";b.disabled=has;
-  b.title="Cria um cartão de memorização: na frente o que você errou, no verso o correto";
-  b.onclick=()=>{const x=cdAdd(e.k,`${e.w}${e.p?`\nPista: ${e.p}`:""}\n\nQual é o certo?`,e.r,"eu");e.cd=x.id;putErr(e);render()};return b}
+function eCardBtn(e){const n=cards.filter(x=>x.eid===e.id||x.id===e.cd).length,b=el(`<button class="mini" type="button"></button>`);b.textContent=n?`${n} ${n===1?"cartão":"cartões"} ✓`:cdErr[e.id]?"Cartões ▾":"Criar cartões";b.disabled=!!n;
+  b.title="Cria dois cartões do padrão Osler a partir do erro: o que separa a certa da sua e por que a sua não serve";b.id="ecd-"+e.id;
+  b.onclick=()=>{if(cdErr[e.id])delete cdErr[e.id];else cdErr[e.id]={list:cdErrDrafts(e)};render();setTimeout(()=>{const x=document.querySelector(`.cderr[data-eid="${e.id}"]`);if(x)x.scrollIntoView({block:"nearest"})},40)};return b}
 function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""} {{e:${e.id}}}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
   if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
   else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
@@ -5104,6 +5132,7 @@ function trRestore(id){const x=trash.find(y=>y.id===id);if(!x)return;let d;try{d
   let ok=true,why="";
   if(x.kind==="err"){if(!errors.some(e=>e.id===d.id)){errors.push(d);putErr(d)}}
   else if(x.kind==="card"){if(!cards.some(c=>c.id===d.id)){const c=cdClean(d);cards.push(c);cdPut(c)}}
+  else if(x.kind==="cards"){(Array.isArray(d)?d:[]).filter(cdOk).forEach(y=>{if(!cards.some(c=>c.id===y.id)){const c=cdClean(y);cards.push(c);cdPut(c)}})}
   else if(x.kind==="free"){if(!freeN.some(f=>f.id===d.id)){const f=frClean(d);freeN.push(f);frPut(f)}}
   else if(x.kind==="exam"){if(d.ex&&exOk(d.ex)&&!exams.some(e=>e.id===d.ex.id)){const e=exClean(d.ex);exams.unshift(e);exPut(e);if(d.pg&&exPOk(d.pg)&&!exProg.some(y=>y.id===e.id)){exProg.push(exPClean(d.pg));exPSave(e.id)}}}
   else if(x.kind==="note"){const cur=notes[d.k]||"";saveNote(d.k,cur.trim()?cur+"\n\n---\n\n"+d.t:d.t)}
@@ -7328,17 +7357,216 @@ function nPegCard(vis){const c=el(`<section class="card npeg" aria-labelledby="n
   if(n>30){const m=el(`<button class="link" type="button">${nPegAll?"Mostrar menos":`Mostrar todas as ${n}`}</button>`);m.onclick=()=>{nPegAll=!nPegAll;render()};c.appendChild(m)}
   return c}
 /* ----- cartões de pergunta e resposta (repetição espaçada tipo Leitner) ----- */
-const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64];
-let cards=[],cardStore=null,cdRun=null,cdGen={},cdNew={};
+/* ===== Cartões (Lote 5): FSRS com 4 botões, limite de novos por dia, visual Osler, cartões dos erros e exportação .apkg ===== */
+const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64],CD_ANKI=40;
+let cards=[],cardStore=null,cdRun=null,cdGen={},cdNew={},cdErr={},cdExp=null;
+try{const v=JSON.parse(localStorage.getItem("resid-cdexp")||"null");if(v&&Array.isArray(v.ids))cdExp=v}catch(e){}
+/* FSRS-4.5 (pesos padrão), em dias */
+const FW=[0.4872,1.4003,3.7145,13.8206,5.1618,1.2298,0.8975,0.031,1.6474,0.1367,1.0461,2.1072,0.0793,0.3246,1.587,0.2272,2.8755],FDEC=-0.5,FFAC=19/81;
+const fClamp=(v,a,b)=>Math.max(a,Math.min(b,v)),fR=(t,s)=>Math.pow(1+FFAC*t/s,FDEC),fIvl=s=>fClamp(Math.round(s),1,36500);
+const fD0=g=>fClamp(FW[4]-Math.exp(FW[5]*(g-1))+1,1,10),fS0=g=>Math.max(.1,FW[g-1]);
+const fND=(d,g)=>fClamp(FW[7]*fD0(4)+(1-FW[7])*(d-FW[6]*(g-3)),1,10);
+const fRec=(d,s,r,g)=>s*(1+Math.exp(FW[8])*(11-d)*Math.pow(s,-FW[9])*(Math.exp(FW[10]*(1-r))-1)*(g===2?FW[15]:1)*(g===4?FW[16]:1));
+const fFor=(d,s,r)=>Math.min(s,FW[11]*Math.pow(d,-FW[12])*(Math.pow(s+1,FW[13])-1)*Math.exp(FW[14]*(1-r)));
+/* próximo estado para cada nota (1 Errei, 2 Difícil, 3 Bom, 4 Fácil): {f, days} (days=0 → volta nesta mesma sessão) */
+function fsNext(x,g){const f=x.f||{st:0},T=today(),el=f.last?Math.max(0,dnum(T)-dnum(f.last)):0;let s,d,st,days,lap=f.lapses||0;
+  if(!f.st){d=fD0(g);s=fS0(g);if(g===1){st=1;days=0}else{st=2;days=fIvl(s)}}
+  else if(f.st===1||f.st===3){d=fND(f.d,g);s=f.s;if(g===1){st=f.st;days=0}else{st=2;days=fIvl(g===4?s*1.5:g===2?s*.8:s)}}
+  else{const r=fR(el,f.s);d=fND(f.d,g);if(g===1){s=Math.max(.1,fFor(f.d,f.s,r));st=3;days=0;lap++}else{s=fRec(f.d,f.s,r,g);st=2;days=fIvl(s)}}
+  return {f:{st,s:+s.toFixed(4),d:+d.toFixed(4),last:T,reps:(f.reps||0)+1,lapses:lap,first:f.first||T},days}}
+function fsPreview(x){const P=[1,2,3,4].map(g=>fsNext(x,g).days);if(P[1]&&P[2]&&P[1]>P[2])P[1]=P[2];if(P[2]&&P[3]<=P[2])P[3]=P[2]+1;if(P[1]&&P[2]===P[1]&&P[2]>1)P[1]=Math.max(1,P[2]-1);return P}
+const fsLab=d=>!d?"<10 min":d<30?`${d} d`:d<365?`${Math.round(d/30)} m`:`${(d/365).toFixed(d<3650?1:0).replace(".",",")} a`;
 function cdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&typeof x.q==="string"&&typeof x.a==="string"&&x.q.trim()&&x.a.trim()}
-function cdClean(x){return {id:x.id,k:x.k,q:x.q.slice(0,600),a:x.a.slice(0,1200),box:Number.isInteger(x.box)&&x.box>=0&&x.box<CD_INT.length?x.box:0,due:/^\d{4}-\d{2}-\d{2}$/.test(x.due)?x.due:today(),n:Number.isInteger(x.n)?x.n:0,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu"}}
+function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x.box>=0&&x.box<CD_INT.length?x.box:0,n=Number.isInteger(x.n)?x.n:0,due=D.test(x.due)?x.due:today();
+  let f=x.f&&typeof x.f==="object"?{st:[0,1,2,3].includes(x.f.st)?x.f.st:0,s:+x.f.s||0,d:+x.f.d||0,last:D.test(x.f.last||"")?x.f.last:"",reps:+x.f.reps||0,lapses:+x.f.lapses||0,first:D.test(x.f.first||"")?x.f.first:""}:null;
+  if(!f){f=n||box?{st:2,s:CD_INT[box]||1,d:5,last:fromNum(dnum(due)-(CD_INT[box]||1)),reps:n,lapses:0,first:""}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""}}
+  if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
+  const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
+  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
-async function cdPut(x){cdSaveLocal();if(!cardStore)return;try{await cardStore.doc(x.id).set({...x})}catch(e){}}
-async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",x.q,topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
-function cdAdd(k,q,a,src){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src});cards.push(x);cdPut(x);return x}
-const cdDue=()=>cards.filter(x=>BYKEY[x.k]&&x.due<=today());
-function cdAnswer(x,good){x.n++;if(good){x.ok++;x.box=Math.min(x.box+1,CD_INT.length-1);x.due=fromNum(dnum(today())+CD_INT[x.box])}else{x.box=0;x.due=fromNum(dnum(today())+1)}cdPut(x)}
+async function cdPut(x){cdSaveLocal();if(!cardStore)return;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))}catch(e){}}
+async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",cdPlain(x.q).slice(0,120),topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
+function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src,at:new Date().toISOString(),...(o||{})});cards.push(x);cdPut(x);return x}
+const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
+const cdNewToday=()=>cards.filter(x=>x.f.first===today()).length;
+/* fila de hoje: revisões e aprendizado vencidos + novos até o limite do dia */
+function cdDue(){const T=today(),rev=cards.filter(x=>BYKEY[x.k]&&x.f.st&&x.due<=T).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0),left=Math.max(0,cdNewLimit()-cdNewToday());
+  const nw=left?cards.filter(x=>BYKEY[x.k]&&!x.f.st).sort((a,b)=>(a.at||a.id)<(b.at||b.id)?-1:1).slice(0,left):[];return [...rev,...nw]}
+function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const N=fsNext(x,g);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
+const cdReady=()=>cards.filter(x=>BYKEY[x.k]&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
+function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>BYKEY[x.k]&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
+/* texto dos cartões: os novos (h=1) guardam HTML simples do padrão Osler; o app só deixa passar b, i, u, br, listas */
+function cdSafe(html){const t=document.createElement("template");t.innerHTML=String(html||"");const ok=new Set(["B","STRONG","I","EM","U","BR","UL","OL","LI","SUB","SUP"]);
+  const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===1){walk(c);if(!ok.has(c.tagName)){c.replaceWith(...c.childNodes)}else[...c.attributes].forEach(a=>c.removeAttribute(a.name))}else if(c.nodeType!==3)c.remove()})};walk(t.content);return t.innerHTML}
+const cdPlain=h=>{const t=document.createElement("template");t.innerHTML=String(h||"").replace(/<br\s*\/?>/gi," ");return t.content.textContent.replace(/\s+/g," ").trim()};
+const cdHTML=(x,f)=>x.h?cdSafe(x[f]):esc(x[f]).replace(/\n/g,"<br>");
+function cdTxt2html(t){return esc(String(t||"")).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>")}
+/* ---- tela Cartões ---- */
+function cdRunStart(){const Q=cdDue();if(!Q.length)return;cdRun={ids:Q.map(x=>x.id),i:0,show:false,done:0,g:{1:0,2:0,3:0,4:0},again:{}};render()}
+function cdRate(x,g){const R=cdRun,days=cdAnswer(x,g);R.done++;R.g[g]++;if(!days){R.ids.push(x.id);R.again[x.id]=(R.again[x.id]||0)+1}R.i++;R.show=false;render()}
+function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões</h2><span class="todaydate"></span></div></section>`);
+  const nNew=due.filter(x=>!x.f.st).length,nRev=due.length-nNew;c.querySelector(".todaydate").textContent=cards.length?`${due.length} hoje · ${cards.length} no total`:"";
+  if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
+    if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim por hoje: ${R.done} ${R.done===1?"resposta":"respostas"} (Errei ${R.g[1]} · Difícil ${R.g[2]} · Bom ${R.g[3]} · Fácil ${R.g[4]}).</p>`));
+      c.appendChild(el(`<p class="how">Cada cartão volta no dia em que você estaria perto de esquecer (FSRS): quem você acertou com facilidade some por mais tempo.</p>`));
+      const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{cdRun=null;render()};c.appendChild(b);return c}
+    const it=BYKEY[x.k],left=R.ids.length-R.i,card=el(`<div class="oscard${R.show?" flip":""}"><div class="oshead"><span class="qn"></span><button class="link fctopic" type="button"></button></div><div class="osq"></div><div class="osa" hidden></div><div class="osref" hidden></div></div>`);
+    card.querySelector(".qn").textContent=`${!x.f.st?"NOVO · ":x.f.st===2?"":"APRENDENDO · "}FALTAM ${left}`;const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
+    card.querySelector(".osq").innerHTML=cdHTML(x,"q");
+    if(R.show){const a=card.querySelector(".osa");a.hidden=false;a.innerHTML=cdHTML(x,"a");if(x.ref){const r=card.querySelector(".osref");r.hidden=false;r.innerHTML=cdSafe(x.ref)}}
+    c.appendChild(card);const a=el(`<div class="osbtns"></div>`);
+    if(!R.show){const s=el(`<button class="btn primary osshow" type="button" id="cdShow">Mostrar resposta</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
+    else{const P=fsPreview(x);[[1,"Errei","cdR1"],[2,"Difícil","cdR2"],[3,"Bom","cdR3"],[4,"Fácil","cdR4"]].forEach(([g,l,id])=>{const b=el(`<button class="osb osb${g}" type="button"><span class="osi"></span><b></b></button>`);b.id=id;b.querySelector(".osi").textContent=fsLab(P[g-1]);b.querySelector("b").textContent=l;b.onclick=()=>cdRate(x,g);a.appendChild(b)})}
+    c.appendChild(a);const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{cdRun=null;render()};c.appendChild(st);
+    c.appendChild(el(`<p class="how erkeys">Teclado: espaço mostra a resposta · 1 Errei · 2 Difícil · 3 Bom · 4 Fácil${fullOn.cd?" · Esc sai da tela inteira":""}</p>`));return c}
+  if(!cards.length){c.appendChild(el(`<p class="cempty">Crie cartões a partir dos seus erros (no caderno de erros, ⋯ Ações › <b>Criar cartões</b>) ou das anotações (no tema, <b>Criar cartões com o Claude</b>). Cada cartão volta no dia certo pelo FSRS, com 4 botões como no Anki.</p>`));c.appendChild(cdCfgEl());return c}
+  const sum=el(`<div class="cdsum"><div class="kpi"><span class="kl">Revisões hoje</span><b></b></div><div class="kpi"><span class="kl">Novos hoje</span><b></b><span class="ks"></span></div><div class="kpi"><span class="kl">Prontos p/ Anki</span><b></b><span class="ks">≥ ${CD_ANKI} dias</span></div></div>`),K=sum.querySelectorAll("b");
+  K[0].textContent=nRev;K[1].textContent=nNew;sum.querySelectorAll(".ks")[0].textContent=`${cdNewToday()} de ${cdNewLimit()} já vistos`;K[2].textContent=cdReady().length;c.appendChild(sum);
+  const FC=cdForecast(),mx=Math.max(1,...FC.map(x=>x.n)),fc=el(`<figure class="cdfc"><figcaption>Revisões nos próximos 7 dias</figcaption><div class="cdfcb"></div></figure>`),fb=fc.querySelector(".cdfcb");
+  FC.forEach((x,i)=>{const d=el(`<div class="cdfcc"><span class="cdfn"></span><i style="height:${Math.round(x.n/mx*100)}%"></i><span class="cdfd"></span></div>`);d.querySelector(".cdfn").textContent=x.n;d.querySelector(".cdfd").textContent=i?new Date(x.d+"T12:00").toLocaleDateString("pt-BR",{weekday:"short"}).replace(".",""):"hoje";fb.appendChild(d)});c.appendChild(fc);
+  if(due.length){const go=el(`<button class="btn primary" type="button" id="cdGo"></button>`);go.textContent=`Revisar ${due.length} ${due.length===1?"cartão":"cartões"}`;go.onclick=cdRunStart;c.appendChild(go)}
+  else{const nx=cards.filter(x=>x.f.st).map(x=>x.due).sort()[0];c.appendChild(el(`<p class="cempty">Nada para hoje.${nx?` O próximo volta em ${br(nx)}.`:""}${cards.some(x=>!x.f.st)?` Os novos do dia já entraram (limite ${cdNewLimit()}).`:""}</p>`))}
+  c.appendChild(cdAnkiEl());c.appendChild(cdCfgEl());return c}
+function cdCfgEl(){const w=el(`<details class="plain cdcfg"><summary>Ajustes dos cartões</summary></details>`);
+  const r=segRow("Novos por dia","Quantos cartões novos entram por dia. As revisões não têm limite.",[[7,"7"],[14,"14"],[20,"20"],[30,"30"]],cdNewLimit(),v=>{ui.prefs.cdNew=v;saveUI();render()});w.appendChild(r);return w}
+/* ---- cartões a partir de um erro: rascunho do app (2 cartões) ou do Claude no padrão Osler ---- */
+const CDK={disc:"Discriminador",nao:"Por que não a sua",lac:"Lacuna",arm:"Armadilha",con:"Contraste"};
+function cdLabel(it){return it?it.t:""}
+function cdErrParse(e){const m=/^Marquei (.+?); a certa era (.+)$/.exec(eOneLine(e.w)),why=(/(?:^|\n)Por que não[^:]*:\s*(.+)/.exec(e.r)||[])[1]||"",concept=String(e.r||"").split("\n").filter(l=>!/^Por que não/.test(l)&&!/^Correta:/.test(l)).join(" ").trim();return {mine:m&&m[1],right:m&&m[2],why,concept}}
+function cdErrDrafts(e){const it=BYKEY[e.k],L=esc(cdLabel(it)),P=cdErrParse(e),ref=e.s?`<i>Questão</i>, em <b>${esc(e.s)}</b>.`:"",out=[];
+  if(P.right){out.push({kind:"disc",q:`<b>${L}.</b> ${e.p?esc(e.p)+" &rarr; ":""}qual é a resposta?`,a:`<b>${esc(P.right)}</b>${P.concept?`<br><br><i>${esc(P.concept)}</i>`:""}`,ref,keep:true});
+    if(P.mine)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(P.mine)}${e.p?" neste caso":""}?`,a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
+  else out.push({kind:"disc",q:`<b>${L}.</b> ${esc(eOneLine(e.w))}${e.p?` (${esc(e.p)})`:""} &rarr; qual é o certo?`,a:`<b>${esc(eOneLine(e.r).slice(0,200))}</b>`,ref,keep:true});
+  return out}
+function cdErrPrompt(e){const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro, não um resumo do tema.
+Tema: ${it?it.t:""} (${it?areaLabel(it):""}). Tipo de erro: ${ETYPES[e.t]||""}${e.c?`; causa: ${e.c}`:""}.
+O que ele errou: ${eOneLine(e.w)}${e.p?`\nPista do caso: ${e.p}`:""}
+Conceito correto: ${String(e.r||"").slice(0,1500)}
+
+Crie 4 cartões, um de cada tipo, nesta ordem:
+1. "discriminador": o detalhe do caso que separa a resposta certa da que ele marcou (pergunta direta).
+2. "por-que-nao": por que a alternativa que ele marcou não serve neste caso (pergunta direta; a armadilha vai num parágrafo "Note:").
+3. "lacuna": uma frase com o dado-chave trocado por [...] (nunca use {{c1::}}).
+4. "${e.t==="confusao"?"contraste":"armadilha"}": ${e.t==="confusao"?"cartão comparativo entre as duas entidades que ele confundiu (o que separa uma da outra)":"a armadilha ligada à causa do erro (leitura, exceção, conduta vs. diagnóstico)"}.
+Regras do Padrão Osler:
+- Question: rótulo da ENTIDADE específica em <b>negrito</b> terminado em ponto (ex.: <b>Anemia ferropriva.</b>), depois a pergunta, afirmação ou lacuna; o rótulo não pode entregar a resposta. Um conceito por cartão, respondível em segundos.
+- Answer: 1ª linha = resposta em <b>negrito</b> (até ~20 palavras); na lacuna, a frase completa com o termo em <b>negrito</b>. Depois <br><br><i>explicação curta e didática, com 1 ou 2 termos em <b>negrito</b>, fechando na consequência prática</i>. "Note:" só quando houver armadilha, como último parágrafo dentro do itálico.
+- Reference: a fonte, com título em <i>itálico</i> e publicação em <b>negrito</b> (ex.: <i>Treatment of iron deficiency anemia in adults</i>, em <b>UpToDate</b>.). Nunca invente título, autor ou ano: se não tiver certeza, cite de forma geral (ex.: diretriz da SBC) ou deixe "".
+- Só as tags HTML b, i, u, br, ul, ol, li. Escreva &lt; e &gt; para os sinais de comparação. Nada de cor, tamanho ou estilo.
+Responda apenas com um array JSON, sem outro texto: [{"tipo":"discriminador","question":"...","answer":"...","reference":"..."}]
+Escreva em português do Brasil.`}
+const CD_TIPO={discriminador:"disc","por-que-nao":"nao",lacuna:"lac",armadilha:"arm",contraste:"con"};
+async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)});S.st="loading";S.ctl=new AbortController();S.msg="";render();
+  try{const data=await sampleFn.json(cdErrPrompt(e),{signal:S.ctl.signal,cache:false,title:"Cartões do erro",hint:"Cole aqui a resposta do Claude (o JSON com os cartões)."});if(cdErr[e.id]!==S)return;
+    const arr=(Array.isArray(data)?data:[]).filter(c=>c&&typeof c.question==="string"&&typeof c.answer==="string"&&c.question.trim()&&c.answer.trim()).slice(0,4);
+    if(!arr.length){S.st="error";S.msg="O Claude não devolveu cartões num formato que o app reconheça. Os do app continuam abaixo."}
+    else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
+  catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
+  render()}
+function cdErrSave(e){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,eid:e.id}).id);if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
+function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>Cartões deste erro</b><button class="link" type="button">Fechar</button></div><p class="how">Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar.</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
+  w.querySelector(".dhead .link").onclick=()=>{delete cdErr[e.id];render()};const ol=w.querySelector("ol");
+  S.list.forEach((c,i)=>{const li=el(`<li class="cdit"><label class="cdck"><input type="checkbox"> <span class="cdk"></span></label><div class="oscard mini"><div class="osq"></div><div class="osa"></div><div class="osref"></div></div></li>`);
+    const cb=li.querySelector("input");cb.id=`cdk-${e.id}-${i}`;cb.checked=!!c.keep;cb.onchange=()=>{c.keep=cb.checked;render()};li.querySelector(".cdk").textContent=(CDK[c.kind]||"Cartão")+(c.sug?" · sugerido para este erro":"");
+    li.querySelector(".osq").innerHTML=cdSafe(c.q);li.querySelector(".osa").innerHTML=cdSafe(c.a);const r=li.querySelector(".osref");if(c.ref)r.innerHTML=cdSafe(c.ref);else r.remove();ol.appendChild(li)});
+  const B=w.querySelector(".btns"),n=S.list.filter(c=>c.keep).length,sv=el(`<button class="btn primary" type="button"></button>`);sv.id="cdSave-"+e.id;sv.textContent=`Guardar ${n} ${n===1?"cartão":"cartões"}`;sv.disabled=!n;
+  sv.onclick=()=>cdErrSave(e);B.appendChild(sv);
+  if(!sampleOff){if(S.st==="loading"){B.appendChild(el(`<span class="gstatus">Criando com o Claude…</span>`));const x=el(`<button class="link" type="button">Cancelar</button>`);x.onclick=()=>S.ctl.abort();B.appendChild(x)}
+    else{const g=el(`<button class="btn" type="button"></button>`);g.id="cdAI-"+e.id;g.textContent=S.st==="done"?"✦ Gerar de novo":"✦ Melhorar com o Claude (padrão Osler)";g.disabled=!sampleFn;g.onclick=()=>cdErrClaude(e);B.appendChild(g)}}
+  if(S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}
+  return w}
+/* ---- Prontos para o Anki: .apkg com tipo de nota "Osler Flashcard (Nexus)", intervalo preservado ---- */
+function cdAnkiEl(){const R=cdReady(),w=el(`<div class="cdanki"><span class="glabel">Prontos para o Anki · ${R.length}</span></div>`);
+  if(cdExp&&cdExp.ids.length){const n=cdExp.ids.filter(id=>cards.some(x=>x.id===id)).length;
+    w.appendChild(el(`<p class="how">Você exportou ${cdExp.ids.length} ${cdExp.ids.length===1?"cartão":"cartões"} em ${br(cdExp.d)}. Depois de importar no Anki (marque "importar o progresso"/"include scheduling"), confirme para tirá-los daqui. Eles ficam 30 dias na lixeira.</p>`));
+    const b=el(`<div class="btns"><button class="btn primary" type="button" id="cdAnkiDone">Já importei no Anki</button><button class="link" type="button" id="cdAnkiUndo">Ainda não</button></div>`);
+    b.querySelector("#cdAnkiDone").onclick=cdAnkiDone;b.querySelector("#cdAnkiUndo").onclick=()=>{cdExp=null;try{localStorage.removeItem("resid-cdexp")}catch(x){}render()};if(!n)b.querySelector("#cdAnkiDone").disabled=true;w.appendChild(b);return w}
+  if(!R.length){w.appendChild(el(`<p class="how">Quando um cartão estiver a ${CD_ANKI} dias ou mais da próxima revisão, ele aparece aqui para ir para o Anki, com o intervalo preservado.</p>`));return w}
+  w.appendChild(el(`<p class="how">Já estão firmes: vão para o Anki como cartões em revisão (não como novos), no tipo de nota "Osler Flashcard (Nexus)", com tags do tema e do erro.</p>`));
+  const b=el(`<button class="btn" type="button" id="cdApkg"></button>`);b.textContent=`Exportar ${R.length} para o Anki (.apkg)`;b.disabled=!downloadsFn;b.onclick=async()=>{b.disabled=true;b.textContent="Gerando…";
+    try{const u=await apkgBuild(R);await downloadsFn.save({filename:`nexus-anki-${today()}.apkg`,data:new Blob([u],{type:"application/octet-stream"})});cdExp={d:today(),ids:R.map(x=>x.id)};try{localStorage.setItem("resid-cdexp",JSON.stringify(cdExp))}catch(x){}}
+    catch(x){b.textContent=x&&(x.code==="declined"||x.code==="cancelled")?"Download cancelado":"Não foi possível gerar agora"}render()};w.appendChild(b);return w}
+function cdAnkiDone(){const ids=new Set((cdExp&&cdExp.ids)||[]),L=cards.filter(x=>ids.has(x.id));if(!L.length){cdExp=null;render();return}
+  toTrash("cards",`${L.length} ${L.length===1?"cartão exportado":"cartões exportados"} para o Anki`,br(today()),L);
+  L.forEach(x=>{const e=x.eid&&errors.find(y=>y.id===x.eid);if(e){e.ak=(e.ak||0)+1;putErr(e)}});
+  cards=cards.filter(x=>!ids.has(x.id));cdSaveLocal();if(cardStore)L.forEach(x=>{cardStore.doc(x.id).delete().catch(()=>{})});cdExp=null;try{localStorage.removeItem("resid-cdexp")}catch(x){}render()}
+/* ---- .apkg feito no aparelho: banco SQLite (formato do Anki, esquema 11) escrito à mão + zip sem compressão ---- */
+function sqlVar(v){if(v<=0x7f)return [v];const t=[];let x=v;while(x>0){t.push(x%128);x=Math.floor(x/128)}t.reverse();return t.map((b,i)=>i<t.length-1?b|0x80:b)}
+const sqlTE=new TextEncoder();
+function sqlRecord(vals){const types=[],bodies=[];vals.forEach(v=>{
+    if(v===null||v===undefined){types.push(0);return}
+    if(typeof v==="number"){if(v===0){types.push(8);return}if(v===1){types.push(9);return}
+      const sz=v>=-128&&v<=127?[1,1]:v>=-32768&&v<=32767?[2,2]:v>=-8388608&&v<=8388607?[3,3]:v>=-2147483648&&v<=2147483647?[4,4]:Math.abs(v)<=140737488355327?[5,6]:[6,8];
+      types.push(sz[0]);const b=new Array(sz[1]);let x=BigInt(Math.trunc(v));if(x<0n)x+=1n<<BigInt(8*sz[1]);for(let i=sz[1]-1;i>=0;i--){b[i]=Number(x&255n);x>>=8n}bodies.push(b);return}
+    const s=sqlTE.encode(String(v));types.push(s.length*2+13);bodies.push(s)});
+  const tv=types.flatMap(sqlVar);let hl=tv.length+1;if(sqlVar(hl).length>1)hl=tv.length+sqlVar(hl+1).length;
+  const out=[...sqlVar(hl),...tv];bodies.forEach(b=>{for(let i=0;i<b.length;i++)out.push(b[i])});return out}
+function sqliteBuild(tables){const PS=4096,U=PS,X=U-35,M=Math.floor((U-12)*32/255)-23,pages=[null];
+  const alloc=()=>{pages.push(new Uint8Array(PS));return pages.length-1};
+  const w16=(p,o,v)=>{p[o]=v>>8&255;p[o+1]=v&255},w32=(p,o,v)=>{p[o]=v>>>24&255;p[o+1]=v>>>16&255;p[o+2]=v>>>8&255;p[o+3]=v&255};
+  /* uma célula de folha: tamanho, rowid, parte local e páginas de transbordo */
+  const leafCell=(rowid,rec)=>{const P=rec.length;let local=P;if(P>X){const K=M+((P-M)%(U-4));local=K<=X?K:M}
+    const cell=[...sqlVar(P),...sqlVar(rowid),...rec.slice(0,local)];
+    if(local<P){let rest=rec.slice(local),first=0,prev=null;while(rest.length){const pg=alloc(),chunk=rest.slice(0,U-4);rest=rest.slice(U-4);pages[pg].set(chunk,4);if(prev)w32(pages[prev],0,pg);else first=pg;prev=pg}
+      cell.push(first>>>24&255,first>>>16&255,first>>>8&255,first&255)}return cell};
+  const writePage=(pg,type,cells,off,right)=>{const p=pages[pg],hs=type===13?8:12;p[off]=type;w16(p,off+1,0);w16(p,off+3,cells.length);let end=PS;
+    cells.forEach((c,i)=>{end-=c.length;p.set(c,end);w16(p,off+hs+2*i,end)});w16(p,off+5,end===65536?0:end);p[off+7]=0;if(type===5)w32(p,off+8,right)};
+  /* árvore de uma tabela: folhas e, se precisar, páginas internas */
+  const buildTree=(rows,rootPg,off)=>{const cells=rows.map(([rowid,vals])=>({rowid,c:leafCell(rowid,sqlRecord(vals))}));
+    const cap=(o,h)=>PS-o-h;let leaves=[],cur=[],used=0;
+    cells.forEach(x=>{const need=x.c.length+2;if(cur.length&&used+need>cap(0,8)){leaves.push(cur);cur=[];used=0}cur.push(x);used+=need});if(cur.length||!leaves.length)leaves.push(cur);
+    if(leaves.length===1){const pg=rootPg||alloc();writePage(pg,13,leaves[0].map(x=>x.c),rootPg===1?off:0);return pg}
+    let level=leaves.map(L=>{const pg=alloc();writePage(pg,13,L.map(x=>x.c),0);return {pg,max:L[L.length-1].rowid}});
+    while(true){const groups=[];let g=[],u=0;level.forEach(n=>{const need=4+sqlVar(n.max).length+2;if(g.length&&u+need>cap(0,12)){groups.push(g);g=[];u=0}g.push(n);u+=need});groups.push(g);
+      const top=groups.length===1;const next=groups.map(G=>{const pg=top&&rootPg?rootPg:alloc(),cs=G.slice(0,-1).map(n=>[n.pg>>>24&255,n.pg>>>16&255,n.pg>>>8&255,n.pg&255,...sqlVar(n.max)]);writePage(pg,5,cs,top&&rootPg===1?off:0,G[G.length-1].pg);return {pg,max:G[G.length-1].max}});
+      if(top)return next[0].pg;level=next}};
+  alloc();/* página 1 = sqlite_master */
+  const master=tables.map((t,i)=>{const root=buildTree(t.rows,0,0);return [i+1,["table",t.name,t.name,root,t.sql]]});
+  buildTree(master,1,100);
+  const p1=pages[1],H=sqlTE.encode("SQLite format 3\0");p1.set(H,0);w16(p1,16,PS);p1[18]=1;p1[19]=1;p1[20]=0;p1[21]=64;p1[22]=32;p1[23]=32;w32(p1,24,1);w32(p1,28,pages.length-1);w32(p1,40,1);w32(p1,44,4);w32(p1,56,1);w32(p1,92,1);w32(p1,96,3045001);
+  const out=new Uint8Array((pages.length-1)*PS);for(let i=1;i<pages.length;i++)out.set(pages[i],(i-1)*PS);return out}
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRC_T[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files){const parts=[],cen=[];let off=0;const dv=n=>{const b=new Uint8Array(n);return [b,new DataView(b.buffer)]};
+  files.forEach(f=>{const name=sqlTE.encode(f.name),crc=crc32(f.data),[h,v]=dv(30);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(8,0,true);v.setUint16(10,0,true);v.setUint16(12,0x21,true);
+    v.setUint32(14,crc,true);v.setUint32(18,f.data.length,true);v.setUint32(22,f.data.length,true);v.setUint16(26,name.length,true);parts.push(h,name,f.data);
+    const [c,cv]=dv(46);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(14,0x21,true);cv.setUint32(16,crc,true);cv.setUint32(20,f.data.length,true);cv.setUint32(24,f.data.length,true);cv.setUint16(28,name.length,true);cv.setUint32(42,off,true);cen.push(c,name);
+    off+=30+name.length+f.data.length});
+  const cs=cen.reduce((s,b)=>s+b.length,0),[e,ev]=dv(22);ev.setUint32(0,0x06054b50,true);ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);ev.setUint32(12,cs,true);ev.setUint32(16,off,true);
+  const all=[...parts,...cen,e],u=new Uint8Array(all.reduce((s,b)=>s+b.length,0));let p=0;all.forEach(b=>{u.set(b,p);p+=b.length});return u}
+const APKG_MID=1699999999123,APKG_DID=1699999999456;
+const APKG_CSS=`.card{font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:1.45;color:#1d1d1f;background:#fff;text-align:center;padding:10px}
+.nx-q,.nx-a{max-width:720px;margin:12px auto;border:1.5px solid #c8c8c8;border-radius:12px;padding:18px 22px}
+.nx-a i{font-style:italic}.nx-a ul,.nx-a ol,.nx-q ul,.nx-q ol{display:inline-block;text-align:left;margin:6px 0}
+.nx-ref{max-width:720px;margin:2px auto 0;text-align:right;color:#8b1a1a;font-size:14px}
+.nightMode .card,.night_mode .card{color:#eee;background:#1e1e1e}.nightMode .nx-q,.nightMode .nx-a{border-color:#555}.nightMode .nx-ref{color:#e58a8a}`;
+const apkgSlug=s=>norm(String(s||"")).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}
+  const e=x.eid&&errors.find(y=>y.id===x.eid);if(x.eid)T.push("erro-nexus");if(e&&e.c)T.push(apkgSlug(e.c));if(x.kind)T.push("cartao-"+apkgSlug(CDK[x.kind]||x.kind));return [...new Set(T)]}
+async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay=new Date(today()+"T00:00:00"),crt=Math.floor(crtDay.getTime()/1000);
+  const fld=(x,f)=>x.h?cdSafe(x[f]||""):esc(x[f]||"").replace(/\n/g,"<br>");
+  const model={id:APKG_MID,name:"Osler Flashcard (Nexus)",type:0,mod:sec,usn:-1,sortf:0,did:APKG_DID,tags:[],vers:[],latexsvg:false,css:APKG_CSS,req:[[0,"any",[0]]],
+    latexPre:"\\documentclass[12pt]{article}\n\\special{papersize=3in,5in}\n\\usepackage[utf8]{inputenc}\n\\usepackage{amssymb,amsmath}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0in}\n\\begin{document}\n",latexPost:"\\end{document}",
+    flds:["Question","Answer","Reference"].map((n,i)=>({name:n,ord:i,sticky:false,rtl:false,font:"Arial",size:20,media:[]})),
+    tmpls:[{name:"Card 1",ord:0,qfmt:`<div class="nx-q">{{Question}}</div>`,afmt:`<div class="nx-q">{{Question}}</div><div id="answer" class="nx-a">{{Answer}}</div>{{#Reference}}<div class="nx-ref">{{Reference}}</div>{{/Reference}}`,bqfmt:"",bafmt:"",did:null,bfont:"",bsize:0}]};
+  const deck=(id,name)=>({id,name,mod:sec,usn:-1,lrnToday:[0,0],revToday:[0,0],newToday:[0,0],timeToday:[0,0],collapsed:false,desc:"",dyn:0,conf:1,extendNew:0,extendRev:0});
+  const dconf={"1":{id:1,name:"Default",mod:0,usn:0,maxTaken:60,autoplay:true,timer:0,replayq:true,dyn:false,new:{delays:[1,10],ints:[1,4,7],initialFactor:2500,separate:true,order:1,perDay:20,bury:true},lapse:{delays:[10],mult:0,minInt:1,leechFails:8,leechAction:0},rev:{perDay:200,ease4:1.3,fuzz:0.05,minSpace:1,ivlFct:1,maxIvl:36500,bury:true}}};
+  const conf={activeDecks:[1],curDeck:1,newSpread:0,collapseTime:1200,timeLim:0,estTimes:true,dueCounts:true,curModel:String(APKG_MID),nextPos:1,sortType:"noteFld",sortBackwards:false,addToCur:true};
+  const notesR=[],cardsR=[];
+  for(let i=0;i<L.length;i++){const x=L[i],nid=now+i,cid=now+L.length+i,q=fld(x,"q"),a=fld(x,"a"),ref=x.ref?(x.h?cdSafe(x.ref):esc(x.ref)):"";
+    const sf=cdPlain(q),hash=new Uint8Array(await crypto.subtle.digest("SHA-1",sqlTE.encode(sf))),csum=((hash[0]<<24)>>>0)+(hash[1]<<16)+(hash[2]<<8)+hash[3];
+    notesR.push([nid,[null,"nx"+x.id,APKG_MID,sec,-1," "+apkgTags(x).join(" ")+" ",[q,a,ref].join("\x1f"),sf,csum,0,""]]);
+    const ivl=Math.max(1,dnum(x.due)-dnum(x.f.last||today())),due=dnum(x.due)-dnum(today()),factor=Math.round(fClamp(3000-(x.f.d-1)*(1700/9),1300,3000));
+    cardsR.push([cid,[null,nid,APKG_DID,0,sec,-1,2,2,due,ivl,factor,Math.max(1,x.f.reps||x.n||1),x.f.lapses||0,0,0,0,0,""]])}
+  const db=sqliteBuild([
+    {name:"col",sql:"CREATE TABLE col (\n    id              integer primary key,\n    crt             integer not null,\n    mod             integer not null,\n    scm             integer not null,\n    ver             integer not null,\n    dty             integer not null,\n    usn             integer not null,\n    ls              integer not null,\n    conf            text not null,\n    models          text not null,\n    decks           text not null,\n    dconf           text not null,\n    tags            text not null\n)",
+      rows:[[1,[null,crt,now,now,11,0,0,0,JSON.stringify(conf),JSON.stringify({[APKG_MID]:model}),JSON.stringify({"1":deck(1,"Default"),[APKG_DID]:deck(APKG_DID,"Nexus::Cartões dos erros")}),JSON.stringify(dconf),"{}"]]]},
+    {name:"notes",sql:"CREATE TABLE notes (\n    id              integer primary key,\n    guid            text not null,\n    mid             integer not null,\n    mod             integer not null,\n    usn             integer not null,\n    tags            text not null,\n    flds            text not null,\n    sfld            integer not null,\n    csum            integer not null,\n    flags           integer not null,\n    data            text not null\n)",rows:notesR},
+    {name:"cards",sql:"CREATE TABLE cards (\n    id              integer primary key,\n    nid             integer not null,\n    did             integer not null,\n    ord             integer not null,\n    mod             integer not null,\n    usn             integer not null,\n    type            integer not null,\n    queue           integer not null,\n    due             integer not null,\n    ivl             integer not null,\n    factor          integer not null,\n    reps            integer not null,\n    lapses          integer not null,\n    left            integer not null,\n    odue            integer not null,\n    odid            integer not null,\n    flags           integer not null,\n    data            text not null\n)",rows:cardsR},
+    {name:"revlog",sql:"CREATE TABLE revlog (\n    id              integer primary key,\n    cid             integer not null,\n    usn             integer not null,\n    ease            integer not null,\n    ivl             integer not null,\n    lastIvl         integer not null,\n    factor          integer not null,\n    time            integer not null,\n    type            integer not null\n)",rows:[]},
+    {name:"graves",sql:"CREATE TABLE graves (\n    usn             integer not null,\n    oid             integer not null,\n    type            integer not null\n)",rows:[]}]);
+  return zipStore([{name:"collection.anki2",data:db},{name:"media",data:sqlTE.encode("{}")}])}
 function cardsPrompt(it){return `Você vai criar cartões de memorização (pergunta e resposta) para um estudante de medicina que se prepara para a prova de residência.
 Use SOMENTE o conteúdo das anotações abaixo, sobre o tema "${it.t}" (${areaLabel(it)}). Não invente nada que não esteja nelas.
 
@@ -7379,28 +7607,8 @@ let nMsgCards="";
 /* sessão de revisão dos cartões */
 let ankiMsg="";
 function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Anotações"));
-  if(!cdRun&&cards.length&&downloadsFn){const b=el(`<button class="link" type="button" id="ankiCd">Exportar para o Anki</button>`);b.onclick=async()=>{ankiMsg=await ankiSave("cards");render()};c.appendChild(b)}
+  if(!cdRun&&cards.length&&downloadsFn){const b=el(`<button class="link" type="button" id="ankiCd">Todos em .txt (entram como novos no Anki)</button>`);b.onclick=async()=>{ankiMsg=await ankiSave("cards");render()};c.appendChild(b)}
   if(ankiMsg&&!cdRun){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=ankiMsg;c.appendChild(m);ankiMsg=""}return c}
-function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões para revisar</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=cards.length?`${due.length} hoje · ${cards.length} no total`:"";
-  if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
-    if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim: ${R.ok} de ${R.done} lembrados.</p>`));c.appendChild(el(`<p class="how">Os que você não lembrou voltam amanhã; os lembrados, em intervalos cada vez maiores (1, 2, 4, 8, 16, 32 e 64 dias).</p>`));
-      const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{cdRun=null;render()};c.appendChild(b);return c}
-    const it=BYKEY[x.k],card=el(`<div class="fcard${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="fcq"></p><div class="fca"></div></div>`);
-    card.querySelector(".qn").textContent=`CARTÃO ${R.i+1} DE ${R.ids.length}`;const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);card.querySelector(".fcq").textContent=x.q;
-    if(R.show){card.querySelector(".fca").textContent=x.a}c.appendChild(card);
-    const a=el(`<div class="btns"></div>`);
-    if(!R.show){const s=el(`<button class="btn primary" type="button" id="cdShow">Mostrar resposta</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
-    else{const g=el(`<button class="btn primary" type="button" id="cdGood">Lembrei</button>`),b=el(`<button class="btn" type="button" id="cdBad">Não lembrei</button>`);
-      g.onclick=()=>{cdAnswer(x,true);R.ok++;R.done++;R.i++;R.show=false;render()};b.onclick=()=>{cdAnswer(x,false);R.done++;R.i++;R.show=false;render()};a.append(g,b)}
-    const st=el(`<button class="link" type="button">Encerrar</button>`);st.onclick=()=>{cdRun=null;render()};a.appendChild(st);c.appendChild(a);
-    c.appendChild(el(`<p class="how erkeys">Teclado: espaço mostra a resposta · 1 Lembrei · 2 Não lembrei${fullOn.cd?" · Esc sai da tela inteira":""}</p>`));return c}
-  if(!cards.length){c.appendChild(el(`<p class="cempty">Transforme suas anotações em perguntas e respostas: abra um tema, vá em Anotações e toque em <b>Criar cartões com o Claude</b> (ou crie à mão). Os cartões voltam em intervalos crescentes, como as revisões.</p>`));return c}
-  if(!due.length){const nx=cards.map(x=>x.due).sort()[0];c.appendChild(el(`<p class="cempty">Nenhum cartão para hoje. O próximo volta em ${br(nx)}.</p>`));return c}
-  const by={};due.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
-  c.appendChild(el(`<p class="gtext qrdsum">${Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}</p>`));
-  const go=el(`<button class="btn primary" type="button" id="cdGo"></button>`);go.textContent=`Revisar ${Math.min(due.length,20)} ${Math.min(due.length,20)===1?"cartão":"cartões"}`;
-  go.onclick=()=>{cdRun={ids:shuffle(due).slice(0,20).map(x=>x.id),i:0,show:false,ok:0,done:0};render()};c.appendChild(go);return c}
 /* cobertura: temas estudados sem nenhuma anotação */
 const noNoteKeys=()=>[...ALL,...FAC_ITEMS].filter(i=>get(i.key).last&&!(notes[i.key]||"").trim()).map(i=>i.key);
 /* ---------- Anotações: PDF, filtros extras, erros junto e caderno livre ---------- */
@@ -7675,7 +7883,7 @@ const HELP=[
 - **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
 - **Sua semana de estudos** (⚙ Configurações › Plano): toque nos dias de **Temas novos** (nos outros dias o plano traz só pontos fracos e faculdade), de **Simulados e provas** (o Início sugere um simulado de 20 questões ou uma prova na íntegra) e de **Folga** (sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo). A prévia da semana e a projeção até a prova seguem esses dias.
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
-- **Anki:** em Anotações › Cartões para revisar e no rodapé de Erros › Encontrar erros, **Exportar para o Anki** gera um arquivo .txt (no Anki: Arquivo › Importar).
+- **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Anotações › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki. No rodapé de Erros › Encontrar erros e em Cartões, a exportação em .txt continua (entra como cartões novos).
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
 - **Resumo da semana:** no domingo e na segunda, o Início compara a sua semana com a anterior.
 - O botão **?** ao lado de vários cartões abre a parte certa desta ajuda.`],
@@ -7760,7 +7968,7 @@ const HELP=[
 - **Aba Anotações** (no celular, em ≡ Menu): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
 - **Para reler hoje:** as anotações dos temas com revisão hoje ou no plano do dia; toque em **Reli** depois de ler. Os temas de hoje sem anotação aparecem embaixo.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
-- **Cartões de memorização:** dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em 5 a 10 perguntas e respostas (você confere antes de salvar), ou crie à mão em **+ Cartão manual**. Na aba, **Cartões para revisar**: veja a pergunta, toque em **Mostrar resposta** e marque **Lembrei** (o cartão volta em 1, 2, 4, 8, 16, 32 e 64 dias) ou **Não lembrei** (volta amanhã).
+- **Cartões** (Anotações › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
 - **Cobertura:** em Todas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
 - **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
 - **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, uma linha cada com o conceito certo; toque para abrir o erro no caderno. Erros arquivados e os que você já levou para a anotação não se repetem ali.
@@ -7782,13 +7990,13 @@ const HELP=[
 - **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
 - **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
-- **Virar cartão** cria um cartão de memorização (frente: o que você errou; verso: o correto). **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
+- **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
 - **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.
 - **Encontrar erros:** busca no tema, no que errou, na fonte e na causa. **Filtros** abre **Tipo de erro**, **Situação** (para revisar hoje, que se repetem, sem cartão, arquivados), **Quando e de onde** (período do registro, fonte, causa) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, próxima revisão ou mais teimosos. No rodapé do cartão, **Exportar PDF destes erros** e **Exportar para o Anki** usam os filtros atuais.
-- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões para revisar** (Anotações; teclado: espaço, 1 Lembrei, 2 Não lembrei) no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima) e nas **Provas na íntegra**, no Modo prova e no Modo estudo (teclado: A a E respondem, → próxima, ← anterior), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
+- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões** (Anotações; teclado: espaço, 1 Errei, 2 Difícil, 3 Bom, 4 Fácil) no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima) e nas **Provas na íntegra**, no Modo prova e no Modo estudo (teclado: A a E respondem, → próxima, ← anterior), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
 - O número na aba Erros mostra quantos erros você tem para revisar hoje.
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],

@@ -12,7 +12,7 @@ await p.evaluate(()=>{notes["CM-1"]="## a\n- b";for(let i=0;i<4;i++)cdAdd("CM-1"
 await click('#cdGo');await p.waitForTimeout(150);ok(await visible('#cdFullB')===big,name+": botão nos cartões "+(big?"aparece":"não aparece"));
 if(big){await click('#cdFullB');await p.waitForTimeout(150);const st=await p.evaluate(()=>({others:[...document.querySelectorAll('#viewNotas section.card')].filter(c=>!c.classList.contains("ncards")&&c.offsetParent!==null).length,w:document.querySelector('.ncards').getBoundingClientRect().width}));
   ok(st.others===0&&st.w>500,name+": cartões em tela inteira "+JSON.stringify(st));await p.screenshot({path:`fullcd-${name}.png`});
-  if(!mob){await p.keyboard.press(' ');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.show),name+": espaço mostra a resposta");await p.keyboard.press('1');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.i===1&&cdRun.ok===1),name+": 1 = Lembrei");
+  if(!mob){await p.keyboard.press(' ');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.show),name+": espaço mostra a resposta");await p.keyboard.press('3');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.i===1&&cdRun.g[3]===1),name+": 3 = Bom");
     await p.keyboard.press('Escape');await p.waitForTimeout(80);ok(await p.evaluate(()=>!fullOn.cd),name+": Esc sai")}
   else{await click('#cdFullB');await p.waitForTimeout(80);ok(await p.evaluate(()=>!fullOn.cd),name+": botão sai")}
   await p.evaluate(()=>{fullSet("cd",true);cdRun=null;render()});ok(await p.evaluate(()=>[...document.querySelectorAll('#viewNotas section.card')].filter(c=>c.offsetParent!==null).length>1),name+": sem sessão, aba normal");}

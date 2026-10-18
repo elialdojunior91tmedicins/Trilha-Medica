@@ -26,10 +26,10 @@ await click('#t-CM-1 .cdrev li:nth-child(2) input');await click('#t-CM-1 .cardsb
 await click('#t-CM-1 .cardsblk .link');await p.fill('#cdq-CM-1','Pergunta manual?');await p.fill('#cda-CM-1','Resposta manual.');await click('#t-CM-1 .cdform .btn');await p.waitForTimeout(150);ok(await p.evaluate(()=>cards.length===2&&cards[1].src==="eu"),tag+": cartão manual");
 await p.waitForTimeout(800);ok(await p.evaluate(()=>Object.keys(window.__store).filter(k=>k.includes("/progress/cards/")).length===2),tag+": cartões gravados na conta");
 await p.evaluate(()=>setView("notas"));await seg("revisar");ok(/Revisar 2 cartões/.test(await p.$eval('#cdGo',x=>x.textContent)),tag+": cartões de hoje");
-await click('#cdGo');await p.waitForTimeout(100);ok(!(await p.isVisible('.fcard .fca')),tag+": resposta escondida");await click('#cdShow');await p.waitForTimeout(100);ok(await p.isVisible('.fcard .fca'),tag+": mostrar resposta");
-await click('#cdGood');await p.waitForTimeout(100);await click('#cdShow');await click('#cdBad');await p.waitForTimeout(150);
-const st=await p.evaluate(()=>cards.map(x=>x.box+":"+(dnum(x.due)-dnum(today()))).sort());ok(JSON.stringify(st)===JSON.stringify(["0:1","1:2"]),tag+": intervalos lembrei/não lembrei "+st);
-ok(/1 de 2 lembrados/.test(await p.$eval('.ncards',x=>x.textContent)),tag+": resultado");await click('.ncards .btn.primary');
+await click('#cdGo');await p.waitForTimeout(100);ok(!(await p.isVisible('.oscard .osa')),tag+": resposta escondida");await click('#cdShow');await p.waitForTimeout(100);ok(await p.isVisible('.oscard .osa'),tag+": mostrar resposta");
+await click('#cdR3');await p.waitForTimeout(100);await click('#cdShow');await click('#cdR1');await p.waitForTimeout(150);await click('#cdShow');await click('#cdR3');await p.waitForTimeout(150);
+const st=await p.evaluate(()=>cards.map(x=>x.f.st+":"+x.f.lapses+":"+(dnum(x.due)-dnum(today()))).sort());ok(st.length===2&&st.every(x=>/^2:0:[1-9]\d*$/.test(x)),tag+": Bom agenda; Errei volta na sessão e depois Bom "+st);
+ok(/Fim por hoje: 3 respostas \(Errei 1 · Difícil 0 · Bom 2 · Fácil 0\)/.test(await p.$eval('.ncards',x=>x.textContent)),tag+": resultado");await click('.ncards .btn.primary');
 ok(await p.evaluate(()=>buildBackup().data.cards.length===2),tag+": backup leva os cartões");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=0,tag+": sem rolagem horizontal");
 await p.evaluate(()=>{scrollTo(0,0)});await p.screenshot({path:`nt-${mob?"fone":"desk"}.png`,fullPage:!mob});

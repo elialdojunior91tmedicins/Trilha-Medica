@@ -21,7 +21,7 @@ await c('#eReg .dhead .link');
 await p.evaluate(()=>{const e=eNew("CM-1","marquei 130/80","140/90","conhecimento","",undefined);e.due=today();e.box=2;putErr(e);render()});await p.waitForTimeout(200);
 await c('#erGo');await p.waitForTimeout(100);await c('#erShow');await p.waitForTimeout(80);
 const first=await p.evaluate(()=>erRun.ids[0]);if(await p.$('#erArch'))await c('#erArch');else await c('#erGood');await p.waitForTimeout(150);
-await p.evaluate(()=>{erRun=null;const e=errors.find(x=>x.k!=="CM-1")||errors[0];eCardBtn(e).click();eToNote(errors.find(x=>x.k==="CM-1"))});await p.waitForTimeout(1500);
+await p.evaluate(()=>{erRun=null;const e=errors.find(x=>x.k!=="CM-1")||errors[0];cdErrSave(e);eToNote(errors.find(x=>x.k==="CM-1"))});await p.waitForTimeout(1500);
 ok(!(await p.evaluate(()=>window.__fbInvalid||0)),tag+": nada recusado pelo Firestore");
 const db=await p.evaluate(()=>JSON.parse(localStorage.getItem("__fbdb")));const ed=Object.entries(db).filter(([k])=>/progress\/errors\//.test(k)).map(([,v])=>v);
 ok(ed.length===2,tag+": 2 erros na conta");ok(ed.some(e=>e.c==="Lembrei pela metade"&&e.s==="ENARE"&&e.box===0&&e.due),tag+": causa e revisão gravadas");
