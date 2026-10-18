@@ -15,15 +15,16 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=c161c6e8">
+<link rel="stylesheet" href="site.css?v=fce3b140">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=c161c6e8"></script>
-<script src="bridge.js?v=c161c6e8"></script>
+<script src="config.js?v=fce3b140"></script>
+<script src="bridge.js?v=fce3b140"></script>
 </head>
 <body>
 <script>
+if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifenização do texto justificado
 /* reconhece o aparelho pelo tamanho da tela física e decide o layout (antes de desenhar a página) */
 (function(){const R=document.documentElement;
   function decide(){const w=innerWidth,coarse=matchMedia("(pointer:coarse)").matches,
@@ -170,6 +171,13 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 #iToday .plan{gap:6px}
 .pcard.pdone .ptitle{text-decoration:line-through;text-decoration-color:var(--muted)}
 .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.pcard .ptitle{line-height:1.3}
+.pcard .ptop+.pa{margin-top:4px}
+@media (pointer:coarse){.pcard .ptop+.pa{margin-top:8px}}
+.pcard .phint{line-height:1.55;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.pcard .pbody{display:flex;flex-direction:column;gap:8px}
+/* celular: o selo vai para cima do título, que ganha a largura toda */
+@media (max-width:560px){.pcard .ptop{flex-direction:column-reverse;align-items:flex-start;gap:10px}.pcard .reason{white-space:normal;max-width:100%}}
 .ptitle{background:none;border:0;padding:0;text-align:left;font:700 1.15rem/1.25 var(--display);color:var(--ink);cursor:pointer;min-width:0}
 .ptitle:hover{color:var(--accent)}
 .pcard .pa{font:500 .74rem var(--mono);color:var(--muted);display:flex;align-items:center;gap:4px;flex-wrap:wrap}
@@ -196,6 +204,8 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 #revVesp{display:flex;flex-direction:column;gap:8px}
 #revVesp:empty{display:none}
 .r-fac{background:var(--l2);color:var(--on-accent)}
+.r-pfr{background:var(--l2);color:var(--on-accent)}
+.pweek{list-style:none;padding:0}.pfrnote{font-size:.76rem}.pweek .phint{margin:0}.pfrt .link{font-size:inherit}
 .fbadge{font:600 .72rem var(--body);color:var(--l2);border:1px solid var(--l2);border-radius:99px;padding:0 7px}
 .fbadgep{margin:0;font-size:.85rem;border-left:3px solid var(--l2);border-radius:0 8px 8px 0}
 .ftools{display:flex;gap:12px;flex-wrap:wrap}
@@ -1676,10 +1686,18 @@ html[data-layout="tablet"][data-cols="1"] body>.wrap>header{padding-left:54px;mi
 /* menu ≡ (celular: folha de baixo; iPad em pé: gaveta à esquerda) */
 .navmenu{position:fixed;inset:0;z-index:95;background:rgb(10 17 33 / .4);display:flex;align-items:flex-end;justify-content:flex-start}
 .navmenu[hidden]{display:none}
-.nmpanel{background:var(--surface);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-height:88vh;border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgb(0 0 0 / .2);animation:nmup .18s ease}
+.nmpanel{background:var(--surface);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;padding:14px 14px calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-height:88vh;border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgb(0 0 0 / .2);animation:nmup .34s cubic-bezier(.22,1,.36,1)}
 html[data-layout="tablet"] .navmenu{align-items:stretch}
-html[data-layout="tablet"] .nmpanel{width:min(360px,88vw);max-height:none;height:100%;border-radius:0 18px 18px 0;padding-top:calc(18px + env(safe-area-inset-top,0px));animation:nmleft .18s ease}
-@keyframes nmup{from{transform:translateY(24px);opacity:.4}}@keyframes nmleft{from{transform:translateX(-24px);opacity:.4}}
+html[data-layout="tablet"] .nmpanel{width:min(360px,88vw);max-height:none;height:100%;border-radius:0 18px 18px 0;padding-top:calc(18px + env(safe-area-inset-top,0px));animation:nmleft .3s cubic-bezier(.22,1,.36,1)}
+@keyframes nmup{from{transform:translateY(100%)}}@keyframes nmleft{from{transform:translateX(-100%)}}
+@keyframes nmfade{from{background:rgb(10 17 33 / 0)}}
+.navmenu{animation:nmfade .3s ease}
+/* fechar: a barra desce (ou volta para a esquerda) antes de sumir */
+.navmenu.nmclosing{animation:nmfade .24s ease reverse forwards;pointer-events:none}
+.navmenu.nmclosing .nmpanel{animation:nmdown .24s cubic-bezier(.4,0,1,1) forwards}
+html[data-layout="tablet"] .navmenu.nmclosing .nmpanel{animation:nmout .22s cubic-bezier(.4,0,1,1) forwards}
+@keyframes nmdown{to{transform:translateY(100%)}}@keyframes nmout{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.navmenu,.nmpanel,.navmenu.nmclosing,.navmenu.nmclosing .nmpanel{animation-duration:.01s!important}}
 .nmgrab{width:40px;height:4px;border-radius:99px;background:var(--line);align-self:center;margin:-4px 0 2px}
 html[data-layout="tablet"] .nmgrab{display:none}
 .nmhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -1959,7 +1977,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <div class="meter" id="planbar" hidden><i></i></div>
     <ol class="plan" id="plan"></ol>
     <div id="weekBox"></div>
-    <p class="how">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
+    <p class="how">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; na semana da prova, o que você já estudou volta para revisão e não entram temas novos da residência; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
   </section>
 
   <div class="side">
@@ -2433,7 +2451,10 @@ function buildPlan(){
   const F=facPlanPicks(),CR=examCrunch();if(CR.active)F.slots=PLAN_N;
   spPlanPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`Fechamento ${o.lab} · ${inLabel(o.d)}`,sub:o.x.sub})}});
   F.picks.slice(0,F.slots).forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-fac",txt:`${o.p.name} · ${inLabel(o.d)}`,sub:o.x.sub})}});
+  // semana da prova: o conteúdo já estudado volta como "Revisar para a prova"
+  provaRvPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-pfr",txt:`Revisar · prova ${inLabel(o.d)}`,pid:o.p.id,ref:o.r,n:o.n})}});
   if(CR.active)return plan;// modo provas: nada da residência
+  if(provaWeek().length)return plan;// semana da prova: sem tema novo nem ponto fraco; as vagas livres ficam para as revisões da residência
   weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
   // temas em andamento ("Estudando") vêm antes de abrir tema novo
   if(NEWD)ALL.filter(i=>{const s=get(i.key);return isIng(s)&&(!subList(i).length||subList(i).some(x=>!x.done))}).sort((a,b)=>(get(a.key).ing.d<get(b.key).ing.d?-1:get(a.key).ing.d>get(b.key).ing.d?1:0)||wOf(b)-wOf(a))
@@ -3470,8 +3491,8 @@ function pickSubs(it,kind){const L=subList(it),s=get(it.key);if(!L.length)return
   else pool=open.length?open:L;
   return pool.slice(0,SUBS_PER_DAY).map(x=>x.t)}
 const WEAK_DAY_Q=5;
-function markResDay(P){const has=P.items.some(x=>x.cls!=="r-fac"&&!(BYKEY[x.k]||{}).own);const d=today(),h=hist[d]||(hist[d]={});if(has)h.res=1;else{delete h.res;if(!Object.keys(h).length)delete hist[d]}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
-function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub})=>{const x={k:it.key,cls,txt,subs:cls==="r-fac"&&sub?[sub]:pickSubs(it,cls==="r-fac"?"r-new":cls)};if(cls==="r-weak")x.q0=get(it.key).qt||0;
+function markResDay(P){const has=P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-pfr"&&!(BYKEY[x.k]||{}).own);const d=today(),h=hist[d]||(hist[d]={});if(has)h.res=1;else{delete h.res;if(!Object.keys(h).length)delete hist[d]}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
+function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub,pid,ref,n})=>{if(cls==="r-pfr")return {k:it.key,cls,txt,subs:[],pid,ref,n};const x={k:it.key,cls,txt,subs:cls==="r-fac"&&sub?[sub]:pickSubs(it,cls==="r-fac"?"r-new":cls)};if(cls==="r-weak")x.q0=get(it.key).qt||0;
     if(cls==="r-new"||cls==="r-cont"){const P=partSubs(it);x.subs=P.subs;if(P.pt){x.pt=P.pt;x.txt=(cls==="r-new"?"Tema novo":"Continuar")+` · Parte ${P.pt[0]} de ${P.pt[1]}`}}return x})}}
 function ensurePlan(){if(!dayPlan||dayPlan.d!==today()||!Array.isArray(dayPlan.items)){dayPlan=makeDayPlan();markResDay(dayPlan);savePlan(false)}
   else if(dayPlan.items.some(x=>x.cls==="r-rev")){// planos antigos: revisões agora ficam na seção Revisões
@@ -3482,6 +3503,7 @@ let planTouched=false;
 function savePlan(touch=true){if(touch)planTouched=true;if(dayPlan&&dayPlan.d===today()&&Array.isArray(dayPlan.items))markResDay(dayPlan);try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}if(store)persist()}
 function planSubs(it){const p=dayPlan&&dayPlan.d===today()&&dayPlan.items.find(x=>x.k===it.key);return p?p.subs:[]}
 function itemDone(p){const it=BYKEY[p.k],L=subList(it),s=get(p.k);
+  if(p.cls==="r-pfr"){const P=fac.provas.find(x=>x.id===p.pid);return !!P&&provaRv(P,p.ref).includes(today())}
   if(p.cls==="r-rev")return s.last===today();
   if(p.cls==="r-weak")return weakDone(p)>=WEAK_DAY_Q;
   if(!p.subs.length&&s.last===today())return true;
@@ -3500,24 +3522,25 @@ function renderPlan(){
   {const wb=$("#weekBox");if(wb){wb.innerHTML="";if(view==="temas")wb.appendChild(weekEl())}}
   const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";const compact=true;if(planOpen.d!==P.d)planOpen={d:P.d};
   const CR=examCrunch(),cb=$("#crunchBar");cb.hidden=!CR.active;{const pn=$("#planNote");pn.hidden=!planNote;pn.textContent=planNote}
-  if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
-  const doneN=P.items.filter(itemDone).length;
-  $("#planmeta").textContent=P.items.length?`${doneN} de ${P.items.length} ${P.items.length===1?"tema concluído":"temas concluídos"}${!isNewDay()&&!CR.active?" · hoje sem temas novos":""}`:"";
+  if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-pfr"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
+  const doneN=P.items.filter(itemDone).length,PW=provaWeek();
+  $("#planmeta").textContent=P.items.length?`${doneN} de ${P.items.length} ${P.items.length===1?"tema concluído":"temas concluídos"}${PW.length&&!CR.active?" · semana de prova":!isNewDay()&&!CR.active?" · hoje sem temas novos":""}`:"";
   $("#planbar").hidden=!P.items.length;$("#planbar").firstElementChild.style.width=(P.items.length?doneN/P.items.length*100:0)+"%";
-  if(!P.items.length){pl.appendChild(el(`<li class="empty" style="padding:0">${isOffDay()?`Hoje é seu dia de folga. O plano volta ${nextStudyLabel()}.`:!isNewDay()&&!CR.active?"Hoje não é dia de temas novos e não há pontos fracos nem conteúdo da faculdade para o plano. Aproveite para revisões e questões.":CR.active?"Todo o conteúdo das provas já foi estudado. Use as revisões de véspera e questões dos temas das provas.":"Tudo em dia. Nenhuma revisão vencida, nenhum ponto fraco e nenhum tema novo pendente."}</li>`));return}
+  if(!P.items.length){pl.appendChild(el(`<li class="empty" style="padding:0">${PW.length&&!isOffDay()&&!CR.active?`Semana de prova (${PW.map(p=>p.name).join(", ")}): o conteúdo já foi estudado e revisado. Não entram temas novos da residência; use o tempo nas revisões dela e em questões.`:isOffDay()?`Hoje é seu dia de folga. O plano volta ${nextStudyLabel()}.`:!isNewDay()&&!CR.active?"Hoje não é dia de temas novos e não há pontos fracos nem conteúdo da faculdade para o plano. Aproveite para revisões e questões.":CR.active?"Todo o conteúdo das provas já foi estudado. Use as revisões de véspera e questões dos temas das provas.":"Tudo em dia. Nenhuma revisão vencida, nenhum ponto fraco e nenhum tema novo pendente."}</li>`));return}
   P.items.forEach((p,pi)=>{const it=BYKEY[p.k],L=subList(it),done=itemDone(p),editing=planEdit===p.k;
     const li=el(`<li class="pcard${done?" pdone":""}" data-k="${p.k}"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason ${p.cls}"></span></div>
       <div class="pa"></div><div class="pbody"></div><div class="pacts"></div></li>`);
-    const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
-    li.querySelector(".reason").textContent=done?(isIng(get(p.k))?"Parte concluída":"Concluído"):(p.cls==="r-new"&&!p.pt?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
+    const tb=li.querySelector(".ptitle"),pfr=p.cls==="r-pfr";tb.textContent=pfr?refLabel(p.ref)||it.t:it.t;tb.onclick=()=>openTopic(it.key);
+    li.querySelector(".reason").textContent=done?(pfr?"Revisado":isIng(get(p.k))?"Parte concluída":"Concluído"):(p.cls==="r-new"&&!p.pt?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
     const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · ${String(it.num).padStart(3,"0")} · `;pa.appendChild(incEl(wOf(it),false));
     if(compact&&!editing){const rev=p.cls==="r-rev";let prog,started=false;
       if(p.cls==="r-weak"){const n=weakDone(p);started=n>0;prog=`${Math.min(n,WEAK_DAY_Q)} de ${WEAK_DAY_Q} questões`}
+      else if(pfr){const PV=fac.provas.find(x=>x.id===p.pid);prog=`Revisão ${p.n||1} de ${FAC_RV_MAX}${PV?" · "+PV.name:""}`}
       else if(p.subs.length){const L2=subList(it),dn=p.subs.filter(t=>rev?(p.chk||[]).includes(t):(L2.find(y=>y.t===t)||{}).done).length;started=dn>0;prog=`${dn} de ${p.subs.length} subtópicos`}
       else prog=done?"feito":"tema inteiro";
       const ov=planOpen[p.k],open=ov&&ov.done===done?ov.v:(started&&!done);// ao concluir, volta ao automático (fecha)
       const sm=el(`<button class="psum" type="button" aria-expanded="${open}"><span class="psp"></span><span class="pst"></span><span class="pchev" aria-hidden="true"></span></button>`);
-      sm.querySelector(".psp").textContent=prog;sm.querySelector(".pst").textContent=open?"":p.subs.join(" · ");
+      sm.querySelector(".psp").textContent=prog;sm.querySelector(".pst").textContent=open?"":pfr?"anotação · erros · questões":p.subs.join(" · ");
       sm.onclick=()=>{planOpen[p.k]={v:!open,done};render()};if(!open)li.classList.add("pmini");li.querySelector(".pa").after(sm)}
     const body=li.querySelector(".pbody");
     if(p.prev&&BYKEY[p.prev.k]){const sw=el(`<p class="pswap"><span></span> <button class="link" type="button">Desfazer troca</button></p>`);
@@ -3528,6 +3551,14 @@ function renderPlan(){
       L.forEach(x=>{const on=p.subs.includes(x.t);const b=el(`<button type="button" class="pick" aria-pressed="${on}"></button>`);b.textContent=(x.done?"✓ ":"")+x.t;
         b.onclick=()=>{if(on)p.subs=p.subs.filter(t=>t!==x.t);else if(p.subs.length<6)p.subs=[...p.subs,x.t];savePlan();render()};wrap.appendChild(b)});
       body.appendChild(wrap);
+    }else if(pfr){const PV=fac.provas.find(x=>x.id===p.pid),a=refAcc(p.ref),T=refTopics(p.ref).filter(x=>BYKEY[x.k]);
+      body.appendChild(el(`<p class="phint">Você já estudou este conteúdo. Releia a anotação, refaça os erros do caderno e faça algumas questões.</p>`));
+      body.appendChild(el(`<p class="phint pfrnote">${a!==null?`Acerto até aqui: ${Math.round(a*100)}%. `:""}Não altera as revisões espaçadas.</p>`));
+      if(T.length>1||(T.length&&T[0].own)){const w=el(`<p class="phint pfrt">Temas: </p>`);T.forEach((x,j)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[x.k].t;b.onclick=()=>openTopic(x.k);if(j)w.appendChild(document.createTextNode(" · "));w.appendChild(b)});body.appendChild(w)}
+      if(PV){const rb=el(`<div class="pacts"></div>`);
+        if(done){const u=el(`<button class="link" type="button">Desfazer “revisei”</button>`);u.onclick=()=>{provaRvMark(PV,p.ref,false);render()};rb.appendChild(u)}
+        else{const g=el(`<button class="btn primary pfrdone" type="button">Revisei para a prova</button>`);g.onclick=()=>{provaRvMark(PV,p.ref,true);render()};rb.appendChild(g)}
+        body.appendChild(rb)}
     }else if(p.cls==="r-weak"){
       const n=weakDone(p),[c0,t0]=[get(p.k).qc||0,get(p.k).qt||0];
       body.appendChild(el(`<p class="phint">Seu acerto neste tema está em ${pct(c0,t0)}% (${c0}/${t0}). Hoje: faça pelo menos ${WEAK_DAY_Q} questões${p.subs.length?", com foco em:":"."}</p>`));
@@ -3550,12 +3581,17 @@ function renderPlan(){
       if(!done){const sb=el(`<button class="btn primary" type="button" style="align-self:flex-start">Estudei hoje</button>`);
         sb.onclick=()=>{const first=!get(p.k).last;upd(p.k,x=>{x.last=today();if(first)x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");p.subs=[];savePlan();commit()};body.appendChild(sb)}}
     const acts=li.querySelector(".pacts");
-    const ed=el(`<button class="mini" type="button">${editing?"Pronto":"Trocar subtópicos"}</button>`);ed.onclick=()=>{planEdit=editing?null:p.k;render()};acts.appendChild(ed);
+    if(!pfr){const ed=el(`<button class="mini" type="button">${editing?"Pronto":"Trocar subtópicos"}</button>`);ed.onclick=()=>{planEdit=editing?null:p.k;render()};acts.appendChild(ed)}
     if(!editing){
+      if(pfr&&!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{openTopic(p.k);setTimeout(()=>{const g=detGet("qf-",p.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
       if(p.subs.length&&!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[p.k]="__hoje";openTopic(p.k);setTimeout(()=>{const g=detGet("qf-",p.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
       const o=el(`<button class="mini" type="button">Abrir tema</button>`);o.onclick=()=>openTopic(p.k);acts.appendChild(o);
       const fz=el(`<button class="mini" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(p.k);acts.appendChild(fz)}
     pl.appendChild(li)});
+  if(PW.length&&!CR.active&&P.items.length<PLAN_N){const due=ALL.filter(i=>isDue(get(i.key))).length;
+    const n=el(`<li class="pweek"><p class="phint"></p></li>`);n.querySelector("p").textContent=`Semana de prova: não entram temas novos da residência.${due?` Use as vagas livres nas ${due} ${due===1?"revisão":"revisões"} da residência.`:""}`;
+    if(due){const b=el(`<button class="link" type="button">Ir para as revisões</button>`);b.onclick=()=>goRevs();n.querySelector("p").appendChild(document.createTextNode(" "));n.querySelector("p").appendChild(b)}
+    pl.appendChild(n)}
 }
 /* quando você começa um tema fora do plano, ele substitui um tema proposto ainda não iniciado */
 function itemStarted(p){if(itemDone(p))return true;if(p.cls==="r-weak")return weakDone(p)>0;if(p.cls==="r-rev")return !!(p.chk&&p.chk.length)||get(p.k).last===today();
@@ -3641,10 +3677,10 @@ function renderVesp(){const box=$("#revVesp");box.innerHTML="";
     c.querySelector(".ptitle").textContent=`Véspera: ${p.name}`;c.querySelector(".reason").textContent=inLabel(daysTo(p.date));
     c.querySelector(".phint").textContent=items.length?`${provaDiscName(p)} · ${chk.filter(r=>items.includes(r)).length} de ${items.length} revisados hoje. Passada rápida no que você já estudou: anotações, erros do caderno e algumas questões. Não altera o agendamento das revisões espaçadas.`:`${provaDiscName(p)} · você ainda não estudou nenhum conteúdo desta prova.`;
     if(pend){const pn=el(`<p class="phint"></p>`);pn.textContent=`${pend} conteúdo${pend>1?"s":""} ainda não estudado${pend>1?"s":""}: ${pend>1?"ficam":"fica"} no Estudar hoje, não aqui.`;c.insertBefore(pn,c.querySelector("ul"))}
-    items.forEach((r,n)=>{const id=`vp-${p.id}-${n}`,on=chk.includes(r),x=refTopic(r);
+    items.forEach((r,n)=>{const id=`vp-${p.id}-${n}`,on=chk.includes(r)||provaRv(p,r).includes(today()),x=refTopic(r);
       const li=el(`<li><input type="checkbox" id="${id}"${on?" checked":""}><label for="${id}"></label><button class="link" type="button">abrir</button></li>`);
       li.querySelector("label").textContent=refLabel(r);
-      li.querySelector("input").onchange=()=>{const s=new Set(V[p.id]||[]);s.has(r)?s.delete(r):s.add(r);V[p.id]=[...s];savePlan();render()};
+      li.querySelector("input").onchange=e=>{provaRvMark(p,r,e.target.checked);render()};
       li.querySelector("button").onclick=()=>openTopic(x.k);c.querySelector("ul").appendChild(li)});
     box.appendChild(c)})}
 function markReviewed(k){ensurePlan();const r=new Set(dayPlan.revd||[]);r.add(k);dayPlan.revd=[...r];if(dayPlan.rchk)delete dayPlan.rchk[k];savePlan()}
@@ -3733,6 +3769,23 @@ function facPlanPicks(){const out=[],seen=new Set();
   // proteção da residência: pelo menos RES_MIN_WEEK dias por semana com 1 tema da residência (exceto nos 7 dias finais de uma prova)
   if(near>7&&slots>=PLAN_N&&resDaysNeeded())slots=PLAN_N-1;
   return {picks:out,slots}}
+/* revisar para a prova: nos dias finais (os mesmos em que a prova ocupa as 3 vagas), o conteúdo já estudado volta ao plano,
+   até FAC_RV_MAX vezes cada, com pelo menos FAC_RV_GAP dias entre elas, o de menor acerto primeiro. p.rv = {ref:[datas]}.
+   Nessa semana o plano não abre tema novo da residência. Não mexe nas revisões espaçadas. Marcar na véspera também conta. */
+const FAC_RV_MAX=2, FAC_RV_GAP=2;
+const rvDays=()=>Math.round(FAC_WIN/3);
+const provaRv=(p,r)=>p.rv&&Array.isArray(p.rv[r])?p.rv[r]:[];
+function provaRvMark(p,r,on){const t=today(),L=provaRv(p,r).filter(d=>d!==t);if(on)L.push(t);if(!p.rv||typeof p.rv!=="object")p.rv={};
+  if(L.length)p.rv[r]=L.sort();else delete p.rv[r];if(!Object.keys(p.rv).length)delete p.rv;
+  ensurePlan();const V=dayPlan.vesp||(dayPlan.vesp={}),S=new Set(V[p.id]||[]);on?S.add(r):S.delete(r);V[p.id]=[...S];savePlan();saveFac()}
+function refAcc(r){let c=0,n=0;refTopics(r).forEach(x=>{if(!BYKEY[x.k])return;const s=get(x.k);c+=s.qc||0;n+=s.qt||0});return n?c/n:null}
+const provaWeek=()=>upcomingProvas().filter(p=>daysTo(p.date)<=rvDays()&&p.items.some(refOk));
+function provaRvPicks(){const out=[],seen=new Set(),t=dnum(today());
+  for(const p of provaWeek()){const d=daysTo(p.date);
+    for(const r of p.items){if(!refOk(r)||!itemStudied(p,r))continue;const L=provaRv(p,r);if(L.length>=FAC_RV_MAX)continue;
+      if(L.length&&t-dnum(L[L.length-1])<FAC_RV_GAP)continue;const x=refTopic(r);if(seen.has(x.k))continue;seen.add(x.k);
+      const a=refAcc(r);out.push({p,d,r,n:L.length+1,it:BYKEY[x.k],a:a===null?0.55:a})}}
+  return out.sort((x,y)=>x.a-y.a||x.n-y.n||x.d-y.d)}
 /* modo provas: 3+ provas num intervalo de 7 dias -> residência pausada de 7 dias antes da 1ª até o dia da última */
 const CRUNCH_N=3, CRUNCH_SPAN=7, CRUNCH_LEAD=7;
 function crunchOverride(){const o=fac.crunch;if(!o||!o.until||o.until<today())return null;return o}
@@ -3927,7 +3980,7 @@ function ownMergeInto(id,toK){const fk="F-"+id,to={k:toK};
 function replaceOwn(id,ref){const from="O:"+id,to=refTopic(ref);if(!to)return;
   const swap=a=>[...new Set(a.map(r=>r===from?ref:r))];
   fac.discs.forEach(d=>{d.items=swap(d.items);(d.sps||[]).forEach(s=>s.items=swap(s.items))});
-  fac.provas.forEach(p=>{p.items=swap(p.items);p.done=(p.done||[]).map(r=>r===from?ref:r)});
+  fac.provas.forEach(p=>{p.items=swap(p.items);p.done=(p.done||[]).map(r=>r===from?ref:r);if(p.rv&&p.rv[from]){p.rv[ref]=[...new Set([...(p.rv[ref]||[]),...p.rv[from]])].sort();delete p.rv[from]}});
   ownMergeInto(id,to.k);
   delete fac.own[id];facReplace=null;saveFac();commit()}
 /* ligar sem substituir: o nome fica, o progresso passa a ser o do tema (o que o conteúdo próprio já tinha vai para o tema) */
@@ -4405,11 +4458,12 @@ function renderFacCrunch(target){const fc=target||$("#facCrunch");fc.innerHTML="
     inp.onchange=()=>{if(/^\d{4}-\d{2}-\d{2}$/.test(inp.value)&&inp.value>=today()){fac.crunch={mode,until:inp.value};saveFac();redoPlan()}};fc.appendChild(f)}
   fc.appendChild(el(`<details class="plain"><summary>Como as provas entram no plano do dia</summary><ul class="frules">
     <li><b>21 dias</b> antes: 1 dos 3 temas do dia é da prova. <b>14 dias</b>: 2. <b>7 dias</b>: os 3.</li>
+    <li>Nos <b>7 dias</b> finais, o conteúdo que você já estudou volta como <b>Revisar para a prova</b> (até 2 vezes cada, o de menor acerto primeiro). Nessa semana não entram temas novos da residência: as vagas que sobram ficam para as revisões dela.</li>
     <li>Se o conteúdo também cai muito na residência, a prova ganha +1 vaga.</li>
     <li>Pelo menos 2 dias por semana mantêm 1 tema da residência, exceto na semana da prova.</li>
     <li>Nos 3 últimos dias, o conteúdo que você já estudou volta como revisão de véspera, na seção Revisões. O que ainda não foi estudado continua no Estudar hoje.</li>
     <li><b>Modo provas:</b> com 3 ou mais provas num intervalo de 7 dias, a residência pausa de 7 dias antes da primeira até a última.</li>
-    <li>Uma prova só ocupa vagas enquanto tiver conteúdo pendente.</li></ul></details>`));
+    <li>Antes dos 7 dias finais, uma prova só ocupa vagas enquanto tiver conteúdo pendente.</li></ul></details>`));
   if(planNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=planNote;fc.appendChild(n)}}
 
 function provaCard(p,L){const d=discOf(p.discId),po=facProvaOpen.has(p.id),dd=daysTo(p.date),tot=p.items.filter(refOk).length,pend=provaPending(p).length;
@@ -5487,11 +5541,13 @@ function navMenuOpen(){const M=$("#navMenu"),P=$("#nmPanel");P.innerHTML="";
   P.appendChild(navListEl(navMenuClose));P.appendChild(el(`<div class="nmsep"></div>`));
   const sec=el(`<div class="nmsec"></div>`);[["nmProf","Perfil",`<circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/>`,()=>goSub("perfil")],["nmCfg","Configurações",`<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>`,()=>goSub("config")],["nmHelp","Ajuda",`<circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/>`,()=>goSub("help")]].forEach(([id,t,ic,fn])=>{
     const b=el(`<button type="button"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg><span></span></button>`);b.id=id;b.querySelector("span").textContent=t;b.onclick=()=>{navMenuClose();fn()};sec.appendChild(b)});P.appendChild(sec);
-  M.hidden=false;document.body.classList.add("nmopen");$("#tabM").setAttribute("aria-expanded","true");$("#navMenuBtn").setAttribute("aria-expanded","true");setTimeout(()=>{const c=$("#nmClose");if(c)c.focus({preventScroll:true})},30)}
-function navMenuClose(){const M=$("#navMenu");if(M.hidden)return;M.hidden=true;document.body.classList.remove("nmopen");$("#tabM").setAttribute("aria-expanded","false");$("#navMenuBtn").setAttribute("aria-expanded","false")}
+  clearTimeout(nmTimer);M.classList.remove("nmclosing");M.hidden=false;document.body.classList.add("nmopen");$("#tabM").setAttribute("aria-expanded","true");$("#navMenuBtn").setAttribute("aria-expanded","true");setTimeout(()=>{const c=$("#nmClose");if(c)c.focus({preventScroll:true})},30)}
+let nmTimer=0;
+function navMenuClose(){const M=$("#navMenu");if(M.hidden||M.classList.contains("nmclosing"))return;
+  M.classList.add("nmclosing");clearTimeout(nmTimer);nmTimer=setTimeout(()=>{M.classList.remove("nmclosing");M.hidden=true},240);document.body.classList.remove("nmopen");$("#tabM").setAttribute("aria-expanded","false");$("#navMenuBtn").setAttribute("aria-expanded","false")}
 $("#navMenu").addEventListener("click",e=>{if(e.target.id==="navMenu")navMenuClose()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#navMenu").hidden){navMenuClose();e.stopPropagation()}else if(document.querySelector(".appnav.peek"))sbPeek(false)}},true);
-$("#navMenuBtn").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
+$("#navMenuBtn").onclick=()=>(($("#navMenu").hidden||$("#navMenu").classList.contains("nmclosing"))?navMenuOpen():navMenuClose());
 
 function renderHead(){placeSide();const ini=initials(ui.profile.name),b=$("#profBtn");if(!b)return;b.classList.toggle("hasini",!!ini);$("#profIni").textContent=ini;
   b.setAttribute("aria-pressed",view==="perfil");$("#cfgBtn").setAttribute("aria-pressed",["config","help","instr"].includes(view))}
@@ -7099,7 +7155,7 @@ function nextSteps(){const out=[],P=ensurePlan(),CR=examCrunch();if(isOffDay())r
   const started=p=>{const L=subList(BYKEY[p.k]);return p.cls==="r-weak"?weakDone(p)>0:p.subs.some(t=>p.cls==="r-rev"?(p.chk||[]).includes(t):(L.find(y=>y.t===t)||{}).done)};
   planItems.filter(started).forEach(p=>out.push({k:p.k,kind:"plan",t:BYKEY[p.k].t,why:"Continuar: você já começou este tema hoje"}));
   due.filter(i=>dueIn(get(i.key))>=0).forEach(it=>out.push({k:it.key,kind:"rev",t:it.t,why:"Revisão de hoje"}));
-  planItems.filter(p=>!started(p)).forEach(p=>out.push({k:p.k,kind:"plan",t:BYKEY[p.k].t,why:p.cls==="r-weak"?"Ponto fraco do plano de hoje":p.cls==="r-fac"?"Conteúdo da prova da faculdade":"Tema do plano de hoje"}));
+  planItems.filter(p=>!started(p)).forEach(p=>out.push({k:p.k,kind:"plan",t:BYKEY[p.k].t,why:p.cls==="r-weak"?"Ponto fraco do plano de hoje":p.cls==="r-fac"?"Conteúdo da prova da faculdade":p.cls==="r-pfr"?"Revisar para a prova da faculdade":"Tema do plano de hoje"}));
   const rd=redo.filter(x=>BYKEY[x.k]).length;if(rd)out.push({kind:"redo",t:`Refazer ${Math.min(rd,10)} ${Math.min(rd,10)===1?"questão errada":"questões erradas"}`,why:`${rd} na lista de Refazer as que errei`});
   const ed=eDueList().length;if(ed)out.push({kind:"errs",t:`Revisar ${Math.min(ed,15)} ${Math.min(ed,15)===1?"erro":"erros"} do caderno`,why:`${ed} ${ed===1?"erro volta":"erros voltam"} para revisão hoje`});
   const g=ui.prefs.qgoal,W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7).q;if(g&&W<g&&!isSimDay())out.push({kind:"sim",t:"Simulado misto de 10 questões",why:`Faltam ${g-W} questões para a meta da semana`});
@@ -8024,6 +8080,7 @@ const HELP=[
 | 15 a 21 | 1 |
 | 8 a 14 | 2 |
 | 0 a 7 | 3 |
+- **Semana da prova (0 a 7 dias):** o que você já estudou volta como **Revisar para a prova** (até 2 vezes cada, com 2 dias entre elas, o de menor acerto primeiro; marcar na véspera também conta). Não entram temas novos da residência: as vagas que sobram ficam para as revisões dela. Não mexe nas revisões espaçadas.
 - **+1 vaga** se o conteúdo também cai muito na residência. **Residência protegida:** 2 dias por semana com um tema dela, exceto nos 7 dias finais antes de uma prova.
 - **Modo provas:** 3+ provas em 7 dias liga sozinho. Controle manual em **Faculdade › Modo provas**.
 - Os temas FAC não entram no "% dominado", que mede só os 185 temas da residência.`],
@@ -8238,7 +8295,7 @@ $("#promptBox").addEventListener("input",()=>{promptEdited=true;setPromptStatus(
 $("#promptSave").onclick=savePrompt;bindPromptReset();
 try{const dp=JSON.parse(localStorage.getItem(LSDP)||"null");if(dp&&dp.d===today())dayPlan=renamePlanLabels(dp)}catch(e){}
 render();
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});$("#tabM").onclick=()=>$("#navMenu").hidden?navMenuOpen():navMenuClose();
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView(t.dataset.v)});$("#tabM").onclick=()=>(($("#navMenu").hidden||$("#navMenu").classList.contains("nmclosing"))?navMenuOpen():navMenuClose());
 $("#foPill").onclick=()=>{backStack=[];setView("foco")};
 if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
