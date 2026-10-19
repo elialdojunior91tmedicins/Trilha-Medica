@@ -243,6 +243,8 @@ consultado quando há dúvida. Responda em português.
   "Por que a sua não serve". O `impPrompt` pede o porquê só no `porque` de cada alternativa.
   Caderno a partir da questão: `qDraft(q,mine,src)` → `{w:"Marquei X; a certa era Y", p:qClue(q), r:conceito + 1–2 frases do comentário + "Por que não…", q:{…}}`
   (`qClue` pontua as frases do enunciado pelas palavras da certa/comentário, números e exames; ignora a pergunta). `errFormEl` tem o campo Pista (`<pre>p`).
+  `cmTidy(t)` tira marcas de comentário de prova ("— Gabarito: A) …", "Por que está correta:", "Correta." no começo da linha): usado em `qSplit` (comentário e porquês), `cmClean`, `eOneLine`,
+  `cdErrParse` e na tela do erro (`eRFill` = "Correto" com "Por que não a sua" em `b.ewhy`; `ePista` esconde pista que é só a pergunta). `qClue` devolve "" se o enunciado é só a pergunta. Nada salvo é regravado. Teste t108.
   "✦ Resumir com o Claude" no `eCadEl`: `eSumRun(D)`/`eSumPrompt(D)` (JSON {errei,pista,conceito}; `D.sum.prev` = Voltar ao do app). Teste: `tests/t101.js`.
   Vários materiais (Lote 4, 10/2026): conjunto `{items:[{id,name,txt,imgs,pages,ntext,scan,busy,err,note}],attach,busy}` em `genMat[chave]` (gerador) e `simMat` (simulado);
   `msAdd(get,set,files)` lê cada arquivo (`msReadOne`), `msPack(S)` junta no limite (`GM_MAX`/`GM_IMG`; divide o espaço por igual, os pequenos ficam inteiros, `parts[].pct`;

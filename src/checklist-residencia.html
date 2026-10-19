@@ -710,6 +710,7 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .etype{font-weight:600;color:var(--tc)}
 .ebody{margin:0;font-size:.93rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .ebody b{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block}
+.ebody b.ewhy{margin-top:10px}
 .efoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.8rem;color:var(--muted)}
 .efoot .sp{flex:1}
 .etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
@@ -3160,11 +3161,18 @@ function cmParse(txt,letters){const t=String(txt||"");if(!t)return null;const M=
   while((m=CM_MARK.exec(t))){const L=m[2]||m[3]||m[4];if(letters.includes(L))M.push({L,at:m.index+m[1].length,end:m.index+m[0].length})}
   if(new Set(M.map(x=>x.L)).size<2)return null;
   return {intro:t.slice(0,M[0].at).trim(),segs:M.map((x,i)=>({L:x.L,t:t.slice(x.end,i+1<M.length?M[i+1].at:t.length).trim()}))}}
-function cmClean(t){return t.replace(/^(?:(?:est[áa]|[ée])\s+)?(?:(?:in)?corret[ao]|errad[ao]|falsa|verdadeira)\b\s*(?:[.:;,—–-]\s*)?/i,"").replace(/^(?:porque|pois)\s+/i,"").trim().replace(/^./,c=>c.toUpperCase())}
-function qSplit(q){if(!q||!q.comentario||!Array.isArray(q.alternativas))return q;const P=cmParse(q.comentario,q.alternativas.map(a=>a.letra));if(!P)return q;
-  const why={},main=[P.intro];P.segs.forEach(x=>{if(x.L===q.correta||!x.t)main.push(x.t&&cmClean(x.t));else why[x.L]=(why[x.L]?why[x.L]+" ":"")+cmClean(x.t)});
-  if(!Object.keys(why).length)return q;
-  return {...q,comentario:main.filter(Boolean).join("\n\n"),alternativas:q.alternativas.map(a=>a.porque||!why[a.letra]?a:{...a,porque:why[a.letra]})}}
+/* tira as marcas que vêm no comentário de algumas provas: "— Gabarito: A) <texto da alternativa>", "Por que está correta:", "Correta." no começo */
+function cmTidy(t){let s=String(t||"");if(!s)return s;
+  s=s.replace(/(^|\n)[ \t]*[—–-]?[ \t]*Gabarito\s*:\s*\(?[A-H]\)[^\n]*?(?=\bPor que\b|\n|$)/gi,"$1");
+  s=s.replace(/\bPor que(?:\s+(?:a|o)\s+[A-H])?\s+(?:(?:est[áa]|[ée])\s+)?(?:(?:in)?corret[ao]|errad[ao]|cert[ao])\s*[:.—–-]\s*/gi,"");
+  s=s.replace(/(^|\n)[ \t]*(?:in)?corret[ao]\s*[.:—–-]\s*/gi,"$1");
+  return s.replace(/[ \t]{2,}/g," ").replace(/\n{3,}/g,"\n\n").trim()}
+function cmClean(t){t=cmTidy(t);return t.replace(/^(?:(?:est[áa]|[ée])\s+)?(?:(?:in)?corret[ao]|errad[ao]|falsa|verdadeira)\b\s*(?:[.:;,—–-]\s*)?/i,"").replace(/^(?:porque|pois)\s+/i,"").trim().replace(/^./,c=>c.toUpperCase())}
+function qSplit(q){if(!q||!q.comentario||!Array.isArray(q.alternativas))return q;const P=cmParse(q.comentario,q.alternativas.map(a=>a.letra));
+  if(!P){const C=cmTidy(q.comentario),T=q.alternativas.map(a=>a.porque?{...a,porque:cmTidy(a.porque)}:a);return C!==q.comentario||T.some((a,i)=>a!==q.alternativas[i])?{...q,comentario:C,alternativas:T}:q}
+  const why={},main=[cmTidy(P.intro)];P.segs.forEach(x=>{if(x.L===q.correta||!x.t)main.push(x.t&&cmClean(x.t));else why[x.L]=(why[x.L]?why[x.L]+" ":"")+cmClean(x.t)});
+  if(!Object.keys(why).length){const C=cmTidy(q.comentario);return C!==q.comentario?{...q,comentario:C}:q}
+  return {...q,comentario:main.filter(Boolean).join("\n\n"),alternativas:q.alternativas.map(a=>a.porque?{...a,porque:cmTidy(a.porque)}:!why[a.letra]?a:{...a,porque:why[a.letra]})}}
 /* explicação: Gabarito no topo, por que a certa está certa, conceito-chave (o porquê das erradas fica sob cada alternativa) */
 function qExplEl(q,o){o=o||{};const f=document.createDocumentFragment(),C=String(q.correta||"").replace(/[^A-Z0-9]/g,""),r=q.alternativas.find(a=>a.letra===q.correta);
   if(!C)return f;const box=el(`<div class="qexpl"><p class="qgab"><span>Gabarito</span><b></b></p></div>`);box.querySelector("b").textContent=r?`${C}) ${r.texto}`:C;
@@ -4759,7 +4767,7 @@ function ecardEl(e,withTopic){
   if(e.s){const s=el(`<span></span>`);s.textContent=e.s;h.appendChild(s)}
   if(e.c){const s=el(`<span class="ecause"></span>`);s.textContent=e.c;h.appendChild(s)}
   if(e.arch)c.classList.add("arch");
-  c.querySelector(".w").textContent=e.w;c.querySelector(".r").textContent=e.r;if(e.p){c.querySelector(".p").textContent=e.p;c.querySelector(".epista").hidden=false}
+  c.querySelector(".w").textContent=e.w;eRFill(c.querySelector(".r"),e.r);if(ePista(e)){c.querySelector(".p").textContent=ePista(e);c.querySelector(".epista").hidden=false}
   if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e);c.querySelector(".rv").textContent=`${du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
   const rb=eCardBtn(e),nb=eNoteBtn(e);
@@ -4788,15 +4796,20 @@ function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
   putErr(e)}
 function eNew(k,w,r,t,s,c,p){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
   if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);errors.push(e);putErr(e);return e}
-const eOneLine=s=>String(s||"").replace(/\s*\n+\s*/g," ").trim();
+const eOneLine=s=>String(s||"").split("\n").map(cmTidy).filter(Boolean).join(" ").replace(/\s+/g," ").trim();
 /* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
 const CL_STOP=new Set("para pelo pela pelos pelas como mais menos sobre entre quando qual quais deve devem pode podem esta este essa esse isso isto está estão com sem que uma umas uns dos das nos nas aos foi era são ser ter tem tinha após antes desde paciente anos idade sexo masculino feminino feminina masculina apresenta apresentando refere queixa história quadro caso seguinte seguintes alternativa correta conduta diagnóstico provável mais adequada assinale".split(" "));
 const clWords=t=>new Set(norm(String(t||"")).split(/[^a-z0-9]+/).filter(w=>w.length>=4&&!CL_STOP.has(w)));
 const clCut=(t,n)=>{t=String(t||"").replace(/\s+/g," ").trim().replace(/[.;:]+$/,"");if(t.length<=n)return t;const c=t.slice(0,n),i=c.lastIndexOf(" ");return (i>n*.6?c.slice(0,i):c).replace(/[,;:]$/,"")+"…"};
 const clSents=t=>String(t||"").replace(/\s+/g," ").trim().replace(/([.!?])\s+(?=[A-ZÀ-Ú0-9"(])/g,"$1\u0001").split("\u0001").map(x=>x.trim()).filter(Boolean);
+/* "Correto" do erro na tela: tira as marcas da prova (cmTidy) e destaca "Por que não a sua" numa linha própria (nada é regravado) */
+function eRFill(box,r){box.textContent="";String(r||"").split("\n").map(cmTidy).filter(Boolean).forEach((l,i)=>{const m=l.match(/^(Por que n[ãa]o[^:]{0,90}:)\s*(.*)$/);if(i&&!m)box.appendChild(document.createElement("br"));
+  if(m){const b=document.createElement("b");b.className="ewhy";b.textContent="Por que não a sua";box.appendChild(b);box.append(cmTidy(m[2]))}else box.append(l)})}
+/* pista antiga que é só a pergunta da questão ("Qual…?") não ajuda: não aparece */
+const ePista=e=>{const p=String(e.p||"").trim();return !p||/\?\s*$/.test(p)&&!/[.!]\s/.test(p)?"":p};
 /* pista do caso: a frase do enunciado que mais aponta para a resposta certa (palavras da correta/comentário, números e exames) */
 function qClue(q){const S=clSents(q.enunciado);if(!S.length)return "";const isAsk=x=>/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x);
-  let C=S.filter(x=>!isAsk(x));if(!C.length)C=S;if(C.length===1)return clCut(C[0],220);
+  let C=S.filter(x=>!isAsk(x));if(!C.length)return "";/* só a pergunta, sem caso: não há pista */if(C.length===1)return clCut(C[0],220);
   const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito].join(" ")),W=[...q.alternativas.filter(a=>a.letra!==q.correta)].reduce((m,a)=>{clWords(a.texto).forEach(w=>m.add(w));return m},new Set());
   const sc=C.map((x,i)=>{const ws=clWords(x);let v=0;ws.forEach(w=>{if(K.has(w))v+=W.has(w)?0.5:2});
     if(/\d/.test(x))v+=0.8;if(/\b(exame|mostra|revela|evidencia|laborat|hemograma|tomografia|radiografia|ultrass|bi[óo]psia|ecg|eletrocardio|resson|sorologia|cultura|gasometria|achado|ausculta|palpa)/i.test(x))v+=1;
@@ -4923,7 +4936,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
     const it=BYKEY[e.k],card=el(`<div class="fcard erfc${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="ebody"><b>Você errou</b><span class="w"></span></p><p class="ebody epista" hidden><b>Pista do caso</b><span class="p"></span></p><p class="how ehint">Antes de abrir: qual é o certo? Responda de cabeça.</p><div class="fca"><p class="ebody"><b>Correto</b><span class="r"></span></p></div></div>`);
     card.querySelector(".qn").textContent=`ERRO ${R.i+1} DE ${R.ids.length} · ${(ETYPES[e.t]||"").toUpperCase()}${e.s?" · "+e.s.toUpperCase():""}`;
     const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(e.k);
-    card.querySelector(".w").textContent=e.w;card.querySelector(".r").textContent=e.r;if(e.p){card.querySelector(".p").textContent=e.p;card.querySelector(".epista").hidden=false}if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
+    card.querySelector(".w").textContent=e.w;eRFill(card.querySelector(".r"),e.r);if(ePista(e)){card.querySelector(".p").textContent=ePista(e);card.querySelector(".epista").hidden=false}if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
     const a=el(`<div class="btns"></div>`);
     if(!R.show){const s=el(`<button class="btn primary" type="button" id="erShow">Mostrar o correto</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
     else{const g=el(`<button class="btn primary" type="button" id="erGood">Agora sei</button>`),b=el(`<button class="btn" type="button" id="erBad">Ainda erraria</button>`);
@@ -7470,7 +7483,7 @@ function cdCfgEl(){const w=el(`<details class="plain cdcfg"><summary>Ajustes dos
 /* ---- cartões a partir de um erro: rascunho do app (2 cartões) ou do Claude no padrão Osler ---- */
 const CDK={disc:"Discriminador",nao:"Por que não a sua",lac:"Lacuna",arm:"Armadilha",con:"Contraste"};
 function cdLabel(it){return it?it.t:""}
-function cdErrParse(e){const m=/^Marquei (.+?); a certa era (.+)$/.exec(eOneLine(e.w)),why=(/(?:^|\n)Por que não[^:]*:\s*(.+)/.exec(e.r)||[])[1]||"",concept=String(e.r||"").split("\n").filter(l=>!/^Por que não/.test(l)&&!/^Correta:/.test(l)).join(" ").trim();return {mine:m&&m[1],right:m&&m[2],why,concept}}
+function cdErrParse(e){const R=String(e.r||"").split("\n").map(cmTidy).filter(Boolean).join("\n"),m=/^Marquei (.+?); a certa era (.+)$/.exec(eOneLine(e.w)),why=cmTidy((/(?:^|\n)Por que não[^:]*:\s*(.+)/.exec(R)||[])[1]||""),concept=R.split("\n").filter(l=>!/^Por que não/.test(l)&&!/^Correta:/.test(l)).join(" ").trim();return {mine:m&&m[1],right:m&&m[2],why,concept}}
 function cdErrDrafts(e){const it=BYKEY[e.k],L=esc(cdLabel(it)),P=cdErrParse(e),ref=e.s?`<i>Questão</i>, em <b>${esc(e.s)}</b>.`:"",out=[];
   if(P.right){out.push({kind:"disc",q:`<b>${L}.</b> ${e.p?esc(e.p)+" &rarr; ":""}qual é a resposta?`,a:`<b>${esc(P.right)}</b>${P.concept?`<br><br><i>${esc(P.concept)}</i>`:""}`,ref,keep:true});
     if(P.mine)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(P.mine)}${e.p?" neste caso":""}?`,a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
