@@ -312,6 +312,10 @@ consultado quando há dúvida. Responda em português.
   com gap 8px; no celular (≤560px) o selo `.reason` fica acima do título (`column-reverse`).
   Densos: `s.dn={índice:"u"|"n"|"c"}` e `cs[j].dn` (u = usuário marcou, n = usuário tirou, c = Claude sugeriu e vale até mudar); `subW` = 2 se denso; `setDn`,
   revisão embutida `DN_DEF` = {chave:[índices]} dos 185 temas (vira "c" em `subList` quando não há `s.dn[i]`; `dnPending` ignora temas em `DN_DEF`; 91 temas em partes), `dnBoxEl` no tema (`dnEdit`, selos `.dnb`), `dnSuggest(it)`/`dnSuggestAll()` (lotes `DN_CHUNK`=45 em Configurações › Plano, `dnPending`, `s.dnAt`), `dnApply` nunca troca u/n. Teste: `tests/t88.js`.
+- Lotes 6–7 (10/2026): questão com `q.pc` (Ponto-chave), `q.th` (Take home) e `q.fonte` (`exQClean`; `impKCParse` separa; `impPrompt` pede `pontoChave/takeHome/fonte`); `qExplEl` = Por que › `.qpc` › Conceito-chave › `.qth`; Fonte no `exQuestionEl`.
+  Erro ganha `e.pc`, `e.dd` (dados decisivos) e `e.q={e,a:[{l,t}],c,m}` (questão completa) via `eNew(...,x)`; `qDraft` → `p:qClueRich` (frase com **negrito**), `dd:qData`, `pc`, `qf`, tipo `confusao` se `qLike`; formulário com `#<pre>d`/`#<pre>k`.
+  Tela: `boldFill` (pista), `eExtraBlocks` (`.edd`, `.epc`, `.eqfull` com `eQOpen`); "Para reler hoje" usa `eItemEl` (subitens, `eNameLink` liga a tema/subtópico). Erros não vão mais para a anotação
+  (sem `eNoteBtn` nem modelo "Meus erros"); `errNoteMig()` (uma vez por aparelho, `resid-enm`) move as seções "## Meus erros" para o caderno e limpa `e.nt`. Teste t109.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
