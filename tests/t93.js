@@ -34,12 +34,12 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   ok(/4 questões lidas/.test(r0.loc)&&/com o comentário da própria prova/.test(r0.loc)&&r0.prim&&!r0.goPrim&&/mesmo assim/.test(r0.go),name+": lê aqui no aparelho e oferece Conferir e salvar (Claude fica opcional) "+JSON.stringify(r0));
   await shot("ok");
   await click('#impLocal');
-  const r1=await p.evaluate(()=>({st:imp.st,src:imp.src,qs:imp.qs.map(r=>({n:r.n,c:r.q.correta,g:r.g,na:r.q.alternativas.length,b:r.q.alternativas[1].texto,pq:r.q.alternativas.map(a=>a.porque),com:r.q.comentario,con:r.q.conceito,k:r.k,kg:r.kg,en:r.q.enunciado})),
+  const r1=await p.evaluate(()=>({st:imp.st,src:imp.src,qs:imp.qs.map(r=>({n:r.n,c:r.q.correta,g:r.g,na:r.q.alternativas.length,b:r.q.alternativas[1].texto,pq:r.q.alternativas.map(a=>a.porque),com:r.q.comentario,con:r.q.conceito,pc:r.q.pc||"",th:r.q.th||"",fo:r.q.fonte||"",k:r.k,kg:r.kg,en:r.q.enunciado})),
     note:document.querySelector('#impPanel').textContent,badge:[...document.querySelectorAll('#impPanel .exb')].some(x=>/Tema sugerido/.test(x.textContent)),N:__N}));
   const q2=r1.qs[1]||{};
   ok(r1.st==="review"&&r1.src==="local"&&r1.qs.map(q=>q.n+q.c+q.g).join()==="1Bb,2Cb,3Ab,4Db"&&r1.N===0,name+": 4 questões com o gabarito da prova, sem chamar o Claude "+r1.qs.map(q=>q.n+q.c+q.g).join());
   ok(q2.na===4&&q2.b==="Segunda conduta possível para o caso, em duas linhas."&&/^Homem de 42 anos/.test(q2.en)&&!/Clínica|Simulado|Página/.test(q2.en),name+": enunciado e alternativas limpos (linhas juntadas; cabeçalho, rodapé e [Clínica] fora) "+JSON.stringify([q2.b,q2.en]));
-  ok(q2.pq[0]==="a alternativa A está errada na questão 2."&&q2.pq[2]===""&&/é a conduta certa na questão 2/.test(q2.com)&&/regra da questão 2/.test(q2.com)&&q2.con==="guarde a regra 2.",name+": justificativas viram o porquê de cada alternativa, comentário e conceito "+JSON.stringify([q2.pq,q2.com,q2.con]));
+  ok(q2.pq[0]==="a alternativa A está errada na questão 2."&&q2.pq[2]===""&&/é a conduta certa na questão 2/.test(q2.com)&&!/regra da questão 2/.test(q2.com)&&/^regra da questão 2/.test(q2.pc)&&q2.th==="guarde a regra 2."&&q2.con==="",name+": justificativas viram o porquê de cada alternativa; comentário, Ponto-chave e Take home separados "+JSON.stringify([q2.pq,q2.com,q2.pc,q2.th,q2.fo]));
   ok(r1.qs.filter(q=>q.k==="CM-22").length>=3&&r1.qs.every(q=>!q.k||q.kg)&&r1.badge&&/tema foi sugerido pelo nome/.test(r1.note),name+": tema sugerido pelo nome (Cefaleias) com o selo para conferir "+r1.qs.map(q=>q.k).join());
   await shot("rev");
   await click('#impSave');ok(await p.evaluate(()=>exams.length===1&&exams[0].qs.length===4&&exams[0].qs[1].q.alternativas[0].porque==="a alternativa A está errada na questão 2."&&!("kg" in exams[0].qs[0])),name+": a prova lida no aparelho é salva com os comentários");

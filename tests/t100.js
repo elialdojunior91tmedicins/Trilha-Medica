@@ -36,14 +36,14 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
    const d=eNew("CM-34","Marquei D","Já na anotação","conhecimento","");d.due=D(0);d.nt=1;putErr(d);// vivo, mas já levado
    const e=eNew("CM-34","Marquei E","Arquivado","conhecimento","");e.arch=D(0);putErr(e);
    notes["CM-34"]="## Resumo\nTexto da anotação de anemias.";commit();nSeg="todas";backStack=[];setView("notas");nOpen.add("CM-34");render()});await p.waitForTimeout(300);
- const r7=await p.evaluate(()=>{const x=document.querySelector('#nlist .nerrs');return x&&{h:x.querySelector('.nerrh span').textContent,items:[...x.querySelectorAll('.nerr .ne-r')].map(y=>y.textContent),m:[...x.querySelectorAll('.ne-m')].map(y=>y.textContent),live:x.classList.contains("live")}});
+ const r7=await p.evaluate(()=>{const x=document.querySelector('#nlist .nerrs');return x&&{h:x.querySelector('.nerrh span').textContent,items:[...x.querySelectorAll('li.nei')].map(y=>y.firstChild.textContent+[...y.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join("")),m:[...x.querySelectorAll('li.nei>.nbadge')].map(y=>y.textContent),live:x.classList.contains("live")}});
  ok(r7&&r7.h==="4 erros neste tema · 3 ainda pedem atenção"&&r7.live,name+": linha de resumo (ativos e vivos) "+JSON.stringify(r7&&r7.h));
- ok(r7&&r7.items.length===2&&/^Talassemia minor/.test(r7.items[0])&&/^Plummer-Vinson/.test(r7.items[1])&&r7.m[0]==="errou de novo 2×"&&r7.m[1]==="revisar hoje",name+": só os vivos que não estão na anotação, teimosos primeiro "+JSON.stringify(r7&&r7.items));
+ ok(r7&&r7.items.length===3&&/Talassemia minor/.test(r7.items[0])&&/Plummer-Vinson/.test(r7.items[1])&&r7.m[0]==="⚠ errou de novo 2×"&&/^⚠ Erro · /.test(r7.m[1]),name+": os vivos inteiros, teimosos primeiro (erros não vão mais para a anotação) "+JSON.stringify(r7&&[r7.items,r7.m]));
  /* conceito longo: corta em palavra inteira; sem "Correta:" */
  ok(await p.evaluate(()=>{const e=errors.find(x=>x.w==="Marquei A"),t=eConcept(e);return t.length<=152&&/…$/.test(t)&&!/Correta/.test(t)&&!/ \S{1,2}…$/.test(t)}),name+": conceito longo é cortado sem quebrar palavra");
  if(name==="fone"||name==="note"){await p.evaluate(()=>{const x=document.querySelector('#nlist .nerrs');x.scrollIntoView({block:"center"})});await p.waitForTimeout(150);await p.screenshot({path:`t100-nota-${name}.png`})}
  /* tocar abre o erro no caderno */
- await p.evaluate(()=>{document.querySelector('#nlist .nerr').id="__ne"});await click('#__ne');await p.waitForTimeout(300);
+ await p.evaluate(()=>{document.querySelector('#nlist li.nei>.nbadge').id="__ne"});await click('#__ne');await p.waitForTimeout(300);
  ok(await p.evaluate(()=>{const c=errors.find(x=>/^Talassemia/.test(x.r));return view==="erros"&&eTopicKey==="CM-34"&&!!document.querySelector(`#elist .ecard[data-eid="${c.id}"]`)}),name+": tocar no erro abre o caderno nele");
  /* sem nenhum vivo: só a linha */
  await p.evaluate(()=>{errors.forEach(e=>{if(e.k==="CM-34"&&!e.arch){e.due=fromNum(dnum(today())+9);e.miss=0;putErr(e)}});backStack=[];setView("notas");render()});await p.waitForTimeout(200);

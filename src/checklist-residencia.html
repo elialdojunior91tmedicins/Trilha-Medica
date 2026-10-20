@@ -711,6 +711,13 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 .ebody{margin:0;font-size:.93rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .ebody b{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block}
 .ebody b.ewhy{margin-top:10px}
+.ebody strong{font-weight:700;color:var(--ink)}
+.ebody.epc{background:color-mix(in srgb,var(--gold) 14%,transparent);border-left:3px solid var(--gold);padding:8px 10px;border-radius:0 8px 8px 0}
+.eqfull{display:flex;flex-direction:column;gap:6px;align-items:flex-start}.eqstem{margin:0;font-size:.92rem;line-height:1.5}
+.eqalts{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:.9rem}.eqalts li{padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+.eqalts li.right{border-color:var(--ok,#2e7d32);background:color-mix(in srgb,var(--ok,#2e7d32) 10%,transparent)}.eqalts li.mine{border-color:var(--bad,#c62828);background:color-mix(in srgb,var(--bad,#c62828) 8%,transparent)}
+.nerrs .nei{display:block;line-height:1.5}.nerrs .nei ul{margin:4px 0 0;padding-left:18px}.nerrs .nei li{font-size:.9rem}
+.nerrs .nei strong{color:var(--ink)}
 .efoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.8rem;color:var(--muted)}
 .efoot .sp{flex:1}
 .etop{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}.etop:empty{display:none}
@@ -876,6 +883,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .qexp b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.qexp.qpc{background:color-mix(in srgb,var(--gold) 14%,transparent);border-left:3px solid var(--gold);padding:8px 10px;border-radius:0 8px 8px 0}
 .qfonte{margin:0;font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
 .qfonte b{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em}
 .qmat{color:var(--accent);font-weight:700}
@@ -2742,7 +2750,7 @@ function renderNotes(it,full){
     const pop=el(`<div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div>`);
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
-    [["Modelo de resumo",()=>insertBlock(ta,k,TPL_RESUMO)],["Seções dos subtópicos",()=>insertBlock(ta,k,tplSubs(it))],["Meus erros",()=>{const t=tplErros(it);if(t)insertBlock(ta,k,t)}]].forEach(([lab,fn])=>{
+    [["Modelo de resumo",()=>insertBlock(ta,k,TPL_RESUMO)],["Seções dos subtópicos",()=>insertBlock(ta,k,tplSubs(it))]].forEach(([lab,fn])=>{
       const b=el(`<button type="button" class="tool txt"></button>`);b.textContent=lab;b.onmousedown=e=>e.preventDefault();b.onclick=fn;
       if(lab==="Meus erros"&&!errors.some(e=>e.k===k)){b.disabled=true;b.title="Nenhum erro deste tema no caderno"}tb.appendChild(b)});
     ta.oninput=()=>{saveNote(k,ta.value);wkPopUpdate(ta,k,pop)};ta.onblur=()=>setTimeout(()=>{if(document.activeElement!==ta){pop.hidden=true;ta._wk=null}},150);ta.onclick=()=>wkPopUpdate(ta,k,pop);
@@ -3178,7 +3186,9 @@ function qExplEl(q,o){o=o||{};const f=document.createDocumentFragment(),C=String
   if(!C)return f;const box=el(`<div class="qexpl"><p class="qgab"><span>Gabarito</span><b></b></p></div>`);box.querySelector("b").textContent=r?`${C}) ${r.texto}`:C;
   if(o.note)box.appendChild(el(`<p class="pnote">${o.note}</p>`));
   if(q.comentario){const p=el(`<p class="qexp qwhy"><b></b><span></span></p>`);p.querySelector("b").textContent=`Por que ${C} está certa`;p.querySelector("span").textContent=q.comentario;box.appendChild(p)}
+  if(q.pc){const p=el(`<p class="qexp qpc"><b>Ponto-chave</b><span></span></p>`);p.querySelector("span").textContent=cmTidy(q.pc);box.appendChild(p)}
   if(q.conceito){const p=el(`<p class="qexp qck"><b>Conceito-chave</b><span></span></p>`);p.querySelector("span").textContent=q.conceito;box.appendChild(p)}
+  if(q.th){const p=el(`<p class="qexp qck qth"><b>Take home message</b><span></span></p>`);p.querySelector("span").textContent=cmTidy(q.th);box.appendChild(p)}
   f.appendChild(box);return f}
 function altsEl(q,mine,onPick){const box=el(`<div class="alts"></div>`);
   q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra.replace(/[^A-Z0-9]/g,""))})</b><span></span></button>`);b.querySelector("span").textContent=a.texto;
@@ -4767,18 +4777,20 @@ function ecardEl(e,withTopic){
   if(e.s){const s=el(`<span></span>`);s.textContent=e.s;h.appendChild(s)}
   if(e.c){const s=el(`<span class="ecause"></span>`);s.textContent=e.c;h.appendChild(s)}
   if(e.arch)c.classList.add("arch");
-  c.querySelector(".w").textContent=e.w;eRFill(c.querySelector(".r"),e.r);if(ePista(e)){c.querySelector(".p").textContent=ePista(e);c.querySelector(".epista").hidden=false}
+  c.querySelector(".w").textContent=e.w;eRFill(c.querySelector(".r"),e.r);if(ePista(e)){boldFill(c.querySelector(".p"),ePista(e));c.querySelector(".epista").hidden=false}eExtraBlocks(c,e,true);
   if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e);c.querySelector(".rv").textContent=`${du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
-  const rb=eCardBtn(e),nb=eNoteBtn(e);
+  const rb=eCardBtn(e);
   const db=el(`<button class="mini${delArm===e.id?" warn":""}" type="button">${delArm===e.id?"Confirmar exclusão":"Excluir"}</button>`);
   db.onclick=()=>{if(delArm===e.id){delArm=null;delErr(e.id)}else{delArm=e.id;render()}};
   const ab=el(`<button class="mini" type="button"></button>`);ab.textContent=e.arch?"Desarquivar":"Resolvido";ab.title=e.arch?"Volta para as revisões":"Arquiva: sai das revisões e da lista (fica em Arquivados)";ab.onclick=()=>eArchive(e,!e.arch);
   const mb=el(`<button class="mini emenu" type="button" aria-expanded="${eMenu===e.id}"></button>`);mb.textContent=eMenu===e.id?"Fechar ações":"⋯ Ações";mb.onclick=()=>{eMenu=eMenu===e.id?null:e.id;render()};
-  if(eMenu===e.id)ft.append(rb,nb,ab,db,mb);else ft.append(mb);if(cdErr[e.id])c.appendChild(cdErrEl(e));
+  if(eMenu===e.id)ft.append(rb,ab,db,mb);else ft.append(mb);if(cdErr[e.id])c.appendChild(cdErrEl(e));
   return c;
 }
-function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();return true}
+function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();
+  for(const f of ["pc","dd"])if(e[f]!=null&&typeof e[f]!=="string")delete e[f];
+  if(e.q!=null&&!(e.q&&typeof e.q==="object"&&typeof e.q.e==="string"&&Array.isArray(e.q.a)))delete e.q;return true}
 function saveErrsLocal(){try{localStorage.setItem(LSE,JSON.stringify(errors))}catch(x){}}
 async function putErr(e){saveErrsLocal();if(!errStore)return;
   try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
@@ -4794,8 +4806,11 @@ function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
   if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
   else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
   putErr(e)}
-function eNew(k,w,r,t,s,c,p){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
-  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);errors.push(e);putErr(e);return e}
+function eNew(k,w,r,t,s,c,p,x){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
+  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
+  x=x||{};if(typeof x.pc==="string"&&x.pc.trim())e.pc=x.pc.trim().slice(0,1200);if(typeof x.dd==="string"&&x.dd.trim())e.dd=x.dd.trim().slice(0,400);
+  if(x.qf&&typeof x.qf.e==="string"&&Array.isArray(x.qf.a))e.q={e:x.qf.e,a:x.qf.a.filter(a=>a&&typeof a.t==="string").map(a=>({l:String(a.l||""),t:a.t})),c:String(x.qf.c||""),m:String(x.qf.m||"")};
+  errors.push(e);putErr(e);return e}
 const eOneLine=s=>String(s||"").split("\n").map(cmTidy).filter(Boolean).join(" ").replace(/\s+/g," ").trim();
 /* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
 const CL_STOP=new Set("para pelo pela pelos pelas como mais menos sobre entre quando qual quais deve devem pode podem esta este essa esse isso isto está estão com sem que uma umas uns dos das nos nas aos foi era são ser ter tem tinha após antes desde paciente anos idade sexo masculino feminino feminina masculina apresenta apresentando refere queixa história quadro caso seguinte seguintes alternativa correta conduta diagnóstico provável mais adequada assinale".split(" "));
@@ -4805,6 +4820,19 @@ const clSents=t=>String(t||"").replace(/\s+/g," ").trim().replace(/([.!?])\s+(?=
 /* "Correto" do erro na tela: tira as marcas da prova (cmTidy) e destaca "Por que não a sua" numa linha própria (nada é regravado) */
 function eRFill(box,r){box.textContent="";String(r||"").split("\n").map(cmTidy).filter(Boolean).forEach((l,i)=>{const m=l.match(/^(Por que n[ãa]o[^:]{0,90}:)\s*(.*)$/);if(i&&!m)box.appendChild(document.createElement("br"));
   if(m){const b=document.createElement("b");b.className="ewhy";b.textContent="Por que não a sua";box.appendChild(b);box.append(cmTidy(m[2]))}else box.append(l)})}
+/* texto com **negrito** (pista) → nós, sem HTML do usuário */
+function boldFill(box,t){box.textContent="";String(t||"").split(/(\*\*[^*]+\*\*)/).forEach(x=>{if(!x)return;const m=x.match(/^\*\*([^*]+)\*\*$/);if(m){const b=document.createElement("strong");b.textContent=m[1];box.appendChild(b)}else box.append(x)})}
+/* blocos extras do erro: dados decisivos (com a pista), ponto-chave (com o correto) e a questão completa */
+let eQOpen=new Set();
+function eExtraBlocks(card,e,show){const pi=card.querySelector(".epista");
+  if(e.dd){const d=el(`<p class="ebody edd"><b>Dados decisivos</b><span></span></p>`);d.querySelector("span").textContent=e.dd;pi.after(d)}
+  if(!show)return;const r=card.querySelector(".r").closest(".ebody");
+  if(e.pc){const k=el(`<p class="ebody epc"><b>Ponto-chave</b><span></span></p>`);k.querySelector("span").textContent=cmTidy(e.pc);r.after(k)}
+  if(e.q){const open=eQOpen.has(e.id),w=el(`<div class="eqfull"><button class="link" type="button"></button></div>`),b=w.querySelector("button");b.id="eqf-"+e.id;b.textContent=open?"Esconder a questão":"Ver a questão completa";b.setAttribute("aria-expanded",open);
+    b.onclick=()=>{open?eQOpen.delete(e.id):eQOpen.add(e.id);render()};
+    if(open){const st=el(`<p class="eqstem"></p>`);st.textContent=e.q.e;w.appendChild(st);const ol=el(`<ol class="eqalts"></ol>`);
+      e.q.a.forEach(a=>{const li=el(`<li><b></b> <span></span></li>`);li.querySelector("b").textContent=a.l+")";li.querySelector("span").textContent=a.t;if(a.l===e.q.c)li.classList.add("right");else if(a.l===e.q.m)li.classList.add("mine");ol.appendChild(li)});w.appendChild(ol)}
+    (card.querySelector(".epc")||r).after(w)}}
 /* pista antiga que é só a pergunta da questão ("Qual…?") não ajuda: não aparece */
 const ePista=e=>{const p=String(e.p||"").trim();return !p||/\?\s*$/.test(p)&&!/[.!]\s/.test(p)?"":p};
 /* pista do caso: a frase do enunciado que mais aponta para a resposta certa (palavras da correta/comentário, números e exames) */
@@ -4815,15 +4843,31 @@ function qClue(q){const S=clSents(q.enunciado);if(!S.length)return "";const isAs
     if(/\d/.test(x))v+=0.8;if(/\b(exame|mostra|revela|evidencia|laborat|hemograma|tomografia|radiografia|ultrass|bi[óo]psia|ecg|eletrocardio|resson|sorologia|cultura|gasometria|achado|ausculta|palpa)/i.test(x))v+=1;
     if(i===0&&ws.size<5)v-=1;return {x,v,i}}).sort((a,b)=>b.v-a.v||a.i-b.i);
   return clCut(sc[0].x,220)}
+/* pista em frase com **negrito** nas palavras que apontam para a certa (e números/achados de exame) */
+const CL_EXAM=/\b(exame|mostra|revela|evidencia|laborat|hemograma|plaquetas?|leuc[oó]citos|hb|tomografia|radiografia|ultrass|bi[óo]psia|ecg|eletrocardio|resson|sorologia|cultura|gasometria|achado|ausculta|palpa|ttpa|tp|inr|ferritina|creatinina|pa\b|fc\b|febre|saturação)/i;
+function qClueRich(q){const t=qClue(q);if(!t)return "";const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito,q.pc].join(" ")),W=new Set();q.alternativas.filter(a=>a.letra!==q.correta).forEach(a=>clWords(a.texto).forEach(w=>W.add(w)));
+  const out=t.split(/(\s+)/).map(w=>{if(/^\s+$/.test(w)||!w)return w;const m=w.match(/^([("“]*)(.*?)([),.;:!?”"]*)$/),core=m[2],n=norm(core).replace(/[^a-z0-9]/g,"");
+    const pre=n.slice(0,5),inK=n.length>=4&&(K.has(n)||n.length>=5&&[...K].some(k=>k.length>=5&&k.slice(0,5)===pre)),inW=W.has(n)||n.length>=5&&[...W].some(k=>k.length>=5&&k.slice(0,5)===pre);
+    const hit=core&&(/\d/.test(core)||inK&&!inW||CL_EXAM.test(core)&&core.length>=2);return hit?`${m[1]}**${core}**${m[3]}`:w}).join("");
+  return out.replace(/\*\*(\s+)\*\*/g,"$1")}
+/* dados decisivos: 2–3 trechos curtos do caso (números, achados de exame, palavras da certa) */
+function qData(q){const S=clSents(q.enunciado).filter(x=>!(/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x)));if(!S.length)return "";
+  const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito,q.pc].join(" "));
+  const C=[];S.forEach((x,i)=>x.split(/[;,]\s+|\.\s+|\s+e\s+(?=[a-zà-ú]+\s)/).forEach(c=>{c=c.trim().replace(/[.;:]+$/,"");if(c.length<6)return;const ws=clWords(c);let v=0;ws.forEach(w=>{if(K.has(w))v+=1.5});if(/\d/.test(c))v+=1.2;if(CL_EXAM.test(c))v+=1;if(i===0&&/\b(anos|homem|mulher|paciente|criança|lactente|gestante)\b/i.test(c)&&!/\d{2,}\s*(mg|g\/|mm|%)/.test(c))v-=.6;if(v>0)C.push({c,v,o:C.length})}));
+  return C.sort((a,b)=>b.v-a.v||a.o-b.o).slice(0,3).sort((a,b)=>a.o-b.o).map(x=>clCut(x.c,80)).join(" · ")}
+/* alternativa marcada parecida com a certa → sugere "Confundi" */
+function qLike(a,b){const A=clWords(a),B=clWords(b);if(!A.size||!B.size)return false;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/Math.min(A.size,B.size)>=.4||n>=2}
 /* rascunho a partir de uma questão respondida, montado pelo app (sem o Claude) */
 function qDraft(q,mine,src){const Q=qSplit(q),m=Q.alternativas.find(a=>a.letra===mine),r=Q.alternativas.find(a=>a.letra===Q.correta);
   const w=m&&r?`Marquei ${clCut(m.texto,90)}; a certa era ${clCut(r.texto,90)}`:r?`A certa era ${clCut(r.texto,110)}`:"";
   const why=clSents(Q.comentario).slice(0,2).join(" "),parts=[];
-  if(Q.conceito)parts.push(Q.conceito.trim());
-  if(why&&!(Q.conceito&&norm(why).includes(norm(Q.conceito).slice(0,40))))parts.push(clCut(why,320)+(why.length>320?"":"."));
+  const co=(Q.conceito||cmTidy(Q.th||"")).trim();if(co)parts.push(co);
+  if(why&&!(co&&norm(why).includes(norm(co).slice(0,40))))parts.push(clCut(why,320)+(why.length>320?"":"."));
   if(!parts.length&&r)parts.push(`Correta: ${r.texto}`);
   if(m&&m.porque&&m.letra!==Q.correta){const pq=clCut(m.porque,240)+".",mt=norm(m.texto).slice(0,18);parts.push(mt&&norm(pq).startsWith(mt)?`Por que não a minha: ${pq}`:`Por que não ${clCut(m.texto,60)}: ${pq}`)}
-  return {w,p:qClue(Q),r:parts.join("\n").replace(/\.\.$/,".").trim(),t:"conhecimento",s:src||"",q:{e:Q.enunciado,m:m?m.texto:"",c:r?r.texto:"",cm:Q.comentario,co:Q.conceito||"",pq:m&&m.porque||""}}}
+  return {w,p:qClueRich(Q),dd:qData(Q),pc:cmTidy(Q.pc||"").slice(0,1200),r:parts.join("\n").replace(/\.\.$/,".").trim(),t:m&&r&&m.letra!==r.letra&&qLike(m.texto,r.texto)?"confusao":"conhecimento",s:src||"",
+    qf:{e:Q.enunciado.slice(0,8000),a:Q.alternativas.map(a=>({l:a.letra,t:a.texto.slice(0,2000)})),c:Q.correta||"",m:mine||""},
+    q:{e:Q.enunciado,m:m?m.texto:"",c:r?r.texto:"",cm:Q.comentario,co:Q.conceito||"",pq:m&&m.porque||""}}}
 /* "Resumir com o Claude" (opcional): reescreve o rascunho curto, com a pista e o conceito */
 function eSumPrompt(D){const x=D.q||{};return `Você ajuda um estudante de medicina a montar o caderno de erros. A partir da questão abaixo, escreva em português do Brasil, curto e direto:
 - "errei": 1 frase, no formato "Marquei <o que marquei>; a certa era <a certa>" (só o essencial de cada alternativa).
@@ -4843,23 +4887,26 @@ async function eSumRun(D){if(!sampleFn||!D.q)return;D.sum={st:"loading",ctl:new 
   catch(e){if(D.sum!==S)return;const code=e&&e.code;if(code==="cancelled"){delete D.sum;render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível resumir agora.")}
   render()}
 /* formulário de erro reaproveitável (registro na aba, simulado, refazer) */
-function errFormEl(D,pre,onSave,ids){const I={w:pre+"w",r:pre+"r",t:pre+"t",s:pre+"s",c:pre+"c",p:pre+"p",...(ids||{})};
+function errFormEl(D,pre,onSave,ids){const I={w:pre+"w",r:pre+"r",t:pre+"t",s:pre+"s",c:pre+"c",p:pre+"p",d:pre+"d",k:pre+"k",...(ids||{})};
   const f=el(`<form class="eform"><label for="${I.w}">O que eu errei</label><textarea id="${I.w}" maxlength="2000" rows="3" placeholder="Ex.: marquei betabloqueador na cocaína"></textarea>
-    <label for="${I.p}">Pista do caso <span class="opt">(opcional)</span></label><textarea id="${I.p}" maxlength="600" rows="2" placeholder="O dado do enunciado que deveria ter levado à resposta. Ex.: massa mediastinal em adolescente com hiperleucocitose"></textarea>
+    <label for="${I.p}">Pista do caso <span class="opt">(opcional)</span></label><textarea id="${I.p}" maxlength="600" rows="2" placeholder="O dado do enunciado que deveria ter levado à resposta. Ex.: massa mediastinal em adolescente com hiperleucocitose. Use **negrito** no que decide."></textarea>
+    <label for="${I.d}">Dados decisivos <span class="opt">(opcional)</span></label><textarea id="${I.d}" maxlength="400" rows="2" placeholder="Ex.: filha de pais primos · plaquetas 280 mil · sem agregação com ADP"></textarea>
     <label for="${I.r}">Conceito correto / o que lembrar</label><textarea id="${I.r}" maxlength="2000" rows="3" placeholder="Ex.: na dor torácica por cocaína, evitar betabloqueador; usar benzodiazepínico e nitrato"></textarea>
+    <label for="${I.k}">Ponto-chave <span class="opt">(opcional)</span></label><textarea id="${I.k}" maxlength="1200" rows="2" placeholder="A regra que decide a questão. Ex.: coagulograma normal não descarta von Willebrand"></textarea>
     <div class="erow2"><div class="eform"><label for="${I.t}">Tipo de erro</label><select id="${I.t}">${Object.entries(ETYPES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></div>
     <div class="eform"><label for="${I.c}">Por que errei (opcional)</label><select id="${I.c}"></select></div></div>
     <div class="eform"><label for="${I.s}">Fonte (opcional)</label><input class="etext" id="${I.s}" maxlength="120" placeholder="Ex.: ENARE 2024, Q35"></div>
     <button class="btn primary" type="submit" style="align-self:flex-start">Salvar no caderno</button></form>`);
-  const fw=f.querySelector(`[id="${I.w}"]`),fr=f.querySelector(`[id="${I.r}"]`),ft=f.querySelector(`[id="${I.t}"]`),fc=f.querySelector(`[id="${I.c}"]`),fs=f.querySelector(`[id="${I.s}"]`),fp=f.querySelector(`[id="${I.p}"]`);
+  const fw=f.querySelector(`[id="${I.w}"]`),fr=f.querySelector(`[id="${I.r}"]`),ft=f.querySelector(`[id="${I.t}"]`),fc=f.querySelector(`[id="${I.c}"]`),fs=f.querySelector(`[id="${I.s}"]`),fp=f.querySelector(`[id="${I.p}"]`),fd=f.querySelector(`[id="${I.d}"]`),fk=f.querySelector(`[id="${I.k}"]`);
+  fd.value=D.dd||"";fk.value=D.pc||"";fd.oninput=()=>D.dd=fd.value;fk.oninput=()=>D.pc=fk.value;
   const fillC=()=>{fc.innerHTML="";[["","—"],...(ECAUSES[ft.value]||[]).map(c=>[c,c])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;fc.appendChild(o)});fc.value=(ECAUSES[ft.value]||[]).includes(D.c)?D.c:"";D.c=fc.value};
   fw.value=D.w||"";fr.value=D.r||"";ft.value=ETYPES[D.t]?D.t:"conhecimento";fs.value=D.s||"";fp.value=D.p||"";fp.oninput=()=>D.p=fp.value;fillC();
-  {const fit=t=>{if(!t.isConnected)return;t.style.height="auto";t.style.height=Math.min(t.scrollHeight+2,320)+"px"};[fw,fp,fr].forEach(t=>{t.addEventListener("input",()=>fit(t));requestAnimationFrame(()=>fit(t))})}
+  {const fit=t=>{if(!t.isConnected)return;t.style.height="auto";t.style.height=Math.min(t.scrollHeight+2,320)+"px"};[fw,fp,fd,fr,fk].forEach(t=>{t.addEventListener("input",()=>fit(t));requestAnimationFrame(()=>fit(t))})}
   fw.oninput=()=>D.w=fw.value;fr.oninput=()=>D.r=fr.value;ft.onchange=()=>{D.t=ft.value;fillC()};fc.onchange=()=>D.c=fc.value;fs.oninput=()=>D.s=fs.value;
   if(D.msg){const p=el(`<p class="err"></p>`);p.textContent=D.msg;f.appendChild(p)}
   f.addEventListener("submit",ev=>{ev.preventDefault();
     if(!(D.w||"").trim()||!(D.r||"").trim()){D.msg="Preencha o que você errou e o conceito correto para salvar.";render();return}
-    D.msg="";onSave(eNew(D.k,D.w,D.r,ft.value,D.s,fc.value,D.p))});
+    D.msg="";onSave(eNew(D.k,D.w,D.r,ft.value,D.s,fc.value,D.p,{pc:D.pc,dd:D.dd,qf:D.qf}))});
   return f}
 /* "Levar para o caderno" dentro do simulado e do refazer */
 function eCadEl(H,idx,k,q,mine,src){const st=H[idx],w=el(`<div class="ecad"></div>`);
@@ -4936,7 +4983,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
     const it=BYKEY[e.k],card=el(`<div class="fcard erfc${R.show?" flip":""}"><span class="qn"></span><button class="link fctopic" type="button"></button><p class="ebody"><b>Você errou</b><span class="w"></span></p><p class="ebody epista" hidden><b>Pista do caso</b><span class="p"></span></p><p class="how ehint">Antes de abrir: qual é o certo? Responda de cabeça.</p><div class="fca"><p class="ebody"><b>Correto</b><span class="r"></span></p></div></div>`);
     card.querySelector(".qn").textContent=`ERRO ${R.i+1} DE ${R.ids.length} · ${(ETYPES[e.t]||"").toUpperCase()}${e.s?" · "+e.s.toUpperCase():""}`;
     const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(e.k);
-    card.querySelector(".w").textContent=e.w;eRFill(card.querySelector(".r"),e.r);if(ePista(e)){card.querySelector(".p").textContent=ePista(e);card.querySelector(".epista").hidden=false}if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
+    card.querySelector(".w").textContent=e.w;eRFill(card.querySelector(".r"),e.r);if(ePista(e)){boldFill(card.querySelector(".p"),ePista(e));card.querySelector(".epista").hidden=false}eExtraBlocks(card,e,R.show);if(R.show)card.querySelector(".ehint").remove();c.appendChild(card);
     const a=el(`<div class="btns"></div>`);
     if(!R.show){const s=el(`<button class="btn primary" type="button" id="erShow">Mostrar o correto</button>`);s.onclick=()=>{R.show=true;render()};a.appendChild(s)}
     else{const g=el(`<button class="btn primary" type="button" id="erGood">Agora sei</button>`),b=el(`<button class="btn" type="button" id="erBad">Ainda erraria</button>`);
@@ -5082,6 +5129,18 @@ function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?`
   if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
   else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
   replaceNote(k,v);e.nt=today();putErr(e);render()}
+/* 10/2026: erros saem das anotações. Uma vez por aparelho (resid-enm), a seção "## Meus erros" de cada anotação vai para o caderno:
+   linha com o selo de um erro que existe = já está no caderno (só sai da anotação); o resto vira erro novo do tema (fonte "Anotação"). */
+function errNoteMig(){try{if(localStorage.getItem("resid-enm")==="1")return 0}catch(x){return 0}let moved=0,made=0;
+  for(const k of Object.keys(notes)){if(!BYKEY[k])continue;const cur=notes[k]||"",m=cur.match(/^(#{1,3})\s*Meus erros(?: neste tema)?\s*$/mi);if(!m)continue;
+    const at=m.index,body0=at+m[0].length,nx=cur.slice(body0).search(/\n#{1,3}\s/),end=nx<0?cur.length:body0+nx,body=cur.slice(body0,end);
+    const items=[];body.split("\n").forEach(l=>{if(!l.trim())return;if(/^[-*•]\s+/.test(l)||!items.length)items.push(l.replace(/^[-*•]\s+/,"").trim());else items[items.length-1]+=" "+l.trim().replace(/^[-*•]\s+/,"")});
+    items.forEach(t=>{const ids=[...t.matchAll(/\{\{e:([A-Za-z0-9_-]+)\}\}/g)].map(x=>x[1]);if(ids.some(id=>errors.some(e=>e.id===id))){moved++;return}
+      const txt=t.replace(/\{\{[eq]:[^}]*\}\}/g,"").trim();if(!txt)return;const er=txt.match(/\(errei:\s*([\s\S]*?)\)\s*$/i),r=(er?txt.slice(0,er.index):txt).trim(),w=er?er[1].trim():"Anotado na seção Meus erros da anotação";
+      if(r){eNew(k,w,r,"conhecimento","Anotação");made++}});
+    const v=(cur.slice(0,at).replace(/\s+$/,"")+(end<cur.length?"\n\n"+cur.slice(end).replace(/^\s+/,""):"")).trim();saveNote(k,v)}
+  errors.forEach(e=>{if(e.nt){delete e.nt;putErr(e)}});
+  try{localStorage.setItem("resid-enm","1")}catch(x){}if(moved||made)render();return moved+made}
 function eNoteBtn(e){const b=el(`<button class="mini" type="button"></button>`);b.textContent=e.nt?"Na anotação ✓":"Levar para a anotação";b.disabled=!!e.nt;
   b.title="Acrescenta o conceito correto na seção Meus erros da anotação do tema";b.onclick=()=>eToNote(e);return b}
 
@@ -6643,7 +6702,7 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
   const L=q.alternativas.filter(a=>a&&typeof a.texto==="string").map(a=>({letra:String(a.letra||"").trim().toUpperCase().slice(0,3),texto:a.texto.slice(0,2000),porque:s(a.porque,1200)}));
   const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
   return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
-    q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:""},
+    q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:"",...(s(q.pc,1200)?{pc:s(q.pc,1200)}:{}),...(s(q.th,800)?{th:s(q.th,800)}:{}),...(s(q.fonte,400)?{fonte:s(q.fonte,400)}:{})},
     g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{})}}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
 function exClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
@@ -6829,11 +6888,12 @@ O que fazer
 3. ${kn?`Resposta: use o GABARITO OFICIAL abaixo e marque "gabarito":"banca". Questão anulada no gabarito: "anulada":true. Se o número não estiver no gabarito, resolva você mesmo e marque "gabarito":"claude".`:rawKey?`Resposta: use o GABARITO OFICIAL (texto extraído) abaixo e marque "gabarito":"banca". Questão anulada: "anulada":true. Se não achar o número no gabarito, resolva você mesmo e marque "gabarito":"claude".`:`A prova veio sem gabarito: resolva cada questão com cuidado, pelas diretrizes brasileiras atuais, e marque "gabarito":"claude". Se tiver dúvida, escolha a mais provável assim mesmo.`}
 4. "imagem": true quando a questão depende de figura, gráfico, tabela ou exame de imagem que não dá para ler aqui (ECG, radiografia, foto de lesão). Não invente o que a imagem mostra.
 5. "tema": a chave (ex.: "CM-34") do tema da lista TEMAS que melhor corresponde ao assunto principal da questão; "" se nenhum servir.
-6. Explicações para estudo, em português: "comentario" (3 a 6 frases: só por que a resposta está certa e o raciocínio para chegar nela, sem comentar as outras alternativas), "conceito" (1 frase com a regra para guardar) e, em cada alternativa errada, "porque" (1 ou 2 frases dizendo por que ela está errada ou em que caso ela seria a resposta; "" na correta). O porquê de cada alternativa vai SEMPRE no "porque" dela, nunca dentro do "comentario". Se a prova trouxer comentário da banca, aproveite.${kc?" Abaixo, em GABARITO COMENTADO, estão as justificativas da própria prova: use-as como base do comentário e do porquê de cada alternativa (reescreva com clareza, sem inventar o que não está lá).":""}
-7. Se ${pg} não tiver nenhuma questão (capa, instruções, folha de respostas), responda [].
+6. Se a prova ou o gabarito comentado trouxer, para a questão, "Ponto-chave", "Take home message" ou "Fonte", copie-os fielmente em "pontoChave", "takeHome" e "fonte" (sem repetir no comentário); se não trouxer, deixe "".
+7. Explicações para estudo, em português: "comentario" (3 a 6 frases: só por que a resposta está certa e o raciocínio para chegar nela, sem comentar as outras alternativas), "conceito" (1 frase com a regra para guardar) e, em cada alternativa errada, "porque" (1 ou 2 frases dizendo por que ela está errada ou em que caso ela seria a resposta; "" na correta). O porquê de cada alternativa vai SEMPRE no "porque" dela, nunca dentro do "comentario". Se a prova trouxer comentário da banca, aproveite.${kc?" Abaixo, em GABARITO COMENTADO, estão as justificativas da própria prova: use-as como base do comentário e do porquê de cada alternativa (reescreva com clareza, sem inventar o que não está lá).":""}
+8. Se ${pg} não tiver nenhuma questão (capa, instruções, folha de respostas), responda [].
 
 Responda somente com um array JSON, sem texto antes ou depois, neste formato:
-[{"numero":12,"enunciado":"...","alternativas":[{"letra":"A","texto":"...","porque":"..."},{"letra":"B","texto":"...","porque":""}],"correta":"B","anulada":false,"gabarito":"banca","imagem":false,"tema":"CM-34","comentario":"...","conceito":"..."}]
+[{"numero":12,"enunciado":"...","alternativas":[{"letra":"A","texto":"...","porque":"..."},{"letra":"B","texto":"...","porque":""}],"correta":"B","anulada":false,"gabarito":"banca","imagem":false,"tema":"CM-34","comentario":"...","conceito":"...","pontoChave":"","takeHome":"","fonte":""}]
 ${kn?`
 GABARITO OFICIAL
 ${keyText(key)}
@@ -6858,7 +6918,7 @@ function impValid(data,b){const arr=Array.isArray(data)?data:data&&Array.isArray
       :typeof a==="string"?{letra:EX_AB[j],texto:a.trim(),porque:""}:null).filter(a=>a&&a.texto);
     if(L.length<2||new Set(L.map(a=>a.letra)).size!==L.length)return;const cor=String(x.correta||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,1),num=parseInt(x.numero,10);
     out.push(exQClean({n:num>0?num:0,p:b.pages[0],pe:b.pages[b.pages.length-1],k:typeof x.tema==="string"?x.tema.trim().toUpperCase():"",
-      q:{enunciado:x.enunciado.trim(),alternativas:L,correta:cor,comentario:typeof x.comentario==="string"?x.comentario.trim():"",conceito:typeof x.conceito==="string"?x.conceito.trim():""},
+      q:{enunciado:x.enunciado.trim(),alternativas:L,correta:cor,comentario:typeof x.comentario==="string"?x.comentario.trim():"",conceito:typeof x.conceito==="string"?x.conceito.trim():"",pc:typeof x.pontoChave==="string"?x.pontoChave.trim():"",th:typeof x.takeHome==="string"?x.takeHome.trim():"",fonte:typeof x.fonte==="string"?x.fonte.trim():""},
       g:x.gabarito==="banca"?"b":"c",an:x.anulada===true,im:x.imagem===true,ck:cor}))});
   return out}
 function impMerge(R,qs){const sz=r=>r.q.enunciado.length+r.q.alternativas.reduce((a,x)=>a+x.texto.length,0);
@@ -6990,8 +7050,10 @@ function impKCParse(seg,cor){const o={porq:{},com:"",con:""};if(!seg)return o;co
   const rj=/Justificativa\s+([A-E])\b\s*(?:\(\s*correta\s*\))?\s*[:\-–—]\s*([\s\S]*?)(?=Justificativa\s+[A-E]\b|Ponto[- ]chave|Take[- ]home|Fonte\s*:|$)/gi;
   while((m=rj.exec(s)))o.porq[m[1].toUpperCase()]=m[2].trim();
   const pk=(s.match(/Ponto[- ]chave\s*:\s*([\s\S]*?)(?=Take[- ]home|Fonte\s*:|$)/i)||[])[1],th=(s.match(/Take[- ]home(?:\s+message)?\s*:\s*([\s\S]*?)(?=Fonte\s*:|$)/i)||[])[1];
-  const cj=cor&&o.porq[cor];o.com=[cj,pk&&pk.trim()].filter(Boolean).join(" ")||(Object.keys(o.porq).length?"":s.replace(/^(?:resposta|quest[aã]o)\s*\d{1,3}\s*/i,"").replace(/^[\s\S]{0,60}?correta\s*[:=\-–—]\s*[A-E]\b\s*/i,"").trim().slice(0,1500));
-  o.con=(th||pk||"").trim().slice(0,600);if(cor)delete o.porq[cor];return o}
+  const cj=cor&&o.porq[cor];o.com=cj||(Object.keys(o.porq).length?"":s.replace(/^(?:resposta|quest[aã]o)\s*\d{1,3}\s*/i,"").replace(/^[\s\S]{0,60}?correta\s*[:=\-–—]\s*[A-E]\b\s*/i,"").replace(/(?:Ponto[- ]chave|Take[- ]home|Fonte\s*:)[\s\S]*$/i,"").trim().slice(0,1500));
+  /* Ponto-chave, Take home message e Fonte ficam em campos próprios (blocos separados no gabarito) */
+  o.pc=(pk||"").trim().slice(0,1200);o.th=(th||"").trim().slice(0,800);o.fonte=((s.match(/Fonte\s*:\s*([^\n]*?)(?=\s*(?:RESPOSTA|QUEST[AÃ]O)\s*\d|$)/i)||[])[1]||"").trim().slice(0,400);
+  o.con="";if(cor)delete o.porq[cor];return o}
 function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
   const QP=R.pages.filter(p=>!R.keyPg.includes(p.n)),scanned=QP.filter(p=>p.img).map(p=>p.n);
   if(scanned.length)probs.push(`${scanned.length===1?"a página":"as páginas"} ${pgList(scanned)} não ${scanned.length===1?"tem":"têm"} texto (${R.doc?"escaneadas":"fotos"}): só o Claude lê imagem`);
@@ -7020,7 +7082,7 @@ function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
     const v=key[s.n],an=v==="X",cor=v&&v!=="X"&&A.some(a=>a.letra===v)?v:"";if(!v)noKey.push(s.n);else if(!an&&!cor&&!few.includes(s.n))bad.push(s.n);
     const kc=impKCParse(KC[s.n]&&KC[s.n].split("\n").map(cl).filter(x=>!junk(x)).join("\n"),cor);A.forEach(a=>{a.porque=(kc.porq[a.letra]||"").slice(0,1200)});
     const k="",im=/\b(imagem|figura|foto(?:grafia)?|gr[aá]fico|tabela|eletrocardiograma|ecg|radiografia|tomografia|resson[aâ]ncia|ultrassonografia)\b[^.?]{0,40}\b(abaixo|a seguir|ao lado|seguinte|anexa|apresentad[ao])/i.test(en);
-    const r=exQClean({n:s.n,p:s.i<lines.length?lines[s.i].p:0,pe:(L[L.length-1]||lines[s.i]).p,k,q:{enunciado:en,alternativas:A,correta:cor,comentario:kc.com,conceito:kc.con},g:v?"b":"c",an,im,ck:cor});r.tt=title;qs.push(r)});
+    const r=exQClean({n:s.n,p:s.i<lines.length?lines[s.i].p:0,pe:(L[L.length-1]||lines[s.i]).p,k,q:{enunciado:en,alternativas:A,correta:cor,comentario:kc.com,conceito:kc.con,pc:kc.pc,th:kc.th,fonte:kc.fonte},g:v?"b":"c",an,im,ck:cor});r.tt=title;qs.push(r)});
   impTemas(qs.map(r=>({title:r.tt,txt:r.q.enunciado+" "+r.q.alternativas.map(a=>a.texto).join(" ")})),R.name||"").forEach((k,i)=>{const r=qs[i];delete r.tt;if(k&&BYKEY[k]){r.k=k;r.kg=true}});
   const nums=qs.map(r=>r.n),mx=Math.max(0,...nums,...Object.keys(key).map(Number)),miss=[];for(let n=Math.min(...nums,1);n<=mx;n++)if(!nums.includes(n)&&!few.includes(n))miss.push(n);
   const lst=a=>a.slice(0,10).join(", ")+(a.length>10?"…":"");
@@ -7054,6 +7116,7 @@ function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,
   if(show){if(q.correta){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${mine?ok?"ok":"no":""}">${mine?ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta)+".":"Você não respondeu. A resposta é "+esc(q.correta)+"."}${r.g!=="b"?" <span class=\"simt\">(gabarito do Claude)</span>":""}</p>`))}
     else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
     card.appendChild(qExplEl(qSplit(q),{note:r.ck&&q.correta&&r.ck!==q.correta?`O comentário foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.`:""}));
+    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}
     if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name))}
   return card}
 function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></div>`);
@@ -7697,16 +7760,26 @@ function eConcept(e){const L=String(e.r||"").split(/\n+/).map(x=>x.trim()).filte
 function eOpenOne(e){eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros");
   setTimeout(()=>{const x=document.querySelector(`#elist .ecard[data-eid="${e.id}"]`);if(x){x.scrollIntoView({behavior:"smooth",block:"center"});x.classList.add("eflash");setTimeout(()=>x.classList.remove("eflash"),1600)}},80)}
 function noteErrsEl(k){const act=errors.filter(e=>e.k===k&&!e.arch);if(!act.length)return null;
-  const alive=act.filter(eAlive),show=alive.filter(e=>!e.nt).sort((a,b)=>(b.miss||0)-(a.miss||0)||eDue(a).localeCompare(eDue(b))).slice(0,3);
+  const alive=act.filter(eAlive),show=alive.sort((a,b)=>(b.miss||0)-(a.miss||0)||eDue(a).localeCompare(eDue(b))).slice(0,3);
   const d=el(`<div class="nerrs"><p class="nerrh"><span></span> <button class="link" type="button">ver no caderno</button></p></div>`);
   d.querySelector("span").textContent=`${act.length} ${act.length===1?"erro neste tema":"erros neste tema"}${alive.length?` · ${alive.length} ${alive.length===1?"ainda pede":"ainda pedem"} atenção`:" · nenhum pedindo atenção agora"}`;
   if(alive.length)d.classList.add("live");
   d.querySelector("button").onclick=()=>{eGoTopic(k);backStack=[];setView("erros")};
-  if(show.length){const ul=el(`<ul></ul>`);show.forEach(e=>{const li=el(`<li><button type="button" class="nerr"><span class="ne-r"></span><span class="ne-m"></span></button></li>`);
-      li.querySelector(".ne-r").textContent=eConcept(e)||e.w.replace(/\s+/g," ").slice(0,120);
-      li.querySelector(".ne-m").textContent=(e.miss||0)>=1?`errou de novo ${e.miss}×`:"revisar hoje";
-      li.querySelector("button").onclick=()=>eOpenOne(e);ul.appendChild(li)});d.appendChild(ul)}
+  if(show.length){const ul=el(`<ul></ul>`);show.forEach(e=>ul.appendChild(eItemEl(e)));d.appendChild(ul)}
   return d}
+/* nome (alternativa) → link para o tema quando bate com um tema, página ou subtópico de um tema */
+function eNameLink(name){const t=String(name||"").trim(),r=wkFind(t);if(r)return wkHTML(t);const n=norm(t);
+  if(n.length>=5){const it=ALL.find(x=>subList(x).some(y=>{const m=norm(y.t);return m===n||m.length>=6&&(n.startsWith(m)||m.startsWith(n))}));if(it)return `<a class="wk" href="#" data-wk="t:${esc(it.key)}" title="Abrir ${esc(it.t)}">${esc(t)}</a>`}
+  return esc(t)}
+const mdBold=t=>esc(String(t||"")).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>");
+/* um erro como item: **certa:** conceito (inteiro) + subitens Errei / Pista / Ponto-chave */
+function eItemEl(e){const P=cdErrParse(e),li=el(`<li class="nei"></li>`),con=P.concept||eOneLine(e.r);
+  li.innerHTML=`${P.right?`<strong>${eNameLink(P.right.replace(/^[A-E]\)\s*/,""))}:</strong> `:""}${esc(con)} `;
+  const b=el(`<button type="button" class="nbadge ne"></button>`);b.textContent=`⚠ ${(e.miss||0)>=1?`errou de novo ${e.miss}×`:"Erro · "+br(e.d).slice(0,5)}`;b.title="Abrir o erro no caderno";b.onclick=()=>eOpenOne(e);li.appendChild(b);
+  const sub=[];if(P.mine&&P.right)sub.push(`<b>Errei:</b> marquei ${eNameLink(P.mine.replace(/^[A-E]\)\s*/,""))}; a certa era ${eNameLink(P.right.replace(/^[A-E]\)\s*/,""))}`);else if(e.w)sub.push(`<b>Errei:</b> ${esc(eOneLine(e.w))}`);
+  if(ePista(e))sub.push(`<b>Pista:</b> ${mdBold(ePista(e))}`);if(e.dd)sub.push(`<b>Dados decisivos:</b> ${esc(e.dd)}`);if(e.pc)sub.push(`<b>Ponto-chave:</b> ${esc(cmTidy(e.pc))}`);if(P.why)sub.push(`<b>Por que não a sua:</b> ${esc(P.why)}`);
+  if(sub.length){const ul=el(`<ul></ul>`);ul.innerHTML=sub.map(x=>`<li>${x}</li>`).join("");li.appendChild(ul)}
+  return li}
 /* ----- PDF das anotações (mesmo gerador do panorama) ----- */
 function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
   const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],gold:[184,145,74],goldInk:[138,106,43],l2:[44,88,150],line:[225,218,203],bg:[243,240,233],hl:[247,228,170],white:[247,243,234],soft:[214,206,190]};
@@ -8012,7 +8085,7 @@ const HELP=[
 - **Fontes:** as questões geradas seguem só fontes confiáveis (diretrizes e protocolos brasileiros, sociedades médicas, diretrizes internacionais de referência e livros-texto clássicos), sem dados ou referências inventados. Depois de responder, cada questão mostra a **Fonte** que sustenta a resposta.
 - **Usar um material meu** (opcional, no gerador do tema): escolha um ou mais arquivos (PDF da aula, slides, resumos ou fotos; **+ Adicionar outro arquivo** junta mais) e toque em **Gerar questões do material**: as questões saem dos materiais e a fonte cita a página ou o slide. Cada arquivo tem **×** para tirar só ele. A barra mostra quanto do espaço do pedido já foi usado (30 mil caracteres e 4 imagens por pedido); passando disso, o app corta um pouco de **cada** material (os pequenos ficam inteiros) e avisa quanto entrou de cada um. O PDF é lido no aparelho. No site, fotos e PDFs escaneados você anexa na conversa do Claude (a janela lembra); dá também para marcar **Vou anexar o material direto na conversa**. Sem material, o gerador funciona como sempre.
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
-- **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa** e o **Conceito-chave**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
+- **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa**, o **Ponto-chave** em destaque (quando a prova traz), o **Conceito-chave** ou a **Take home message** e a **Fonte**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
 - **Aba Anotações** (no celular, em ≡ Menu): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
@@ -8021,7 +8094,7 @@ const HELP=[
 - **Cartões** (Anotações › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
 - **Cobertura:** em Todas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
 - **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
-- **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, uma linha cada com o conceito certo; toque para abrir o erro no caderno. Erros arquivados e os que você já levou para a anotação não se repetem ali.
+- **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, cada um inteiro: a certa em negrito com o conceito e, embaixo, **Errei**, **Pista**, **Dados decisivos**, **Ponto-chave** e **Por que não a sua** (nomes que batem com um tema viram link); o selo abre o erro no caderno. Erros arquivados não aparecem.
 - **Baixar PDF:** escolha **o caderno todo**, **uma área** ou **como está na tela** (com os filtros) e, no caderno todo, se entra o caderno livre. O PDF tem **capa** com o seu nome e a data, **sumário** com as páginas, área › especialidade › tema, destaques em cor, pegadinhas em caixa e links entre temas com a página (ex.: "Anemias (p. 12)").
 - **Sumário lateral** (computador com tela larga): "Nesta página" lista área › especialidade › tema das anotações mostradas; toque para ir até o tema. O tema que você está lendo fica marcado.
 - **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
@@ -8029,18 +8102,18 @@ const HELP=[
 - **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
 - **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. Funciona no tema, na aba Anotações (Editar) e no caderno livre. No fim de cada anotação (no tema, no cartão aberto da aba Anotações e na página aberta do caderno livre), **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.
 - **Tópicos que recolhem:** na leitura, cada título (##) abre e fecha pela seta, e o app lembra o que ficou fechado; **Abrir tudo/Fechar tudo** no topo. Item de lista com subitens tem seta para recolher. No editor, **Tab** e **Shift+Tab** aumentam e diminuem o recuo do item (ou das linhas selecionadas).
-- **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele (no caderno livre, os dos temas ligados à página); escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro. **Levar para a anotação** (no caderno de erros) já deixa o selo do erro na linha.
+- **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele (no caderno livre, os dos temas ligados à página); escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro.
 - **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
 - **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Anotações): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
-- Modelos: **Modelo de resumo**, **Seções dos subtópicos**, **Meus erros**.
+- Modelos: **Modelo de resumo** e **Seções dos subtópicos**.
 - **Tela cheia** para escrever; **Ler** mostra formatado.
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.
 - A aba **Anotações** reúne todas, com busca, e exporta em Markdown (bom para o Notion).`],
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
-- **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
+- **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). A pista vem numa frase com **negrito** no que decide, e os **Dados decisivos** à parte; o **Ponto-chave** da questão fica num campo próprio; quando a alternativa que você marcou é parecida com a certa, o tipo já vem como **Confundi ou esqueci**. A questão inteira fica guardada no erro: na revisão, **Ver a questão completa** mostra o enunciado e as alternativas. Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
 - **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
-- **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. **Levar para a anotação** acrescenta o conceito na seção **Meus erros** da anotação do tema.
+- **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. Os erros ficam só aqui, no caderno de erros, ligados ao tema (não são mais escritos na anotação; as antigas seções "Meus erros" das anotações foram trazidas para cá).
 - **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
@@ -8417,7 +8490,7 @@ window.addEventListener("online",()=>liveRefresh(true));
   try{
     const [db,user]=await Promise.all([window.claude?.use?.("db"),window.claude?.use?.("user")]);
     const uid=user?await user.id():null;
-    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");setTimeout(maybeOnb,0);return}
+    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();setTimeout(maybeOnb,0);return}
     store=db.doc("data/users/"+uid+"/progress");
     facStore=db.doc("data/users/"+uid+"/faculdade");
     try{const fs=await facStore.get();const fd=fs.exists?fs.data():null;
@@ -8477,7 +8550,7 @@ window.addEventListener("online",()=>liveRefresh(true));
       for(const k in notes)if(!remoteIds.has(k))await notesStore.doc(k).set({t:notes[k],updatedAt:noteAt[k]||new Date().toISOString()});
       if(changed){saveNotesLocal();render()}
     }catch(e){}
-    setSave("Progresso salvo na sua conta");maybeOnb();liveStart();
-  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");setTimeout(maybeOnb,0)}
+    setSave("Progresso salvo na sua conta");errNoteMig();maybeOnb();liveStart();
+  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");errNoteMig();setTimeout(maybeOnb,0)}
 })();
 </script>
