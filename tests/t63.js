@@ -21,7 +21,7 @@ ok(await p.evaluate(()=>Array.isArray(__imgs)&&__imgs[0] instanceof Blob&&/Fluxo
 ok(await p.$$eval('#imgOut .flow .fl-box',a=>a.length)>=5,tag+": prévia com fluxograma");
 await click('#imgSave');await p.waitForTimeout(300);ok(await p.evaluate(()=>/Angioplastia/.test(notes["CM-1"])&&/Gerado pelo Claude a partir de uma imagem/.test(notes["CM-1"])&&imgR===null),tag+": inserido na anotação do tema");
 // pelo caderno livre, a partir da aba Anotações
-await p.evaluate(()=>{setView("notas");setNSeg("todas")});await p.waitForTimeout(150);await click('#nImg');await p.waitForTimeout(150);
+await p.evaluate(()=>{setView("notas");setNSeg("livre")});await p.waitForTimeout(150);await click('#nImg');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>imgR&&imgR.dest==="livre"),tag+": da aba Anotações, padrão = caderno livre");
 await p.setInputFiles('#imgPanel input[type=file]',{name:"aula.png",mimeType:"image/png",buffer:png});await p.waitForTimeout(400);await p.fill('#imgT','Slide IAM');await click('#imgGo');await p.waitForTimeout(400);await click('#imgSave');await p.waitForTimeout(300);
 ok(await p.evaluate(()=>freeN.length===1&&freeN[0].t==="Slide IAM"&&freeN[0].tags.includes("imagem")),tag+": salvo no caderno livre com etiqueta #imagem");

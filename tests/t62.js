@@ -18,19 +18,19 @@ await p.selectOption('#nSortSel','recent');await p.waitForTimeout(120);ok((await
 // 7. erros junto
 ok(/1 erro neste tema/.test(await p.$eval("#nlist",x=>x.textContent)),tag+": erros junto da anotação (linha de resumo)");
 // 8. caderno livre
-await click('#frNew');await p.fill('#frT','Aula de cardio');await p.fill('#frB','# IAM\n> troponina em 3 h');await p.fill('#frTags','aula, cardio');
+await p.evaluate(()=>setNSeg("livre"));await p.waitForTimeout(150);await click('#frNew');await p.fill('#frT','Aula de cardio');await p.fill('#frB','# IAM\n> troponina em 3 h');await p.fill('#frTags','aula, cardio');
 await p.fill('#frQ','hipertens');await p.waitForTimeout(500);await click('.frres .qrpick');await p.waitForTimeout(120);await click('#frSave');await p.waitForTimeout(200);
 const f=await p.evaluate(()=>freeN[0]);ok(f&&f.t==="Aula de cardio"&&f.tags.join()==="aula,cardio"&&f.ks.includes("CM-1"),tag+": anotação livre salva: "+JSON.stringify(f&&{t:f.t,tags:f.tags,ks:f.ks}));
 ok(await p.isVisible('.nfree .chip:has-text("#aula")'),tag+": etiquetas viram filtro");
 await p.waitForTimeout(800);ok(await p.evaluate(()=>Object.keys(window.__store).some(k=>k.includes("/progress/free/"))),tag+": gravada na conta");
 await p.evaluate(()=>{detTab["CM-1"]="notas";openTopic("CM-1")});await p.waitForTimeout(250);ok(/Do caderno livre · 1/.test(await p.$eval('#t-CM-1',x=>x.textContent)),tag+": aparece dentro do tema ligado");
-await p.evaluate(()=>{setView("notas");setNSeg("todas")});await p.waitForTimeout(150);
+await p.evaluate(()=>{setView("notas");setNSeg("livre")});await p.waitForTimeout(150);
 await click('#fr-'+f.id+' .efoot .mini:nth-child(2)');await p.fill('#frT','Aula de cardiologia');await click('#frSave');await p.waitForTimeout(150);ok(await p.evaluate(()=>freeN.length===1&&freeN[0].t==="Aula de cardiologia"),tag+": editar");
-await p.fill('#nq','troponina');await p.waitForTimeout(500);ok(await p.$$eval('.nfree .ncard',a=>a.length)===1,tag+": busca inclui o caderno livre");await p.fill('#nq','');await p.waitForTimeout(400);
+await p.fill('#frq','troponina');await p.waitForTimeout(500);ok(await p.$$eval('.nfree .ncard',a=>a.length)===1,tag+": busca inclui o caderno livre");await p.fill('#frq','');await p.waitForTimeout(400);
 // 5. PDF
 const pdf=await p.evaluate(()=>{const s=new TextDecoder("latin1").decode(notesPDF(["CM-1","CM-6"],freeN));return {ok:s.startsWith("%PDF"),cad:s.includes("Caderno livre"),tema:s.includes("Hipertens")}});ok(pdf.ok&&pdf.cad&&pdf.tema,tag+": PDF das anotações "+JSON.stringify(pdf));
-ok(await p.isVisible('#nPdf'),tag+": botão Baixar PDF");
-await click('#fr-'+f.id+' .efoot .mini:last-child');await click('#fr-'+f.id+' .efoot .mini:last-child');await p.waitForTimeout(200);ok(await p.evaluate(()=>freeN.length===0),tag+": excluir em dois toques");
+await p.evaluate(()=>setNSeg("todas"));await p.waitForTimeout(150);ok(await p.isVisible('#nPdf'),tag+": botão Baixar PDF");
+await p.evaluate(()=>setNSeg("livre"));await p.waitForTimeout(150);await click('#fr-'+f.id+' .efoot .mini:last-child');await click('#fr-'+f.id+' .efoot .mini:last-child');await p.waitForTimeout(200);ok(await p.evaluate(()=>freeN.length===0),tag+": excluir em dois toques");
 ok(await p.evaluate(()=>buildBackup().data.free!==undefined),tag+": backup tem o caderno livre");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=0,tag+": sem rolagem horizontal");
 await ctx.close()}

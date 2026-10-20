@@ -31,7 +31,7 @@ await click('#qRegB');await p.fill('#qrq','sepse');await p.waitForTimeout(500);a
 await p.waitForSelector('#qReg .pnote',{timeout:10000}).catch(()=>{});ok(await p.evaluate(()=>hist[today()].tq===15),tag+": registro com tempo");ok(/3min por questão/.test(await p.$eval('#qReg .pnote',x=>x.textContent)),tag+": mostra o ritmo do registro");
 await click('#qReg .pnote .link');await p.waitForTimeout(150);ok(await p.evaluate(()=>hist[today()].tq===5),tag+": desfazer tira o tempo");
 // encerrar no meio
-await p.evaluate(()=>{qReg=null;setQSeg("praticar")});await click('#simGo');await p.waitForTimeout(400);await click('.qsim .alt:nth-child(2)');await p.waitForTimeout(100);await click('.qsim .btn:not(.primary)');await p.waitForTimeout(150);
+await p.evaluate(()=>{qReg=null;setQSeg("praticar")});await click('#simGo');await p.waitForTimeout(400);await click('.qsim .alt:nth-child(2)');await p.waitForTimeout(100);await click('#simEnd');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>sim.status==="done"&&sim.qs.length===1),tag+": encerrar no meio mostra o resultado das respondidas");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=0,tag+": sem rolagem horizontal");
 await p.evaluate(()=>{sim=null;render()});await click('#simGo');await p.waitForTimeout(400);await p.screenshot({path:`q5-${mob?"fone":"desk"}.png`});

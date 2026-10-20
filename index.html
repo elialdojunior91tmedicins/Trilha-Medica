@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=75200fc0">
+<link rel="stylesheet" href="site.css?v=0d67726b">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=75200fc0"></script>
-<script src="bridge.js?v=75200fc0"></script>
+<script src="config.js?v=0d67726b"></script>
+<script src="bridge.js?v=0d67726b"></script>
 </head>
 <body>
 <script>
@@ -677,9 +677,10 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .fcard .fcq{margin:0;font:700 1.242rem/1.35 var(--display)}
 .fcard .fca{font-size:.98rem;border-top:1px dashed var(--line);padding-top:10px}.fcard:not(.flip) .fca{display:none}
 .fctopic{font-size:.8rem}
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-rev),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-rev,.ns-peg){display:none!important}
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="livre"] :is(.ns-all,.ns-ctl,.ns-peg,.ns-rev),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg,.ns-free),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-rev,.ns-free),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-rev,.ns-peg,.ns-free){display:none!important}
 .nerrs{margin-top:8px;font-size:.85rem;display:flex;flex-direction:column;gap:6px}
 .nerrh{margin:0;font-size:.82rem;color:var(--muted)}.nerrs.live .nerrh>span{color:var(--due);font-weight:600}.nerrh .link{font-size:.82rem}
 .nerrs ul{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
@@ -906,6 +907,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .qexp b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.qacts{display:flex;flex-direction:column;gap:8px;margin-top:6px}.qpick{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.qpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.qpl label{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;line-height:1.45;cursor:pointer}.qpl input{margin-top:4px}
 .qexp.qpc{background:color-mix(in srgb,var(--gold) 14%,transparent);border-left:3px solid var(--gold);padding:8px 10px;border-radius:0 8px 8px 0}
 .qfonte{margin:0;font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
 .qfonte b{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em}
@@ -1839,7 +1842,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Residência</span></button>
     <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
-    <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Anotações</span><span class="ecount" id="ncount"></span></button>
+    <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Caderno</span><span class="ecount" id="ncount"></span></button>
     <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
     <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
     <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false" aria-haspopup="dialog"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="tl">Menu</span><span class="ecount" id="mcount"></span></button>
@@ -1880,15 +1883,15 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <ol class="elist qlistT qs-tem" id="qlistT"></ol>
   </div>
 
-  <div id="viewNotas" class="wrap" style="width:100%" data-nseg="revisar" hidden>
-    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Anotações" id="nSegBar"><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button><button type="button" data-n="todas">Todas</button></div>
+  <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
+    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Livre</button><button type="button" data-n="todas">Temas</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
+    <div id="nFreeBox" class="ns-free"></div>
     <div id="nRevBox" class="ns-rev nrevbox"></div>
     <section class="card ns-all" aria-labelledby="nh">
       <h2 id="nh">Minhas anotações</h2>
       <p class="gtext" id="nsum"></p>
-      <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button><button class="btn" id="nImg" type="button">📷 Ler imagem</button></div>
+      <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button></div>
       <div id="nPdfBox"></div>
-      <div id="nImgBox"></div>
       <p class="gstatus" id="nmsg" aria-live="polite"></p>
       <textarea id="nFallback" class="ntext" hidden readonly aria-label="Anotações em Markdown"></textarea>
     </section>
@@ -1901,7 +1904,6 @@ html[data-layout="tablet"] .nmgrab{display:none}
     </section>
     <div id="nPegBox" class="ns-peg"></div>
     <ol class="elist ns-all" id="nlist"></ol>
-    <div id="nFreeBox" class="ns-all"></div>
     <aside class="ntoc" id="nToc" aria-label="Sumário das anotações" hidden></aside>
   </div>
 
@@ -2612,7 +2614,7 @@ function wkHTML(name,alias){const r=wkFind(name),lab=alias||name;
   return r?`<a class="wk" href="#" data-wk="${esc(r.kind+":"+r.id)}" title="${esc(r.kind==="f"?"Caderno livre: ":"Abrir ")+esc(r.t||"")}">${esc(lab)}</a>`:`<span class="wk miss" title="Nenhum tema ou página com este nome">${esc(lab)}</span>`}
 function wkGo(ref){const i=ref.indexOf(":"),kind=ref.slice(0,i),id=ref.slice(i+1);
   if(kind==="t"&&BYKEY[id]){detTab[id]="notas";noteMode[id]="ler";openTopic(id);return}
-  if(kind==="f"&&freeN.some(f=>f.id===id)){backStack=[];freeOpen.add(id);if(typeof setNSeg==="function")nSeg="todas";setView("notas");setTimeout(()=>{const x=document.getElementById("fr-"+id);if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
+  if(kind==="f"&&freeN.some(f=>f.id===id)){backStack=[];freeOpen.add(id);if(typeof setNSeg==="function")nSeg="livre";setView("notas");setTimeout(()=>{const x=document.getElementById("fr-"+id);if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
 /* links de uma anotação (para "Mencionado em") */
 function wkLinksIn(txt){const out=[];String(txt||"").replace(/\[\[([^\[\]\n|]{1,120})(?:\|[^\[\]\n]{1,120})?\]\]/g,(m,a)=>{const r=wkFind(a.trim());if(r)out.push(r);return m});return out}
 function wkSources(){const L=[];Object.keys(notes).forEach(k=>{if(BYKEY[k]&&(notes[k]||"").trim())L.push({kind:"t",id:k,t:BYKEY[k].t,txt:notes[k]})});freeN.forEach(f=>{if((f.b||"").trim())L.push({kind:"f",id:f.id,t:f.t||"Sem título",txt:f.b})});return L}
@@ -2870,7 +2872,7 @@ function renderNotasView(){
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
   // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
   {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length;
-   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas",todas:"Todas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
+   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Livre",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas",todas:"Temas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
    const rb=$("#nRevBox");rb.innerHTML="";rb.append(nTodayCard(),nCardsCard());const pb=$("#nPegBox");pb.innerHTML="";pb.appendChild(nPegCard(vis));
    const nn=noNoteKeys(),cv=el(`<p class="gtext ncover"></p>`);
    if(nn.length){cv.append(`${nn.length} ${nn.length===1?"tema estudado está":"temas estudados estão"} sem anotação. `);const b=el(`<button class="link" type="button" id="nNoNoteB"></button>`);b.textContent=nNoNote?"Voltar às anotações":"Ver quais";b.onclick=()=>{nNoNote=!nNoNote;render()};cv.appendChild(b)}
@@ -3322,10 +3324,8 @@ function renderGen(it){
         if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
         const acts=el(`<div class="btns"></div>`);
         if(!ok){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>toCaderno(it,qi);acts.appendChild(b)}
-        if(q.conceito){const b=el(`<button class="btn" type="button">Adicionar conceito às anotações</button>`);
-          if((g.added||(g.added={}))[qi]){b.textContent="Adicionado às anotações";b.disabled=true}
-          b.onclick=()=>{const cur=notes[it.key]||"";saveNote(it.key,(cur.trim()?cur.replace(/\s+$/,"")+"\n":"")+"- "+q.conceito);g.added[qi]=true;render()};acts.appendChild(b)}
-        if(acts.children.length)c.appendChild(acts)}
+        if(acts.children.length)c.appendChild(acts);
+        c.appendChild(qActsEl(q,mine,{k:it.key,src:"Questão gerada"}))}
       ol.appendChild(c)});
     box.appendChild(ol);
   }
@@ -4861,7 +4861,7 @@ const ePista=e=>{const p=String(e.p||"").trim();return !p||/\?\s*$/.test(p)&&!/[
 /* pista do caso: a frase do enunciado que mais aponta para a resposta certa (palavras da correta/comentário, números e exames) */
 function qClue(q){const S=clSents(q.enunciado);if(!S.length)return "";const isAsk=x=>/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x);
   let C=S.filter(x=>!isAsk(x));if(!C.length)return "";/* só a pergunta, sem caso: não há pista */if(C.length===1)return clCut(C[0],220);
-  const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito].join(" ")),W=[...q.alternativas.filter(a=>a.letra!==q.correta)].reduce((m,a)=>{clWords(a.texto).forEach(w=>m.add(w));return m},new Set());
+  const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito,q.pc,q.th].join(" ")),W=[...q.alternativas.filter(a=>a.letra!==q.correta)].reduce((m,a)=>{clWords(a.texto).forEach(w=>m.add(w));return m},new Set());
   const sc=C.map((x,i)=>{const ws=clWords(x);let v=0;ws.forEach(w=>{if(K.has(w))v+=W.has(w)?0.5:2});
     if(/\d/.test(x))v+=0.8;if(/\b(exame|mostra|revela|evidencia|laborat|hemograma|tomografia|radiografia|ultrass|bi[óo]psia|ecg|eletrocardio|resson|sorologia|cultura|gasometria|achado|ausculta|palpa)/i.test(x))v+=1;
     if(i===0&&ws.size<5)v-=1;return {x,v,i}}).sort((a,b)=>b.v-a.v||a.i-b.i);
@@ -4876,10 +4876,48 @@ function qClueRich(q){const t=qClue(q);if(!t)return "";const r=q.alternativas.fi
 /* dados decisivos: 2–3 trechos curtos do caso (números, achados de exame, palavras da certa) */
 function qData(q){const S=clSents(q.enunciado).filter(x=>!(/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x)));if(!S.length)return "";
   const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito,q.pc].join(" "));
-  const C=[];S.forEach((x,i)=>x.split(/[;,]\s+|\.\s+|\s+e\s+(?=[a-zà-ú]+\s)/).forEach(c=>{c=c.trim().replace(/[.;:]+$/,"");if(c.length<6)return;const ws=clWords(c);let v=0;ws.forEach(w=>{if(K.has(w))v+=1.5});if(/\d/.test(c))v+=1.2;if(CL_EXAM.test(c))v+=1;if(i===0&&/\b(anos|homem|mulher|paciente|criança|lactente|gestante)\b/i.test(c)&&!/\d{2,}\s*(mg|g\/|mm|%)/.test(c))v-=.6;if(v>0)C.push({c,v,o:C.length})}));
+  const C=[];S.forEach((x,i)=>x.split(/[;,]\s+|\.\s+|\s+e\s+(?=[a-zà-ú]+\s)/).forEach(c=>{c=c.trim().replace(/[.;:]+$/,"").replace(/^(?:e|mas|porém)\s+/i,"");if(c.length<6)return;const ws=clWords(c);let v=0;ws.forEach(w=>{if(K.has(w))v+=1.5});if(/\d/.test(c))v+=1.2;if(CL_EXAM.test(c))v+=1;if(i===0&&/\b(anos|homem|mulher|paciente|criança|lactente|gestante)\b/i.test(c)&&!/\d{2,}\s*(mg|g\/|mm|%)/.test(c))v-=.6;if(v>0)C.push({c,v,o:C.length})}));
   return C.sort((a,b)=>b.v-a.v||a.o-b.o).slice(0,3).sort((a,b)=>a.o-b.o).map(x=>clCut(x.c,80)).join(" · ")}
 /* alternativa marcada parecida com a certa → sugere "Confundi" */
 function qLike(a,b){const A=clWords(a),B=clWords(b);if(!A.size||!B.size)return false;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/Math.min(A.size,B.size)>=.4||n>=2}
+/* ---- em toda questão respondida (certa ou errada): Levar para a anotação (você marca os pontos) e Criar cartão ---- */
+const qActS=new WeakMap();let qActN=0;
+const qSt=q=>{let s=qActS.get(q);if(!s){s={id:"qv"+(++qActN)};qActS.set(q,s)}return s};
+function qPoints(q,mine){const Q=qSplit(q),C=Q.correta,r=Q.alternativas.find(a=>a.letra===C),L=[];
+  if(Q.pc)L.push({id:"pc",lab:"Ponto-chave",t:cmTidy(Q.pc),on:true});
+  if(Q.conceito)L.push({id:"co",lab:"Conceito-chave",t:Q.conceito.trim(),on:!Q.pc});
+  if(Q.th)L.push({id:"th",lab:"Take home",t:cmTidy(Q.th),on:!Q.pc&&!Q.conceito});
+  const why=clSents(cmTidy(Q.comentario)).slice(0,2).join(" ");if(why)L.push({id:"why",lab:`Por que ${C} está certa`,t:why,on:!L.length});
+  Q.alternativas.filter(a=>a.letra!==C&&a.porque).forEach(a=>L.push({id:"n"+a.letra,lab:`Por que não ${clCut(a.texto,60)}`,t:cmTidy(a.porque),on:a.letra===mine}));
+  const cl=qClueRich(Q);if(cl)L.push({id:"pi",lab:"Pista",t:cl,on:false});
+  return {head:r?clCut(r.texto,110):"",L}}
+/* acrescenta na seção "## Conceitos das questões" da anotação do tema (cria no fim se não existir) */
+function conNote(k,head,lines,tok,src){const cur=notes[k]||"",item=`- **${head}**${tok?" "+tok:` _(${src} · ${br(today()).slice(0,5)})_`}`+lines.map(l=>`\n  - ${l}`).join(""),m=cur.match(/^#{1,3}\s*Conceitos das questões\s*$/mi);let v;
+  if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+item+(end<cur.length?"\n"+cur.slice(end):"")}
+  else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Conceitos das questões\n"+item;
+  replaceNote(k,v)}
+function qCardDrafts(q,mine,k){const Q=qSplit(q),it=BYKEY[k],L=esc(it?it.t:""),r=Q.alternativas.find(a=>a.letra===Q.correta),m=mine&&mine!==Q.correta?Q.alternativas.find(a=>a.letra===mine):null;
+  const ask=(clSents(Q.enunciado).filter(x=>/\?$/.test(x)).pop()||"qual é a resposta?").replace(/^\s*/,""),clue=qData(Q)||qClue(Q),exp=cmTidy(Q.pc||Q.conceito||Q.th||clSents(cmTidy(Q.comentario)).slice(0,2).join(" "));
+  const out=[{kind:"disc",q:`<b>${L}.</b> ${clue?esc(clue)+" &rarr; ":""}${esc(clCut(ask,160))}`,a:`<b>${esc(r?r.texto:"")}</b>${exp?`<br><br><i>${esc(exp)}</i>`:""}`,ref:"",keep:true}];
+  if(m)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(clCut(m.texto,90))}${clue?" neste caso":""}?`,a:`<b>${esc(cmTidy(m.porque||"Não se encaixa no caso: veja o conceito."))}</b><br><br><i>A resposta é <b>${esc(r?r.texto:"")}</b>.${exp?" "+esc(exp):""}</i>`,ref:"",keep:true});
+  return out}
+function qActsEl(q,mine,ctx){const st=qSt(q),k=ctx.k,ok=!!BYKEY[k],w=el(`<div class="qacts"><div class="btns"></div></div>`),B=w.querySelector(".btns");
+  const nb=el(`<button class="btn" type="button"></button>`);nb.id="qan-"+st.id;nb.textContent=st.noted?"Na anotação ✓":st.pick?"Fechar":"Levar para a anotação";nb.disabled=!ok||!!st.noted;if(!ok)nb.title="Escolha o tema desta questão primeiro";
+  nb.onclick=()=>{if(st.pick)delete st.pick;else{const P=qPoints(q,mine);st.pick={head:P.head,L:P.L};delete cdErr[st.id]}render()};B.appendChild(nb);
+  const cb=el(`<button class="btn" type="button"></button>`);cb.id="qac-"+st.id;cb.textContent=st.cards?`${st.cards} ${st.cards===1?"cartão":"cartões"} ✓`:cdErr[st.id]?"Fechar cartões":"Criar cartão";cb.disabled=!ok||!!st.cards;if(!ok)cb.title="Escolha o tema desta questão primeiro";
+  const ve=()=>{const Q=qSplit(q),r=Q.alternativas.find(a=>a.letra===Q.correta),m=Q.alternativas.find(a=>a.letra===mine),D=qDraft(q,mine,ctx.src);
+    return {id:st.id,virtual:true,okq:mine===Q.correta,k,w:mine===Q.correta?`Acertei: ${r?r.texto:""}`:D.w,p:D.p.replace(/\*\*/g,""),r:[cmTidy(Q.pc||""),D.r].filter(Boolean).join("\n"),t:D.t,c:"",s:ctx.src||"",onSaved:ids=>{st.cards=ids.length}}};
+  cb.onclick=()=>{if(cdErr[st.id])delete cdErr[st.id];else{cdErr[st.id]={list:qCardDrafts(q,mine,k)};delete st.pick}render()};B.appendChild(cb);
+  if(st.pick){const P=st.pick,pv=el(`<div class="qpick"><span class="glabel">Marque o que vai para “Conceitos das questões”</span><ul class="qpl"></ul><div class="btns"></div></div>`),ul=pv.querySelector("ul");
+    P.L.forEach((x,i)=>{const li=el(`<li><label><input type="checkbox"> <span><b></b> <span class="qpt"></span></span></label></li>`),c=li.querySelector("input");c.id=`qp-${st.id}-${x.id}`;c.checked=x.on;c.onchange=()=>{x.on=c.checked;render()};
+      li.querySelector("b").textContent=x.lab+":";boldFill(li.querySelector(".qpt"),x.t);ul.appendChild(li)});
+    if(!P.L.length)ul.appendChild(el(`<li class="how">Esta questão não trouxe explicação para levar.</li>`));
+    const n=P.L.filter(x=>x.on).length,go=el(`<button class="btn primary" type="button"></button>`);go.id="qpgo-"+st.id;go.textContent=`Inserir na anotação de ${BYKEY[k]?BYKEY[k].t:""}`;go.disabled=!n;
+    go.onclick=()=>{conNote(k,P.head,P.L.filter(x=>x.on).map(x=>`${x.lab}: ${x.t}`),ctx.tok||"",ctx.src||"Questão");st.noted=1;delete st.pick;render()};
+    const x=el(`<button class="link" type="button">Cancelar</button>`);x.onclick=()=>{delete st.pick;render()};pv.querySelector(".btns").append(go,x);w.appendChild(pv)}
+  if(st.noted){const v=el(`<button class="link" type="button">ver a anotação</button>`);v.onclick=()=>{detTab[k]="notas";noteMode[k]="ler";openTopic(k)};B.appendChild(v)}
+  if(cdErr[st.id])w.appendChild(cdErrEl(ve()));
+  return w}
 /* rascunho a partir de uma questão respondida, montado pelo app (sem o Claude) */
 function qDraft(q,mine,src){const Q=qSplit(q),m=Q.alternativas.find(a=>a.letra===mine),r=Q.alternativas.find(a=>a.letra===Q.correta);
   const w=m&&r?`Marquei ${clCut(m.texto,90)}; a certa era ${clCut(r.texto,90)}`:r?`A certa era ${clCut(r.texto,110)}`:"";
@@ -5587,13 +5625,13 @@ new MutationObserver(()=>sbApply()).observe(document.documentElement,{attributes
   $("#sbPinOpen").onclick=()=>sbSetPin(sbPin==="open"?"":"open");
   $("#sbPinRail").onclick=()=>sbSetPin(sbPin==="rail"?"":"rail")}
 /* menu ≡: lista de todas as seções com um resumo de cada */
-const NM_SUB={inicio:"Painel do dia",temas:"185 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Praticar, simulados e provas",notas:"Resumos dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros"};
+const NM_SUB={inicio:"Painel do dia",temas:"185 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Praticar, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros"};
 function nmInfo(v){try{
   if(v==="inicio"){const P=ensurePlan();if(P.items.length){const d=P.items.filter(itemDone).length;return [`Estudar hoje: ${d} de ${P.items.length} temas`,""]}}
   if(v==="temas"){const n=dueCount();return [n?`${n} ${n===1?"revisão pendente":"revisões pendentes"}`:"Revisões em dia",n?"late":"",n]}
   if(v==="fac"){const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);return [`${up.name} · ${inLabel(dd)}`,dd<=7?"late":""]}}
   if(v==="quest"){const h=hist[today()];if(h&&h.q)return [`Hoje: ${h.q} ${h.q===1?"questão":"questões"}, ${pct(h.c||0,h.q)}% de acerto`,""]}
-  if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;if(nk)return [`${nk} ${nk===1?"tema":"temas"} com anotações`,""]}
+  if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,nf=freeN.length;if(nk||nf)return [[nf?`${nf} no caderno livre`:"",nk?`${nk} ${nk===1?"tema":"temas"} com anotações`:""].filter(Boolean).join(" · "),""]}
   if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"",foRun?"●":0]}
   if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}}catch(e){}return [NM_SUB[v]||"",""]}
 function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
@@ -6425,7 +6463,8 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
     c.appendChild(qExplEl(qSplit(q)));
     if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
-    if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"))}
+    if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"));
+    c.appendChild(qActsEl(q,R.ans,{k:x.k,src:"Refazer"}))}
   w.appendChild(c);
   const acts=el(`<div class="btns"></div>`);
   if(R.ans){const nx=el(`<button class="btn primary" type="button" id="rdNext">${R.i+1<R.ids.length?"Próxima":"Ver resultado"}</button>`);nx.onclick=()=>{R.i++;R.ans=null;R.snap=null;render()};acts.appendChild(nx)}
@@ -6707,10 +6746,11 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     card.appendChild(qExplEl(qSplit(q)));
     if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
-    if(!ok)card.appendChild(q.err?el(`<p class="pnote">Este ponto já está no seu caderno de erros: ele volta para revisão amanhã.</p>`):eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"))}
+    if(!ok)card.appendChild(q.err?el(`<p class="pnote">Este ponto já está no seu caderno de erros: ele volta para revisão amanhã.</p>`):eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"));
+    card.appendChild(qActsEl(q,mine,{k:q.k,src:"Simulado misto"}))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
   if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
-  const st=el(`<button class="btn" type="button">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
+  const st=el(`<button class="btn" type="button" id="simEnd">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
   c.appendChild(acts);c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.sim?" · Esc sai da tela inteira":""}</p>`));return c}
 function simTick(){const c=$("#simClock");if(!c||!sim||sim.status!=="run")return;const q=sim.ans[sim.i]?null:Math.floor((Date.now()-sim.shown)/1000);c.textContent=q===null?"":`${fmtPace(q)} nesta questão`}
 setInterval(simTick,1000);
@@ -7140,7 +7180,8 @@ function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,
     else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
     card.appendChild(qExplEl(qSplit(q),{note:r.ck&&q.correta&&r.ck!==q.correta?`O comentário foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.`:""}));
     if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}
-    if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name))}
+    if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name));
+    if(mine&&q.correta&&!r.an)card.appendChild(qActsEl(q,mine,{k:r.k,src:ex.name,tok:`{{q:${ex.id}:${i}}}`}))}
   return card}
 function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></div>`);
   if(R.view==="res"){const S=exScore(ex),areas={};ex.qs.forEach((r,i)=>{const a=P.a[i];if(!a||r.an||!r.q.correta)return;const it=r.k&&BYKEY[r.k],lab=it?it.area.name:"Sem tema",x=areas[lab]||(areas[lab]={c:0,q:0});x.q++;if(a.l===r.q.correta)x.c++});
@@ -7453,8 +7494,8 @@ function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";con
     li.querySelector("b").textContent=it.t;li.querySelector(".pint span").textContent=`${it.own?"FAC":it.area.code} · ${it.sp||""}${d!==null?" · "+dueLabel(d):""}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}`;
     li.querySelector(".pint").onclick=()=>openTopic(it.key);li.querySelector(".pinx").onclick=()=>togglePin(it.key);ul.appendChild(li)});box.appendChild(ul)}
 /* ---------- Anotações: reler hoje, pegadinhas, cartões e cobertura ---------- */
-let nSeg="revisar";try{const v=localStorage.getItem("resid-nseg");if(["revisar","pegadinhas","todas"].includes(v))nSeg=v}catch(e){}
-function setNSeg(v){nSeg=v;try{localStorage.setItem("resid-nseg",v)}catch(e){}render();window.scrollTo({top:0})}
+let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","revisar","pegadinhas","todas"].includes(v))nSeg=v}catch(e){}
+function setNSeg(v){nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
 let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
@@ -7575,7 +7616,7 @@ function cdErrDrafts(e){const it=BYKEY[e.k],L=esc(cdLabel(it)),P=cdErrParse(e),r
     if(P.mine)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(P.mine)}${e.p?" neste caso":""}?`,a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
   else out.push({kind:"disc",q:`<b>${L}.</b> ${esc(eOneLine(e.w))}${e.p?` (${esc(e.p)})`:""} &rarr; qual é o certo?`,a:`<b>${esc(eOneLine(e.r).slice(0,200))}</b>`,ref,keep:true});
   return out}
-function cdErrPrompt(e){const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro, não um resumo do tema.
+function cdErrPrompt(e){const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de ${e.okq?"uma QUESTÃO que ele acertou (talvez no chute) e quer fixar. O cartão mira o que decide a questão":"um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro"}, não um resumo do tema.
 Tema: ${it?it.t:""} (${it?areaLabel(it):""}). Tipo de erro: ${ETYPES[e.t]||""}${e.c?`; causa: ${e.c}`:""}.
 O que ele errou: ${eOneLine(e.w)}${e.p?`\nPista do caso: ${e.p}`:""}
 Conceito correto: ${String(e.r||"").slice(0,1500)}
@@ -7600,8 +7641,9 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
     else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
-function cdErrSave(e){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,eid:e.id}).id);if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
-function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>Cartões deste erro</b><button class="link" type="button">Fechar</button></div><p class="how">Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar.</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
+function cdErrSave(e){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id})}).id);
+  if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
+function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{delete cdErr[e.id];render()};const ol=w.querySelector("ol");
   S.list.forEach((c,i)=>{const li=el(`<li class="cdit"><label class="cdck"><input type="checkbox"> <span class="cdk"></span></label><div class="oscard mini"><div class="osq"></div><div class="osa"></div><div class="osref"></div></div></li>`);
     const cb=li.querySelector("input");cb.id=`cdk-${e.id}-${i}`;cb.checked=!!c.keep;cb.onchange=()=>{c.keep=cb.checked;render()};li.querySelector(".cdk").textContent=(CDK[c.kind]||"Cartão")+(c.sug?" · sugerido para este erro":"");
@@ -7742,7 +7784,7 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
 let nMsgCards="";
 /* sessão de revisão dos cartões */
 let ankiMsg="";
-function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Anotações"));
+function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Caderno"));
   if(!cdRun&&cards.length&&downloadsFn){const b=el(`<button class="link" type="button" id="ankiCd">Todos em .txt (entram como novos no Anki)</button>`);b.onclick=async()=>{ankiMsg=await ankiSave("cards");render()};c.appendChild(b)}
   if(ankiMsg&&!cdRun){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=ankiMsg;c.appendChild(m);ankiMsg=""}return c}
 /* cobertura: temas estudados sem nenhuma anotação */
@@ -7882,11 +7924,14 @@ try{const v=JSON.parse(localStorage.getItem(LSFR2)||"[]");if(Array.isArray(v))fr
 function frSaveLocal(){try{localStorage.setItem(LSFR2,JSON.stringify(freeN))}catch(e){}}
 async function frPut(x){frSaveLocal();if(!freeStore)return;try{await freeStore.doc(x.id).set({...x})}catch(e){}}
 async function frDel(id){{const f=freeN.find(x=>x.id===id);if(f)toTrash("free",f.t||"Sem título",(f.b||"").replace(/\s+/g," ").slice(0,80),f)}freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
-function freeVisible(){return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!nQuery||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(nQuery))).sort((a,b)=>b.at.localeCompare(a.at))}
-function freeCard(){const c=el(`<section class="card nfree ns-all" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno livre</h2><button class="btn primary" type="button" id="frNew">+ Nova anotação</button></div></section>`);
+let frQ="";
+function freeVisible(){const Q=frQ||nQuery;return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!Q||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(Q))).sort((a,b)=>b.at.localeCompare(a.at))}
+function freeCard(){const c=el(`<section class="card nfree ns-free" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno livre</h2><span class="sp"></span><button class="btn" id="nImg" type="button">📷 Ler imagem</button><button class="btn primary" type="button" id="frNew">+ Nova anotação</button></div><div id="nImgBox"></div></section>`);
   c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
   if(freeEdit)c.appendChild(freeEditor());
   if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a anotação aparece também dentro deles.</p>`));return c}
+  {const sr=el(`<div class="tfsearch frsearch">${FC_ICO}<input class="search" id="frq" type="search" placeholder="Buscar no caderno livre" aria-label="Buscar no caderno livre" autocomplete="off"></div>`),i=sr.querySelector("input");i.value=frQ;
+    i.oninput=debounced(()=>{frQ=norm(i.value.trim());render();const x=$("#frq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});c.appendChild(sr)}
   const tags=[...new Set(freeN.flatMap(f=>f.tags))].sort();
   if(tags.length){const ch=el(`<div class="chips"></div>`);[["all","Todas"],...tags.map(t=>[t,"#"+t])].forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${freeTag===v}"></button>`);b.textContent=l;b.onclick=()=>{freeTag=v;render()};ch.appendChild(b)});c.appendChild(ch)}
   const L=freeVisible(),ol=el(`<ol class="elist"></ol>`);if(!L.length&&freeN.length)ol.appendChild(el(`<li class="empty" style="padding:0">Nenhuma anotação livre com esses filtros.</li>`));
@@ -7974,7 +8019,7 @@ async function imgRun(){const R=imgR;if(!R||!R.blob||!sampleFn)return;R.status="
 function imgSave(){const R=imgR;if(!R||!R.text.trim())return;const stamp=`\n\n_Gerado pelo Claude a partir de uma imagem em ${br(today())}/${today().slice(0,4)}. Confira com a fonte._`;
   if(R.dest==="tema"){if(!R.k)return;const cur=(notes[R.k]||"").replace(/\s+$/,"");replaceNote(R.k,(cur?cur+"\n\n---\n\n":"")+R.text.trim()+stamp);const k=R.k;imgR=null;noteMode[k]="ler";detTab[k]="notas";openTopic(k);return}
   const x=frClean({id:"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:R.title.trim()||"Imagem lida pelo Claude",b:R.text.trim()+stamp,tags:["imagem"],ks:R.k?[R.k]:[],at:new Date().toISOString()});
-  freeN.push(x);frPut(x);imgR=null;nSeg="todas";try{localStorage.setItem("resid-nseg","todas")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const c=document.getElementById("fr-"+x.id);if(c)c.scrollIntoView({behavior:"smooth",block:"center"})},80)}
+  freeN.push(x);frPut(x);imgR=null;nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const c=document.getElementById("fr-"+x.id);if(c)c.scrollIntoView({behavior:"smooth",block:"center"})},80)}
 function imgStart(k){imgR={from:k||null,dest:k?"tema":"livre",k:k||null,kind:"slide",blob:null,url:"",status:"pick",text:"",msg:"",title:"",q:""};render();setTimeout(()=>{const p=$("#imgPanel");if(p)p.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div class="dhead"><b>Ler imagem com o Claude</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{if(R.ctl)R.ctl.abort();if(R.url)URL.revokeObjectURL(R.url);imgR=null;render()};
@@ -8029,7 +8074,7 @@ const HELP=[
 - **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
 - **Sua semana de estudos** (⚙ Configurações › Plano): toque nos dias de **Temas novos** (nos outros dias o plano traz só pontos fracos e faculdade), de **Simulados e provas** (o Início sugere um simulado de 20 questões ou uma prova na íntegra) e de **Folga** (sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo). A prévia da semana e a projeção até a prova seguem esses dias.
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
-- **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Anotações › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki. No rodapé de Erros › Encontrar erros e em Cartões, a exportação em .txt continua (entra como cartões novos).
+- **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Caderno › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki. No rodapé de Erros › Encontrar erros e em Cartões, a exportação em .txt continua (entra como cartões novos).
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
 - **Resumo da semana:** no domingo e na segunda, o Início compara a sua semana com a anterior.
 - O botão **?** ao lado de vários cartões abre a parte certa desta ajuda.`],
@@ -8110,28 +8155,28 @@ const HELP=[
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
 - **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa**, o **Ponto-chave** em destaque (quando a prova traz), o **Conceito-chave** ou a **Take home message** e a **Fonte**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
-["Anotações",`Ficam dentro de cada tema e são salvas enquanto você escreve.
-- **Aba Anotações** (no celular, em ≡ Menu): partes **Revisar**, **Pegadinhas** e **Todas** (no computador, tudo numa página).
+["Caderno",`A aba **Caderno** (antes Anotações) junta o seu **caderno livre** e as anotações de cada tema. As anotações do tema ficam dentro dele e são salvas enquanto você escreve.
+- **Partes** (no celular e no tablet em pé): **Livre** (abre primeiro: notas de aula, plantão, dicas, com etiquetas e ligadas a temas), **Temas** (as anotações de cada tema, com busca e filtros), **Revisar** (Para reler hoje e Cartões) e **Pegadinhas**. No computador, tudo numa página só, com o caderno livre no topo. Os erros ficam na aba **Erros**.
 - **Para reler hoje:** as anotações dos temas com revisão hoje ou no plano do dia; toque em **Reli** depois de ler. Os temas de hoje sem anotação aparecem embaixo.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
-- **Cartões** (Anotações › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
-- **Cobertura:** em Todas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
+- **Cartões** (Caderno › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
+- **Cobertura:** em Temas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
 - **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
 - **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, cada um inteiro: a certa em negrito com o conceito e, embaixo, **Errei**, **Pista**, **Dados decisivos**, **Ponto-chave** e **Por que não a sua** (nomes que batem com um tema viram link); o selo abre o erro no caderno. Erros arquivados não aparecem.
 - **Baixar PDF:** escolha **o caderno todo**, **uma área** ou **como está na tela** (com os filtros) e, no caderno todo, se entra o caderno livre. O PDF tem **capa** com o seu nome e a data, **sumário** com as páginas, área › especialidade › tema, destaques em cor, pegadinhas em caixa e links entre temas com a página (ex.: "Anemias (p. 12)").
 - **Sumário lateral** (computador com tela larga): "Nesta página" lista área › especialidade › tema das anotações mostradas; toque para ir até o tema. O tema que você está lendo fica marcado.
-- **Caderno livre** (em Todas): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
+- **Caderno livre** (parte **Livre**, a primeira): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
 - **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
 - **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. Funciona no tema, na aba Anotações (Editar) e no caderno livre. No fim de cada anotação (no tema, no cartão aberto da aba Anotações e na página aberta do caderno livre), **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.
 - **Tópicos que recolhem:** na leitura, cada título (##) abre e fecha pela seta, e o app lembra o que ficou fechado; **Abrir tudo/Fechar tudo** no topo. Item de lista com subitens tem seta para recolher. No editor, **Tab** e **Shift+Tab** aumentam e diminuem o recuo do item (ou das linhas selecionadas).
 - **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele (no caderno livre, os dos temas ligados à página); escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro.
 - **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
-- **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Anotações): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
+- **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Caderno, parte Livre): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
 - Modelos: **Modelo de resumo** e **Seções dos subtópicos**.
 - **Tela cheia** para escrever; **Ler** mostra formatado.
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.
-- A aba **Anotações** reúne todas, com busca, e exporta em Markdown (bom para o Notion).`],
+- A aba **Caderno** reúne todas (parte Temas), com busca, e exporta em Markdown (bom para o Notion).`],
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
 - **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). A pista vem numa frase com **negrito** no que decide, e os **Dados decisivos** à parte; o **Ponto-chave** da questão fica num campo próprio; quando a alternativa que você marcou é parecida com a certa, o tipo já vem como **Confundi ou esqueci**. A questão inteira fica guardada no erro: na revisão, **Ver a questão completa** mostra o enunciado e as alternativas. Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
@@ -8142,7 +8187,7 @@ const HELP=[
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
 - **Resolvido** arquiva o erro: ele sai das revisões e da lista e fica em **Arquivados** (dá para desarquivar). Na revisão, um erro que você já acertou várias vezes ganha o botão **Já domino: arquivar**.
 - **Encontrar erros:** busca no tema, no que errou, na fonte e na causa. **Filtros** abre **Tipo de erro**, **Situação** (para revisar hoje, que se repetem, sem cartão, arquivados), **Quando e de onde** (período do registro, fonte, causa) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, próxima revisão ou mais teimosos. No rodapé do cartão, **Exportar PDF destes erros** e **Exportar para o Anki** usam os filtros atuais.
-- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões** (Anotações; teclado: espaço, 1 Errei, 2 Difícil, 3 Bom, 4 Fácil) no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima) e nas **Provas na íntegra**, no Modo prova e no Modo estudo (teclado: A a E respondem, → próxima, ← anterior), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
+- **Tela inteira** (tablet deitado e computador): durante a revisão, o botão esconde a lista e deixa só o erro na tela; o app lembra a escolha. O mesmo botão aparece nos **Cartões** (Caderno; teclado: espaço, 1 Errei, 2 Difícil, 3 Bom, 4 Fácil) no **Simulado misto** (Questões; teclado: A a E respondem, espaço vai para a próxima) e nas **Provas na íntegra**, no Modo prova e no Modo estudo (teclado: A a E respondem, → próxima, ← anterior), cada um com a sua escolha. No computador: espaço mostra o correto, 1 = Agora sei, 2 = Ainda erraria, Esc sai da tela inteira.
 - O número na aba Erros mostra quantos erros você tem para revisar hoje.
 - Tipos: **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. A aba **Erros** mostra onde você mais erra (tipo, tema, especialidade) e quantos erros você registrou por semana.
 - Os erros de um tema entram no pedido das próximas questões dele.`],
@@ -8193,7 +8238,7 @@ const HELP=[
 - O tempo vai para o **PDF** (Perfil › Exportar PDF), respeitando o período e as matérias escolhidas, e para o backup.`],
 ["Navegação por aparelho",`| Aparelho | Navegação | Aba Residência |
 |---|---|---|
-| Celular | Barra embaixo (Anotações e Foco ficam em **Mais**); Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
+| Celular | Barra embaixo (Caderno e Foco ficam no **≡ Menu**); Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
 | Tablet em pé ou no app do Claude | Faixa lateral | Hoje · Revisões · Lista · Progresso |
 | Tablet deitado (tela cheia) | Faixa lateral | Duas colunas |
 | Computador | Menu lateral com atalhos | Duas colunas |
