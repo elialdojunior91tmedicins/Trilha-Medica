@@ -6,7 +6,7 @@ como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`
 
 Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
-Faculdade, Questões, Anotações, Foco, Erros; no celular Anotações e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
+Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Foco, Erros; no celular Caderno e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
 - **Artefato no Claude**: https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
@@ -316,6 +316,10 @@ consultado quando há dúvida. Responda em português.
   Erro ganha `e.pc`, `e.dd` (dados decisivos) e `e.q={e,a:[{l,t}],c,m}` (questão completa) via `eNew(...,x)`; `qDraft` → `p:qClueRich` (frase com **negrito**), `dd:qData`, `pc`, `qf`, tipo `confusao` se `qLike`; formulário com `#<pre>d`/`#<pre>k`.
   Tela: `boldFill` (pista), `eExtraBlocks` (`.edd`, `.epc`, `.eqfull` com `eQOpen`); "Para reler hoje" usa `eItemEl` (subitens, `eNameLink` liga a tema/subtópico). Erros não vão mais para a anotação
   (sem `eNoteBtn` nem modelo "Meus erros"); `errNoteMig()` (uma vez por aparelho, `resid-enm`) move as seções "## Meus erros" para o caderno e limpa `e.nt`. Teste t109.
+- Lotes 8–9 (10/2026): aba **Caderno** (rótulo; a view continua `notas`): partes `nSeg` = livre (padrão)|todas ("Temas")|revisar|pegadinhas (localStorage `resid-nseg2`), caderno livre em `#nFreeBox.ns-free`
+  no topo (no computador tudo numa página), com "📷 Ler imagem" (`#nImg`, `#nImgBox`) e busca própria `#frq` (`frQ`). Em toda questão respondida (gerador, simulado, Refazer, prova): `qActsEl(q,mine,{k,src,tok})`
+  (estado em `qActS` WeakMap) = "Levar para a anotação" (`qPoints` → lista marcável `.qpick`, `#qp-<id>-<ponto>`, `#qpgo-<id>`; `conNote` grava em "## Conceitos das questões" com o selo `{{q:…}}` só nas provas,
+  nas outras a origem e a data) e "Criar cartão" (`qCardDrafts` → `cdErrEl` com erro virtual `virtual:true, okq`; `cdErrSave` não liga a erro). Simulado: "Encerrar" = `#simEnd`. Teste t110.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
