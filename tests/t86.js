@@ -22,7 +22,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
     await p.click('#cfgBtn');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="config"),name+": engrenagem abre Configurações");
     await p.click('#srchBtn');await p.waitForTimeout(150);ok(await p.evaluate(()=>!!document.querySelector('#gsearch')),name+": Buscar abre a busca");await p.keyboard.press('Escape');
     const tabs=await p.evaluate(()=>[...document.querySelectorAll('.appnav .tab')].filter(t=>t.offsetParent).map(t=>{const b=t.getBoundingClientRect();return Math.round(b.height)}));
-    ok(tabs.length===7&&tabs.every(x=>x>=36&&x<=52),name+": 7 abas em linha (ícone + nome) "+tabs.join(","));
+    ok(tabs.length===8&&tabs.every(x=>x>=36&&x<=52),name+": 8 abas em linha (ícone + nome) "+tabs.join(","));
     if(name==="note")await p.screenshot({path:`t86-${name}.png`});
   }else{
     ok(!r.brand&&!r.srch&&!r.prof&&!r.cfg&&r.head!=="none",name+": celular/iPad em pé: marca e botões continuam no topo");

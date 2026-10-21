@@ -9,7 +9,7 @@ ok(await p.evaluate(()=>!!navigator.serviceWorker.controller),"página controlad
 await ctx.setOffline(true);
 await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100,timeout:15000});
 ok(await p.evaluate(()=>!navigator.onLine||true),"abriu sem internet");
-ok(await p.evaluate(()=>(get("CM-1").sd||[]).length===1&&document.querySelectorAll(".appnav .tab").length===8),"sem internet: app abre com o progresso e a navegação");
+ok(await p.evaluate(()=>(get("CM-1").sd||[]).length===1&&document.querySelectorAll(".appnav .tab").length===9),"sem internet: app abre com o progresso e a navegação");
 await p.evaluate(()=>{const it=BYKEY["CM-1"];toggleSub(it,subList(it)[1])});ok(await p.evaluate(()=>(get("CM-1").sd||[]).length===2),"sem internet: continua marcando");
 await ctx.setOffline(false);
 const man=await p.evaluate(async()=>{const r=await fetch("manifest.webmanifest");const m=await r.json();const icons=await Promise.all(m.icons.map(i=>fetch(i.src).then(x=>x.ok&&x.headers.get("content-type").includes("png"))));return {m,icons}});

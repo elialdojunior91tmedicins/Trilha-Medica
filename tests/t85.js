@@ -1,4 +1,4 @@
-// t85: semana de estudos — dias de temas novos, de simulado e de folga (Configurações › Plano) e o efeito no plano, revisões, fila, saudação e prévia
+// t85: planejar a semana — semana padrão, esta semana, tempo de hoje, simulado e folga (Configurações › Plano) e o efeito no plano, revisões, fila, saudação e prévia
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync(__dirname+'/mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 const DEV={fone:[390,844,true],ipad578:[578,820,true],tabEmPe:[820,1180,true],note:[1366,768,false],monitor:[1920,1080,false]};
 (async()=>{const b=await chromium.launch();const errs=[];
@@ -14,19 +14,21 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
     state["CM-3"]={l:1,last:D(-10),step:1,qt:20,qc:8,qd:{[D(-10)]:[20,8]}};// ponto fraco, atrasada
     commit();return {wd:wdOf(dnum(today())),wd2:wdOf(dnum(today())+2),js:new Date().getDay()}});
   ok(T.wd===T.js,name+": dia da semana calculado igual ao do relógio ("+T.wd+")");
-  /* 1. tela de configuração */
-  await p.evaluate(()=>{backStack=[];goSub("config")});await p.waitForTimeout(150);
-  ok(await p.isVisible('#wkCfg')&&await p.evaluate(()=>document.querySelectorAll('#wkCfg .wkd').length===21),name+": Configurações › Plano tem a semana de estudos (3 linhas × 7 dias)");
-  ok(await p.evaluate(()=>[...document.querySelectorAll('#wkCfg .wkd.wnew')].every(b=>b.getAttribute('aria-pressed')==="true")),name+": padrão: temas novos todos os dias (como antes)");
-  await click(`#wk-woff-${T.wd}`);
-  const r1=await p.evaluate(wd=>({off:ui.prefs.woff.includes(wd),nw:ui.prefs.wnew.includes(wd),saved:(__store["data/users/u1/prefs"]||{}).prefs}),T.wd);
-  ok(r1.off&&!r1.nw,name+": marcar folga tira o dia dos temas novos");
-  for(let d=0;d<7;d++)if(d!==T.wd)await p.evaluate(d=>{if(ui.prefs.wnew.includes(d))document.getElementById(`wk-wnew-${d}`).click()},d);await p.waitForTimeout(100);
-  ok(await p.evaluate(()=>ui.prefs.wnew.length===1&&/pelo menos um dia de temas novos/.test(document.querySelector('#wkCfg').textContent)),name+": não deixa ficar sem nenhum dia de temas novos");
+  /* 1. Configurações › Plano › Planejar a semana */
+  await p.evaluate(()=>{backStack=[];wpTab="pad";goSub("config")});await p.waitForTimeout(150);
+  ok(await p.isVisible('#wpCard')&&await p.evaluate(()=>document.querySelectorAll('#wpCard .wpday').length===7&&document.querySelectorAll('#wpCard .wpo').length===35&&document.querySelectorAll('#wkCfg .wkd.wsim').length===7),name+": Configurações › Plano tem a semana padrão (7 dias × 5 tempos) e a linha de simulados");
+  ok(await p.evaluate(()=>ui.prefs.wday.every(m=>m===180)&&ui.prefs.hgoal===600),name+": padrão: 3 h+ todos os dias (como antes) e meta de 10 h");
+  ok(await p.evaluate(()=>!document.querySelector('#wkCfg .wkd.wnew')&&!document.querySelector('.wkd.woff')),name+": a antiga \"Semana de estudos\" saiu");
+  await click(`#wp-${T.wd}-0`);
+  const r1=await p.evaluate(wd=>({w:ui.prefs.wday[wd],off:ui.prefs.woff.includes(wd),nw:ui.prefs.wnew.includes(wd)}),T.wd);
+  ok(r1.w===0&&r1.off&&!r1.nw,name+": folga na semana padrão (e os campos antigos acompanham)");
+  for(let d=0;d<7;d++)if(d!==T.wd)await p.evaluate(d=>{const b=document.getElementById(`wp-${d}-0`);if(b&&b.getAttribute('aria-pressed')!=="true")b.click()},d);await p.waitForTimeout(100);
+  ok(await p.evaluate(()=>ui.prefs.wday.filter(m=>m===0).length===5&&/No máximo 5 dias de folga/.test(document.querySelector('#wpCard').textContent)),name+": no máximo 5 dias de folga");
+  await p.evaluate(wd=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd?0:180);ui.prefs.wsim=[];wpLegacy();saveUI();wpMsg="";render()},T.wd);
   ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": configuração sem rolagem lateral");
-  if(name==="fone"||name==="note"){await p.evaluate(()=>document.querySelector('#wkCfg').scrollIntoView({block:"center"}));await p.screenshot({path:`t85-${name}.png`})}
+  if(name==="fone"||name==="note"){await p.evaluate(()=>document.querySelector('#wpCard').scrollIntoView({block:"start"}));await p.screenshot({path:`t85-${name}.png`})}
   await p.waitForTimeout(1200);
-  ok(await p.evaluate(()=>{const v=(__store["data/users/u1/prefs"]||{}).prefs;return v&&Array.isArray(v.woff)&&v.woff.length===1&&v.wnew.length===1}),name+": a semana fica salva na conta");
+  ok(await p.evaluate(wd=>{const v=(__store["data/users/u1/prefs"]||{}).prefs;return v&&Array.isArray(v.wday)&&v.wday[wd]===0&&v.hgoal===600},T.wd),name+": a semana fica salva na conta");
   /* 2. hoje é folga */
   await p.evaluate(()=>{redoPlan();backStack=[];setView("inicio")});await p.waitForTimeout(150);
   const r2=await p.evaluate(()=>{const s1=get("CM-1"),s3=get("CM-3");return {plan:ensurePlan().items.length,q:qCounts(),d1:dueIn(s1),d3:dueIn(s3),hero:document.querySelector('#iHero .hsum').textContent,btn:!!document.querySelector('#heroGo'),steps:nextSteps().length,
@@ -36,15 +38,33 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(/dia de folga/.test(r2.hero)&&/as revisões voltam (amanhã|n[ao] )/.test(r2.hero)&&!r2.btn,name+": a saudação avisa a folga, sem botão: "+r2.hero);
   ok(/folga/.test(r2.plTxt)&&/folga/.test(r2.rq),name+": Estudar hoje e Revisar hoje explicam a folga");
   /* 3. revisão que cairia numa folga futura vai para o dia seguinte */
-  const r3=await p.evaluate(wd2=>{ui.prefs.woff=[wd2];ui.prefs.wnew=[0,1,2,3,4,5,6].filter(d=>d!==wd2);ui.prefs.wsim=[];saveUI();return dueIn(get("CM-2"))},T.wd2);
+  const r3=await p.evaluate(wd2=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd2?0:180);saveUI();return dueIn(get("CM-2"))},T.wd2);
   ok(r3===3,name+": revisão que venceria em 2 dias, numa folga, vence em 3 "+r3);
-  /* 4. hoje sem temas novos (não é folga) */
-  const r4=await p.evaluate(wd=>{ui.prefs.woff=[];ui.prefs.wnew=[0,1,2,3,4,5,6].filter(d=>d!==wd);saveUI();redoPlan();const P=ensurePlan();render();
-    return {cls:P.items.map(x=>x.cls),meta:document.querySelector('#planmeta').textContent,due:dueIn(get("CM-1"))}},T.wd);
-  ok(r4.cls.length>0&&!r4.cls.includes("r-new")&&r4.cls.includes("r-weak")&&/hoje sem temas novos/.test(r4.meta),name+": sem temas novos hoje: o plano traz só ponto fraco/faculdade "+JSON.stringify(r4.cls));
+  /* 4. tempo de hoje: 30 min = só o leve; 1 h = 1 tema; 2 h = 2; 3 h+ = o plano inteiro */
+  const r4=await p.evaluate(wd=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd?30:180);saveUI();redoPlan();const P=ensurePlan();backStack=[];setView("temas");render();
+    return {n:P.items.length,meta:document.querySelector('#planmeta').textContent,due:dueIn(get("CM-1")),light:!!document.querySelector('#pLight'),lt:(document.querySelector('#pLight')||{}).textContent||"",tm:document.querySelector('#pTime').textContent}},T.wd);
+  ok(r4.n===0&&r4.light&&/Revisões de temas/.test(r4.lt)&&/30 min/.test(r4.tm),name+": dia de 30 min: sem tema, com o leve (cartões, erros, revisões) "+JSON.stringify(r4));
   ok(r4.due===0,name+": sem folga, as revisões vencem normalmente");
+  const caps=await p.evaluate(wd=>[60,120,180].map(m=>{ui.prefs.wday[wd]=m;saveUI();redoPlan();return ensurePlan().items.length}),T.wd);
+  ok(caps[0]===1&&caps[1]===2&&caps[2]===3,name+": 1 h = 1 tema, 2 h = 2, 3 h+ = 3 "+caps);
+  await click('#pTimeChg');await click('#tdm-60');
+  const r4b=await p.evaluate(()=>{const t=dnum(today()),W=ui.prefs.wplans[fromNum(wpMon(t))];return {w:W&&W.m[wdOf(t)],pad:ui.prefs.wday[wdOf(t)],n:ensurePlan().items.length,note:document.querySelector('#planNote').textContent}});
+  ok(r4b.w===60&&r4b.pad===180&&r4b.n>=1&&/1 h/.test(r4b.note),name+": \"Tenho menos tempo hoje\" muda só hoje (na semana) e refaz o plano "+JSON.stringify(r4b));
+  /* 4b. esta semana: confirmar e voltar à padrão */
+  await p.evaluate(()=>{backStack=[];wpTab="cur";goSub("config")});await p.waitForTimeout(150);
+  const r4c=await p.evaluate(wd=>({chg:!!document.querySelector(`#wp-${wd}-60.chg`),st:document.querySelector('#wpCard .wpst').textContent}),T.wd);
+  ok(r4c.chg&&/não confirmada/.test(r4c.st),name+": Esta semana marca o dia diferente da padrão "+r4c.st);
+  await click('#wpOk');ok(await p.evaluate(()=>/confirmada/.test(document.querySelector('#wpCard .wpst').textContent)&&ui.prefs.wplans[fromNum(wpMon(dnum(today())))].ok===1),name+": Confirmar a semana");
+  await click('#wpReset');ok(await p.evaluate(()=>!ui.prefs.wplans[fromNum(wpMon(dnum(today())))]&&dayMin(dnum(today()))===180),name+": Voltar à semana padrão");
+  /* 4c. cartão do Início no domingo/segunda */
+  const r4d=await p.evaluate(()=>{dayOff=0;const t=dnum(today());let off=0;while(wdOf(t+off)!==0)off++;dayOff=off;backStack=[];setView("inicio");render();
+    const a=!!document.querySelector('#wpNotice'),txt=a?document.querySelector('#wpNotice').textContent:"";dayOff=off+2;render();const c=!!document.querySelector("#wpNotice");dayOff=off;render();return {a,txt,c,off}});
+  ok(r4d.a&&/próxima semana/.test(r4d.txt)&&!r4d.c,name+": Início: cartão Planejar a semana no domingo, não na terça "+r4d.txt);
+  await click('#wpGo');ok(await p.evaluate(()=>view==="config"&&wpTab==="next"),name+": o botão leva a Configurações › Próxima semana");
+  await click('#wpOk');await p.evaluate(()=>{backStack=[];setView("inicio");render()});ok(!(await p.isVisible('#wpNotice')),name+": depois de confirmar, o cartão some");
+  await p.evaluate(()=>{dayOff=0;render()});
   /* 5. dia de simulado */
-  const r5=await p.evaluate(wd=>{ui.prefs.wnew=[0,1,2,3,4,5,6];ui.prefs.wsim=[wd];saveUI();redoPlan();render();const S=nextSteps(),i=S.findIndex(x=>x.kind==="sim");
+  const r5=await p.evaluate(wd=>{ui.prefs.wday=[180,180,180,180,180,180,180];ui.prefs.wplans={};ui.prefs.wsim=[wd];saveUI();redoPlan();render();const S=nextSteps(),i=S.findIndex(x=>x.kind==="sim");
     return {i,s:S[i],ex:document.querySelector('#iHero .hexam')?document.querySelector('#iHero .hexam').textContent:""}},T.wd);
   ok(r5.i>=0&&r5.i<=1&&r5.s.n===20&&/dia de simulado/.test(r5.s.why),name+": no dia de simulado, o próximo passo sugere um simulado de 20 questões "+JSON.stringify(r5.s));
   ok(/Hoje é dia de simulado e provas/.test(r5.ex),name+": a saudação lembra que é dia de simulado");
@@ -53,9 +73,11 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(r6.s&&r6.s.id==="exA"&&r6.view==="quest",name+": com prova na íntegra por fazer, o dia de simulado sugere a prova e abre a aba Questões");
   ok(await p.evaluate(()=>{exams=[];const s=nextSteps().find(x=>x.kind==="sim");startStep(s);return simCfg.n===20&&view==="quest"}),name+": tocar no simulado abre o simulado com 20 questões");
   /* 6. prévia da semana e projeção */
-  const r7=await p.evaluate(wd2=>{ui.prefs.woff=[wd2];ui.prefs.wnew=[0,1,2,3,4,5,6].filter(d=>d!==wd2);ui.prefs.wsim=[];saveUI();const W=weekPreview(),d2=W[1];
-    weekOpen=true;backStack=[];setView("temas");render();const li=[...document.querySelectorAll('.pwlist li')][1];return {n:d2.items.length,txt:li&&li.textContent,cls:li&&li.classList.contains("pwoff"),cap:projModel().cap,pa:partsAvg(),nd:newDaysWeek(),pn:PLAN_N}},T.wd2);
+  const r7=await p.evaluate(wd2=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd2?0:180);ui.prefs.wsim=[];saveUI();const W=weekPreview(),d2=W[1];
+    weekOpen=true;backStack=[];setView("temas");render();const li=[...document.querySelectorAll('.pwlist li')][1];return {n:d2.items.length,txt:li&&li.textContent,cls:li&&li.classList.contains("pwoff"),cap:projModel().cap,pa:partsAvg(),wc:weekCap(),pn:PLAN_N}},T.wd2);
   ok(r7.n===0&&r7.cls&&/folga/.test(r7.txt),name+": a prévia da semana mostra a folga, sem temas: "+r7.txt);
-  ok(r7.nd===6&&Math.abs(r7.cap-r7.pn*6/r7.pa)<1e-9&&(()=>true)(),name+": a projeção usa os dias de temas novos ("+r7.cap+")");
+  ok(r7.wc===r7.pn*6&&Math.abs(r7.cap-r7.wc/r7.pa)<1e-9,name+": a projeção usa o tempo da semana ("+r7.cap+")");
+  const r8=await p.evaluate(()=>{ui.prefs.wday=[0,120,120,120,60,60,180];saveUI();return weekCap()});
+  ok(r8===2+2+2+1+1+3,name+": capacidade da semana pelos tempos (2 h = 2, 1 h = 1, 3 h+ = 3) "+r8);
   await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join(" | "));await b.close()})();

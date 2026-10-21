@@ -68,13 +68,17 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
 .st.good{--c:var(--good)}.st.warn{--c:var(--warn)}.st.bad{--c:var(--bad)}
 .meter{height:6px;border-radius:99px;background:var(--track);overflow:hidden;margin-top:6px}
 .meter i{display:block;height:100%;background:var(--accent);border-radius:0 4px 4px 0}
-.dcharts{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.dcharts{display:grid;grid-template-columns:1fr;gap:18px}
 .chart{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0;border-top:1px solid var(--line);padding-top:14px}
 .chart figcaption{font:700 1.092rem var(--display)}
 .hrow{display:grid;grid-template-columns:2.6rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.85rem;min-height:22px}
 #qChart,#areaChart{display:flex;flex-direction:column;gap:12px}
-#areaChart{gap:8px}
+#areaChart{gap:10px}button.arow{all:unset;display:flex;flex-direction:column;gap:5px;cursor:pointer;box-sizing:border-box;width:100%}button.arow:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.atop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.88rem}.al{font-weight:600}.an{color:var(--muted);font-size:.8rem;white-space:nowrap}.an b{color:var(--ink)}
+button.arow .hbar{display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--track)}button.arow .hbar i{display:block;height:100%}
 .vrow{display:flex;flex-direction:column;gap:5px}
+button.qchrow{all:unset;display:flex;flex-direction:column;gap:5px;cursor:pointer;border-radius:8px;padding:2px 0;width:100%;box-sizing:border-box}button.qchrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.qchrow.few{opacity:.55}.qchrow .qtr{white-space:nowrap}.qchctl{display:flex;gap:8px;flex-wrap:wrap}
 .vtop{display:flex;align-items:baseline;gap:10px;font-size:.88rem}
 .vl{flex:1;min-width:0}
 .vrow .hbar{height:10px}
@@ -394,7 +398,9 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[
 .qegrid{stroke:var(--line);stroke-width:1}
 .qeref{stroke:var(--ink);stroke-opacity:.4;stroke-width:1;stroke-dasharray:4 4}
 .qeax{fill:var(--muted);font:500 10px var(--mono)}
-.qebar{fill:var(--accent);fill-opacity:.3}
+.qebar{fill:var(--accent);fill-opacity:.3}.qebar.cur{fill-opacity:.14;stroke:var(--accent);stroke-opacity:.35;stroke-dasharray:3 2}
+.qegoal{stroke:var(--gold-ink);stroke-width:1.5;stroke-dasharray:4 3}.qegoalt{font:700 10px var(--body);fill:var(--gold-ink)}
+.qedk{display:inline-flex;align-items:center;gap:3px}.qedot1{width:8px;height:8px;border-radius:50%;display:inline-block}.qedot1.good{background:var(--good)}.qedot1.warn{background:var(--warn)}.qedot1.bad{background:var(--bad)}.qedk i:last-of-type{margin-right:3px}
 .qeline{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}
 .qedot{stroke:var(--surface);stroke-width:2}
 .qedot.good{fill:var(--good)}.qedot.warn{fill:var(--warn)}.qedot.bad{fill:var(--bad)}
@@ -1218,6 +1224,64 @@ li.fspr.open{background:var(--bg)}
 .wkdays{display:flex;gap:6px}.wkd{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 .85rem var(--body);cursor:pointer;padding:0}
 .wkd[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.wkd.woff[aria-pressed="true"]{background:var(--due-soft);border-color:var(--due);color:var(--due)}.wkd.wsim[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-accent)}
 html[data-layout="phone"] .wkdays{width:100%;justify-content:space-between}html[data-layout="phone"] .wkd{width:40px;height:40px}
+
+/* Estatísticas (Lote 10) */
+.stbody{display:flex;flex-direction:column;gap:16px;padding-bottom:24px}
+.sttop{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}.sttitle{font:700 2rem/1.1 var(--display);margin:0;color:var(--accent)}.stsub{margin:4px 0 0}
+.stctl{display:flex;gap:8px;flex-wrap:wrap}.stlow{margin:0;background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-size:.88rem}
+.stverd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stv{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--muted);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stv.ok{border-left-color:var(--good)}.stv.warn{border-left-color:var(--warn)}.stv.bad{border-left-color:var(--bad)}.stv.na{border-left-color:var(--track)}
+.stq{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.stv b{font:700 1.3rem/1.2 var(--display)}.stv.ok b{color:var(--good)}.stv.warn b{color:var(--warn)}.stv.bad b{color:var(--bad)}.sts{font-size:.8rem;color:var(--muted)}
+.stgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.stcard{display:flex;flex-direction:column;gap:12px;container-type:inline-size}.stcard h2{display:flex;align-items:center;gap:10px;margin:0}
+.stn{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:inline-grid;place-items:center;font:700 .85rem var(--body);flex:none}
+.stlead{margin:0;font-size:.93rem;line-height:1.5}.stlead strong{color:var(--accent)}
+.sttab{width:100%;border-collapse:collapse;font-size:.88rem}.sttab td{padding:7px 4px;border-bottom:1px solid var(--line)}.sttab tr:last-child td{border:0}.sttab .stv1{font-weight:700;text-align:right}
+.sttab .std{text-align:right;white-space:nowrap;font-size:.8rem;color:var(--muted)}.sttab .up{color:var(--good)}.sttab .dn{color:var(--bad)}
+.stnote,.stempty{margin:0;font-size:.8rem}.strow{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.strow .how{font-size:.78rem;margin:0}
+.stsvg{width:100%;height:auto;display:block;overflow:visible}.stsvg .gl{stroke:var(--line);stroke-width:1}.stsvg .ax{font:500 9px var(--body);fill:var(--muted)}
+.stb rect{fill:var(--accent)}.stb rect.b2{fill:var(--gold)}.stb.cur rect{opacity:.45}.stb:hover rect{opacity:.8}
+.stsvg .goal{stroke:var(--gold-ink);stroke-width:1.5;stroke-dasharray:4 3}.stsvg .goalt{font:700 9px var(--body);fill:var(--gold-ink)}
+.stquad .q1{fill:color-mix(in srgb,var(--good) 9%,transparent)}.stquad .q2,.stquad .q3{fill:transparent}.stquad .q4{fill:color-mix(in srgb,var(--bad) 9%,transparent)}
+.stquad .ql{font:700 8.5px var(--body);fill:var(--muted);text-transform:uppercase;letter-spacing:.04em}.stquad .ql.bad{fill:var(--bad)}
+.stpt circle{fill:var(--accent);fill-opacity:.8;stroke:var(--surface);stroke-width:1.5}.stpt.q4 circle{fill:var(--bad)}.stpt.q1 circle{fill:var(--good)}.stpt.q3 circle{fill:var(--warn)}.stpt .pl{font:600 8.5px var(--body);fill:var(--ink)}
+.stser polyline{fill:none;stroke-width:2}.stser circle{stroke:var(--surface);stroke-width:1}
+.stser.c0 polyline,.stleg .c0 i{stroke:var(--accent);background:var(--accent)}.stser.c0 circle{fill:var(--accent)}.stser.c1 polyline,.stleg .c1 i{stroke:var(--gold);background:var(--gold)}.stser.c1 circle{fill:var(--gold)}
+.stser.c2 polyline,.stleg .c2 i{stroke:var(--good);background:var(--good)}.stser.c2 circle{fill:var(--good)}.stser.c3 polyline,.stleg .c3 i{stroke:var(--li);background:var(--li)}.stser.c3 circle{fill:var(--li)}
+.stleg{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}.stleg span{display:inline-flex;align-items:center;gap:5px}.stleg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.stseen{display:flex;flex-direction:column;gap:6px}.stkpis{grid-template-columns:repeat(3,minmax(0,1fr))}@container (max-width:300px){.stkpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stquadw{display:flex;flex-direction:column;gap:8px}.stql{display:flex;flex-direction:column;gap:4px}.stqg{margin:0;font-size:.8rem;line-height:1.4}.stqg span{color:var(--muted)}
+.stqg i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:6px}.stqg.q1 i{background:var(--good)}.stqg.q3 i{background:var(--warn)}.stqg.q4 i{background:var(--bad)}.stqg.q4 b{color:var(--bad)}
+.stpill{font-size:.76rem;font-weight:700;border-radius:999px;padding:2px 9px;background:var(--track);color:var(--ink)}.stpill.p-ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.stpill.p-warn{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}.stpill.p-bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.stfocus{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}.stfi{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border-radius:10px;padding:9px 10px}
+.stft{display:flex;flex-direction:column;min-width:0}.stft small{color:var(--muted);font-size:.78rem}.stfi .btn{flex:none}
+.stnotas,.stdisc,.stprov{display:flex;flex-direction:column;gap:8px}.stnr{display:grid;grid-template-columns:minmax(0,1.3fr) 1fr auto;gap:10px;align-items:center;font-size:.84rem}.stnn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stnr .meter i.ok{background:var(--good)}.stnr .meter i.warn{background:var(--warn)}.stnr .meter i.bad{background:var(--bad)}.stpr{display:flex;flex-direction:column;gap:5px}.stpr .how{font-size:.8rem;margin:0}
+.stsplit{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--track)}.stsplit i{display:block;height:100%}
+.sp-r i,.stsplit .sp-r{background:var(--accent)}.sp-b i,.stsplit .sp-b{background:var(--good)}.sp-f i,.stsplit .sp-f{background:var(--gold)}.sp-n i,.stsplit .sp-n{background:var(--track)}
+.stfoot{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.stfoot .how{font-size:.8rem;margin:0}
+html[data-layout="phone"] .stverd{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-layout="phone"] .stgrid,html[data-cols="1"] .stgrid{grid-template-columns:1fr}
+html[data-layout="phone"] .stsvg .ax,html[data-layout="phone"] .stsvg .goalt{font-size:10.5px}html[data-layout="phone"] .stpt .pl{font-size:9.5px}html[data-layout="phone"] .sttitle{font-size:1.7rem}
+/* Planejar a semana (Lote 10) */
+.wpcard{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:14px}.wph{display:flex;flex-direction:column;gap:2px}.wph b{font-size:1rem}.wph .how{margin:0;font-size:.82rem}
+.wptabs{align-self:flex-start;flex-wrap:wrap}.wpbody{display:flex;flex-direction:column;gap:10px}.wpst{margin:0;font-size:.9rem}.wpst span{color:var(--muted)}
+.wpdays{display:flex;flex-direction:column}.wpday{display:grid;grid-template-columns:58px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}.wpday:last-child{border:0}
+.wpday.past{opacity:.5}.wpday.wpnow .wpdn b{color:var(--accent)}.wpdn{display:flex;flex-direction:column;line-height:1.2}.wpdn b{font-size:.9rem}.wpdn small{color:var(--muted);font-size:.74rem}
+.wpopts{display:flex;gap:4px;flex-wrap:wrap}.wpo{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 11px;font:600 .8rem var(--body);color:var(--muted);cursor:pointer;min-height:34px}
+.wpo[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.wpo.off[aria-pressed="true"]{background:var(--muted);border-color:var(--muted)}
+.wpo.chg{outline:2px solid var(--gold);outline-offset:1px}.wpo:disabled{cursor:default}
+.wptot{display:flex;align-items:center;gap:10px}.wptot .meter{flex:1}.wptot b{white-space:nowrap;font-size:.9rem}
+.wpnote{margin:0;font-size:.84rem;background:var(--gold-soft,rgba(184,145,74,.14));border-radius:10px;padding:8px 10px}
+html[data-layout="phone"] .wpday{grid-template-columns:1fr;gap:4px}html[data-layout="phone"] .wpdn{flex-direction:row;gap:6px;align-items:baseline}
+html[data-layout="phone"] .wpopts{display:grid;grid-template-columns:repeat(5,1fr)}html[data-layout="phone"] .wpo{padding:6px 2px}
+.pday{display:flex;flex-direction:column;gap:8px}.pdrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ptime{display:inline-flex;align-items:center;background:var(--bg);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--accent)}
+.pdrow .link{font-size:.84rem}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
+.plight{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.plight .how{margin:0;font-size:.84rem}
+.plight ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.plight li{display:flex;gap:10px;align-items:baseline}.pltag{font-size:.78rem;color:var(--muted)}
+.plight .btn{align-self:flex-start}
 .pwlist li.pwoff{opacity:.65}
 /* ===== aba Início ===== */
 #iHero{order:-2;padding:0;border:0;overflow:hidden;background:radial-gradient(120% 90% at 92% -10%,var(--heroglow),transparent 55%),linear-gradient(140deg,var(--hero1) 0%,var(--hero2) 55%,var(--hero3) 100%);color:var(--heroink);box-shadow:0 10px 28px -14px rgb(10 17 33 / .55)}
@@ -1600,7 +1664,9 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .f
 .fov{height:1.3rem;font:500 .7rem/1.3rem var(--mono);color:var(--muted);white-space:nowrap}
 .fob{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}
 .fob i{display:block;width:min(100%,30px);background:var(--accent);border-radius:5px 5px 0 0;min-height:0}
-.fob i.ok{background:var(--good)}
+.fob i.ok{background:var(--good)}.fob{position:relative}.fob i{position:relative;z-index:1}
+.fogh{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,30px);border:1.5px dashed var(--muted);border-bottom:0;border-radius:5px 5px 0 0;opacity:.45;box-sizing:border-box}
+.foglt{position:absolute;right:0;top:-1.05rem;font:700 .66rem var(--body);color:var(--ink);background:var(--surface);padding:0 3px;border-radius:4px}
 .fod.fut .fox{opacity:.5}
 .fox{height:1.3rem;font:600 .74rem/1.3rem var(--body);color:var(--muted)}
 .fod.now .fox{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
@@ -1630,7 +1696,7 @@ html:not([data-layout="phone"]) body.haspill>.wrap{padding-bottom:72px}
 html[data-layout="phone"] body.typing .fopill{display:none}
 #tabM{display:none}
 html[data-layout="phone"] #tabM{display:flex}
-html[data-layout="phone"] .appnav #tabN,html[data-layout="phone"] .appnav #tabFo{display:none}
+html[data-layout="phone"] .appnav #tabN,html[data-layout="phone"] .appnav #tabFo,html[data-layout="phone"] .appnav #tabS{display:none}
 .appnav #mcount,.appnav #focount{background:var(--accent)!important;color:var(--on-accent)}
 .appnav #mcount:empty,.appnav #focount:empty{display:none}
 html[data-layout="tablet"] #viewFoco,html[data-layout="tablet"] #viewMais{max-width:820px}
@@ -1820,6 +1886,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Caderno</span><span class="ecount" id="ncount"></span></button>
+    <button class="tab" role="tab" id="tabS" data-v="stats" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M6.5 16.5l4-5 3.5 3 5-7"/><path d="M15.5 7.5H19V11"/></svg><span class="tl">Estatísticas</span></button>
     <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
     <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
     <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false" aria-haspopup="dialog"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="tl">Menu</span><span class="ecount" id="mcount"></span></button>
@@ -1884,6 +1951,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <aside class="ntoc" id="nToc" aria-label="Sumário das anotações" hidden></aside>
   </div>
 
+  <div id="viewStats" class="wrap" style="width:100%" hidden><div id="stBody" class="stbody"></div></div>
   <div id="viewFoco" class="wrap" style="width:100%" hidden><div id="foBody" class="fobody"></div></div>
   <div id="viewMais" class="wrap" style="width:100%" hidden><div id="maisBody" class="cfbody"></div></div>
 
@@ -1960,6 +2028,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <p class="crunch" id="crunchBar" hidden></p>
     <p class="pnote" id="planNote" role="status" hidden></p>
     <div class="planhead"><span id="planmeta"></span><button class="link" id="planRedo" type="button">Refazer plano</button></div>
+    <div id="planDay"></div>
     <div class="meter" id="planbar" hidden><i></i></div>
     <ol class="plan" id="plan"></ol>
     <div id="weekBox"></div>
@@ -1985,7 +2054,6 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <div class="kpis" id="stats"></div>
     <div class="dcharts">
       <figure class="chart"><figcaption>Progresso por área</figcaption><div id="areaChart"></div></figure>
-      <figure class="chart"><figcaption>Atividade nos últimos 14 dias</figcaption><div id="actChart"></div></figure>
     </div>
   </section>
   <section class="card resmap" id="resMap" aria-label="Mapa da residência"></section>
@@ -2390,15 +2458,22 @@ function interval(s){const b=INT[Math.min(s.step||0,INT.length-1)];if(s.adjFrom=
 let WK_NEW=new Set([0,1,2,3,4,5,6]),WK_SIM=new Set(),WK_OFF=new Set();
 const WD_FULL=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
 const wdOf=n=>((n+4)%7+7)%7;// dnum 0 = 01/01/1970, uma quinta
-const isOffDay=()=>WK_OFF.size>0&&WK_OFF.has(wdOf(dnum(today())));
-const isNewDay=()=>WK_NEW.has(wdOf(dnum(today())))&&!isOffDay();
+/* planejamento semanal (10/2026): tempo de cada dia = a semana planejada (ui.prefs.wplans[segunda]) ou a semana padrão (ui.prefs.wday) */
+const WP_MIN=[0,30,60,120,180],WP_LAB={0:"Folga",30:"30 min",60:"1 h",120:"2 h",180:"3 h+"};let HAS_OFF=false;
+const wpMon=n=>n-((wdOf(n)+6)%7);
+function dayMin(n){const P=ui.prefs,wp=P.wplans&&P.wplans[fromNum(wpMon(n))],a=wp?wp.m:P.wday;return Array.isArray(a)?a[wdOf(n)]:180}
+/* quantos temas cabem no dia: folga 0 · 30 min só o leve (1 vaga só para a faculdade) · 1 h 1 · 2 h 2 · 3 h+ o número do plano */
+function dayCap(n){const m=dayMin(n);return m<=0?0:m<=30?1:m<=60?1:m<=120?Math.min(2,PLAN_N):PLAN_N}
+const isOffDay=()=>dayMin(dnum(today()))===0;
+const isNewDay=()=>dayMin(dnum(today()))>=60;
 const isSimDay=()=>WK_SIM.has(wdOf(dnum(today())))&&!isOffDay();
-function offShift(n){let g=0;while(WK_OFF.has(wdOf(n))&&g<7){n++;g++}return n}
+function offShift(n){let g=0;while(dayMin(n)===0&&g<7){n++;g++}return n}
 function nextStudyLabel(){const t=dnum(today()),n=offShift(t+1);return n===t+1?"amanhã":(wdOf(n)===0||wdOf(n)===6?"no ":"na ")+WD_FULL[wdOf(n)]}
-const newDaysWeek=()=>Math.max(1,[...WK_NEW].filter(d=>!WK_OFF.has(d)).length);
+const newDaysWeek=()=>Math.max(1,ui.prefs.wday.filter(m=>m>=60).length);
+const weekCap=()=>{const W=ui.prefs.wday;let c=0;for(let d=0;d<7;d++){const m=W[d];c+=m<=30?0:m<=60?1:m<=120?Math.min(2,PLAN_N):PLAN_N}return Math.max(1,c)};
 /* revisão que cairia num dia de folga passa para o próximo dia de estudo; no dia de folga nada vence */
-function dueIn(s){if(!s.last)return null;const t=dnum(today()),raw=dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0);if(!WK_OFF.size)return raw-t;
-  const eff=offShift(raw);if(WK_OFF.has(wdOf(t))&&eff<=t)return offShift(t)-t;return eff-t}
+function dueIn(s){if(!s.last)return null;const t=dnum(today()),raw=dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0);if(!HAS_OFF)return raw-t;
+  const eff=offShift(raw);if(dayMin(t)===0&&eff<=t)return offShift(t)-t;return eff-t}
 function acc(s){return s.qt? s.qc/s.qt : null}
 /* questões por dia em cada tema (qd = {"AAAA-MM-DD":[questões, acertos]}), para relatórios por matéria e período */
 function addQ(x,t,c,day,src){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc||0)+c);const d=day||today(),m={...(x.qd||{})},v=m[d]||[0,0];m[d]=[v[0]+t,v[1]+c];
@@ -2426,7 +2501,7 @@ function renamePlanLabels(dp){if(!dp||!Array.isArray(dp.items))return dp;const r
 /* plano do dia */
 let PLAN_N=3;
 function buildPlan(){
-  const plan=[],used=new Set();if(isOffDay())return plan;const NEWD=isNewDay();
+  const plan=[],used=new Set();if(isOffDay())return plan;const NEWD=isNewDay(),DM=dayMin(dnum(today())),PLAN_N=dayCap(dnum(today()));
   const add=(it,cls,txt)=>{if(plan.length<PLAN_N&&!used.has(it.key)){used.add(it.key);plan.push({it,cls,txt})}};
   const rev=ALL.filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))||wOf(b)-wOf(a));
   const weak=ALL.filter(i=>isWeak(get(i.key))).sort((a,b)=>(acc(get(a.key))-acc(get(b.key)))-(wOf(a)-wOf(b))*0.1);
@@ -2440,6 +2515,7 @@ function buildPlan(){
   // semana da prova: o conteúdo já estudado volta como "Revisar para a prova"
   provaRvPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-pfr",txt:`Revisar · prova ${inLabel(o.d)}`,pid:o.p.id,ref:o.r,n:o.n})}});
   if(CR.active)return plan;// modo provas: nada da residência
+  if(DM<=30)return plan;// dia de 30 min: só o leve (cartões, erros e revisões); a vaga é só da faculdade
   if(provaWeek().length)return plan;// semana da prova: sem tema novo nem ponto fraco; as vagas livres ficam para as revisões da residência
   weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
   // temas em andamento ("Estudando") vêm antes de abrir tema novo
@@ -3366,26 +3442,17 @@ function renderDash(){
     <div class="kpi"><span class="kl">Acerto geral</span><b>${ac===null?"–":ac+"%"}</b><span class="ks">${ac===null?"sem questões ainda":`<span class="st ${bk}">${bl}</span>`}</span></div>
     <div class="kpi"><span class="kl">Peso da prova estudado</span><b>${wp}%</b><div class="meter" data-tip="${wp}% do peso de incidência já estudado"><i style="width:${wp}%"></i></div></div>`;
   // progresso por área
+  /* progresso por área (Lote 10): uma barra empilhada por área com o nome inteiro e "21 de 40 temas"; os subtópicos ficam na dica da barra */
   $("#areaChart").innerHTML=AREAS.map(a=>{const k=counts(a.items),n=a.items.length,seen=k[1]+k[2]+k[3];
-    const seg=(v,t,lab)=>v?`<i style="width:${v/n*100}%;background:var(--${t})" data-tip="${a.name} · ${lab}: ${v} de ${n}"></i>`:"";
-    let sd=0,st=0;a.items.forEach(it=>{const [x,y]=subCount(it);sd+=x;st+=y});const sp=pct(sd,st);
-    return `<div class="hrow"><span class="hl">${a.code}</span><div class="hbar" role="img" aria-label="${a.name}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}${seg(k[4],"mi","estudando")}</div><span class="hv">${pct(seen,n)}%</span></div>
-      <div class="hrow hsub"><span class="hl"></span><div class="hbar sbar2" role="img" aria-label="${a.name}: ${sd} de ${st} subtópicos marcados"><i style="width:${st?sd/st*100:0}%" data-tip="${a.name} · subtópicos: ${sd} de ${st}"></i></div><span class="hv">${sp}%</span></div>`}).join("")+
-    `<p class="cnote">Barra grossa: temas já estudados em cada área (cores da legenda acima). Barra fina: subtópicos marcados, que mostram o quanto do conteúdo você realmente cobriu.</p>`;
-  // atividade
-  const days=lastDays(14),qs=days.map(d=>(hist[d]||{}).q||0),mx=Math.max(...qs,1),active=days.filter(d=>{const h=hist[d];return h&&(h.e||h.r||h.q)}).length,st=streak();
-  const step=Math.max(1,Math.ceil(mx/4)),top=Math.ceil(mx/step)*step;
-  $("#actChart").innerHTML=Object.keys(hist).length?
-    `<div class="cols"><div class="yaxis"><span>${top}</span><span>${top/2%1?"":top/2}</span><span>0</span></div><div class="cgrid">${days.map((d,i)=>{const h=hist[d]||{},q=h.q||0,dt=new Date(d+"T12:00:00");
-      const lab=dt.toLocaleDateString("pt-BR",{weekday:"short",day:"numeric",month:"short"});
-      const tipT=`${lab}: ${q} ${q===1?"questão":"questões"}${q?` (${pct(h.c||0,q)}% de acerto)`:""}${h.e?` · ${h.e} ${h.e===1?"tema estudado":"temas estudados"}`:""}${h.r?` · ${h.r} ${h.r===1?"revisão":"revisões"}`:""}`;
-      return `<div class="col" data-tip="${tipT}"><div class="cbar"><i style="height:${q/top*100}%"></i></div><span class="cdot${h.e||h.r?" on":""}" aria-hidden="true"></span><span class="cx">${i%2===(days.length-1)%2?dt.getDate():""}</span></div>`}).join("")}</div></div>
-     <div class="clegend"><span><i class="sw" style="background:var(--accent)"></i>questões respondidas</span><span><i class="dotk"></i>dia com estudo ou revisão</span></div>
-     <p class="cnote"><b>${active}</b> de 14 dias com atividade${st?` · sequência atual de <b>${st}</b> ${st===1?"dia":"dias"}`:""}.</p>`:
-    `<p class="cempty">O gráfico começa a ser preenchido a partir de hoje: cada tema estudado, revisão e questão respondida fica registrado por dia.</p>`;
+    let sd=0,st=0;a.items.forEach(it=>{const [x,y]=subCount(it);sd+=x;st+=y});const sub=`subtópicos marcados: ${sd} de ${st} (${pct(sd,st)}%)`;
+    const seg=(v,t,lab)=>v?`<i style="width:${v/n*100}%;background:var(--${t})" data-tip="${esc(a.name)} · ${lab}: ${v} de ${n} · ${sub}"></i>`:"";
+    return `<button type="button" class="arow" data-code="${a.code}"><span class="atop"><span class="al">${esc(a.name)}</span><span class="an"><b>${seen}</b> de ${n} temas</span></span><span class="hbar" role="img" aria-label="${esc(a.name)}: ${k[3]} dominados, ${k[2]} revisados, ${k[1]} estudados de ${n}; ${sub}" data-tip="${esc(a.name)}: ${seen} de ${n} temas · ${sub}">${seg(k[3],"m3","dominados")}${seg(k[2],"m2","revisados")}${seg(k[1],"m1","estudados")}${seg(k[4],"mi","estudando")}</span></button>`}).join("")+
+    `<p class="cnote">Cores da legenda acima. Toque numa área para ver os temas dela; a dica da barra mostra os subtópicos marcados.</p>`;
+  $("#areaChart").querySelectorAll(".arow").forEach(b=>b.onclick=()=>{tf.area=b.dataset.code;tf.sp="all";openAreas.add(b.dataset.code);setTSeg("lista")});
 }
 
 /* aba Questões */
+const QCH_FEW=10;let qChSort=(()=>{try{return localStorage.getItem("resid-qchsort")==="gain"?"gain":"acc"}catch(e){return "acc"}})();
 let qWorse=false,qFOpen=(()=>{try{return localStorage.getItem("resid-qfpanel")==="1"}catch(e){return false}})(), qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
 function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
@@ -3449,13 +3516,19 @@ function renderQuest(){
     <div class="kpi"><span class="kl">Temas praticados</span><b>${vis.length}</b><span class="ks">de ${U.length} no filtro</span></div>
     <div class="kpi${weakN?" alert":""}"><span class="kl">Pontos fracos</span><b>${weakN}</b><span class="ks">abaixo de 60% (5+ questões)</span></div>`;
   // gráfico: especialidades (padrão) ou áreas
-  const groups={};vis.forEach(x=>{const key=qChartBy==="area"?x.it.area.code:x.it.area.code+"|"+x.it.sp;const g=groups[key]||(groups[key]={lab:qChartBy==="area"?x.it.area.name:`${x.it.sp} · ${x.it.area.code}`,c:0,t:0});g.c+=x.c;g.t+=x.t});
-  const rows=Object.values(groups).sort((a,b)=>a.c/a.t-b.c/b.t||b.t-a.t).map(g=>[g.lab,g.c,g.t]);
-  $("#qChartTitle").textContent=qChartBy==="area"?"Acerto por área":"Acerto por especialidade (menor acerto primeiro)";
-  const tog=`<div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div>`;
-  $("#qChart").innerHTML=tog+(T?hbarRows(rows.slice(0,qMore?rows.length:12))+(rows.length>12?`<button class="link qmore" type="button">${qMore?"Mostrar menos":`Mostrar todas as ${rows.length}`}</button>`:"")+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span></div>`:
+  /* Lote 10: tendência ▲▼ (30 dias × 90 antes), poucas questões esmaecidas, ordem "onde ganhar mais pontos" (incidência² × distância de 80%), toque filtra */
+  const groups={};vis.forEach(x=>{const key=qChartBy==="area"?x.it.area.code:x.it.area.code+"|"+x.it.sp;const g=groups[key]||(groups[key]={key,code:x.it.area.code,sp:qChartBy==="area"?"":x.it.sp,lab:qChartBy==="area"?x.it.area.name:`${x.it.sp} · ${x.it.area.code}`,c:0,t:0,ks:[],w:0});g.c+=x.c;g.t+=x.t;g.ks.push(x.it.key);g.w+=wOf(x.it)});
+  const t0=dnum(today()),G=Object.values(groups).map(g=>{const a=stQ(g.ks,t0-29,t0),b=stQ(g.ks,t0-119,t0-30),tr=a.q>=5&&b.q>=5?Math.round((a.c/a.q-b.c/b.q)*100):null,w=g.w/g.ks.length;return {...g,tr,gain:w*w*Math.max(0,.8-g.c/g.t)*Math.sqrt(g.ks.length)}});
+  const rows=G.sort(qChSort==="gain"?(a,b)=>b.gain-a.gain||a.c/a.t-b.c/b.t:(a,b)=>a.c/a.t-b.c/b.t||b.t-a.t);
+  $("#qChartTitle").textContent=qChartBy==="area"?"Acerto por área":"Acerto por especialidade";
+  const tog=`<div class="qchctl"><div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div><div class="seg qchsort" role="group" aria-label="Ordem"><button type="button" id="qchS-acc" data-s="acc" aria-pressed="${qChSort!=="gain"}">Menor acerto</button><button type="button" id="qchS-gain" data-s="gain" aria-pressed="${qChSort==="gain"}">Onde ganhar mais pontos</button></div></div>`;
+  const qchRows=L=>L.map(g=>{const p=pct(g.c,g.t),[bk,bl]=band(p),few=g.t<QCH_FEW,tr=g.tr===null||Math.abs(g.tr)<5?"":`<span class="qtr ${g.tr>0?"up":"down"}" title="últimos 30 dias × os 90 anteriores">${g.tr>0?"▲":"▼"} ${Math.abs(g.tr)}</span>`;
+    return `<button type="button" class="vrow qchrow${few?" few":""}" data-code="${esc(g.code)}" data-sp="${esc(g.sp)}"><div class="vtop"><span class="vl">${esc(g.lab)}</span>${tr}<span class="hv">${p}%</span><span class="hn">${few?"poucas questões · ":""}${g.c}/${g.t}</span></div><div class="hbar track1"><i class="pbar ${bk}" style="width:${Math.max(p,1)}%" data-tip="${esc(g.lab)}: ${g.c} de ${g.t} (${p}%) · ${bl}${few?" · poucas questões, ainda pouco confiável":""}"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></button>`}).join("");
+  $("#qChart").innerHTML=tog+(T?qchRows(rows.slice(0,qMore?rows.length:12))+(rows.length>12?`<button class="link qmore" type="button">${qMore?"Mostrar menos":`Mostrar todas as ${rows.length}`}</button>`:"")+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span><span>▲▼ = últimos 30 dias × os 90 anteriores · toque para filtrar</span></div>`:
     `<p class="cempty">${[...ALL,...FAC_ITEMS].some(i=>get(i.key).qt)?"Nenhuma questão com esses filtros.":"Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema."}</p>`);
   $("#qChart").querySelectorAll(".qchtog button").forEach(b=>b.onclick=()=>{qChartBy=b.dataset.by;render()});
+  $("#qChart").querySelectorAll(".qchsort button").forEach(b=>b.onclick=()=>{qChSort=b.dataset.s;lsSet("resid-qchsort",qChSort);render()});
+  $("#qChart").querySelectorAll(".qchrow").forEach(b=>b.onclick=()=>{qArea=b.dataset.code;qSpec=b.dataset.sp||"all";render()});
   const mb=$("#qChart").querySelector(".qmore");if(mb)mb.onclick=()=>{qMore=!qMore;render()};
   // lista por tema
   const list=$("#qlistT");list.innerHTML="";
@@ -3490,7 +3563,7 @@ function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub,
 function ensurePlan(){if(!dayPlan||dayPlan.d!==today()||!Array.isArray(dayPlan.items)){dayPlan=makeDayPlan();markResDay(dayPlan);savePlan(false)}
   else if(dayPlan.items.some(x=>x.cls==="r-rev")){// planos antigos: revisões agora ficam na seção Revisões
     dayPlan.items=dayPlan.items.filter(x=>x.cls!=="r-rev");const f=makeDayPlan().items.filter(x=>!dayPlan.items.some(y=>y.k===x.k));
-    while(dayPlan.items.length<PLAN_N&&f.length)dayPlan.items.push(f.shift());savePlan(false)}
+    while(dayPlan.items.length<dayCap(dnum(today()))&&f.length)dayPlan.items.push(f.shift());savePlan(false)}
   dayPlan.items=dayPlan.items.filter(x=>BYKEY[x.k]);return dayPlan}
 let planTouched=false;
 function savePlan(touch=true){if(touch)planTouched=true;if(dayPlan&&dayPlan.d===today()&&Array.isArray(dayPlan.items))markResDay(dayPlan);try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}if(store)persist()}
@@ -3511,15 +3584,28 @@ function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.st
 /* cartões do plano: recolhidos por padrão; abertos sozinhos enquanto o tema está sendo estudado (começado e não concluído).
    planOpen guarda o que você abriu ou fechou à mão hoje */
 let planOpen={};
+/* tempo de hoje no Estudar hoje: selo, "Tenho mais/menos tempo hoje" e, no dia de 30 min, o leve */
+let tdOpen=false;
+function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pday"><div class="pdrow"><span class="ptime" id="pTime"></span><button class="link" type="button" id="pTimeChg"></button></div></div>`);
+  w.querySelector("#pTime").textContent=`${WD_FULL[wdOf(t)][0].toUpperCase()+WD_FULL[wdOf(t)].slice(1)} · ${WP_LAB[m]}`;
+  const cb=w.querySelector("#pTimeChg");cb.textContent=tdOpen?"Fechar":m>=180?"Tenho menos tempo hoje":m===0?"Vou estudar hoje":"Tenho mais ou menos tempo hoje";cb.setAttribute("aria-expanded",tdOpen);cb.onclick=()=>{tdOpen=!tdOpen;render()};
+  if(tdOpen){const g=el(`<div class="seg pdseg" role="group" aria-label="Tempo de hoje"></div>`);WP_MIN.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="tdm-"+v;b.textContent=WP_LAB[v];b.setAttribute("aria-pressed",v===m);b.onclick=()=>{tdOpen=false;if(v!==m)setTodayMin(v)};g.appendChild(b)});
+    w.appendChild(g);w.appendChild(el(`<p class="how">Muda só hoje (fica no plano desta semana). O que você já começou continua no plano.</p>`))}
+  if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"]].filter(x=>x[2]);
+    const b=el(`<div class="plight" id="pLight"><p class="how">Dia curto: só o que é leve e não pode acumular. Nada de tema novo hoje.</p><ul></ul></div>`),ul=b.querySelector("ul");
+    if(!L.length)ul.appendChild(el(`<li class="how">Nada vencendo hoje. Se sobrar tempo, faça algumas questões.</li>`));
+    L.forEach(([id,lab,n,tm])=>{const li=el(`<li><b></b><span class="pltag"></span></li>`);li.querySelector(".pltag").textContent=tm;li.querySelector("b").textContent=`${lab}: ${n}`;ul.appendChild(li)});
+    if(L.length){const go=el(`<button class="btn primary" type="button" id="pLightGo">Começar</button>`);go.onclick=qStart;b.appendChild(go)}w.appendChild(b)}
+  return w}
 function renderPlan(){
   {const wb=$("#weekBox");if(wb){wb.innerHTML="";if(view==="temas")wb.appendChild(weekEl())}}
   const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";const compact=true;if(planOpen.d!==P.d)planOpen={d:P.d};
   const CR=examCrunch(),cb=$("#crunchBar");cb.hidden=!CR.active;{const pn=$("#planNote");pn.hidden=!planNote;pn.textContent=planNote}
   if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-pfr"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
-  const doneN=P.items.filter(itemDone).length,PW=provaWeek();
-  $("#planmeta").textContent=P.items.length?`${doneN} de ${P.items.length} ${P.items.length===1?"tema concluído":"temas concluídos"}${PW.length&&!CR.active?" · semana de prova":!isNewDay()&&!CR.active?" · hoje sem temas novos":""}`:"";
+  const doneN=P.items.filter(itemDone).length,PW=provaWeek();{const pd=$("#planDay");if(pd){pd.innerHTML="";const x=planDayEl(CR,PW);if(x)pd.appendChild(x)}}
+  $("#planmeta").textContent=P.items.length?`${doneN} de ${P.items.length} ${P.items.length===1?"tema concluído":"temas concluídos"}${PW.length&&!CR.active?" · semana de prova":!isNewDay()&&!CR.active?(dayMin(dnum(today()))===30?" · dia curto":" · hoje sem temas novos"):""}`:"";
   $("#planbar").hidden=!P.items.length;$("#planbar").firstElementChild.style.width=(P.items.length?doneN/P.items.length*100:0)+"%";
-  if(!P.items.length){pl.appendChild(el(`<li class="empty" style="padding:0">${PW.length&&!isOffDay()&&!CR.active?`Semana de prova (${PW.map(p=>p.name).join(", ")}): o conteúdo já foi estudado e revisado. Não entram temas novos da residência; use o tempo nas revisões dela e em questões.`:isOffDay()?`Hoje é seu dia de folga. O plano volta ${nextStudyLabel()}.`:!isNewDay()&&!CR.active?"Hoje não é dia de temas novos e não há pontos fracos nem conteúdo da faculdade para o plano. Aproveite para revisões e questões.":CR.active?"Todo o conteúdo das provas já foi estudado. Use as revisões de véspera e questões dos temas das provas.":"Tudo em dia. Nenhuma revisão vencida, nenhum ponto fraco e nenhum tema novo pendente."}</li>`));return}
+  if(!P.items.length){pl.appendChild(el(`<li class="empty" style="padding:0">${PW.length&&!isOffDay()&&!CR.active?`Semana de prova (${PW.map(p=>p.name).join(", ")}): o conteúdo já foi estudado e revisado. Não entram temas novos da residência; use o tempo nas revisões dela e em questões.`:isOffDay()?`Hoje é seu dia de folga. O plano volta ${nextStudyLabel()}.`:!isNewDay()&&!CR.active&&dayMin(dnum(today()))===30?"Nenhum tema no plano hoje (dia curto).":!isNewDay()&&!CR.active?"Hoje não é dia de temas novos e não há pontos fracos nem conteúdo da faculdade para o plano. Aproveite para revisões e questões.":CR.active?"Todo o conteúdo das provas já foi estudado. Use as revisões de véspera e questões dos temas das provas.":"Tudo em dia. Nenhuma revisão vencida, nenhum ponto fraco e nenhum tema novo pendente."}</li>`));return}
   P.items.forEach((p,pi)=>{const it=BYKEY[p.k],L=subList(it),done=itemDone(p),editing=planEdit===p.k;
     const li=el(`<li class="pcard${done?" pdone":""}" data-k="${p.k}"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason ${p.cls}"></span></div>
       <div class="pa"></div><div class="pbody"></div><div class="pacts"></div></li>`);
@@ -3581,7 +3667,7 @@ function renderPlan(){
       const o=el(`<button class="mini" type="button">Abrir tema</button>`);o.onclick=()=>openTopic(p.k);acts.appendChild(o);
       const fz=el(`<button class="mini" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(p.k);acts.appendChild(fz)}
     pl.appendChild(li)});
-  if(PW.length&&!CR.active&&P.items.length<PLAN_N){const due=ALL.filter(i=>isDue(get(i.key))).length;
+  if(PW.length&&!CR.active&&P.items.length<dayCap(dnum(today()))){const due=ALL.filter(i=>isDue(get(i.key))).length;
     const n=el(`<li class="pweek"><p class="phint"></p></li>`);n.querySelector("p").textContent=`Semana de prova: não entram temas novos da residência.${due?` Use as vagas livres nas ${due} ${due===1?"revisão":"revisões"} da residência.`:""}`;
     if(due){const b=el(`<button class="link" type="button">Ir para as revisões</button>`);b.onclick=()=>goRevs();n.querySelector("p").appendChild(document.createTextNode(" "));n.querySelector("p").appendChild(b)}
     pl.appendChild(n)}
@@ -3687,7 +3773,7 @@ function provaChanged(p,what){const d=daysTo(p.date);if(d<0||d>AUTO_REDO_DAYS){r
   planNote=before!==after?`Plano de hoje atualizado: ${what} “${p.name}” (${inLabel(d)}). O que você já tinha começado foi mantido.`:"";render()}
 function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayPlan&&dayPlan.d===today()?dayPlan.items:[]).filter(x=>BYKEY[x.k]&&itemStarted(x)).map(x=>{const y={...x};delete y.prev;return y});const fresh=makeDayPlan();
   const old=dayPlan&&dayPlan.d===today()?dayPlan:{};
-  dayPlan={d:today(),items:[...keep,...fresh.items.filter(x=>!keep.some(k=>k.k===x.k))].slice(0,Math.max(PLAN_N,keep.length+1)),revd:old.revd||[],rchk:old.rchk||{},vesp:old.vesp||{}};planTouched=true;planEdit=null;savePlan();render()}
+  dayPlan={d:today(),items:[...keep,...fresh.items.filter(x=>!keep.some(k=>k.k===x.k))].slice(0,Math.max(dayCap(dnum(today())),keep.length+1)),revd:old.revd||[],rchk:old.rchk||{},vesp:old.vesp||{}};planTouched=true;planEdit=null;savePlan();render()}
 
 /* ===================== FACULDADE =====================
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
@@ -5066,9 +5152,10 @@ function eWeeksEl(){const N=8,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,sta
     s.style.height=`${Math.round(w.n/mx*80)}px`;Object.keys(ETYPES).forEach(ty=>{if(!w.t[ty])return;const i2=document.createElement("i");i2.style.flexGrow=String(w.t[ty]);i2.style.background=ECOL[ty];s.appendChild(i2)});
     col.title=`Semana de ${br(fromNum(w.s))}: ${w.n} ${w.n===1?"erro":"erros"}`+Object.keys(ETYPES).filter(ty=>w.t[ty]).map(ty=>` · ${w.t[ty]} ${ETYPES[ty].toLowerCase()}`).join("");g.appendChild(col)});
   const lg=box.querySelector(".elegend");Object.keys(ETYPES).forEach(ty=>{const s=el(`<span><i style="background:${ECOL[ty]}"></i></span>`);s.appendChild(document.createTextNode(ETYPES[ty]));lg.appendChild(s)});
+  {const wks=W.filter(w=>w.n).length;if(tot<8||wks<3)box.appendChild(el(`<p class="how ewlow">Poucos dados (${tot} ${tot===1?"erro":"erros"} em ${wks} ${wks===1?"semana":"semanas"}): a tendência por tipo fica confiável com uns 8 erros em 3 semanas ou mais.</p>`))}
   // tendência: últimas 4 semanas × 4 anteriores, no tipo que mais mudou
   const sum=(a,b,ty)=>W.slice(a,b).reduce((x,w)=>x+(ty?w.t[ty]:w.n),0),ch=Object.keys(ETYPES).map(ty=>({ty,a:sum(0,4,ty),b:sum(4,8,ty)})).sort((x,y)=>Math.abs(y.b-y.a)-Math.abs(x.b-x.a))[0];
-  if(ch&&ch.a+ch.b>=3&&ch.a!==ch.b){const p=el(`<p class="how"></p>`);p.textContent=`${ETYPES[ch.ty]}: ${ch.b<ch.a?"caiu":"subiu"} de ${ch.a} para ${ch.b} nas últimas 4 semanas (contra as 4 anteriores).`;box.appendChild(p)}
+  if(tot>=8&&ch&&ch.a+ch.b>=3&&ch.a!==ch.b){const p=el(`<p class="how"></p>`);p.textContent=`${ETYPES[ch.ty]}: ${ch.b<ch.a?"caiu":"subiu"} de ${ch.a} para ${ch.b} nas últimas 4 semanas (contra as 4 anteriores).`;box.appendChild(p)}
   return box}
 /* ----- causa do erro (mais fina que o tipo) ----- */
 const ECAUSES={conhecimento:["Nunca estudei isso","Estudei, mas esqueci","Detalhe: dose, valor ou critério","Conteúdo novo ou atualizado"],
@@ -5183,7 +5270,7 @@ function eNoteBtn(e){const b=el(`<button class="mini" type="button"></button>`);
   b.title="Acrescenta o conceito correto na seção Meus erros da anotação do tema";b.onclick=()=>eToNote(e);return b}
 
 function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
-  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
+  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewStats").hidden=v!=="stats";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas","stats"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 function renderErros(){
@@ -5354,6 +5441,7 @@ function iNoticeEl(){const box=el(`<div class="inotices"></div>`);
   if(hasData()&&!logged&&(days===null?age>=30:days>=30)&&!(snooze&&snooze>=today())){const n=el(`<div class="inote warn"><p></p><div class="btns"><button class="btn" type="button">Fazer backup agora</button><button class="link" type="button">Lembrar em 7 dias</button></div></div>`);
     n.querySelector("p").textContent=days===null?"Você nunca fez um backup dos seus dados. Sem conta, eles ficam só neste aparelho: um backup evita perder tudo se o navegador for limpo.":`Seu último backup foi há ${days} dias. Exporte um novo para não perder o que estudou desde então.`;
     const [go,sn]=n.querySelectorAll("button");go.onclick=()=>{goSub("config");setTimeout(()=>{const b=$("#bkSave");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};sn.onclick=()=>{lsSet("resid-bksnooze",fromNum(dnum(today())+7));render()};box.appendChild(n)}
+  {const wn=wpNoticeEl();if(wn)box.appendChild(wn)}
   return box.children.length?box:null}
 /* ----- 4. resumo da semana (domingo: esta semana; segunda: a que passou) ----- */
 function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
@@ -5523,7 +5611,7 @@ function render(){
 function dueCount(){const CR=examCrunch();return [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).length}
 /* ---------- Perfil e Configurações (preferências salvas na conta) ---------- */
 const LSUI="resid-ui-v1";
-const UI_DEF={prefs:{wnew:[0,1,2,3,4,5,6],wsim:[],woff:[],layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180,adapt:true},profile:{name:"",goal:"",goalDate:"",exams:[]}};
+const UI_DEF={prefs:{wnew:[0,1,2,3,4,5,6],wsim:[],woff:[],wday:[180,180,180,180,180,180,180],hgoal:600,wplans:{},layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180,adapt:true},profile:{name:"",goal:"",goalDate:"",exams:[]}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
@@ -5538,6 +5626,14 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if([0,1,2,3].includes(p.resWeek))o.prefs.resWeek=p.resWeek;
   {const D=v=>Array.isArray(v)?[...new Set(v.filter(x=>Number.isInteger(x)&&x>=0&&x<=6))].sort():null,off=D(p.woff)||[],nw=(D(p.wnew)||[0,1,2,3,4,5,6]).filter(d=>!off.includes(d)),sm=(D(p.wsim)||[]).filter(d=>!off.includes(d));
     if(nw.length&&off.length<=5){o.prefs.wnew=nw;o.prefs.woff=off;o.prefs.wsim=sm}}
+  /* planejamento semanal: minutos por dia (0 domingo … 6 sábado) na semana padrão, meta em minutos e as semanas planejadas (segunda → {m,ok}) */
+  {const okM=a=>Array.isArray(a)&&a.length===7&&a.every(v=>WP_MIN.includes(v));
+    o.prefs.wday=okM(p.wday)?[...p.wday]:[0,1,2,3,4,5,6].map(d=>o.prefs.woff.includes(d)?0:o.prefs.wnew.includes(d)?180:30);
+    o.prefs.hgoal=Number.isInteger(p.hgoal)&&p.hgoal>=0&&p.hgoal<=3000?p.hgoal:600;
+    const W={};if(p.wplans&&typeof p.wplans==="object")Object.keys(p.wplans).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&p.wplans[k]&&okM(p.wplans[k].m)).sort().slice(-3).forEach(k=>{W[k]={m:[...p.wplans[k].m],ok:p.wplans[k].ok?1:0}});o.prefs.wplans=W;
+    if(okM(p.wday)){const w=o.prefs.wday,Dz=v=>Array.isArray(v)?v.filter(x=>Number.isInteger(x)&&x>=0&&x<=6):[];let nw=[0,1,2,3,4,5,6].filter(d=>w[d]>=60);if(!nw.length)nw=[0,1,2,3,4,5,6].filter(d=>w[d]>0);
+      o.prefs.wnew=nw.length?nw:[1];o.prefs.woff=[0,1,2,3,4,5,6].filter(d=>w[d]===0);o.prefs.wsim=[...new Set(Dz(p.wsim))].sort()}
+    o.prefs.wsim=o.prefs.wsim.filter(d=>o.prefs.wday[d]>0)}
   if(Number.isInteger(p.fw)&&p.fw>=5&&p.fw<=180)o.prefs.fw=p.fw;
   if(Number.isInteger(p.fb)&&p.fb>=0&&p.fb<=60)o.prefs.fb=p.fb;
   if(Number.isInteger(p.flong)&&p.flong>=0&&p.flong<=60)o.prefs.flong=p.flong;
@@ -5565,7 +5661,8 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   return o}
 function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.layout;R.dataset.font=P.font;
   if(P.theme==="auto"){if(R.dataset.themeOwn){R.removeAttribute("data-theme");delete R.dataset.themeOwn}}else{R.setAttribute("data-theme",P.theme);R.dataset.themeOwn="1"}
-  PLAN_N=P.planN;SUBS_PER_DAY=P.subN;WK_NEW=new Set(P.wnew);WK_SIM=new Set(P.wsim);WK_OFF=new Set(P.woff);INT.splice(0,INT.length,...INT_SETS[P.ints]);FAC_WIN=P.facWin;RES_MIN_WEEK=P.resWeek;
+  PLAN_N=P.planN;SUBS_PER_DAY=P.subN;WK_NEW=new Set([0,1,2,3,4,5,6].filter(d=>P.wday[d]>=60));WK_SIM=new Set(P.wsim);WK_OFF=new Set([0,1,2,3,4,5,6].filter(d=>P.wday[d]===0));
+  HAS_OFF=WK_OFF.size>0||Object.values(P.wplans||{}).some(w=>w.m.includes(0));INT.splice(0,INT.length,...INT_SETS[P.ints]);FAC_WIN=P.facWin;RES_MIN_WEEK=P.resWeek;
   if(window.__decideLayout)window.__decideLayout()}
 function saveUI(){uiTouched=true;ui=uiSanitize(ui);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();
   if(!uiDoc)return;clearTimeout(uiTimer);uiTimer=setTimeout(async()=>{uiTimer=0;try{liveW.ui=stab(ui);await uiDoc.set({...ui,updatedAt:new Date().toISOString()})}catch(e){}},600)}
@@ -5602,7 +5699,7 @@ new MutationObserver(()=>sbApply()).observe(document.documentElement,{attributes
   $("#sbPinOpen").onclick=()=>sbSetPin(sbPin==="open"?"":"open");
   $("#sbPinRail").onclick=()=>sbSetPin(sbPin==="rail"?"":"rail")}
 /* menu ≡: lista de todas as seções com um resumo de cada */
-const NM_SUB={inicio:"Painel do dia",temas:"185 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Praticar, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros"};
+const NM_SUB={inicio:"Painel do dia",temas:"185 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Praticar, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros",stats:"Como estou indo e se chego a tempo"};
 function nmInfo(v){try{
   if(v==="inicio"){const P=ensurePlan();if(P.items.length){const d=P.items.filter(itemDone).length;return [`Estudar hoje: ${d} de ${P.items.length} temas`,""]}}
   if(v==="temas"){const n=dueCount();return [n?`${n} ${n===1?"revisão pendente":"revisões pendentes"}`:"Revisões em dia",n?"late":"",n]}
@@ -5610,7 +5707,8 @@ function nmInfo(v){try{
   if(v==="quest"){const h=hist[today()];if(h&&h.q)return [`Hoje: ${h.q} ${h.q===1?"questão":"questões"}, ${pct(h.c||0,h.q)}% de acerto`,""]}
   if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,nf=freeN.length;if(nk||nf)return [[nf?`${nf} no caderno livre`:"",nk?`${nk} ${nk===1?"tema":"temas"} com anotações`:""].filter(Boolean).join(" · "),""]}
   if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"",foRun?"●":0]}
-  if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}}catch(e){}return [NM_SUB[v]||"",""]}
+  if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}
+  if(v==="stats"){const V=stVerdRes(stRes(30)),a=V[0],b=V[1];if(a[1]==="na"&&b[1]==="na")return [NM_SUB.stats,""];return [[a[1]!=="na"?a[2]:"",b[1]!=="na"?`chegar a tempo: ${b[2].toLowerCase()}`:""].filter(Boolean).join(" · "),b[1]==="bad"||b[1]==="warn"?"late":""]}}catch(e){}return [NM_SUB[v]||"",""]}
 function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
   document.querySelectorAll(".appnav .tabs .tab").forEach(t=>{const v=t.dataset.v;if(!v||v==="mais"||v==="help")return;
     const [sub,cls,badge]=nmInfo(v),li=el(`<li><button class="nmit" type="button"><span class="nmic"></span><span class="nmt"></span><span class="nms"></span></button></li>`),b=li.querySelector("button");
@@ -5659,7 +5757,8 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
   ALL.forEach(i=>{const s=get(i.key);qq+=s.qt||0;qc+=s.qc||0});
   const studied=ALL.filter(i=>{const s=get(i.key);return s.last||(s.l||0)>0}).length,dom=ALL.filter(i=>(get(i.key).l||0)===3).length,first=act[0];
   const st=el(`<section class="card dash"><div class="dhead"><h2>Minhas estatísticas</h2></div><div class="kpis pfstats"></div></section>`),k=st.querySelector(".kpis");
-  {const xb=el(`<button class="mini" type="button" aria-expanded="${pdfOpt.open}">Exportar PDF</button>`);xb.onclick=()=>{pdfOpt.open=!pdfOpt.open;pdfOpt.msg="";render()};st.querySelector(".dhead").appendChild(xb)}
+  {const sb=el(`<button class="mini" type="button" id="pfStats">Ver Estatísticas</button>`);sb.onclick=()=>{backStack=[];setView("stats")};st.querySelector(".dhead").appendChild(sb);
+    const xb=el(`<button class="mini" type="button" aria-expanded="${pdfOpt.open}">Exportar PDF</button>`);xb.onclick=()=>{pdfOpt.open=!pdfOpt.open;pdfOpt.msg="";render()};st.querySelector(".dhead").appendChild(xb)}
   [["Sequência atual",`${streak()}`,streak()===1?"dia seguido":"dias seguidos"],["Dias com estudo",`${act.length}`,first?`desde ${br(first)}/${first.slice(0,4)}`:"comece hoje"],
    ["Temas estudados",`${studied}`,`de ${TOTAL} · ${dom} dominados`],["Revisões feitas",`${rv}`,"no total"],
    ["Questões",qq.toLocaleString("pt-BR"),qq?`${pct(qc,qq)}% de acerto`:"nenhuma ainda"],["Faculdade",`${FAC_ITEMS.length}`,`conteúdos próprios · ${fac.discs.length} disciplina${fac.discs.length===1?"":"s"}`]]
@@ -5669,21 +5768,61 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
 const goalSpan=dd=>dd>=60?`${Math.round(dd/30.4)} meses`:dd>=14?`${Math.round(dd/7)} semanas`:`${dd} dias`;
 
 /* ---------- Configurações ---------- */
-/* Sua semana de estudos: 3 linhas de 7 dias; folga tira o dia das outras duas; ao menos 1 dia de temas novos */
-function weekCfgEl(){const P=ui.prefs,w=el(`<div class="wkcfg" id="wkCfg"><div class="wkh"><b>Sua semana de estudos</b><span class="gtext how">Toque nos dias. Vale a partir do próximo plano (ou toque em Refazer o plano de hoje).</span></div></div>`),L="DSTQQSS";
-  const rows=[["wnew","Temas novos","Dias em que o Estudar hoje propõe temas novos. Nos outros, só pontos fracos e faculdade."],["wsim","Simulados e provas","Nesses dias o Início sugere um simulado ou uma prova na íntegra."],["woff","Folga","Sem plano e sem fila. Revisão que vencer na folga passa para o próximo dia de estudo."]];
-  rows.forEach(([k,lab,how])=>{const r=el(`<div class="wkrow"><div class="wkl"><b></b><span class="how"></span></div><div class="wkdays" role="group"></div></div>`);r.querySelector("b").textContent=lab;r.querySelector(".how").textContent=how;
-    const g=r.querySelector(".wkdays");g.setAttribute("aria-label",lab);
-    for(let d=0;d<7;d++){const on=P[k].includes(d),b=el(`<button type="button" class="wkd ${k}" aria-pressed="${on}"></button>`);b.id=`wk-${k}-${d}`;b.textContent=L[d];b.title=WD_FULL[d];
-      b.onclick=()=>{const cur=new Set(ui.prefs[k]);if(cur.has(d))cur.delete(d);else cur.add(d);const nx={wnew:[...ui.prefs.wnew],wsim:[...ui.prefs.wsim],woff:[...ui.prefs.woff],[k]:[...cur]};
-        if(k==="woff"&&cur.has(d)){nx.wnew=nx.wnew.filter(x=>x!==d);nx.wsim=nx.wsim.filter(x=>x!==d)}else if(k!=="woff"&&cur.has(d))nx.woff=nx.woff.filter(x=>x!==d);
-        if(!nx.wnew.length){wkMsg="Deixe pelo menos um dia de temas novos.";render();return}if(nx.woff.length>5){wkMsg="No máximo 5 dias de folga por semana.";render();return}
-        wkMsg="";Object.assign(ui.prefs,nx);saveUI();uiNote="O plano de hoje continua como estava. Toque em Refazer o plano de hoje para aplicar agora, ou espere até amanhã.";render()};g.appendChild(b)}
-    w.appendChild(r)});
-  if(wkMsg){const m=el(`<p class="err" role="alert"></p>`);m.textContent=wkMsg;w.appendChild(m)}
-  const nd=newDaysWeek(),off=P.woff.length;w.appendChild(el(`<p class="how">${nd} ${nd===1?"dia":"dias"} de temas novos (até ${PLAN_N*nd} temas por semana)${off?` · ${off} ${off===1?"dia":"dias"} de folga`:""}${P.wsim.length?` · simulado ${P.wsim.map(d=>WD_FULL[d].slice(0,3)).join(", ")}`:""}.</p>`));
-  return w}
 let wkMsg="";
+/* ---------- Planejar a semana (Lote 10): Esta semana · Próxima · Semana padrão; tempo de cada dia em WP_MIN; meta ui.prefs.hgoal ---------- */
+let wpTab=null,wpMsg="";const WP_ORDER=[1,2,3,4,5,6,0],WD3=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const hm=m=>{m=Math.round(m);const h=Math.floor(m/60),r=m%60;return h?(r?`${h} h ${String(r).padStart(2,"0")}`:`${h} h`):`${r} min`};
+const ddmm=n=>{const d=fromNum(n);return d.slice(8,10)+"/"+d.slice(5,7)};
+function wpPlanned(mon){return ui.prefs.wplans[fromNum(mon)]||null}
+function wpArr(mon){const W=wpPlanned(mon);return W?W.m:ui.prefs.wday}
+/* muda um dia; mon=null = semana padrão. Mexer no dia de hoje refaz o plano de hoje (mantém o começado) */
+function wpSetDay(mon,d,m){const P=ui.prefs,t=dnum(today());
+  if(mon===null){const w=[...P.wday];w[d]=m;if(w.filter(x=>x===0).length>5){wpMsg="No máximo 5 dias de folga na semana padrão.";render();return}wpMsg="";P.wday=w;wpLegacy()}
+  else{const k=fromNum(mon),W=P.wplans[k]?{...P.wplans[k],m:[...P.wplans[k].m]}:{m:[...P.wday],ok:0};W.m[d]=m;P.wplans={...P.wplans,[k]:W}}
+  saveUI();const todayHit=(mon===null&&!wpPlanned(wpMon(t))&&wdOf(t)===d)||(mon===wpMon(t)&&wdOf(t)===d);
+  if(todayHit)redoPlan(`Plano de hoje ajustado para ${WP_LAB[m].toLowerCase()}. O que você já tinha começado foi mantido.`);else render()}
+/* mantém os campos antigos (wnew/woff) coerentes para quem ainda lê */
+function wpLegacy(){const P=ui.prefs,w=P.wday;let nw=[0,1,2,3,4,5,6].filter(d=>w[d]>=60);if(!nw.length)nw=[0,1,2,3,4,5,6].filter(d=>w[d]>0);P.wnew=nw.length?nw:[1];P.woff=[0,1,2,3,4,5,6].filter(d=>w[d]===0);P.wsim=P.wsim.filter(d=>w[d]>0)}
+function wpConfirm(mon){const k=fromNum(mon),P=ui.prefs,W=P.wplans[k]||{m:[...P.wday],ok:0};P.wplans={...P.wplans,[k]:{m:[...W.m],ok:1}};saveUI();render()}
+function wpReset(mon){const k=fromNum(mon),P=ui.prefs,o={...P.wplans};delete o[k];P.wplans=o;saveUI();const t=dnum(today());if(mon===wpMon(t))redoPlan("Esta semana voltou à semana padrão.");else render()}
+/* o tempo de hoje, pelo link do Estudar hoje */
+function setTodayMin(m){const t=dnum(today());wpSetDay(wpMon(t),wdOf(t),m)}
+function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTab=wdOf(t)===0?"next":"cur";
+  const c=el(`<div class="wpcard" id="wpCard"><div class="wph"><b>Planejar a semana</b><span class="gtext how">O tempo que você tem em cada dia decide o tamanho do Estudar hoje: 30 min = só cartões, erros e revisões; 1 h ≈ 1 tema; 2 h ≈ 2 temas; 3 h+ = o plano inteiro.</span></div><div class="seg wptabs" role="group" aria-label="Qual semana"></div><div class="wpbody"></div></div>`);
+  const tg=c.querySelector(".wptabs");[["cur","Esta semana"],["next","Próxima semana"],["pad","Semana padrão"]].forEach(([v,lab])=>{const b=el(`<button type="button"></button>`);b.id="wpT-"+v;b.textContent=lab;b.setAttribute("aria-pressed",wpTab===v);b.onclick=()=>{wpTab=v;wpMsg="";render()};tg.appendChild(b)});
+  const body=c.querySelector(".wpbody"),pad=wpTab==="pad",mon=pad?null:wpTab==="next"?cur+7:cur,W=pad?null:wpPlanned(mon),arr=pad?P.wday:wpArr(mon);
+  if(pad)body.appendChild(el(`<p class="how">O tempo que você costuma ter em cada dia. Vale para toda semana que você não planejar.</p>`));
+  else{const h=el(`<p class="wpst"><b></b> <span></span></p>`);h.querySelector("b").textContent=`${ddmm(mon)} a ${ddmm(mon+6)}`;
+    h.querySelector("span").textContent=W&&W.ok?"· confirmada":W?"· alterada, ainda não confirmada":"· veio da semana padrão";body.appendChild(h)}
+  const days=el(`<div class="wpdays"></div>`);
+  WP_ORDER.forEach(d=>{const n=pad?null:mon+((d+6)%7),past=!pad&&n<t,r=el(`<div class="wpday${past?" past":""}${!pad&&n===t?" wpnow":""}"><span class="wpdn"><b></b><small></small></span><div class="wpopts" role="group"></div></div>`);
+    r.querySelector("b").textContent=WD3[d];r.querySelector("small").textContent=pad?"":n===t?"hoje":ddmm(n);const g=r.querySelector(".wpopts");g.setAttribute("aria-label",WD_FULL[d]);
+    WP_MIN.forEach(m=>{const on=arr[d]===m,b=el(`<button type="button" class="wpo${m===0?" off":""}${!pad&&on&&W&&P.wday[d]!==m?" chg":""}" aria-pressed="${on}"></button>`);b.id=`wp-${d}-${m}`;b.textContent=WP_LAB[m];b.disabled=past;
+      b.onclick=()=>{if(!on)wpSetDay(mon,d,m)};g.appendChild(b)});days.appendChild(r)});
+  body.appendChild(days);
+  if(wpMsg&&pad){const m=el(`<p class="err" role="alert"></p>`);m.textContent=wpMsg;body.appendChild(m)}
+  const tot=arr.reduce((a,m)=>a+m,0),goal=P.hgoal,tb=el(`<div class="wptot"><div class="meter"><i></i></div><b></b></div>`);tb.querySelector("i").style.width=Math.min(100,goal?tot/goal*100:100)+"%";
+  tb.querySelector("b").textContent=goal?`${hm(tot)} de ${hm(goal)}`:`${hm(tot)} por semana`;body.appendChild(tb);
+  if(goal&&tot<goal){const free=WP_ORDER.filter(d=>(pad||mon+((d+6)%7)>=t)&&arr[d]>0&&arr[d]<180),nt=el(`<p class="wpnote"></p>`);
+    nt.textContent=`Faltam ${hm(goal-tot)} para a meta.${free.length?` Que tal um pouco mais ${free.slice(0,2).map(d=>(d===0||d===6?"no ":"na ")+WD_FULL[d]).join(" ou ")}?`:""} Se a meta parece longe, suba aos poucos: 1 h a mais por semana já conta.`;body.appendChild(nt)}
+  if(!pad){const bt=el(`<div class="btns"></div>`);
+    if(!(W&&W.ok)){const ok=el(`<button class="btn primary" type="button" id="wpOk">Confirmar a semana</button>`);ok.onclick=()=>wpConfirm(mon);bt.appendChild(ok)}
+    if(W){const rs=el(`<button class="btn" type="button" id="wpReset">Voltar à semana padrão</button>`);rs.onclick=()=>wpReset(mon);bt.appendChild(rs)}
+    if(bt.children.length)body.appendChild(bt);
+    body.appendChild(el(`<p class="how">Contorno dourado = diferente da semana padrão. Semana que você não planejar segue a padrão.</p>`))}
+  else{body.appendChild(segRow("Meta por semana","Quanto você quer estudar por semana (residência e faculdade juntas). Aparece aqui e em Estatísticas.",[[300,"5 h"],[420,"7 h"],[480,"8 h"],[540,"9 h"],[600,"10 h"],[720,"12 h"]],P.hgoal,v=>{ui.prefs.hgoal=v;saveUI();render()}));
+    const L="DSTQQSS",r=el(`<div class="wkrow" id="wkCfg"><div class="wkl"><b>Simulados e provas</b><span class="how">Nesses dias o Início sugere um simulado ou uma prova na íntegra.</span></div><div class="wkdays" role="group" aria-label="Simulados e provas"></div></div>`),g=r.querySelector(".wkdays");
+    for(let d=0;d<7;d++){const on=P.wsim.includes(d),b=el(`<button type="button" class="wkd wsim" aria-pressed="${on}"></button>`);b.id=`wk-wsim-${d}`;b.textContent=L[d];b.title=WD_FULL[d];b.disabled=P.wday[d]===0;
+      b.onclick=()=>{const cur=new Set(ui.prefs.wsim);if(cur.has(d))cur.delete(d);else cur.add(d);ui.prefs.wsim=[...cur];saveUI();render()};g.appendChild(b)}
+    body.appendChild(r)}
+  return c}
+/* Início: cartão pequeno no domingo (próxima semana) e na segunda (esta), até confirmar ou dispensar */
+function wpNoticeEl(){const t=dnum(today()),w=wdOf(t);if(w!==0&&w!==1)return null;const mon=w===0?t+1:t,W=wpPlanned(mon);if(W&&W.ok)return null;if(lsGet("resid-wpdis","")===fromNum(mon))return null;
+  const arr=wpArr(mon),tot=arr.reduce((a,m)=>a+m,0),n=el(`<div class="inote wpnotice" id="wpNotice"><p><b></b> <span></span></p><div class="btns"><button class="btn primary" type="button" id="wpGo">Planejar a semana</button><button class="link" type="button">Agora não</button></div></div>`);
+  n.querySelector("b").textContent=w===0?"Planeje a próxima semana.":"Planeje esta semana.";
+  n.querySelector("span").textContent=`Pela sua semana padrão: ${hm(tot)}${ui.prefs.hgoal?` (meta ${hm(ui.prefs.hgoal)})`:""}. Leva 1 minuto e o plano de cada dia se ajusta ao tempo que você tem.`;
+  const [go,no]=n.querySelectorAll("button");go.onclick=()=>{wpTab=w===0?"next":"cur";goSub("config");setTimeout(()=>{const b=$("#wpCard");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};
+  no.onclick=()=>{lsSet("resid-wpdis",fromNum(mon));render()};return n}
 function segRow(lab,how,opts,cur,on){const g=el(`<div class="cfrow"><div class="cfl"><b></b><span class="gtext how"></span></div><div class="seg" role="group"></div></div>`);
   g.querySelector("b").textContent=lab;const h=g.querySelector(".how");if(how)h.textContent=how;else h.remove();g.querySelector(".seg").setAttribute("aria-label",lab);
   opts.forEach(([v,t])=>{const b=el(`<button type="button"></button>`);b.textContent=t;b.setAttribute("aria-pressed",cur===v);b.onclick=()=>on(v);g.querySelector(".seg").appendChild(b)});return g}
@@ -5710,7 +5849,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   {const A=dnAsk.all,n=dnPending().length,g=el(`<div class="grp" id="dnAllBox"><span class="glabel">Subtópicos densos</span><p class="gtext how">Denso conta como dois na parte do dia. O Claude pode sugerir quais são, nos temas com 4 ou mais subtópicos (${n?`${n} ainda sem sugestão`:"todos já sugeridos"}). Você corrige em cada tema, e a sua escolha nunca é trocada.</p></div>`);
     if(sampleFn&&!sampleOff&&n){const b=el(`<button class="btn" type="button" id="dnAll">Pedir sugestões ao Claude</button>`);b.disabled=!!(A&&A.st==="loading");b.onclick=dnSuggestAll;g.appendChild(b)}
     if(A&&A.msg){const m=el(`<p class="gstatus" id="dnAllMsg"></p>`);m.textContent=A.msg;g.appendChild(m)}pl.appendChild(g)}
-  pl.appendChild(weekCfgEl());
+  pl.appendChild(wpCardEl());
   const rp=el(`<button class="btn" type="button">Refazer o plano de hoje</button>`);rp.onclick=()=>{redoPlan("Plano de hoje refeito com a nova configuração. O que você já tinha começado foi mantido.");uiNote="Plano de hoje refeito com a nova configuração.";render()};pl.appendChild(rp);
   box.appendChild(pl);
   // faculdade
@@ -5922,7 +6061,7 @@ const PJ_SHOW=8;
 /* média de dias (partes) por tema ainda não estudado: tema grande ocupa uma vaga do plano em vários dias */
 function partsAvg(){let n=0,p=0;ALL.forEach(it=>{const s=get(it.key);if(s.last||s.l>0)return;n++;const L=subList(it),P=subParts(L);p+=Math.max(1,P.filter(q=>q.some(x=>!x.done)).length)});return n?p/n:1}
 function projModel(){const t=dnum(today()),ws0=foWeekStart(),main=exMain(),end=main&&main.date&&main.date>=today()?dnum(main.date):null;
-  const left=counts(ALL)[0];let e4=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e4+=h.e||0}const pace=e4/4,cap=PLAN_N*Math.min(6,newDaysWeek())/partsAvg();
+  const left=counts(ALL)[0];let e4=0;for(let i=0;i<28;i++){const h=hist[fromNum(t-i)];if(h)e4+=h.e||0}const pace=e4/4,cap=weekCap()/partsAvg();
   let done0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)done0+=h.e||0}
   let q0=0;for(let n=ws0;n<=t;n++){const h=hist[fromNum(n)];if(h)q0+=h.q||0}
   const rate=pace>0?pace:cap,total=left+done0;
@@ -6224,14 +6363,14 @@ function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeek
     <div class="kpi"><span class="kl">Total na semana</span><b>${fmtMin(tot)}</b><span class="ks">${act} dia${act===1?"":"s"} com foco</span></div>
     <div class="kpi"><span class="kl">Sessões</span><b>${wk.length}</b><span class="ks">${wk.length?`média de ${fmtMin(tot/wk.length)}`:"nenhuma ainda"}</span></div>
     <div class="kpi"><span class="kl">${g?"Sequência na meta":"Média por dia"}</span><b>${g?st:fmtMin(act?tot/act:0)}</b><span class="ks">${g?`dia${st===1?"":"s"} seguido${st===1?"":"s"}`:"nos dias com foco"}</span></div>`;
-  const days=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],vals=days.map((_,i)=>m[fromNum(ws+i)]||0),mx=Math.max(g,...vals,1);
+  const days=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],vals=days.map((_,i)=>m[fromNum(ws+i)]||0),pv=days.map((_,i)=>m[fromNum(ws-7+i)]||0),mx=Math.max(g,...vals,...pv,1);
   const box=c.querySelector(".fowk");box.setAttribute("aria-label","Minutos de foco por dia da semana: "+days.map((d,i)=>`${d} ${Math.round(vals[i]/60)} min`).join(", "));
-  box.innerHTML=days.map((d,i)=>{const n=ws+i,v=vals[i],fut=n>t;return `<div class="fod${n===t?" now":""}${fut?" fut":""}"><span class="fov">${v?fmtMin(v).replace(" min","m"):""}</span><div class="fob"><i style="height:${v/mx*100}%" data-tip="${d} ${br(fromNum(n))}: ${fmtMin(v)}${g?` (meta ${fmtMin(g)})`:""}" class="${g&&v>=g?"ok":""}"></i></div><span class="fox">${d}</span></div>`}).join("")+(g?`<span class="fogl" style="bottom:calc(1.3rem + ${g/mx}*(100% - 2.6rem))" aria-hidden="true"></span>`:"");
+  box.innerHTML=days.map((d,i)=>{const n=ws+i,v=vals[i],fut=n>t;return `<div class="fod${n===t?" now":""}${fut?" fut":""}"><span class="fov">${v?fmtMin(v).replace(" min","m"):""}</span><div class="fob">${pv[i]?`<b class="fogh" style="height:${pv[i]/mx*100}%" aria-hidden="true"></b>`:""}<i style="height:${v/mx*100}%" data-tip="${d} ${br(fromNum(n))}: ${fmtMin(v)}${g?` (meta ${fmtMin(g)})`:""} · semana passada: ${fmtMin(pv[i])}" class="${g&&v>=g?"ok":""}"></i></div><span class="fox">${d}</span></div>`}).join("")+(g?`<span class="fogl" style="bottom:calc(1.3rem + ${g/mx}*(100% - 2.6rem))" aria-hidden="true"><span class="foglt">meta ${fmtMin(g)}</span></span>`:"");
   const gl=c.querySelector(".fogoal"),sel=el(`<label class="qfsel fogsel"><span>Meta diária de foco</span><select id="foGoal"></select></label>`),s=sel.querySelector("select");
   [[0,"Sem meta"],[30,"30 min"],[60,"1 h"],[90,"1h30"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[300,"5 h"],[360,"6 h"],[480,"8 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});
   if(![0,30,60,90,120,180,240,300,360,480].includes(P.fgoal)){const o=document.createElement("option");o.value=P.fgoal;o.textContent=fmtMin(P.fgoal*60);s.appendChild(o)}
   s.value=String(P.fgoal);s.onchange=()=>{ui.prefs.fgoal=+s.value;saveUI();render()};gl.appendChild(sel);
-  if(g)gl.appendChild(el(`<span class="how">A linha no gráfico marca a meta; barras verdes bateram a meta.</span>`));
+  gl.appendChild(el(`<span class="how">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
   c.appendChild(foWeekExtra());return c}
 function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foPer==="30"?t-29:-Infinity;
   const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),g={};list.forEach(x=>{const m=foMat(x);const r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
@@ -6498,15 +6637,19 @@ function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key
 function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,q:0,c:0}));
   let est=0;U.forEach(it=>{const s=get(it.key);if(s.qe&&dnum(s.qe.d)>=start)est+=s.qe.q||0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=dnum(d);if(n<start||n>t)continue;const w=W[Math.floor((n-start)/7)];if(w){w.q+=v[0]||0;w.c+=v[1]||0}}});
   const tot=W.reduce((a,w)=>a+w.q,0);if(!tot)return {html:`<p class="cempty">Sem questões nas últimas ${N} semanas${U.length<ALL.length+FAC_ITEMS.length?" neste filtro":""}.</p>`,tot};
-  const VW=Math.max(300,Math.round(width||600)),VH=VW<500?170:200,L=30,R=36,T=12,B=24,lstep=VW<420?3:2,cw=(VW-L-R)/N,mq=Math.max(...W.map(w=>w.q)),yq=v=>T+(VH-T-B)*(1-v/mq),ya=a=>T+(VH-T-B)*(1-a);
+  /* Lote 10: eixo do acerto ajustado aos dados, semana atual mais clara ("até hoje"), linha da meta semanal de questões */
+  const QG=ui.prefs.qgoal||0,AC=W.filter(w=>w.q).map(w=>w.c/w.q),lo=Math.max(0,Math.floor((Math.min(...AC)-.08)*10)/10),hi=Math.min(1,Math.ceil((Math.max(...AC)+.04)*10)/10),A0=Math.min(lo,hi-.2),A1=Math.max(hi,A0+.2);
+  const VW=Math.max(300,Math.round(width||600)),VH=VW<500?170:200,L=30,R=36,T=12,B=24,lstep=VW<420?3:2,cw=(VW-L-R)/N,mq=Math.max(...W.map(w=>w.q),QG),yq=v=>T+(VH-T-B)*(1-v/mq),ya=a=>T+(VH-T-B)*(1-(a-A0)/(A1-A0));
   const nice=mq<=10?mq:Math.ceil(mq/5)*5;
   let g=`<svg class="qevo" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Questões e acerto por semana nas últimas ${N} semanas">`;
-  [0,0.6,1].forEach(a=>{g+=`<line x1="${L}" x2="${VW-R}" y1="${ya(a)}" y2="${ya(a)}" class="${a===0.6?"qeref":"qegrid"}"/><text x="${VW-R+4}" y="${ya(a)+3.5}" class="qeax">${a*100}%</text>`});
+  [...new Set([A0,A1,...(A0<.6&&A1>.6?[.6]:[])])].forEach(a=>{g+=`<line x1="${L}" x2="${VW-R}" y1="${ya(a)}" y2="${ya(a)}" class="${a===0.6?"qeref":"qegrid"}"/><text x="${VW-R+4}" y="${ya(a)+3.5}" class="qeax">${Math.round(a*100)}%</text>`});
   g+=`<text x="${L-4}" y="${yq(mq)+3.5}" class="qeax" text-anchor="end">${mq}</text><text x="${L-4}" y="${yq(0)+3.5}" class="qeax" text-anchor="end">0</text>`;
   W.forEach((w,i)=>{const x=L+i*cw+cw*0.18,bw=cw*0.64,ws2=fromNum(w.s),we=fromNum(Math.min(w.s+6,t)),tip=`Semana de ${br(ws2)} a ${br(we)}: ${w.q} questões${w.q?`, ${pct(w.c,w.q)}% de acerto`:""}`;
-    if(w.q)g+=`<rect x="${x}" y="${yq(w.q)}" width="${bw}" height="${yq(0)-yq(w.q)}" rx="3" class="qebar" data-tip="${esc(tip)}"/>`;
+    const cur=i===N-1;
+    if(w.q)g+=`<rect x="${x}" y="${yq(w.q)}" width="${bw}" height="${yq(0)-yq(w.q)}" rx="3" class="qebar${cur?" cur":""}" data-tip="${esc(tip+(cur?" (semana em andamento)":""))}"/>`;
     else g+=`<rect x="${x}" y="${T}" width="${bw}" height="${VH-T-B}" fill="transparent" data-tip="${esc(tip)}"/>`;
-    if((N-1-i)%lstep===0)g+=`<text x="${x+bw/2}" y="${VH-8}" text-anchor="middle" class="qeax">${br(ws2)}</text>`});
+    if((N-1-i)%lstep===0)g+=`<text x="${x+bw/2}" y="${VH-8}" text-anchor="middle" class="qeax">${cur?"até hoje":br(ws2)}</text>`});
+  if(QG)g+=`<line x1="${L}" x2="${VW-R}" y1="${yq(QG)}" y2="${yq(QG)}" class="qegoal"/><text x="${L+2}" y="${yq(QG)-4}" class="qegoalt">meta ${QG}</text>`;
   const all=W.map((w,i)=>w.q?[L+i*cw+cw/2,ya(w.c/w.q),w]:null),pts=all.filter(Boolean);
   // a linha só liga semanas seguidas com questões; semana vazia interrompe a linha
   let seg=[];const flush=()=>{if(seg.length>1)g+=`<polyline points="${seg.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" class="qeline"/>`;seg=[]};
@@ -6517,7 +6660,7 @@ function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6
   let note=`${tot.toLocaleString("pt-BR")} questões em ${N} semanas.`;
   if(last.q&&pa!==null){const d=Math.round(last.c/last.q*100-pa*100);note+=` Esta semana: ${pct(last.c,last.q)}% de acerto, ${d===0?"igual à":d>0?`${d} pontos acima da`:`${-d} pontos abaixo da`} média das 4 anteriores.`}
   if(est)note+=` Inclui ${est} questões antigas com data estimada.`;
-  return {html:g+`<div class="clegend"><span><i class="sw" style="background:var(--accent);opacity:.35"></i>questões na semana</span><span><i class="sw" style="background:var(--ink)"></i>acerto</span><span><i class="refk"></i>60%</span></div><p class="cnote">${note}</p>`,tot}}
+  return {html:g+`<div class="clegend"><span><i class="sw" style="background:var(--accent);opacity:.35"></i>questões na semana</span><span><i class="sw" style="background:var(--ink)"></i>acerto</span><span><i class="refk"></i>60%</span><span class="qedk"><i class="qedot1 good"></i><i class="qedot1 warn"></i><i class="qedot1 bad"></i>ponto: verde ≥ 80%, amarelo 60–79%, vermelho &lt; 60%</span></div><p class="cnote">${note}</p>`,tot}}
 /* ---------- Questões: meta semanal, tendência, erros na lista, acerto por banca ---------- */
 const QSRC_SUG=["Claude","ENARE","USP","UNIFESP","SUS-SP","UNICAMP","AMRIGS","PSU-MG","SES-DF","UERJ","UFRJ","Revalida","Medcel","Estratégia MED","MedCof","Aristo","Sanar","Prova antiga"];
 const ESHORT={conhecimento:"não sabia",interpretacao:"li errado",confusao:"confundi"};
@@ -8049,7 +8192,7 @@ const HELP=[
 - **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo por dia. Dá para mudar depois em Perfil e Configurações.
 - **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
 - **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
-- **Sua semana de estudos** (⚙ Configurações › Plano): toque nos dias de **Temas novos** (nos outros dias o plano traz só pontos fracos e faculdade), de **Simulados e provas** (o Início sugere um simulado de 20 questões ou uma prova na íntegra) e de **Folga** (sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo). A prévia da semana e a projeção até a prova seguem esses dias.
+- **Planejar a semana** (⚙ Configurações › Plano): para cada dia, escolha **Folga, 30 min, 1 h, 2 h ou 3 h+**. A **Semana padrão** vale para toda semana que você não planejar; em **Esta semana** e **Próxima semana** você muda só aquela semana (contorno dourado = diferente da padrão) e toca em **Confirmar a semana**. No domingo e na segunda, o Início mostra um cartão **Planejar a semana** que leva até lá. O tempo do dia decide o plano: **30 min** = só o leve (cartões, erros e revisões, sem tema novo); **1 h** ≈ 1 tema; **2 h** ≈ 2 temas; **3 h+** = o plano inteiro (o número de temas por dia). Folga = sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo. Mudou o dia? Em **Estudar hoje**, toque em **Tenho mais ou menos tempo hoje** (muda só hoje e refaz o plano, mantendo o que você começou). Ali também ficam a **meta por semana** (padrão 10 h) e os dias de **Simulados e provas**. Semana de prova da faculdade e modo provas continuam valendo por cima. A prévia da semana e a projeção até a prova seguem esses tempos.
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
 - **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Caderno › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki. No rodapé de Erros › Encontrar erros e em Cartões, a exportação em .txt continua (entra como cartões novos).
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
@@ -8213,6 +8356,14 @@ const HELP=[
 - A contagem usa a hora de início: continua certa com a tela bloqueada ou o app fechado. O **alarme** só toca com o app aberto; com o app em segundo plano, ele toca quando você volta. No iPhone, o som segue a chave de silencioso. **Tela acesa** mantém a tela ligada durante o foco, quando o aparelho permite.
 - Fora da aba Foco, um botão com o tempo aparece no canto da tela para voltar ao relógio.
 - O tempo vai para o **PDF** (Perfil › Exportar PDF), respeitando o período e as matérias escolhidas, e para o backup.`],
+["Estatísticas",`A página **Estatísticas** (no celular, em **≡ Menu**; no computador e no iPad deitado, na barra lateral; também em Perfil › Ver Estatísticas) responde quatro perguntas, com um selo verde, amarelo ou vermelho no topo:
+- **Como estou indo:** os últimos 7, 30 ou 90 dias comparados ao período anterior (acerto, questões, temas novos, revisões e erros que você ainda erraria) e a nota nas provas na íntegra ao longo do tempo, por banca.
+- **Vou chegar a tempo:** temas já vistos, seu ritmo × o necessário até a prova principal, quantos ficam de fora se nada mudar e as barras de temas novos por semana com a linha do necessário.
+- **Estou estudando o suficiente:** as horas por semana (do Foco) com a linha da meta, quanto tempo um tema leva para você (medido no Foco) e quantas horas o ritmo necessário pede. **Ajustar a semana** leva ao planejamento.
+- **Tenho direção:** quanto do tempo foi para temas de incidência alta, o quadro **tempo × acerto** por especialidade (funcionando, dá para manter, falta estudar, mudar o método) e 3 focos sugeridos com botão.
+No seletor **Faculdade**: notas das provas, quanto de cada prova e fechamento dos próximos 30 dias está pronto, foco por disciplina e a divisão do tempo entre **só residência, só faculdade e as duas** (conteúdo ligado a um tema da residência tem um progresso só, conta nos dois lados e vale duas vezes; o total de horas nunca soma em dobro).
+- As horas vêm só das sessões do **Foco**. Com menos de 3 semanas de uso, a página avisa que ainda há poucos dados.
+- **Exportar PDF** fica no fim da página (abre o painel no Perfil).`],
 ["Navegação por aparelho",`| Aparelho | Navegação | Aba Residência |
 |---|---|---|
 | Celular | Barra embaixo (Caderno e Foco ficam no **≡ Menu**); Perfil e ⚙ no topo | Hoje · Revisões · Lista · Progresso |
@@ -8226,7 +8377,7 @@ const HELP=[
 - **Nome:** vira as iniciais do ícone.
 - **Provas de residência:** cadastre as provas que vai prestar (ENARE, USP, SUS-SP…), com data se já souber, e marque a principal. Ela guia a projeção do Início; as outras aparecem na linha do tempo e no arquivo de calendário.
 - **Conta** (no site): entrar, sair e criar senha para o app instalado.
-- **Minhas estatísticas:** sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
+- **Minhas estatísticas:** **Ver Estatísticas** abre a página completa. O cartão mostra sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
 - **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 usam a data do último estudo do tema). "Estudados no período" conta cada dia em que o tema foi estudado ou revisado. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
 
 **⚙ Configurações:**
@@ -8283,6 +8434,191 @@ function renderHelp(){const box=$("#helpList");const q=helpQ?norm(helpQ):"";cons
     const d=el(`<details class="hsec" data-i="${i}"${q||prev.has(String(i))?" open":""}><summary></summary><div class="mdview"></div></details>`);
     d.querySelector("summary").textContent=t;d.querySelector(".mdview").innerHTML=md(body);box.appendChild(d)});
   if(!n)box.appendChild(el(`<p class="hempty">Nada encontrado. Tente outra palavra, como "prova", "revisão" ou "senha".</p>`))}
+/* ===================== ESTATÍSTICAS (Lote 10) =====================
+   view "stats" (≡ Menu e barra lateral): seletor Residência · Faculdade (stSide, localStorage resid-stside), período 7/30/90 dias (stPer, resid-stper),
+   4 veredictos (.stv ok|warn|bad|na) e 4 blocos. Tempo = sessões do Foco: tema da faculdade ligado à residência conta nos dois lados (stSideOf "b"),
+   e o total nunca soma duas vezes. Tempo por tema = mediana do Foco nos temas estudados (stPerTopic; 2 h até haver 3 temas). */
+let stSide=lsGet("resid-stside","res")==="fac"?"fac":"res",stPer=[7,30,90].includes(+lsGet("resid-stper","30"))?+lsGet("resid-stper","30"):30;
+const ST_TIP_DEF=7200,ST_LOW_DAYS=21;
+function stHist(a,b){const r={q:0,c:0,e:0,r:0,days:0};for(let n=a;n<=b;n++){const d=fromNum(n),h=hist[d];if(h){r.q+=h.q||0;r.c+=h.c||0;r.e+=h.e||0;r.r+=h.r||0}if(heroActive(d))r.days++}return r}
+function stQ(keys,a,b){let q=0,c=0;keys.forEach(k=>{const Q=get(k).qd||{};for(const d in Q){const v=Q[d];if(!Array.isArray(v))continue;const n=dnum(d);if(n>=a&&n<=b){q+=v[0]||0;c+=v[1]||0}}});return {q,c}}
+function stFacKeys(){const act=new Set(activeSems()),K=new Set();fac.discs.filter(d=>act.has(d.semId)).forEach(d=>topicKeysOf(discRefs(d)).forEach(k=>K.add(k)));return K}
+function stSideOf(x,FK){const r=x.ref||"";if(r.startsWith("D:"))return "f";if(r.startsWith("T:")){const k=r.slice(2),it=BYKEY[k];if(!it)return "";return it.own?"f":FK.has(k)?"b":"r"}return ""}
+function stTime(a,b,FK){const o={r:0,f:0,b:0,n:0,tot:0};foSess.forEach(x=>{const n=dnum(x.d);if(n<a||n>b)return;o[stSideOf(x,FK)||"n"]+=x.sec;o.tot+=x.sec});return o}
+function stPerTopic(){const by={};foSess.forEach(x=>{const r=x.ref||"";if(!r.startsWith("T:"))return;const k=r.slice(2);if(!BYKEY[k]||BYKEY[k].own)return;by[k]=(by[k]||0)+x.sec});
+  const L=Object.keys(by).filter(k=>get(k).last&&by[k]>=600).map(k=>by[k]).sort((a,b)=>a-b);return L.length<3?{sec:ST_TIP_DEF,n:L.length,est:true}:{sec:L[Math.floor(L.length/2)],n:L.length,est:false}}
+function stFirst(){const d=[...Object.keys(hist).filter(heroActive),...foSess.map(x=>x.d)].sort()[0];return d?dnum(d):null}
+function stTopicAct(keys,a,b){let nw=0,rv=0;keys.forEach(k=>{const ed=(get(k).ed||[]).slice().sort();ed.forEach((d,i)=>{const n=dnum(d);if(n<a||n>b)return;if(i===0)nw++;else rv++})});return {nw,rv}}
+const stH=s=>s>=3600?(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1})+" h":Math.round(s/60)+" min";
+const stHn=s=>(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1});
+const stPct=x=>x===null||x===undefined?"—":Math.round(x*100)+"%";
+const stMon=d=>{const M=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];return M[+d.slice(5,7)-1]+" de "+d.slice(0,4)};
+function stDelta(n,p,o={}){if(n===null||p===null||n===undefined||p===undefined)return ["","—"];const d=o.pts?Math.round((n-p)*100):n-p;if(!d)return ["eq","="];
+  const good=o.lowGood?d<0:d>0;return [good?"up":"dn",(d>0?"▲ ":"▼ ")+Math.abs(d).toLocaleString("pt-BR")+(o.pts?(Math.abs(d)===1?" ponto":" pontos"):"")]}
+function stTile(q,lvl,big,sub){const v=el(`<div class="stv ${lvl}"><span class="stq"></span><b></b><span class="sts"></span></div>`);v.querySelector(".stq").textContent=q;v.querySelector("b").textContent=big;v.querySelector(".sts").textContent=sub;return v}
+function stCard(n,title,id){const c=el(`<section class="card stcard" id="${id}"><h2><span class="stn">${n}</span><span></span></h2><p class="stlead"></p></section>`);c.querySelector("h2 span:last-child").textContent=title;return c}
+function stLead(c,html){c.querySelector(".stlead").innerHTML=html}
+function stKpis(L){const k=el(`<div class="kpis stkpis"></div>`);L.forEach(([a,b,c])=>{const x=el(`<div class="kpi"><span class="kl"></span><b></b><span class="ks"></span></div>`);x.querySelector(".kl").textContent=a;x.querySelector("b").textContent=b;x.querySelector(".ks").textContent=c;k.appendChild(x)});return k}
+function stRow(l,r){const x=el(`<div class="strow"><b></b><span class="how"></span></div>`);x.querySelector("b").textContent=l;x.querySelector("span").textContent=r||"";return x}
+const svgEsc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+/* barras por semana: vals [{v,lab,cur,tip}], meta (linha tracejada com rótulo), semana atual mais clara com "até hoje" */
+function stBars(vals,o={}){const W=320,H=128,P={l:26,r:6,t:14,b:22},n=vals.length,mx=Math.max(o.goal||0,...vals.map(x=>x.v),o.min||1)*1.12,bw=(W-P.l-P.r)/n,y=v=>P.t+(H-P.t-P.b)*(1-v/mx);
+  let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${svgEsc(o.aria||"")}">`;
+  [0,.5,1].forEach(f=>{const v=mx/1.12*f,yy=y(v);s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="ax" x="${P.l-4}" y="${yy+3}" text-anchor="end">${svgEsc(o.fmt?o.fmt(v):Math.round(v))}</text>`});
+  vals.forEach((x,i)=>{const h=Math.max(0,H-P.b-y(x.v)),xx=P.l+i*bw+bw*.18,w=bw*.64;s+=`<g class="stb${x.cur?" cur":""}"><title>${svgEsc(x.tip||"")}</title><rect x="${xx}" y="${H-P.b-h}" width="${w}" height="${h}" rx="2"/>`;
+    if(o.split&&x.v2){const h2=Math.max(0,H-P.b-y(x.v2));s+=`<rect class="b2" x="${xx}" y="${H-P.b-h2}" width="${w}" height="${h2}" rx="2"/>`}
+    s+=`<text class="ax" x="${xx+w/2}" y="${H-P.b+12}" text-anchor="middle">${svgEsc(x.cur?"até hoje":x.lab)}</text></g>`});
+  if(o.goal){const yy=y(o.goal);s+=`<line class="goal" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="goalt" x="${W-P.r}" y="${yy-4}" text-anchor="end">${svgEsc(o.goalLab||"meta")}</text>`}
+  return el(s+`</svg>`)}
+/* tempo × acerto por especialidade: x = horas, y = acerto, raio = questões */
+function stQuad(pts,xm){const W=320,H=190,P={l:30,r:8,t:16,b:26},mx=Math.max(xm*2,...pts.map(p=>p.x),1)*1.1,y0=Math.min(.5,Math.floor((Math.min(...pts.map(p=>p.y))-.05)*10)/10),x=v=>P.l+(W-P.l-P.r)*v/mx,y=v=>P.t+(H-P.t-P.b)*(1-(v-y0)/(1-y0));
+  let s=`<svg class="stsvg stquad" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tempo e acerto por especialidade">`;
+  const X=x(xm),Y=y(.7);s+=`<rect class="q1" x="${X}" y="${P.t}" width="${W-P.r-X}" height="${Y-P.t}"/><rect class="q2" x="${P.l}" y="${P.t}" width="${X-P.l}" height="${Y-P.t}"/><rect class="q3" x="${P.l}" y="${Y}" width="${X-P.l}" height="${H-P.b-Y}"/><rect class="q4" x="${X}" y="${Y}" width="${W-P.r-X}" height="${H-P.b-Y}"/>`;
+  s+=`<text class="ql" x="${W-P.r-2}" y="${P.t-5}" text-anchor="end">funcionando</text><text class="ql" x="${P.l+2}" y="${P.t-5}">dá para manter</text><text class="ql" x="${P.l+4}" y="${H-P.b-5}">falta estudar</text><text class="ql bad" x="${W-P.r-4}" y="${H-P.b-5}" text-anchor="end">mudar o método</text>`;
+  [...new Set([y0,.7,1])].forEach(v=>{s+=`<text class="ax" x="${P.l-4}" y="${y(v)+3}" text-anchor="end">${Math.round(v*100)}%</text>`});
+  s+=`<text class="ax" x="${(W+P.l)/2}" y="${H-6}" text-anchor="middle">horas de foco no período →</text>`;
+  pts.forEach(p=>{const r=Math.max(4,Math.min(12,3+Math.sqrt(p.q)));s+=`<g class="stpt ${p.cls}"><title>${svgEsc(p.tip)}</title><circle cx="${x(p.x)}" cy="${y(p.y)}" r="${r}"/></g>`});
+  /* nomes numa lista por quadrante (rótulos no gráfico se sobrepõem) */
+  const w=el(`<div class="stquadw"></div>`);w.appendChild(el(s+`</svg>`));const L=el(`<div class="stql"></div>`);
+  [["q4","Mudar o método"],["q3","Falta estudar"],["q2","Dá para manter"],["q1","Funcionando"]].forEach(([k,lab])=>{const g=pts.filter(p=>p.cls===k).sort((a,b)=>b.x-a.x);if(!g.length)return;
+    const r=el(`<p class="stqg ${k}"><i></i><b></b> <span></span></p>`);r.querySelector("b").textContent=lab+":";r.querySelector("span").textContent=g.map(p=>`${p.full} (${Math.round(p.y*100)}%, ${stH(p.x*3600)})`).join(" · ");L.appendChild(r)});
+  w.appendChild(L);return w}
+/* nota nas provas na íntegra ao longo do tempo, uma cor por banca */
+function stExamLine(series){const W=320,H=130,P={l:30,r:8,t:10,b:22},all=series.flatMap(s=>s.pts),d0=Math.min(...all.map(p=>p.n)),d1=Math.max(...all.map(p=>p.n),d0+1),x=n=>P.l+(W-P.l-P.r)*(n-d0)/(d1-d0),y=v=>P.t+(H-P.t-P.b)*(1-v);
+  let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Nota nas provas na íntegra">`;[.25,.5,.75,1].forEach(v=>{s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${P.l-4}" y="${y(v)+3}" text-anchor="end">${v*100}%</text>`});
+  series.forEach((S,i)=>{const L=S.pts.sort((a,b)=>a.n-b.n);s+=`<g class="stser c${i%4}"><polyline points="${L.map(p=>x(p.n)+","+y(p.v)).join(" ")}"/>${L.map(p=>`<circle cx="${x(p.n)}" cy="${y(p.v)}" r="3.5"><title>${svgEsc(S.name+" · "+p.t+": "+Math.round(p.v*100)+"%")}</title></circle>`).join("")}</g>`});
+  s+=`<text class="ax" x="${P.l}" y="${H-6}">${svgEsc(br(fromNum(d0)))}</text><text class="ax" x="${W-P.r}" y="${H-6}" text-anchor="end">${svgEsc(br(fromNum(d1)))}</text>`;
+  const sv=el(s+`</svg>`),w=el(`<div class="stexam"></div>`);w.appendChild(sv);const lg=el(`<div class="stleg"></div>`);series.forEach((S,i)=>{const b=el(`<span class="c${i%4}"><i></i></span>`);b.append(S.name);lg.appendChild(b)});w.appendChild(lg);return w}
+function stGoSpec(code,sp){tf.area=code;tf.sp=sp;openAreas.add(code);openSpecs.add(code+":"+sp);tSeg="lista";try{localStorage.setItem("resid-tseg","lista")}catch(e){}backStack=[];setView("temas")}
+function stAdjWeek(){wpTab="cur";goSub("config");setTimeout(()=>{const b=$("#wpCard");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)}
+/* modelo de cada lado (usado pela página e pelo resumo do menu) */
+function stRes(D){const t=dnum(today()),a=t-D+1,pa=a-D,pb=a-1,FK=stFacKeys(),keys=ALL.map(i=>i.key);
+  const H=stHist(a,t),HP=stHist(pa,pb),Q=stQ(keys,a,t),QP=stQ(keys,pa,pb),acc=Q.q>=10?Q.c/Q.q:null,accP=QP.q>=10?QP.c/QP.q:null;
+  const still=errors.filter(e=>BYKEY[e.k]&&!BYKEY[e.k].own&&e.lastMiss&&dnum(e.lastMiss)>=a).length,stillP=errors.filter(e=>BYKEY[e.k]&&!BYKEY[e.k].own&&e.lastMiss&&dnum(e.lastMiss)>=pa&&dnum(e.lastMiss)<=pb).length;
+  const M=projModel(),PT=stPerTopic(),wk=stWeeks(8,FK);
+  const per=D/7,T=stTime(a,t,FK),hW=T.tot/per,goal=(ui.prefs.hgoal||600)*60;
+  /* direção: tempo nos temas da residência de incidência alta ou muito alta */
+  let tTop=0,tHi=0;const bySp={};foSess.forEach(x=>{const n=dnum(x.d);if(n<a||n>t)return;const r=x.ref||"";if(!r.startsWith("T:"))return;const it=BYKEY[r.slice(2)];if(!it||it.own)return;tTop+=x.sec;if(wOf(it)>=2)tHi+=x.sec;const sk=spKey(it);bySp[sk]=(bySp[sk]||0)+x.sec});
+  const sps=[];AREAS.forEach(A=>A.specs.forEach(S=>{const k=A.code+":"+S.name,ks=S.items.map(i=>i.key),q=stQ(ks,a,t),left=S.items.filter(i=>!get(i.key).last&&!isIng(get(i.key))),inc=left.reduce((s,i)=>s+wOf(i),0);
+    sps.push({A,S,k,sec:bySp[k]||0,q:q.q,c:q.c,acc:q.q>=5?q.c/q.q:null,left:left.length,inc})}));
+  return {t,a,pa,pb,D,H,HP,Q,QP,acc,accP,still,stillP,M,PT,wk,T,hW,goal,tTop,tHi,sps,FK}}
+function stWeeks(n,FK){const ws=foWeekStart(),t=dnum(today()),out=[];for(let i=n-1;i>=0;i--){const s=ws-7*i,e=Math.min(s+6,t);out.push({s,e,cur:i===0,H:stHist(s,e),T:stTime(s,e,FK),plan:wpArr(s).reduce((x,m)=>x+m,0)*60})}return out}
+function stVerdRes(R){const out=[];
+  if(R.acc===null)out.push(["Como estou indo","na","Poucos dados",`Faça pelo menos 10 questões em ${R.D} dias`]);
+  else if(R.accP===null)out.push(["Como estou indo","na",`${stPct(R.acc)} de acerto`,"Sem o período anterior para comparar"]);
+  else{const d=Math.round((R.acc-R.accP)*100);out.push(["Como estou indo",d>=3?"ok":d<=-3?"bad":"ok",d>=3?"Melhorando":d<=-3?"Piorando":"Estável",`Acerto ${stPct(R.accP)} → ${stPct(R.acc)}`])}
+  const M=R.M;if(M.end===null)out.push(["Chego a tempo?","na","Sem data de prova",M.endPace?`No ritmo atual: ${stMon(M.endPace)}`:"Cadastre a prova no Perfil"]);
+  else if(!M.left)out.push(["Chego a tempo?","ok","Todos vistos","Agora é revisar e treinar"]);
+  else{const r=M.need?M.pace/M.need:1,f=Math.max(0,M.need-M.pace);out.push(["Chego a tempo?",r>=1?"ok":r>=.8?"warn":"bad",r>=1?"No ritmo":r>=.8?"Apertado":"Atrasado",r>=1?`${M.pace.toLocaleString("pt-BR",{maximumFractionDigits:1})} temas/semana`:`Faltam ${f.toLocaleString("pt-BR",{maximumFractionDigits:1})} tema/semana`])}
+  {const r=R.goal?R.hW/R.goal:0;out.push(["Estudo suficiente?",!R.T.tot?"na":r>=.9?"ok":r>=.6?"warn":"bad",!R.T.tot?"Sem Foco":r>=.9?"Sim":r>=.6?"Quase":"Abaixo",!R.T.tot?"Use o Foco para medir o tempo":`${stH(R.hW)} por semana de ${stH(R.goal)}`])}
+  {const r=R.tTop?R.tHi/R.tTop:0;out.push(["Tenho direção?",R.tTop<7200?"na":r>=.6?"ok":r>=.4?"warn":"bad",R.tTop<7200?"Poucos dados":r>=.6?"Boa":r>=.4?"Dá para melhorar":"Dispersa",R.tTop<7200?"Ligue as sessões do Foco aos temas":`${stPct(r)} do tempo no que mais cai`])}
+  return out}
+function stFac(D){const t=dnum(today()),a=t-D+1,pa=a-D,pb=a-1,FK=stFacKeys(),keys=[...FK],act=new Set(activeSems()),ds=fac.discs.filter(d=>act.has(d.semId));
+  const Q=stQ(keys,a,t),QP=stQ(keys,pa,pb),acc=Q.q>=10?Q.c/Q.q:null,accP=QP.q>=10?QP.c/QP.q:null,TA=stTopicAct(keys,a,t),TP=stTopicAct(keys,pa,pb);
+  const notas=fac.provas.filter(p=>p.res&&!p.res.skip&&typeof p.res.n==="number").map(p=>({p,v:p.res.n/(p.res.of||10),d:p.res.d||p.date})).sort((x,y)=>x.d<y.d?-1:1);
+  const up=upcomingProvas().filter(p=>daysTo(p.date)<=30).map(p=>({p,st:provaStats(p)})),fe=spFechas(30);
+  const PT=stPerTopic(),pend=up.reduce((s,x)=>s+x.st.pend.length,0),needSec=pend*PT.sec;
+  const T=stTime(a,t,FK),per=D/7,facSec=T.f+T.b,wk=stWeeks(8,FK),discT=ds.map(d=>({d,s:discFocusSec(d,a)})).sort((x,y)=>y.s-x.s);
+  /* direção: tempo da faculdade nos conteúdos das provas dos próximos 30 dias */
+  const upK=new Set(up.flatMap(x=>topicKeysOf(x.p.items)));let tUp=0;foSess.forEach(x=>{const n=dnum(x.d);if(n<a||n>t)return;const r=x.ref||"";if(r.startsWith("T:")&&upK.has(r.slice(2)))tUp+=x.sec;else if(r.startsWith("D:")&&up.some(u=>provaDids(u.p).includes(r.slice(2))))tUp+=x.sec});
+  return {t,a,D,Q,QP,acc,accP,TA,TP,notas,up,fe,PT,pend,needSec,T,per,facSec,wk,discT,tUp,ds}}
+function stVerdFac(F){const out=[],last=F.notas.slice(-3);
+  if(!last.length)out.push(["Como estou indo","na","Sem notas",F.acc!==null?`${stPct(F.acc)} de acerto nas questões`:"Registre a nota depois da prova"]);
+  else{const m=last.reduce((s,x)=>s+x.v,0)/last.length;out.push(["Como estou indo",m>=.7?"ok":m>=.5?"warn":"bad",`Média ${(m*10).toLocaleString("pt-BR",{maximumFractionDigits:1})}`,`nas últimas ${last.length===1?"prova":last.length+" provas"}`])}
+  const nx=F.up[0];if(!nx)out.push(["Chego a tempo?","na","Sem provas",`Nada nos próximos 30 dias`]);
+  else out.push(["Chego a tempo?",nx.st.lvl,nx.st.lvl==="ok"?"No ritmo":nx.st.lvl==="warn"?"Apertado":"Atrasado",`${nx.p.name}: ${nx.st.done} de ${nx.st.tot} prontos · ${inLabel(nx.st.dd)}`]);
+  {const wkSec=F.facSec/F.per,dd=nx?Math.max(1,nx.st.dd):0,needW=nx?F.needSec/Math.max(1,dd/7):0;
+    out.push(["Estudo suficiente?",!F.pend?"na":!F.facSec?"bad":wkSec>=needW*.9?"ok":wkSec>=needW*.6?"warn":"bad",!F.pend?"Nada pendente":!F.facSec?"Sem Foco":wkSec>=needW*.9?"Sim":wkSec>=needW*.6?"Quase":"Abaixo",!F.pend?"Para as provas dos próximos 30 dias":`${stH(wkSec)}/semana de ~${stH(needW)} necessárias`])}
+  {const r=F.facSec?F.tUp/F.facSec:0;out.push(["Tenho direção?",!F.up.length||F.facSec<3600?"na":r>=.6?"ok":r>=.35?"warn":"bad",!F.up.length?"Sem provas":F.facSec<3600?"Poucos dados":r>=.6?"Boa":r>=.35?"Dá para melhorar":"Dispersa",!F.up.length?"Nada nos próximos 30 dias":F.facSec<3600?"Ligue o Foco às disciplinas":`${stPct(r)} do tempo no que vai cair`])}
+  return out}
+function renderStats(){const box=$("#stBody");if(!box)return;box.innerHTML="";
+  const top=el(`<div class="sttop"><div><h2 class="sttitle">Estatísticas</h2><p class="how stsub">Como você está indo, se chega a tempo, se o estudo é suficiente e se tem direção.</p></div><div class="stctl"><div class="seg" role="group" aria-label="Lado"></div><div class="seg stper" role="group" aria-label="Período"></div></div></div>`);
+  const [sg,pg]=top.querySelectorAll(".seg");[["res","Residência"],["fac","Faculdade"]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="stSide-"+v;b.textContent=l;b.setAttribute("aria-pressed",stSide===v);b.onclick=()=>{stSide=v;lsSet("resid-stside",v);render()};sg.appendChild(b)});
+  [7,30,90].forEach(v=>{const b=el(`<button type="button"></button>`);b.id="stPer-"+v;b.textContent=v+" dias";b.setAttribute("aria-pressed",stPer===v);b.onclick=()=>{stPer=v;lsSet("resid-stper",String(v));render()};pg.appendChild(b)});
+  box.appendChild(top);
+  const f0=stFirst(),age=f0===null?0:dnum(today())-f0;if(age<ST_LOW_DAYS)box.appendChild(el(`<p class="stlow" id="stLow">Ainda poucos dados${f0===null?"":` (${age+1} ${age?"dias":"dia"} de uso)`}: as comparações e tendências ficam confiáveis depois de 3 a 4 semanas usando o app e o Foco.</p>`));
+  const v=el(`<div class="stverd" id="stVerd"></div>`),g=el(`<div class="stgrid"></div>`);box.appendChild(v);box.appendChild(g);
+  if(stSide==="res"){const R=stRes(stPer);stVerdRes(R).forEach(x=>v.appendChild(stTile(...x)));stResBlocks(R).forEach(c=>g.appendChild(c))}
+  else{const F=stFac(stPer);stVerdFac(F).forEach(x=>v.appendChild(stTile(...x)));stFacBlocks(F).forEach(c=>g.appendChild(c))}
+  const ft=el(`<div class="stfoot"><button class="btn" type="button" id="stPdf">Exportar PDF</button><span class="how">O tempo vem das sessões do Foco. Estudo sem o Foco não entra nas horas.</span></div>`);
+  ft.querySelector("button").onclick=()=>{pdfOpt.open=true;pdfOpt.msg="";goSub("perfil");setTimeout(()=>{const b=$(".pdfpan");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};box.appendChild(ft)}
+function stTable(rows){const t=el(`<table class="sttab"><tbody></tbody></table>`),tb=t.querySelector("tbody");rows.forEach(([l,v,dl])=>{const r=el(`<tr><td></td><td class="stv1"></td><td class="std"></td></tr>`);r.children[0].textContent=l;r.children[1].textContent=v;r.children[2].textContent=dl[1];if(dl[0])r.children[2].classList.add(dl[0]);tb.appendChild(r)});return t}
+function stResBlocks(R){const out=[],per=`${R.D} dias`;
+  /* 1. como estou indo */
+  {const c=stCard(1,"Como estou indo","stB1"),dA=stDelta(R.acc,R.accP,{pts:true}),dQ=stDelta(R.Q.q,R.QP.q),dE=stDelta(R.H.e,R.HP.e),dR=stDelta(R.H.r,R.HP.r),dS=stDelta(R.still,R.stillP,{lowGood:true});
+    const parts=[];if(dA[0]==="up")parts.push("<strong>acertou mais</strong>");else if(dA[0]==="dn")parts.push("<strong>acertou menos</strong>");if(dQ[0])parts.push(dQ[0]==="up"?"fez mais questões":"fez menos questões");if(dE[0])parts.push(dE[0]==="up"?"estudou <strong>mais temas novos</strong>":"estudou <strong>menos temas novos</strong>");
+    stLead(c,parts.length?`Nos últimos ${per}, comparado aos ${per} anteriores, você ${parts.join(", ").replace(/, ([^,]*)$/," e $1")}.`:`Nos últimos ${per}: ${R.Q.q} questões e ${R.H.e} temas novos.`);
+    c.appendChild(stTable([["Acerto nas questões",stPct(R.acc),dA],["Questões feitas",R.Q.q.toLocaleString("pt-BR"),dQ],["Temas novos estudados",String(R.H.e),dE],["Revisões feitas",String(R.H.r),dR],["Erros que você ainda erraria",String(R.still),dS]]));
+    c.appendChild(el(`<p class="how stnote">"Ainda erraria" = erros do caderno que você errou de novo na revisão no período. Menos é melhor.</p>`));
+    const ser={};exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);if(!P)return;(P.tries||[]).forEach(tr=>{if(!tr.n)return;const b=ex.banca||"Outras";(ser[b]=ser[b]||[]).push({n:dnum(tr.d),v:tr.hit/tr.n,t:ex.name})})});
+    const S=Object.keys(ser).map(name=>({name,pts:ser[name]}));c.appendChild(stRow("Nota nas provas na íntegra","cada ponto é uma prova terminada"));
+    if(S.reduce((s,x)=>s+x.pts.length,0)>=2)c.appendChild(stExamLine(S));else c.appendChild(el(`<p class="how stempty">Termine pelo menos duas provas na íntegra (Questões › Praticar) para ver a nota ao longo do tempo.</p>`));
+    out.push(c)}
+  /* 2. vou chegar a tempo */
+  {const c=stCard(2,"Vou chegar a tempo?","stB2"),M=R.M,seen=TOTAL-M.left,fmt=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1});
+    stLead(c,M.end!==null?(M.endPace?`No ritmo atual você termina de ver os ${TOTAL} temas em <strong>${stMon(M.endPace)}</strong>. A prova principal${M.main&&M.main.name?` (${svgEsc(M.main.name)})`:""} é em <strong>${stMon(M.main.date)}</strong>.`:`Nas últimas 4 semanas nenhum tema novo foi estudado. A prova principal é em <strong>${stMon(M.main.date)}</strong>.`)
+      :M.endPace?`Sem data de prova: no ritmo atual você vê todos os temas por volta de <strong>${stMon(M.endPace)}</strong>. Cadastre a prova no Perfil para saber o ritmo necessário.`:"Cadastre a prova principal no Perfil e estude alguns temas para ver a projeção.");
+    const sb=el(`<div class="stseen"><div class="strow"><span>Temas já vistos</span><b></b></div><div class="meter"><i></i></div></div>`);sb.querySelector("b").textContent=`${seen} de ${TOTAL}`;sb.querySelector("i").style.width=seen/TOTAL*100+"%";c.appendChild(sb);
+    c.appendChild(stKpis([["Seu ritmo",fmt(M.pace),"temas/semana (4 sem.)"],["Necessário",M.need!==null?fmt(M.need):"—",M.need!==null?"temas/semana":"sem data de prova"],["Ficam de fora",M.end!==null?String(M.out):"—",M.end!==null?"temas, se nada mudar":"sem data de prova"]]));
+    c.appendChild(stRow("Temas novos por semana",M.need?"linha = o necessário":""));
+    c.appendChild(stBars(R.wk.map(w=>({v:w.H.e,lab:br(fromNum(w.s)),cur:w.cur,tip:`Semana de ${br(fromNum(w.s))}: ${w.H.e} temas novos`})),{goal:M.need||0,goalLab:M.need?`necessário ${fmt(M.need)}`:"",aria:"Temas novos por semana nas últimas 8 semanas",min:3}));
+    const nx=upcomingProvas()[0];if(nx){const st=provaStats(nx),r=el(`<div class="strow stfacnx"><span></span><span class="stpill"></span></div>`);r.children[0].innerHTML=`<b>Faculdade:</b> ${svgEsc(nx.name)} ${svgEsc(inLabel(st.dd))}`;r.children[1].textContent=st.tot?`${st.done} de ${st.tot} conteúdos prontos`:"sem conteúdo marcado";r.children[1].classList.add("p-"+st.lvl);c.appendChild(r)}
+    out.push(c)}
+  /* 3. estou estudando o suficiente */
+  {const c=stCard(3,"Estou estudando o suficiente?","stB3"),M=R.M,rate=M.need!==null?M.need:M.pace||M.cap,needW=rate*R.PT.sec,cw=R.wk[R.wk.length-1],t=dnum(today());
+    let planSoFar=0;for(let n=cw.s;n<=t;n++)planSoFar+=dayMin(n)*60;
+    stLead(c,`Para ${M.need!==null?"chegar a tempo":"manter o ritmo"}, você precisa de cerca de <strong>${stH(needW)} por semana</strong> só para temas novos (${rate.toLocaleString("pt-BR",{maximumFractionDigits:1})} temas × ${stH(R.PT.sec)} por tema${R.PT.est?", estimativa padrão até o Foco medir 3 temas":", medido no seu Foco"}). Sua meta: <strong>${stH(R.goal)}</strong>. Nesta semana: planejou ${stH(cw.plan)}, fez <strong>${stH(cw.T.tot)}</strong>.`);
+    c.appendChild(stRow("Horas de estudo por semana","escuro = residência · claro = só faculdade"));
+    c.appendChild(stBars(R.wk.map(w=>({v:w.T.tot/3600,v2:w.T.f/3600,lab:br(fromNum(w.s)),cur:w.cur,tip:`Semana de ${br(fromNum(w.s))}: ${stH(w.T.tot)} (planejado ${stH(w.plan)})`})),{goal:R.goal/3600,goalLab:`meta ${stH(R.goal)}`,fmt:v=>Math.round(v)+"h",split:true,aria:"Horas de estudo por semana",min:2}));
+    const qg=ui.prefs.qgoal||0,days=R.H.days;
+    c.appendChild(stKpis([["Horas nesta semana",stH(cw.T.tot),`de ${stH(planSoFar)} planejadas até hoje`],["Questões na semana",String(cw.H.q),qg?`meta ${qg}`:"sem meta"],["Dias estudados",`${days} de ${R.D}`,`sequência: ${streak()}`]]));
+    const adj=el(`<div class="btns"><button class="btn" type="button" id="stAdj">Ajustar a semana</button></div>`);adj.querySelector("button").onclick=stAdjWeek;c.appendChild(adj);
+    out.push(c)}
+  /* 4. tenho direção */
+  {const c=stCard(4,"Tenho direção?","stB4"),r=R.tTop?R.tHi/R.tTop:null,pts=R.sps.filter(s=>s.sec>=1800&&s.acc!==null),xm=pts.length?pts.map(p=>p.sec/3600).sort((a,b)=>a-b)[Math.floor(pts.length/2)]:1;
+    const cls=s=>{const hiT=s.sec/3600>=xm,hiA=s.acc>=.7;return hiT&&hiA?"q1":!hiT&&hiA?"q2":!hiT?"q3":"q4"};
+    const bad=pts.filter(s=>cls(s)==="q4").sort((a,b)=>b.sec-a.sec)[0];
+    stLead(c,r===null?"Ligue as sessões do Foco aos temas (escolha o tema ao começar) para ver para onde vai o seu tempo.":`<strong>${stPct(r)}</strong> do seu tempo nos temas foi para os de incidência alta ou muito alta.${bad?` Onde agir: <strong>${svgEsc(bad.S.name)}</strong> (muito tempo, acerto baixo).`:""}`);
+    c.appendChild(stRow("Tempo × acerto por especialidade","só com 30 min de foco e 5 questões no período · tamanho = questões"));
+    if(pts.length>=2)c.appendChild(stQuad(pts.map(s=>({x:s.sec/3600,y:s.acc,q:s.q,cls:cls(s),full:s.S.name,tip:`${s.S.name}: ${stH(s.sec)} de foco, ${stPct(s.acc)} em ${s.q} questões`})),xm));
+    else c.appendChild(el(`<p class="how stempty">Ainda poucos dados: precisa de pelo menos 2 especialidades com 30 min de foco e 5 questões no período.</p>`));
+    const fx=el(`<div class="stfocus"><b>Foco sugerido para esta semana</b></div>`),add=(t,s,lab,fn,ghost)=>{const x=el(`<div class="stfi"><div class="stft"><b></b><small></small></div><button class="btn${ghost?"":" primary"}" type="button"></button></div>`);x.querySelector("b").textContent=t;x.querySelector("small").textContent=s;x.querySelector("button").textContent=lab;x.querySelector("button").onclick=fn;fx.appendChild(x)};
+    if(bad)add(`${bad.S.name}: mudar o método`,`${stH(bad.sec)} de foco, ${stPct(bad.acc)} em ${bad.q} questões · tente questões antes de reler`,"Ver temas",()=>stGoSpec(bad.A.code,bad.S.name));
+    const miss=R.sps.filter(s=>s.left&&s.sec<3600&&!(bad&&s.k===bad.k)).sort((a,b)=>b.inc-a.inc)[0];
+    if(miss)add(`${miss.S.name}: falta estudar`,`${miss.left} ${miss.left===1?"tema":"temas"} por ver${miss.sec?`, só ${stH(miss.sec)} no período`:", nada no período"}`,"Ver temas",()=>stGoSpec(miss.A.code,miss.S.name));
+    const due=dueCount();if(due)add(`${due} ${due===1?"revisão pendente":"revisões pendentes"}`,"revisão em dia segura o que você já estudou","Revisar agora",()=>goRevs(),true);
+    else{const wk=ALL.filter(i=>isWeak(get(i.key))).sort((a,b)=>acc(get(a.key))-acc(get(b.key)))[0];if(wk)add(`Ponto fraco: ${wk.t}`,`${pct(get(wk.key).qc||0,get(wk.key).qt||0)}% em ${get(wk.key).qt} questões`,"Abrir tema",()=>openTopic(wk.key),true)}
+    if(fx.children.length>1)c.appendChild(fx);
+    out.push(c)}
+  return out}
+function stFacBlocks(F){const out=[],per=`${F.D} dias`;
+  /* 1. notas */
+  {const c=stCard(1,"Como estou indo","stF1"),dA=stDelta(F.acc,F.accP,{pts:true});
+    stLead(c,F.notas.length?`Suas notas nas provas da faculdade e o acerto nas questões dos conteúdos da faculdade nos últimos ${per}.`:"Depois de cada prova, registre a nota no painel Próximas provas (Faculdade) para acompanhar aqui.");
+    c.appendChild(stTable([["Acerto nas questões (conteúdos FAC)",stPct(F.acc),dA],["Questões feitas",String(F.Q.q),stDelta(F.Q.q,F.QP.q)],["Conteúdos estudados",String(F.TA.nw),stDelta(F.TA.nw,F.TP.nw)],["Revisões feitas",String(F.TA.rv),stDelta(F.TA.rv,F.TP.rv)]]));
+    if(F.notas.length){const L=el(`<div class="stnotas"></div>`);F.notas.slice(-8).reverse().forEach(x=>{const r=el(`<div class="stnr"><span class="stnn"></span><div class="meter"><i></i></div><b></b></div>`);r.querySelector(".stnn").textContent=`${x.p.name} · ${provaDiscName(x.p)}`;
+      r.querySelector("i").style.width=Math.min(100,x.v*100)+"%";r.querySelector("i").className=x.v>=.7?"ok":x.v>=.5?"warn":"bad";r.querySelector("b").textContent=`${(+x.p.res.n).toLocaleString("pt-BR")} / ${x.p.res.of||10}`;L.appendChild(r)});c.appendChild(stRow("Notas das provas","as mais recentes primeiro"));c.appendChild(L)}
+    c.appendChild(el(`<p class="how stnote">Conteúdo da faculdade ligado a um tema da residência tem um progresso só e conta nos dois lados.</p>`));out.push(c)}
+  /* 2. provas e fechamentos */
+  {const c=stCard(2,"Vou chegar a tempo?","stF2");stLead(c,F.up.length||F.fe.length?"Quanto de cada prova e fechamento dos próximos 30 dias já está pronto, comparado aos dias que faltam.":"Nenhuma prova nem fechamento de SP nos próximos 30 dias.");
+    const L=el(`<div class="stprov"></div>`);F.up.forEach(({p,st})=>{const r=el(`<div class="stpr"><div class="strow"><b></b><span class="stpill"></span></div><div class="meter"><i></i></div><span class="how"></span></div>`);r.querySelector("b").textContent=p.name;
+      const pl=r.querySelector(".stpill");pl.textContent=inLabel(st.dd);pl.classList.add("p-"+st.lvl);r.querySelector("i").style.width=(st.tot?st.done/st.tot*100:0)+"%";r.querySelector(".how").textContent=`${st.done} de ${st.tot} prontos · ${provaRitmo(st)}`;L.appendChild(r)});
+    F.fe.forEach(f=>{const r=el(`<div class="stpr"><div class="strow"><b></b><span class="stpill"></span></div><span class="how"></span></div>`);r.querySelector("b").textContent=`Fechamento: ${spShort(f.s.name)}`;r.querySelector(".stpill").textContent=inLabel(daysTo(f.s.fech));r.querySelector(".how").textContent=f.d.name;L.appendChild(r)});
+    if(L.children.length)c.appendChild(L);out.push(c)}
+  /* 3. tempo por disciplina */
+  {const c=stCard(3,"Estou estudando o suficiente?","stF3"),wkSec=F.facSec/F.per;
+    stLead(c,F.pend?`Faltam <strong>${F.pend}</strong> ${F.pend===1?"conteúdo":"conteúdos"} das provas dos próximos 30 dias: cerca de <strong>${stH(F.needSec)}</strong> (${stH(F.PT.sec)} por conteúdo${F.PT.est?", estimativa padrão":", medido no seu Foco"}). Você está fazendo ${stH(wkSec)} por semana na faculdade.`:`Você está fazendo ${stH(wkSec)} por semana na faculdade.`);
+    if(F.discT.length){const mx=Math.max(1,...F.discT.map(x=>x.s));const L=el(`<div class="stdisc"></div>`);F.discT.forEach(x=>{const r=el(`<div class="stnr"><span class="stnn"></span><div class="meter"><i></i></div><b></b></div>`);r.querySelector(".stnn").textContent=x.d.name;r.querySelector("i").style.width=x.s/mx*100+"%";r.querySelector("b").textContent=stH(x.s);L.appendChild(r)});
+      c.appendChild(stRow("Foco por disciplina",`últimos ${per}`));c.appendChild(L)}else c.appendChild(el(`<p class="how stempty">Nenhuma disciplina ativa.</p>`));
+    const adj=el(`<div class="btns"><button class="btn" type="button" id="stAdjF">Ajustar a semana</button></div>`);adj.querySelector("button").onclick=stAdjWeek;c.appendChild(adj);out.push(c)}
+  /* 4. divisão do tempo */
+  {const c=stCard(4,"Tenho direção?","stF4"),T=F.T,tot=T.r+T.f+T.b+T.n;
+    stLead(c,tot?`Nos últimos ${per}: ${stH(tot)} de foco. O que é das duas (conteúdo da faculdade ligado à residência) <strong>vale duas vezes</strong>: avança a prova e a residência ao mesmo tempo.`:"Use o Foco ligado a temas e disciplinas para ver a divisão do tempo.");
+    if(tot){const bar=el(`<div class="stsplit" role="img"></div>`),L=[["r","Só residência",T.r],["b","As duas",T.b],["f","Só faculdade",T.f],["n","Sem tema",T.n]].filter(x=>x[2]);bar.setAttribute("aria-label",L.map(x=>`${x[1]} ${stH(x[2])}`).join(", "));
+      L.forEach(([k,l,s])=>{const i=el(`<i class="sp-${k}"></i>`);i.style.width=s/tot*100+"%";i.title=`${l}: ${stH(s)}`;bar.appendChild(i)});c.appendChild(bar);
+      const lg=el(`<div class="stleg"></div>`);L.forEach(([k,l,s])=>{const x=el(`<span class="sp-${k}"><i></i></span>`);x.append(`${l} · ${stH(s)} (${Math.round(s/tot*100)}%)`);lg.appendChild(x)});c.appendChild(lg)}
+    out.push(c)}
+  return out}
 function renderAll(){
   $("#tdate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
   // contadores das abas (sempre visíveis)
@@ -8302,6 +8638,7 @@ function renderAll(){
   else if(view==="perfil")renderPerfil();
   else if(view==="config")renderConfig();
   else if(view==="foco")renderFoco();
+  else if(view==="stats")renderStats();
   else if(view==="mais")renderMais();
   if(view!=="foco")$("#foBody").innerHTML="";
   foEnsureTick();foPaint();
