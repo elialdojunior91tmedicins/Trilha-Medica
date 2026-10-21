@@ -8,7 +8,7 @@ for(const [name,opt] of Object.entries(DV)){const ctx=await b.newContext(opt);aw
  ok(await p.isVisible('#cfgBtn')&&!(await p.$('#tabH')),`${name}: ajuda dentro da engrenagem`);
  if(phone)await p.tap('#cfgBtn');else await p.click('#cfgBtn');await p.waitForTimeout(150);
  if(phone)await p.tap('#cfBody .cflink:has-text("Ajuda")');else await p.click('#cfBody .cflink:has-text("Ajuda")');await p.waitForTimeout(150);
- ok(await p.evaluate(()=>view==="help"&&!document.getElementById("viewHelp").hidden&&document.querySelectorAll(".hsec").length===17),`${name}: abre a Ajuda com 17 assuntos`);
+ ok(await p.evaluate(()=>view==="help"&&!document.getElementById("viewHelp").hidden&&document.querySelectorAll(".hsec").length===18),`${name}: abre a Ajuda com 18 assuntos`);
  if(name==="celular"){
   await p.fill('#hq','senha');await p.waitForTimeout(350);
   const r=await p.evaluate(()=>[...document.querySelectorAll(".hsec")].map(d=>d.querySelector("summary").textContent+(d.open?"*":"")));

@@ -186,10 +186,10 @@ consultado quando há dúvida. Responda em português.
   `ui.prefs.wplans={"<segunda AAAA-MM-DD>":{m:[7],ok:0|1}}` (as 3 mais recentes) = semana planejada; `ui.prefs.hgoal` = meta semanal em minutos (600). `uiSanitize` deriva `wday` de
   `wnew/woff` antigos e mantém `wnew/woff` coerentes com `wday` (só para quem ainda lê); `wsim` continua (dias de simulado). `dayMin(n)` (plano da semana ou padrão, `wpMon`), `dayCap(n)`
   (folga 0 · 30 min 1 só faculdade · 1 h 1 · 2 h 2 · 3 h+ `PLAN_N`), `weekCap()` (projeção), `HAS_OFF`. `isOffDay/isNewDay/offShift/dueIn` usam `dayMin`. `buildPlan` sombreia `PLAN_N` com `dayCap`
-  e, com 30 min, só deixa faculdade. Cartão `wpCardEl` em Configurações › Plano (`#wpCard`, abas `#wpT-cur|next|pad` em `wpTab`, botões `#wp-<dia>-<min>`, `.chg` = diferente da padrão,
+  e, com 30 min, só deixa faculdade ou, sem ela, 1 ponto fraco (fora da semana da prova). Cartão `wpCardEl` em Configurações › Plano (`#wpCard`, abas `#wpT-cur|next|pad` em `wpTab`, botões `#wp-<dia>-<min>`, `.chg` = diferente da padrão,
   `#wpOk`/`#wpReset`, meta, linha `#wkCfg` de simulados `#wk-wsim-<d>`); `wpSetDay(mon|null,d,m)` refaz o plano se mexer em hoje; `wpConfirm`/`wpReset`/`wpLegacy`. Início: `wpNoticeEl`
   (`#wpNotice`, `#wpGo`) no domingo (próxima) e na segunda (esta), some com `ok` ou `resid-wpdis`. Estudar hoje: `planDayEl` em `#planDay` (`#pTime`, `#pTimeChg`, `#tdm-<min>` → `setTodayMin`,
-  caixa do leve `#pLight`/`#pLightGo` = `qStart` no dia de 30 min). `wdOf(dnum)`, `isSimDay`, `nextStudyLabel`, `newDaysWeek`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim`
+  caixa do leve `#pLight`/`#pLightGo` = `qStart` no dia de 30 min, com a revisão geral `#pLightGenBox`/`#pLightGen` → `cdGenGo`: `cdGenScope()` = temas da prova da faculdade em até 7 dias ou os estudados na semana (`ed`), `cdGenIds` = até `CD_GEN_MAX`=20 cartões já estudados, `cdRunStart(ids,gen)` com aviso `#cdGenNote`). `wdOf(dnum)`, `isSimDay`, `nextStudyLabel`, `newDaysWeek`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim`
   (n=20) ou `exam` no topo. Testes: `tests/t85.js` (planejar) e `tests/t111.js`.
 - Estatísticas (Lote 10, view `stats`, `#tabS` na barra lateral e no ≡ Menu, escondida na barra de baixo do celular; `#viewStats`/`#stBody`; módulo antes de `function renderAll`):
   `renderStats` com seletor `#stSide-res|fac` (`stSide`, `resid-stside`), período `#stPer-7|30|90` (`stPer`, `resid-stper`), aviso `#stLow` (< `ST_LOW_DAYS`=21 dias de uso, `stFirst`),

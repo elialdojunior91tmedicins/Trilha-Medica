@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=0177e2a7">
+<link rel="stylesheet" href="site.css?v=6dd0264f">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=0177e2a7"></script>
-<script src="bridge.js?v=0177e2a7"></script>
+<script src="config.js?v=6dd0264f"></script>
+<script src="bridge.js?v=6dd0264f"></script>
 </head>
 <body>
 <script>
@@ -1304,7 +1304,7 @@ html[data-layout="phone"] .wpopts{display:grid;grid-template-columns:repeat(5,1f
 .pdrow .link{font-size:.84rem}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
 .plight{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.plight .how{margin:0;font-size:.84rem}
 .plight ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.plight li{display:flex;gap:10px;align-items:baseline}.pltag{font-size:.78rem;color:var(--muted)}
-.plight .btn{align-self:flex-start}
+.plight .btn{align-self:flex-start}.plgen{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:8px;font-size:.88rem}.plgen .how{font-size:.8rem}
 .pwlist li.pwoff{opacity:.65}
 /* ===== aba Início ===== */
 #iHero{order:-2;padding:0;border:0;overflow:hidden;background:radial-gradient(120% 90% at 92% -10%,var(--heroglow),transparent 55%),linear-gradient(140deg,var(--hero1) 0%,var(--hero2) 55%,var(--hero3) 100%);color:var(--heroink);box-shadow:0 10px 28px -14px rgb(10 17 33 / .55)}
@@ -2538,7 +2538,8 @@ function buildPlan(){
   // semana da prova: o conteúdo já estudado volta como "Revisar para a prova"
   provaRvPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-pfr",txt:`Revisar · prova ${inLabel(o.d)}`,pid:o.p.id,ref:o.r,n:o.n})}});
   if(CR.active)return plan;// modo provas: nada da residência
-  if(DM<=30)return plan;// dia de 30 min: só o leve (cartões, erros e revisões); a vaga é só da faculdade
+  if(DM<=30){// dia de 30 min: a vaga é da faculdade ou, sem ela, de um ponto fraco (questões); nada de tema novo
+    if(!provaWeek().length)weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});return plan}
   if(provaWeek().length)return plan;// semana da prova: sem tema novo nem ponto fraco; as vagas livres ficam para as revisões da residência
   weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
   // temas em andamento ("Estudando") vêm antes de abrir tema novo
@@ -3617,8 +3618,10 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
   if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"]].filter(x=>x[2]);
     const b=el(`<div class="plight" id="pLight"><p class="how">Dia curto: só o que é leve e não pode acumular. Nada de tema novo hoje.</p><ul></ul></div>`),ul=b.querySelector("ul");
     if(!L.length)ul.appendChild(el(`<li class="how">Nada vencendo hoje. Se sobrar tempo, faça algumas questões.</li>`));
+    {const S=cdGenScope(),n=cdGenIds(S).length;if(n){const g=el(`<div class="plgen" id="pLightGenBox"><span><b></b> <span class="how"></span></span><button class="btn" type="button" id="pLightGen">Revisão geral</button></div>`);
+      g.querySelector("b").textContent=`Revisão geral com cartões: ${n}`;g.querySelector(".how").textContent=S.prova?`dos temas da ${S.lab}`:"dos temas que você estudou nesta semana";g.querySelector("button").onclick=cdGenGo;b._gen=g}}
     L.forEach(([id,lab,n,tm])=>{const li=el(`<li><b></b><span class="pltag"></span></li>`);li.querySelector(".pltag").textContent=tm;li.querySelector("b").textContent=`${lab}: ${n}`;ul.appendChild(li)});
-    if(L.length){const go=el(`<button class="btn primary" type="button" id="pLightGo">Começar</button>`);go.onclick=qStart;b.appendChild(go)}w.appendChild(b)}
+    if(L.length){const go=el(`<button class="btn primary" type="button" id="pLightGo">Começar</button>`);go.onclick=qStart;b.appendChild(go)}if(b._gen)b.appendChild(b._gen);w.appendChild(b)}
   return w}
 function renderPlan(){
   {const wb=$("#weekBox");if(wb){wb.innerHTML="";if(view==="temas")wb.appendChild(weekEl())}}
@@ -7723,11 +7726,20 @@ const cdPlain=h=>{const t=document.createElement("template");t.innerHTML=String(
 const cdHTML=(x,f)=>x.h?cdSafe(x[f]):esc(x[f]).replace(/\n/g,"<br>");
 function cdTxt2html(t){return esc(String(t||"")).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>")}
 /* ---- tela Cartões ---- */
-function cdRunStart(){const Q=cdDue();if(!Q.length)return;cdRun={ids:Q.map(x=>x.id),i:0,show:false,done:0,g:{1:0,2:0,3:0,4:0},again:{}};render()}
+function cdRunStart(ids,gen){const Q=Array.isArray(ids)?ids.map(id=>cards.find(c=>c.id===id)).filter(Boolean):cdDue();if(!Q.length)return;cdRun={ids:Q.map(x=>x.id),i:0,show:false,done:0,g:{1:0,2:0,3:0,4:0},again:{},gen:gen||""};render()}
+/* revisão geral com cartões (dia de 30 min): cartões já estudados dos temas da prova da faculdade em até 7 dias ou, sem prova, dos temas estudados nesta semana */
+const CD_GEN_MAX=20;
+function cdGenScope(){const t=dnum(today()),up=upcomingProvas().find(p=>daysTo(p.date)<=7);
+  if(up)return {lab:up.name,prova:true,keys:new Set(topicKeysOf(up.items))};
+  const ws=wpMon(t),K=new Set();[...ALL,...FAC_ITEMS].forEach(i=>{if((get(i.key).ed||[]).some(d=>dnum(d)>=ws))K.add(i.key)});return {lab:"temas da semana",prova:false,keys:K}}
+function cdGenIds(S){return cards.filter(x=>BYKEY[x.k]&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
+function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
+  setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
 function cdRate(x,g){const R=cdRun,days=cdAnswer(x,g);R.done++;R.g[g]++;if(!days){R.ids.push(x.id);R.again[x.id]=(R.again[x.id]||0)+1}R.i++;R.show=false;render()}
 function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões</h2><span class="todaydate"></span></div></section>`);
   const nNew=due.filter(x=>!x.f.st).length,nRev=due.length-nNew;c.querySelector(".todaydate").textContent=cards.length?`${due.length} hoje · ${cards.length} no total`:"";
   if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
+    if(R.gen){const g=el(`<p class="pnote cdgen" id="cdGenNote"></p>`);g.textContent=`${R.gen}: ${Math.min(R.i+1,R.ids.length)} de ${R.ids.length} cartões. Conta como revisão normal de cada cartão.`;c.appendChild(g)}
     if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim por hoje: ${R.done} ${R.done===1?"resposta":"respostas"} (Errei ${R.g[1]} · Difícil ${R.g[2]} · Bom ${R.g[3]} · Fácil ${R.g[4]}).</p>`));
       c.appendChild(el(`<p class="how">Cada cartão volta no dia em que você estaria perto de esquecer (FSRS): quem você acertou com facilidade some por mais tempo.</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{cdRun=null;render()};c.appendChild(b);return c}
@@ -8215,7 +8227,7 @@ const HELP=[
 - **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo por dia. Dá para mudar depois em Perfil e Configurações.
 - **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
 - **Saudação do dia:** abre o Início com a data, o seu primeiro nome (do Perfil), o que espera por você hoje, os dias até a prova principal e uma frase do dia (60 frases, sem repetir por dois meses). Quando há um feito real, ele entra no lugar da frase: dias seguidos estudando, questões de ontem, especialidade em que o acerto subiu, horas de foco na semana. O botão começa ou continua a fila; sem nada pendente, leva ao próximo tema. Escondeu a saudação em Personalizar? O botão volta para Revisar hoje.
-- **Planejar a semana** (⚙ Configurações › Plano): para cada dia, escolha **Folga, 30 min, 1 h, 2 h ou 3 h+**. A **Semana padrão** vale para toda semana que você não planejar; em **Esta semana** e **Próxima semana** você muda só aquela semana (contorno dourado = diferente da padrão) e toca em **Confirmar a semana**. No domingo e na segunda, o Início mostra um cartão **Planejar a semana** que leva até lá. O tempo do dia decide o plano: **30 min** = só o leve (cartões, erros e revisões, sem tema novo); **1 h** ≈ 1 tema; **2 h** ≈ 2 temas; **3 h+** = o plano inteiro (o número de temas por dia). Folga = sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo. Mudou o dia? Em **Estudar hoje**, toque em **Tenho mais ou menos tempo hoje** (muda só hoje e refaz o plano, mantendo o que você começou). Ali também ficam a **meta por semana** (padrão 10 h) e os dias de **Simulados e provas**. Semana de prova da faculdade e modo provas continuam valendo por cima. A prévia da semana e a projeção até a prova seguem esses tempos.
+- **Planejar a semana** (⚙ Configurações › Plano): para cada dia, escolha **Folga, 30 min, 1 h, 2 h ou 3 h+**. A **Semana padrão** vale para toda semana que você não planejar; em **Esta semana** e **Próxima semana** você muda só aquela semana (contorno dourado = diferente da padrão) e toca em **Confirmar a semana**. No domingo e na segunda, o Início mostra um cartão **Planejar a semana** que leva até lá. O tempo do dia decide o plano: **30 min** = só o leve (cartões, erros e revisões, sem tema novo), um **ponto fraco** para questões (se não houver prova da faculdade ocupando a vaga) e a **Revisão geral com cartões** dos temas que você estudou na semana (ou, com prova da faculdade em até 7 dias, dos temas da prova; até 20 cartões já estudados, contando como revisão normal); **1 h** ≈ 1 tema; **2 h** ≈ 2 temas; **3 h+** = o plano inteiro (o número de temas por dia). Folga = sem plano e sem fila; revisão que vencer na folga passa para o próximo dia de estudo. Mudou o dia? Em **Estudar hoje**, toque em **Tenho mais ou menos tempo hoje** (muda só hoje e refaz o plano, mantendo o que você começou). Ali também ficam a **meta por semana** (padrão 10 h) e os dias de **Simulados e provas**. Semana de prova da faculdade e modo provas continuam valendo por cima. A prévia da semana e a projeção até a prova seguem esses tempos.
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
 - **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Caderno › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki. No rodapé de Erros › Encontrar erros e em Cartões, a exportação em .txt continua (entra como cartões novos).
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.

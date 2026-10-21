@@ -42,8 +42,19 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(r3===3,name+": revisão que venceria em 2 dias, numa folga, vence em 3 "+r3);
   /* 4. tempo de hoje: 30 min = só o leve; 1 h = 1 tema; 2 h = 2; 3 h+ = o plano inteiro */
   const r4=await p.evaluate(wd=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd?30:180);saveUI();redoPlan();const P=ensurePlan();backStack=[];setView("temas");render();
-    return {n:P.items.length,meta:document.querySelector('#planmeta').textContent,due:dueIn(get("CM-1")),light:!!document.querySelector('#pLight'),lt:(document.querySelector('#pLight')||{}).textContent||"",tm:document.querySelector('#pTime').textContent}},T.wd);
-  ok(r4.n===0&&r4.light&&/Revisões de temas/.test(r4.lt)&&/30 min/.test(r4.tm),name+": dia de 30 min: sem tema, com o leve (cartões, erros, revisões) "+JSON.stringify(r4));
+    return {n:P.items.length,cls:P.items.map(x=>x.cls),meta:document.querySelector('#planmeta').textContent,due:dueIn(get("CM-1")),light:!!document.querySelector('#pLight'),lt:(document.querySelector('#pLight')||{}).textContent||"",tm:document.querySelector('#pTime').textContent}},T.wd);
+  ok(r4.n===1&&r4.cls[0]==="r-weak"&&r4.light&&/Revisões de temas/.test(r4.lt)&&/30 min/.test(r4.tm),name+": dia de 30 min: sem tema novo, só o ponto fraco, com o leve (cartões, erros, revisões) "+JSON.stringify(r4));
+  /* revisão geral com cartões dos temas da semana (dia de 30 min) */
+  const g0=await p.evaluate(()=>{const t=dnum(today()),k="CM-5",s=get(k);s.last=today();s.step=0;s.ed=[today()];state[k]=s;commit();
+    for(let i=0;i<3;i++){const x=cdClean({id:"cg"+i,k,q:"Q"+i,a:"A"+i,box:0,due:fromNum(t+5),n:0,ok:0,src:"eu",f:{st:2,s:5,d:5,last:fromNum(t-2),reps:2,lapses:0,first:fromNum(t-9)}});cards.push(x)}
+    cards.push(cdClean({id:"cgo",k:"PED-3",q:"fora",a:"x",box:0,due:fromNum(t+5),n:0,ok:0,src:"eu",f:{st:2,s:5,d:5,last:fromNum(t-2),reps:2,lapses:0,first:fromNum(t-9)}}));render();
+    const b=document.querySelector('#pLightGenBox');return {box:!!b,txt:b?b.textContent:"",ids:cdGenIds(cdGenScope())}});
+  ok(g0.box&&/: 3/.test(g0.txt)&&/semana/.test(g0.txt)&&g0.ids.length===3,name+": revisão geral com os cartões dos temas da semana "+JSON.stringify(g0));
+  await click('#pLightGen');
+  ok(await p.evaluate(()=>view==="notas"&&cdRun&&cdRun.ids.length===3&&/Revisão geral/.test(cdRun.gen)&&!!document.querySelector('#cdGenNote')),name+": Revisão geral abre os cartões no Caderno, com o aviso");
+  const g1=await p.evaluate(()=>{cdRun=null;const t=dnum(today());fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"NCS",items:["T:PED-3"],sps:[]}],provas:[{id:"p",discId:"d",name:"P2",date:fromNum(t+4),items:["T:PED-3"],done:[]}],own:{}};saveFac();
+    const S=cdGenScope(),r={prova:S.prova,lab:S.lab,ids:cdGenIds(S)};fac={sems:[],discs:[],provas:[],own:{}};saveFac();cards=cards.filter(x=>!/^cg/.test(x.id));backStack=[];setView("temas");return r});
+  ok(g1.prova&&g1.lab==="P2"&&g1.ids.join()==="cgo",name+": com prova da faculdade em até 7 dias, a revisão geral usa os temas da prova "+JSON.stringify(g1));
   ok(r4.due===0,name+": sem folga, as revisões vencem normalmente");
   const caps=await p.evaluate(wd=>[60,120,180].map(m=>{ui.prefs.wday[wd]=m;saveUI();redoPlan();return ensurePlan().items.length}),T.wd);
   ok(caps[0]===1&&caps[1]===2&&caps[2]===3,name+": 1 h = 1 tema, 2 h = 2, 3 h+ = 3 "+caps);
