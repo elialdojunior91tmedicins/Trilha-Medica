@@ -12,13 +12,13 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  const side=["tabDeitado","note","full"].includes(name);
  if(side){
   /* automático: aberta no Início, trilho nas outras abas */
-  let r=await st();ok(r.sb==="open"&&r.w===248&&r.labels===7,name+": no Início a barra fica aberta "+JSON.stringify(r));
+  let r=await st();ok(r.sb==="open"&&r.w===248&&r.labels===8,name+": no Início a barra fica aberta "+JSON.stringify(r));
   await p.evaluate(()=>{backStack=[];setView("quest")});await p.waitForTimeout(250);
   r=await st();ok(r.sb==="rail"&&r.w===76&&r.labels===0&&r.pad<130,name+": nas outras abas vira trilho de ícones e a página ganha largura "+JSON.stringify(r));
   ok(await p.evaluate(()=>!!document.querySelector('#sbMenu').checkVisibility()&&document.querySelector('#tabQ').getBoundingClientRect().width<70),name+": trilho mostra ≡ e só os ícones");
   /* abrir por cima: mouse (computador) ou ≡ (iPad) */
   if(mob){await click('#sbMenu')}else{await p.mouse.move(800,400);await p.mouse.move(30,300,{steps:6});await p.waitForTimeout(350)}
-  r=await st();ok(r.peek&&r.w===248&&r.labels===7&&r.pad<130&&(mob?r.back:!r.back),name+": abre por cima sem empurrar a página "+JSON.stringify(r));
+  r=await st();ok(r.peek&&r.w===248&&r.labels===8&&r.pad<130&&(mob?r.back:!r.back),name+": abre por cima sem empurrar a página "+JSON.stringify(r));
   if(name==="note"||name==="tabDeitado")await p.screenshot({path:`t102-peek-${name}.png`});
   if(mob){await p.tap('#sbBack',{position:{x:900,y:400}});await p.waitForTimeout(200);r=await st();ok(!r.peek&&!r.back,name+": tocar fora fecha")}
   else{await p.mouse.move(900,400);await p.waitForTimeout(250);r=await st();ok(!r.peek,name+": tirar o mouse recolhe")}
@@ -47,7 +47,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
   await p.evaluate(()=>{backStack=[];setView("quest")});await p.waitForTimeout(200);
   await click(phone?'#tabM':'#navMenuBtn');
   const m=await p.evaluate(()=>({open:!document.querySelector('#navMenu').hidden,items:[...document.querySelectorAll('#navMenu .nmit')].map(x=>x.id),cur:(document.querySelector('#navMenu .nmit[aria-current]')||{}).id,sec:[...document.querySelectorAll('#navMenu .nmsec button')].map(x=>x.textContent),search:!!document.querySelector('#nmSearch')}));
-  ok(m.open&&m.items.join()==="go-inicio,go-temas,go-fac,go-quest,go-notas,go-foco,go-erros"&&m.cur==="go-quest"&&m.sec.join()==="Perfil,Configurações,Ajuda"&&m.search,name+": menu com todas as seções, busca, Perfil, Configurações e Ajuda "+JSON.stringify(m));
+  ok(m.open&&m.items.join()==="go-inicio,go-temas,go-fac,go-quest,go-notas,go-stats,go-foco,go-erros"&&m.cur==="go-quest"&&m.sec.join()==="Perfil,Configurações,Ajuda"&&m.search,name+": menu com todas as seções, busca, Perfil, Configurações e Ajuda "+JSON.stringify(m));
   if(name==="fone"||name==="ipad820")await p.screenshot({path:`t102-menu-${name}.png`});
   await p.keyboard.press('Escape');await p.waitForTimeout(320);ok((await st()).menu===false,name+": Esc fecha");
   await click(phone?'#tabM':'#navMenuBtn');await click('#go-foco');await p.waitForTimeout(320);

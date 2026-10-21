@@ -14,7 +14,7 @@ await seg("prog");ok(await p.$$eval('#resMap .rmc',a=>a.length)===185,tag+": map
 ok(await p.evaluate(()=>document.querySelectorAll('#resMap .rmc.l3').length===1&&document.querySelectorAll('#resMap .rmc.l2').length===1&&document.querySelectorAll('#resMap .rmc.weak').length===1),tag+": cores por nível e ponto fraco");
 await click('#resMap .rmc.l3');await p.waitForTimeout(250);ok(await p.evaluate(()=>openKey==="CM-2"),tag+": toque no quadrado abre o tema");
 // 8. subtópicos no gráfico
-await p.evaluate(()=>{openKey=null;setView("temas")});await seg("prog");ok(await p.$$eval('#areaChart .hsub',a=>a.length)===5,tag+": barra de subtópicos por área");
+await p.evaluate(()=>{openKey=null;setView("temas")});await seg("prog");ok(await p.$$eval('#areaChart .arow',a=>a.length===5&&a.every(x=>/subtópicos marcados/.test(x.querySelector('.hbar').dataset.tip))),tag+": barra por área com os subtópicos na dica");
 // 7. sugestões
 await seg("lista");const sug=await p.$$eval('#lvSug li',a=>a.map(x=>x.textContent));ok(sug.length===2&&/Pronto para Dominado/.test(sug[0])&&/acerto caiu/.test(sug[1]),tag+": sugestões "+sug.map(x=>x.slice(0,60)).join(" | "));
 await click('#lvSug li:first-child .btn.primary');await p.waitForTimeout(150);ok(await p.evaluate(()=>get("CM-1").l===3),tag+": marcar como Dominado");

@@ -42,6 +42,8 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t81 | Gerador de questões: instruções novas, porquê de cada alternativa, alternativas embaralhadas |
 | t82 | Faculdade: ligar conteúdo a um tema da residência sem substituir (tema inteiro ou subtópicos) |
 | t76 | Lixeira e intervalos ajustados pelo acerto |
+| t85 | Planejar a semana: semana padrão, esta semana, tempo de hoje (30 min a 3 h+), cartão de domingo/segunda, simulado e folga |
+| t111 | Estatísticas (Residência · Faculdade, veredictos, 4 blocos) e melhorias dos gráficos (Lote 10); dados de exemplo em `seed10.js` |
 
 ## Falhas conhecidas do ambiente
 
