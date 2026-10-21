@@ -6,7 +6,7 @@ como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`
 
 Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
-Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Foco, Erros; no celular Caderno e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
+Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Estatísticas (view `stats`), Foco, Erros; no celular Caderno, Estatísticas e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
 - **Artefato no Claude**: https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
@@ -182,10 +182,25 @@ consultado quando há dúvida. Responda em português.
   `heroExam` (prova principal + prova da faculdade em até 7 dias), `heroLine` = feito real (`heroFeats`: sequência `heroActive`, questões de ontem, especialidade
   que subiu ≥10 pontos, ≥5 h de foco na semana) ou `HERO_FRASES[dnum % 60]`. Botão `#heroGo` (fila: `qStart`/`qGoStep`; sem pendência: `startStep`);
   com a saudação visível, `iQueueCard` não mostra `#iqGo`. Em duas colunas `.icol{order:50}` deixa saudação e placar no topo. Classes `.herobtn` (`.hbtn` já é do cabeçalho). Teste: `tests/t84.js`.
-- Semana de estudos: `ui.prefs.wnew/wsim/woff` (dias 0=domingo; `applyUI` → `WK_NEW/WK_SIM/WK_OFF`; editor `weekCfgEl` em Configurações › Plano, ids `#wk-<pref>-<dia>`).
-  `wdOf(dnum)`, `isOffDay/isNewDay/isSimDay`, `offShift`, `nextStudyLabel`, `newDaysWeek`. `dueIn` empurra a data que cai na folga para o próximo dia de estudo e,
-  no dia de folga, nada vence. `buildPlan`: folga = vazio; dia sem temas novos = sem `r-new`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim` (n=20)
-  ou `exam` (prova na íntegra por fazer) no topo. Prévia (`weekEl`) marca folga; projeção usa `newDaysWeek`. Teste: `tests/t85.js`.
+- Planejar a semana (Lote 10, substitui a "Semana de estudos"): `ui.prefs.wday` = minutos por dia (0=domingo … 6) em `WP_MIN` [0,30,60,120,180] (`WP_LAB`), semana padrão;
+  `ui.prefs.wplans={"<segunda AAAA-MM-DD>":{m:[7],ok:0|1}}` (as 3 mais recentes) = semana planejada; `ui.prefs.hgoal` = meta semanal em minutos (600). `uiSanitize` deriva `wday` de
+  `wnew/woff` antigos e mantém `wnew/woff` coerentes com `wday` (só para quem ainda lê); `wsim` continua (dias de simulado). `dayMin(n)` (plano da semana ou padrão, `wpMon`), `dayCap(n)`
+  (folga 0 · 30 min 1 só faculdade · 1 h 1 · 2 h 2 · 3 h+ `PLAN_N`), `weekCap()` (projeção), `HAS_OFF`. `isOffDay/isNewDay/offShift/dueIn` usam `dayMin`. `buildPlan` sombreia `PLAN_N` com `dayCap`
+  e, com 30 min, só deixa faculdade. Cartão `wpCardEl` em Configurações › Plano (`#wpCard`, abas `#wpT-cur|next|pad` em `wpTab`, botões `#wp-<dia>-<min>`, `.chg` = diferente da padrão,
+  `#wpOk`/`#wpReset`, meta, linha `#wkCfg` de simulados `#wk-wsim-<d>`); `wpSetDay(mon|null,d,m)` refaz o plano se mexer em hoje; `wpConfirm`/`wpReset`/`wpLegacy`. Início: `wpNoticeEl`
+  (`#wpNotice`, `#wpGo`) no domingo (próxima) e na segunda (esta), some com `ok` ou `resid-wpdis`. Estudar hoje: `planDayEl` em `#planDay` (`#pTime`, `#pTimeChg`, `#tdm-<min>` → `setTodayMin`,
+  caixa do leve `#pLight`/`#pLightGo` = `qStart` no dia de 30 min). `wdOf(dnum)`, `isSimDay`, `nextStudyLabel`, `newDaysWeek`. Folga zera `qCounts`/`nextSteps`; dia de simulado põe passo `sim`
+  (n=20) ou `exam` no topo. Testes: `tests/t85.js` (planejar) e `tests/t111.js`.
+- Estatísticas (Lote 10, view `stats`, `#tabS` na barra lateral e no ≡ Menu, escondida na barra de baixo do celular; `#viewStats`/`#stBody`; módulo antes de `function renderAll`):
+  `renderStats` com seletor `#stSide-res|fac` (`stSide`, `resid-stside`), período `#stPer-7|30|90` (`stPer`, `resid-stper`), aviso `#stLow` (< `ST_LOW_DAYS`=21 dias de uso, `stFirst`),
+  veredictos `#stVerd .stv ok|warn|bad|na` (`stVerdRes`/`stVerdFac`), blocos `#stB1..4` (`stResBlocks`: tabela `stTable`/`stDelta`, nota das provas na íntegra `stExamLine` pelos `tries`,
+  projeção de `projModel`, barras `stBars` com meta e "até hoje", `stPerTopic` = mediana do Foco por tema estudado (2 h até 3 temas), quadrante `stQuad` + lista por quadrante, focos `.stfi`
+  com `stGoSpec`/`goRevs`, `#stAdj` → `stAdjWeek`) e `#stF1..4` (`stFacBlocks`: notas `p.res`, `provaStats`, `discFocusSec`, divisão `stsplit`). Dados: `stRes(D)`/`stFac(D)`, `stHist`, `stQ(keys,a,b)`
+  (por `qd`), `stTime` + `stSideOf` (r = só residência, f = só faculdade/`D:`/`F-`, b = tema da residência usado na faculdade, `stFacKeys`; o total nunca soma duas vezes), `stTopicAct` (por `ed`).
+  `#stPdf` abre o PDF no Perfil; Perfil tem `#pfStats`. `nmInfo("stats")` resume. Dados de exemplo para testes/prints: `tests/seed10.js`.
+- Gráficos (Lote 10): `qEvoSvg` com eixo do acerto ajustado, `.qebar.cur` "até hoje", `.qegoal` (meta `qgoal`) e legenda das cores; acerto por especialidade em `.qchrow` (botão que filtra
+  `qArea/qSpec`), tendência `.qtr` (30 dias × 90 antes), `.few` com menos de `QCH_FEW`=10, ordem `qChSort` acc|gain (`resid-qchsort`, `#qchS-acc|gain`); Progresso por área = `button.arow`
+  (nome inteiro, "N de M temas", subtópicos na dica, toque filtra a área); sem "Atividade nos últimos 14 dias"; Foco › Esta semana com `.fogh` (semana passada) e `.foglt`; `eWeeksEl` com `.ewlow`.
 - Barra lateral de altura inteira (computador e tablet com `data-cols=2`): `.appnav` fixa à esquerda (`--sbw` 248px; `body` com recuo), slots `#sBrand`/`#sSearch`/`#sfProf`/`#sfCfg`;
   `placeSide()` (em `renderHead` e num `MutationObserver` de `data-layout/data-cols`) move os MESMOS nós (`h1.brand`, `#srchBtn`, `#profBtn`, `#cfgBtn`) e devolve ao `header`
   nas outras telas; o `header` fica escondido. Rodapé `#sFoot` com `#sfWho` (nome, abre Perfil). Teste: `tests/t86.js`.
