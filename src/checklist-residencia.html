@@ -554,6 +554,10 @@ li.t.open{background:var(--bg)}
 .ntags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.ntag{font-size:.78rem;padding:3px 9px}.ntagf .etext{width:9rem;padding:4px 8px;font-size:.82rem}
 .ntagbar{align-items:center}.ntagbar .glabel{margin-right:4px}
 .exks{font-size:.76rem;padding:3px 9px}.exkadd{font-size:.8rem}
+.exsug{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;grid-column:1/-1}.exnote{grid-column:1/-1;margin:2px 0 0;font-size:.78rem}
+.excat{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}.excat .seg{flex-wrap:wrap}
+.exclist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}.exch2{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:8px 0 4px}
+.excrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.excrow div{display:flex;flex-direction:column;min-width:0}.excrow b{font-size:.92rem}.excrow .how{font-size:.78rem}
 .qfig{margin:10px 0 4px;display:flex;flex-direction:column;gap:4px}.qfig img{max-width:100%;max-height:520px;object-fit:contain;align-self:flex-start;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}.qfig figcaption{font-size:.76rem;color:var(--muted)}
 .frlinked{border-top:1px dashed var(--line);padding-top:12px}.frl .link{margin-top:6px}
 .gtext{margin:0;font-size:.92rem}
@@ -5838,7 +5842,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
   /* provas de residência: lista + principal; goal/goalDate passam a espelhar a principal (o resto do app lê esses dois) */
   let ex=Array.isArray(f.exams)?f.exams.filter(e=>e&&typeof e==="object").slice(0,12).map((e,i)=>{const y={id:typeof e.id==="string"&&e.id?e.id.slice(0,24):"ex"+i,name:typeof e.name==="string"?e.name.trim().slice(0,60):""};
-    if(typeof e.date==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.date))y.date=e.date;return y}):null;
+    if(typeof e.date==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)){y.date=e.date;if(e.est)y.est=1}return y}):null;
   if(!ex||(!ex.length&&(o.profile.goal||o.profile.goalDate)&&!f.exOk)){ex=(o.profile.goal||o.profile.goalDate)?[{id:"ex0",name:o.profile.goal||"Prova de residência",...(o.profile.goalDate?{date:o.profile.goalDate}:{})}]:[]}
   o.profile.exams=ex;o.profile.exOk=true;const mn=ex.find(e=>e.id===f.mainEx)||ex[0];if(mn){o.profile.mainEx=mn.id;o.profile.goal=mn.name;o.profile.goalDate=mn.date||""}else{o.profile.goal="";o.profile.goalDate=""}
   return o}
@@ -6299,16 +6303,99 @@ function projEl(){const M=projModel(),w=el(`<div class="iproj"></div>`),fmt=x=>x
     b.onclick=()=>{projOpen=!projOpen;lsSet("resid-projopen",projOpen?"1":null);render()};w.appendChild(b);if(projOpen)w.appendChild(projWeeksEl(M))}
   return w}
 /* Perfil: lista de provas de residência */
+/* ---------- catálogo de provas (Lote 16, pesquisa de 10/2026: calendários Medway, MedCof, BIP, Estratégia MED; bancas conferidas só onde a fonte diz) ----------
+   r = região (NAC, NE, N, CO, SE, S), m = mês habitual da 1ª fase (1–12; 0 = não informado), b = banca ("" = não informada), v = entra pelo ENARE, o = "outras" (fora do top 10) */
+const EXC_REG=[["NAC","Nacionais"],["NE","Nordeste"],["N","Norte"],["CO","Centro-Oeste"],["SE","Sudeste"],["S","Sul"]];
+const EX_CAT=[
+ {n:"ENARE / ENAMED",r:"NAC",uf:"BR",b:"FGV · Ebserh/INEP",m:9,x:"enare enamed nacional"},
+ {n:"HUOL / UFRN (pelo ENARE)",r:"NE",uf:"RN",b:"FGV (ENARE)",m:9,v:1,x:"huol onofre lopes ufrn natal mejc huab"},
+ {n:"SESAP-RN",r:"NE",uf:"RN",b:"SESAP-RN",m:1,x:"sesap walfredo gurgel natal"},
+ {n:"UERN",r:"NE",uf:"RN",b:"Funcitern",m:0,x:"mossoro pau dos ferros"},
+ {n:"SURCE / SESA-CE (pelo ENARE)",r:"NE",uf:"CE",b:"FGV (ENARE)",m:9,v:1,x:"surce ceara fortaleza hgf ijf hgwa huwc ufc sobral esp"},
+ {n:"SUS-BA",r:"NE",uf:"BA",b:"Strix",m:11,x:"bahia salvador"},
+ {n:"SES-PE",r:"NE",uf:"PE",b:"IAUPE",m:12,x:"pernambuco recife petrolina"},
+ {n:"PSU-AL (CEREM-AL)",r:"NE",uf:"AL",b:"",m:0,x:"alagoas maceio"},
+ {n:"UEMA",r:"NE",uf:"MA",b:"",m:11,x:"maranhao"},
+ {n:"Santa Casa de Maceió",r:"NE",uf:"AL",b:"",m:12,x:"scm maceio"},
+ {n:"SMS João Pessoa",r:"NE",uf:"PB",b:"",m:11,x:"sms-jp paraiba"},
+ {n:"FAMENE",r:"NE",uf:"PB",b:"",m:11,x:"paraiba"},
+ {n:"FBHC",r:"NE",uf:"SE",b:"",m:11,x:"sergipe aracaju"},
+ {n:"Hospital Infantil Varela Santiago (HIVS)",r:"NE",uf:"RN",b:"",m:10,o:1,x:"hivs natal pediatria"},
+ {n:"Liga Norte-Rio-Grandense Contra o Câncer",r:"NE",uf:"RN",b:"",m:0,o:1,x:"lnrcc liga natal oncologia"},
+ {n:"CERMAM",r:"N",uf:"AM",b:"",m:0,x:"amazonas manaus"},
+ {n:"UEPA",r:"N",uf:"PA",b:"",m:0,x:"para belem"},
+ {n:"SES-RO",r:"N",uf:"RO",b:"IESPRO",m:12,x:"rondonia porto velho"},
+ {n:"FUNDHACRE",r:"N",uf:"AC",b:"",m:12,x:"acre rio branco"},
+ {n:"Hospital Yano",r:"N",uf:"TO",b:"",m:1,x:"tocantins palmas"},
+ {n:"PSU-GO",r:"CO",uf:"GO",b:"",m:11,x:"goias goiania"},
+ {n:"SES-GO",r:"CO",uf:"GO",b:"Instituto Verbena/UFG",m:12,x:"goias goiania"},
+ {n:"SES-DF",r:"CO",uf:"DF",b:"",m:12,x:"brasilia distrito federal"},
+ {n:"FUBOG",r:"CO",uf:"GO",b:"",m:10,x:"goias"},
+ {n:"HCMS",r:"CO",uf:"MS",b:"",m:12,x:"mato grosso do sul campo grande"},
+ {n:"Hospital Geral de Cuiabá (UNIC)",r:"CO",uf:"MT",b:"",m:12,x:"mato grosso cuiaba"},
+ {n:"Complexo Hospitalar Jardim Cuiabá",r:"CO",uf:"MT",b:"",m:12,x:"mato grosso cuiaba chjc"},
+ {n:"Santa Casa de Campo Grande",r:"CO",uf:"MS",b:"Consesp",m:8,x:"mato grosso do sul"},
+ {n:"USP-SP (FMUSP)",r:"SE",uf:"SP",b:"FUVEST",m:12,x:"usp sao paulo hcfmusp"},
+ {n:"UNIFESP",r:"SE",uf:"SP",b:"VUNESP",m:11,x:"sao paulo epm"},
+ {n:"UNICAMP",r:"SE",uf:"SP",b:"Comvest",m:11,x:"campinas"},
+ {n:"USP-RP (HCFMRP)",r:"SE",uf:"SP",b:"",m:11,x:"ribeirao preto"},
+ {n:"SUS-SP",r:"SE",uf:"SP",b:"VUNESP",m:12,x:"sao paulo"},
+ {n:"Santa Casa de São Paulo",r:"SE",uf:"SP",b:"FCC",m:12,x:"scmsp iscmsp"},
+ {n:"Einstein (HIAE)",r:"SE",uf:"SP",b:"VUNESP",m:11,x:"albert einstein"},
+ {n:"UNESP Botucatu",r:"SE",uf:"SP",b:"VUNESP",m:12,x:"unesp fmb"},
+ {n:"UERJ",r:"SE",uf:"RJ",b:"",m:11,x:"rio de janeiro"},
+ {n:"PSU-MG",r:"SE",uf:"MG",b:"",m:11,x:"minas gerais belo horizonte"},
+ {n:"Sírio-Libanês",r:"SE",uf:"SP",b:"VUNESP",m:9,o:1,x:"sirio libanes hsl"},
+ {n:"SES-RJ",r:"SE",uf:"RJ",b:"",m:12,o:1,x:"rio de janeiro"},
+ {n:"IAMSPE",r:"SE",uf:"SP",b:"Instituto Avança São Paulo",m:11,o:1,x:"iamspe servidor"},
+ {n:"FAMERP",r:"SE",uf:"SP",b:"FAMERP (comissão própria)",m:11,o:1,x:"sao jose do rio preto"},
+ {n:"FMABC",r:"SE",uf:"SP",b:"Instituto Avalia",m:11,o:1,x:"abc santo andre"},
+ {n:"EMESCAM",r:"SE",uf:"ES",b:"",m:11,o:1,x:"espirito santo vitoria"},
+ {n:"PSU-ES",r:"SE",uf:"ES",b:"",m:11,o:1,x:"espirito santo"},
+ {n:"Santa Casa de BH (SCM-BH)",r:"SE",uf:"MG",b:"",m:11,o:1,x:"belo horizonte scmbh"},
+ {n:"IPSEMG",r:"SE",uf:"MG",b:"",m:12,o:1,x:"belo horizonte"},
+ {n:"AMRIGS",r:"S",uf:"RS",b:"",m:11,x:"rio grande do sul porto alegre"},
+ {n:"HCPA",r:"S",uf:"RS",b:"",m:10,x:"hospital de clinicas porto alegre"},
+ {n:"UFCSPA / Moinhos de Vento",r:"S",uf:"RS",b:"",m:11,x:"porto alegre hmv"},
+ {n:"PUC-PR",r:"S",uf:"PR",b:"",m:10,x:"curitiba parana"},
+ {n:"AMP-PR",r:"S",uf:"PR",b:"",m:11,x:"curitiba parana"},
+ {n:"UEL",r:"S",uf:"PR",b:"",m:11,x:"londrina"},
+ {n:"Hospital do Trabalhador",r:"S",uf:"PR",b:"",m:10,x:"curitiba"},
+ {n:"Hospital Pequeno Príncipe",r:"S",uf:"PR",b:"",m:11,x:"curitiba hpp pediatria"},
+ {n:"UEM",r:"S",uf:"PR",b:"",m:12,x:"maringa"},
+ {n:"Hospital Angelina Caron",r:"S",uf:"PR",b:"",m:12,x:"curitiba"}];
+const MESES=["","janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+let excQ={},excOpen=false,excReg="NE";
+const excLine=c=>[c.uf,c.b||"banca não informada",c.m?`costuma ser em ${MESES[c.m]}`:"mês não informado"].join(" · ")+(c.v?" · seleção pelo ENARE":"");
+function excFind(q){const n=norm(q.trim());if(n.length<2)return [];return EX_CAT.filter(c=>norm(c.n+" "+c.uf+" "+c.x).includes(n)||n.split(/\s+/).every(w=>norm(c.n+" "+c.x).includes(w))).slice(0,6)}
+/* data sugerida: dia 15 do mês habitual, na próxima vez que ele chegar */
+function excDate(m){if(!m)return "";const t=today(),y=+t.slice(0,4);let d=`${y}-${String(m).padStart(2,"0")}-15`;if(d<t)d=`${y+1}-${String(m).padStart(2,"0")}-15`;return d}
+let excJust=null;
+function excPick(id,c){const y=exList().find(z=>z.id===id);if(!y)return;excJust=id;setTimeout(()=>{if(excJust===id)excJust=null},400);y.name=c.n;if(!y.date||y.est){const d=excDate(c.m);if(d){y.date=d;y.est=1}else{delete y.date;delete y.est}}excQ[id]="";saveUI();render()}
+function excAdd(c){const id="ex"+Date.now().toString(36),L2=exList(),d=excDate(c.m);ui.profile.exams=[...L2,{id,name:c.n,...(d?{date:d,est:1}:{})}];if(!L2.length)ui.profile.mainEx=id;saveUI();render()}
+function excPanelEl(){const w=el(`<div class="excat" id="excPanel"><div class="seg" role="group" aria-label="Região"></div><ul class="exclist"></ul><p class="how">Lista de 10/2026 (Medway, MedCof, BIP, Estratégia MED). Banca e mês podem mudar a cada edital: confira o edital. "Pelo ENARE" = a instituição seleciona pela prova nacional.</p></div>`),sg=w.querySelector(".seg");
+  EXC_REG.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="excR-"+v;b.textContent=l;b.setAttribute("aria-pressed",excReg===v);b.onclick=()=>{excReg=v;render()};sg.appendChild(b)});
+  const ul=w.querySelector("ul"),has=new Set(exList().map(x=>norm(x.name||"")));
+  [["Principais",EX_CAT.filter(c=>c.r===excReg&&!c.o)],["Outras",EX_CAT.filter(c=>c.r===excReg&&c.o)]].forEach(([h,L])=>{if(!L.length)return;ul.appendChild(el(`<li class="exch2">${h}</li>`));
+    L.forEach(c=>{const li=el(`<li class="excrow"><div><b></b><span class="how"></span></div><button class="mini" type="button"></button></li>`);li.querySelector("b").textContent=c.n;li.querySelector(".how").textContent=excLine(c);
+      const b=li.querySelector("button"),on=has.has(norm(c.n));b.id="excA-"+EX_CAT.indexOf(c);b.textContent=on?"Na sua lista":"+ Adicionar";b.disabled=on||exList().length>=12;b.onclick=()=>excAdd(c);ul.appendChild(li)})});
+  return w}
 function exEditorEl(){const P=ui.profile,L=exList(),main=exMain();
-  const mt=el(`<section class="card pfex"><div class="dhead"><h2>Provas de residência</h2></div><p class="gtext how">Cadastre as provas que vai prestar e marque a principal: ela guia a projeção do Início. Sem data, o Início mostra só o seu ritmo; as outras aparecem marcadas na linha do tempo e no calendário.</p><ul class="exlist"></ul><button class="btn" type="button" id="pfExAdd">+ Adicionar prova</button><p class="pfcount"></p></section>`);
+  const mt=el(`<section class="card pfex"><div class="dhead"><h2>Provas de residência</h2></div><p class="gtext how">Cadastre as provas que vai prestar e marque a principal: ela guia a projeção do Início. Sem data, o Início mostra só o seu ritmo; as outras aparecem marcadas na linha do tempo e no calendário.</p><ul class="exlist"></ul><div class="btns"><button class="btn" type="button" id="pfExAdd">+ Adicionar prova</button><button class="btn" type="button" id="pfExCat"></button></div><p class="pfcount"></p></section>`);
+  {const cb=mt.querySelector("#pfExCat");cb.textContent=excOpen?"Fechar o catálogo":"Ver provas por região";cb.setAttribute("aria-expanded",excOpen);cb.onclick=()=>{excOpen=!excOpen;render()};if(excOpen)mt.insertBefore(excPanelEl(),mt.querySelector(".pfcount"))}
   const ul=mt.querySelector(".exlist");
   L.forEach(x=>{const li=el(`<li class="exrow"><label class="exmain"><input type="radio" name="pfMain"><span>Principal</span></label><label class="ffield"><span>Prova</span><input class="etext exn" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data (se já souber)</span><input class="etext exd" type="date"></label><button class="link warn exdel" type="button">remover</button></li>`);
     const rb=li.querySelector("input[type=radio]"),n=li.querySelector(".exn"),d=li.querySelector(".exd");rb.checked=!!main&&main.id===x.id;rb.id="pfExMain-"+x.id;n.id="pfExName-"+x.id;d.id="pfExDate-"+x.id;n.value=x.name||"";d.value=x.date||"";
     rb.setAttribute("aria-label",`Marcar ${x.name||"esta prova"} como principal`);li.querySelector(".exdel").setAttribute("aria-label",`Remover ${x.name||"prova"}`);
     rb.onchange=()=>{ui.profile.mainEx=x.id;saveUI();render()};
     const cur=()=>exList().find(y=>y.id===x.id);/* o objeto muda a cada saveUI: procura pelo id */
-    n.onchange=()=>{const y=cur();if(!y)return;y.name=n.value.trim();saveUI();renderHead()};
-    d.onchange=()=>{const v=d.value,y=cur();if(!y||(v&&!/^\d{4}-\d{2}-\d{2}$/.test(v)))return;if(v)y.date=v;else delete y.date;saveUI();render()};
+    n.onchange=()=>{if(excJust===x.id||!n.isConnected)return;const y=cur();if(!y)return;y.name=n.value.trim();saveUI();renderHead()};
+    /* sugestões do catálogo enquanto digita (continua dando para escrever qualquer prova) */
+    const sug=el(`<ul class="exsug" role="listbox"></ul>`),fill=()=>{sug.innerHTML="";const R=excFind(n.value);R.filter(c=>norm(c.n)!==norm(n.value)).forEach((c,j)=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=c.n;li.querySelector("span").textContent=excLine(c);
+      const bb=li.querySelector("button");bb.id=`exs-${x.id}-${j}`;bb.onmousedown=e=>e.preventDefault();bb.onclick=()=>excPick(x.id,c);sug.appendChild(li)});sug.hidden=!sug.children.length};
+    n.oninput=()=>{excQ[x.id]=n.value;fill()};n.onblur=()=>setTimeout(()=>{sug.hidden=true},200);li.appendChild(sug);if(excQ[x.id]){n.value=excQ[x.id];fill()}else sug.hidden=true;
+    {const c=EX_CAT.find(c=>norm(c.n)===norm(x.name||""));if(c||x.est){const nt=el(`<p class="how exnote"></p>`);nt.textContent=(c?excLine(c):"")+(x.est?(c?". ":"")+"Data estimada pelo mês habitual: troque quando sair o edital.":"");li.appendChild(nt)}}
+    d.onchange=()=>{const v=d.value,y=cur();if(!y||(v&&!/^\d{4}-\d{2}-\d{2}$/.test(v)))return;if(v)y.date=v;else delete y.date;delete y.est;saveUI();render()};
     li.querySelector(".exdel").onclick=()=>{ui.profile.exams=exList().filter(y=>y.id!==x.id);if(ui.profile.mainEx===x.id)delete ui.profile.mainEx;saveUI();render()};ul.appendChild(li)});
   if(!L.length)ul.appendChild(el(`<li class="cempty">Nenhuma prova cadastrada. Sem prova, a projeção usa só o seu ritmo.</li>`));
   const ad=mt.querySelector("#pfExAdd");if(L.length>=12)ad.remove();else ad.onclick=()=>{const id="ex"+Date.now().toString(36),L2=exList();ui.profile.exams=[...L2,{id,name:""}];if(!L2.length)ui.profile.mainEx=id;saveUI();render();setTimeout(()=>{const i=document.getElementById("pfExName-"+id);if(i)i.focus()},40)};
@@ -8836,7 +8923,7 @@ No seletor **Faculdade**: notas das provas, quanto de cada prova e fechamento do
 - **Perfil** (suas iniciais) e **⚙ Configurações** ficam no canto superior direito em todos os aparelhos. A Ajuda, as instruções do gerador e o backup ficam dentro da ⚙.`],
 ["Perfil e Configurações",`**Perfil** (ícone com suas iniciais, no topo):
 - **Nome:** vira as iniciais do ícone.
-- **Provas de residência:** cadastre as provas que vai prestar (ENARE, USP, SUS-SP…), com data se já souber, e marque a principal. Ela guia a projeção do Início; as outras aparecem na linha do tempo e no arquivo de calendário.
+- **Provas de residência:** cadastre as provas que vai prestar, com data se já souber, e marque a principal. Ela guia a projeção do Início; as outras aparecem na linha do tempo e no arquivo de calendário. Ao digitar o nome, o app sugere provas do **catálogo** (nacionais e as principais de cada região, com UF, banca e mês habitual; "pelo ENARE" = a instituição seleciona pela prova nacional, como o HUOL/UFRN). Escolhendo uma, a data vem **estimada** no dia 15 do mês habitual, marcada como estimada até você trocar pela data do edital. **Ver provas por região** mostra a lista (Principais e Outras) com **+ Adicionar**. Dá para digitar qualquer prova que não esteja no catálogo.
 - **Conta** (no site): entrar, sair e criar senha para o app instalado.
 - **Minhas estatísticas:** **Ver Estatísticas** abre a página completa. O cartão mostra sequência de dias, dias com estudo, temas estudados e dominados, revisões feitas, questões e acerto, conteúdos da faculdade.
 - **Exportar PDF** (em Minhas estatísticas): escolha **Residência**, **Faculdade** e/ou **Questões e erros**, o período (7, 14, 21, 30, 60 ou 90 dias, tudo, ou digite os dias em **Outro**) e, se quiser, as **Matérias** (especialidades da residência e disciplinas da faculdade; sem nenhuma marcada, entram todas). Questões e acerto respeitam o período e as matérias escolhidas (cada tema guarda as questões de cada dia; as registradas antes de 08/10/2026 usam a data do último estudo do tema). "Estudados no período" conta cada dia em que o tema foi estudado ou revisado. O PDF traz o resumo do período, o progresso por área e por disciplina, as questões respondidas com o acerto e os principais erros por tema (menor acerto primeiro): o que você errou, o correto, o porquê e **como melhorar**. Funciona sem internet.
