@@ -22,12 +22,12 @@ ok(await p.evaluate(([k,o])=>JSON.stringify(get(k).qd[o])==="[10,6]",[k,ont]),ta
 await p.evaluate(k=>{gen[k]={status:"done",n:2,qs:[{enunciado:"Caso A",alternativas:[{letra:"A",texto:"x"},{letra:"B",texto:"y"}],correta:"B",comentario:"c",conceito:"k",alerta:""},{enunciado:"Caso B",alternativas:[{letra:"A",texto:"x"},{letra:"B",texto:"y"}],correta:"A",comentario:"",conceito:"",alerta:""}],ans:{}};answer(BYKEY[k],0,"A");answer(BYKEY[k],1,"A");render()},k);
 ok(await p.evaluate(()=>redo.length===1&&redo[0].q.enunciado==="Caso A"),tag+": errada vai para refazer, certa não");
 await p.waitForTimeout(400);ok(await p.evaluate(()=>Object.keys(window.__store).some(x=>x.includes("/progress/redo/"))),tag+": gravada na conta");
-await p.evaluate(()=>{setView("quest")});await p.waitForTimeout(200);await p.evaluate(()=>setQSeg("praticar"));await p.waitForTimeout(100);ok(/1/.test(await p.$eval('#rdGo',x=>x.textContent)),tag+": botão refazer");
+await p.evaluate(()=>{rdF.due=false;setView("quest")});await p.waitForTimeout(200);await p.evaluate(()=>setQSeg("praticar"));await p.waitForTimeout(100);ok(/1/.test(await p.$eval('#rdGo',x=>x.textContent)),tag+": botão refazer");
 const qt0=await p.evaluate(k=>get(k).qt,k);
 await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(1)');await p.waitForTimeout(150);
 ok(await p.evaluate(()=>redo[0].n===2),tag+": errou de novo, continua (2×)");ok(await p.evaluate(k=>get(k).qt,k)===qt0,tag+": refazer não muda o acerto do tema");
 await click('#rdNext');await p.waitForTimeout(150);await click('.rdplay .btn.primary');await p.waitForTimeout(150);
-await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(2)');await p.waitForTimeout(200);ok(await p.evaluate(()=>redo.length===0),tag+": acertou, saiu da lista");
+await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(2)');await p.waitForTimeout(200);ok(await p.evaluate(()=>redo.length===1&&redo[0].ok===1&&redo[0].due>today()),tag+": acertou: volta em 3 dias (sai com 2 acertos em dias diferentes)");
 await click('#rdNext');await p.waitForTimeout(150);ok(/1 de 1/.test(await p.$eval('.rdplay .verdict',x=>x.textContent)),tag+": resultado final");await click('.rdplay .btn.primary');
 // onde ganhar pontos
 const g=await p.$$eval('.qglist li',a=>a.length);ok(g===6,tag+": onde ganhar pontos lista 6 ("+g+")");

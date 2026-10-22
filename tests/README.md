@@ -45,6 +45,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t85 | Planejar a semana: semana padrão, esta semana, tempo de hoje (30 min a 3 h+), cartão de domingo/segunda, simulado e folga |
 | t111 | Estatísticas (Residência · Faculdade, veredictos, 4 blocos) e melhorias dos gráficos (Lote 10); dados de exemplo em `seed10.js` |
 | t112 | Lote 11: 198 temas, pesos revistos e psiquiatria dividida em 4 (migração do progresso e das ligações da faculdade) |
+| t113 | Lote 12: referências nas questões, Refazer espaçado (fila do dia, filtros, teimosas, simulado) e "Seus temas nas questões" |
 
 ## Falhas conhecidas do ambiente
 

@@ -5,7 +5,7 @@ const ctx=await b.newContext({viewport:{width:vw,height:vh},hasTouch:mob,isMobil
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";
 await p.evaluate(()=>{errors=[];const q={enunciado:"Paciente com PA 150/95",alternativas:[{letra:"A",texto:"Normal"},{letra:"B",texto:"HAS estágio 1"}],correta:"B",conceito:"HAS ≥140/90",comentario:"c",alerta:""};
-  redo=[{id:"r1",k:"CM-1",d:today(),n:1,q}];rdSaveLocal&&rdSaveLocal();setView("quest");setQSeg("praticar")});await p.waitForTimeout(200);
+  redo=[{id:"r1",k:"CM-1",d:today(),n:1,q}];rdF.due=false;rdSaveLocal&&rdSaveLocal();setView("quest");setQSeg("praticar")});await p.waitForTimeout(200);
 await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(1)');await p.waitForTimeout(150);
 await p.click('.rdplay .ecad .btn');await p.waitForTimeout(150);
 ok(/^Marquei Normal; a certa era/.test(await p.inputValue("#ecq-w"))&&/HAS ≥140\/90/.test(await p.inputValue('#ecq-r')),tag+": refazer pré-preenche");

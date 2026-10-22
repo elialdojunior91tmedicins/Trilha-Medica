@@ -453,6 +453,17 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .rdl{display:flex;flex-direction:column;min-width:0}.rdl b{font-size:.88rem;font-weight:600;overflow-wrap:anywhere}.rdl span{font-size:.76rem;color:var(--muted)}
 .rdlist .foxb.warn{color:var(--danger);font-size:.8rem;font-weight:600}
 .rdplay{display:flex;flex-direction:column;gap:10px}
+.rdfil{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.rdfil select{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.85rem}
+.rdteim{font:700 .66rem var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--bad);border:1px solid var(--bad);border-radius:99px;padding:0 6px;vertical-align:1px}
+.rdbytema{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.88rem}.rdbytema li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
+.qflink{color:var(--accent);font-weight:600}
+#qFind #qlistT{margin-top:4px}.qfall{margin:0;font-size:.8rem}.qrow.qopen{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.qtp{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}.qtp .glabel{margin:0}.qtp .glabel .how{text-transform:none;letter-spacing:0;font-weight:400}
+.qtpw{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;height:110px}.qtpc{display:flex;flex-direction:column;align-items:center;min-width:0}.qtpv{font:600 .68rem var(--body);color:var(--muted);height:1rem}
+.qtpb{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}.qtpb i{display:block;width:min(100%,26px);border-radius:4px 4px 0 0;background:var(--accent);opacity:.75}
+.qtpb i.good{background:var(--good)}.qtpb i.warn{background:var(--warn)}.qtpb i.bad{background:var(--bad)}.qtpc.cur .qtpb i{opacity:.4}.qtpx{font-size:.66rem;color:var(--muted)}
+.qtptr{margin:0;font-size:.82rem}.qtpsrc,.qtperr{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.85rem}.qtpsrc li{display:flex;justify-content:space-between;gap:10px}
+.qtperr .link{text-align:left;font-size:.85rem}.qtpacts .btn{font-size:.82rem}
 .rdtopic{font-size:.82rem}
 .qglist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
 .qglist li{display:grid;grid-template-columns:1.6rem minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -2381,6 +2392,34 @@ Comentário
 - Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
 - Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
 - Conceito-chave: uma frase curta, boa para revisar depois.
+- Apoie o comentário na referência: diga o que ela estabelece (critério, conduta, valor de corte, dose) e por que isso decide o caso. Nunca mande o estudante "conferir na diretriz": a explicação tem de estar aqui.
+- Se o tema mudou recentemente ou as fontes divergem, diga no alerta qual versão você seguiu (ano) e o que mudou.`;
+const DEFAULT_PROMPT_1026A=`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
+
+Estilo
+- Cerca de 70–80% em caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP); o restante, conceito aplicado.
+- Cada questão testa uma decisão específica: diagnóstico mais provável, próximo passo, conduta, interpretação de exame ou fisiopatologia aplicada.
+- Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
+- O enunciado traz os dados necessários para decidir. A dificuldade vem do conteúdo, nunca de ambiguidade.
+
+Alternativas
+- 4 alternativas (A a D), uma única melhor resposta.
+- Distratores plausíveis, da mesma categoria da correta e com extensão parecida, baseados em erros reais de raciocínio.
+- Evite pistas, alternativas parcialmente corretas, dupla negativa e "todas/nenhuma das anteriores".
+
+Dificuldade
+- Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
+- Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
+
+Conteúdo e fontes
+- Use só fontes confiáveis e vigentes: diretrizes e protocolos brasileiros (Ministério da Saúde, PCDTs, sociedades médicas brasileiras como SBC, SBD, SBP, FEBRASGO, SBPT, SBEM, AMIB), o que as bancas brasileiras cobram e, quando não houver diretriz brasileira, diretrizes internacionais de referência (OMS, ACC/AHA, ESC, KDIGO, GOLD, GINA, ADA, IDSA, Surviving Sepsis) e livros-texto clássicos (Harrison, Sabiston, Nelson, Williams, Guyton).
+- Nada inventado: nenhum dado, dose, critério, valor de corte, estudo ou referência que você não tenha certeza de que existe e está correto. Se não tiver certeza de um detalhe, não o use na questão.
+- Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
+
+Comentário
+- Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
+- Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
+- Conceito-chave: uma frase curta, boa para revisar depois.
 - Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no alerta para conferir na diretriz vigente.`;
 /* instruções padrão antigas: quem nunca mudou o texto passa a usar o padrão novo */
 const OLD_PROMPTS=[`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
@@ -2430,15 +2469,22 @@ Comentário
 - Resuma o conceito-chave cobrado em uma frase curta, boa para revisar depois.
 - Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no campo de alerta para conferir na diretriz vigente.`];
 const promptKey=t=>String(t||"").replace(/\s+/g," ").trim();
+OLD_PROMPTS.push(DEFAULT_PROMPT_1026A);
 function promptUp(t){return OLD_PROMPTS.some(o=>promptKey(o)===promptKey(t))?DEFAULT_PROMPT:t}
+/* referências (Lote 12): no site o pedido vai para uma conversa do Claude com busca na web → pesquisar, confirmar e trazer o link;
+   no artefato o sample não tem internet → só referência que conhece com segurança, senão troca a questão (o app descarta questão sem fonte) */
+const REF_RULES=()=>window.__site?`Referências (obrigatório): antes de responder, pesquise na internet e confirme cada referência em fonte oficial (Ministério da Saúde/gov.br, sociedades médicas, sites oficiais das diretrizes, PubMed). Confira o ano, a versão vigente e o trecho que sustenta a resposta. Nada inventado: se não conseguir confirmar a referência de uma questão, troque a questão por outra cujo conteúdo você confirmou. No comentário e em cada "porque", use o que a referência diz para justificar a correta e mostrar por que cada errada está errada.`
+  :`Referências (obrigatório): você não tem acesso à internet agora, então só gere questões cujo conteúdo e referência você conhece com segurança. Nada inventado: se não tiver uma referência segura para uma questão, troque a questão por outra. Deixe "link" vazio, a não ser que tenha certeza do endereço oficial. No comentário e em cada "porque", use o que a referência diz para justificar a correta e mostrar por que cada errada está errada.`;
 const fixedFormat=(nq)=>`Responda apenas com um array JSON de ${nq} objetos, sem nenhum outro texto, cada um neste formato:
 {"enunciado": "texto do caso e da pergunta",
  "alternativas": [{"letra": "A", "texto": "...", "porque": "por que esta alternativa está errada neste caso (string vazia na correta)"}, {"letra": "B", "texto": "...", "porque": "..."}],
  "correta": "letra da alternativa correta",
  "comentario": "por que a correta é a melhor resposta",
  "conceito": "conceito-chave em uma frase",
- "alerta": "aviso para conferir na diretriz, ou string vazia",
- "fonte": "a referência que sustenta a resposta: nome da diretriz ou protocolo, com a sociedade ou órgão e o ano (ex.: Diretriz Brasileira de Insuficiência Cardíaca, SBC, 2021), ou o livro-texto e o capítulo. Cite só o que você tem certeza de que existe; se não tiver certeza do ano ou do título exato, cite de forma geral (ex.: diretriz da SBC sobre insuficiência cardíaca), nunca invente"}
+ "alerta": "só quando o tema mudou recentemente ou as fontes divergem: qual versão você seguiu (ano) e o que mudou; nunca 'confira na diretriz'; string vazia se não houver",
+ "fonte": "a referência específica que sustenta a resposta: nome da diretriz, consenso ou protocolo + sociedade ou órgão + ano + seção, tabela ou recomendação quando houver (ex.: Diretriz Brasileira de Insuficiência Cardíaca Crônica e Aguda, SBC, 2018, tabela de recomendações de betabloqueadores); ou livro-texto + edição + capítulo; ou manual do Ministério da Saúde + ano. Se a questão saiu do material do estudante, cite o material e a página ou slide",
+ "link": "endereço (URL) da página oficial da referência que você consultou; string vazia se não houver"}
+${REF_RULES()}
 O app embaralha a ordem das alternativas: no comentário e no campo porque, não cite letras; refira-se ao conteúdo da alternativa.
 Escreva tudo em português do Brasil.`;
 let promptText=DEFAULT_PROMPT, promptEdited=false, settingsDoc=null, sampleFn=null, sampleOff=false, gen={}, qCount=10;
@@ -3258,15 +3304,19 @@ function msEl(S,o){const site=!!window.__site,on=genMatOn(S),ID=o.id,its=S?S.ite
     c.onchange=()=>{if(c.checked)o.set({items:[],attach:true,busy:false});else o.set(null);render()};b.appendChild(l)}
   return d}
 function genMatEl(it){return msEl(genMat[it.key],{id:(t,i)=>`gm${t}-${it.key}${i!==undefined?"-"+i:""}`,get:()=>genMat[it.key],set:v=>{if(v)genMat[it.key]=v;else delete genMat[it.key]}})}
+const linkOk=u=>typeof u==="string"&&/^https?:\/\/[^\s"<>]{4,400}$/i.test(u.trim());
 function validQs(data){
   const arr=Array.isArray(data)?data:(data&&Array.isArray(data.questoes)?data.questoes:[]);
-  return arr.filter(q=>q&&typeof q.enunciado==="string"&&Array.isArray(q.alternativas)&&q.alternativas.length>=2&&
+  return arr.filter(q=>q&&(window.__site||window.__noRefCheck||String(q.fonte||"").trim())&&typeof q.enunciado==="string"&&Array.isArray(q.alternativas)&&q.alternativas.length>=2&&
     q.alternativas.every(a=>a&&a.letra&&typeof a.texto==="string")&&q.alternativas.some(a=>String(a.letra).trim().toUpperCase()===String(q.correta||"").trim().toUpperCase()))
     .map(q=>altShuffle({enunciado:q.enunciado,alternativas:q.alternativas.map(a=>({letra:String(a.letra).trim().toUpperCase(),texto:a.texto,porque:typeof a.porque==="string"?a.porque.trim():""})),
-      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||""),fonte:String(q.fonte||"").trim().slice(0,400),...(typeof q.tema==="string"&&q.tema.trim()?{tema:q.tema.trim()}:{})}));
+      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||""),fonte:String(q.fonte||"").trim().slice(0,400),...(linkOk(q.link)?{link:String(q.link).trim()}:{}),...(typeof q.tema==="string"&&q.tema.trim()?{tema:q.tema.trim()}:{})}));
 }
 /* o próprio app sorteia a posição das alternativas (o Claude tende a concentrar a correta em B e C) e renomeia as letras A, B, C…;
    o comentário e os "porque" não citam letras (fixedFormat pede isso), então continuam valendo */
+/* Fonte da questão (Lote 12): referência + link para a página oficial, quando houver */
+function qFonteEl(q){if(!q||!(q.fonte||q.link))return null;const p=el(`<p class="qfonte"><b>Referência</b><span></span></p>`),sp=p.querySelector("span");sp.textContent=q.fonte||"";
+  if(linkOk(q.link)){const a=el(`<a class="qflink" target="_blank" rel="noopener"></a>`);a.href=q.link.trim();a.textContent=q.fonte?"Abrir a referência":q.link.trim();if(q.fonte)sp.append(" · ");sp.appendChild(a)}return p}
 function altShuffle(q){const L=q.alternativas;if(window.__noShuffle||L.length<2||L.length>8||new Set(L.map(a=>a.letra)).size!==L.length)return q;
   const right=L.find(a=>a.letra===q.correta),mix=shuffle(L),AB="ABCDEFGH";
   q.alternativas=mix.map((a,i)=>({...a,letra:AB[i]}));q.correta=AB[mix.indexOf(right)];return q}
@@ -3350,7 +3400,7 @@ async function generate(it){
 function answer(it,qi,letra){
   const g=gen[it.key];if(!g||g.ans[qi])return;
   g.ans[qi]=letra;const ok=letra===g.qs[qi].correta;
-  if(!ok)rdAdd(it.key,g.qs[qi]);
+  if(!ok)rdAdd(it.key,g.qs[qi],"gen");
   upd(it.key,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
@@ -3404,7 +3454,7 @@ function renderGen(it){
       if(mine){const ok=mine===q.correta;
         c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+q.correta.replace(/[^A-Z0-9]/g,"")+"."}</p>`));
         c.appendChild(qExplEl(qSplit(q)));
-        if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
+        {const f=qFonteEl(q);if(f)c.appendChild(f)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+q.alerta;c.appendChild(p)}
         const acts=el(`<div class="btns"></div>`);
         if(!ok){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>toCaderno(it,qi);acts.appendChild(b)}
         if(acts.children.length)c.appendChild(acts);
@@ -3502,8 +3552,9 @@ function qUniverse(){// temas da residência + conteúdos da faculdade, com os f
   return pool}
 const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
 function qClearAll(){qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;qWorse=false}
-function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
-  const c=el(`<div class="card tfind" id="qFind" role="search" aria-labelledby="qfh"><div class="tfhead"><h2 id="qfh">Filtrar questões</h2><span class="tfcount"></span></div><div class="tfsearch">${FC_ICO}<input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto" aria-label="Buscar tema ou assunto" autocomplete="off"></div><div class="tfilters"></div></div>`);
+let qListKeep=null;
+function renderQFilters(){const box=$("#qFilters");qListKeep=qListKeep||$("#qlistT");if(qListKeep&&qListKeep.parentNode)qListKeep.remove();box.innerHTML="";
+  const c=el(`<div class="card tfind" id="qFind" role="search" aria-labelledby="qfh"><div class="tfhead"><h2 id="qfh">Seus temas nas questões</h2><span class="tfcount"></span></div><div class="tfsearch">${FC_ICO}<input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto" aria-label="Buscar tema ou assunto" autocomplete="off"></div><div class="tfilters"></div></div>`);
   box.appendChild(c);const qi=c.querySelector("#qq");qi.value=qQuery;qi.oninput=debounced(()=>{qQuery=qi.value;render()});
   const pool=[...ALL,...FAC_ITEMS],withQ=it=>get(it.key).qt,U=qUniverse(),nU=U.filter(withQ).length,nAll=pool.filter(withQ).length;
   c.querySelector(".tfcount").textContent=nU===nAll?`${nAll} ${nAll===1?"tema":"temas"} com questões`:`${nU} de ${nAll} temas`;
@@ -3522,7 +3573,9 @@ function renderQFilters(){const box=$("#qFilters");box.innerHTML="";
   fcBody(c.querySelector(".tfilters"),{tog:"qFBtn",panelId:"qFPanel",open:qFOpen,onToggle:()=>{qFOpen=!qFOpen;lsSet("resid-qfpanel",qFOpen?"1":null)},
     sort:["qSort",[["num","Por especialidade"],["low","Menor acerto primeiro"],["most","Mais questões primeiro"]],qSort,v=>{qSort=v}],
     act:A,clearId:"qClear",onClear:qClearAll,groups:G,foot:A.length||qQuery?(nU?`${nU} ${nU===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com questões nesses filtros"):"",
-    onDone:()=>{qFOpen=false;lsSet("resid-qfpanel",null);render();const k=$("#qkpis");if(k)k.scrollIntoView({block:"start"})}})}
+    onDone:()=>{qFOpen=false;lsSet("resid-qfpanel",null);render();const k=$("#qkpis");if(k)k.scrollIntoView({block:"start"})}});
+  c.appendChild(el(`<p class="how qfall">Os filtros valem para toda a aba (resumo, gráficos, simulado e Refazer). Toque num tema para ver os detalhes dele aqui.</p>`));
+  if(qListKeep)c.appendChild(qListKeep)}
 function renderQuest(){
   renderQFilters();
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
@@ -3567,8 +3620,8 @@ function renderQuest(){
   const S=new Map(vis.map(x=>[x.it.key,x]));
   const row=it=>{const x=S.get(it.key),pp=pct(x.c,x.t),[k,l]=band(pp);
     const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+" · "+String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
-    li.querySelector(".qname").textContent=it.t;li.querySelector(".qt").onclick=()=>openTopic(it.key);
-    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);li.appendChild(qRowExtra(it));return li};
+    li.querySelector(".qname").textContent=it.t;const qt=li.querySelector(".qt"),open=qOpenK===it.key;qt.setAttribute("aria-expanded",open);qt.onclick=()=>{qOpenK=open?null:it.key;render()};if(open)li.classList.add("qopen");
+    li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);li.appendChild(open?qTopicPanel(it):qRowExtra(it));return li};
   const items=vis.map(x=>x.it);
   if(qSort==="num"){const ai=it=>{const i=AREAS.indexOf(it.area);return i<0?99:i},si=it=>{const i=(it.area.specs||[]).findIndex(z=>z.name===it.sp);return i<0?99:i};items.sort((a,b)=>ai(a)-ai(b)||si(a)-si(b)||(a.sp||"").localeCompare(b.sp||"","pt")||(a.own-b.own)||a.num-b.num);appendGrouped(list,items,x=>x,row,["tema","temas"])}
   else{items.sort(qSort==="low"?(a,b)=>S.get(a.key).c/S.get(a.key).t-S.get(b.key).c/S.get(b.key).t||S.get(b.key).t-S.get(a.key).t:(a,b)=>S.get(b.key).t-S.get(a.key).t);items.forEach(it=>list.appendChild(row(it)))}
@@ -3621,7 +3674,7 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
   const cb=w.querySelector("#pTimeChg");cb.textContent=tdOpen?"Fechar":m>=180?"Tenho menos tempo hoje":m===0?"Vou estudar hoje":"Tenho mais ou menos tempo hoje";cb.setAttribute("aria-expanded",tdOpen);cb.onclick=()=>{tdOpen=!tdOpen;render()};
   if(tdOpen){const g=el(`<div class="seg pdseg" role="group" aria-label="Tempo de hoje"></div>`);WP_MIN.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="tdm-"+v;b.textContent=WP_LAB[v];b.setAttribute("aria-pressed",v===m);b.onclick=()=>{tdOpen=false;if(v!==m)setTodayMin(v)};g.appendChild(b)});
     w.appendChild(g);w.appendChild(el(`<p class="how">Muda só hoje (fica no plano desta semana). O que você já começou continua no plano.</p>`))}
-  if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"]].filter(x=>x[2]);
+  if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"]].filter(x=>x[2]);
     const b=el(`<div class="plight" id="pLight"><p class="how">Dia curto: só o que é leve e não pode acumular. Nada de tema novo hoje.</p><ul></ul></div>`),ul=b.querySelector("ul");
     if(!L.length)ul.appendChild(el(`<li class="how">Nada vencendo hoje. Se sobrar tempo, faça algumas questões.</li>`));
     {const S=cdGenScope(),n=cdGenIds(S).length;if(n){const g=el(`<div class="plgen" id="pLightGenBox"><span><b></b> <span class="how"></span></span><button class="btn" type="button" id="pLightGen">Revisão geral</button></div>`);
@@ -5436,12 +5489,13 @@ function trashCardEl(){trPurgeOld();const c=el(`<section class="card trash" id="
 const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
 /* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
-const QSTEPS=[["errs","Erros","erro","erros"],["cards","Cartões","cartão","cartões"],["notes","Anotações para reler","anotação","anotações"],["revs","Temas para revisar","tema","temas"]];
-function qCounts(){if(isOffDay())return {errs:0,cards:0,notes:0,revs:0};return {errs:eDueList().length,cards:cdDue().length,notes:notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length,revs:dueCount()}}
+const QSTEPS=[["errs","Erros","erro","erros"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["notes","Anotações para reler","anotação","anotações"],["revs","Temas para revisar","tema","temas"]];
+function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0};return {errs:eDueList().length,redo:Math.min(RD_DAY,rdDueList().length),cards:cdDue().length,notes:notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length,revs:dueCount()}}
 let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
 function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
   if(id==="errs"){setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60)}
+  else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");const ids=rdDueList().sort((a,b)=>(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
   else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
   else goRevs()}
@@ -5453,7 +5507,7 @@ function qNext(){if(!dayQ)return;const C=qCounts();let i=dayQ.i+1;while(i<dayQ.i
   if(i>=dayQ.ids.length){dayQ=null;dayQSave();qMsg="Fila do dia concluída. Bom trabalho!";setView("inicio");return}dayQ.i=i;dayQSave();qGoStep(dayQ.ids[i])}
 function qStop(){dayQ=null;dayQSave();render()}
 let qMsg="";
-function iQueueCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
+function iQueueCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=tot?`${tot} ${tot===1?"item":"itens"}`:"";
   if(qMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=qMsg;c.appendChild(m);qMsg=""}
   if(!tot){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Nada para revisar hoje: temas, cartões, erros e anotações estão em dia."}</p>`));return c}
@@ -5531,16 +5585,16 @@ function heroFeats(){const out=[],t=dnum(today());
   {const ws=t-(new Date().getDay()+6)%7,s=foSum(foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t));if(s>=5*3600)out.push(`Esta semana você já soma ${fmtMin(s)} de estudo focado.`)}
   return out}
 function heroLine(){const F=heroFeats(),n=dnum(today());return F.length?{feat:true,t:F[n%F.length]}:{feat:false,t:HERO_FRASES[((n%HERO_FRASES.length)+HERO_FRASES.length)%HERO_FRASES.length]}}
-function heroSummary(C){const tot=C.errs+C.cards+C.notes+C.revs;if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
+function heroSummary(C){const tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs;if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
   if(dayQ){const left=dayQ.ids.slice(dayQ.i).reduce((a,id)=>a+(C[id]||0),0);return left?`Fila do dia em andamento: ${left===1?"falta 1 item":`faltam ${left} itens`}.`:"Fila do dia quase no fim."}
-  if(tot){const P=[[C.revs,"revisão","revisões"],[C.errs,"erro","erros"],[C.cards,"cartão","cartões"],[C.notes,"anotação para reler","anotações para reler"]].filter(x=>x[0]).map(([n,a,b])=>`${n} ${n===1?a:b}`);
+  if(tot){const P=[[C.revs,"revisão","revisões"],[C.errs,"erro","erros"],[C.redo||0,"questão para refazer","questões para refazer"],[C.cards,"cartão","cartões"],[C.notes,"anotação para reler","anotações para reler"]].filter(x=>x[0]).map(([n,a,b])=>`${n} ${n===1?a:b}`);
     const txt=P.length>1?P.slice(0,-1).join(", ")+" e "+P[P.length-1]:P[0];return `${txt} ${tot===1?"espera":"esperam"} por você hoje.`}
   const s=nextSteps()[0];return s?`Revisões em dia. Próximo: ${s.t}.`:"Tudo feito por hoje. Bom trabalho."}
 function heroExam(){const out=[],t=dnum(today()),m=exMain();if(isSimDay())out.push("Hoje é dia de simulado e provas.");
   if(m&&m.date){const n=dnum(m.date)-t;if(n===0)out.push(`Hoje é dia de ${m.name}. Boa prova!`);else if(n>0&&n<=365)out.push(`${n===1?"Falta 1 dia":`Faltam ${n} dias`} para ${m.name}.`)}
   const p=upcomingProvas().find(x=>x.date&&dnum(x.date)-t>=0&&dnum(x.date)-t<=7);if(p){const n=dnum(p.date)-t;out.push(`Prova ${p.name} da faculdade ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}.`)}
   return out.join(" · ")}
-function heroCard(){const C=qCounts(),tot=C.errs+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
+function heroCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
   const c=el(`<div class="iherob"><span class="hdate"></span><h2 class="hhi"></h2><p class="hsum"></p>${ex?`<p class="hexam"></p>`:""}<p class="hline"></p><div class="herobtns"></div></div>`);
   c.querySelector(".hdate").textContent=heroDate();c.querySelector(".hhi").textContent=`${heroHi()}${nm?", "+nm:""}.`;c.querySelector(".hsum").textContent=heroSummary(C);
   if(ex)c.querySelector(".hexam").textContent=ex;const hl=c.querySelector(".hline");hl.textContent=L.t;if(L.feat)hl.classList.add("feat");
@@ -6576,50 +6630,72 @@ function renderMais(){const b=$("#maisBody");b.innerHTML="";b.appendChild(el(`<h
 const LSRD="resid-redo-v1",RD_MAX=600;
 let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
+/* Lote 12: due = quando volta; ok = acertos em dias diferentes (sai com RD_NEED); okd = dia do último acerto; wr = erros no próprio Refazer; src = gen|sim|exam */
+const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/;
 function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
-  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(q.mat?{mat:true}:{})}}}
+  ...(DATE_RE.test(x.due||"")?{due:x.due}:{}),...(Number.isInteger(x.ok)&&x.ok>0?{ok:x.ok}:{}),...(DATE_RE.test(x.okd||"")?{okd:x.okd}:{}),...(Number.isInteger(x.wr)&&x.wr>0?{wr:x.wr}:{}),...(["gen","sim","exam"].includes(x.src)?{src:x.src}:{}),
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(linkOk(q.link)?{link:q.link.trim()}:{}),...(q.mat?{mat:true}:{})}}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
 async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
 async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoStore)try{await redoStore.doc(id).delete()}catch(e){}}
 /* chamada quando você erra uma questão gerada */
-function rdAdd(k,q){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem);
-  if(ex){ex.n++;ex.d=today();rdPut(ex);return}
-  const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),n:1,q});redo.push(x);
+function rdAdd(k,q,src){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem),t=dnum(today());
+  if(ex){ex.n++;ex.d=today();ex.due=fromNum(t+RD_INT[0]);delete ex.ok;delete ex.okd;rdPut(ex);return}
+  const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),n:1,q,due:fromNum(t+RD_INT[0]),src});redo.push(x);
   if(redo.length>RD_MAX){const old=redo.sort((a,b)=>a.d<b.d?-1:1).slice(0,redo.length-RD_MAX);old.forEach(o=>rdDel(o.id))}rdPut(x)}
-function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),list=redo.filter(x=>BYKEY[x.k]&&ks.has(x.k)).sort((a,b)=>b.n-a.n||(a.d<b.d?-1:1));
+/* quando volta (antigos sem due: no dia seguinte ao erro) e o que acontece ao responder no Refazer */
+const rdDue=x=>x.due||fromNum(dnum(x.d)+RD_INT[0]);
+const rdDueList=()=>redo.filter(x=>BYKEY[x.k]&&rdDue(x)<=today());
+function rdHit(x){const t=today();if(x.okd!==t){x.ok=(x.ok||0)+1;x.okd=t}if(x.ok>=RD_NEED){rdDel(x.id);return true}x.due=fromNum(dnum(t)+RD_INT[Math.min(x.ok,RD_INT.length-1)]);rdPut(x);return false}
+function rdMiss(x){x.n++;x.wr=(x.wr||0)+1;x.d=today();delete x.ok;delete x.okd;x.due=fromNum(dnum(today())+RD_INT[0]);rdPut(x)}
+let rdF={due:true,src:"all",rep:false};
+const RD_SRC={gen:"Gerador do tema",sim:"Simulado",exam:"Provas na íntegra"};
+function rdStart(ids){rdRun={ids,i:0,ans:null,hit:0,okc:0,done:0,res:[],view:{}};render();setTimeout(()=>{const h=$("#qrdh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},40)}
+/* alternativas embaralhadas no Refazer (não decorar a letra); comentário que cita letras (provas) fica na ordem original */
+function rdView(x){const v=qSplit(x.q);if(/\b(?:letra|alternativa|op[çc][ãa]o)\s*\(?[A-H]\)?(?![A-Za-zÀ-ú])/i.test(v.comentario||""))return v;return altShuffle(JSON.parse(JSON.stringify(v)))}
+function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filter(x=>BYKEY[x.k]&&ks.has(x.k)),
+    list=base.filter(x=>(!rdF.due||rdDue(x)<=T)&&(rdF.src==="all"||x.src===rdF.src)&&(!rdF.rep||x.n>=2)).sort((a,b)=>(rdDue(a)<rdDue(b)?-1:rdDue(a)>rdDue(b)?1:0)||b.n-a.n||(a.d<b.d?-1:1)),dueN=base.filter(x=>rdDue(x)<=T).length;
   const c=el(`<section class="card qredo" aria-labelledby="qrdh"><div class="dhead"><h2 id="qrdh">Refazer as que errei</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=redo.length?`${list.length} ${list.length===1?"questão":"questões"}${list.length<redo.length?" neste filtro":""}`:"";
+  c.querySelector(".todaydate").textContent=redo.length?`${dueN} para hoje · ${base.length} no total`:"";
   if(rdRun){c.appendChild(rdPlayer());return c}
   if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
-  if(!list.length){c.appendChild(el(`<p class="cempty">Nenhuma questão para refazer com esses filtros.</p>`));return c}
+  {const f=el(`<div class="rdfil"><div class="seg" role="group" aria-label="Quais"></div></div>`),sg=f.querySelector(".seg");
+    [[true,`Para hoje (${dueN})`],[false,`Todas (${base.length})`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=v?"rdFDue":"rdFAll";b.textContent=l;b.setAttribute("aria-pressed",rdF.due===v);b.onclick=()=>{rdF.due=v;render()};sg.appendChild(b)});
+    const so=el(`<select id="rdFSrc" aria-label="Origem"><option value="all">De onde: todas</option></select>`);Object.entries(RD_SRC).forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;so.appendChild(o)});so.value=rdF.src;so.onchange=()=>{rdF.src=so.value;render()};f.appendChild(so);
+    const rp=el(`<button type="button" class="chip" id="rdFRep">Erradas 2+ vezes</button>`);rp.setAttribute("aria-pressed",rdF.rep);rp.onclick=()=>{rdF.rep=!rdF.rep;render()};f.appendChild(rp);c.appendChild(f)}
+  if(!list.length){c.appendChild(el(`<p class="cempty">${rdF.due&&base.length&&!(rdF.src!=="all"||rdF.rep)?"Nada para refazer hoje. As próximas voltam nos dias marcados (toque em Todas para ver).":"Nenhuma questão para refazer com esses filtros."}</p>`));return c}
   const by={};list.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
   const top=Object.entries(by).sort((a,b)=>b[1]-a[1]);
   c.appendChild(el(`<p class="gtext qrdsum">${top.slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}${top.length>4?`<span>+ ${top.length-4} especialidades</span>`:""}</p>`));
   const acts=el(`<div class="btns"></div>`);
   const go=el(`<button class="btn primary" type="button" id="rdGo"></button>`);go.textContent=`Refazer ${Math.min(list.length,10)} ${Math.min(list.length,10)===1?"questão":"questões"}`;
-  go.onclick=()=>{rdRun={ids:list.slice(0,10).map(x=>x.id),i:0,ans:null,hit:0,done:0};render();const h=$("#qrdh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};acts.appendChild(go);
-  if(list.length>10){const all=el(`<button class="btn" type="button">Todas (${list.length})</button>`);all.onclick=()=>{rdRun={ids:list.map(x=>x.id),i:0,ans:null,hit:0,done:0};render()};acts.appendChild(all)}
+  go.onclick=()=>rdStart(list.slice(0,10).map(x=>x.id));acts.appendChild(go);
+  if(list.length>10){const all=el(`<button class="btn" type="button">Todas (${list.length})</button>`);all.onclick=()=>rdStart(list.map(x=>x.id));acts.appendChild(all)}
   const vl=el(`<button class="link" type="button">${rdList?"Esconder lista":"Ver lista"}</button>`);vl.onclick=()=>{rdList=!rdList;render()};acts.appendChild(vl);c.appendChild(acts);
-  c.appendChild(el(`<p class="how">Primeiro as que você errou mais vezes. Refazer não muda o seu acerto nos temas (você já viu a resposta); acertou, a questão sai daqui.</p>`));
+  c.appendChild(el(`<p class="how">A questão errada volta no dia seguinte; acertou, volta em 3 dias; <b>sai da lista depois de 2 acertos em dias diferentes</b> (um acerto logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As alternativas vêm embaralhadas. Refazer não muda o seu acerto nos temas.</p>`));
   if(rdList){const ul=el(`<ul class="rdlist"></ul>`);list.slice(0,80).forEach(x=>{const it=BYKEY[x.k];const li=el(`<li><span class="rdl"><b></b><span></span></span><button class="foxb" type="button" aria-label="Remover da lista">×</button></li>`);
-      li.querySelector("b").textContent=x.q.enunciado.replace(/\s+/g," ").slice(0,110)+(x.q.enunciado.length>110?"…":"");li.querySelector(".rdl span").textContent=`${it.t} · errada ${x.n}× · ${br(x.d)}`;
+      li.querySelector("b").textContent=x.q.enunciado.replace(/\s+/g," ").slice(0,110)+(x.q.enunciado.length>110?"…":"");const dd=rdDue(x);li.querySelector(".rdl span").textContent=`${it.t} · errada ${x.n}×${x.ok?` · acertou ${x.ok} de ${RD_NEED}`:""} · ${dd<=T?"para hoje":"volta em "+br(dd)}${x.src?` · ${RD_SRC[x.src]}`:""}`;if((x.wr||0)>=2)li.querySelector(".rdl b").insertAdjacentHTML("beforeend",' <span class="rdteim">teimosa</span>');
       const xb=li.querySelector("button");if(rdArm===x.id){xb.textContent="Remover?";xb.classList.add("warn");xb.onclick=()=>{rdArm=null;rdDel(x.id).then(render);render()}}else xb.onclick=()=>{rdArm=x.id;render()};ul.appendChild(li)});
     if(list.length>80)ul.appendChild(el(`<li class="how">+ ${list.length-80} questões.</li>`));c.appendChild(ul)}
   return c}
-function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);
-  if(R.i>=R.ids.length){w.appendChild(el(`<p class="verdict ok">Fim: ${R.hit} de ${R.done} certas.</p>`));
-    w.appendChild(el(`<p class="gtext">${R.hit?`${R.hit} ${R.hit===1?"saiu":"saíram"} da lista. `:""}${R.done-R.hit?`${R.done-R.hit} ${R.done-R.hit===1?"continua":"continuam"} para a próxima vez.`:"Nenhuma ficou para trás."}</p>`));
+function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);if(!R.res)R.res=[];if(!R.view)R.view={};
+  if(R.i>=R.ids.length){const okc=R.okc||0;w.appendChild(el(`<p class="verdict ${R.done&&okc/R.done>=.6?"ok":"no"}" id="rdEnd">Você acertou ${R.done?Math.round(okc/R.done*100):0}% ao refazer (${okc} de ${R.done}).</p>`));
+    w.appendChild(el(`<p class="gtext">${R.hit?`${R.hit} ${R.hit===1?"saiu":"saíram"} da lista. `:""}${okc-R.hit>0?`${okc-R.hit} ${okc-R.hit===1?"volta":"voltam"} em 3 dias para confirmar. `:""}${R.done-okc?`${R.done-okc} ${R.done-okc===1?"volta":"voltam"} amanhã.`:""}</p>`));
+    const by={};R.res.forEach(r=>{const b=by[r.k]=by[r.k]||[0,0];b[1]++;if(r.ok)b[0]++});const ks=Object.keys(by).filter(k=>BYKEY[k]);
+    if(ks.length>1){const ul=el(`<ul class="rdbytema"></ul>`);ks.sort((a,b)=>by[a][0]/by[a][1]-by[b][0]/by[b][1]).forEach(k=>{const li=el(`<li><span></span><b></b></li>`);li.querySelector("span").textContent=BYKEY[k].t;li.querySelector("b").textContent=`${by[k][0]} de ${by[k][1]}`;ul.appendChild(li)});
+      w.appendChild(el(`<p class="glabel">Por tema</p>`));w.appendChild(ul)}
     const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{rdRun=null;render()};w.appendChild(b);return w}
   const x=redo.find(y=>y.id===R.ids[R.i])||R.snap;if(!x){R.i++;return rdPlayer()}
-  R.snap=x;const it=BYKEY[x.k],q=x.q;
+  R.snap=x;const it=BYKEY[x.k],q=R.view[x.id]||(R.view[x.id]=rdView(x));
   const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p></div>`);
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
   c.querySelector(".qstem").textContent=q.enunciado;
-  c.appendChild(altsEl(qSplit(q),R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;if(ok){R.hit++;rdDel(x.id)}else{x.n++;x.d=today();rdPut(x)}render()}));
-  if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta. Saiu da lista.":"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."}</p>`));
-    c.appendChild(qExplEl(qSplit(q)));
-    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;c.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;c.appendChild(p)}
+  c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;R.res.push({k:x.k,ok});if(ok){R.okc=(R.okc||0)+1;const sameDay=x.okd===today();R.left=rdHit(x);R.same=sameDay;if(R.left)R.hit++}else rdMiss(x);render()}));
+  if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?(R.left?"Correta. Acertou 2 vezes em dias diferentes: saiu da lista.":R.same?"Correta. Você já tinha acertado hoje; volta em 3 dias para confirmar.":"Correta. Volta em 3 dias: acertando de novo, sai da lista."):"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+". Volta amanhã."}</p>`));
+    c.appendChild(qExplEl(q));
+    {const f=qFonteEl(q);if(f)c.appendChild(f)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+q.alerta;c.appendChild(p)}
+    if(!ok&&(x.wr||0)>=2)c.appendChild(el(`<p class="pnote rdteimnote" id="rdTeim">Você já errou esta questão ${x.wr} vezes ao refazer. Vale levar o ponto para o caderno de erros: lá ele vira revisão com a pista, o conceito e cartões.</p>`));
     if(!ok)c.appendChild(eCadEl(R.cad||(R.cad={}),x.id,x.k,q,R.ans,"Refazer as que errei"));
     c.appendChild(qActsEl(q,R.ans,{k:x.k,src:"Refazer"}))}
   w.appendChild(c);
@@ -6723,6 +6799,28 @@ function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
   for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=t-dnum(d);if(n<0)continue;if(n<30){rq+=v[0]||0;rc+=v[1]||0}else if(n<120){pq+=v[0]||0;pc+=v[1]||0}}
   if(rq<5||pq<5)return null;const r=rc/rq*100,p=pc/pq*100;return {d:Math.round(r-p),r:Math.round(r),p:Math.round(p),rq,pq}}
 /* linha extra de cada tema na lista: tendência, erros no caderno e atalhos */
+/* painel do tema na aba Questões (Lote 12): acerto por semana, por banca/fonte, tendência, erros vivos, provas na íntegra e ações */
+let qOpenK=null,simPick=new Set();
+function qTopicPanel(it){const k=it.key,s=get(k),w=el(`<div class="qtp" id="qtp-${k}"></div>`),t0=dnum(today()),ws=t0-((new Date().getDay()+6)%7);
+  const W=[...Array(8)].map((_,i)=>({s:ws-7*(7-i),q:0,c:0}));for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=dnum(d),i=Math.floor((n-W[0].s)/7);if(i>=0&&i<8){W[i].q+=v[0]||0;W[i].c+=v[1]||0}}
+  const mx=Math.max(1,...W.map(x=>x.q));const ch=el(`<div class="qtpw" role="img"></div>`);ch.setAttribute("aria-label","Questões por semana: "+W.map(x=>`${br(fromNum(x.s))} ${x.q}`).join(", "));
+  W.forEach((x,i)=>{const p=x.q?Math.round(x.c/x.q*100):null,[bk]=p===null?[""]:band(p),b=el(`<div class="qtpc${i===7?" cur":""}"><span class="qtpv"></span><div class="qtpb"><i class="${bk}" style="height:${x.q/mx*100}%"></i></div><span class="qtpx"></span></div>`);
+    b.querySelector(".qtpv").textContent=p===null?"":p+"%";b.querySelector(".qtpx").textContent=i===7?"esta":br(fromNum(x.s));b.title=`Semana de ${br(fromNum(x.s))}: ${x.q} questões${p===null?"":`, ${p}% de acerto`}`;ch.appendChild(b)});
+  const h1=el(`<p class="glabel">Acerto por semana <span class="how">(altura = questões; % = acerto)</span></p>`);w.append(h1,ch);
+  const tr=qTrend(k);if(tr)w.appendChild(el(`<p class="how qtptr">${tr.rq?`Últimos 30 dias: ${tr.r}% em ${tr.rq} questões`:"Nada nos últimos 30 dias"}${tr.pq?` · 90 dias antes: ${tr.p}% em ${tr.pq}`:""}${Math.abs(tr.d)>=5?(tr.d>0?" · melhorando":" · piorando"):""}.</p>`));
+  {const B=s.qb||{},L=Object.keys(B).map(f=>{let q=0,c=0;for(const d in B[f]){const v=B[f][d];if(Array.isArray(v)){q+=v[0]||0;c+=v[1]||0}}return {f,q,c}}).filter(x=>x.q).sort((a,b)=>b.q-a.q);
+    if(L.length){w.appendChild(el(`<p class="glabel">Por banca ou fonte</p>`));const ul=el(`<ul class="qtpsrc"></ul>`);L.slice(0,6).forEach(x=>{const li=el(`<li><span></span><b></b></li>`);li.querySelector("span").textContent=x.f;li.querySelector("b").textContent=`${pct(x.c,x.q)}% · ${x.c}/${x.q}`;ul.appendChild(li)});w.appendChild(ul)}}
+  {const E=errors.filter(e=>e.k===k&&eAlive(e)).sort((a,b)=>(b.miss||0)-(a.miss||0)).slice(0,3);if(E.length){w.appendChild(el(`<p class="glabel">Erros que ainda pedem atenção</p>`));const ul=el(`<ul class="qtperr"></ul>`);
+    E.forEach(e=>{const li=el(`<li><button class="link" type="button"></button></li>`),b=li.querySelector("button");b.textContent=(eConcept(e)||eOneLine(e.w)).slice(0,140);b.onclick=()=>eOpenOne(e);ul.appendChild(li)});w.appendChild(ul)}}
+  {const x=exTopicEl(it);if(x)w.appendChild(x)}
+  const a=el(`<div class="btns qtpacts"></div>`),btn=(id,lab,fn,pri)=>{const b=el(`<button class="btn${pri?" primary":""}" type="button"></button>`);b.id=id+"-"+k;b.textContent=lab;b.onclick=fn;a.appendChild(b)};
+  btn("qtpGo","Praticar este tema",()=>{detTab[k]="questoes";openTopic(k)},true);
+  btn("qtpSim",simPick.has(k)?"Tirar do simulado":"Pôr no simulado misto",()=>{if(simPick.has(k))simPick.delete(k);else{simPick.add(k);simCfg.src="pick";sim=null}render()});
+  btn("qtpReg","Registrar questões",()=>{qReg={k,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})});
+  if(errors.some(e=>e.k===k))btn("qtpErr","Ver erros",()=>{eGoTopic(k);backStack=[];setView("erros")});
+  btn("qtpRes","Abrir na Residência",()=>openTopic(k));w.appendChild(a);
+  if(simPick.has(k))w.appendChild(el(`<p class="how">No simulado misto: fonte "Escolhidos" (${simPick.size} ${simPick.size===1?"tema":"temas"}).</p>`));
+  return w}
 function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key&&!e.arch),ex=el(`<div class="qrx"></div>`);
   if(tr&&Math.abs(tr.d)>=5){const b=el(`<span class="qtr ${tr.d>0?"up":"down"}"></span>`);b.textContent=`${tr.d>0?"▲":"▼"} ${Math.abs(tr.d)} pts`;b.dataset.tip=`Últimos 30 dias: ${tr.r}% em ${tr.rq} questões · antes: ${tr.p}% em ${tr.pq}`;b.title=b.dataset.tip;ex.appendChild(b)}
   if(en.length){const tc={};en.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const b=el(`<button class="qer" type="button"></button>`);
@@ -6797,9 +6895,9 @@ function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;
   w.append(box,sel);return w}
 /* simulado misto: questões de vários temas num bloco só */
 let sim=null,simCfg={src:"weak",n:10};
-const SIM_SRC=[["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["filter","Filtro atual"]];
+const SIM_SRC=[["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Para refazer"],["filter","Filtro atual"]];
 const simProva=()=>fac.provas.find(x=>x.id===simCfg.pid&&x.date>=today())||upcomingProvas().find(p=>p.items.some(refOk));
-function simSrcList(){const p=simProva();return p?[["prova",`Prova: ${p.name}`],...SIM_SRC]:SIM_SRC}
+function simSrcList(){const p=simProva(),pk=[...simPick].filter(k=>BYKEY[k]),L=[...(pk.length?[["pick",`Escolhidos (${pk.length})`]]:[]),...SIM_SRC];return p?[["prova",`Prova: ${p.name}`],...L]:L}
 function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
   if(src==="weak")return pool.filter(i=>{const s=get(i.key);return s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT}).sort((a,b)=>acc(get(a.key))-acc(get(b.key)));
   if(src==="gain")return U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return {it,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,15).map(r=>r.it);
@@ -6807,16 +6905,20 @@ function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
   if(src==="plan")return ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean);
   if(src==="prova"){const p=simProva();return p?topicKeysOf(p.items).map(k=>BYKEY[k]):[]}
   if(src==="errs")return [...new Set(errors.filter(e=>BYKEY[e.k]&&!e.arch).map(e=>e.k))].map(k=>BYKEY[k]);
+  if(src==="redo")return [...new Set(redo.filter(x=>BYKEY[x.k]).map(x=>x.k))].map(k=>BYKEY[k]);
+  if(src==="pick")return [...simPick].filter(k=>BYKEY[k]).map(k=>BYKEY[k]);
   return U}
+/* fonte "Para refazer": um caso novo para cada questão do Refazer (as que vencem primeiro); acertar conta como acerto dela no Refazer */
+function rdSimItems(n){return redo.filter(x=>BYKEY[x.k]).sort((a,b)=>(rdDue(a)<rdDue(b)?-1:rdDue(a)>rdDue(b)?1:0)||b.n-a.n).slice(0,n).map(x=>({k:x.k,sub:"",rd:x.id}))}
 function simPrompt(items){return promptText.trim()+`
 
 Tarefa
 Monte um simulado com ${items.length} ${items.length===1?"questão inédita":"questões inéditas"}, uma para cada item abaixo, na mesma ordem (a 1ª questão é sobre o item 1, a 2ª sobre o item 2, e assim por diante):
-${items.map((x,i)=>{const it=BYKEY[x.k],er=x.err&&errors.find(e=>e.id===x.err);return `${i+1}. Tema "${it.t}" (área: ${areaLabel(it)})${x.sub?`, com foco no subtópico "${x.sub}"`:""}${x.ctx?` (${x.ctx})`:""}${er?`. O estudante já errou este ponto: "${eOneLine(er.w).slice(0,300)}"; o correto é: "${eOneLine(er.r).slice(0,300)}". Crie um caso NOVO (outro paciente, outra apresentação) que cobre exatamente esse ponto, sem repetir o enunciado original`:""}`}).join("\n")}
+${items.map((x,i)=>{const it=BYKEY[x.k],er=x.err&&errors.find(e=>e.id===x.err),rq=x.rd&&(redo.find(y=>y.id===x.rd)||{}).q,ra=rq&&rq.alternativas.find(a=>a.letra===rq.correta);return `${i+1}. Tema "${it.t}" (área: ${areaLabel(it)})${x.sub?`, com foco no subtópico "${x.sub}"`:""}${x.ctx?` (${x.ctx})`:""}${er?`. O estudante já errou este ponto: "${eOneLine(er.w).slice(0,300)}"; o correto é: "${eOneLine(er.r).slice(0,300)}". Crie um caso NOVO (outro paciente, outra apresentação) que cobre exatamente esse ponto, sem repetir o enunciado original`:""}${rq?`. O estudante errou uma questão sobre este ponto; a resposta certa era "${(ra?ra.texto:"").slice(0,200)}"${rq.conceito?` (conceito: ${rq.conceito.slice(0,200)})`:""}. Crie um caso NOVO que cobre exatamente esse ponto, sem repetir o enunciado original`:""}`}).join("\n")}
 Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complicação, exceção), como numa prova de residência.
 
 ${fixedFormat(items.length)}`}
-const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados onde você está longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",filter:"Os temas que aparecem com os filtros da aba"};
+const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados onde você está longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões do Refazer",pick:"Os temas que você escolheu na lista de temas",filter:"Os temas que aparecem com os filtros da aba"};
 /* simulado a partir do material: as questões seguem o material; o Claude indica o tema da residência mais próximo de cada uma */
 function simMatPrompt(n,P,avoid){return promptText.trim()+`
 
@@ -6847,7 +6949,7 @@ async function simStartMat(){const P=msPack(simMat),n=simCfg.n,items=Array.from(
       S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMatOn(simMat))simStartMat();return}const T=simTopics(simCfg.src,U);if(!T.length)return;
-  const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):[];if(simCfg.src!=="errs")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
+  const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):simCfg.src==="redo"?rdSimItems(simCfg.n):[];if(simCfg.src!=="errs"&&simCfg.src!=="redo")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
   if(simCfg.src==="prova"){const p=simProva(),d=p&&discOf(p.discId);if(p){simCfg.pid=p.id;items.forEach(x=>{x.ctx=`para a prova "${p.name}"${d?` da disciplina ${provaDiscName(p)}`:""} da faculdade`;
     const sr=p.items.find(r=>r.startsWith("S:")&&refTopic(r).k===x.k);if(sr)x.sub=refTopic(sr).sub})}}
   const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0};render();
@@ -6856,7 +6958,7 @@ async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMat
     try{const data=await sampleFn.json(simPrompt(part),{signal:S.ctl.signal,cache:false,onText:()=>{const s=$("#simSt");if(s)s.textContent=`Escrevendo as questões ${S.qs.length+1} a ${S.qs.length+part.length} de ${items.length}…`}});
       if(sim!==S||S.stopped)return;const qs=validQs(data).slice(0,part.length);
       if(!qs.length){if(++fails>=2){S.msg=GEN_ERR.invalid_json;break}continue}fails=0;
-      qs.forEach((q,j)=>S.qs.push({...q,k:part[j].k,...(part[j].err?{err:part[j].err}:{})}));
+      qs.forEach((q,j)=>S.qs.push({...q,k:part[j].k,...(part[j].err?{err:part[j].err}:{}),...(part[j].rd?{rd:part[j].rd}:{})}));
       if(qs.length<part.length)items.splice(S.qs.length,part.length-qs.length);
       if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}render()}
     catch(e){if(sim!==S||S.stopped)return;const code=e&&e.code;if(code==="cancelled"){if(!S.qs.length){sim=null;render();return}break}
@@ -6864,7 +6966,8 @@ async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMat
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 function simAnswer(letra){const S=sim,q=S.qs[S.i];if(!q||S.ans[S.i])return;const sec=Math.min(1800,Math.max(1,(Date.now()-S.shown)/1000));
   S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;
-  upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok)rdAdd(q.k,q);
+  upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok&&!q.rd)rdAdd(q.k,q,"sim");
+  if(q.rd){const x=redo.find(y=>y.id===q.rd);if(x){if(ok)rdHit(x);else rdMiss(x)}}
   if(q.err){const e=errors.find(x=>x.id===q.err);if(e){if(!ok)eAnswer(e,false);else if(eDue(e)<=today())eAnswer(e,true)}}commit()}
 function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.gen)S.status="done";render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
 function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="simh"><div class="dhead"><h2 id="simh">Simulado misto</h2><span class="todaydate" id="simClock"></span></div></section>`);
@@ -6882,7 +6985,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     else f.appendChild(msEl(simMat,{open:true,title:"Materiais do simulado",how:"Escolha um ou mais arquivos (PDFs da aula, slides, resumos ou fotos). As questões seguem o material, mesmo que ele passe por várias áreas; cada questão é ligada ao tema da residência mais próximo, e o acerto conta nele.",id:(t,i)=>`sm${t}${i!==undefined?"-"+i:""}`,get:()=>simMat,set:v=>{simMat=v}}));
     f.appendChild(el(`<div class="simstep"><span class="simnum">2</span><b>Quantas questões</b></div>`));
     const nn=el(`<div class="seg" role="group" aria-label="Número de questões"></div>`);[5,10,20,30].forEach(v=>{const b=el(`<button type="button" aria-pressed="${simCfg.n===v}">${v} questões</button>`);b.onclick=()=>{simCfg.n=v;render()};nn.appendChild(b)});f.appendChild(nn);
-    const T2=mode==="mat"?[]:simTopics(simCfg.src,U),nq=mode==="temas"&&simCfg.src==="errs"?Math.min(simCfg.n,errors.filter(e=>BYKEY[e.k]&&!e.arch).length):simCfg.n;
+    const T2=mode==="mat"?[]:simTopics(simCfg.src,U),nq=mode==="temas"&&simCfg.src==="errs"?Math.min(simCfg.n,errors.filter(e=>BYKEY[e.k]&&!e.arch).length):mode==="temas"&&simCfg.src==="redo"?Math.min(simCfg.n,redo.filter(x=>BYKEY[x.k]).length):simCfg.n;
     f.appendChild(el(`<p class="how simeta">≈ ${Math.max(1,Math.round(nq*ui.prefs.qpace/60))} min no seu ritmo de prova (${fmtPace(ui.prefs.qpace)} por questão).</p>`));c.appendChild(f);
     const matOn=genMatOn(simMat),go=el(`<button class="btn primary simgo" type="button" id="simGo"></button>`);
     if(mode==="mat"){go.textContent=`Começar simulado do material · ${nq} ${nq===1?"questão":"questões"}`;go.disabled=!sampleFn||!matOn;if(!matOn)c.appendChild(el(`<p class="how">Escolha pelo menos um arquivo para começar.</p>`))}
@@ -6906,7 +7009,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   card.appendChild(altsEl(qSplit(q),mine,l=>{simAnswer(l);render()}));
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     card.appendChild(qExplEl(qSplit(q)));
-    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Confira na diretriz: "+q.alerta;card.appendChild(p)}
+    {const f=qFonteEl(q);if(f)card.appendChild(f)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+q.alerta;card.appendChild(p)}
     if(!ok)card.appendChild(q.err?el(`<p class="pnote">Este ponto já está no seu caderno de erros: ele volta para revisão amanhã.</p>`):eCadEl(S.cad||(S.cad={}),S.i,q.k,q,mine,"Simulado misto"));
     card.appendChild(qActsEl(q,mine,{k:q.k,src:"Simulado misto"}))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
@@ -7015,11 +7118,11 @@ function exAnswer(ex,i,l){const R=exRun,P=exPg(ex.id),old=P.a[i];if(old&&old.l==
   const sec=R&&R.shown?Math.min(1800,Math.max(1,(Date.now()-R.shown)/1000)):0;
   exChange(ex,i,(r,P)=>{P.a[i]={l,d:old?old.d:today(),s:old?old.s:Math.round(sec)}});
   if(!old&&sec)logPace(today(),1,sec);
-  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta)rdAdd(r.k,r.q);
+  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta)rdAdd(r.k,r.q,"exam");
   P.i=i;exPSave(ex.id);commit()}
 function exFinish(ex){const P=exPg(ex.id),S=exScore(ex);
   if(!P.fin){P.fin=today();P.tries.push({d:today(),hit:S.hit,n:S.ans,s:Math.round(S.s)});
-    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta)rdAdd(r.k,r.q)})}
+    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta)rdAdd(r.k,r.q,"exam")})}
   exPSave(ex.id);exRun={id:ex.id,view:"res",i:0,cad:{}};commit()}
 function exRestart(ex){const P=exPg(ex.id);for(const i in P.a){P.h[i]=[...(P.h[i]||[]),{l:P.a[i].l,d:P.a[i].d}].slice(-10)}P.a={};P.fin="";P.i=0;exPSave(ex.id)}
 /* gabarito: "1-A 2-C", "01. B", "Questão 3: D", "4 ANULADA" ou tabela (linha de números + linha de letras) → {número: letra | "X" (anulada)} */
@@ -7340,7 +7443,7 @@ function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,
   if(show){if(q.correta){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${mine?ok?"ok":"no":""}">${mine?ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta)+".":"Você não respondeu. A resposta é "+esc(q.correta)+"."}${r.g!=="b"?" <span class=\"simt\">(gabarito do Claude)</span>":""}</p>`))}
     else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
     card.appendChild(qExplEl(qSplit(q),{note:r.ck&&q.correta&&r.ck!==q.correta?`O comentário foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.`:""}));
-    if(q.fonte){const p=el(`<p class="qfonte"><b>Fonte</b><span></span></p>`);p.querySelector("span").textContent=q.fonte;card.appendChild(p)}
+    {const f=qFonteEl(q);if(f)card.appendChild(f)}
     if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name));
     if(mine&&q.correta&&!r.an)card.appendChild(qActsEl(q,mine,{k:r.k,src:ex.name,tok:`{{q:${ex.id}:${i}}}`}))}
   return card}
@@ -8312,16 +8415,16 @@ const HELP=[
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão gerada pelo Claude que você erra fica guardada, com o comentário. Refaça 10 de cada vez (primeiro as que você mais errou); acertou, ela sai da lista. Refazer não muda o acerto do tema, porque você já viu a resposta. **Ver lista** mostra e remove.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema.
 - **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
 - **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
 - **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros. Se a mesma fonte aparecer com dois nomes (ex.: "Questões no Claude" e "Claude"), o cartão sugere **Juntar**; em **Juntar ou renomear fontes** você escolhe a fonte e o novo nome (ou o nome de outra, para somar as duas), em todos os temas e nas provas importadas. Dá para **Desfazer** logo depois. "Claude" não muda de nome, porque é onde caem as geradas.
-- **Filtrar questões** (parte Temas no celular): o mesmo cartão da Residência. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
+- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (fonte **Escolhidos**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
-- **Fontes:** as questões geradas seguem só fontes confiáveis (diretrizes e protocolos brasileiros, sociedades médicas, diretrizes internacionais de referência e livros-texto clássicos), sem dados ou referências inventados. Depois de responder, cada questão mostra a **Fonte** que sustenta a resposta.
+- **Referências:** cada questão gerada traz a **referência específica** (diretriz ou consenso com sociedade, ano e seção; livro e capítulo; manual do Ministério da Saúde) e o comentário e o porquê de cada alternativa se apoiam nela; nada de "confira na diretriz". **No site**, o pedido manda o Claude **pesquisar e confirmar** a referência na internet e trazer o **link** (Abrir a referência). **No artefato**, sem internet, o Claude só usa o que conhece com segurança e troca a questão quando não há fonte segura (o app descarta questão sem referência). Com material seu, o material é a fonte (página ou slide).
 - **Usar um material meu** (opcional, no gerador do tema): escolha um ou mais arquivos (PDF da aula, slides, resumos ou fotos; **+ Adicionar outro arquivo** junta mais) e toque em **Gerar questões do material**: as questões saem dos materiais e a fonte cita a página ou o slide. Cada arquivo tem **×** para tirar só ele. A barra mostra quanto do espaço do pedido já foi usado (30 mil caracteres e 4 imagens por pedido); passando disso, o app corta um pouco de **cada** material (os pequenos ficam inteiros) e avisa quanto entrou de cada um. O PDF é lido no aparelho. No site, fotos e PDFs escaneados você anexa na conversa do Claude (a janela lembra); dá também para marcar **Vou anexar o material direto na conversa**. Sem material, o gerador funciona como sempre.
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
 - **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa**, o **Ponto-chave** em destaque (quando a prova traz), o **Conceito-chave** ou a **Take home message** e a **Fonte**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.

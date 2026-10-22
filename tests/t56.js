@@ -30,7 +30,7 @@ await c2.addInitScript(s=>{if(!sessionStorage.__seeded){localStorage.setItem("__
 const q=await c2.newPage();q.on('pageerror',e=>errs.push("fone:"+e.message));await boot(q);await login(q,true,false);await q.waitForTimeout(800);
 const r=await q.evaluate(()=>({redo:redo.length,fo:foSess.length,qb:!!(get("CM-16").qb||{}).ENARE,qg:ui.prefs.qgoal,fg:ui.prefs.fgoal,qp:ui.prefs.qpace,tq:(hist[today()]||{}).tq}));
 ok(r.redo===1&&r.fo===1&&r.qb&&r.qg===200&&r.fg===120&&r.qp===150&&r.tq===12,"celular recebeu tudo: "+JSON.stringify(r));
-await q.tap('#tabQ');await q.waitForTimeout(200);await q.evaluate(()=>setQSeg("praticar"));await q.waitForTimeout(150);ok(await q.isVisible('#rdGo'),"celular: refazer disponível");
+await q.tap('#tabQ');await q.waitForTimeout(200);await q.evaluate(()=>{rdF.due=false;setQSeg("praticar")});await q.waitForTimeout(150);ok(await q.isVisible('#rdGo'),"celular: refazer disponível");
 // simulado pelo copiar e colar do site
 await q.evaluate(()=>{simCfg={src:"filter",n:5};render()});await q.tap('#simGo');await q.waitForTimeout(500);
 const modal=await q.evaluate(()=>{const m=document.querySelector('.smodal');return m?m.textContent.slice(0,200):""});ok(/simulado|Copiar|copiar/i.test(modal),"site: simulado abre o copiar e colar");

@@ -1,5 +1,6 @@
 window.__mock=(seed,delay)=>{
   if(window.__noShuffle===undefined)window.__noShuffle=true;// testes antigos escolhem a alternativa pela posição (correta = B)
+  if(window.__noRefCheck===undefined)window.__noRefCheck=true;// testes antigos geram questões sem "fonte" (o artefato real descarta essas)
   try{if(!window.__wantOnb&&!localStorage.getItem("resid-onb-seen"))localStorage.setItem("resid-onb-seen","1")}catch(e){}
   const store=JSON.parse(JSON.stringify(seed||{}));window.__store=store;
   const wait=()=>new Promise(r=>setTimeout(r,delay||0));

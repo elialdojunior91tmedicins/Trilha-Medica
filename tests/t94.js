@@ -20,7 +20,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
     sampleFn.json=async(input,o)=>{__P.push(input);__O.push(o||{});const mat=/Material do estudante/.test(input);return [mat?Q2:Q1]};qCount=1;detTab["CM-34"]="questoes";openTopic("CM-34")},
     [Q(1,"Diretriz brasileira de anemias, ABHH"),Q(2,"Material do estudante, página 1")]);await p.waitForTimeout(250);
   /* 1. instruções: fontes confiáveis, nada inventado, campo fonte */
-  ok(await p.evaluate(()=>/Conteúdo e fontes/.test(DEFAULT_PROMPT)&&/Nada inventado/.test(DEFAULT_PROMPT)&&/PCDTs/.test(DEFAULT_PROMPT)&&promptUp(OLD_PROMPTS[0])===DEFAULT_PROMPT&&/"fonte"/.test(fixedFormat(2))&&/nunca invente/.test(fixedFormat(2))),name+": instruções pedem fontes confiáveis e a fonte de cada questão (o padrão anterior migra)");
+  ok(await p.evaluate(()=>/Conteúdo e fontes/.test(DEFAULT_PROMPT)&&/Nada inventado/.test(DEFAULT_PROMPT)&&/PCDTs/.test(DEFAULT_PROMPT)&&promptUp(OLD_PROMPTS[0])===DEFAULT_PROMPT&&/"fonte"/.test(fixedFormat(2))&&/Nada inventado/.test(fixedFormat(2))),name+": instruções pedem fontes confiáveis e a fonte de cada questão (o padrão anterior migra)");
   /* 2. sem material: gera normalmente e mostra a fonte */
   ok(await p.evaluate(()=>!!document.getElementById('gmf-CM-34')&&/opcional/i.test(document.querySelector('.gmat summary').textContent)),name+": a opção de material aparece, marcada como opcional");
   await p.evaluate(()=>generate(BYKEY["CM-34"]));await p.waitForFunction(()=>gen["CM-34"]&&gen["CM-34"].status==="done",null,{timeout:10000});
