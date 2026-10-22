@@ -134,7 +134,7 @@ function buildBackup(uid) {
     errors: arr("errors"), fac: fac || { sems: [], discs: [], provas: [], own: {} },
     prompt: typeof settings.prompt === "string" ? settings.prompt : undefined,
     focus: arr("focus"), redo: arr("redo"), cards: arr("cards"), free: arr("free"),
-    exams: arr("exams"), examProg: arr("exprog")
+    exams: arr("exams"), examProg: arr("exprog"), sims: arr("sims")
   };
   if (prefs) { delete prefs.updatedAt; data.ui = prefs; } // a conta guarda a data da gravação junto; o backup do app não
   if (data.prompt === undefined) delete data.prompt;

@@ -47,6 +47,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t112 | Lote 11: 198 temas, pesos revistos e psiquiatria dividida em 4 (migração do progresso e das ligações da faculdade) |
 | t113 | Lote 12: referências nas questões, Refazer espaçado (fila do dia, filtros, teimosas, simulado) e "Seus temas nas questões" |
 | t114 | Lote 13: caderno único (busca única, tipo, sem anotação como filtro, 1ª página ligada vira a página do tema, + Nova página ligada) e tema repaginado |
+| t115 | Lote 14: simulado misto completo (Escolher temas, dificuldade, estilo ENAMED, resumo), material em partes com figuras, imagem só no Refazer, Meus simulados |
 
 ## Falhas conhecidas do ambiente
 

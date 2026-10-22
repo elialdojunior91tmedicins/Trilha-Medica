@@ -553,6 +553,7 @@ li.t.open{background:var(--bg)}
 .nhint{font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;color:var(--muted);font-size:.76rem}
 .ntags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.ntag{font-size:.78rem;padding:3px 9px}.ntagf .etext{width:9rem;padding:4px 8px;font-size:.82rem}
 .ntagbar{align-items:center}.ntagbar .glabel{margin-right:4px}
+.qfig{margin:10px 0 4px;display:flex;flex-direction:column;gap:4px}.qfig img{max-width:100%;max-height:520px;object-fit:contain;align-self:flex-start;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}.qfig figcaption{font-size:.76rem;color:var(--muted)}
 .frlinked{border-top:1px dashed var(--line);padding-top:12px}.frl .link{margin-top:6px}
 .gtext{margin:0;font-size:.92rem}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
@@ -1872,6 +1873,16 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .simsrcb{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border-radius:12px;padding:10px 12px;min-height:58px}
 .simsrcb b{font-size:.88rem}.simsrcb span{font:500 .76rem var(--body);color:var(--muted);line-height:1.3}
 .simsrcb[aria-pressed="true"] span{color:inherit;opacity:.85}.simsrcb:disabled{opacity:.45;cursor:default}
+.simopt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.simol{font:600 .8rem var(--body);color:var(--muted);min-width:6.5rem}
+.simsum{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px}.simsum ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}.simsum li{display:grid;grid-template-columns:7rem 1fr;gap:10px;font-size:.86rem}.simsum li span{color:var(--muted)}.simsum li b{font-weight:600}
+.simpick{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:12px;padding:10px 12px}.simpf{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.simpf select{max-width:100%}
+.spklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:360px;overflow:auto}.spk>label{display:flex;align-items:baseline;gap:8px;padding:6px 4px;cursor:pointer}.spk.on>label{font-weight:600}.spkm{margin-left:auto;font-size:.74rem;color:var(--muted);font-weight:400;white-space:nowrap}
+.spsubs{margin:0 0 6px 28px}.spsubs summary{font-size:.8rem}.spsl{display:flex;flex-direction:column;gap:2px;margin-top:4px}.spsub{display:flex;gap:8px;font-size:.84rem;align-items:baseline}
+.simpicked{align-items:center}
+.simhist{display:flex;flex-direction:column;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.smlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.smrow{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.smh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.smlab{font-size:.9rem}.smpct{font:700 1rem var(--body)}.smpct[data-c=ok]{color:var(--good)}.smpct[data-c=mid]{color:var(--warn)}.smpct[data-c=bad]{color:var(--bad)}
+.smmeta{font-size:.78rem;color:var(--muted)}.smacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.smacts .smdel{margin-left:auto}.smrev{margin-top:6px}.smq{margin:6px 0 8px}
 .simeta{margin:-2px 0 0}.simgo{align-self:flex-start;min-height:44px;padding:10px 18px}
 .mslist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
 .mslist li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 6px 8px 12px}
@@ -3272,12 +3283,18 @@ ${fixedFormat(nq)}`;
 /* materiais do estudante: VÁRIOS arquivos por pedido (genMat[chave] no gerador do tema, simMat no simulado).
    Conjunto: {items:[{id,name,txt,imgs,pages,ntext,scan,busy,err,note}], attach, busy}. O pedido junta tudo (msPack):
    cabe até GM_MAX caracteres e GM_IMG imagens; passando disso, corta um pouco de CADA material (não só o último) e avisa. */
-let genMat={},simMat=null;const GM_MAX=30000,GM_IMG=4;
+let genMat={},simMat=null;const GM_MAX=30000,GM_IMG=4,GM_TOTAL=100000,FIG_MAX=30;
+/* Lote 14: o material vai em PARTES de até GM_MAX caracteres (uma por pedido, revezando), somando até GM_TOTAL.
+   Páginas com figura (imagem grande que não se repete em todas as páginas) viram "Figura N" (m.figs=[{page,blob}]); a parte leva as figuras das suas páginas. */
 const msItemOk=i=>!i.busy&&!i.err&&!!(i.txt||(i.imgs&&i.imgs.length)||i.scan);
 const genMatOn=S=>!!(S&&!S.busy&&(S.attach||(S.items||[]).some(msItemOk)));
 async function msReadOne(f,canImg,site){const isPdf=f.type==="application/pdf"||/\.pdf$/i.test(f.name),m={id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:f.name,txt:"",imgs:[],note:"",err:""};
   try{if(isPdf){const o=await pdfOpenTxt(f);let txt="",nt=0,sc=[];o.pages.forEach(p=>{if(p.img){sc.push(p.n);return}txt+=`=== Página ${p.n} ===\n${p.t}\n\n`;nt++});
-      m.txt=txt.trim();m.pages=o.pages.length;m.ntext=nt;
+      m.txt=txt.trim();m.pages=o.pages.length;m.ntext=nt;m.figs=[];
+      try{const fp=await pdfFigPages(o.doc,o.pages.map(p=>p.n));for(const n of fp.slice(0,FIG_MAX))m.figs.push({page:n,blob:await pdfPageImg(await o.doc.getPage(n),1100,.78)});
+        /* página quase sem texto mas com uma figura própria (slide só com a imagem): vira figura, não "página escaneada" */
+        const fs=new Set(m.figs.map(f=>f.page));sc=sc.filter(n=>!fs.has(n));
+        if(fp.length>FIG_MAX)m.note=(m.note?m.note+" ":"")+`Só as ${FIG_MAX} primeiras páginas com figura viram figura.`}catch(e){m.figs=[]}
       if(sc.length){if(!site&&canImg){for(const n of sc.slice(0,GM_IMG))m.imgs.push(await pdfPageImg(await o.doc.getPage(n)));if(sc.length>GM_IMG)m.note=`Só as ${GM_IMG} primeiras páginas sem texto vão como imagem.`}
         else if(site){m.scan=true;m.note=`${sc.length} ${sc.length===1?"página sem texto":"páginas sem texto"} (escaneadas): anexe o PDF na conversa do Claude quando colar o pedido.`}
         else m.note=`${sc.length} ${sc.length===1?"página sem texto ficou":"páginas sem texto ficaram"} de fora: esta visualização não envia imagens ao Claude.`}}
@@ -3292,23 +3309,52 @@ async function msAdd(get,set,files){files=[...(files||[])];if(!files.length)retu
   for(let i=0;i<files.length;i++){const m=await msReadOne(files[i],canImg,site);if(get()!==S)return;const j=S.items.indexOf(ph[i]);if(j>=0)S.items[j]=m;render()}
   S.busy=S.items.some(x=>x.busy);if(get()===S)render()}
 /* junta os materiais no limite do pedido: divide o espaço por igual (quem é menor usa só o que precisa e sobra para os outros) */
-function msPack(S){const ok=(S.items||[]).filter(msItemOk),site=!!window.__site,lens=ok.map(i=>i.txt.length),take=lens.map(()=>0);let left=GM_MAX-ok.length*60,idx=ok.map((_,i)=>i).filter(i=>lens[i]).sort((a,b)=>lens[a]-lens[b]);
+function msPack(S){const ok=(S.items||[]).filter(msItemOk),site=!!window.__site,lens=ok.map(i=>i.txt.length),take=lens.map(()=>0);let left=GM_TOTAL-ok.length*60,idx=ok.map((_,i)=>i).filter(i=>lens[i]).sort((a,b)=>lens[a]-lens[b]);
   while(idx.length){const share=Math.floor(Math.max(0,left)/idx.length),i=idx[0];if(lens[i]<=share){take[i]=lens[i];left-=lens[i];idx.shift()}else{idx.forEach(j=>take[j]=share);left=0;idx=[]}}
   const parts=ok.map((m,i)=>{let t=m.txt;if(take[i]<lens[i]){t=t.slice(0,take[i]);const c=t.lastIndexOf("\n");if(c>take[i]*.7)t=t.slice(0,c)}return {name:m.name,txt:t,cut:take[i]<lens[i],pct:lens[i]?Math.round(t.length/lens[i]*100):100}});
-  let imgs=[];if(site)imgs=ok.flatMap(m=>m.imgs);else{const q=ok.map(m=>[...m.imgs]);let n=0;while(n<GM_IMG&&q.some(a=>a.length))q.forEach(a=>{if(n<GM_IMG&&a.length){imgs.push(a.shift());n++}})}
-  const imgCut=!site&&ok.reduce((s,m)=>s+m.imgs.length,0)>imgs.length,many=ok.length>1;
-  const txt=parts.filter(p=>p.txt).map((p,i)=>many?`##### Material: ${p.name}\n${p.txt}`:p.txt).join("\n\n");
-  return {n:ok.length,names:ok.map(m=>m.name),name:ok.length===1?ok[0].name:ok.length?`${ok.length} materiais`:"",txt,imgs,cut:parts.some(p=>p.cut)||imgCut,parts,imgCut,scan:ok.some(m=>m.scan),attach:!!S.attach}}
+  const scans=ok.flatMap(m=>m.imgs),imgCut=false,many=ok.length>1;
+  const figs=[];ok.forEach((m,mi)=>(m.figs||[]).forEach(f=>figs.push({no:figs.length+1,mi,name:m.name,page:f.page,blob:f.blob})));
+  /* partes: corta nas marcas de página, cada uma até GM_MAX, sem misturar páginas de dois materiais num mesmo pedaço sem o cabeçalho */
+  const chunks=[];let cur={txt:"",pg:new Set()};const push=()=>{if(cur.txt.trim())chunks.push(cur);cur={txt:"",pg:new Set()}};
+  parts.forEach((p,mi)=>{if(!p.txt)return;const head=many?`##### Material: ${p.name}\n`:"";let pgN=null,opened=false;
+    p.txt.split(/(?==== Página \d+ ===)/).forEach(pc=>{const m=pc.match(/^=== Página (\d+) ===/);if(m)pgN=m[1];let t=pc;
+      while(t.length){const room=GM_MAX-cur.txt.length-(opened?0:head.length+2);if(room<400&&cur.txt){push();opened=false;continue}
+        const tk=t.length<=room?t:t.slice(0,Math.max(400,room));if(!opened){cur.txt+=(cur.txt?"\n\n":"")+head;opened=true}
+        cur.txt+=tk;if(pgN)cur.pg.add(mi+":"+pgN);t=t.slice(tk.length);if(t.length){push();opened=false}}})});push();
+  /* figura em página sem texto (fora de todas as partes): vai com a parte da página anterior mais próxima do mesmo material */
+  if(chunks.length)figs.forEach(f=>{const key=f.mi+":"+f.page;if(chunks.some(c=>c.pg.has(key)))return;let best=chunks[0];for(let n=f.page-1;n>=1;n--){const c=chunks.find(c=>c.pg.has(f.mi+":"+n));if(c){best=c;break}}best.pg.add(key)});
+  const txt=chunks.length===1?chunks[0].txt:parts.filter(p=>p.txt).map(p=>many?`##### Material: ${p.name}\n${p.txt}`:p.txt).join("\n\n");
+  return {n:ok.length,names:ok.map(m=>m.name),name:ok.length===1?ok[0].name:ok.length?`${ok.length} materiais`:"",txt,imgs:site?scans:scans.slice(0,GM_IMG),scans,figs,chunks,cut:parts.some(p=>p.cut),parts,imgCut,scan:ok.some(m=>m.scan),attach:!!S.attach}}
+/* o pedaço do material para o pedido j (revezando): texto da parte, as figuras das páginas dela e, sobrando vaga, páginas escaneadas */
+function msPart(P,j){if(!P)return null;const site=!!window.__site,L=P.chunks.length,c=L?P.chunks[j%L]:null,F=c?P.figs.filter(f=>c.pg.has(f.mi+":"+f.page)):[];
+  let fs=site?F:F.slice(0,GM_IMG),imgs=site?P.scans:fs.map(f=>f.blob);
+  if(!site&&imgs.length<GM_IMG&&P.scans.length){const off=(j*GM_IMG)%P.scans.length;for(let i=0;imgs.length<GM_IMG&&i<P.scans.length;i++)imgs.push(P.scans[(off+i)%P.scans.length])}
+  if(!L&&!site&&P.scans.length){imgs=[];const off=(j*GM_IMG)%P.scans.length;for(let i=0;i<Math.min(GM_IMG,P.scans.length);i++)imgs.push(P.scans[(off+i)%P.scans.length])}
+  return {...P,txt:c?c.txt:"",imgs,fsent:fs.map(f=>({no:f.no,name:f.name,page:f.page})),nfig:fs.length,part:L>1?[j%L+1,L]:null}}
+/* figura da questão: o Claude devolve "figura": N; só vale se N foi mandada (ou listada, no site) naquele pedido */
+function figBind(q,M){const n=+q.figura;delete q.figura;if(!M||!n)return;const f=(M.fsent||[]).find(x=>x.no===n);if(f)q.fg={no:f.no,name:f.name,page:f.page}}
+const figURL=new WeakMap();function figSrc(b){if(!b)return "";if(typeof b==="string")return b;let u=figURL.get(b);if(!u){u=URL.createObjectURL(b);figURL.set(b,u)}return u}
+function figEl(q,P,img){if(!q.fg)return null;const f=P&&P.figs?P.figs.find(x=>x.no===q.fg.no):null,src=img||(f?figSrc(f.blob):"");
+  const w=el(`<figure class="qfig"></figure>`);if(src){const i=el(`<img alt="">`);i.src=src;i.alt=`Figura ${q.fg.no} da questão`;i.onclick=()=>{try{window.open(src,"_blank")}catch(e){}};w.appendChild(i)}
+  const c=el(`<figcaption></figcaption>`);c.textContent=`Figura ${q.fg.no} · ${q.fg.name}, página ${q.fg.page}${src?"":" (a imagem não fica guardada)"}`;w.appendChild(c);return w}
+/* versão pequena para guardar no Refazer (só das erradas) */
+async function figSmall(b){try{const bm=await createImageBitmap(b),sc=Math.min(1,640/bm.width),cv=document.createElement("canvas");cv.width=Math.round(bm.width*sc);cv.height=Math.round(bm.height*sc);
+  cv.getContext("2d").drawImage(bm,0,0,cv.width,cv.height);const u=cv.toDataURL("image/jpeg",.6);return u.length<=RD_IMG_MAX?u:cv.toDataURL("image/jpeg",.4)}catch(e){return ""}}
 function genMatPrompt(m){const site=!!window.__site,anexo=site&&(m.attach||m.imgs&&m.imgs.length||m.scan),many=m.n>1;
   return `
 
 Material do estudante
 O estudante enviou ${many?`${m.n} materiais de estudo (${m.names.join("; ")})`:`um material de estudo${m.name?` (${m.name})`:""}`}. Baseie as questões ${many?"neles":"nele"}: cubra o que ${many?"os materiais ensinam":"o material ensina"}, com os critérios, condutas e valores que ${many?"eles trazem":"ele traz"}, e não cobre o que não está ${many?"nos materiais":"no material"}.${many?" Distribua as questões entre os materiais.":""} Se algum ponto divergir da diretriz brasileira vigente, siga a diretriz e explique a divergência no alerta. No campo fonte, cite o material e onde está o trecho (ex.: "Material do estudante${many?", Aula de anemias":""}, slide 12") e, se usar também uma diretriz, cite-a.`+
   (m.cut?` ${many?"Os materiais foram cortados":"O material foi cortado"} por tamanho: use só o trecho abaixo.`:"")+
+  (m.part?` Este pedido traz a parte ${m.part[0]} de ${m.part[1]} do texto (as outras partes vão em outros pedidos): faça as questões só com o que está nesta parte.`:"")+
   (anexo?`
 O material (ou parte dele) está anexado a esta conversa (PDF, slides ou fotos). Se não houver nenhum anexo nesta conversa, use só o texto abaixo; se não houver texto, ignore esta seção e faça as questões apenas com fontes confiáveis.`:"")+
-  (!site&&m.imgs&&m.imgs.length?`
-As imagens anexadas são páginas do material.`:"")+
+  (m.fsent&&m.fsent.length?`
+FIGURAS ${site?"(páginas do PDF anexado)":`(as ${m.fsent.length===1?"primeira imagem anexada":m.fsent.length+" primeiras imagens anexadas"}, nesta ordem)`}:
+${m.fsent.map(f=>`- Figura ${f.no}: ${f.name}, página ${f.page}`).join("\n")}
+Use uma figura só quando ela for essencial ou enriquecer de verdade a questão (ECG, exame de imagem, lesão de pele, gráfico, esquema, tabela): escreva no enunciado "Observe a figura" e ponha o número dela no campo "figura". No máximo uma questão com figura a cada três; nas outras, "figura": 0. Nunca use o número de uma figura que não está nesta lista.`:"")+
+  (!site&&m.imgs&&m.imgs.length>(m.nfig||0)?`
+As ${m.nfig?"demais ":""}imagens anexadas são páginas do material (sem texto selecionável).`:"")+
   (m.txt?`
 TEXTO DO MATERIAL (extraído ${many?"dos arquivos":"do arquivo"})
 ${m.txt}`:"")}
@@ -3326,10 +3372,12 @@ function msEl(S,o){const site=!!window.__site,on=genMatOn(S),ID=o.id,its=S?S.ite
   inp.id=ID("f");pk.querySelector("span").textContent=its.length?"+ Adicionar outro arquivo":"Escolher PDFs ou fotos";inp.onchange=e=>{const f=e.target.files;msAdd(o.get,o.set,f);e.target.value=""};bx.appendChild(pk);
   if(S){const x=el(`<button class="link" type="button"></button>`);x.textContent=its.length>1?"Tirar todos":"Tirar o material";x.id=ID("x");x.onclick=()=>{o.set(null);render()};bx.appendChild(x)}
   const b=d.querySelector(".gmatb");
-  if(ok.length){const P=msPack(S),raw=ok.reduce((s,m)=>s+m.txt.length,0),ni=ok.reduce((s,m)=>s+m.imgs.length,0),w=Math.min(100,Math.round(raw/GM_MAX*100));
-    const u=el(`<div class="msuse"><div class="msbar${raw>GM_MAX?" over":""}"><i style="width:${w}%"></i></div><span class="mst"></span></div>`);
-    u.querySelector(".mst").textContent=`Espaço do pedido: ${raw<1000?raw+" caracteres":Math.round(raw/1000)+" mil"} de ${GM_MAX/1000} mil caracteres${raw>GM_MAX?" (passou)":""}${!site&&ni?` · imagens: ${Math.min(ni,GM_IMG)} de ${GM_IMG}`:""}`;b.appendChild(u);
-    if(P.cut){const p=el(`<p class="pnote mscut"></p>`);p.textContent=(P.parts.some(x=>x.cut)?`Passou do limite: cortei um pouco de cada para caber (${P.parts.filter(x=>x.txt).map(x=>`${x.name}: ${x.pct}%`).join(" · ")}). As questões usam só esse trecho de cada um.`:"")+(P.imgCut?` Imagens: vão as ${GM_IMG} primeiras, revezando entre os arquivos.`:"");b.appendChild(p)}
+  if(ok.length){const P=msPack(S),raw=ok.reduce((s,m)=>s+m.txt.length,0),ni=ok.reduce((s,m)=>s+m.imgs.length,0),w=Math.min(100,Math.round(raw/GM_TOTAL*100)),nc=P.chunks.length;
+    const u=el(`<div class="msuse"><div class="msbar${raw>GM_TOTAL?" over":""}"><i style="width:${w}%"></i></div><span class="mst"></span></div>`);
+    u.querySelector(".mst").textContent=`Material: ${raw<1000?raw+" caracteres":Math.round(raw/1000)+" mil"} de ${GM_TOTAL/1000} mil caracteres${raw>GM_TOTAL?" (passou)":""}${nc>1?` · vai em ${nc} partes, uma por pedido`:""}${P.figs.length?` · ${P.figs.length} ${P.figs.length===1?"figura":"figuras"}`:""}${!site&&ni?` · ${ni} ${ni===1?"página escaneada":"páginas escaneadas"}`:""}`;b.appendChild(u);
+    if(nc>1)b.appendChild(el(`<p class="how mspart">Cada pedido ao Claude leva uma parte (até ${GM_MAX/1000} mil caracteres), revezando: com várias questões, todas as partes são cobertas.</p>`));
+    if(P.figs.length)b.appendChild(el(`<p class="how msfig">Páginas com figura (exames, ECG, esquemas) viram figuras numeradas: o Claude pode fazer questões com elas, e a figura aparece junto da questão. Ela só fica guardada, menor, se você errar (no Refazer, até sair de lá).</p>`));
+    if(P.cut){const p=el(`<p class="pnote mscut"></p>`);p.textContent=`Passou do limite: cortei um pouco de cada para caber (${P.parts.filter(x=>x.txt).map(x=>`${x.name}: ${x.pct}%`).join(" · ")}). As questões usam só esse trecho de cada um.`;b.appendChild(p)}
     if(site&&(P.scan||P.imgs.length)){b.appendChild(el(`<p class="pnote">No site, anexe na conversa do Claude os arquivos com páginas escaneadas ou fotos quando colar o pedido.</p>`))}}
   if(site&&!ok.length){const l=el(`<label class="gmatt"><input type="checkbox"> Vou anexar o material direto na conversa do Claude</label>`),c=l.querySelector("input");c.id=ID("a");c.checked=!!(S&&S.attach);
     c.onchange=()=>{if(c.checked)o.set({items:[],attach:true,busy:false});else o.set(null);render()};b.appendChild(l)}
@@ -3341,7 +3389,7 @@ function validQs(data){
   return arr.filter(q=>q&&(window.__site||window.__noRefCheck||String(q.fonte||"").trim())&&typeof q.enunciado==="string"&&Array.isArray(q.alternativas)&&q.alternativas.length>=2&&
     q.alternativas.every(a=>a&&a.letra&&typeof a.texto==="string")&&q.alternativas.some(a=>String(a.letra).trim().toUpperCase()===String(q.correta||"").trim().toUpperCase()))
     .map(q=>altShuffle({enunciado:q.enunciado,alternativas:q.alternativas.map(a=>({letra:String(a.letra).trim().toUpperCase(),texto:a.texto,porque:typeof a.porque==="string"?a.porque.trim():""})),
-      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||""),fonte:String(q.fonte||"").trim().slice(0,400),...(linkOk(q.link)?{link:String(q.link).trim()}:{}),...(typeof q.tema==="string"&&q.tema.trim()?{tema:q.tema.trim()}:{})}));
+      correta:String(q.correta).trim().toUpperCase(),comentario:String(q.comentario||""),conceito:String(q.conceito||""),alerta:String(q.alerta||""),fonte:String(q.fonte||"").trim().slice(0,400),...(linkOk(q.link)?{link:String(q.link).trim()}:{}),...(typeof q.tema==="string"&&q.tema.trim()?{tema:q.tema.trim()}:{}),...(+q.figura>0&&+q.figura<=999?{figura:+q.figura}:{})}));
 }
 /* o próprio app sorteia a posição das alternativas (o Claude tende a concentrar a correta em B e C) e renomeia as letras A, B, C…;
    o comentário e os "porque" não citam letras (fixedFormat pede isso), então continuam valendo */
@@ -3400,20 +3448,20 @@ async function generate(it){
   // ordem dos subtópicos: primeiro os ainda não marcados, depois os demais, embaralhados
   const L=subList(it);let order=[...shuffle(L.filter(x=>!x.done)),...shuffle(L.filter(x=>x.done))].map(x=>x.t);
   if(focus==="__hoje"){order=todaySubs(it);focus=""}
-  const M=genMatOn(genMat[it.key])?msPack(genMat[it.key]):null;
-  const g=gen[it.key]={status:"loading",qs:[],ans:{},msg:"",ctl:new AbortController(),n:qCount,focus,order,pos:0,mat:!!M};render();
-  let fails=0;
+  const MP=genMatOn(genMat[it.key])?msPack(genMat[it.key]):null;
+  const g=gen[it.key]={status:"loading",qs:[],ans:{},msg:"",ctl:new AbortController(),n:qCount,focus,order,pos:0,mat:!!MP,P:MP};render();
+  let fails=0,bi=0;
   while(g.qs.length<g.n){
-    const k=Math.min(BATCH,g.n-g.qs.length);
+    const k=Math.min(BATCH,g.n-g.qs.length),M=MP?msPart(MP,bi):null;
     let subs=[];if(!focus&&order.length&&!M){for(let i=0;i<k;i++)subs.push(order[(g.pos+i)%order.length])}
     const site=!!window.__site,mo=M?(site?{title:"Gerar questões do seu material",hint:(M.attach||M.scan||M.imgs&&M.imgs.length)?"Copie o pedido, abra uma conversa nova no app do Claude ou em claude.ai, ANEXE o seu material (PDF, slides ou fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto do seu material já vai junto."}:(M.imgs&&M.imgs.length?{images:M.imgs}:{})):{};
     try{
       const data=await sampleFn.json(buildPrompt(it,k,{focus,subs,avoid:g.qs.map(q=>q.conceito||q.enunciado.slice(0,120)),first:g.qs.length===0,mat:M}),{...mo,signal:g.ctl.signal,cache:false,
         onText:()=>{const s=document.getElementById("gs-"+it.key);if(s)s.textContent=`Escrevendo as questões ${g.qs.length+1} a ${g.qs.length+k} de ${g.n}…`}});
       if(gen[it.key]!==g)return;
-      const qs=validQs(data).slice(0,k);if(M)qs.forEach(q=>{q.mat=true});
+      const qs=validQs(data).slice(0,k);qs.forEach(q=>{if(M){q.mat=true;figBind(q,M)}else delete q.figura});
       if(!qs.length){if(++fails>=2){g.msg=GEN_ERR.invalid_json;break}continue}
-      fails=0;g.pos+=k;g.qs.push(...qs);render();
+      fails=0;g.pos+=k;bi++;g.qs.push(...qs);render();
     }catch(e){
       if(gen[it.key]!==g)return;
       const code=e&&e.code;
@@ -3431,7 +3479,7 @@ async function generate(it){
 function answer(it,qi,letra){
   const g=gen[it.key];if(!g||g.ans[qi])return;
   g.ans[qi]=letra;const ok=letra===g.qs[qi].correta;
-  if(!ok)rdAdd(it.key,g.qs[qi],"gen");
+  if(!ok)rdAdd(it.key,g.qs[qi],"gen",g.P);
   upd(it.key,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);commit();
 }
 function toCaderno(it,qi){
@@ -3480,7 +3528,7 @@ function renderGen(it){
     g.qs.forEach((q,qi)=>{
       const mine=g.ans[qi];
       const c=el(`<li class="qcard"><span class="qn">QUESTÃO ${qi+1} DE ${tot}${q.mat?` · <span class="qmat">do seu material</span>`:""}</span><p class="qstem"></p></li>`);
-      c.querySelector(".qstem").textContent=q.enunciado;
+      c.querySelector(".qstem").textContent=q.enunciado;{const fe=figEl(q,g.P);if(fe)c.appendChild(fe)}
       c.appendChild(altsEl(qSplit(q),mine,l=>answer(it,qi,l)));
       if(mine){const ok=mine===q.correta;
         c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+q.correta.replace(/[^A-Z0-9]/g,"")+"."}</p>`));
@@ -6667,19 +6715,23 @@ const LSRD="resid-redo-v1",RD_MAX=600;
 let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
 /* Lote 12: due = quando volta; ok = acertos em dias diferentes (sai com RD_NEED); okd = dia do último acerto; wr = erros no próprio Refazer; src = gen|sim|exam */
-const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/;
+const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/,RD_IMG_MAX=180000;
+const fgClean=f=>f&&typeof f==="object"&&+f.no>0?{no:+f.no,name:String(f.name||"").slice(0,140),page:+f.page||0}:null;
 function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
   ...(DATE_RE.test(x.due||"")?{due:x.due}:{}),...(Number.isInteger(x.ok)&&x.ok>0?{ok:x.ok}:{}),...(DATE_RE.test(x.okd||"")?{okd:x.okd}:{}),...(Number.isInteger(x.wr)&&x.wr>0?{wr:x.wr}:{}),...(["gen","sim","exam"].includes(x.src)?{src:x.src}:{}),
-  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(linkOk(q.link)?{link:q.link.trim()}:{}),...(q.mat?{mat:true}:{})}}}
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(linkOk(q.link)?{link:q.link.trim()}:{}),...(q.mat?{mat:true}:{}),...(fgClean(q.fg)?{fg:fgClean(q.fg)}:{})},
+  ...(typeof x.img==="string"&&/^data:image\/jpeg;base64,/.test(x.img)&&x.img.length<=RD_IMG_MAX?{img:x.img}:{})}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
 async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
 async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoStore)try{await redoStore.doc(id).delete()}catch(e){}}
 /* chamada quando você erra uma questão gerada */
-function rdAdd(k,q,src){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem),t=dnum(today());
+function rdAdd(k,q,src,P){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem),t=dnum(today());
   if(ex){ex.n++;ex.d=today();ex.due=fromNum(t+RD_INT[0]);delete ex.ok;delete ex.okd;rdPut(ex);return}
   const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),n:1,q,due:fromNum(t+RD_INT[0]),src});redo.push(x);
-  if(redo.length>RD_MAX){const old=redo.sort((a,b)=>a.d<b.d?-1:1).slice(0,redo.length-RD_MAX);old.forEach(o=>rdDel(o.id))}rdPut(x)}
+  if(redo.length>RD_MAX){const old=redo.sort((a,b)=>a.d<b.d?-1:1).slice(0,redo.length-RD_MAX);old.forEach(o=>rdDel(o.id))}rdPut(x);
+  /* figura: só a errada guarda uma versão pequena (some com o item quando ele sai do Refazer) */
+  const f=q.fg&&P&&P.figs?P.figs.find(y=>y.no===q.fg.no):null;if(f&&f.blob)figSmall(f.blob).then(u=>{if(u&&redo.includes(x)){x.img=u;rdPut(x);render()}})}
 /* quando volta (antigos sem due: no dia seguinte ao erro) e o que acontece ao responder no Refazer */
 const rdDue=x=>x.due||fromNum(dnum(x.d)+RD_INT[0]);
 const rdDueList=()=>redo.filter(x=>BYKEY[x.k]&&rdDue(x)<=today());
@@ -6727,7 +6779,7 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);if(!R.res)R
   R.snap=x;const it=BYKEY[x.k],q=R.view[x.id]||(R.view[x.id]=rdView(x));
   const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p></div>`);
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
-  c.querySelector(".qstem").textContent=q.enunciado;
+  c.querySelector(".qstem").textContent=q.enunciado;{const fe=figEl(x.q,null,x.img);if(fe)c.appendChild(fe)}
   c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;R.res.push({k:x.k,ok});if(ok){R.okc=(R.okc||0)+1;const sameDay=x.okd===today();R.left=rdHit(x);R.same=sameDay;if(R.left)R.hit++}else rdMiss(x);render()}));
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?(R.left?"Correta. Acertou 2 vezes em dias diferentes: saiu da lista.":R.same?"Correta. Você já tinha acertado hoje; volta em 3 dias para confirmar.":"Correta. Volta em 3 dias: acertando de novo, sai da lista."):"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+". Volta amanhã."}</p>`));
     c.appendChild(qExplEl(q));
@@ -6856,7 +6908,7 @@ function qTopicPanel(it){const k=it.key,s=get(k),w=el(`<div class="qtp" id="qtp-
   btn("qtpReg","Registrar questões",()=>{qReg={k,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})});
   if(errors.some(e=>e.k===k))btn("qtpErr","Ver erros",()=>{eGoTopic(k);backStack=[];setView("erros")});
   btn("qtpRes","Abrir na Residência",()=>openTopic(k));w.appendChild(a);
-  if(simPick.has(k))w.appendChild(el(`<p class="how">No simulado misto: fonte "Escolhidos" (${simPick.size} ${simPick.size===1?"tema":"temas"}).</p>`));
+  if(simPick.has(k))w.appendChild(el(`<p class="how">No simulado misto: fonte "Escolher temas" (${simPick.size} ${simPick.size===1?"tema":"temas"}).</p>`));
   return w}
 function qRowExtra(it){const tr=qTrend(it.key),en=errors.filter(e=>e.k===it.key&&!e.arch),ex=el(`<div class="qrx"></div>`);
   if(tr&&Math.abs(tr.d)>=5){const b=el(`<span class="qtr ${tr.d>0?"up":"down"}"></span>`);b.textContent=`${tr.d>0?"▲":"▼"} ${Math.abs(tr.d)} pts`;b.dataset.tip=`Últimos 30 dias: ${tr.r}% em ${tr.rq} questões · antes: ${tr.p}% em ${tr.pq}`;b.title=b.dataset.tip;ex.appendChild(b)}
@@ -6931,10 +6983,17 @@ function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;
   box.querySelector(".qgtxt").textContent=`${ok?"Dentro":"Acima"} do tempo da prova (${fmtPace(ref)})${ok?"":`: ${fmtPace(avg-ref)} a mais por questão`}.${n7?` Últimos 7 dias: ${fmtPace(s7/n7)}.`:""}`;
   w.append(box,sel);return w}
 /* simulado misto: questões de vários temas num bloco só */
-let sim=null,simCfg={src:"weak",n:10};
-const SIM_SRC=[["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Para refazer"],["filter","Filtro atual"]];
+let sim=null,simCfg={src:"weak",n:10,dif:"mista",est:"res"},simSubs={},simPF={q:"",area:"all",lv:"all",inc:0};
+const SIM_SRC=[["pick","Escolher temas"],["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
+/* Lote 14: dificuldade e estilo do simulado */
+const SIM_DIF=[["mista","Mista"],["facil","Fácil"],["media","Média"],["dificil","Difícil"]],SIM_EST=[["res","Residência"],["inep","ENAMED / INEP"]];
+const SIM_DIF_TXT={mista:"Misture os níveis: cerca de 30% fáceis, 50% médias e 20% difíceis.",facil:"Nível fácil: casos típicos, que cobram o conceito central de forma direta, com distratores que quem estudou distingue sem dificuldade.",
+  media:"Nível médio, como a média das provas de residência.",dificil:"Nível difícil: apresentações atípicas ou com o dado decisivo sutil, exceções, condutas de segunda linha e distratores muito próximos da correta (sem pegadinha de português)."};
+const SIM_EST_TXT={res:"",inep:"Estilo ENAMED/INEP: cada questão é uma situação-problema contextualizada (caso clínico com os dados necessários, alguns irrelevantes, como na prática do médico generalista no SUS), com comando claro e afirmativo (sem \"exceto\", \"incorreta\" ou \"não\" no comando) e exatamente 4 alternativas (A a D), homogêneas e plausíveis, com uma única correta. Use 4 alternativas mesmo que as instruções acima falem em cinco."};
+function simStyleTxt(c){c=c||simCfg;return [SIM_DIF_TXT[c.dif]||SIM_DIF_TXT.mista,SIM_EST_TXT[c.est]||""].filter(Boolean).join("\n")}
+function simCfgSnap(){return {mode:simCfg.mode==="mat"?"mat":"temas",src:simCfg.src,n:simCfg.n,dif:simCfg.dif||"mista",est:simCfg.est||"res",picks:[...simPick].filter(k=>BYKEY[k]),subs:JSON.parse(JSON.stringify(simSubs)),pid:simCfg.pid||""}}
 const simProva=()=>fac.provas.find(x=>x.id===simCfg.pid&&x.date>=today())||upcomingProvas().find(p=>p.items.some(refOk));
-function simSrcList(){const p=simProva(),pk=[...simPick].filter(k=>BYKEY[k]),L=[...(pk.length?[["pick",`Escolhidos (${pk.length})`]]:[]),...SIM_SRC];return p?[["prova",`Prova: ${p.name}`],...L]:L}
+function simSrcList(){const p=simProva(),L=SIM_SRC;return p?[["prova",`Prova: ${p.name}`],...L]:L}
 function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
   if(src==="weak")return pool.filter(i=>{const s=get(i.key);return s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT}).sort((a,b)=>acc(get(a.key))-acc(get(b.key)));
   if(src==="gain")return U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return {it,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,15).map(r=>r.it);
@@ -6953,14 +7012,16 @@ Tarefa
 Monte um simulado com ${items.length} ${items.length===1?"questão inédita":"questões inéditas"}, uma para cada item abaixo, na mesma ordem (a 1ª questão é sobre o item 1, a 2ª sobre o item 2, e assim por diante):
 ${items.map((x,i)=>{const it=BYKEY[x.k],er=x.err&&errors.find(e=>e.id===x.err),rq=x.rd&&(redo.find(y=>y.id===x.rd)||{}).q,ra=rq&&rq.alternativas.find(a=>a.letra===rq.correta);return `${i+1}. Tema "${it.t}" (área: ${areaLabel(it)})${x.sub?`, com foco no subtópico "${x.sub}"`:""}${x.ctx?` (${x.ctx})`:""}${er?`. O estudante já errou este ponto: "${eOneLine(er.w).slice(0,300)}"; o correto é: "${eOneLine(er.r).slice(0,300)}". Crie um caso NOVO (outro paciente, outra apresentação) que cobre exatamente esse ponto, sem repetir o enunciado original`:""}${rq?`. O estudante errou uma questão sobre este ponto; a resposta certa era "${(ra?ra.texto:"").slice(0,200)}"${rq.conceito?` (conceito: ${rq.conceito.slice(0,200)})`:""}. Crie um caso NOVO que cobre exatamente esse ponto, sem repetir o enunciado original`:""}`}).join("\n")}
 Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complicação, exceção), como numa prova de residência.
+${simStyleTxt(sim&&sim.cfg)}
 
 ${fixedFormat(items.length)}`}
-const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados onde você está longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões do Refazer",pick:"Os temas que você escolheu na lista de temas",filter:"Os temas que aparecem com os filtros da aba"};
+const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados onde você está longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões que você errou",pick:"Busque e marque temas e subtópicos",filter:"Os temas que aparecem com os filtros da aba"};
 /* simulado a partir do material: as questões seguem o material; o Claude indica o tema da residência mais próximo de cada uma */
 function simMatPrompt(n,P,avoid){return promptText.trim()+`
 
 Tarefa
-Monte um simulado com ${n} ${n===1?"questão inédita":"questões inéditas"} a partir do material do estudante abaixo, cobrindo pontos diferentes dele (pode passar por várias áreas, se o material passar). Varie o tipo de pergunta (diagnóstico, conduta, exame, complicação, exceção), como numa prova de residência.${avoid&&avoid.length?`
+Monte um simulado com ${n} ${n===1?"questão inédita":"questões inéditas"} a partir do material do estudante abaixo, cobrindo pontos diferentes dele (pode passar por várias áreas, se o material passar). Varie o tipo de pergunta (diagnóstico, conduta, exame, complicação, exceção), como numa prova de residência.
+${simStyleTxt(sim&&sim.cfg)}${avoid&&avoid.length?`
 Não repita estes pontos, já cobrados nas questões anteriores deste simulado:
 ${avoid.map(x=>"- "+x).join("\n")}`:""}
 Em cada questão, acrescente o campo "tema": a chave (ex.: "CM-34") do tema da lista TEMAS abaixo mais próximo do assunto principal da questão.
@@ -6972,24 +7033,25 @@ ${fixedFormat(n)}
 Cada objeto tem também o campo "tema" com a chave do tema.`}
 function simGuessK(q,prev){const sc=impTemaScores(q.conceito+" "+q.enunciado.slice(0,400),q.comentario||""),b=Object.entries(sc).sort((a,c)=>c[1]-a[1])[0];if(b&&b[1]>=3)return b[0];
   const cnt={};prev.forEach(x=>{cnt[x.k]=(cnt[x.k]||0)+1});const t=Object.entries(cnt).sort((a,c)=>c[1]-a[1])[0];return t?t[0]:(b?b[0]:ALL[0].key)}
-async function simStartMat(){const P=msPack(simMat),n=simCfg.n,items=Array.from({length:n},()=>({k:"",mat:true}));
-  const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:"mat",mat:true,shown:0,start:0};render();
-  const site=!!window.__site,mo=site?{title:"Simulado do seu material",hint:(P.attach||P.scan||P.imgs.length)?"Copie o pedido, abra uma conversa nova no app do Claude ou em claude.ai, ANEXE os seus materiais (PDF, slides ou fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto dos seus materiais já vai junto."}:(P.imgs.length?{images:P.imgs}:{});
+async function simStartMat(){const P0=msPack(simMat),n=simCfg.n,items=Array.from({length:n},()=>({k:"",mat:true}));
+  const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:"mat",mat:true,shown:0,start:0,P:P0,cfg:simCfgSnap()};render();let bi=0;
+  const site=!!window.__site;
   let fails=0;
-  while(S.qs.length<items.length){const k=Math.min(BATCH,items.length-S.qs.length);
+  while(S.qs.length<items.length){const k=Math.min(BATCH,items.length-S.qs.length),P=msPart(P0,bi),mo=site?{title:"Simulado do seu material",hint:(P.attach||P.scan||P.imgs.length)?"Copie o pedido, abra uma conversa nova no app do Claude ou em claude.ai, ANEXE os seus materiais (PDF, slides ou fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto dos seus materiais já vai junto."}:(P.imgs.length?{images:P.imgs}:{});
     try{const data=await sampleFn.json(simMatPrompt(k,P,S.qs.map(q=>q.conceito||q.enunciado.slice(0,120))),{...mo,signal:S.ctl.signal,cache:false,onText:()=>{const s=$("#simSt");if(s)s.textContent=`Escrevendo as questões ${S.qs.length+1} a ${S.qs.length+k} de ${items.length}…`}});
       if(sim!==S||S.stopped)return;const raw=Array.isArray(data)?data:(data&&Array.isArray(data.questoes)?data.questoes:[]),qs=validQs(raw).slice(0,k);
-      if(!qs.length){if(++fails>=2){S.msg=GEN_ERR.invalid_json;break}continue}fails=0;
-      qs.forEach(q=>{const t=String(q.tema||"").trim().toUpperCase(),kk=BYKEY[t]&&!BYKEY[t].own?t:simGuessK(q,S.qs);delete q.tema;S.qs.push({...q,k:kk,mat:true})});
+      if(!qs.length){if(++fails>=2){S.msg=GEN_ERR.invalid_json;break}continue}fails=0;bi++;
+      qs.forEach(q=>{const t=String(q.tema||"").trim().toUpperCase(),kk=BYKEY[t]&&!BYKEY[t].own?t:simGuessK(q,S.qs);delete q.tema;figBind(q,P);S.qs.push({...q,k:kk,mat:true})});
       if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}render()}
     catch(e){if(sim!==S||S.stopped)return;const code=e&&e.code;if(code==="cancelled"){if(!S.qs.length){sim=null;render();return}break}
       S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMatOn(simMat))simStartMat();return}const T=simTopics(simCfg.src,U);if(!T.length)return;
-  const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):simCfg.src==="redo"?rdSimItems(simCfg.n):[];if(simCfg.src!=="errs"&&simCfg.src!=="redo")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
+  const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):simCfg.src==="redo"?rdSimItems(simCfg.n):[],used={};if(simCfg.src!=="errs"&&simCfg.src!=="redo")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),ch=simCfg.src==="pick"&&simSubs[it.key]&&simSubs[it.key].length?simSubs[it.key].filter(t=>L.some(x=>x.t===t)):null;
+    let pick="";if(ch&&ch.length){const u=used[it.key]=(used[it.key]||0);pick=ch[u%ch.length];used[it.key]++}else pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
   if(simCfg.src==="prova"){const p=simProva(),d=p&&discOf(p.discId);if(p){simCfg.pid=p.id;items.forEach(x=>{x.ctx=`para a prova "${p.name}"${d?` da disciplina ${provaDiscName(p)}`:""} da faculdade`;
     const sr=p.items.find(r=>r.startsWith("S:")&&refTopic(r).k===x.k);if(sr)x.sub=refTopic(sr).sub})}}
-  const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0};render();
+  const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0,cfg:simCfgSnap()};render();
   let fails=0;
   while(S.qs.length<items.length){const part=items.slice(S.qs.length,S.qs.length+BATCH);
     try{const data=await sampleFn.json(simPrompt(part),{signal:S.ctl.signal,cache:false,onText:()=>{const s=$("#simSt");if(s)s.textContent=`Escrevendo as questões ${S.qs.length+1} a ${S.qs.length+part.length} de ${items.length}…`}});
@@ -7002,11 +7064,50 @@ async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMat
       S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 function simAnswer(letra){const S=sim,q=S.qs[S.i];if(!q||S.ans[S.i])return;const sec=Math.min(1800,Math.max(1,(Date.now()-S.shown)/1000));
-  S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;
-  upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok&&!q.rd)rdAdd(q.k,q,"sim");
+  S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;if(S.rerun)return;
+  upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok&&!q.rd&&!S.rerun)rdAdd(q.k,q,"sim",S.P);
   if(q.rd){const x=redo.find(y=>y.id===q.rd);if(x){if(ok)rdHit(x);else rdMiss(x)}}
   if(q.err){const e=errors.find(x=>x.id===q.err);if(e){if(!ok)eAnswer(e,false);else if(eDue(e)<=today())eAnswer(e,true)}}commit()}
-function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.gen)S.status="done";render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
+function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.gen){S.status="done";simSave(S)}render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
+/* resumo antes de começar */
+function simSummaryEl(mode,T,nq){const w=el(`<div class="simsum"><ul></ul></div>`),ul=w.querySelector("ul"),li=(lab,val)=>{const x=el(`<li><span></span><b></b></li>`);x.firstChild.textContent=lab;x.lastChild.textContent=val;ul.appendChild(x)};
+  li("Questões",`${nq} · ≈ ${Math.max(1,Math.round(nq*ui.prefs.qpace/60))} min no seu ritmo (${fmtPace(ui.prefs.qpace)} por questão)`);
+  li("Dificuldade",(SIM_DIF.find(x=>x[0]===(simCfg.dif||"mista"))||SIM_DIF[0])[1]);li("Estilo",(SIM_EST.find(x=>x[0]===(simCfg.est||"res"))||SIM_EST[0])[1]);
+  if(mode==="mat"){const P=genMatOn(simMat)&&(simMat.items||[]).some(msItemOk)?msPack(simMat):null;li("Material",P?`${P.names.join(", ")}${P.chunks.length>1?` · ${P.chunks.length} partes`:""}${P.figs.length?` · ${P.figs.length} ${P.figs.length===1?"figura":"figuras"}`:""}`:simMat&&simMat.attach?"anexado na conversa do Claude":"nenhum ainda")}
+  else if(simCfg.src==="errs")li("Temas",`casos novos sobre ${nq} ${nq===1?"erro":"erros"} do caderno`);
+  else if(simCfg.src==="redo")li("Temas",`casos novos sobre ${nq} ${nq===1?"questão":"questões"} do Refazer`);
+  else{const names=T.slice(0,6).map(i=>i.t+(simCfg.src==="pick"&&simSubs[i.key]&&simSubs[i.key].length?` (${simSubs[i.key].length} ${simSubs[i.key].length===1?"subtópico":"subtópicos"})`:"")).join("; ");li(`Temas · ${T.length}`,T.length?names+(T.length>6?` e mais ${T.length-6}`:""):"nenhum")}
+  return w}
+/* fonte "Escolher temas": busca em todos os temas, filtros e subtópicos */
+function simPickerEl(){const w=el(`<div class="simpick"></div>`),pool=[...ALL,...FAC_ITEMS];
+  const pk=[...simPick].filter(k=>BYKEY[k]);
+  if(pk.length){const ch=el(`<div class="chips simpicked"><span class="glabel">Escolhidos · ${pk.length}</span></div>`);pk.forEach(k=>{const b=el(`<button class="chip" type="button"></button>`);b.id="spx-"+k;b.textContent=BYKEY[k].t+(simSubs[k]&&simSubs[k].length?` · ${simSubs[k].length} sub.`:"")+" ×";b.onclick=()=>{simPick.delete(k);delete simSubs[k];render()};ch.appendChild(b)});
+    const cl=el(`<button class="link" type="button" id="spClear">Limpar</button>`);cl.onclick=()=>{simPick.clear();simSubs={};render()};ch.appendChild(cl);w.appendChild(ch)}
+  const sr=el(`<div class="tfsearch">${FC_ICO}<input class="search" id="simPq" type="search" placeholder="Buscar tema ou subtópico" aria-label="Buscar tema para o simulado" autocomplete="off"></div>`),inp=sr.querySelector("input");inp.value=simPF.q;
+  inp.oninput=debounced(()=>{simPF.q=inp.value;render();const x=$("#simPq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});w.appendChild(sr);
+  const fl=el(`<div class="simpf"></div>`),sel=el(`<select id="simPa" aria-label="Grande área"><option value="all">Todas as áreas</option></select>`);
+  AREAS.forEach(a=>{const o=document.createElement("option");o.value=a.code;o.textContent=a.name;sel.appendChild(o)});sel.value=simPF.area;sel.onchange=()=>{simPF.area=sel.value;render()};fl.appendChild(sel);
+  const chip=(id,lab,on,fn)=>{const b=el(`<button class="chip" type="button"></button>`);b.id=id;b.textContent=lab;b.setAttribute("aria-pressed",on);b.onclick=()=>{fn();render()};fl.appendChild(b)};
+  [["all","Todos"],["nao","Não estudados"],["ing","Estudando"],["est","Já estudados"],["weak","Pontos fracos"],["due","Revisão hoje"]].forEach(([v,l])=>chip("simPl-"+v,l,simPF.lv===v,()=>{simPF.lv=v}));
+  chip("simPi-3","Muito alta incidência",simPF.inc===3,()=>{simPF.inc=simPF.inc===3?0:3});chip("simPi-2","Alta ou mais",simPF.inc===2,()=>{simPF.inc=simPF.inc===2?0:2});
+  w.appendChild(fl);
+  const q=norm(simPF.q.trim()),ok=it=>{const s=get(it.key);if(simPF.area!=="all"&&it.area.code!==simPF.area)return false;
+    if(simPF.lv==="nao"&&(s.last||isIng(s)))return false;if(simPF.lv==="ing"&&!isIng(s))return false;if(simPF.lv==="est"&&!s.last)return false;
+    if(simPF.lv==="weak"&&!(s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT))return false;if(simPF.lv==="due"&&!isDue(s))return false;
+    if(simPF.inc&&(it.own||wOf(it)<simPF.inc))return false;
+    if(q&&!norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")).includes(q))return false;return true};
+  const R=pool.filter(ok),shown=R.slice(0,30),ul=el(`<ul class="spklist"></ul>`);
+  shown.forEach(it=>{const k=it.key,on=simPick.has(k),li=el(`<li class="spk${on?" on":""}"><label><input type="checkbox"><span class="spkn"></span><span class="spkm"></span></label></li>`),cb=li.querySelector("input");cb.id="spk-"+k;cb.checked=on;
+    li.querySelector(".spkn").textContent=it.t;li.querySelector(".spkm").textContent=`${it.own?"FAC":it.area.code}${it.sp?" · "+it.sp:""}`;
+    cb.onchange=()=>{if(cb.checked)simPick.add(k);else{simPick.delete(k);delete simSubs[k]}render()};
+    if(on){const L=subList(it);if(L.length){const sel=simSubs[k]||[],d=el(`<details class="plain spsubs"${sel.length||simPF.open===k?" open":""}><summary></summary><div class="spsl"></div></details>`);d.querySelector("summary").textContent=sel.length?`Subtópicos: ${sel.length} de ${L.length}`:`Subtópicos: todos (${L.length}) · escolher`;
+      d.addEventListener("toggle",()=>{if(d.open)simPF.open=k});
+      L.forEach((x,i)=>{const lb=el(`<label class="spsub"><input type="checkbox"><span></span></label>`),c2=lb.querySelector("input");c2.id=`sps-${k}-${i}`;c2.checked=sel.includes(x.t);lb.querySelector("span").textContent=x.t;
+        c2.onchange=()=>{const a=new Set(simSubs[k]||[]);c2.checked?a.add(x.t):a.delete(x.t);if(a.size)simSubs[k]=[...a];else delete simSubs[k];simPF.open=k;render()};d.querySelector(".spsl").appendChild(lb)});li.appendChild(d)}}
+    ul.appendChild(li)});
+  if(!R.length)w.appendChild(el(`<p class="how">Nenhum tema com esses filtros.</p>`));else{w.appendChild(ul);if(R.length>shown.length)w.appendChild(el(`<p class="how">Mostrando 30 de ${R.length}: busque ou filtre para achar outros.</p>`))}
+  if(R.length>1&&R.length<=60){const all=el(`<button class="link" type="button" id="spAll"></button>`);const allOn=R.every(i=>simPick.has(i.key));all.textContent=allOn?`Desmarcar os ${R.length}`:`Marcar os ${R.length}`;all.onclick=()=>{R.forEach(i=>{if(allOn){simPick.delete(i.key);delete simSubs[i.key]}else simPick.add(i.key)});render()};w.appendChild(all)}
+  return w}
 function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="simh"><div class="dhead"><h2 id="simh">Simulado misto</h2><span class="todaydate" id="simClock"></span></div></section>`);
   const S=sim;if(S&&S.status!=="error")c.querySelector(".dhead").appendChild(fullBtn("sim"));
   if(!S||S.status==="error"){
@@ -7016,18 +7117,23 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     f.appendChild(el(`<div class="simstep"><span class="simnum">1</span><b>De onde vêm as questões</b></div>`));
     const md=el(`<div class="simmode" role="group" aria-label="Origem das questões"></div>`);[["temas","Dos meus temas"],["mat","De um material meu"]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="simM-"+v;b.textContent=l;b.setAttribute("aria-pressed",mode===v);b.onclick=()=>{simCfg.mode=v;render()};md.appendChild(b)});f.appendChild(md);
     if(mode==="temas"){const src=el(`<div class="chips simsrc" role="group" aria-label="Temas do simulado"></div>`);
-      simSrcList().forEach(([v,lab])=>{const n=simTopics(v,U).length,b=el(`<button class="chip simsrcb" type="button" aria-pressed="${simCfg.src===v}"><b></b><span></span></button>`);b.querySelector("b").textContent=`${lab} · ${n}`;b.querySelector("span").textContent=SIM_DESC[v]||"";b.disabled=!n;b.onclick=()=>{simCfg.src=v;render()};src.appendChild(b)});
-      if(!simTopics(simCfg.src,U).length){const alt=simSrcList().find(([v])=>simTopics(v,U).length);if(alt&&alt[0]!==simCfg.src){simCfg.src=alt[0];src.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",simSrcList()[i][0]===simCfg.src))}}
-      f.appendChild(src)}
-    else f.appendChild(msEl(simMat,{open:true,title:"Materiais do simulado",how:"Escolha um ou mais arquivos (PDFs da aula, slides, resumos ou fotos). As questões seguem o material, mesmo que ele passe por várias áreas; cada questão é ligada ao tema da residência mais próximo, e o acerto conta nele.",id:(t,i)=>`sm${t}${i!==undefined?"-"+i:""}`,get:()=>simMat,set:v=>{simMat=v}}));
-    f.appendChild(el(`<div class="simstep"><span class="simnum">2</span><b>Quantas questões</b></div>`));
-    const nn=el(`<div class="seg" role="group" aria-label="Número de questões"></div>`);[5,10,20,30].forEach(v=>{const b=el(`<button type="button" aria-pressed="${simCfg.n===v}">${v} questões</button>`);b.onclick=()=>{simCfg.n=v;render()};nn.appendChild(b)});f.appendChild(nn);
+      simSrcList().forEach(([v,lab])=>{const n=simTopics(v,U).length,b=el(`<button class="chip simsrcb" type="button" aria-pressed="${simCfg.src===v}"><b></b><span></span></button>`);b.id="simS-"+v;b.querySelector("b").textContent=v==="pick"?`${lab}${n?" · "+n:""}`:`${lab} · ${n}`;b.querySelector("span").textContent=SIM_DESC[v]||"";b.disabled=!n&&v!=="pick";b.onclick=()=>{simCfg.src=v;render()};src.appendChild(b)});
+      if(simCfg.src!=="pick"&&!simTopics(simCfg.src,U).length){const alt=simSrcList().find(([v])=>v!=="pick"&&simTopics(v,U).length);if(alt&&alt[0]!==simCfg.src){simCfg.src=alt[0];src.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed",simSrcList()[i][0]===simCfg.src))}}
+      f.appendChild(src);if(simCfg.src==="pick")f.appendChild(simPickerEl())}
+    else f.appendChild(msEl(simMat,{open:true,title:"Materiais do simulado",how:"Escolha um ou mais arquivos (PDFs da aula, slides, resumos ou fotos), até 100 mil caracteres no total. As questões seguem o material, mesmo que ele passe por várias áreas; cada questão é ligada ao tema da residência mais próximo, e o acerto conta nele.",id:(t,i)=>`sm${t}${i!==undefined?"-"+i:""}`,get:()=>simMat,set:v=>{simMat=v}}));
+    f.appendChild(el(`<div class="simstep"><span class="simnum">2</span><b>Como vai ser</b></div>`));
+    const row=(lab,L,cur,id,fn)=>{const w=el(`<div class="simopt"><span class="simol"></span><div class="seg" role="group"></div></div>`);w.querySelector(".simol").textContent=lab;w.querySelector(".seg").setAttribute("aria-label",lab);
+      L.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=id+v;b.textContent=l;b.setAttribute("aria-pressed",cur===v);b.onclick=()=>{fn(v);render()};w.querySelector(".seg").appendChild(b)});f.appendChild(w)};
+    row("Questões",[5,10,20,30].map(v=>[v,String(v)]),simCfg.n,"simN-",v=>{simCfg.n=v});
+    row("Dificuldade",SIM_DIF,simCfg.dif||"mista","simD-",v=>{simCfg.dif=v});
+    row("Estilo",SIM_EST,simCfg.est||"res","simE-",v=>{simCfg.est=v});
+    if(simCfg.est==="inep")f.appendChild(el(`<p class="how simesth">Como no ENAMED: caso clínico contextualizado da prática do generalista, comando direto e 4 alternativas (A a D).</p>`));
     const T2=mode==="mat"?[]:simTopics(simCfg.src,U),nq=mode==="temas"&&simCfg.src==="errs"?Math.min(simCfg.n,errors.filter(e=>BYKEY[e.k]&&!e.arch).length):mode==="temas"&&simCfg.src==="redo"?Math.min(simCfg.n,redo.filter(x=>BYKEY[x.k]).length):simCfg.n;
-    f.appendChild(el(`<p class="how simeta">≈ ${Math.max(1,Math.round(nq*ui.prefs.qpace/60))} min no seu ritmo de prova (${fmtPace(ui.prefs.qpace)} por questão).</p>`));c.appendChild(f);
+    f.appendChild(el(`<div class="simstep"><span class="simnum">3</span><b>Resumo</b></div>`));f.appendChild(simSummaryEl(mode,T2,nq));c.appendChild(f);
     const matOn=genMatOn(simMat),go=el(`<button class="btn primary simgo" type="button" id="simGo"></button>`);
     if(mode==="mat"){go.textContent=`Começar simulado do material · ${nq} ${nq===1?"questão":"questões"}`;go.disabled=!sampleFn||!matOn;if(!matOn)c.appendChild(el(`<p class="how">Escolha pelo menos um arquivo para começar.</p>`))}
-    else{go.textContent=`Começar simulado · ${nq} ${nq===1?"questão":"questões"} de ${Math.min(T2.length,nq)} ${Math.min(T2.length,nq)===1?"tema":"temas"}`;go.disabled=!sampleFn||!T2.length}
-    if(sampleOff)go.title="O Claude não está disponível nesta visualização";go.onclick=()=>simStart(U);c.appendChild(go);
+    else{go.textContent=`Começar simulado · ${nq} ${nq===1?"questão":"questões"} de ${Math.min(T2.length,nq)} ${Math.min(T2.length,nq)===1?"tema":"temas"}`;go.disabled=!sampleFn||!T2.length;if(simCfg.src==="pick"&&!T2.length)c.appendChild(el(`<p class="how">Marque pelo menos um tema na busca acima.</p>`))}
+    if(sampleOff)go.title="O Claude não está disponível nesta visualização";go.onclick=()=>simStart(U);c.appendChild(go);c.appendChild(simHistEl(U));
     return c}
   if(S.status==="loading"){c.appendChild(el(`<p class="gstatus" id="simSt" aria-live="polite">Preparando o simulado. O primeiro bloco pode levar até um minuto…</p>`));
     const b=el(`<button class="btn" type="button">Cancelar</button>`);b.onclick=()=>S.ctl.abort();c.appendChild(b);return c}
@@ -7036,13 +7142,13 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     const ul=el(`<ol class="simlist"></ol>`);S.qs.forEach((q,i)=>{const it=BYKEY[q.k],ok=S.ans[i]===q.correta,li=el(`<li><span class="simok ${S.ans[i]?ok?"ok":"no":""}">${S.ans[i]?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${S.t[i]?fmtPace(S.t[i]):""}</span></li>`);
       const b=li.querySelector("button");b.textContent=it?it.t:"";b.onclick=()=>openTopic(q.k);ul.appendChild(li)});c.appendChild(ul);
     const wrong=S.qs.filter((q,i)=>S.ans[i]&&S.ans[i]!==q.correta).length;
-    c.appendChild(el(`<p class="how">${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo.</p>`));
+    c.appendChild(el(`<p class="how">${S.rerun?"Refazendo um simulado: não conta no acerto dos temas nem vai para o Refazer. A tentativa fica anotada em Meus simulados.":`${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo. O simulado ficou guardado em Meus simulados.`}</p>`));
     const b=el(`<button class="btn primary" type="button">Novo simulado</button>`);b.onclick=()=>{sim=null;render()};c.appendChild(b);return c}
   // em andamento
   const q=S.qs[S.i];if(!q){c.appendChild(el(`<p class="gstatus" id="simSt">Escrevendo a próxima questão…</p>`));return c}
   const it=BYKEY[q.k],mine=S.ans[S.i],card=el(`<div class="qcard"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p></div>`);
-  card.querySelector(".qn").textContent=`QUESTÃO ${S.i+1} DE ${S.items.length}`;if(q.mat)card.querySelector(".qn").appendChild(el(`<span class="qmat"> · do seu material</span>`));card.querySelector(".simtopic").textContent=mine&&it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Tema revelado depois de responder";
-  card.querySelector(".qstem").textContent=q.enunciado;
+  card.querySelector(".qn").textContent=`QUESTÃO ${S.i+1} DE ${S.items.length}${S.rerun?" · REFAZENDO (não conta)":""}`;if(q.mat)card.querySelector(".qn").appendChild(el(`<span class="qmat"> · do seu material</span>`));card.querySelector(".simtopic").textContent=mine&&it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Tema revelado depois de responder";
+  card.querySelector(".qstem").textContent=q.enunciado;{const fe=figEl(q,S.P);if(fe)card.appendChild(fe)}
   card.appendChild(altsEl(qSplit(q),mine,l=>{simAnswer(l);render()}));
   if(mine){const ok=mine===q.correta;card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+"."} <span class="simt">${fmtPace(S.t[S.i])}</span></p>`));
     card.appendChild(qExplEl(qSplit(q)));
@@ -7051,8 +7157,60 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     card.appendChild(qActsEl(q,mine,{k:q.k,src:"Simulado misto"}))}
   c.appendChild(card);const acts=el(`<div class="btns"></div>`);
   if(mine){const nx=el(`<button class="btn primary" type="button" id="simNext"></button>`);const last=S.i+1>=S.items.length;nx.textContent=last?(S.gen?"Ver resultado":"Aguardando as próximas…"):(S.i+1<S.qs.length?"Próxima":"Aguardando a próxima…");nx.disabled=!last&&S.i+1>=S.qs.length||last&&!S.gen;nx.onclick=simNext;acts.appendChild(nx)}
-  const st=el(`<button class="btn" type="button" id="simEnd">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(!S.qs.length)sim=null;render()};acts.appendChild(st);
+  const st=el(`<button class="btn" type="button" id="simEnd">Encerrar</button>`);st.onclick=()=>{S.stopped=true;if(S.ctl)S.ctl.abort();S.gen=true;S.qs.length=Math.max(Object.keys(S.ans).length,0);S.items.length=S.qs.length;S.status=S.qs.length?"done":"error";if(S.qs.length)simSave(S);if(!S.qs.length)sim=null;render()};acts.appendChild(st);
   c.appendChild(acts);c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.sim?" · Esc sai da tela inteira":""}</p>`));return c}
+/* ---------- Meus simulados (Lote 14): cada simulado terminado fica guardado (só texto, sem figuras), para rever, refazer ou repetir os temas ----------
+   sims = [{id,d,at,mode,src,lab,dif,est,n,hit,ans,tt,cfg,qs:[{k,q,a,t}],tries:[{d,hit,ans}]}]; localStorage resid-sims-v1 + Firestore progress/sims/{id} */
+const LSSIM="resid-sims-v1",SIM_MAX=40;let sims=[],simStore=null,simRev=null,simAllOpen=false,simArm=null;
+function smOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
+function smClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",D=/^\d{4}-\d{2}-\d{2}$/,cf=x.cfg&&typeof x.cfg==="object"?x.cfg:{};
+  return {id:x.id,d:D.test(x.d||"")?x.d:today(),at:s(x.at,40),mode:x.mode==="mat"?"mat":"temas",src:s(x.src,20),lab:s(x.lab,140),dif:s(x.dif,10)||"mista",est:s(x.est,10)||"res",
+    n:+x.n||0,hit:+x.hit||0,ans:+x.ans||0,tt:Math.round(+x.tt||0),
+    cfg:{mode:cf.mode==="mat"?"mat":"temas",src:s(cf.src,20),n:+cf.n||10,dif:s(cf.dif,10)||"mista",est:s(cf.est,10)||"res",picks:Array.isArray(cf.picks)?cf.picks.filter(k=>typeof k==="string").slice(0,200):[],
+      subs:cf.subs&&typeof cf.subs==="object"?Object.fromEntries(Object.entries(cf.subs).filter(([k,v])=>Array.isArray(v)).map(([k,v])=>[k,v.filter(t=>typeof t==="string").slice(0,40)])):{},pid:s(cf.pid,40)},
+    qs:x.qs.filter(r=>r&&typeof r.k==="string"&&r.q&&typeof r.q.enunciado==="string"&&Array.isArray(r.q.alternativas)).map(r=>({k:r.k,q:rdClean({id:"x",k:r.k,q:r.q}).q,a:s(r.a,3),t:Math.round(+r.t||0)})).slice(0,40),
+    tries:Array.isArray(x.tries)?x.tries.filter(t=>t&&D.test(t.d)).map(t=>({d:t.d,hit:+t.hit||0,ans:+t.ans||0})).slice(-10):[]}}
+try{const v=JSON.parse(localStorage.getItem(LSSIM)||"[]");if(Array.isArray(v))sims=v.filter(smOk).map(smClean)}catch(e){}
+function smSaveLocal(){try{localStorage.setItem(LSSIM,JSON.stringify(sims))}catch(e){}}
+async function smPut(x){smSaveLocal();if(!simStore)return;try{await simStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))}catch(e){}}
+async function smDel(id){sims=sims.filter(x=>x.id!==id);smSaveLocal();render();if(simStore)try{await simStore.doc(id).delete()}catch(e){}}
+function simLab(c,S){if(c.mode==="mat"){const P=S&&S.P;return "Do material"+(P&&P.names&&P.names.length?": "+P.names.join(", ").slice(0,100):"")}
+  const L=simSrcList().find(x=>x[0]===c.src)||SIM_SRC.find(x=>x[0]===c.src),b=L?L[1]:"Simulado";return c.src==="pick"&&c.picks.length?`${b}: ${c.picks.slice(0,3).map(k=>BYKEY[k]?BYKEY[k].t:"").filter(Boolean).join(", ")}${c.picks.length>3?` e mais ${c.picks.length-3}`:""}`:b}
+/* guarda (ou, ao refazer, soma a tentativa) quando o simulado acaba */
+function simSave(S){if(!S||S.saved||!S.qs.length)return;S.saved=true;const ans=Object.keys(S.ans).length;if(!ans)return;const hit=S.qs.filter((q,i)=>S.ans[i]===q.correta).length,tt=Object.values(S.t).reduce((a,b)=>a+b,0);
+  if(S.rerun){const x=sims.find(y=>y.id===S.fromId);if(x){x.tries.push({d:today(),hit,ans});x.tries=x.tries.slice(-10);smPut(x)}return}
+  const c=S.cfg||simCfgSnap(),x=smClean({id:"sm"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d:today(),at:new Date().toISOString(),mode:c.mode,src:S.mat?"mat":c.src,lab:simLab(c,S),dif:c.dif,est:c.est,n:S.qs.length,hit,ans,tt,cfg:c,
+    qs:S.qs.map((q,i)=>({k:q.k,q:{enunciado:q.enunciado,alternativas:q.alternativas,correta:q.correta,comentario:q.comentario,conceito:q.conceito,alerta:q.alerta,fonte:q.fonte,link:q.link,mat:q.mat,fg:q.fg},a:S.ans[i]||"",t:S.t[i]||0})),tries:[]});
+  sims.unshift(x);if(sims.length>SIM_MAX)sims.splice(SIM_MAX).forEach(o=>{if(simStore)simStore.doc(o.id).delete().catch(()=>{})});smPut(x);S.savedId=x.id}
+/* refazer as mesmas questões (embaralhadas; não conta no acerto dos temas nem vai para o Refazer) */
+function simRerun(x){const qs=x.qs.filter(r=>BYKEY[r.k]).map(r=>({...altShuffle(JSON.parse(JSON.stringify(r.q))),k:r.k}));if(!qs.length)return;
+  sim={status:"run",items:qs.map(q=>({k:q.k})),qs,i:0,ans:{},t:{},msg:"",src:x.src,cfg:x.cfg,gen:true,rerun:true,fromId:x.id,start:Date.now(),shown:Date.now()};simRev=null;render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"})}
+/* mesmos temas e ajustes, questões novas */
+function simAgain(x,U){const c=x.cfg;simCfg={...simCfg,mode:c.mode,src:c.src,n:c.n,dif:c.dif,est:c.est,pid:c.pid};if(c.src==="pick"){simPick=new Set(c.picks.filter(k=>BYKEY[k]));simSubs=JSON.parse(JSON.stringify(c.subs||{}))}
+  simRev=null;sim=null;if(c.mode==="mat"&&!genMatOn(simMat)){render();const h=$("#simh");if(h)h.scrollIntoView({block:"start"});return}simStart(U)}
+function simHistEl(U){const w=el(`<div class="simhist"><div class="dbh"><span class="glabel">Meus simulados${sims.length?" · "+sims.length:""}</span></div></div>`);
+  if(!sims.length){w.appendChild(el(`<p class="how">Os simulados que você terminar ficam aqui, com o resultado, para rever as questões, refazer ou repetir os mesmos temas.</p>`));return w}
+  const ol=el(`<ol class="smlist"></ol>`),L=simAllOpen?sims:sims.slice(0,5);
+  L.forEach(x=>{const li=el(`<li class="smrow" id="sm-${x.id}"><div class="smh"><b class="smlab"></b><span class="smpct"></span></div><span class="smmeta"></span><div class="smacts"></div></li>`),p=pct(x.hit,x.ans);
+    li.querySelector(".smlab").textContent=x.lab||"Simulado";const pc=li.querySelector(".smpct");pc.textContent=`${p}%`;pc.dataset.c=p>=80?"ok":p>=65?"mid":"bad";
+    const tr=x.tries.length?x.tries[x.tries.length-1]:null;
+    li.querySelector(".smmeta").textContent=`${br(x.d)} · ${x.hit} de ${x.ans} · ${fmtPace(x.tt)} · ${(SIM_DIF.find(d=>d[0]===x.dif)||SIM_DIF[0])[1].toLowerCase()}${x.est==="inep"?" · ENAMED":""}${tr?` · refeito em ${br(tr.d)}: ${tr.hit} de ${tr.ans}`:""}`;
+    const a=li.querySelector(".smacts"),btn=(id,t,fn,cls)=>{const b=el(`<button class="mini${cls?" "+cls:""}" type="button"></button>`);b.id=id;b.textContent=t;b.onclick=fn;a.appendChild(b);return b};
+    btn("smv-"+x.id,simRev&&simRev.id===x.id?"Fechar":"Rever",()=>{simRev=simRev&&simRev.id===x.id?null:{id:x.id,i:null};render()});
+    btn("smr-"+x.id,"Refazer estas",()=>simRerun(x)).title="As mesmas questões, embaralhadas; não conta no acerto";
+    btn("sma-"+x.id,"Mesmos temas, questões novas",()=>simAgain(x,U)).disabled=!sampleFn;
+    const armed=simArm===x.id,d=btn("smd-"+x.id,armed?"Toque de novo para apagar":"Apagar",()=>{if(armed){simArm=null;smDel(x.id)}else{simArm=x.id;render()}},"smdel");if(armed)d.classList.add("warn");
+    if(simRev&&simRev.id===x.id)li.appendChild(simRevEl(x));ol.appendChild(li)});
+  w.appendChild(ol);
+  if(sims.length>5){const m=el(`<button class="link" type="button" id="smAll"></button>`);m.textContent=simAllOpen?"Mostrar só os 5 últimos":`Ver todos (${sims.length})`;m.onclick=()=>{simAllOpen=!simAllOpen;render()};w.appendChild(m)}
+  return w}
+function simRevEl(x){const w=el(`<div class="smrev"><ol class="simlist"></ol></div>`),ol=w.querySelector("ol");
+  x.qs.forEach((r,i)=>{const it=BYKEY[r.k],ok=r.a===r.q.correta,li=el(`<li><span class="simok ${r.a?ok?"ok":"no":""}">${r.a?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${r.t?fmtPace(r.t):""}</span></li>`),b=li.querySelector("button");
+    b.id=`smq-${x.id}-${i}`;b.textContent=`${i+1}. ${it?it.t:"Tema"}`;b.onclick=()=>{simRev.i=simRev.i===i?null:i;render()};ol.appendChild(li);
+    if(simRev.i===i){const c=el(`<div class="qcard smq"><p class="qstem"></p></div>`);c.querySelector(".qstem").textContent=r.q.enunciado;{const fe=figEl(r.q,null);if(fe)c.appendChild(fe)}
+      c.appendChild(altsEl(qSplit(r.q),r.a||"_",()=>{}));c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${!r.a?"Sem resposta.":ok?"Você acertou.":"Você marcou "+esc(r.a)+"; a resposta é "+esc(r.q.correta)+"."}</p>`));
+      c.appendChild(qExplEl(qSplit(r.q)));{const f=qFonteEl(r.q);if(f)c.appendChild(f)}if(r.a&&!ok)c.appendChild(qActsEl(r.q,r.a,{k:r.k,src:"Meus simulados"}));li.appendChild(c)}});
+  return w}
 function simTick(){const c=$("#simClock");if(!c||!sim||sim.status!=="run")return;const q=sim.ans[sim.i]?null:Math.floor((Date.now()-sim.shown)/1000);c.textContent=q===null?"":`${fmtPace(q)} nesta questão`}
 setInterval(simTick,1000);
 /* ---------- Provas na íntegra: importar o PDF (ou fotos) de uma prova, conferir as questões e fazer no app ----------
@@ -7194,9 +7352,15 @@ async function pdfPageText(pg){const tc=await pg.getTextContent();let s="",y0=nu
     else if(x1!==null&&x-x1>1.5&&s&&!/\s$/.test(s)&&!/^\s/.test(it.str))s+=" ";
     s+=it.str;if(it.hasEOL)s+="\n";if(it.str)y0=y;x1=x+(it.width||0)}
   return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()}
-async function pdfPageImg(pg){const v0=pg.getViewport({scale:1}),sc=Math.min(2.2,1500/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
+/* páginas com figura: imagem de pelo menos 150×150 px que não aparece em boa parte das páginas (logo/fundo do slide ficam de fora) */
+async function pdfFigPages(doc,ns){const lib=await pdfLib(),O=lib.OPS,ops=[O.paintImageXObject,O.paintInlineImageXObject,O.paintImageXObjectRepeat].filter(x=>x!==undefined),per={},cnt={};
+  for(const n of ns){const pg=await doc.getPage(n),L=await pg.getOperatorList(),ids=new Set();
+    L.fnArray.forEach((f,i)=>{if(!ops.includes(f))return;const a=L.argsArray[i]||[],w=+a[1]||0,h=+a[2]||0;if(w>=150&&h>=150)ids.add(w+"x"+h)});/* o pdf.js dá nomes diferentes por página à mesma imagem: compara pelo tamanho */
+    per[n]=ids;ids.forEach(id=>{cnt[id]=(cnt[id]||0)+1})}
+  const lim=Math.max(3,Math.ceil(ns.length*.6));return ns.filter(n=>[...per[n]].some(id=>cnt[id]<lim||ns.length<=2))}
+async function pdfPageImg(pg,W=1500,Q=.82){const v0=pg.getViewport({scale:1}),sc=Math.min(2.2,W/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
   cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);
-  await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;return await new Promise(r=>cv.toBlob(b=>r(b),"image/jpeg",0.82))}
+  await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;return await new Promise(r=>cv.toBlob(b=>r(b),"image/jpeg",Q))}
 async function pdfOpenTxt(file,onPage){const lib=await pdfLib();const doc=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer()),isEvalSupported:false,disableFontFace:true}).promise;
   const pages=[];for(let n=1;n<=doc.numPages;n++){const t=await pdfPageText(await doc.getPage(n));pages.push({n,t,img:t.replace(/\s/g,"").length<60});if(onPage)onPage(n,doc.numPages)}return {doc,pages}}
 const BANCAS=["ENARE","UNIFESP","UNICAMP","SUS-SP","SES-DF","AMRIGS","PSU-MG","PSU-GO","SURCE","UFRJ","UERJ","HCPA","UFPR","UNESP","SANTA CASA","EINSTEIN","IAMSPE","UFMG","UFBA","UFPE","SES-PE","HCFMRP","UFSC","AREMG","USP-RP","USP"];
@@ -8395,7 +8559,7 @@ const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
   anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length,cartoes:cards.length,livres:freeN.length,provasImportadas:exams.length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg}}}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg,sims}}}
 function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}${c.cartoes?` · ${c.cartoes} ${c.cartoes===1?"cartão":"cartões"}`:""}${c.livres?` · ${c.livres} ${c.livres===1?"anotação livre":"anotações livres"}`:""}${c.provasImportadas?` · ${c.provasImportadas} ${c.provasImportadas===1?"prova importada":"provas importadas"}`:""}`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
@@ -8487,7 +8651,7 @@ const HELP=[
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
 - **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
 - **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros. Se a mesma fonte aparecer com dois nomes (ex.: "Questões no Claude" e "Claude"), o cartão sugere **Juntar**; em **Juntar ou renomear fontes** você escolhe a fonte e o novo nome (ou o nome de outra, para somar as duas), em todos os temas e nas provas importadas. Dá para **Desfazer** logo depois. "Claude" não muda de nome, porque é onde caem as geradas.
-- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (fonte **Escolhidos**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
+- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (marca o tema em **Escolher temas**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **Referências:** cada questão gerada traz a **referência específica** (diretriz ou consenso com sociedade, ano e seção; livro e capítulo; manual do Ministério da Saúde) e o comentário e o porquê de cada alternativa se apoiam nela; nada de "confira na diretriz". **No site**, o pedido manda o Claude **pesquisar e confirmar** a referência na internet e trazer o **link** (Abrir a referência). **No artefato**, sem internet, o Claude só usa o que conhece com segurança e troca a questão quando não há fonte segura (o app descarta questão sem referência). Com material seu, o material é a fonte (página ou slide).
@@ -9078,6 +9242,7 @@ function liveStart(){if(liveOn)return;liveOn=true;
     [trashStore,L("trash",()=>trash,v=>{trash=v},x=>trOk(x)?x:null,trSaveLocal)],
     [cardStore,L("cards",()=>cards,v=>{cards=v},x=>cdOk(x)?cdClean(x):null,cdSaveLocal)],
     [redoStore,L("redo",()=>redo,v=>{redo=v},x=>rdOk(x)?rdClean(x):null,rdSaveLocal)],
+    [simStore,L("sims",()=>sims,v=>{sims=v},x=>smOk(x)?smClean(x):null,smSaveLocal,()=>sims.sort((a,b)=>a.at<b.at?1:-1))],
     [exStore,L("exams",()=>exams,v=>{exams=v},x=>exOk(x)?exClean(x):null,exSaveLocal)],
     [exPStore,L("exprog",()=>exProg,v=>{exProg=v},x=>exPOk(x)&&!exATimer[x.id]?exPClean(x):null,exSaveLocal)],
     [focStore,L("focus",()=>foSess,v=>{foSess=v},x=>foOk(x)?foClean(x):null,foSaveLocal,()=>foSess.sort((a,b)=>a.s<b.s?1:-1))]].filter(r=>r[0]);
@@ -9135,6 +9300,9 @@ window.addEventListener("online",()=>liveRefresh(true));
     cardStore=store.collection("cards");
     try{const cq=await cardStore.get(),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),lo=cards.filter(x=>!ids.has(x.id));
       if(rem.length){cards=[...rem,...lo];cdSaveLocal();render()}for(const x of lo)await cdPut(x)}catch(e){}
+    simStore=store.collection("sims");
+    try{const sq=await simStore.get(),rem=sq.docs.map(d=>d.data()).filter(smOk).map(smClean),ids=new Set(rem.map(x=>x.id)),lo=sims.filter(x=>!ids.has(x.id));
+      if(rem.length){sims=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);smSaveLocal();render()}for(const x of lo)await smPut(x)}catch(e){}
     redoStore=store.collection("redo");
     try{const rq=await redoStore.get(),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
       if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}

@@ -68,7 +68,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   const r10=await p.evaluate(()=>{const P=document.querySelector('#qtp-CM-1');return P?{w:P.querySelectorAll('.qtpc').length,src:P.querySelector('.qtpsrc')&&P.querySelector('.qtpsrc').textContent,acts:[...P.querySelectorAll('.qtpacts button')].map(b=>b.textContent),view}:null});
   ok(r10&&r10.w===8&&/ENARE/.test(r10.src)&&/Claude/.test(r10.src)&&r10.view==="quest",name+": tocar no tema abre o painel ali mesmo (semanas e banca)");
   ok(r10&&["Praticar este tema","Pôr no simulado misto","Registrar questões","Abrir na Residência"].every(t=>r10.acts.includes(t)),name+": ações do painel "+(r10&&r10.acts.join(" / ")));
-  await click('#qtpSim-CM-1');ok(await p.evaluate(()=>simPick.has("CM-1")&&simCfg.src==="pick"&&simSrcList().some(x=>x[0]==="pick"&&/Escolhidos \(1\)/.test(x[1]))),name+": Pôr no simulado misto cria a fonte Escolhidos");
+  await click('#qtpSim-CM-1');ok(await p.evaluate(()=>simPick.has("CM-1")&&simCfg.src==="pick"&&simTopics("pick",[]).length===1),name+": Pôr no simulado misto marca o tema em Escolher temas");
   ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
   if(name==="fone"||name==="note")await p.screenshot({path:`t113-${name}.png`});
   await click('#qtpGo-CM-1');ok(await p.evaluate(()=>view==="temas"&&openKey==="CM-1"&&detTab["CM-1"]==="questoes"),name+": Praticar este tema abre a aba Questões do tema");
