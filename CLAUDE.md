@@ -4,7 +4,7 @@ Marca (desde 10/2026): nome **Nexus - Trilha Médica**; símbolo dourado (fita +
 e ícones em `icons/`. Paleta: claro = off-white `#f3f0e9`, azul-marinho `#16264a` (`--accent`), dourado `--gold`; escuro = `#0a1121` com dourado `#cfab63`
 como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`--body` e `--mono`). Teste da marca: `tests/t79.js`.
 
-Checklist de estudos para residência médica (185 temas, plano do dia, revisões espaçadas,
+Checklist de estudos para residência médica (198 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
 Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Estatísticas (view `stats`), Foco, Erros; no celular Caderno, Estatísticas e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
@@ -311,6 +311,9 @@ consultado quando há dúvida. Responda em português.
   Painel `exLinksEl` (`exLinkEd={id,q}`; botão `#exlk-<id>`; chips `#exlx-`, sugestões `#exls-`, busca `#exlq-<id>`, resultados `#exlr-`), linha `.exlk` "Ligada a:". No tema (aba Questões)
   `exTopicEl(it)` = provas com questões dele ou ligadas (`exForTopic(k)`), com o acerto nelas e "Ver a prova". Teste: `tests/t104.js`.
 
+- Lote 11 (10/2026, incidência revista com o Guia Estatístico ENAMED do INEP): **198 temas** (CM-55…CM-65, CIR-35/36; `INC_NEW` = sem contagem própria em `INC_DATA`, texto "Tema novo" no "Por que esse peso"); `INC_DEF` com os pesos novos; especialidades novas Dermatologia (CM-63/64) e Oftalmologia (CIR-36).
+  Psiquiatria dividida: CM-50 "Transtornos do humor, ansiedade e psicoses" + CM-60 Dependência química, CM-61 Alimentares e infância, CM-62 Urgências e psicofarmacologia. Migração `psySplit(out)` no fim de `migrate()` (só com `CM-50` sem `p11`): `PSY_MAP` = índice antigo → [tema, índice novo] para `sd` e `dn`;
+  os temas novos herdam `last/step/l/ed` se o CM-50 estava estudado, senão ganham `ing` automático quando recebem subtópico marcado; nunca sobrescreve um tema novo que já exista. FAC: `facPsyMig()` (em `facNormalize`) troca `S:CM-50:<subtópico>` pelo tema novo (`PSY_TXT`, `PSY_REN` para o TDAH) e divide `own.links`. Teste: `tests/t112.js`.
 - Estudando e plano em partes (10/2026): `s.ing={d,m:"a"|"m"}` = tema começado (`isIng`, `lvKey` → "i", `lvName`); não tem revisão (`last` só ao concluir).
   `toggleSub` em tema sem `last`: 1º subtópico liga `ing` automático, o último conclui (`last`, `step` 0, `logAct("e")`, `s.pre.ing` permite desfazer no mesmo dia),
   desmarcar tudo tira o automático (o manual fica). Botões de nível `setLevel` (Não iniciado, Estudando, Estudado = começa revisões, Revisado, Dominado); `upd` apaga

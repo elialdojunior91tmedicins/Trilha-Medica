@@ -39,7 +39,7 @@ const tm=await p.evaluate(()=>{const r=document.getElementById("t-CM-37");const 
 ok(/Faculdade · SP 2.1/.test(tm.badge||""),"tema da residência ligado mostra 'Faculdade · SP 2.1': "+tm.badge);
 ok(await p.evaluate(()=>{const it=FAC_ITEMS.find(x=>x.t==="Cascata da coagulação");const li=document.getElementById("t-"+it.key);if(!li){openAreas.add("CM");render()}const li2=document.getElementById("t-"+it.key);return !!li2&&li2.closest("details").querySelector(".code").textContent==="CM"&&/FAC · NCS 6 · SP 2.1/.test(li2.textContent)}),"tema FAC aparece em CM com selo 'FAC · NCS 6 · SP 2.1'");
 ok(await p.evaluate(()=>{const h=[...document.querySelectorAll(".sphead")].find(x=>/Hematologia e oncologia/.test(x.textContent));return h&&/\+1 FAC/.test(h.textContent)}),"cabeçalho da especialidade mostra +1 FAC");
-ok(await p.evaluate(()=>weighted()===weighted()&&TOTAL===185),"% dominado continua contando só os 185 temas");
+ok(await p.evaluate(()=>weighted()===weighted()&&TOTAL===198),"% dominado continua contando só os 198 temas");
 // mudar a área do conteúdo da faculdade (dentro dele, em Área na Residência)
 await p.click('#tabF');await p.waitForTimeout(100);
 const cid=await p.evaluate(()=>{const it=FAC_ITEMS.find(x=>x.t==="Cascata da coagulação");openKey=it.key;render();return it.key.slice(2)});await p.waitForTimeout(100);

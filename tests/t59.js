@@ -10,7 +10,7 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={};
   state["CM-4"]={l:1,last:D(-2),step:0,qt:10,qc:4};
   foSess=[{id:"f",d:today(),s:"",sec:4800,m:"p",ref:"T:CM-4",lab:""}];commit();setView("temas")});
 // 5. mapa
-await seg("prog");ok(await p.$$eval('#resMap .rmc',a=>a.length)===185,tag+": mapa com 185 temas");
+await seg("prog");ok(await p.$$eval('#resMap .rmc',a=>a.length)===198,tag+": mapa com 198 temas");
 ok(await p.evaluate(()=>document.querySelectorAll('#resMap .rmc.l3').length===1&&document.querySelectorAll('#resMap .rmc.l2').length===1&&document.querySelectorAll('#resMap .rmc.weak').length===1),tag+": cores por nível e ponto fraco");
 await click('#resMap .rmc.l3');await p.waitForTimeout(250);ok(await p.evaluate(()=>openKey==="CM-2"),tag+": toque no quadrado abre o tema");
 // 8. subtópicos no gráfico

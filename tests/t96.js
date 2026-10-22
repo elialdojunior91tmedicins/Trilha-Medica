@@ -24,7 +24,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  /* 5. busca abre o que achou e, ao limpar, volta como estava */
  await p.fill('#q','sepse');await p.waitForTimeout(500);
  const r5=await p.evaluate(()=>({t:[...document.querySelectorAll('#areas li.t')].filter(x=>x.checkVisibility()).length,cnt:document.querySelector('#tfCount').textContent}));
- ok(r5.t>=1&&/de 185 temas/.test(r5.cnt),name+": a busca abre as áreas e mostra os temas achados "+JSON.stringify(r5));
+ ok(r5.t>=1&&/de 198 temas/.test(r5.cnt),name+": a busca abre as áreas e mostra os temas achados "+JSON.stringify(r5));
  await p.fill('#q','');await p.waitForTimeout(500);
  ok(await p.evaluate(()=>[...document.querySelectorAll('details.area[open]')].length===1&&[...document.querySelectorAll('#areas li.t')].filter(x=>x.checkVisibility()).every(x=>/^t-CM-/.test(x.id))),name+": ao limpar a busca, volta só o que você tinha aberto");
  /* 6. Filtros: painel fechado; abre, lembra; chips com contagem */

@@ -25,7 +25,7 @@ ok(await p.evaluate(()=>document.querySelector('#viewTemas .rcard[data-k="CM-2"]
 await click('#viewTemas .rcard[data-k="CM-2"] .psum');await p.waitForTimeout(150);ok(await p.evaluate(()=>!document.querySelector('#viewTemas .rcard[data-k="CM-2"]').classList.contains('pmini')),tag+": revisão abre ao toque");
 // projeção
 await p.evaluate(()=>{tSeg="prog";setView("temas")});await p.waitForTimeout(150);
-const pj=await p.$eval('#iMeta .iproj',x=>x.textContent);await p.evaluate(()=>{setView("inicio")});await p.waitForTimeout(150);ok(/Faltam 18\d temas/.test(pj)&&/2,5 por semana/.test(pj),tag+": projeção: "+pj.slice(0,160));
+const pj=await p.$eval('#iMeta .iproj',x=>x.textContent);await p.evaluate(()=>{setView("inicio")});await p.waitForTimeout(150);ok(/Faltam 19\d temas/.test(pj)&&/2,5 por semana/.test(pj),tag+": projeção: "+pj.slice(0,160));
 // atalhos do placar
 await click('#iBoard .itile:nth-child(3)');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="quest"),tag+": questões leva à aba Questões");
 await p.evaluate(()=>{foRun=null;foSaveRun();setView("inicio");scrollTo(0,0)});await p.waitForTimeout(200);
