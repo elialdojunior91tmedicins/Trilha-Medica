@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=49cf455d">
+<link rel="stylesheet" href="site.css?v=13a6a53b">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=49cf455d"></script>
-<script src="bridge.js?v=49cf455d"></script>
+<script src="config.js?v=13a6a53b"></script>
+<script src="bridge.js?v=13a6a53b"></script>
 </head>
 <body>
 <script>
@@ -576,6 +576,7 @@ li.t.open{background:var(--bg)}
 .nhint{font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;color:var(--muted);font-size:.76rem}
 .ntags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.ntag{font-size:.78rem;padding:3px 9px}.ntagf .etext{width:9rem;padding:4px 8px;font-size:.82rem}
 .ntagbar{align-items:center}.ntagbar .glabel{margin-right:4px}
+.exks{font-size:.76rem;padding:3px 9px}.exkadd{font-size:.8rem}
 .qfig{margin:10px 0 4px;display:flex;flex-direction:column;gap:4px}.qfig img{max-width:100%;max-height:520px;object-fit:contain;align-self:flex-start;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}.qfig figcaption{font-size:.76rem;color:var(--muted)}
 .frlinked{border-top:1px dashed var(--line);padding-top:12px}.frl .link{margin-top:6px}
 .gtext{margin:0;font-size:.92rem}
@@ -3360,6 +3361,9 @@ const figURL=new WeakMap();function figSrc(b){if(!b)return "";if(typeof b==="str
 function figEl(q,P,img){if(!q.fg)return null;const f=P&&P.figs?P.figs.find(x=>x.no===q.fg.no):null,src=img||(f?figSrc(f.blob):"");
   const w=el(`<figure class="qfig"></figure>`);if(src){const i=el(`<img alt="">`);i.src=src;i.alt=`Figura ${q.fg.no} da questão`;i.onclick=()=>{try{window.open(src,"_blank")}catch(e){}};w.appendChild(i)}
   const c=el(`<figcaption></figcaption>`);c.textContent=`Figura ${q.fg.no} · ${q.fg.name}, página ${q.fg.page}${src?"":" (a imagem não fica guardada)"}`;w.appendChild(c);return w}
+/* figura da prova: JPEG até 1000 px, baixando a qualidade até caber em EXF_MAX */
+async function exfData(b){try{const bm=await createImageBitmap(b),sc=Math.min(1,1000/bm.width),cv=document.createElement("canvas");cv.width=Math.round(bm.width*sc);cv.height=Math.round(bm.height*sc);
+  cv.getContext("2d").drawImage(bm,0,0,cv.width,cv.height);for(const q of [.78,.62,.48,.35]){const u=cv.toDataURL("image/jpeg",q);if(u.length<=EXF_MAX)return u}return ""}catch(e){return ""}}
 /* versão pequena para guardar no Refazer (só das erradas) */
 async function figSmall(b){try{const bm=await createImageBitmap(b),sc=Math.min(1,640/bm.width),cv=document.createElement("canvas");cv.width=Math.round(bm.width*sc);cv.height=Math.round(bm.height*sc);
   cv.getContext("2d").drawImage(bm,0,0,cv.width,cv.height);const u=cv.toDataURL("image/jpeg",.6);return u.length<=RD_IMG_MAX?u:cv.toDataURL("image/jpeg",.4)}catch(e){return ""}}
@@ -6803,7 +6807,7 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);if(!R.res)R
   const c=el(`<div class="qcard"><span class="qn"></span><button class="link rdtopic" type="button"></button><p class="qstem"></p></div>`);
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
   c.querySelector(".qstem").textContent=q.enunciado;{const fe=figEl(x.q,null,x.img);if(fe)c.appendChild(fe)}
-  c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;R.res.push({k:x.k,ok});if(ok){R.okc=(R.okc||0)+1;const sameDay=x.okd===today();R.left=rdHit(x);R.same=sameDay;if(R.left)R.hit++}else rdMiss(x);render()}));
+  c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;{const h=hist[today()]||(hist[today()]={});h.rq=(h.rq||0)+1}R.res.push({k:x.k,ok});if(ok){R.okc=(R.okc||0)+1;const sameDay=x.okd===today();R.left=rdHit(x);R.same=sameDay;if(R.left)R.hit++}else rdMiss(x);render()}));
   if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?(R.left?"Correta. Acertou 2 vezes em dias diferentes: saiu da lista.":R.same?"Correta. Você já tinha acertado hoje; volta em 3 dias para confirmar.":"Correta. Volta em 3 dias: acertando de novo, sai da lista."):"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+". Volta amanhã."}</p>`));
     c.appendChild(qExplEl(q));
     {const f=qFonteEl(q);if(f)c.appendChild(f)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+q.alerta;c.appendChild(p)}
@@ -6904,7 +6908,7 @@ function qGoalEl(){const g=ui.prefs.qgoal,t=dnum(today()),ws=t-(new Date().getDa
   let st=0,k=ws-7;while(qWeekQ(k).g>=g){st++;k-=7}if(W.q>=g)st++;
   const left=7-(t-ws),miss=Math.max(0,g-W.q),pc=Math.min(100,W.q/g*100);
   const box=el(`<div class="qgm"><div class="qgtop"><b>${W.q.toLocaleString("pt-BR")}</b><span>de ${g.toLocaleString("pt-BR")} questões nesta semana</span></div><div class="meter${W.q>=g?" ok":""}"><i style="width:${pc}%"></i></div><p class="how qgtxt"></p></div>`);
-  box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`+(W.rq?` Inclui ${W.rq} ${W.rq===1?"refeita":"refeitas"} de Meus simulados.`:"");
+  box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`+(W.rq?` Inclui ${W.rq} ${W.rq===1?"refeita":"refeitas"} (Refazer e Meus simulados).`:"");
   w.append(box,sel);return w}
 /* tendência: acerto dos últimos 30 dias contra os 90 dias antes deles (mínimo de 5 questões em cada) */
 function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
@@ -7165,7 +7169,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     const ul=el(`<ol class="simlist"></ol>`);S.qs.forEach((q,i)=>{const it=BYKEY[q.k],ok=S.ans[i]===q.correta,li=el(`<li><span class="simok ${S.ans[i]?ok?"ok":"no":""}">${S.ans[i]?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${S.t[i]?fmtPace(S.t[i]):""}</span></li>`);
       const b=li.querySelector("button");b.textContent=it?it.t:"";b.onclick=()=>openTopic(q.k);ul.appendChild(li)});c.appendChild(ul);
     const wrong=S.qs.filter((q,i)=>S.ans[i]&&S.ans[i]!==q.correta).length;
-    c.appendChild(el(`<p class="how">${S.rerun?"Refazendo um simulado: conta na meta semanal de questões, mas não no acerto dos temas nem vai para o Refazer. A tentativa fica anotada em Meus simulados.":`${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo. O simulado ficou guardado em Meus simulados.`}</p>`));
+    c.appendChild(el(`<p class="how">${S.rerun?"Refazendo um simulado: conta na meta semanal de questões (como o Refazer), mas não no acerto dos temas nem vai para o Refazer. A tentativa fica anotada em Meus simulados.":`${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo. O simulado ficou guardado em Meus simulados.`}</p>`));
     const b=el(`<button class="btn primary" type="button">Novo simulado</button>`);b.onclick=()=>{sim=null;render()};c.appendChild(b);return c}
   // em andamento
   const q=S.qs[S.i];if(!q){c.appendChild(el(`<p class="gstatus" id="simSt">Escrevendo a próxima questão…</p>`));return c}
@@ -7248,7 +7252,9 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
   const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
   return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
     q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:"",...(s(q.pc,1200)?{pc:s(q.pc,1200)}:{}),...(s(q.th,800)?{th:s(q.th,800)}:{}),...(s(q.fonte,400)?{fonte:s(q.fonte,400)}:{})},
-    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{})}}
+    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{})}}
+/* temas extras da questão (até 2 além do principal); contam inteiros em cada tema, mas uma vez só no dia/semana */
+function exKs(r){const k=typeof r.k==="string"?r.k:"";return Array.isArray(r.ks)?[...new Set(r.ks.filter(x=>typeof x==="string"&&BYKEY[x]&&!BYKEY[x].own&&x!==k))].slice(0,2):[]}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
 function exClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
   return {id:x.id,name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),links:Array.isArray(x.links)?[...new Set(x.links.filter(r=>typeof r==="string"&&/^(T|O):[A-Za-z0-9_-]{1,60}$/.test(r)))].slice(0,12):[],qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
@@ -7267,6 +7273,32 @@ async function exPWrite(id){const P=exProg.find(x=>x.id===id);if(P&&exPStore)try
 function exPSave(id){exSaveLocal();clearTimeout(exATimer[id]);const t=setTimeout(async()=>{await exPWrite(id);if(exATimer[id]===t)delete exATimer[id]},1500);exATimer[id]=t}
 function exFlush(){for(const id of Object.keys(exATimer)){clearTimeout(exATimer[id]);delete exATimer[id];exPWrite(id)}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")exFlush()});
+/* ---------- figuras das provas (Lote 15): uma imagem por questão, recortada do PDF ----------
+   exFigs = {"<prova>_<índice>": {id,ex,i,img}} (img = JPEG em data URL). Guardadas no aparelho (IndexedDB "nexus-figs") e na conta (progress/exfig/{id}),
+   fora do documento da prova (que tem limite de tamanho). A prova marca a questão com fg:1; a imagem é buscada quando a questão aparece. */
+const EXF_MAX=260000;let exFigs={},exFigStore=null,exFigWait={};
+let idbP=null;function idb(){if(!idbP)idbP=new Promise((res,rej)=>{try{const r=indexedDB.open("nexus-figs",1);r.onupgradeneeded=()=>{r.result.createObjectStore("f",{keyPath:"id"})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});return idbP}
+async function idbDo(mode,fn){try{const d=await idb();return await new Promise((res,rej)=>{const t=d.transaction("f",mode),st=t.objectStore("f"),q=fn(st);t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)})}catch(e){return null}}
+const exfOk=x=>!!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.ex==="string"&&typeof x.img==="string"&&/^data:image\/jpeg;base64,/.test(x.img)&&x.img.length<=EXF_MAX;
+const exfClean=x=>({id:x.id,ex:x.ex,i:+x.i||0,img:x.img});
+async function exfPut(x){exFigs[x.id]=x;await idbDo("readwrite",st=>st.put(x));if(exFigStore)try{await exFigStore.doc(x.id).set({...x})}catch(e){}}
+async function exfDel(id){delete exFigs[id];await idbDo("readwrite",st=>st.delete(id));if(exFigStore)try{await exFigStore.doc(id).delete()}catch(e){}}
+idbDo("readonly",st=>st.getAll()).then(L=>{(L||[]).filter(exfOk).forEach(x=>{if(!exFigs[x.id])exFigs[x.id]=exfClean(x)})});
+/* a imagem de uma questão: da memória, do aparelho ou da conta (e redesenha quando chega) */
+function exFig(ex,i){const id=ex.id+"_"+i;if(exFigs[id])return exFigs[id].img;if(!exFigWait[id]){exFigWait[id]=1;(async()=>{let x=await idbDo("readonly",st=>st.get(id));
+    if(!exfOk(x)&&exFigStore)try{const d=await exFigStore.doc(id).get();const v=d&&(typeof d.data==="function"?d.data():d.data);if(exfOk(v)){x=exfClean(v);idbDo("readwrite",st=>st.put(x))}}catch(e){}
+    if(exfOk(x)){exFigs[id]=exfClean(x);render()}else exFigWait[id]=2})()}return ""}
+/* figuras órfãs (prova apagada e fora da lixeira) saem */
+function exfPurge(){const keep=new Set([...exams.map(e=>e.id),...trash.filter(t=>t.kind==="exam").map(t=>{try{return JSON.parse(t.j).ex.id}catch(e){return ""}})]);Object.values(exFigs).forEach(x=>{if(!keep.has(x.ex))exfDel(x.id)})}
+/* na importação: em que questão fica cada figura. Página com uma questão só: nela. Com várias: a questão cujo título está logo acima da imagem
+   (posição do texto "Questão N" na página); imagem no alto da página, antes de qualquer título: a questão que vinha da página anterior. */
+async function pdfQHeads(doc,n){try{const pg=await doc.getPage(n),tc=await pg.getTextContent(),out=[];tc.items.forEach(it=>{const m=String(it.str||"").match(/^\s*(?:quest[aã]o\s*(?:n[ºo°.]\s*)?)?(\d{1,3})\s*(?:[—–\-:.)]|$)/i);if(m&&(/quest/i.test(it.str)||/^\s*\d{1,3}\s*[.)]/.test(it.str)))out.push({n:+m[1],y:it.transform[5]})});return out}catch(e){return []}}
+async function impFigAssign(R,qs){if(!R.doc||!R.figs||!R.figs.length)return [];const out=[];
+  for(const f of R.figs){const C=qs.map((r,j)=>({r,j})).filter(({r})=>r.p&&r.p<=f.n&&(r.pe||r.p)>=f.n);if(!C.length)continue;let pick=C.length===1?C[0]:null;
+    if(!pick){const H=await pdfQHeads(R.doc,f.n),top=Math.max(...f.rs.map(r=>r[3])),above=C.map(c=>({c,h:H.find(h=>h.n===c.r.n)})).filter(x=>x.h&&x.h.y>=top-6).sort((a,b)=>a.h.y-b.h.y);
+      pick=above.length?above[0].c:C.find(c=>c.r.p<f.n)||C.find(c=>c.r.im)||null}
+    if(pick&&!out.some(o=>o.j===pick.j))out.push({j:pick.j,f})}
+  return out}
 async function exDel(id){const ex=exams.find(x=>x.id===id);if(!ex)return;const P=exProg.find(x=>x.id===id);
   toTrash("exam",ex.name,`${ex.qs.length} ${ex.qs.length===1?"questão":"questões"}${ex.banca?" · "+ex.banca:""}`,{ex,pg:P||null});
   exams=exams.filter(x=>x!==ex);exProg=exProg.filter(x=>x.id!==id);clearTimeout(exATimer[id]);delete exATimer[id];exSaveLocal();
@@ -7275,7 +7307,7 @@ async function exDel(id){const ex=exams.find(x=>x.id===id);if(!ex)return;const P
 /* contagem no acerto dos temas: cada resposta válida (tema, gabarito, não anulada) vale 1 questão no dia em que foi respondida */
 const exSrc=ex=>ex.banca||"Prova importada";
 function exContrib(ex,i){const r=ex.qs[i];if(!r||r.an||!r.q.correta)return [];const P=exPg(ex.id),A=[...(P.h[i]||[]),...(P.a[i]?[P.a[i]]:[])],main=r.k&&BYKEY[r.k]?r.k:"";
-  const extra=[...new Set((ex.links||[]).filter(x=>x.startsWith("O:")).map(exRefKey).filter(k=>k&&k!==main))];
+  const extra=[...new Set([...(main?exKs(r):[]),...(ex.links||[]).filter(x=>x.startsWith("O:")).map(exRefKey)].filter(k=>k&&k!==main))];
   return A.flatMap(a=>{const c=a.l===r.q.correta?1:0;return [...(main?[{k:main,d:a.d,c}]:[]),...extra.map(k=>({k,d:a.d,c,x:1}))]})}
 function exCount(L,sign,src){L.forEach(c=>{upd(c.k,x=>addQ(x,sign,sign*c.c,c.d,src));if(c.x)return;const h=hist[c.d]||(hist[c.d]={});h.q=Math.max(0,(h.q||0)+sign);if(c.c)h.c=Math.max(0,(h.c||0)+sign*c.c)});
   if(L.length)try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
@@ -7289,7 +7321,7 @@ let exLinkEd=null;
 function exRefKey(r){const x=refTopic(r);return x&&BYKEY[x.k]?x.k:""}
 function exRefOf(k){const it=BYKEY[k];return it&&it.own&&/^F-/.test(k)?"O:"+k.slice(2):"T:"+k}
 function exLinkKeys(ex){return [...new Set((ex.links||[]).map(exRefKey).filter(Boolean))]}
-function exForTopic(k){return exams.map(ex=>{const qi=ex.qs.map((r,i)=>r.k===k?i:-1).filter(i=>i>=0),linked=exLinkKeys(ex).includes(k);return qi.length||linked?{ex,qi,linked}:null}).filter(Boolean)}
+function exForTopic(k){return exams.map(ex=>{const qi=ex.qs.map((r,i)=>r.k===k||(r.ks||[]).includes(k)?i:-1).filter(i=>i>=0),linked=exLinkKeys(ex).includes(k);return qi.length||linked?{ex,qi,linked}:null}).filter(Boolean)}
 function exRelink(ex,links){const B=ex.qs.map((_,i)=>exContrib(ex,i));ex.links=[...new Set(links)].slice(0,12);const A=ex.qs.map((_,i)=>exContrib(ex,i)),left=[],add=[];
   B.forEach((b,i)=>{const l=[...b];A[i].forEach(c=>{const j=l.findIndex(x=>x.k===c.k&&x.d===c.d&&x.c===c.c&&!!x.x===!!c.x);if(j>=0)l.splice(j,1);else add.push(c)});left.push(...l)});
   exCount(left,-1,exSrc(ex));exCount(add,1,exSrc(ex));exPut(ex);commit();render()}
@@ -7352,7 +7384,7 @@ function parseKeyStrong(t){const k={};if(!t)return k;const s=String(t).replace(/
   const r2=/(?:resposta|quest[aã]o)\s*(\d{1,3})\b(?:(?!resposta\s*\d|quest[aã]o\s*\d)[\s\S]){0,1500}?(?:justificativa|alternativa|letra)\s+([A-E])\s*[(\[]\s*correta\s*[)\]]/gi;
   while((m=r2.exec(s))){const n=+m[1];if(n>=1&&n<=300&&!k[n])k[n]=m[2].toUpperCase();r2.lastIndex=m.index+m[0].length}
   return k}
-function parseKey(t){const k={};if(!t)return k;const s=String(t).replace(/\r/g,"");let m;
+function parseKey(t){const k={};if(!t)return k;const s=String(t).replace(/\r/g,"");let m;{const st=parseKeyStrong(s);if(Object.keys(st).length>=3)return st}
   const r1=/(?:^|[^\d])(\d{1,3})\s*(?:[-–—.:)=]\s*([A-Ea-e])|\s+([A-E]))(?![A-Za-zÀ-ÿ0-9])(?![ \t]+[a-zà-ÿ])/g;
   while((m=r1.exec(s))){const n=+m[1];if(n>=1&&n<=300&&!k[n])k[n]=(m[2]||m[3]).toUpperCase();r1.lastIndex=m.index+m[0].length-1}
   const r2=/(?:^|[^\d])(\d{1,3})\s*[-–—.:)=]?\s*(anulad[ao]|nula\b|\*)/gi;while((m=r2.exec(s))){const n=+m[1];if(n>=1&&n<=300)k[n]="X"}
@@ -7392,7 +7424,7 @@ async function pdfFigPages(doc,ns){const lib=await pdfLib(),O=lib.OPS,ops=[O.pai
 async function pdfFigImg(pg,rs){const v0=pg.getViewport({scale:1}),sc=Math.min(3,1400/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
   cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;
   let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const T=vp.transform;rs.forEach(r=>[[r[0],r[1]],[r[2],r[3]],[r[0],r[3]],[r[2],r[1]]].forEach(([x,y])=>{const X=T[0]*x+T[2]*y+T[4],Y=T[1]*x+T[3]*y+T[5];x0=Math.min(x0,X);x1=Math.max(x1,X);y0=Math.min(y0,Y);y1=Math.max(y1,Y)}));
-  const m=Math.round(10*sc);x0=Math.max(0,Math.floor(x0-m));y0=Math.max(0,Math.floor(y0-m));x1=Math.min(cv.width,Math.ceil(x1+m));y1=Math.min(cv.height,Math.ceil(y1+m));
+  const m=Math.round(3*sc);x0=Math.max(0,Math.floor(x0-m));y0=Math.max(0,Math.floor(y0-m));x1=Math.min(cv.width,Math.ceil(x1+m));y1=Math.min(cv.height,Math.ceil(y1+m));
   const w=x1-x0,h=y1-y0;let out=cv;if(w>=60&&h>=60&&w*h<cv.width*cv.height*.92){out=document.createElement("canvas");const k=Math.min(1,1100/w);out.width=Math.round(w*k);out.height=Math.round(h*k);
     const c2=out.getContext("2d");c2.fillStyle="#fff";c2.fillRect(0,0,out.width,out.height);c2.drawImage(cv,x0,y0,w,h,0,0,out.width,out.height)}
   else if(cv.width>1100){out=document.createElement("canvas");out.width=1100;out.height=Math.round(cv.height*1100/cv.width);out.getContext("2d").drawImage(cv,0,0,out.width,out.height)}
@@ -7416,7 +7448,9 @@ async function impPick(files){const R=imp;files=[...(files||[])];if(!R||!files.l
     else{R.doc=null;R.pages=[];R.blobs={};let n=0;for(const f of files){if(!/^image\//.test(f.type))continue;n++;R.blobs[n]=await imgShrink(f);R.pages.push({n,t:"",img:true})}}
     if(imp!==R)return;if(!R.pages.length)throw {code:"empty"};
     if(!R.name)R.name=f0.name.replace(/\.[a-z0-9]+$/i,"").replace(/[_]+/g," ").replace(/\s+/g," ").trim().slice(0,100);
-    impGuess(R);R.keyPg=R.pages.filter(p=>p.t&&keyPage(p.t)).map(p=>p.n);R.st="ready";R.msg=""}
+    impGuess(R);R.keyPg=R.pages.filter(p=>p.t&&keyPage(p.t)).map(p=>p.n);
+    R.figs=[];if(R.doc)try{R.figs=await pdfFigPages(R.doc,R.pages.filter(p=>!R.keyPg.includes(p.n)&&!p.img).map(p=>p.n))}catch(e){R.figs=[]}
+    R.st="ready";R.msg=""}
   catch(e){if(imp!==R)return;R.st="pick";R.msg="";R.err=e&&e.code==="lib"?"Não foi possível abrir o leitor de PDF. Confira a internet e tente de novo.":e&&e.code==="empty"?"Escolha um PDF ou fotos das páginas.":
     /password/i.test(String(e&&(e.name||e.message)))?"Este PDF tem senha. Abra-o, salve uma cópia sem senha e tente de novo.":"Não consegui ler este PDF. Ele pode estar corrompido; tente outro arquivo ou fotos das páginas."}
   render()}
@@ -7426,7 +7460,9 @@ async function impKeyFile(f){const R=imp;if(!R||!f)return;R.err="";
   catch(e){R.err="Não consegui ler o PDF do gabarito."}
   if(R.st==="review")impApplyKey(R,impKey(R));render()}
 function impKey(R){const k={};R.pages.forEach(p=>{if(p.t&&!R.keyPg.includes(p.n))Object.assign(k,parseKeyStrong(p.t))});/* página mista: questões no começo, gabarito comentado no fim */
-  [...R.keyPg.map(n=>(R.pages.find(p=>p.n===n)||{}).t||""),R.keyTxt,R.paste].forEach(t=>Object.assign(k,parseKey(t)));return k}
+  /* gabarito comentado em várias páginas ("RESPOSTA N — Correta: X"): junta as páginas e usa só esse formato, que não confunde números do texto (t(15;17)…) com respostas */
+  const kp=R.keyPg.map(n=>(R.pages.find(p=>p.n===n)||{}).t||"").join("\n");if(Object.keys(parseKeyStrong(kp)).length>=3)Object.assign(k,parseKeyStrong(kp));else Object.assign(k,parseKey(kp));
+  [R.keyTxt,R.paste].forEach(t=>Object.assign(k,parseKey(t)));return k}
 function impBlocks(R,only){const site=!!window.__site,LIM=site?24000:11000,MAXP=site?10:5,MAXI=site?8:Math.max(1,Math.min(4,R.maxImg||4)),out=[];let cur=null;
   for(const p of R.pages){if(R.keyPg.includes(p.n)||(only&&!only.includes(p.n)))continue;
     const last=cur&&cur.pages[cur.pages.length-1];
@@ -7454,13 +7490,13 @@ O que fazer
 2. "numero": o número da questão na prova.
 3. ${kn?`Resposta: use o GABARITO OFICIAL abaixo e marque "gabarito":"banca". Questão anulada no gabarito: "anulada":true. Se o número não estiver no gabarito, resolva você mesmo e marque "gabarito":"claude".`:rawKey?`Resposta: use o GABARITO OFICIAL (texto extraído) abaixo e marque "gabarito":"banca". Questão anulada: "anulada":true. Se não achar o número no gabarito, resolva você mesmo e marque "gabarito":"claude".`:`A prova veio sem gabarito: resolva cada questão com cuidado, pelas diretrizes brasileiras atuais, e marque "gabarito":"claude". Se tiver dúvida, escolha a mais provável assim mesmo.`}
 4. "imagem": true quando a questão depende de figura, gráfico, tabela ou exame de imagem que não dá para ler aqui (ECG, radiografia, foto de lesão). Não invente o que a imagem mostra.
-5. "tema": a chave (ex.: "CM-34") do tema da lista TEMAS que melhor corresponde ao assunto principal da questão; "" se nenhum servir.
+5. "temas": as chaves (ex.: ["CM-34"]) dos temas da lista TEMAS que a questão cobre, o principal primeiro. Normalmente 1; use 2 (no máximo 3) só quando a questão cobre de verdade mais de um tema (ex.: neutropenia febril em paciente com leucemia). [] se nenhum servir.
 6. Se a prova ou o gabarito comentado trouxer, para a questão, "Ponto-chave", "Take home message" ou "Fonte", copie-os fielmente em "pontoChave", "takeHome" e "fonte" (sem repetir no comentário); se não trouxer, deixe "".
 7. Explicações para estudo, em português: "comentario" (3 a 6 frases: só por que a resposta está certa e o raciocínio para chegar nela, sem comentar as outras alternativas), "conceito" (1 frase com a regra para guardar) e, em cada alternativa errada, "porque" (1 ou 2 frases dizendo por que ela está errada ou em que caso ela seria a resposta; "" na correta). O porquê de cada alternativa vai SEMPRE no "porque" dela, nunca dentro do "comentario". Se a prova trouxer comentário da banca, aproveite.${kc?" Abaixo, em GABARITO COMENTADO, estão as justificativas da própria prova: use-as como base do comentário e do porquê de cada alternativa (reescreva com clareza, sem inventar o que não está lá).":""}
 8. Se ${pg} não tiver nenhuma questão (capa, instruções, folha de respostas), responda [].
 
 Responda somente com um array JSON, sem texto antes ou depois, neste formato:
-[{"numero":12,"enunciado":"...","alternativas":[{"letra":"A","texto":"...","porque":"..."},{"letra":"B","texto":"...","porque":""}],"correta":"B","anulada":false,"gabarito":"banca","imagem":false,"tema":"CM-34","comentario":"...","conceito":"...","pontoChave":"","takeHome":"","fonte":""}]
+[{"numero":12,"enunciado":"...","alternativas":[{"letra":"A","texto":"...","porque":"..."},{"letra":"B","texto":"...","porque":""}],"correta":"B","anulada":false,"gabarito":"banca","imagem":false,"temas":["CM-34"],"comentario":"...","conceito":"...","pontoChave":"","takeHome":"","fonte":""}]
 ${kn?`
 GABARITO OFICIAL
 ${keyText(key)}
@@ -7484,7 +7520,8 @@ function impValid(data,b){const arr=Array.isArray(data)?data:data&&Array.isArray
     const L=x.alternativas.map((a,j)=>a&&typeof a==="object"?{letra:String(a.letra||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,1)||EX_AB[j],texto:String(a.texto||"").trim(),porque:typeof a.porque==="string"?a.porque.trim():""}
       :typeof a==="string"?{letra:EX_AB[j],texto:a.trim(),porque:""}:null).filter(a=>a&&a.texto);
     if(L.length<2||new Set(L.map(a=>a.letra)).size!==L.length)return;const cor=String(x.correta||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,1),num=parseInt(x.numero,10);
-    out.push(exQClean({n:num>0?num:0,p:b.pages[0],pe:b.pages[b.pages.length-1],k:typeof x.tema==="string"?x.tema.trim().toUpperCase():"",
+    out.push(exQClean({n:num>0?num:0,p:b.pages[0],pe:b.pages[b.pages.length-1],k:(()=>{const T=(Array.isArray(x.temas)?x.temas:[]).map(t=>String(t||"").trim().toUpperCase()).filter(t=>BYKEY[t]&&!BYKEY[t].own);return T[0]||(typeof x.tema==="string"?x.tema.trim().toUpperCase():"")})(),
+      ks:(Array.isArray(x.temas)?x.temas:[]).map(t=>String(t||"").trim().toUpperCase()).filter(t=>BYKEY[t]&&!BYKEY[t].own).slice(1,3),
       q:{enunciado:x.enunciado.trim(),alternativas:L,correta:cor,comentario:typeof x.comentario==="string"?x.comentario.trim():"",conceito:typeof x.conceito==="string"?x.conceito.trim():"",pc:typeof x.pontoChave==="string"?x.pontoChave.trim():"",th:typeof x.takeHome==="string"?x.takeHome.trim():"",fonte:typeof x.fonte==="string"?x.fonte.trim():""},
       g:x.gabarito==="banca"?"b":"c",an:x.anulada===true,im:x.imagem===true,ck:cor}))});
   return out}
@@ -7514,14 +7551,16 @@ function impGaps(R,key){const have=new Set(R.qs.map(r=>r.n)),kk=Object.keys(key)
   if(!R.qs.length)return g;for(let n=Math.max(1,start);n<=end;n++)if(!have.has(n))g.push(n);return g}
 function impGapPages(R,g){const P=new Set();g.forEach(n=>{const a=R.qs.filter(r=>r.n<n).pop(),b=R.qs.find(r=>r.n>n),from=a?a.p:1,to=b?b.pe:R.pages.length;for(let p=from;p<=to;p++)if(!R.keyPg.includes(p))P.add(p)});return [...P].sort((x,y)=>x-y)}
 const pgList=L=>{const out=[];L.forEach(n=>{const l=out[out.length-1];if(l&&n===l[1]+1)l[1]=n;else out.push([n,n])});return out.map(([a,b])=>a===b?`${a}`:`${a}–${b}`).join(", ")};
-function impSave(){const R=imp;if(!R)return;const qs=R.qs.filter(r=>!r.x);if(!qs.length)return;
-  const ex=exClean({id:"ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs});
+async function impSave(){const R=imp;if(!R||R.saving)return;const qs=R.qs.filter(r=>!r.x);if(!qs.length)return;
+  const id="ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);let FA=[];
+  if(R.doc&&R.figs&&R.figs.length){R.saving=true;R.msg="Recortando as figuras das questões…";render();try{FA=await impFigAssign(R,qs);for(const a of FA){const b=await pdfFigImg(await R.doc.getPage(a.f.n),a.f.rs),u=await exfData(b);if(u){qs[a.j].fg=1;await exfPut({id:id+"_"+a.j,ex:id,i:a.j,img:u})}}}catch(e){}R.saving=false;if(imp!==R)return}
+  const ex=exClean({id,name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs});
   exams.unshift(ex);exPut(ex);imp=null;exArm=null;render();setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 /* uma questão para conferir (na importação e depois de salva) */
 /* o comentário contradiz o gabarito: outra alternativa diz "Correta" ou o comentário da certa começa com "Incorreta" (gabarito lido errado) */
 function exClash(r){const q=r&&r.q;if(!q||r.an||!q.correta)return false;return q.alternativas.some(a=>a.letra!==q.correta&&/^\s*correta\b/i.test(a.porque||""))||/^\s*incorreta\b/i.test(q.comentario||"")||!!(q.alternativas.find(a=>a.letra===q.correta)||{}).porque&&/^\s*incorreta\b/i.test(q.alternativas.find(a=>a.letra===q.correta).porque)}
 function exFilterOk(r,f){return f==="all"||f==="chk"&&!r.an&&(r.g!=="b"||!r.q.correta||r.ck&&r.ck!==r.q.correta||exClash(r))||f==="tema"&&!r.k||f==="kg"&&r.kg&&!!r.k||f==="img"&&r.im||f==="x"&&r.x}
-function exTopicPick(T,onPick){const w=el(`<div class="extpick"></div>`),s=el(`<label class="ffield"><span class="glabel">Tema desta questão</span><input class="etext" id="exTq" type="search" placeholder="Buscar tema (ex.: sepse, IAM)" autocomplete="off"></label>`),i=s.querySelector("input");
+function exTopicPick(T,onPick){const w=el(`<div class="extpick"></div>`),s=el(`<label class="ffield"><span class="glabel">${T.add?"Outro tema desta questão":"Tema desta questão"}</span><input class="etext" id="exTq" type="search" placeholder="Buscar tema (ex.: sepse, IAM)" autocomplete="off"></label>`),i=s.querySelector("input");
   i.value=T.q;i.oninput=debounced(()=>{T.q=i.value;render()});w.appendChild(s);const n=norm(T.q.trim());
   if(n.length>=2){const ul=el(`<ul class="qrres"></ul>`);ALL.map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,6)
     .forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>onPick(x.key);ul.appendChild(li)});
@@ -7539,8 +7578,11 @@ function exRowEl(r,i,C){const li=el(`<li class="exq${r.x?" off":""}"><div class=
   [["","—"],...r.q.alternativas.map(a=>[a.letra,a.letra]),["X","Anulada"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;s.appendChild(o)});
   s.value=r.an?"X":r.q.correta;s.onchange=()=>C.setKey(i,s.value);ctl.appendChild(sel);
   const tb=el(`<button class="link extema" type="button"></button>`);tb.id=`ext-${C.pre}-${i}`;tb.textContent=r.k?`Tema: ${BYKEY[r.k].t}`:"Escolher o tema";tb.onclick=()=>C.setT({i,q:""});ctl.appendChild(tb);
+  /* até 3 temas: o principal + 2; cada um conta inteiro no acerto do tema */
+  if(r.k){(r.ks||[]).filter(k=>BYKEY[k]).forEach(k=>{const c=el(`<button class="chip exks" type="button"></button>`);c.id=`exkx-${C.pre}-${i}-${k}`;c.textContent=`+ ${BYKEY[k].t} ×`;c.title="Tirar este tema da questão";c.onclick=()=>C.delTopic(i,k);ctl.appendChild(c)});
+    if((r.ks||[]).length<2&&C.delTopic){const a=el(`<button class="link exkadd" type="button"></button>`);a.id=`exka-${C.pre}-${i}`;a.textContent="+ outro tema";a.title="Para questão que cobre mais de um tema (até 3)";a.onclick=()=>C.setT({i,q:"",add:true});ctl.appendChild(a)}}
   if(C.toggleX){const x=el(`<button class="link" type="button"></button>`);x.id=`exx-${C.pre}-${i}`;x.textContent=r.x?"Incluir de volta":"Descartar";x.onclick=()=>C.toggleX(i);ctl.appendChild(x)}
-  if(C.T&&C.T.i===i)li.appendChild(exTopicPick(C.T,k=>{if(k!==null)C.setTopic(i,k);C.setT(null)}));
+  if(C.T&&C.T.i===i)li.appendChild(exTopicPick(C.T,k=>{if(k!==null&&!(C.T.add&&!k))C.setTopic(i,k,!!C.T.add);C.setT(null)}));
   return li}
 function exListEl(rows,S,C){const w=el(`<div class="exrev"></div>`),cnt=f=>rows.filter(r=>exFilterOk(r,f)).length;
   const ch=el(`<div class="chips" role="group" aria-label="Mostrar"></div>`);[["all","Todas"],["chk","Conferir"],["tema","Sem tema"],["kg","Tema sugerido"],["img","Com imagem"],...(C.toggleX?[["x","Descartadas"]]:[])].forEach(([v,l])=>{const n=cnt(v);if(v!=="all"&&!n&&S.flt!==v)return;
@@ -7593,8 +7635,9 @@ function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><
   else if(gaps.length){const p=el(`<p class="pnote"></p>`);p.textContent=`Não encontrei ${gaps.length===1?"a questão":"as questões"} ${gaps.slice(0,12).join(", ")}${gaps.length>12?"…":""}. `;const gp=impGapPages(R,gaps),b=el(`<button class="link" type="button" id="impGap"></button>`);b.textContent=`Procurar de novo (págs. ${pgList(gp)})`;b.onclick=()=>impRead(gp);p.appendChild(b);p.append(" Se não existirem nesta prova, ignore.");w.appendChild(p)}
   if(nc)w.appendChild(el(`<p class="how">“Gabarito do Claude”: ele resolveu a questão. Confira com o gabarito oficial quando sair: cole-o acima (ou depois, na prova salva) e o app corrige tudo de uma vez.</p>`));
   if(!R.T||!rows[R.T.i])R.T=null;
-  w.appendChild(exListEl(rows,R,{pre:"i",T:R.T,setT:v=>{R.T=v;render()},setTopic:(i,k)=>{rows[i].k=k;rows[i].kg=false},setKey:(i,v)=>{const r=rows[i];if(v==="X"){r.an=true}else{r.an=false;r.q.correta=v;if(v)r.g="b"}render()},toggleX:i=>{rows[i].x=!rows[i].x;render()}}));
-  const b=el(`<div class="btns"></div>`),sv=el(`<button class="btn primary" type="button" id="impSave"></button>`);sv.textContent=`Salvar prova · ${keep.length} ${keep.length===1?"questão":"questões"}`;sv.disabled=!keep.length;sv.onclick=impSave;b.appendChild(sv);
+  w.appendChild(exListEl(rows,R,{pre:"i",T:R.T,setT:v=>{R.T=v;render()},setTopic:(i,k,add)=>{const r=rows[i];if(add){if(k&&k!==r.k)r.ks=[...new Set([...(r.ks||[]),k])].slice(0,2)}else{r.k=k;r.kg=false;r.ks=(r.ks||[]).filter(x=>x!==k);if(!k)delete r.ks}},delTopic:(i,k)=>{const r=rows[i];r.ks=(r.ks||[]).filter(x=>x!==k);render()},setKey:(i,v)=>{const r=rows[i];if(v==="X"){r.an=true}else{r.an=false;r.q.correta=v;if(v)r.g="b"}render()},toggleX:i=>{rows[i].x=!rows[i].x;render()}}));
+  const b=el(`<div class="btns"></div>`),sv=el(`<button class="btn primary" type="button" id="impSave"></button>`);sv.textContent=R.saving?"Recortando as figuras…":`Salvar prova · ${keep.length} ${keep.length===1?"questão":"questões"}`;sv.disabled=!keep.length||!!R.saving;sv.onclick=impSave;b.appendChild(sv);
+  if(R.figs&&R.figs.length&&!R.saving)w.appendChild(el(`<p class="how impfigh">${R.figs.length} ${R.figs.length===1?"página tem figura":"páginas têm figura"} (exame, ECG, esquema): ao salvar, cada figura é recortada e fica junto da questão dela.</p>`));
   if(!sampleOff){const again=el(`<button class="btn" type="button">${R.src==="local"?"Ler com o Claude":"Ler tudo de novo"}</button>`);again.onclick=()=>{R.qs=[];R.done=new Set();R.fail=[];R.src="";impRead()};b.appendChild(again)}w.appendChild(b);
   return w}
 /* ---------- leitura no aparelho, sem o Claude (PDF com texto, questões numeradas, alternativas A) B) …) ---------- */
@@ -7603,15 +7646,25 @@ let impTIdx=null;
 const IMP_SYN=[[/\bmigran[a-z]*/g," enxaqueca "],[/\btipo tensao\b/g," tensional "],[/\bcefaleias?\b/g," cefaleia cefaleias "],[/\bavc\b/g," acidente vascular "],[/\biam\b/g," infarto "],[/\bdpoc\b/g," doenca pulmonar obstrutiva "],[/\bitu\b/g," infeccao urinaria "]];
 const impNT=s=>{let x=" "+norm(s||"").replace(/[^a-z0-9\s]/g," ")+" ";IMP_SYN.forEach(([r,v])=>{x=x.replace(r,v)});return x.replace(/\s+/g," ")};
 /* pontua cada tema pelas palavras do nome e dos subtópicos que aparecem no título/enunciado; palavras comuns a muitos temas valem menos */
-function impTemaScores(title,txt){if(!impTIdx){const w=s=>new Set(impNT(s).split(" ").filter(x=>x.length>=5&&!STOP.has(x)));const L=ALL.map(it=>({k:it.key,name:w(it.t),subs:w(subList(it).map(x=>x.t).join(" "))})),df={};
+/* palavras genéricas de prova que não dizem o tema ("[Clínica]", "conduta"…) e sinônimos que o nome do tema usa */
+const IMP_GEN=new Set("clinica clinico clinicos clinicas conceito conceitual conduta condutas diagnostico diagnosticos tratamento tratamentos abordagem avaliacao manejo simulado ineditas inedita questao questoes gabarito feedback detalhado baseadas baseado casos tutoria modulo fonte paciente pacientes principais exames exame".split(" "));
+const IMP_SYN2=[[/\btrombocitopeni(a|as|ca|co)\b/g,"plaquetopenia"],[/\b(ttpa|coagulograma|inr|hemofilias?|hemorragicos?)\b/g,"$& coagulacao"],[/\bcoagulopatias?\b/g,"coagulacao"],[/\bhemostasia\b/g,"coagulacao"],[/\bneoplasias?\s+hematologicas?\b/g,"leucemias linfomas"]];
+const impNT2=s=>{let t=impNT(s);IMP_SYN2.forEach(([r,v])=>{t=t.replace(r,v)});return t};
+function impTemaScores(title,txt){if(!impTIdx){const ac=s=>(String(s).match(/\b[A-Z]{2,5}\b/g)||[]).map(x=>impNT(x).trim()).filter(Boolean);
+    const w=s=>new Set([...impNT2(s).split(" ").filter(x=>x.length>=5&&!STOP.has(x)&&!IMP_GEN.has(x)),...ac(s)]);
+    const L=ALL.map(it=>{const st=subList(it).map(x=>x.t).join(" ; ");return {k:it.key,sp:it.sp||"",name:w(it.t),subs:w(st)}}),df={};
     L.forEach(o=>new Set([...o.name,...o.subs]).forEach(x=>{df[x]=(df[x]||0)+1}));L.forEach(o=>{o.idf=x=>Math.log(ALL.length/(df[x]||1))});impTIdx=L}
-  const T=impNT(title),X=impNT(txt),has=(S,w)=>S.includes(" "+w)||w.length>7&&S.includes(" "+w.slice(0,w.length-2)),sc={};
+  const T=" "+impNT2(title)+" ",X=" "+impNT2(txt)+" ",has=(S,w)=>w.length<5?S.includes(" "+w+" "):S.includes(" "+w)||w.length>7&&S.includes(" "+w.slice(0,Math.max(7,Math.ceil(w.length*.7)))),sc={};
   impTIdx.forEach(o=>{let s=0;o.name.forEach(w=>{const f=o.idf(w);if(has(T,w))s+=3*f;else if(has(X,w))s+=1.2*f});o.subs.forEach(w=>{if(o.name.has(w))return;const f=o.idf(w);if(has(T,w))s+=1.5*f;else if(has(X,w))s+=.4*f});if(s>0)sc[o.k]=s});
   return sc}
-/* tema por questão, com o "assunto da prova" (nome do arquivo + títulos) como desempate */
+/* temas por questão (até 3: o 1º é o principal; o 2º e o 3º só quando a questão cobre mesmo mais de um), com o assunto da prova
+   (cabeçalho da 1ª página, nome do arquivo e títulos das questões) dando preferência ao tema e à especialidade da prova */
 function impTemas(list,examName){const raw=list.map(x=>impTemaScores(x.title,x.txt)),ctx=impTemaScores(examName+" "+list.map(x=>x.title).join(" "),"");
-  const top=Object.entries(ctx).sort((a,b)=>b[1]-a[1])[0],prior=top&&top[1]>=6?top[0]:"";
-  return raw.map(sc=>{if(prior&&sc[prior])sc[prior]=sc[prior]*2.2+3;const b=Object.entries(sc).sort((a,c)=>c[1]-a[1])[0];return b&&b[1]>=4?b[0]:""})}
+  const C=Object.entries(ctx).sort((a,b)=>b[1]-a[1]),top=C[0],prior=top&&top[1]>=6?top[0]:"",psp=prior&&BYKEY[prior]?BYKEY[prior].sp:"";
+  return raw.map(sc=>{Object.keys(sc).forEach(k=>{if(k===prior)sc[k]=sc[k]*2.2+3;else if(psp&&BYKEY[k]&&BYKEY[k].sp===psp)sc[k]=sc[k]*1.5+1});
+    const R=Object.entries(sc).sort((a,c)=>c[1]-a[1]);if(!R.length||R[0][1]<4)return [];const b=R[0][1],out=[R[0][0]];
+    const ok2=x=>x&&x[1]>=Math.max(4.5,b*((psp&&BYKEY[x[0]]&&BYKEY[x[0]].sp===psp)?.6:.8));/* fora da especialidade da prova, o 2º tema precisa ser quase tão forte quanto o 1º */
+    if(ok2(R[1]))out.push(R[1][0]);if(out.length===2&&R[2]&&ok2(R[2])&&R[2][1]>=b*.75)out.push(R[2][0]);return out})}
 /* justificativas do gabarito comentado → porquê de cada alternativa, comentário e conceito */
 function impKCParse(seg,cor){const o={porq:{},com:"",con:""};if(!seg)return o;const s=seg.replace(/\s+/g," ");let m;
   const rj=/Justificativa\s+([A-E])\b\s*(?:\(\s*correta\s*\))?\s*[:\-–—]\s*([\s\S]*?)(?=Justificativa\s+[A-E]\b|Ponto[- ]chave|Take[- ]home|Fonte\s*:|$)/gi;
@@ -7638,7 +7691,7 @@ function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
   const join=arr=>arr.reduce((a,x)=>!a?x:/[A-Za-zÀ-ÿ]-$/.test(a)&&/^[a-zà-ÿ]/.test(x)?a.slice(0,-1)+x:a+" "+x,"").trim();
   const bad=[],few=[],noKey=[],dup=new Set();
   S.forEach((s,j)=>{const end=j+1<S.length?S[j+1].i:lines.length;let L=lines.slice(s.i+1,end);const stop=L.findIndex(l=>STOPL.test(l.x));if(stop>=0)L=L.slice(0,stop);
-    const rest=s.rest.trim(),title=rest&&rest.length<=90&&!/[?]$/.test(rest)?rest.replace(/^[—–\-:]\s*/,""):"",stem=[];if(rest&&!title)stem.push(rest);
+    const rest=s.rest.trim().replace(/\s*(?:\[[^\]]{1,24}\]|\|\s*[^|]{1,24})$/,""),title=rest&&rest.length<=90&&!/[?]$/.test(rest)?rest.replace(/^[—–\-:]\s*/,""):"",stem=[];if(rest&&!title)stem.push(rest);
     const alts=[];let cur=null;
     L.forEach(l=>{const m=l.x.match(/^\(?([A-Ea-e])\s*[).:\-–]\s*(.*)$/),want=EX_AB[alts.length];
       if(m&&m[1].toUpperCase()===want&&(alts.length||stem.length)){cur={letra:want,tx:[m[2]]};alts.push(cur)}else if(cur)cur.tx.push(l.x);else stem.push(l.x)});
@@ -7650,7 +7703,8 @@ function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
     const kc=impKCParse(KC[s.n]&&KC[s.n].split("\n").map(cl).filter(x=>!junk(x)).join("\n"),cor);A.forEach(a=>{a.porque=(kc.porq[a.letra]||"").slice(0,1200)});
     const k="",im=/\b(imagem|figura|foto(?:grafia)?|gr[aá]fico|tabela|eletrocardiograma|ecg|radiografia|tomografia|resson[aâ]ncia|ultrassonografia)\b[^.?]{0,40}\b(abaixo|a seguir|ao lado|seguinte|anexa|apresentad[ao])/i.test(en);
     const r=exQClean({n:s.n,p:s.i<lines.length?lines[s.i].p:0,pe:(L[L.length-1]||lines[s.i]).p,k,q:{enunciado:en,alternativas:A,correta:cor,comentario:kc.com,conceito:kc.con,pc:kc.pc,th:kc.th,fonte:kc.fonte},g:v?"b":"c",an,im,ck:cor});r.tt=title;qs.push(r)});
-  impTemas(qs.map(r=>({title:r.tt,txt:r.q.enunciado+" "+r.q.alternativas.map(a=>a.texto).join(" ")})),R.name||"").forEach((k,i)=>{const r=qs[i];delete r.tt;if(k&&BYKEY[k]){r.k=k;r.kg=true}});
+  {const head=S.length?lines.slice(0,S[0].i).map(l=>l.x).join(" ").slice(0,600):"";
+   impTemas(qs.map(r=>({title:r.tt,txt:r.q.enunciado+" "+r.q.alternativas.map(a=>a.texto).join(" ")})),(R.name||"").replace(/^[0-9a-f]{6,}[-_ ]+/i,"")+" "+head).forEach((L,i)=>{const r=qs[i];delete r.tt;const ok=L.filter(k=>BYKEY[k]);if(ok.length){r.k=ok[0];r.kg=true;if(ok.length>1)r.ks=ok.slice(1)}})}
   const nums=qs.map(r=>r.n),mx=Math.max(0,...nums,...Object.keys(key).map(Number)),miss=[];for(let n=Math.min(...nums,1);n<=mx;n++)if(!nums.includes(n)&&!few.includes(n))miss.push(n);
   const lst=a=>a.slice(0,10).join(", ")+(a.length>10?"…":"");
   if(miss.length)probs.push(`não achei ${miss.length===1?"a questão":"as questões"} ${lst(miss)}`);
@@ -7673,9 +7727,11 @@ function exGo(ex,i){const R=exRun;if(!R)return;R.i=Math.max(0,Math.min(ex.qs.len
 function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,mine=P.a[i]&&P.a[i].l,show=review||P.mode==="e"&&!!mine||r.an&&!!mine;
   const card=el(`<div class="qcard exqc"><span class="qn"></span><span class="simtopic"></span><p class="qstem"></p></div>`);
   card.querySelector(".qn").textContent=`QUESTÃO ${r.n||i+1} · ${i+1} DE ${ex.qs.length}`;
-  const it=r.k&&BYKEY[r.k];card.querySelector(".simtopic").textContent=show?(it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`:"Sem tema"):"";
+  const it=r.k&&BYKEY[r.k];card.querySelector(".simtopic").textContent=show?(it?`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}${(r.ks||[]).filter(k=>BYKEY[k]).map(k=>" + "+BYKEY[k].t).join("")}`:"Sem tema"):"";
   card.querySelector(".qstem").textContent=q.enunciado;
-  if(r.im)card.insertBefore(el(`<p class="pnote">Esta questão tem imagem: veja na prova, página ${r.p}${r.pe&&r.pe!==r.p?` a ${r.pe}`:""}.</p>`),card.querySelector(".qstem").nextSibling);
+  if(r.fg){const src=exFig(ex,i),fw=el(`<figure class="qfig"></figure>`);if(src){const im=el(`<img alt="">`);im.src=src;im.alt=`Figura da questão ${r.n||i+1}`;im.onclick=()=>{try{window.open(src,"_blank")}catch(e){}};fw.appendChild(im)}
+    const cap=el(`<figcaption></figcaption>`);cap.textContent=src?`Figura da prova · página ${r.p}${r.pe&&r.pe!==r.p?`–${r.pe}`:""}`:exFigWait[ex.id+"_"+i]===2?`A figura não está neste aparelho: veja na prova, página ${r.p}.`:"Carregando a figura…";fw.appendChild(cap);card.insertBefore(fw,card.querySelector(".qstem").nextSibling)}
+  else if(r.im)card.insertBefore(el(`<p class="pnote">Esta questão tem imagem: veja na prova, página ${r.p}${r.pe&&r.pe!==r.p?` a ${r.pe}`:""}.</p>`),card.querySelector(".qstem").nextSibling);
   if(r.an)card.appendChild(el(`<p class="pnote">Questão anulada pela banca: não conta no acerto.</p>`));
   if(show&&exClash(r)){const cl=q.alternativas.find(a=>a.letra!==q.correta&&/^\s*correta\b/i.test(a.porque||""));card.appendChild(el(`<p class="pnote">O comentário desta questão contradiz o gabarito ${esc(q.correta)}${cl?`: ele diz que a certa é a ${esc(cl.letra)}`:""}. O gabarito pode ter sido lido errado na importação: confira e, se for o caso, troque a resposta em Revisar questões (o acerto é recalculado).</p>`))}
   if(show&&q.correta)card.appendChild(altsEl(qSplit(q),mine||"-",()=>{}));
@@ -7718,7 +7774,8 @@ function exEditEl(ex){const S=exEdit,w=el(`<div class="exedit"></div>`);
   w.appendChild(el(`<p class="how">Mudar a resposta, anular ou trocar o tema recalcula o seu acerto nas questões que você já respondeu.</p>`));
   if(!S.T||!ex.qs[S.T.i])S.T=null;
   w.appendChild(exListEl(ex.qs,S,{pre:"e",T:S.T,setT:v=>{S.T=v;render()},
-    setTopic:(i,k)=>{exChange(ex,i,r=>{r.k=k});exPut(ex);commit()},
+    setTopic:(i,k,add)=>{exChange(ex,i,r=>{if(add){if(k&&k!==r.k)r.ks=[...new Set([...(r.ks||[]),k])].slice(0,2)}else{r.k=k;r.ks=(r.ks||[]).filter(x=>x!==k);if(!k||!r.ks.length)delete r.ks}});exPut(ex);commit()},
+    delTopic:(i,k)=>{exChange(ex,i,r=>{r.ks=(r.ks||[]).filter(x=>x!==k);if(!r.ks.length)delete r.ks});exPut(ex);commit()},
     setKey:(i,v)=>{exChange(ex,i,r=>{if(v==="X")r.an=true;else{r.an=false;r.q.correta=v;if(v)r.g="b"}});exPut(ex);commit()}}));
   const b=el(`<button class="btn" type="button">Fechar</button>`);b.onclick=()=>{exEdit=null;render()};w.appendChild(b);return w}
 function exKeyEl(ex){const K=exKey,w=el(`<div class="exkey"></div>`),pk=parseKey(K.t),n=Object.keys(pk).length;
@@ -8598,7 +8655,7 @@ const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
 function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
   anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length,cartoes:cards.length,livres:freeN.length,provasImportadas:exams.length}}
 function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
-  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg,sims}}}
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg,sims,exfigs:Object.values(exFigs)}}}
 function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}${c.cartoes?` · ${c.cartoes} ${c.cartoes===1?"cartão":"cartões"}`:""}${c.livres?` · ${c.livres} ${c.livres===1?"anotação livre":"anotações livres"}`:""}${c.provasImportadas?` · ${c.provasImportadas} ${c.provasImportadas===1?"prova importada":"provas importadas"}`:""}`}
 function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
 
@@ -8680,12 +8737,13 @@ const HELP=[
 - **Simulado misto** (em Praticar), em três passos. **1. De onde vêm as questões:** **Dos meus temas** — **Escolher temas** (busque qualquer tema ou subtópico, filtre por área, situação e incidência, marque os temas e, se quiser, só alguns subtópicos de cada um), **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje**, **Meus erros**, **Questões para refazer** (casos novos sobre as que você errou), **Filtro atual** e, com prova da faculdade perto, a **Prova** — ou **De um material meu** (um ou mais arquivos, até **100 mil caracteres** no total; o material vai em partes, uma por pedido, revezando, e as páginas com figura viram **figuras numeradas**: o Claude pode fazer questões com elas e a figura, recortada, aparece junto da questão). **2. Como vai ser:** quantas questões (5, 10, 20 ou 30), **dificuldade** (Mista, Fácil, Média, Difícil) e **estilo** (Residência ou **ENAMED/INEP**: caso clínico contextualizado, comando direto e 4 alternativas). **3. Resumo:** confira questões, tempo estimado, dificuldade, estilo e temas antes de começar. Uma questão por vez, com o tempo medido; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer (a figura só fica guardada, menor, nas erradas, até saírem do Refazer). **Encerrar** mostra o resultado das que você já respondeu.
 - **Meus simulados** (embaixo do Simulado misto): cada simulado terminado fica guardado com a nota (só o texto, sem figuras). **Rever** abre cada questão com a sua resposta e o comentário; **Refazer estas** repete as mesmas questões embaralhadas (conta na **meta semanal** de questões, mas não no acerto dos temas nem vai para o Refazer); **Mesmos temas, questões novas** repete as escolhas e os ajustes daquele simulado.
 - **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**. Também vale gabarito comentado ("RESPOSTA 1 · Correta: B" com as justificativas): as páginas dele não vão como questões e as justificativas viram a base do comentário; **Leitura no aparelho:** se o PDF tiver texto, questões numeradas, alternativas A) a E) e gabarito, o app lê tudo sozinho, sem o Claude (o comentário é o da prova e o tema é sugerido pelo nome, com o selo **Tema sugerido** para conferir); se faltar questão ou alternativa, a página for escaneada ou não houver gabarito, ele avisa e pede para **passar pelo Claude**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Se o comentário de uma questão disser que a certa é outra alternativa, ela ganha o selo **Comentário contradiz o gabarito · conferir** (entra no filtro Conferir) e um aviso na própria questão: troque a resposta em **Revisar questões**. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva. Cada prova aparece num cartão: nome, banca, número de questões, de onde veio o gabarito e a situação (Não iniciada, Em andamento com a barra de progresso, ou Feita com a nota). Antes de começar, escolha **Modo prova** ou **Modo estudo** (a linha embaixo explica a diferença); Revisar questões, Colar gabarito, Refazer e Excluir ficam no rodapé do cartão.
+- **Temas e figuras das provas (10/2026):** o leitor usa o **título de cada questão** ("Questão 2 — Doença de von Willebrand") e o **assunto da prova** (o cabeçalho da 1ª página) para sugerir o tema; palavras como "[Clínica]" ou "conduta" não contam. Uma questão pode ter **até 3 temas** (normalmente 1 ou 2, como neutropenia febril num paciente com leucemia): em Conferir, **+ outro tema** acrescenta e o **×** tira. Cada resposta conta **inteira em cada tema**, mas **uma vez só** no total do dia e na meta. As páginas com **figura** (exame, ECG, esquema) são recortadas ao salvar e a figura aparece junto da questão certa (a que tem o título logo acima da imagem); ela fica guardada no aparelho e na sua conta, separada da prova.
 - **Ligar a prova a temas:** no cartão da prova, **Ligar a temas** (ou **Ligações**) liga a prova a temas da residência e a conteúdos da faculdade (SP, conteúdo FAC), com sugestões pelos temas das questões. A prova aparece dentro do tema (aba Questões › **Provas na íntegra**, com o seu acerto nas questões dele). Num conteúdo da faculdade, o acerto da prova conta também nele, sem contar duas vezes se ele já for ligado ao mesmo tema da questão; tirar a ligação tira o que tinha somado.
 - **Onde você perdeu pontos** (no resultado da prova): as especialidades com 3 ou mais questões e acerto abaixo de 60% naquela prova, com os temas que você errou (o que mais errou primeiro). Toque no tema para estudar, em **gerar questões** para praticar, ou numa questão (Q12) para ver o comentário e, se quiser, **Levar para o caderno de erros** (as levadas ficam com ✓). É só sugestão: o plano do dia não muda.
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões.
 - **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
@@ -9347,10 +9405,13 @@ window.addEventListener("online",()=>liveRefresh(true));
     try{const rq=await redoStore.get(),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
       if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
     exStore=store.collection("exams");exPStore=store.collection("exprog");
+    exFigStore=store.collection("exfig");
     try{const q1=await exStore.get(),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),lo=exams.filter(x=>!ids.has(x.id));
       if(rem.length){exams=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);exSaveLocal();render()}for(const x of lo)await exPut(x)}catch(e){}
     try{const q2=await exPStore.get(),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),lo=exProg.filter(x=>!ids.has(x.id));
       if(rem.length){exProg=[...rem,...lo];exSaveLocal();render()}for(const x of lo)await exPWrite(x.id)}catch(e){}
+    try{const q3=await exFigStore.get(),seen=new Set();q3.docs.forEach(d=>{const v=d.data();if(exfOk(v)){seen.add(v.id);if(!exFigs[v.id]){exFigs[v.id]=exfClean(v);idbDo("readwrite",st=>st.put(exFigs[v.id]))}}});
+      for(const x of Object.values(exFigs))if(!seen.has(x.id))try{await exFigStore.doc(x.id).set({...x})}catch(e){}exfPurge()}catch(e){}
     focStore=store.collection("focus");
     try{const fq=await focStore.get(),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
       if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}

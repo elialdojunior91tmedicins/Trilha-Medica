@@ -64,6 +64,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   const R=await p.evaluate(([id,qt0])=>({qt:get("CM-1").qt||0,qt0,tries:sims.find(x=>x.id===id).tries,n:sims.length}),[id,qt0]);
   ok(R.qt===R.qt0&&R.tries.length===1&&R.tries[0].hit===5&&R.n===1,name+": refazer não conta no acerto e anota a tentativa "+JSON.stringify(R));
   ok(await p.evaluate(()=>{const W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7);return (hist[today()].rq||0)===5&&W.g===W.q+5}),name+": as refeitas contam na meta semanal (não no acerto)");
+  ok(await p.evaluate(()=>{const x={id:"rdT",k:"CM-1",d:today(),n:1,q:{enunciado:"Teste refazer",alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"A",comentario:"",conceito:"",alerta:""}};redo.push(rdClean(x));const before=hist[today()].rq||0;rdStart(["rdT"]);render();
+    const b=[...document.querySelectorAll('.qredo .alt,.rdplay .alt')][0];if(b)b.click();const after=hist[today()].rq||0;rdRun=null;redo=redo.filter(y=>y.id!=="rdT");render();return after===before+1}),name+": responder no Refazer também conta na meta semanal");
   /* mesmos temas, questões novas */
   await p.evaluate(()=>{sim=null;simPick=new Set();simSubs={};simCfg={src:"weak",n:10,dif:"mista",est:"res"};__P=[];render()});await click('#sma-'+id);
   await p.waitForFunction(()=>sim&&sim.status==="run",null,{timeout:10000});

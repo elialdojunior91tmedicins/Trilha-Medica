@@ -350,6 +350,8 @@
     const hasFree = Array.isArray(d.free) && typeof frOk === "function";
     const hasEx = Array.isArray(d.exams) && typeof exOk === "function";
     const hasSims = Array.isArray(d.sims) && typeof smOk === "function";
+    const hasFigs = Array.isArray(d.exfigs) && typeof exfOk === "function";
+    if (hasFigs) { exFigs = {}; d.exfigs.filter(exfOk).forEach(x => { exFigs[x.id] = exfClean(x); idbDo("readwrite", st => st.put(exFigs[x.id])); }); }
     if (hasSims) { sims = d.sims.filter(smOk).map(smClean); smSaveLocal(); }
     if (hasEx) { exams = d.exams.filter(exOk).map(exClean); exProg = (Array.isArray(d.examProg) ? d.examProg : []).filter(exPOk).map(exPClean); exSaveLocal(); }
     if (hasFree) { freeN = d.free.filter(frOk).map(frClean); try { localStorage.setItem(LSFR2, JSON.stringify(freeN)); } catch (e) {} }
@@ -376,6 +378,11 @@
         const fs2 = await freeStore.get(), fids = new Set(freeN.map(x => x.id));
         await Promise.all(fs2.docs.filter(x => !fids.has(x.id)).map(x => freeStore.doc(x.id).delete()));
         await Promise.all(freeN.map(x => freeStore.doc(x.id).set({ ...x })));
+      }
+      if (hasFigs && typeof exFigStore !== "undefined" && exFigStore) {
+        const fs3 = await exFigStore.get(), fids = new Set(Object.keys(exFigs));
+        await Promise.all(fs3.docs.filter(x => !fids.has(x.id)).map(x => exFigStore.doc(x.id).delete()));
+        for (const x of Object.values(exFigs)) await exFigStore.doc(x.id).set({ ...x });
       }
       if (hasSims && typeof simStore !== "undefined" && simStore) {
         const ss = await simStore.get(), sids = new Set(sims.map(x => x.id));

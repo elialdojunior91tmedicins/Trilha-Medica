@@ -48,6 +48,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t113 | Lote 12: referências nas questões, Refazer espaçado (fila do dia, filtros, teimosas, simulado) e "Seus temas nas questões" |
 | t114 | Lote 13: caderno único (busca única, tipo, sem anotação como filtro, 1ª página ligada vira a página do tema, + Nova página ligada) e tema repaginado |
 | t115 | Lote 14: simulado misto completo (Escolher temas, dificuldade, estilo ENAMED, resumo), material em partes com figuras, imagem só no Refazer, Meus simulados |
+| t116 | Lote 15: provas na íntegra — temas pelo título e assunto da prova, até 3 temas por questão (inteiros em cada tema, 1 vez no dia), gabarito comentado sem fantasmas, figura recortada na questão certa |
 
 ## Falhas conhecidas do ambiente
 
