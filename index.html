@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=47d9eaca">
+<link rel="stylesheet" href="site.css?v=89649d30">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=47d9eaca"></script>
-<script src="bridge.js?v=47d9eaca"></script>
+<script src="config.js?v=89649d30"></script>
+<script src="bridge.js?v=89649d30"></script>
 </head>
 <body>
 <script>
@@ -480,6 +480,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .rdteim{font:700 .66rem var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--bad);border:1px solid var(--bad);border-radius:99px;padding:0 6px;vertical-align:1px}
 .rdbytema{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.88rem}.rdbytema li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
 .qflink{color:var(--accent);font-weight:600}
+.ntype{align-self:flex-start;flex-wrap:wrap}.nlisth{margin:6px 0 0;font:700 1.05rem var(--display);color:var(--accent)}.ncadhow{margin:0;font-size:.82rem}.nexport h2{font-size:1.1rem}
 #qFind #qlistT{margin-top:4px}.qfall{margin:0;font-size:.8rem}.qrow.qopen{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .qtp{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}.qtp .glabel{margin:0}.qtp .glabel .how{text-transform:none;letter-spacing:0;font-weight:400}
 .qtpw{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;height:110px}.qtpc{display:flex;flex-direction:column;align-items:center;min-width:0}.qtpv{font:600 .68rem var(--body);color:var(--muted);height:1rem}
@@ -548,6 +549,32 @@ li.t.open{background:var(--bg)}
 .detail{padding:4px 18px 18px calc(18px + 2.6rem + 10px);display:flex;flex-direction:column;gap:16px}
 .grp{display:flex;flex-direction:column;gap:8px}
 .glabel{font:600 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+/* tema aberto em blocos (Lote 13) */
+.detail{container-type:inline-size}
+.detail>.grp:not(.notes),.dduo{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.dbh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dpill{font:600 .74rem var(--body);padding:3px 10px;border-radius:99px;background:var(--track);color:var(--muted)}
+.drev{border-left:4px solid var(--accent)!important}.drev[data-st=late]{border-left-color:var(--due)!important}.drev[data-st=none]{border-left-color:var(--line)!important}.drev[data-st=ok]{border-left-color:var(--good)!important}
+.drev[data-st=late] .dpill{background:var(--due-soft);color:var(--due)}.drev[data-st=today] .dpill{background:var(--accent-soft);color:var(--accent)}.drev[data-st=ok] .dpill{color:var(--good)}
+.dnext{display:block;font:500 1.02rem var(--body);color:var(--ink)}.dnext b{font-weight:700}
+.dsub{display:block;color:var(--muted);font-size:.85rem;margin-top:3px;line-height:1.45}
+.dpct{font:700 .86rem var(--body);color:var(--accent)}
+@container (min-width:640px){.dsubs ul.subs{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}}
+.dduo{display:grid;gap:14px}.dduo>.grp+.grp{border-top:1px dashed var(--line);padding-top:14px}
+@container (min-width:900px){.dduo{grid-template-columns:1fr 1fr;align-items:start}.dduo>.grp+.grp{border-top:0;padding-top:0;border-left:1px dashed var(--line);padding-left:18px}}
+.dhow>summary{padding:0;display:block;list-style:none;cursor:pointer;font-size:.82rem;color:var(--muted);width:max-content;max-width:100%;text-decoration:underline dotted;text-underline-offset:3px}
+.dhow ul,.dhow p{margin:6px 0 0;font-size:.85rem;color:var(--muted);line-height:1.5}.dhow ul{padding-left:18px}.dhow li{margin:2px 0}
+.dready{color:var(--good)}
+.dpf{display:flex;gap:18px;align-items:center}
+.dbig{font:600 2.6rem/1 var(--display);min-width:3.4ch;color:var(--ink)}.dbig[data-c=ok]{color:var(--good)}.dbig[data-c=mid]{color:var(--warn)}.dbig[data-c=bad]{color:var(--bad)}.dbig[data-c=none]{color:var(--muted)}
+.dpfr{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.dpfr .gtext{margin:0}
+.dwk{display:flex;align-items:flex-end;gap:4px;height:30px}.dwk:empty{display:none}
+.dwb{width:13px;height:100%;background:var(--track);border-radius:3px;display:flex;align-items:flex-end;overflow:hidden}.dwb i{display:block;width:100%;background:var(--muted)}
+.dwb i[data-c=ok]{background:var(--good)}.dwb i[data-c=mid]{background:var(--warn)}.dwb i[data-c=bad]{background:var(--bad)}
+.dwl{font-size:.72rem;color:var(--muted);margin-left:6px;align-self:center}
+.glabel.dsm{margin-top:6px;padding-top:12px;border-top:1px dashed var(--line)}
+.nhint{font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;color:var(--muted);font-size:.76rem}
+.frlinked{border-top:1px dashed var(--line);padding-top:12px}.frl .link{margin-top:6px}
 .gtext{margin:0;font-size:.92rem}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg button,.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .85rem var(--body);padding:7px 12px;border-radius:8px;cursor:pointer}
@@ -694,7 +721,7 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .fcard .fcq{margin:0;font:700 1.242rem/1.35 var(--display)}
 .fcard .fca{font-size:.98rem;border-top:1px dashed var(--line);padding-top:10px}.fcard:not(.flip) .fca{display:none}
 .fctopic{font-size:.8rem}
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="livre"] :is(.ns-all,.ns-ctl,.ns-peg,.ns-rev),
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="livre"] :is(.ns-peg,.ns-rev),
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg,.ns-free),
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-rev,.ns-free),
 html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-rev,.ns-peg,.ns-free){display:none!important}
@@ -1962,26 +1989,20 @@ html[data-layout="tablet"] .nmgrab{display:none}
   </div>
 
   <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
-    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Livre</button><button type="button" data-n="todas">Temas</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
-    <div id="nFreeBox" class="ns-free"></div>
+    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Caderno</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
     <div id="nRevBox" class="ns-rev nrevbox"></div>
-    <section class="card ns-all" aria-labelledby="nh">
-      <h2 id="nh">Minhas anotações</h2>
+    <div id="nFreeBox" class="ns-free"></div>
+    <h3 class="nlisth ns-all" id="nTopicH" hidden></h3>
+    <ol class="elist ns-all" id="nlist"></ol>
+    <section class="card ns-all nexport" aria-labelledby="nh">
+      <h2 id="nh">Exportar o caderno</h2>
       <p class="gtext" id="nsum"></p>
       <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button></div>
       <div id="nPdfBox"></div>
       <p class="gstatus" id="nmsg" aria-live="polite"></p>
       <textarea id="nFallback" class="ntext" hidden readonly aria-label="Anotações em Markdown"></textarea>
     </section>
-    <section class="controls ns-ctl">
-      <div class="card tfind" id="nFind" role="search" aria-labelledby="nfh">
-        <div class="tfhead"><h2 id="nfh">Encontrar anotações</h2><span class="tfcount" id="nFCount"></span></div>
-        <div class="tfsearch"><svg class="tfsico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="search" id="nq" type="search" placeholder="Buscar nas anotações" aria-label="Buscar nas anotações" autocomplete="off"></div>
-        <div class="tfilters" id="nFBody"></div>
-      </div>
-    </section>
     <div id="nPegBox" class="ns-peg"></div>
-    <ol class="elist ns-all" id="nlist"></ol>
     <aside class="ntoc" id="nToc" aria-label="Sumário das anotações" hidden></aside>
   </div>
 
@@ -2914,7 +2935,7 @@ async function noteClaude(it,kind){
 function renderNotes(it,full){
   const k=it.key, has=!!(notes[k]||"").trim(), mode=noteMode[k]||(has?"ler":"editar");
   const box=el(`<div class="grp notes${full?" full":""}"></div>`);
-  const head=el(`<div class="nhead"><span class="glabel">Anotações</span><div class="seg nseg" role="group" aria-label="Modo das anotações"></div><span class="sp"></span></div>`);
+  const head=el(`<div class="nhead"><span class="glabel">Página do tema<small class="nhint">também no Caderno</small></span><div class="seg nseg" role="group" aria-label="Modo das anotações"></div><span class="sp"></span></div>`);
   [["editar","Editar"],["ler","Ler"]].forEach(([v,lab])=>{const b=el(`<button type="button" aria-pressed="${mode===v}">${lab}</button>`);b.onclick=()=>{noteMode[k]=v;render();if(v==="editar"){const t=document.getElementById((full?"fnt-":"nt-")+k);if(t)t.focus()}};head.querySelector(".nseg").appendChild(b)});
   const fb=el(`<button class="mini" type="button">${full?"Fechar tela cheia":"Tela cheia"}</button>`);fb.onclick=()=>{focusKey=full?null:k;render()};head.appendChild(fb);
   box.appendChild(head);
@@ -3020,16 +3041,15 @@ function renderNotasView(){
   const words=keys.reduce((s,k)=>s+wordCount(notes[k]),0);
   $("#nsum").textContent=keys.length?`${keys.length} ${keys.length===1?"tema anotado":"temas anotados"} de ${TOTAL} · ${words.toLocaleString("pt-BR")} palavras`:"Nenhuma anotação ainda.";
   const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]).includes(nQuery))&&nFlagOk(k));
-  renderNFlags(keys,vis);{const fb=$("#nFreeBox");fb.innerHTML="";fb.appendChild(freeCard())}
+  {const fb=$("#nFreeBox");fb.innerHTML="";fb.appendChild(freeCard())}renderNFlags(keys,vis);
+  {const L=$("#nlist"),H=$("#nTopicH"),hideT=nType==="free"&&!nNoNote;L.hidden=hideT;H.hidden=hideT||(nType!=="all"&&!nNoNote);
+    H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
   // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
   {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length;
-   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Livre",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas",todas:"Temas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
+   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
    const rb=$("#nRevBox");rb.innerHTML="";rb.append(nTodayCard(),nCardsCard());const pb=$("#nPegBox");pb.innerHTML="";pb.appendChild(nPegCard(vis));
-   const nn=noNoteKeys(),cv=el(`<p class="gtext ncover"></p>`);
-   if(nn.length){cv.append(`${nn.length} ${nn.length===1?"tema estudado está":"temas estudados estão"} sem anotação. `);const b=el(`<button class="link" type="button" id="nNoNoteB"></button>`);b.textContent=nNoNote?"Voltar às anotações":"Ver quais";b.onclick=()=>{nNoNote=!nNoNote;render()};cv.appendChild(b)}
-   else if(keys.length)cv.textContent="Todos os temas que você já estudou têm anotação.";
-   const old=$("#nCover");if(old)old.remove();cv.id="nCover";$("#nsum").after(cv)}
+   }
   if(nNoNote){const list=$("#nlist");list.innerHTML="";const nn=noNoteKeys().filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t).includes(nQuery)));
     if(!nn.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema estudado sem anotação com esses filtros.</li>`));
     nn.sort((a,b)=>wOf(BYKEY[b])-wOf(BYKEY[a])||BYKEY[a].num-BYKEY[b].num);appendGrouped(list,nn,k=>BYKEY[k],k=>{const it=BYKEY[k],s=get(k),c=el(`<li class="ncard nnone"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span></div><div class="efoot"><button class="mini" type="button">Escrever resumo</button>${sampleOff?"":`<button class="mini" type="button">Resumo com o Claude</button>`}</div></li>`);
@@ -3134,40 +3154,43 @@ function renderDetail(it,o={}){
   const s=get(it.key), d=dueIn(s), a=acc(s);
   const box=el(`<div class="detail"></div>`);
   // nível
-  const g1=el(`<div class="grp"><span class="glabel">Nível de domínio</span><div class="seg"></div></div>`);
+  const g1=el(`<div class="grp dblk dlv"><span class="glabel">Nível de domínio</span><div class="seg"></div></div>`);
   const lk=lvKey(s);
   [[0,"Não iniciado"],["i","Estudando"],[1,"Estudado"],[2,"Revisado"],[3,"Dominado"]].forEach(([i,name])=>{const b=el(`<button aria-pressed="${lk===i}" data-lv="${i}">${name}</button>`);b.onclick=()=>setLevel(it,i);g1.querySelector(".seg").appendChild(b)});
   const ready=(s.l||0)<3&&s.qt>=10&&acc(s)>=0.8&&(s.step||0)>=2;
-  g1.appendChild(el(`<p class="gtext how">${ready?"<b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.":"Estudando: começou e ainda não terminou (as revisões só começam ao concluir). Estudado: viu o conteúdo inteiro. Revisado: lembrou bem numa revisão. Dominado: 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade."}</p>`));
-  box.appendChild(g1);
+  if(ready)g1.appendChild(el(`<p class="gtext dready"><b>Você atingiu os critérios de domínio</b> (80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade). Pode marcar como Dominado.</p>`));
+  g1.appendChild(el(`<details class="dhow"><summary>O que cada nível quer dizer</summary><ul><li><b>Estudando:</b> começou e ainda não terminou (as revisões só começam ao concluir).</li><li><b>Estudado:</b> viu o conteúdo inteiro; a 1ª revisão fica para amanhã.</li><li><b>Revisado:</b> lembrou bem numa revisão.</li><li><b>Dominado:</b> 80% ou mais em pelo menos 10 questões e duas revisões seguidas sem dificuldade.</li></ul></details>`));
+  const duo=el(`<div class="dduo"></div>`);duo.appendChild(g1);
   if(!o.fac){const lk=linkInfoEl(it);if(lk)box.insertBefore(lk,box.firstChild)}
   const fbd=facBadge(it.key);if(fbd){const x=el(`<p class="tips fbadgep"></p>`);x.textContent=`Faculdade: cai na prova “${fbd.p.name}” de ${provaDiscName(fbd.p)} (${br(fbd.p.date)}, ${inLabel(daysTo(fbd.p.date))}).`;box.insertBefore(x,box.firstChild)}
   // peso de incidência
   if(!it.own){
-  const w=wOf(it),gw=el(`<div class="grp"><span class="glabel">Peso de incidência</span><div class="seg"></div><p class="gtext how"></p></div>`);
+  const w=wOf(it),gw=el(`<div class="grp dblk dinc"><span class="glabel">Peso de incidência</span><div class="seg"></div><p class="gtext how"></p><details class="dhow"><summary>De onde vem este peso</summary><p></p></details></div>`);
   [1,2,3].forEach(v=>{const b=el(`<button aria-pressed="${w===v}"></button>`);b.appendChild(incEl(v));b.appendChild(document.createTextNode(" "+INC[v]));
     b.onclick=()=>{upd(it.key,x=>{if(v===it.w0)delete x.w;else x.w=v});commit()};gw.querySelector(".seg").appendChild(b)});
   const D=INC_DATA[it.key]||[0,0,0,0];
   gw.querySelector("p").textContent=(get(it.key).w?`Você ajustou este peso. O padrão é ${INC[it.w0].toLowerCase()}. `:"")+
-    (INC_NEW.has(it.key)?"Tema novo (10/2026), ainda sem contagem própria nas 12 provas analisadas.":D[0]?`Caiu ${D[0]} ${D[0]===1?"vez":"vezes"} em ${D[1]} das 12 provas analisadas${D[2]?`, ${D[2]} no Enamed 2025`:""}${it.key==="CM-50"?" (contando toda a psiquiatria, antes de ela ser dividida em 4 temas)":""}.`:"Não apareceu com esse nome nas 12 provas analisadas.")+
-    (D[3]?" Peso elevado porque os cursinhos o apontam como prioritário.":"")+` Fonte: ${INC_SRC}.`;
-  if(get(it.key).w){const r=el(`<button class="link" type="button">Voltar ao padrão</button>`);r.onclick=()=>{upd(it.key,x=>{delete x.w});commit()};gw.appendChild(r)}
-  box.appendChild(gw);
+    (INC_NEW.has(it.key)?"Tema novo (10/2026), ainda sem contagem própria nas 12 provas analisadas.":D[0]?`Caiu ${D[0]} ${D[0]===1?"vez":"vezes"} em ${D[1]} das 12 provas analisadas${D[2]?`, ${D[2]} no Enamed 2025`:""}${it.key==="CM-50"?" (contando toda a psiquiatria, antes de ela ser dividida em 4 temas)":""}.`:"Não apareceu com esse nome nas 12 provas analisadas.");
+  gw.querySelector(".dhow p").textContent=(D[3]?"Peso elevado porque os cursinhos o apontam como prioritário. ":"")+`O peso decide quanto o tema pesa no plano do dia e no “onde ganhar pontos”. Fonte: ${INC_SRC}.`;
+  if(get(it.key).w){const r=el(`<button class="link" type="button">Voltar ao padrão</button>`);r.onclick=()=>{upd(it.key,x=>{delete x.w});commit()};gw.insertBefore(r,gw.querySelector(".dhow"))}
+  duo.appendChild(gw);
   }
   // revisão
-  const g2=el(`<div class="grp"><span class="glabel">Revisão espaçada</span><p class="gtext"></p><div class="btns"></div></div>`);
-  const p=g2.querySelector("p"), bt=g2.querySelector(".btns");
-  if(!s.last){p.textContent=isIng(s)?`Estudando desde ${br(s.ing.d)}. A primeira revisão fica agendada quando você marcar todos os subtópicos ou tocar em Estudei hoje.`:"Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
+  const g2=el(`<div class="grp dblk drev"><div class="dbh"><span class="glabel">Revisão espaçada</span><span class="dpill"></span></div><p class="gtext"></p><div class="btns"></div></div>`);
+  const p=g2.querySelector("p"), bt=g2.querySelector(".btns"),pill=g2.querySelector(".dpill");
+  if(!s.last){pill.textContent=isIng(s)?"em estudo":"sem estudo";g2.dataset.st="none";p.textContent=isIng(s)?`Estudando desde ${br(s.ing.d)}. A primeira revisão fica agendada quando você marcar todos os subtópicos ou tocar em Estudei hoje.`:"Ainda sem estudo registrado. Marque quando estudar e a primeira revisão fica agendada para amanhã.";
     const b=el(`<button class="btn primary">Estudei hoje</button>`);b.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");adoptTopic(it.key);commit()};bt.appendChild(b);}
   else{const next=fromNum(dnum(today())+d);
-    const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;p.textContent=`Último estudo em ${br(s.last)}. Próxima revisão em ${br(next)} (${dueLabel(d)}). Intervalo atual: ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
+    const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;pill.textContent=dueLabel(d);g2.dataset.st=d<0?"late":d===0?"today":"ok";
+    p.innerHTML=`<span class="dnext">Próxima revisão: <b></b></span><span class="dsub"></span>`;p.querySelector("b").textContent=br(next);
+    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}. Lembrou bem: o intervalo cresce. Teve dificuldade: volta para 1 dia.`;
     const g=el(`<button class="btn primary">Revisei: lembrei bem</button>`);g.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=Math.min((x.step||0)+1,INT.length-1);x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(it.key);commit()};
     const h=el(`<button class="btn">Revisei: tive dificuldade</button>`);h.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0});logAct("r");markReviewed(it.key);commit()};
     bt.append(g,h);}
   box.appendChild(g2);
   // subtópicos
   const L=subList(it),[sdn,stot]=subCount(it);
-  const gs=el(`<div class="grp"><span class="glabel">Subtópicos · ${sdn}/${stot}</span><div class="sbar"><i style="width:${stot?sdn/stot*100:0}%"></i></div><ul class="subs"></ul></div>`);
+  const gs=el(`<div class="grp dblk dsubs"><div class="dbh"><span class="glabel">Subtópicos · ${sdn}/${stot}</span><span class="dpct">${stot?Math.round(sdn/stot*100):0}%</span></div><div class="sbar"><i style="width:${stot?sdn/stot*100:0}%"></i></div><ul class="subs"></ul></div>`);
   L.forEach((x,n)=>{const id=`sb-${it.key}-${n}`;
     const li=el(`<li class="sub"><input type="checkbox" id="${id}"${x.done?" checked":""}><label for="${id}"></label></li>`);
     li.querySelector("label").textContent=x.t;
@@ -3188,16 +3211,20 @@ function renderDetail(it,o={}){
     const n=document.getElementById("as-"+it.key);if(n)n.focus()});
   gs.appendChild(af);
   if(subErr){const e=el(`<p class="err"></p>`);e.textContent=subErr;gs.appendChild(e)}
-  box.appendChild(gs);
+  box.appendChild(gs);if(duo.children.length)box.appendChild(duo);
   // anotações
   if(focusKey===it.key){const ph=el(`<div class="grp"><span class="glabel">Anotações</span><p class="gtext">Abertas em tela cheia.</p></div>`);box.appendChild(ph)}
   else box.appendChild(renderNotes(it,false));
-  const notesEl=box.lastElementChild;if(focusKey!==it.key){const fl=freeLinkedEl(it.key);if(fl)notesEl.appendChild(fl);notesEl.appendChild(cardsBlock(it))}
+  const notesEl=box.lastElementChild;if(focusKey!==it.key){const fl=freeLinkedEl(it.key),nf=notesEl.querySelector(":scope>.nfoot");if(nf)nf.after(fl);else notesEl.appendChild(fl);notesEl.appendChild(cardsBlock(it))}
   // questões
-  const g3=el(`<div class="grp"><span class="glabel">Questões</span><p class="gtext"></p>
-    <form class="qform"><label for="qc-${it.key}">Acertei</label><input id="qc-${it.key}" type="number" inputmode="numeric" min="0" max="500" placeholder="0">
+  const g3=el(`<div class="grp dblk dperf"><span class="glabel">Seu desempenho</span><div class="dpf"><div class="dbig"></div><div class="dpfr"><p class="gtext"></p><div class="dwk"></div></div></div>
+    <span class="glabel dsm">Registrar questões feitas fora do app</span><form class="qform"><label for="qc-${it.key}">Acertei</label><input id="qc-${it.key}" type="number" inputmode="numeric" min="0" max="500" placeholder="0">
     <label for="qt-${it.key}">de</label><input id="qt-${it.key}" type="number" inputmode="numeric" min="1" max="500" placeholder="10"><button class="btn primary" type="submit">Registrar</button></form></div>`);
-  g3.querySelector("p").textContent=s.qt?`${s.qc} acertos em ${s.qt} questões: ${Math.round(a*100)}% de acerto.${isWeak(s)?" Ponto fraco, entra no seu plano diário.":""}`:"Nenhuma questão registrada ainda.";
+  g3.querySelector("p").textContent=s.qt?`${s.qc} acertos em ${s.qt} questões: ${Math.round(a*100)}% de acerto.${isWeak(s)?" Ponto fraco, entra no seu plano diário.":""}`:"Nenhuma questão registrada ainda. Gere questões abaixo ou registre as que fez em outro lugar.";
+  {const bg=g3.querySelector(".dbig");if(s.qt){bg.textContent=Math.round(a*100)+"%";bg.dataset.c=a>=.8?"ok":a>=.65?"mid":"bad"}else{bg.textContent="—";bg.dataset.c="none"}
+   const W=dWeeks(s);if(W.some(x=>x.q)){const wk=g3.querySelector(".dwk"),mx=Math.max(...W.map(x=>x.q));
+     W.forEach(x=>{const b=el(`<span class="dwb"><i></i></span>`),i=b.firstChild;i.style.height=(x.q?Math.max(12,x.q/mx*100):0)+"%";if(x.q)i.dataset.c=x.c/x.q>=.8?"ok":x.c/x.q>=.65?"mid":"bad";b.title=x.q?`${x.lab}: ${x.c} de ${x.q} (${Math.round(x.c/x.q*100)}%)`:`${x.lab}: nada`;wk.appendChild(b)});
+     wk.appendChild(el(`<span class="dwl">últimas 8 semanas</span>`))}}
   if(formErr){const e=el(`<p class="err"></p>`);e.textContent=formErr;g3.appendChild(e)}
   g3.querySelector("form").addEventListener("submit",ev=>{ev.preventDefault();
     const c=Number(g3.querySelector(`#qc-${it.key}`).value), t=Number(g3.querySelector(`#qt-${it.key}`).value);
@@ -3237,6 +3264,8 @@ function renderDetail(it,o={}){
   return box;
 }
 let detTab={};
+/* questões do tema por semana (8 semanas, a última termina hoje) */
+function dWeeks(s){const t=dnum(today()),out=[];for(let w=7;w>=0;w--){const a=t-w*7-6,b=t-w*7;let q=0,c=0;Object.entries(s.qd||{}).forEach(([d,v])=>{const n=dnum(d);if(n>=a&&n<=b){q+=v[0]||0;c+=v[1]||0}});out.push({q,c,lab:w?`há ${w} sem.`:"esta semana"})}return out}
 /* abre a aba certa do tema antes de procurar um campo dela (questões ou caderno de erros) */
 function detGet(pre,k){detTab[k]=pre==="ew-"?"erros":pre==="nt-"?"notas":"questoes";render();return document.getElementById(pre+k)}
 
@@ -3435,7 +3464,7 @@ function toCaderno(it,qi){
 function setQCount(v){qCount=Math.max(1,Math.min(QMAX,Math.round(v)||10));try{localStorage.setItem("resid-qcount",String(qCount))}catch(e){}}
 function renderGen(it){
   const g=gen[it.key];
-  const box=el(`<div class="grp"><span class="glabel">Questões geradas pelo Claude</span></div>`);
+  const box=el(`<div class="grp dblk dgen"><span class="glabel">Gerar questões com o Claude</span></div>`);
   if(!g||g.status!=="loading"){
     const subs=subList(it).map(x=>x.t);
     if(subs.length){const ps=todaySubs(it);if(genFocus[it.key]&&!subs.includes(genFocus[it.key])&&!(genFocus[it.key]==="__hoje"&&ps.length))delete genFocus[it.key];
@@ -3456,7 +3485,7 @@ function renderGen(it){
     b.onclick=()=>{setQCount(Number(inp.value));generate(it)};
     if(!sampleFn){b.disabled=true;b.title="Conectando ao Claude…"}
     box.appendChild(b);
-    if(!g)box.appendChild(el(`<p class="gstatus">Sugestão: 10 questões por sessão. Você pode pedir até ${QMAX}; elas chegam em blocos de ${BATCH} e dá para responder enquanto as próximas são escritas. Cada resposta conta no desempenho do tema. Confira condutas e doses na diretriz.</p>`));
+    if(!g)box.appendChild(el(`<p class="gstatus">Sugestão: 10 questões por sessão. Você pode pedir até ${QMAX}; elas chegam em blocos de ${BATCH} e dá para responder enquanto as próximas são escritas. Cada resposta conta no desempenho do tema, e cada questão traz a referência usada.</p>`));
   }
   if(g&&g.status==="loading"){
     const row=el(`<div class="qgen"><p class="gstatus" id="gs-${it.key}" aria-live="polite">${g.qs.length?`${g.qs.length} de ${g.n} prontas. Escrevendo as próximas…`:"Preparando as questões. O primeiro bloco pode levar até um minuto…"}</p><button class="btn" type="button">Parar</button></div>`);
@@ -7787,8 +7816,9 @@ function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";con
     li.querySelector("b").textContent=it.t;li.querySelector(".pint span").textContent=`${it.own?"FAC":it.area.code} · ${it.sp||""}${d!==null?" · "+dueLabel(d):""}${s.qt?` · ${Math.round(acc(s)*100)}% em ${s.qt}`:""}`;
     li.querySelector(".pint").onclick=()=>openTopic(it.key);li.querySelector(".pinx").onclick=()=>togglePin(it.key);ul.appendChild(li)});box.appendChild(ul)}
 /* ---------- Anotações: reler hoje, pegadinhas, cartões e cobertura ---------- */
-let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","revisar","pegadinhas","todas"].includes(v))nSeg=v}catch(e){}
-function setNSeg(v){nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
+let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","revisar","pegadinhas"].includes(v))nSeg=v}catch(e){}
+/* Lote 13: caderno único — "Temas" e "Livre" viraram a parte "Caderno" (nSeg "livre"); "todas" continua aceito como apelido */
+function setNSeg(v){if(v==="todas")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
 let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
@@ -8106,15 +8136,17 @@ function nSortKeys(keys){const w=k=>wordCount(notes[k]||"");
   return keys.sort((x,y)=>BYKEY[x].num-BYKEY[y].num)}
 let nFOpen=lsGet("resid-nfpanel","")==="1";
 function renderNFlags(keys,vis){const box=$("#nFBody");if(!box)return;keys=keys||[];vis=vis||keys;
-  {const c=$("#nFCount");if(c)c.textContent=nArea!=="all"||nQuery||nFlags.size?`${vis.length} de ${keys.length} ${keys.length===1?"anotação":"anotações"}`:`${keys.length} ${keys.length===1?"anotação":"anotações"}`}
+  {const c=$("#nFCount")||null;if(c)c.textContent=nArea!=="all"||nQuery||nFlags.size?`${vis.length} de ${keys.length} ${keys.length===1?"anotação":"anotações"}`:(n=>`${n} ${n===1?"página":"páginas"}`)(keys.length+freeN.length)}
   const A=[];Object.entries(NFLAG).forEach(([v,l])=>{if(nFlags.has(v))A.push([l,()=>nFlags.delete(v)])});
   if(nArea!=="all")A.push([fcAreaName(nArea),()=>{nArea="all";nSp="all"}]);if(nArea!=="all"&&nSp!=="all")A.push([nSp,()=>{nSp="all"}]);
   const cntF={week:k=>nFlagOk1(k,"week"),peg:k=>nFlagOk1(k,"peg"),tab:k=>nFlagOk1(k,"tab"),cards:k=>nFlagOk1(k,"cards")};
-  const G=[["Mostrar só","combinam com o resto",fcChips(Object.entries(NFLAG).map(([v,l])=>fcChip(`${l} · ${keys.filter(cntF[v]).length}`,nFlags.has(v),()=>{nFlags.has(v)?nFlags.delete(v):nFlags.add(v)},null,null,null,{nf:v})))],
+  const nnN=noNoteKeys().length;if(nNoNote)A.push(["Estudados sem anotação",()=>{nNoNote=false}]);
+  const G=[["Mostrar só","combinam com o resto",fcChips([...Object.entries(NFLAG).map(([v,l])=>fcChip(`${l} · ${keys.filter(cntF[v]).length}`,nFlags.has(v),()=>{nFlags.has(v)?nFlags.delete(v):nFlags.add(v)},null,null,null,{nf:v})),
+      fcChip(`Temas estudados sem anotação · ${nnN}`,nNoNote,()=>{nNoNote=!nNoNote;if(nNoNote&&nType==="free"){nType="all";lsSet("resid-ntype","all")}},"nNoNoteB",null,"Temas que você já estudou e ainda não têm página no caderno",{nf:"nonote"})])],
     ["Onde","grande área e especialidade",fcWhere("n",nArea,nSp,(a,sp)=>keys.filter(k=>(a==="all"||BYKEY[k].area.code===a)&&(sp==="all"||BYKEY[k].sp===sp)).length,v=>{nArea=v;nSp="all"},v=>{nSp=v})]];
   fcBody(box,{tog:"nFBtn",panelId:"nFPanel",open:nFOpen,onToggle:()=>{nFOpen=!nFOpen;lsSet("resid-nfpanel",nFOpen?"1":null)},
     sort:["nSortSel",[["sp","Por especialidade"],["recent","Mais recentes primeiro"],["big","Maiores primeiro"],["small","Menores primeiro"]],nSort,v=>{nSort=v}],
-    act:A,clearId:"nClear",onClear:()=>{nFlags.clear();nArea="all";nSp="all";nQuery="";$("#nq").value=""},groups:G,
+    act:A,clearId:"nClear",onClear:()=>{nFlags.clear();nArea="all";nSp="all";nQuery="";frQ="";frQRaw="";nNoNote=false},groups:G,
     foot:nQuery||A.length?(vis.length?`${vis.length} ${vis.length===1?"anotação encontrada":"anotações encontradas"}`:"Nenhuma anotação com esses filtros"):"",
     onDone:()=>{nFOpen=false;lsSet("resid-nfpanel",null);render();const l=$("#nlist");if(l)l.scrollIntoView({block:"start"})}})}
 /* erros do caderno junto da anotação */
@@ -8226,14 +8258,22 @@ try{const v=JSON.parse(localStorage.getItem(LSFR2)||"[]");if(Array.isArray(v))fr
 function frSaveLocal(){try{localStorage.setItem(LSFR2,JSON.stringify(freeN))}catch(e){}}
 async function frPut(x){frSaveLocal();if(!freeStore)return;try{await freeStore.doc(x.id).set({...x})}catch(e){}}
 async function frDel(id){{const f=freeN.find(x=>x.id===id);if(f)toTrash("free",f.t||"Sem título",(f.b||"").replace(/\s+/g," ").slice(0,80),f)}freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
-let frQ="";
+let frQ="",frQRaw="",frMsg="";
 function freeVisible(){const Q=frQ||nQuery;return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!Q||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(Q))).sort((a,b)=>b.at.localeCompare(a.at))}
-function freeCard(){const c=el(`<section class="card nfree ns-free" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno livre</h2><span class="sp"></span><button class="btn" id="nImg" type="button">📷 Ler imagem</button><button class="btn primary" type="button" id="frNew">+ Nova anotação</button></div><div id="nImgBox"></div></section>`);
+let nType=(()=>{const v=lsGet("resid-ntype","all");return ["all","free","topic"].includes(v)?v:"all"})();
+function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nFind" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno</h2><span class="tfcount" id="nFCount"></span><span class="sp"></span><button class="btn" id="nImg" type="button">📷 Ler imagem</button><button class="btn primary" type="button" id="frNew">+ Nova página</button></div><div id="nImgBox"></div></section>`);
   c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
   if(freeEdit)c.appendChild(freeEditor());
-  if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a anotação aparece também dentro deles.</p>`));return c}
-  {const sr=el(`<div class="tfsearch frsearch">${FC_ICO}<input class="search" id="frq" type="search" placeholder="Buscar no caderno livre" aria-label="Buscar no caderno livre" autocomplete="off"></div>`),i=sr.querySelector("input");i.value=frQ;
-    i.oninput=debounced(()=>{frQ=norm(i.value.trim());render();const x=$("#frq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});c.appendChild(sr)}
+  if(frMsg){const m=el(`<p class="pnote" role="status" id="frMsg"></p>`);m.textContent=frMsg;c.appendChild(m);frMsg=""}
+  c.appendChild(el(`<p class="how ncadhow">Um caderno só: páginas livres (aula, plantão, dicas) e a página de cada tema, que é a mesma anotação da aba Residência. Página nova ligada a um tema que ainda não tem anotação vira a página dele.</p>`));
+  {const sr=el(`<div class="tfsearch frsearch">${FC_ICO}<input class="search" id="frq" type="search" placeholder="Buscar no caderno (páginas livres e temas)" aria-label="Buscar no caderno" autocomplete="off"></div>`),i=sr.querySelector("input");i.value=frQRaw;
+    i.oninput=debounced(()=>{frQRaw=i.value;frQ=norm(i.value.trim());nQuery=frQ;render();const x=$("#frq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});c.appendChild(sr)}
+  {const nT=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).length,g=el(`<div class="seg ntype" role="group" aria-label="Tipo de página"></div>`);
+    [["all",`Todas · ${freeN.length+nT}`],["free",`Livres · ${freeN.length}`],["topic",`Temas · ${nT}`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="nTy-"+v;b.textContent=l;b.setAttribute("aria-pressed",nType===v);b.onclick=()=>{nType=v;lsSet("resid-ntype",v);if(v==="free")nNoNote=false;render()};g.appendChild(b)});c.appendChild(g)}
+  c.appendChild(el(`<div class="tfilters" id="nFBody"></div>`));
+  if(nType==="topic"||nNoNote)return c;
+  if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Páginas livres são para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a página aparece também dentro deles.</p>`));return c}
+  if(nType==="all"&&freeN.length)c.appendChild(el(`<h3 class="nlisth">Páginas livres · ${freeN.length}</h3>`));
   const tags=[...new Set(freeN.flatMap(f=>f.tags))].sort();
   if(tags.length){const ch=el(`<div class="chips"></div>`);[["all","Todas"],...tags.map(t=>[t,"#"+t])].forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${freeTag===v}"></button>`);b.textContent=l;b.onclick=()=>{freeTag=v;render()};ch.appendChild(b)});c.appendChild(ch)}
   const L=freeVisible(),ol=el(`<ol class="elist"></ol>`);if(!L.length&&freeN.length)ol.appendChild(el(`<li class="empty" style="padding:0">Nenhuma anotação livre com esses filtros.</li>`));
@@ -8264,12 +8304,22 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
   const ks=w.querySelector(".frks");E.ks.filter(k=>BYKEY[k]).forEach(k=>{const c=el(`<button class="fchip" type="button"></button>`);c.textContent=BYKEY[k].t+" ×";c.onclick=()=>{E.ks=E.ks.filter(x=>x!==k);render()};ks.appendChild(c)});
   const n=norm((E.q||"").trim()),rs=w.querySelector(".frres");if(n.length>=2)[...ALL,...FAC_ITEMS].filter(x=>!E.ks.includes(x.key)&&norm(x.t+" "+(x.sp||"")).includes(n)).slice(0,6).forEach(x=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||""}`;li.querySelector("button").onclick=()=>{E.ks.push(x.key);E.q="";render()};rs.appendChild(li)});
   const [sv,cc]=w.querySelectorAll(".btns .btn");
-  sv.onclick=()=>{if(!E.t.trim()&&!E.b.trim())return;const x=frClean({id:E.id||"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:E.t.trim(),b:E.b,tags:E.tags.split(",").map(s=>s.trim()).filter(Boolean),ks:E.ks,at:new Date().toISOString()});
+  sv.onclick=()=>{if(!E.t.trim()&&!E.b.trim())return;
+    {const tk=E.ks.filter(k=>BYKEY[k]);if(!E.id&&tk.length===1&&!(notes[tk[0]]||"").trim()){const k=tk[0],ti=E.t.trim(),same=!ti||norm(ti)===norm(BYKEY[k].t);
+      saveNote(k,(same?"":`## ${ti}\n\n`)+E.b.trim());freeEdit=null;frMsg=`Virou a página do tema “${BYKEY[k].t}” (era a primeira anotação dele). Ela aparece aqui no caderno e na aba Anotações do tema.`;render();return}}
+    const x=frClean({id:E.id||"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:E.t.trim(),b:E.b,tags:E.tags.split(",").map(s=>s.trim()).filter(Boolean),ks:E.ks,at:new Date().toISOString()});
     const i=freeN.findIndex(f=>f.id===x.id);if(i>=0)freeN[i]=x;else freeN.push(x);freeEdit=null;frPut(x);render()};
   cc.onclick=()=>{freeEdit=null;render()};return w}
 /* anotações livres ligadas a um tema (aparecem dentro dele) */
-function freeLinkedEl(k){const L=freeN.filter(f=>f.ks.includes(k));if(!L.length)return null;const w=el(`<div class="grp frlinked"><span class="glabel">Do caderno livre · ${L.length}</span></div>`);
-  L.forEach(f=>{const d=el(`<details class="plain"><summary></summary><div class="mdview"></div></details>`);d.querySelector("summary").textContent=f.t||"Sem título";d.querySelector(".mdview").innerHTML=mdC(f.b||"");w.appendChild(d)});return w}
+function freeLinkedEl(k){const L=freeN.filter(f=>f.ks.includes(k)),has=!!(notes[k]||"").trim();
+  const w=el(`<div class="grp frlinked"><div class="dbh"><span class="glabel">Outras páginas ligadas${L.length?" · "+L.length:""}</span><button class="mini" type="button" id="frlNew-${k}">+ Nova página ligada</button></div></div>`);
+  const nb=w.querySelector("button");nb.onclick=()=>frOpenFor(k,null);
+  if(!L.length)w.appendChild(el(`<p class="how">${has?"Páginas do caderno livre ligadas a este tema aparecem aqui: aula, caso clínico, comparação com outro tema…":"Ainda sem página do tema: a primeira página que você criar ligada a ele vira a página do tema (acima)."}</p>`));
+  L.forEach(f=>{const d=el(`<details class="plain frl"><summary></summary><div class="mdview"></div><button class="link" type="button">Editar no Caderno</button></details>`);d.querySelector("summary").textContent=f.t||"Sem título";d.querySelector(".mdview").innerHTML=mdC(f.b||"");
+    d.querySelector("button").onclick=()=>frOpenFor(k,f);w.appendChild(d)});return w}
+/* abre o editor do caderno livre já ligado ao tema (página nova) ou numa página existente */
+function frOpenFor(k,f){freeEdit=f?{id:f.id,t:f.t,b:f.b,tags:f.tags.join(", "),ks:[...f.ks],q:""}:{t:"",b:"",tags:"",ks:[k],q:""};nType="all";try{localStorage.setItem("resid-ntype","all")}catch(e){}frQ=frQRaw="";nQuery="";nNoNote=false;
+  nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}setView("notas");setTimeout(()=>{const t=$(f?"#frB":"#frT");if(t){t.focus();t.scrollIntoView({block:"center"})}},60)}
 /* ---------- Fluxograma (bloco ```fluxo) e leitura de imagem pelo Claude ---------- */
 /* sintaxe: uma etapa por linha; "? pergunta" é decisão; linhas recuadas "Rótulo: texto" são os caminhos (use → para encadear) */
 function flowHTML(lines){const L=lines.map(l=>l.replace(/\t/g,"  ")).filter(l=>l.trim());let out=`<div class="flow">`,i=0,first=true;
@@ -8931,7 +8981,7 @@ document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{backStack=[];setView
 $("#foPill").onclick=()=>{backStack=[];setView("foco")};
 if(window.__site&&window.__site.authReady)window.__site.authReady.then(u=>{acctEmail=u&&u.email||null;if(view==="perfil")render()});
 (async()=>{try{const s=await window.claude?.use?.("sample");if(s){sampleFn=s}else{sampleOff=true}}catch(e){sampleOff=true}render()})();
-$("#nq").addEventListener("input",debounced(e=>{nQuery=norm(e.target.value.trim());render()}));
+/* a busca do caderno agora fica no cartão Caderno (#frq) */
 (async()=>{try{downloadsFn=await window.claude?.use?.("downloads")||null}catch(e){downloadsFn=null}render()})();
 $("#planRedo").onclick=redoPlan;
 document.querySelectorAll("#tSeg button").forEach(b=>b.onclick=()=>setTSeg(b.dataset.s));

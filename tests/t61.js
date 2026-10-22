@@ -16,7 +16,7 @@ await click('.ntoday .nreadb');await p.waitForTimeout(150);ok(await p.evaluate((
 await seg("pegadinhas");const pg=await p.$$eval('.npeg .pglist li',a=>a.map(x=>x.className+":"+x.textContent));
 ok(pg.length===3&&pg.some(x=>/peg:MAPA/.test(x))&&pg.some(x=>/dest:< 130\/80/.test(x))&&pg.some(x=>/peg:Não usar IECA/.test(x)),tag+": pegadinhas e destaques: "+pg.join(" | "));
 // 4. cobertura
-await seg("todas");ok(/2 temas estudados estão sem anotação/.test(await p.$eval('#nCover',x=>x.textContent)),tag+": cobertura");
+await seg("todas");if(!(await p.$('#nNoNoteB'))){await click('#nFBtn');await p.waitForTimeout(150)}ok(/sem anotação · 2/.test(await p.$eval('#nNoNoteB',x=>x.textContent)),tag+": cobertura (agora filtro do caderno)");
 await click('#nNoNoteB');await p.waitForTimeout(150);ok((await p.$$eval('#nlist .nnone',a=>a.length))===2,tag+": lista temas sem anotação");
 await click('#nlist .nnone .efoot .mini');await p.waitForTimeout(300);ok(await p.evaluate(()=>view==="temas"&&openKey&&detTab[openKey]==="notas"),tag+": escrever resumo abre o tema na aba Anotações");
 // 3. cartões

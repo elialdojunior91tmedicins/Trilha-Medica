@@ -1,4 +1,4 @@
-// t110: Lote 8–9 — aba Caderno (Livre · Temas · Revisar · Pegadinhas, Livre primeiro) e, em toda questão respondida, Levar para a anotação
+// t110: Lote 8–9 (atualizado no Lote 13) — aba Caderno (Caderno · Revisar · Pegadinhas) e, em toda questão respondida, Levar para a anotação
 // (pontos marcáveis → "## Conceitos das questões" com selo) e Criar cartão (padrão Osler, sem ligar a erro).
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync(__dirname+'/mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 const SHOT=process.env.SHOT||"";
@@ -9,14 +9,15 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["ipad578",578,820,true],["no
   await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   /* 1. aba Caderno */
   const T=await p.evaluate(()=>({tab:document.querySelector('#tabN .tl').textContent,seg:[...document.querySelectorAll('#nSegBar button')].map(b=>b.dataset.n+":"+b.textContent.replace(/\d+$/,"")).join(),nseg:nSeg}));
-  ok(T.tab==="Caderno"&&T.seg==="livre:Livre,todas:Temas,revisar:Revisar,pegadinhas:Pegadinhas"&&T.nseg==="livre",name+": aba Caderno com Livre primeiro "+JSON.stringify(T));
+  ok(T.tab==="Caderno"&&T.seg==="livre:Caderno,revisar:Revisar,pegadinhas:Pegadinhas"&&T.nseg==="livre",name+": aba Caderno com Livre primeiro "+JSON.stringify(T));
   await p.evaluate(()=>{notes["CM-12"]="## Resumo\nTexto.";saveNotesLocal();backStack=[];setView("notas")});await p.waitForTimeout(200);
   const V=await p.evaluate(()=>{const vis=s=>{const x=document.querySelector(s);return !!x&&x.getClientRects().length>0};return {free:vis('.nfree'),list:vis('#nlist'),rev:vis('#nRevBox'),order:[...document.querySelectorAll('#viewNotas > *')].map(x=>x.id||x.className).slice(0,3).join("|")}});
   if(name==="note")ok(V.free&&V.list&&V.rev&&/nFreeBox/.test(V.order),name+": no computador tudo numa página, caderno livre no topo "+JSON.stringify(V));
-  else ok(V.free&&!V.list&&!V.rev,name+": Livre mostra só o caderno livre "+JSON.stringify(V));
+  else ok(V.free&&V.list&&!V.rev,name+": a parte Caderno mostra as páginas livres e as dos temas juntas "+JSON.stringify(V));
   if(SHOT&&name==="fone")await p.screenshot({path:SHOT+'/l8-caderno-fone.png'});
-  if(name!=="note"){await p.evaluate(()=>document.querySelector('#nSegBar button[data-n="todas"]').click());await p.waitForTimeout(150);
-    ok(await p.evaluate(()=>!document.querySelector('.nfree').getClientRects().length&&document.querySelector('#nlist').getClientRects().length>0),name+": Temas mostra as anotações dos temas sem o caderno livre")}
+  await p.evaluate(()=>document.querySelector('#nTy-topic').click());await p.waitForTimeout(150);
+  ok(await p.evaluate(()=>document.querySelector('#nlist').getClientRects().length>0&&!document.querySelector('.nfree .elist')),name+": tipo Temas mostra só as páginas dos temas");
+  await p.evaluate(()=>{nType="all";lsSet("resid-ntype","all");render()});
   /* 2. prova na íntegra: Levar para a anotação com pontos marcáveis */
   await p.evaluate(()=>{const alts=[{letra:"A",texto:"Síndrome de Bernard-Soulier",porque:"Bernard-Soulier tem plaquetas gigantes e ristocetina ausente."},{letra:"B",texto:"Trombastenia de Glanzmann",porque:""},{letra:"C",texto:"Doença de von Willebrand tipo 3",porque:"Na DvW o TTPA costuma estar alargado."}];
     const ex=exClean({id:"exg",name:"Simulado-Coagulopatias",banca:"",ano:"",at:new Date().toISOString(),qs:[{n:5,p:1,pe:1,k:"CM-12",q:{enunciado:"Criança de 4 anos, filha de pais primos, com epistaxe recorrente. Plaquetas 280.000/mm³. Na agregometria, não há agregação com ADP, e a ristocetina é normal. Qual o diagnóstico?",alternativas:alts,correta:"B",comentario:"Na trombastenia de Glanzmann falta a GP IIb/IIIa. A herança é autossômica recessiva.",conceito:"",pc:"Agregação ausente com ADP e ristocetina normal = Glanzmann.",th:"Plaquetas normais sem agregação: pense em Glanzmann."},g:"b",an:false,im:false,ck:"B"}]});

@@ -23,7 +23,7 @@ await p.fill('#frQ','hipertens');await p.waitForTimeout(500);await click('.frres
 const f=await p.evaluate(()=>freeN[0]);ok(f&&f.t==="Aula de cardio"&&f.tags.join()==="aula,cardio"&&f.ks.includes("CM-1"),tag+": anotação livre salva: "+JSON.stringify(f&&{t:f.t,tags:f.tags,ks:f.ks}));
 ok(await p.isVisible('.nfree .chip:has-text("#aula")'),tag+": etiquetas viram filtro");
 await p.waitForTimeout(800);ok(await p.evaluate(()=>Object.keys(window.__store).some(k=>k.includes("/progress/free/"))),tag+": gravada na conta");
-await p.evaluate(()=>{detTab["CM-1"]="notas";openTopic("CM-1")});await p.waitForTimeout(250);ok(/Do caderno livre · 1/.test(await p.$eval('#t-CM-1',x=>x.textContent)),tag+": aparece dentro do tema ligado");
+await p.evaluate(()=>{detTab["CM-1"]="notas";openTopic("CM-1")});await p.waitForTimeout(250);ok(/Outras páginas ligadas · 1/.test(await p.$eval('#t-CM-1',x=>x.textContent)),tag+": aparece dentro do tema ligado");
 await p.evaluate(()=>{setView("notas");setNSeg("livre")});await p.waitForTimeout(150);
 await click('#fr-'+f.id+' .efoot .mini:nth-child(2)');await p.fill('#frT','Aula de cardiologia');await click('#frSave');await p.waitForTimeout(150);ok(await p.evaluate(()=>freeN.length===1&&freeN[0].t==="Aula de cardiologia"),tag+": editar");
 await p.fill('#frq','troponina');await p.waitForTimeout(500);ok(await p.$$eval('.nfree .ncard',a=>a.length)===1,tag+": busca inclui o caderno livre");await p.fill('#frq','');await p.waitForTimeout(400);

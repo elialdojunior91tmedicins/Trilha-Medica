@@ -46,6 +46,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t111 | Estatísticas (Residência · Faculdade, veredictos, 4 blocos) e melhorias dos gráficos (Lote 10); dados de exemplo em `seed10.js` |
 | t112 | Lote 11: 198 temas, pesos revistos e psiquiatria dividida em 4 (migração do progresso e das ligações da faculdade) |
 | t113 | Lote 12: referências nas questões, Refazer espaçado (fila do dia, filtros, teimosas, simulado) e "Seus temas nas questões" |
+| t114 | Lote 13: caderno único (busca única, tipo, sem anotação como filtro, 1ª página ligada vira a página do tema, + Nova página ligada) e tema repaginado |
 
 ## Falhas conhecidas do ambiente
 
