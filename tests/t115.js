@@ -63,6 +63,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   for(let i=0;i<5;i++){await p.evaluate(()=>{simAnswer(sim.qs[sim.i].correta);render()});await p.evaluate(()=>simNext())}
   const R=await p.evaluate(([id,qt0])=>({qt:get("CM-1").qt||0,qt0,tries:sims.find(x=>x.id===id).tries,n:sims.length}),[id,qt0]);
   ok(R.qt===R.qt0&&R.tries.length===1&&R.tries[0].hit===5&&R.n===1,name+": refazer não conta no acerto e anota a tentativa "+JSON.stringify(R));
+  ok(await p.evaluate(()=>{const W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7);return (hist[today()].rq||0)===5&&W.g===W.q+5}),name+": as refeitas contam na meta semanal (não no acerto)");
   /* mesmos temas, questões novas */
   await p.evaluate(()=>{sim=null;simPick=new Set();simSubs={};simCfg={src:"weak",n:10,dif:"mista",est:"res"};__P=[];render()});await click('#sma-'+id);
   await p.waitForFunction(()=>sim&&sim.status==="run",null,{timeout:10000});
@@ -71,7 +72,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   /* 4. material em partes com figura */
   await p.evaluate(()=>{simCfg.mode="mat";simCfg.n=5;simCfg.est="res";simCfg.dif="mista";render()});await p.waitForTimeout(150);
   await p.setInputFiles('#smf',PDF);await p.waitForFunction(()=>simMat&&!simMat.busy&&simMat.items.length===1,null,{timeout:30000});await p.waitForTimeout(200);
-  const M=await p.evaluate(()=>{const m=simMat.items[0],P=msPack(simMat);return {figs:(m.figs||[]).map(f=>f.page),ch:P.chunks.length,max:Math.max(...P.chunks.map(c=>c.txt.length)),use:document.querySelector('.qsim .mst').textContent,figtxt:!!document.querySelector('.qsim .msfig'),sum:document.querySelector('.simsum').textContent}});
+  const M=await p.evaluate(async()=>{const m=simMat.items[0],P=msPack(simMat),bm=m.figs[0]?await createImageBitmap(m.figs[0].blob):null;return {ratio:bm?+(bm.width/bm.height).toFixed(2):0,figs:(m.figs||[]).map(f=>f.page),ch:P.chunks.length,max:Math.max(...P.chunks.map(c=>c.txt.length)),use:document.querySelector('.qsim .mst').textContent,figtxt:!!document.querySelector('.qsim .msfig'),sum:document.querySelector('.simsum').textContent}});
+  ok(M.ratio>1.4,name+": a figura é recortada na imagem (ECG largo), não a página inteira "+M.ratio);
   ok(M.figs.join()==="2"&&M.ch>=2&&M.max<=30000&&/vai em \d+ partes/.test(M.use)&&/1 figura/.test(M.use)&&M.figtxt&&/partes/.test(M.sum),name+": só a página do ECG vira figura (a logo repetida não); material em partes "+JSON.stringify(M));
   await p.evaluate(()=>{__P=[];__O=[]});await click('#simGo');await p.waitForFunction(()=>sim&&sim.status==="run"&&sim.gen,null,{timeout:10000});
   const F=await p.evaluate(()=>({p:__P[0],imgs:(__O[0].images||[]).length,fg:sim.qs[0].fg,img:!!document.querySelector('.qsim .qfig img'),cap:(document.querySelector('.qsim .qfig figcaption')||{}).textContent||""}));

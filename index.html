@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=770d49ed">
+<link rel="stylesheet" href="site.css?v=49cf455d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=770d49ed"></script>
-<script src="bridge.js?v=770d49ed"></script>
+<script src="config.js?v=49cf455d"></script>
+<script src="bridge.js?v=49cf455d"></script>
 </head>
 <body>
 <script>
@@ -3314,7 +3314,7 @@ const genMatOn=S=>!!(S&&!S.busy&&(S.attach||(S.items||[]).some(msItemOk)));
 async function msReadOne(f,canImg,site){const isPdf=f.type==="application/pdf"||/\.pdf$/i.test(f.name),m={id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:f.name,txt:"",imgs:[],note:"",err:""};
   try{if(isPdf){const o=await pdfOpenTxt(f);let txt="",nt=0,sc=[];o.pages.forEach(p=>{if(p.img){sc.push(p.n);return}txt+=`=== Página ${p.n} ===\n${p.t}\n\n`;nt++});
       m.txt=txt.trim();m.pages=o.pages.length;m.ntext=nt;m.figs=[];
-      try{const fp=await pdfFigPages(o.doc,o.pages.map(p=>p.n));for(const n of fp.slice(0,FIG_MAX))m.figs.push({page:n,blob:await pdfPageImg(await o.doc.getPage(n),1100,.78)});
+      try{const fp=await pdfFigPages(o.doc,o.pages.map(p=>p.n));for(const x of fp.slice(0,FIG_MAX))m.figs.push({page:x.n,blob:await pdfFigImg(await o.doc.getPage(x.n),x.rs)});
         /* página quase sem texto mas com uma figura própria (slide só com a imagem): vira figura, não "página escaneada" */
         const fs=new Set(m.figs.map(f=>f.page));sc=sc.filter(n=>!fs.has(n));
         if(fp.length>FIG_MAX)m.note=(m.note?m.note+" ":"")+`Só as ${FIG_MAX} primeiras páginas com figura viram figura.`}catch(e){m.figs=[]}
@@ -6894,17 +6894,17 @@ function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6
 const QSRC_SUG=["Claude","ENARE","USP","UNIFESP","SUS-SP","UNICAMP","AMRIGS","PSU-MG","SES-DF","UERJ","UFRJ","Revalida","Medcel","Estratégia MED","MedCof","Aristo","Sanar","Prova antiga"];
 const ESHORT={conhecimento:"não sabia",interpretacao:"li errado",confusao:"confundi"};
 /* meta semanal (segunda a domingo), contada no histórico de todas as questões */
-function qWeekQ(ws){let q=0,c=0;for(let i=0;i<7;i++){const h=hist[fromNum(ws+i)];if(h){q+=h.q||0;c+=h.c||0}}return {q,c}}
-function qGoalEl(){const g=ui.prefs.qgoal,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,W=qWeekQ(ws),w=el(`<div class="qgoal"></div>`);
+function qWeekQ(ws){let q=0,c=0,r=0;for(let i=0;i<7;i++){const h=hist[fromNum(ws+i)];if(h){q+=h.q||0;c+=h.c||0;r+=h.rq||0}}return {q,c,rq:r,g:q+r}}/* g = para a meta (inclui as refeitas de Meus simulados, que não contam no acerto) */
+function qGoalEl(){const g=ui.prefs.qgoal,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,W0=qWeekQ(ws),W={q:W0.g,rq:W0.rq},w=el(`<div class="qgoal"></div>`);
   const sel=el(`<label class="qfsel qgsel"><span>Meta semanal</span><select id="qGoalSel"></select></label>`),s=sel.querySelector("select");
   [[0,"Sem meta"],[50,"50"],[100,"100"],[150,"150"],[200,"200"],[300,"300"],[400,"400"],[500,"500"],[700,"700"],[1000,"1.000"]].forEach(([v,lab])=>{const o=document.createElement("option");o.value=v;o.textContent=v?lab+" questões":lab;s.appendChild(o)});
   if(![0,50,100,150,200,300,400,500,700,1000].includes(g)){const o=document.createElement("option");o.value=g;o.textContent=g+" questões";s.appendChild(o)}
   s.value=String(g);s.onchange=()=>{ui.prefs.qgoal=+s.value;saveUI();render()};
   if(!g){w.appendChild(el(`<p class="how qgtxt">Nesta semana: <b>${W.q}</b> ${W.q===1?"questão":"questões"}. Defina uma meta semanal para acompanhar o ritmo.</p>`));w.appendChild(sel);return w}
-  let st=0,k=ws-7;while(qWeekQ(k).q>=g){st++;k-=7}if(W.q>=g)st++;
+  let st=0,k=ws-7;while(qWeekQ(k).g>=g){st++;k-=7}if(W.q>=g)st++;
   const left=7-(t-ws),miss=Math.max(0,g-W.q),pc=Math.min(100,W.q/g*100);
   const box=el(`<div class="qgm"><div class="qgtop"><b>${W.q.toLocaleString("pt-BR")}</b><span>de ${g.toLocaleString("pt-BR")} questões nesta semana</span></div><div class="meter${W.q>=g?" ok":""}"><i style="width:${pc}%"></i></div><p class="how qgtxt"></p></div>`);
-  box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`;
+  box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`+(W.rq?` Inclui ${W.rq} ${W.rq===1?"refeita":"refeitas"} de Meus simulados.`:"");
   w.append(box,sel);return w}
 /* tendência: acerto dos últimos 30 dias contra os 90 dias antes deles (mínimo de 5 questões em cada) */
 function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
@@ -7087,7 +7087,7 @@ async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMat
       S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 function simAnswer(letra){const S=sim,q=S.qs[S.i];if(!q||S.ans[S.i])return;const sec=Math.min(1800,Math.max(1,(Date.now()-S.shown)/1000));
-  S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;if(S.rerun)return;
+  S.ans[S.i]=letra;S.t[S.i]=sec;const ok=letra===q.correta;if(S.rerun){const h=hist[today()]||(hist[today()]={});h.rq=(h.rq||0)+1;commit();return}
   upd(q.k,x=>addQ(x,1,ok?1:0,null,"Claude"));logAct("q",1,ok?1:0);logPace(today(),1,sec);if(!ok&&!q.rd&&!S.rerun)rdAdd(q.k,q,"sim",S.P);
   if(q.rd){const x=redo.find(y=>y.id===q.rd);if(x){if(ok)rdHit(x);else rdMiss(x)}}
   if(q.err){const e=errors.find(x=>x.id===q.err);if(e){if(!ok)eAnswer(e,false);else if(eDue(e)<=today())eAnswer(e,true)}}commit()}
@@ -7165,7 +7165,7 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
     const ul=el(`<ol class="simlist"></ol>`);S.qs.forEach((q,i)=>{const it=BYKEY[q.k],ok=S.ans[i]===q.correta,li=el(`<li><span class="simok ${S.ans[i]?ok?"ok":"no":""}">${S.ans[i]?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${S.t[i]?fmtPace(S.t[i]):""}</span></li>`);
       const b=li.querySelector("button");b.textContent=it?it.t:"";b.onclick=()=>openTopic(q.k);ul.appendChild(li)});c.appendChild(ul);
     const wrong=S.qs.filter((q,i)=>S.ans[i]&&S.ans[i]!==q.correta).length;
-    c.appendChild(el(`<p class="how">${S.rerun?"Refazendo um simulado: não conta no acerto dos temas nem vai para o Refazer. A tentativa fica anotada em Meus simulados.":`${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo. O simulado ficou guardado em Meus simulados.`}</p>`));
+    c.appendChild(el(`<p class="how">${S.rerun?"Refazendo um simulado: conta na meta semanal de questões, mas não no acerto dos temas nem vai para o Refazer. A tentativa fica anotada em Meus simulados.":`${wrong?`${wrong} ${wrong===1?"errada foi":"erradas foram"} para Refazer as que errei. `:""}O resultado já entrou no acerto de cada tema e no seu ritmo. O simulado ficou guardado em Meus simulados.`}</p>`));
     const b=el(`<button class="btn primary" type="button">Novo simulado</button>`);b.onclick=()=>{sim=null;render()};c.appendChild(b);return c}
   // em andamento
   const q=S.qs[S.i];if(!q){c.appendChild(el(`<p class="gstatus" id="simSt">Escrevendo a próxima questão…</p>`));return c}
@@ -7377,10 +7377,26 @@ async function pdfPageText(pg){const tc=await pg.getTextContent();let s="",y0=nu
   return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()}
 /* páginas com figura: imagem de pelo menos 150×150 px que não aparece em boa parte das páginas (logo/fundo do slide ficam de fora) */
 async function pdfFigPages(doc,ns){const lib=await pdfLib(),O=lib.OPS,ops=[O.paintImageXObject,O.paintInlineImageXObject,O.paintImageXObjectRepeat].filter(x=>x!==undefined),per={},cnt={};
-  for(const n of ns){const pg=await doc.getPage(n),L=await pg.getOperatorList(),ids=new Set();
-    L.fnArray.forEach((f,i)=>{if(!ops.includes(f))return;const a=L.argsArray[i]||[],w=+a[1]||0,h=+a[2]||0;if(w>=150&&h>=150)ids.add(w+"x"+h)});/* o pdf.js dá nomes diferentes por página à mesma imagem: compara pelo tamanho */
-    per[n]=ids;ids.forEach(id=>{cnt[id]=(cnt[id]||0)+1})}
-  const lim=Math.max(3,Math.ceil(ns.length*.6));return ns.filter(n=>[...per[n]].some(id=>cnt[id]<lim||ns.length<=2))}
+  const mul=(m,n)=>[m[0]*n[0]+m[2]*n[1],m[1]*n[0]+m[3]*n[1],m[0]*n[2]+m[2]*n[3],m[1]*n[2]+m[3]*n[3],m[0]*n[4]+m[2]*n[5]+m[4],m[1]*n[4]+m[3]*n[5]+m[5]];
+  for(const n of ns){const pg=await doc.getPage(n),L=await pg.getOperatorList(),ims=[];let ctm=[1,0,0,1,0,0];const st=[];
+    L.fnArray.forEach((f,i)=>{const a=L.argsArray[i]||[];
+      if(f===O.save)st.push(ctm);else if(f===O.restore)ctm=st.pop()||[1,0,0,1,0,0];else if(f===O.transform)ctm=mul(ctm,a);
+      else if(f===O.paintFormXObjectBegin){st.push(ctm);if(Array.isArray(a[0])&&a[0].length===6)ctm=mul(ctm,a[0])}else if(f===O.paintFormXObjectEnd)ctm=st.pop()||[1,0,0,1,0,0];
+      else if(ops.includes(f)){const w=+a[1]||0,h=+a[2]||0;if(w<150||h<150)return;/* a imagem ocupa o quadrado 0..1 transformado pela matriz atual */
+        const P=[[0,0],[1,0],[0,1],[1,1]].map(([x,y])=>[ctm[0]*x+ctm[2]*y+ctm[4],ctm[1]*x+ctm[3]*y+ctm[5]]);
+        ims.push({key:w+"x"+h,r:[Math.min(...P.map(p=>p[0])),Math.min(...P.map(p=>p[1])),Math.max(...P.map(p=>p[0])),Math.max(...P.map(p=>p[1]))]})}});
+    per[n]=ims;new Set(ims.map(x=>x.key)).forEach(k=>{cnt[k]=(cnt[k]||0)+1})}/* o pdf.js dá nomes diferentes por página à mesma imagem: compara pelo tamanho */
+  const lim=Math.max(3,Math.ceil(ns.length*.6));
+  return ns.map(n=>({n,rs:per[n].filter(x=>cnt[x.key]<lim||ns.length<=2).map(x=>x.r)})).filter(x=>x.rs.length)}
+/* figura recortada: a área das imagens da página (com uma margem); se o recorte não fizer sentido, a página inteira */
+async function pdfFigImg(pg,rs){const v0=pg.getViewport({scale:1}),sc=Math.min(3,1400/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
+  cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const T=vp.transform;rs.forEach(r=>[[r[0],r[1]],[r[2],r[3]],[r[0],r[3]],[r[2],r[1]]].forEach(([x,y])=>{const X=T[0]*x+T[2]*y+T[4],Y=T[1]*x+T[3]*y+T[5];x0=Math.min(x0,X);x1=Math.max(x1,X);y0=Math.min(y0,Y);y1=Math.max(y1,Y)}));
+  const m=Math.round(10*sc);x0=Math.max(0,Math.floor(x0-m));y0=Math.max(0,Math.floor(y0-m));x1=Math.min(cv.width,Math.ceil(x1+m));y1=Math.min(cv.height,Math.ceil(y1+m));
+  const w=x1-x0,h=y1-y0;let out=cv;if(w>=60&&h>=60&&w*h<cv.width*cv.height*.92){out=document.createElement("canvas");const k=Math.min(1,1100/w);out.width=Math.round(w*k);out.height=Math.round(h*k);
+    const c2=out.getContext("2d");c2.fillStyle="#fff";c2.fillRect(0,0,out.width,out.height);c2.drawImage(cv,x0,y0,w,h,0,0,out.width,out.height)}
+  else if(cv.width>1100){out=document.createElement("canvas");out.width=1100;out.height=Math.round(cv.height*1100/cv.width);out.getContext("2d").drawImage(cv,0,0,out.width,out.height)}
+  return await new Promise(r=>out.toBlob(b=>r(b),"image/jpeg",.82))}
 async function pdfPageImg(pg,W=1500,Q=.82){const v0=pg.getViewport({scale:1}),sc=Math.min(2.2,W/v0.width),vp=pg.getViewport({scale:sc}),cv=document.createElement("canvas");
   cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);const ctx=cv.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);
   await pg.render({canvasContext:ctx,canvas:cv,viewport:vp}).promise;return await new Promise(r=>cv.toBlob(b=>r(b),"image/jpeg",Q))}
@@ -7767,7 +7783,7 @@ function nextSteps(){const out=[],P=ensurePlan(),CR=examCrunch();if(isOffDay())r
   planItems.filter(p=>!started(p)).forEach(p=>out.push({k:p.k,kind:"plan",t:BYKEY[p.k].t,why:p.cls==="r-weak"?"Ponto fraco do plano de hoje":p.cls==="r-fac"?"Conteúdo da prova da faculdade":p.cls==="r-pfr"?"Revisar para a prova da faculdade":"Tema do plano de hoje"}));
   const rd=redo.filter(x=>BYKEY[x.k]).length;if(rd)out.push({kind:"redo",t:`Refazer ${Math.min(rd,10)} ${Math.min(rd,10)===1?"questão errada":"questões erradas"}`,why:`${rd} na lista de Refazer as que errei`});
   const ed=eDueList().length;if(ed)out.push({kind:"errs",t:`Revisar ${Math.min(ed,15)} ${Math.min(ed,15)===1?"erro":"erros"} do caderno`,why:`${ed} ${ed===1?"erro volta":"erros voltam"} para revisão hoje`});
-  const g=ui.prefs.qgoal,W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7).q;if(g&&W<g&&!isSimDay())out.push({kind:"sim",t:"Simulado misto de 10 questões",why:`Faltam ${g-W} questões para a meta da semana`});
+  const g=ui.prefs.qgoal,W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7).g;if(g&&W<g&&!isSimDay())out.push({kind:"sim",t:"Simulado misto de 10 questões",why:`Faltam ${g-W} questões para a meta da semana`});
   return out}
 function startStep(s){
   if(s.kind==="redo"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const b=$("#rdGo");if(b)b.click()},60);return}
@@ -8661,7 +8677,8 @@ const HELP=[
 - **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
 - **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
-- **Simulado misto** (em Praticar), em dois passos: **1. De onde vêm as questões:** **Dos meus temas** (cada opção diz o que pega: **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje**, **Meus erros**, **Filtro atual** e, com prova da faculdade perto, a **Prova**) ou **De um material meu** (um ou mais arquivos: PDFs da aula, slides, resumos, fotos; as questões seguem o material mesmo que ele passe por várias áreas, e cada questão é ligada ao tema da residência mais próximo, onde o acerto conta). **2. Quantas questões:** 5, 10, 20 ou 30, com o tempo estimado no seu ritmo de prova. Uma questão por vez, com o tempo medido em cada uma; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer. **Encerrar** mostra o resultado das que você já respondeu.
+- **Simulado misto** (em Praticar), em três passos. **1. De onde vêm as questões:** **Dos meus temas** — **Escolher temas** (busque qualquer tema ou subtópico, filtre por área, situação e incidência, marque os temas e, se quiser, só alguns subtópicos de cada um), **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje**, **Meus erros**, **Questões para refazer** (casos novos sobre as que você errou), **Filtro atual** e, com prova da faculdade perto, a **Prova** — ou **De um material meu** (um ou mais arquivos, até **100 mil caracteres** no total; o material vai em partes, uma por pedido, revezando, e as páginas com figura viram **figuras numeradas**: o Claude pode fazer questões com elas e a figura, recortada, aparece junto da questão). **2. Como vai ser:** quantas questões (5, 10, 20 ou 30), **dificuldade** (Mista, Fácil, Média, Difícil) e **estilo** (Residência ou **ENAMED/INEP**: caso clínico contextualizado, comando direto e 4 alternativas). **3. Resumo:** confira questões, tempo estimado, dificuldade, estilo e temas antes de começar. Uma questão por vez, com o tempo medido; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer (a figura só fica guardada, menor, nas erradas, até saírem do Refazer). **Encerrar** mostra o resultado das que você já respondeu.
+- **Meus simulados** (embaixo do Simulado misto): cada simulado terminado fica guardado com a nota (só o texto, sem figuras). **Rever** abre cada questão com a sua resposta e o comentário; **Refazer estas** repete as mesmas questões embaralhadas (conta na **meta semanal** de questões, mas não no acerto dos temas nem vai para o Refazer); **Mesmos temas, questões novas** repete as escolhas e os ajustes daquele simulado.
 - **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**. Também vale gabarito comentado ("RESPOSTA 1 · Correta: B" com as justificativas): as páginas dele não vão como questões e as justificativas viram a base do comentário; **Leitura no aparelho:** se o PDF tiver texto, questões numeradas, alternativas A) a E) e gabarito, o app lê tudo sozinho, sem o Claude (o comentário é o da prova e o tema é sugerido pelo nome, com o selo **Tema sugerido** para conferir); se faltar questão ou alternativa, a página for escaneada ou não houver gabarito, ele avisa e pede para **passar pelo Claude**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Se o comentário de uma questão disser que a certa é outra alternativa, ela ganha o selo **Comentário contradiz o gabarito · conferir** (entra no filtro Conferir) e um aviso na própria questão: troque a resposta em **Revisar questões**. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva. Cada prova aparece num cartão: nome, banca, número de questões, de onde veio o gabarito e a situação (Não iniciada, Em andamento com a barra de progresso, ou Feita com a nota). Antes de começar, escolha **Modo prova** ou **Modo estudo** (a linha embaixo explica a diferença); Revisar questões, Colar gabarito, Refazer e Excluir ficam no rodapé do cartão.
 - **Ligar a prova a temas:** no cartão da prova, **Ligar a temas** (ou **Ligações**) liga a prova a temas da residência e a conteúdos da faculdade (SP, conteúdo FAC), com sugestões pelos temas das questões. A prova aparece dentro do tema (aba Questões › **Provas na íntegra**, com o seu acerto nas questões dele). Num conteúdo da faculdade, o acerto da prova conta também nele, sem contar duas vezes se ele já for ligado ao mesmo tema da questão; tirar a ligação tira o que tinha somado.
 - **Onde você perdeu pontos** (no resultado da prova): as especialidades com 3 ou mais questões e acerto abaixo de 60% naquela prova, com os temas que você errou (o que mais errou primeiro). Toque no tema para estudar, em **gerar questões** para praticar, ou numa questão (Q12) para ver o comentário e, se quiser, **Levar para o caderno de erros** (as levadas ficam com ✓). É só sugestão: o plano do dia não muda.
