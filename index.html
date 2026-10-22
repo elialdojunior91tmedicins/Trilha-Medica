@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=89649d30">
+<link rel="stylesheet" href="site.css?v=ecd44c20">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=89649d30"></script>
-<script src="bridge.js?v=89649d30"></script>
+<script src="config.js?v=ecd44c20"></script>
+<script src="bridge.js?v=ecd44c20"></script>
 </head>
 <body>
 <script>
@@ -574,6 +574,8 @@ li.t.open{background:var(--bg)}
 .dwl{font-size:.72rem;color:var(--muted);margin-left:6px;align-self:center}
 .glabel.dsm{margin-top:6px;padding-top:12px;border-top:1px dashed var(--line)}
 .nhint{font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;color:var(--muted);font-size:.76rem}
+.ntags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.ntag{font-size:.78rem;padding:3px 9px}.ntagf .etext{width:9rem;padding:4px 8px;font-size:.82rem}
+.ntagbar{align-items:center}.ntagbar .glabel{margin-right:4px}
 .frlinked{border-top:1px dashed var(--line);padding-top:12px}.frl .link{margin-top:6px}
 .gtext{margin:0;font-size:.92rem}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
@@ -2966,7 +2968,7 @@ function renderNotes(it,full){
     box.appendChild(rv);
   }
   const foot=el(`<div class="nfoot"><span data-nw="${k}"></span><span class="nstat" data-ns="${k}"></span></div>`);
-  foot.firstChild.textContent=noteFoot(k);
+  foot.firstChild.textContent=noteFoot(k);if(has||tgOf(k).length)foot.appendChild(tgRowEl(k));
   if(noteUndo[k]!==undefined){const u=el(`<button class="link" type="button">Desfazer última substituição</button>`);u.onclick=()=>{const v=noteUndo[k];delete noteUndo[k];saveNote(k,v);render()};foot.appendChild(u)}
   box.appendChild(foot);
   box.appendChild(wkBackEl({kind:"t",id:k}));
@@ -3040,7 +3042,7 @@ function renderNotasView(){
   $("#ncount").textContent=keys.length?String(keys.length):"";
   const words=keys.reduce((s,k)=>s+wordCount(notes[k]),0);
   $("#nsum").textContent=keys.length?`${keys.length} ${keys.length===1?"tema anotado":"temas anotados"} de ${TOTAL} · ${words.toLocaleString("pt-BR")} palavras`:"Nenhuma anotação ainda.";
-  const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]).includes(nQuery))&&nFlagOk(k));
+  const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]+" "+tgOf(k).join(" ")).includes(nQuery))&&(freeTag==="all"||tgOf(k).includes(freeTag))&&nFlagOk(k));
   {const fb=$("#nFreeBox");fb.innerHTML="";fb.appendChild(freeCard())}renderNFlags(keys,vis);
   {const L=$("#nlist"),H=$("#nTopicH"),hideT=nType==="free"&&!nNoNote;L.hidden=hideT;H.hidden=hideT||(nType!=="all"&&!nNoNote);
     H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
@@ -3062,7 +3064,7 @@ function renderNotasView(){
   const card=k=>{const it=BYKEY[k],open=nOpen.has(k);
     const c=el(`<li class="ncard${open?" open":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span><span></span></div><div class="mdview clamp"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini" type="button">Editar</button></div></li>`);
     const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);
-    c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}`;
+    c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}${tgOf(k).length?" · "+tgOf(k).map(t=>"#"+t).join(" "):""}`;
     c.querySelector(".ehead span:last-child").textContent=`${wordCount(notes[k])} palavras${noteAt[k]?" · "+whenLabel(noteAt[k]):""}`;
     const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}if(open)c.querySelector(".efoot").before(wkBackEl({kind:"t",id:k}));
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
@@ -8271,11 +8273,12 @@ function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nF
   {const nT=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).length,g=el(`<div class="seg ntype" role="group" aria-label="Tipo de página"></div>`);
     [["all",`Todas · ${freeN.length+nT}`],["free",`Livres · ${freeN.length}`],["topic",`Temas · ${nT}`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="nTy-"+v;b.textContent=l;b.setAttribute("aria-pressed",nType===v);b.onclick=()=>{nType=v;lsSet("resid-ntype",v);if(v==="free")nNoNote=false;render()};g.appendChild(b)});c.appendChild(g)}
   c.appendChild(el(`<div class="tfilters" id="nFBody"></div>`));
+  {const tags=[...new Set([...(nType==="topic"?[]:freeN.flatMap(f=>f.tags)),...(nType==="free"?[]:[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).flatMap(i=>tgOf(i.key)))])].sort();
+    if(freeTag!=="all"&&!tags.includes(freeTag))freeTag="all";
+    if(tags.length&&!nNoNote){const ch=el(`<div class="chips ntagbar"><span class="glabel">Etiquetas</span></div>`);[["all","Todas"],...tags.map(t=>[t,"#"+t])].forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${freeTag===v}"></button>`);b.textContent=l;b.dataset.tag=v;b.onclick=()=>{freeTag=v;render()};ch.appendChild(b)});c.appendChild(ch)}}
   if(nType==="topic"||nNoNote)return c;
   if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Páginas livres são para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a página aparece também dentro deles.</p>`));return c}
   if(nType==="all"&&freeN.length)c.appendChild(el(`<h3 class="nlisth">Páginas livres · ${freeN.length}</h3>`));
-  const tags=[...new Set(freeN.flatMap(f=>f.tags))].sort();
-  if(tags.length){const ch=el(`<div class="chips"></div>`);[["all","Todas"],...tags.map(t=>[t,"#"+t])].forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${freeTag===v}"></button>`);b.textContent=l;b.onclick=()=>{freeTag=v;render()};ch.appendChild(b)});c.appendChild(ch)}
   const L=freeVisible(),ol=el(`<ol class="elist"></ol>`);if(!L.length&&freeN.length)ol.appendChild(el(`<li class="empty" style="padding:0">Nenhuma anotação livre com esses filtros.</li>`));
   L.forEach(f=>ol.appendChild(freeItem(f)));c.appendChild(ol);return c}
 function freeItem(f){const open=freeOpen.has(f.id),li=el(`<li class="ncard" id="fr-${f.id}"><div class="ehead"><b class="frt"></b><span class="nloc"></span></div><div class="frlinks"></div><div class="mdview${open?"":" clamp"}"></div><div class="efoot"><button class="mini" type="button"></button><button class="mini" type="button">Editar</button><span class="sp"></span><button class="mini" type="button"></button></div></li>`);
@@ -8306,10 +8309,17 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
   const [sv,cc]=w.querySelectorAll(".btns .btn");
   sv.onclick=()=>{if(!E.t.trim()&&!E.b.trim())return;
     {const tk=E.ks.filter(k=>BYKEY[k]);if(!E.id&&tk.length===1&&!(notes[tk[0]]||"").trim()){const k=tk[0],ti=E.t.trim(),same=!ti||norm(ti)===norm(BYKEY[k].t);
-      saveNote(k,(same?"":`## ${ti}\n\n`)+E.b.trim());freeEdit=null;frMsg=`Virou a página do tema “${BYKEY[k].t}” (era a primeira anotação dele). Ela aparece aqui no caderno e na aba Anotações do tema.`;render();return}}
+      saveNote(k,(same?"":`## ${ti}\n\n`)+E.b.trim());{const T=E.tags.split(",").map(s=>s.trim()).filter(Boolean);if(T.length)tgAdd(k,T)}
+      freeEdit=null;frMsg=`Virou a página do tema “${BYKEY[k].t}” (era a primeira anotação dele). Ela aparece aqui no caderno e na aba Anotações do tema${E.tags.trim()?", com as etiquetas":""}.`;render();return}}
     const x=frClean({id:E.id||"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:E.t.trim(),b:E.b,tags:E.tags.split(",").map(s=>s.trim()).filter(Boolean),ks:E.ks,at:new Date().toISOString()});
     const i=freeN.findIndex(f=>f.id===x.id);if(i>=0)freeN[i]=x;else freeN.push(x);freeEdit=null;frPut(x);render()};
   cc.onclick=()=>{freeEdit=null;render()};return w}
+/* etiquetas da página do tema: state[k].tg (vão com o tema na conta e no backup) */
+function tgOf(k){return Array.isArray(get(k).tg)?get(k).tg:[]}
+function tgAdd(k,T){upd(k,x=>{const a=[...new Set([...(Array.isArray(x.tg)?x.tg:[]),...T.map(t=>t.replace(/^#/,"").trim().slice(0,30)).filter(Boolean)])].slice(0,12);if(a.length)x.tg=a;else delete x.tg});commit()}
+function tgDel(k,t){upd(k,x=>{const a=(Array.isArray(x.tg)?x.tg:[]).filter(y=>y!==t);if(a.length)x.tg=a;else delete x.tg});commit()}
+function tgRowEl(k){const w=el(`<div class="ntags" aria-label="Etiquetas da página"></div>`);tgOf(k).forEach(t=>{const b=el(`<button class="chip ntag" type="button"></button>`);b.textContent="#"+t+" ×";b.title="Tirar a etiqueta";b.onclick=()=>tgDel(k,t);w.appendChild(b)});
+  const f=el(`<form class="ntagf"><input class="etext" maxlength="30" placeholder="+ etiqueta" aria-label="Nova etiqueta" id="ntg-${k}"></form>`);f.onsubmit=e=>{e.preventDefault();const v=f.querySelector("input").value.trim();if(v)tgAdd(k,v.split(","))};w.appendChild(f);return w}
 /* anotações livres ligadas a um tema (aparecem dentro dele) */
 function freeLinkedEl(k){const L=freeN.filter(f=>f.ks.includes(k)),has=!!(notes[k]||"").trim();
   const w=el(`<div class="grp frlinked"><div class="dbh"><span class="glabel">Outras páginas ligadas${L.length?" · "+L.length:""}</span><button class="mini" type="button" id="frlNew-${k}">+ Nova página ligada</button></div></div>`);
@@ -8460,7 +8470,7 @@ const HELP=[
 - Cada revisão sugere alguns subtópicos já estudados, em rodízio.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
 - **Modo provas ligado:** as revisões da residência ficam pausadas numa lista recolhida.`],
-["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele. No topo, um resumo (nível, próxima revisão, acerto, tempo de foco e erros); abaixo, as partes **Estudo** (nível, incidência, revisão e subtópicos), **Questões** (registrar e gerar), **Anotações** e **Erros**, além do botão **⏱ Foco**.
+["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele. No topo, um resumo (nível, próxima revisão, acerto, tempo de foco e erros); abaixo, as partes **Estudo** (a **revisão** em destaque, com a próxima data e o selo atrasada/hoje/em dia; os **subtópicos** com a % feita; **nível** e **peso de incidência** juntos, com as explicações em "O que cada nível quer dizer" e "De onde vem este peso"), **Questões** (**Seu desempenho**: acerto grande e colorido, barrinhas das últimas 8 semanas e o registro das questões feitas fora do app; depois **Gerar questões com o Claude**), **Anotações** (a **página do tema**, a mesma do Caderno, com etiquetas; **Outras páginas ligadas** com **+ Nova página ligada**) e **Erros**, além do botão **⏱ Foco**.
 | Nível | Quando |
 |---|---|
 | Estudando | Começou e ainda não terminou (sozinho ao marcar o 1º subtópico, ou à mão). Não tem revisão |
@@ -8508,17 +8518,19 @@ const HELP=[
 - **Alternativas embaralhadas:** o app sorteia a ordem das alternativas de cada questão gerada, para a resposta certa não cair sempre na mesma letra.
 - **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa**, o **Ponto-chave** em destaque (quando a prova traz), o **Conceito-chave** ou a **Take home message** e a **Fonte**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
-["Caderno",`A aba **Caderno** (antes Anotações) junta o seu **caderno livre** e as anotações de cada tema. As anotações do tema ficam dentro dele e são salvas enquanto você escreve.
-- **Partes** (no celular e no tablet em pé): **Livre** (abre primeiro: notas de aula, plantão, dicas, com etiquetas e ligadas a temas), **Temas** (as anotações de cada tema, com busca e filtros), **Revisar** (Para reler hoje e Cartões) e **Pegadinhas**. No computador, tudo numa página só, com o caderno livre no topo. Os erros ficam na aba **Erros**.
+["Caderno",`A aba **Caderno** é um caderno só: as **páginas livres** (aula, plantão, dicas) e a **página de cada tema**, que é a mesma anotação da aba Residência — editar num lugar muda no outro, e tudo é salvo enquanto você escreve.
+- **Partes** (no celular e no tablet em pé): **Caderno** (abre primeiro), **Revisar** (Para reler hoje e Cartões) e **Pegadinhas**. No computador, tudo numa página só. Os erros ficam na aba **Erros**.
+- **Uma busca só:** procura nas páginas livres e nas dos temas (título, texto e etiquetas). Embaixo, escolha **Todas**, **Livres** ou **Temas**. **Etiquetas** (#aula, #plantão…) filtram os dois tipos.
+- **Página do tema e páginas ligadas:** cada tema tem **uma página principal** e quantas **páginas ligadas** você quiser. Uma página nova ligada a **um** tema que ainda não tem anotação **vira a página do tema** (com título e etiquetas); se o tema já tem, ela fica como página ligada e aparece no tema em **Outras páginas ligadas**. No tema, **+ Nova página ligada** abre o caderno já ligado a ele.
 - **Para reler hoje:** as anotações dos temas com revisão hoje ou no plano do dia; toque em **Reli** depois de ler. Os temas de hoje sem anotação aparecem embaixo.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
 - **Cartões** (Caderno › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
-- **Cobertura:** em Temas, quantos temas estudados ainda não têm anotação; **Ver quais** lista e leva direto para escrever o resumo.
-- **Encontrar anotações:** busca no tema e no texto. **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
+- **Temas estudados sem anotação:** em **Filtros › Mostrar só**, lista os temas que você já estudou e ainda não têm página, com atalho para escrever o resumo.
+- **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
 - **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, cada um inteiro: a certa em negrito com o conceito e, embaixo, **Errei**, **Pista**, **Dados decisivos**, **Ponto-chave** e **Por que não a sua** (nomes que batem com um tema viram link); o selo abre o erro no caderno. Erros arquivados não aparecem.
 - **Baixar PDF:** escolha **o caderno todo**, **uma área** ou **como está na tela** (com os filtros) e, no caderno todo, se entra o caderno livre. O PDF tem **capa** com o seu nome e a data, **sumário** com as páginas, área › especialidade › tema, destaques em cor, pegadinhas em caixa e links entre temas com a página (ex.: "Anemias (p. 12)").
 - **Sumário lateral** (computador com tela larga): "Nesta página" lista área › especialidade › tema das anotações mostradas; toque para ir até o tema. O tema que você está lendo fica marcado.
-- **Caderno livre** (parte **Livre**, a primeira): anotações que não são de um tema (aula, plantão, dica de preceptor). Tem título, texto com a mesma formatação, **etiquetas** (viram filtro) e pode ser **ligado a temas**: aparece também dentro deles, na parte Anotações. A busca da aba procura nelas também.
+- **Páginas livres:** o que não é de um tema só (aula, plantão, dica de preceptor). Têm título, texto com a mesma formatação, **etiquetas** e podem ser **ligadas a temas**: aparecem também dentro deles, na parte Anotações.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
 - **Links:** use o botão **Link** (ou escreva [texto](https://...)); endereços soltos também viram link. Bom para apontar fotos guardadas no Google Drive ou no Google Fotos.
 - **Links entre temas:** escreva **[[** (ou toque em **[[ ]]**) e escolha o tema ou a página do caderno livre na lista: o nome fica entre colchetes duplos e, na leitura, vira link. Para mostrar outro texto, ponha uma barra depois do nome (Anemias|anemia) dentro dos colchetes. Nome que não existe fica tracejado. Funciona no tema, na aba Anotações (Editar) e no caderno livre. No fim de cada anotação (no tema, no cartão aberto da aba Anotações e na página aberta do caderno livre), **Mencionado em** mostra quem liga para ela e **Citado sem link** mostra onde o nome aparece escrito sem link, com **Transformar em link**.

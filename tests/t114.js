@@ -27,10 +27,11 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["tablet",820,1180,true],["no
   await p.click('#frlNew-CM-1');await p.waitForTimeout(350);
   const V=await p.evaluate(()=>({view:document.querySelector('#viewNotas').hidden===false,ks:freeEdit&&freeEdit.ks.join()}));
   ok(V.view&&V.ks==="CM-1",name+": abre o editor do caderno já ligado ao tema "+JSON.stringify(V));
-  await p.fill('#frT','Aula de HAS');await p.fill('#frB','- PA ≥ 140/90');
+  await p.fill('#frT','Aula de HAS');await p.fill('#frB','- PA ≥ 140/90');await p.fill('#frTags','aula, cardio');
   await p.evaluate(()=>{const b=[...document.querySelectorAll('#nFind button')].find(x=>/^Salvar/.test(x.textContent));b.click()});await p.waitForTimeout(250);
   const R=await p.evaluate(()=>({note:notes["CM-1"]||"",free:freeN.filter(f=>f.ks.includes("CM-1")).length,msg:document.querySelector('#frMsg')?.textContent||""}));
   ok(/## Aula de HAS/.test(R.note)&&/140\/90/.test(R.note)&&R.free===0&&/Virou a página do tema/.test(R.msg),name+": 1ª página ligada vira a página do tema "+JSON.stringify(R));
+  {const G=await p.evaluate(()=>({tg:(get("CM-1").tg||[]).join()}));ok(G.tg==="aula,cardio",name+": a página do tema guarda as etiquetas "+JSON.stringify(G))}
   /* 4. com página do tema, a nova fica como página ligada */
   await p.evaluate(()=>frOpenFor("CM-1",null));await p.waitForTimeout(300);await p.fill('#frT','Caso clínico');await p.fill('#frB','Paciente de 50 anos');
   await p.evaluate(()=>{const b=[...document.querySelectorAll('#nFind button')].find(x=>/^Salvar/.test(x.textContent));b.click()});await p.waitForTimeout(250);
@@ -43,6 +44,12 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["tablet",820,1180,true],["no
   ok(C.ty==="nTy-all,nTy-free,nTy-topic"&&C.q&&C.nonote&&C.dup,name+": busca única com Todas · Livre · Temas e filtro sem anotação "+JSON.stringify(C));
   await p.fill('#frq','caso clínico');await p.waitForTimeout(300);
   const S=await p.evaluate(()=>document.querySelector('#nFind').textContent.includes("Caso clínico"));ok(S,name+": a busca acha a página livre");
+  await p.fill('#frq','');await p.waitForTimeout(300);await p.evaluate(()=>{nType="all";render()});await p.click('.ntagbar [data-tag="cardio"]');await p.waitForTimeout(200);
+  const TG=await p.evaluate(()=>({topics:[...document.querySelectorAll('#nlist .ncard')].map(c=>c.id).join(),free:document.querySelectorAll('#nFind li.ncard').length,loc:document.querySelector('#nc-CM-1 .nloc')?.textContent||""}));
+  ok(TG.topics==="nc-CM-1"&&TG.free===0&&/#cardio/.test(TG.loc),name+": etiqueta filtra páginas dos temas e livres "+JSON.stringify(TG));
+  await p.evaluate(()=>{freeTag="all";detTab["CM-1"]="notas";setView("temas");openTopic("CM-1")});await p.waitForTimeout(250);
+  const TT=await p.evaluate(()=>[...document.querySelectorAll('#t-CM-1 .ntags .ntag')].map(b=>b.textContent).join("|"));ok(/#aula/.test(TT)&&/#cardio/.test(TT),name+": etiquetas aparecem no tema "+TT);
+  await p.fill('#ntg-CM-1','prova');await p.press('#ntg-CM-1','Enter');await p.waitForTimeout(200);ok(await p.evaluate(()=>get("CM-1").tg.includes("prova")),name+": adiciona etiqueta pelo tema");
   await ctx.close()}
 ok(!errs.length,"sem erros de página "+errs.join(" | "));await b.close()})();
 function sampleOffOk(Q){return !Q.dir&&(!Q.gen||/Gerar questões com o Claude/.test(Q.gen))}
