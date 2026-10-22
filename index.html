@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=1a31ccd6">
+<link rel="stylesheet" href="site.css?v=47d9eaca">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=1a31ccd6"></script>
-<script src="bridge.js?v=1a31ccd6"></script>
+<script src="config.js?v=47d9eaca"></script>
+<script src="bridge.js?v=47d9eaca"></script>
 </head>
 <body>
 <script>
@@ -843,10 +843,10 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>
 .fullhide{display:none!important}
 .fullpath{display:block!important;max-width:none!important}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull:not([hidden]){display:block!important;max-width:860px!important;margin-inline:auto}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim,.qexam){padding:26px 30px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim,.qexam,.qredo){padding:26px 30px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard{padding:22px 24px;min-height:260px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard .fcq{font-size:1.3rem}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.qsim,.qexam) .qstem{font-size:1.08rem;line-height:1.55}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.qsim,.qexam,.qredo) .qstem{font-size:1.08rem;line-height:1.55}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .erfullb{display:inline-block}
 html[data-layout="desktop"] .erkeys{display:block}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull:not([hidden]){display:block;max-width:860px;margin-inline:auto}
@@ -5188,10 +5188,10 @@ document.addEventListener("keydown",ev=>{if(view!=="erros"||!erRun)return;const 
   if(ev.key==="1"){b("#erGood");return}if(ev.key==="2"){b("#erBad");return}
   if(ev.key==="Escape"&&erFull&&document.documentElement.dataset.cols==="2"){ev.preventDefault();erFullSet(false)}});
 /* tela inteira também nos cartões (Anotações) e no simulado (Questões); cada um lembra a própria escolha */
-const FULLK={cd:"resid-cdfull",sim:"resid-simfull",fo:"resid-fofull",ex:"resid-exfull"},fullOn={cd:false,sim:false,fo:false,ex:false};
+const FULLK={cd:"resid-cdfull",sim:"resid-simfull",fo:"resid-fofull",ex:"resid-exfull",rd:"resid-rdfull"},fullOn={cd:false,sim:false,fo:false,ex:false,rd:false};
 try{for(const k in FULLK)fullOn[k]=localStorage.getItem(FULLK[k])==="1"}catch(x){}
 const twoCols=()=>{const R=document.documentElement.dataset;return R.cols==="2"&&(R.layout==="desktop"||R.layout==="tablet")};
-function fullSet(k,v){fullOn[k]=v;try{localStorage.setItem(FULLK[k],v?"1":"0")}catch(x){}render();const h=$(k==="cd"?"#nch":k==="sim"?"#simh":k==="ex"?"#exh":"#foh");if(h)h.scrollIntoView({block:"start"})}
+function fullSet(k,v){fullOn[k]=v;try{localStorage.setItem(FULLK[k],v?"1":"0")}catch(x){}render();const h=$(k==="cd"?"#nch":k==="sim"?"#simh":k==="ex"?"#exh":k==="rd"?"#qrdh":"#foh");if(h)h.scrollIntoView({block:"start"})}
 function fullBtn(k){const on=fullOn[k],b=el(`<button class="mini erfullb" type="button"></button>`);b.id=k+"FullB";b.textContent=on?"Sair da tela inteira":"⛶ Tela inteira";b.setAttribute("aria-pressed",on);
   b.title=on?"Volta a mostrar o resto da aba (Esc)":"Esconde o resto da aba e mostra só isto";b.onclick=()=>fullSet(k,!on);return b}
 /* esconde tudo da aba menos o cartão (marca os irmãos de cada nível até a aba) */
@@ -5201,6 +5201,7 @@ function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").for
   else if(view==="quest"&&sim&&sim.status!=="error"&&fullOn.sim){v=$("#viewQuest");card=v&&v.querySelector(".qsim")}
   else if(view==="foco"&&foRun&&fullOn.fo){v=$("#viewFoco");card=v&&v.querySelector(".fotimer")}
   else if(view==="quest"&&exRun&&fullOn.ex){v=$("#viewQuest");card=v&&v.querySelector(".qexam")}
+  else if(view==="quest"&&rdRun&&fullOn.rd){v=$("#viewQuest");card=v&&v.querySelector(".qredo")}
   if(!v||!card)return;v.classList.add("vfull");let n=card;
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
@@ -5212,7 +5213,11 @@ document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAR
   if(view==="quest"&&sim&&sim.status==="run"){const L=ev.key.length===1?ev.key.toUpperCase():"";
     if(/^[A-E]$/.test(L)){const alt=[...document.querySelectorAll(".qsim .alt")].find(x=>!x.disabled&&(x.querySelector("b")||{}).textContent===L+")");if(alt){ev.preventDefault();alt.click()}return}
     if(ev.key===" "||ev.key==="Enter"){b("#simNext");return}
-    if(ev.key==="Escape"&&fullOn.sim&&twoCols()){ev.preventDefault();fullSet("sim",false)}}});
+    if(ev.key==="Escape"&&fullOn.sim&&twoCols()){ev.preventDefault();fullSet("sim",false)}return}
+  if(view==="quest"&&rdRun&&!sim){const L=ev.key.length===1?ev.key.toUpperCase():"";
+    if(/^[A-E]$/.test(L)){const alt=[...document.querySelectorAll(".qredo .alt")].find(x=>!x.disabled&&(x.querySelector("b")||{}).textContent===L+")");if(alt){ev.preventDefault();alt.click()}return}
+    if(ev.key===" "||ev.key==="Enter"){b("#rdNext");return}
+    if(ev.key==="Escape"&&fullOn.rd&&twoCols()){ev.preventDefault();fullSet("rd",false)}}});
 function eRevCard(){const c=eRevCard0();c.querySelector(".dhead").insertBefore(helpBtn("Caderno de erros"),c.querySelector(".dhead .todaydate"));return c}
 function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
   if(erRun){const fb=el(`<button class="mini erfullb" type="button" id="erFullB"></button>`);fb.textContent=erFull?"Sair da tela inteira":"⛶ Tela inteira";fb.setAttribute("aria-pressed",erFull);fb.title=erFull?"Volta a mostrar a lista ao lado (Esc)":"Esconde a lista e mostra só a revisão";fb.onclick=()=>erFullSet(!erFull);c.querySelector(".dhead").appendChild(fb)}
@@ -6681,7 +6686,8 @@ function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filt
     list=base.filter(x=>(!rdF.due||rdDue(x)<=T)&&(rdF.src==="all"||x.src===rdF.src)&&(!rdF.rep||x.n>=2)).sort((a,b)=>(rdDue(a)<rdDue(b)?-1:rdDue(a)>rdDue(b)?1:0)||b.n-a.n||(a.d<b.d?-1:1)),dueN=base.filter(x=>rdDue(x)<=T).length;
   const c=el(`<section class="card qredo" aria-labelledby="qrdh"><div class="dhead"><h2 id="qrdh">Refazer as que errei</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=redo.length?`${dueN} para hoje · ${base.length} no total`:"";
-  if(rdRun){c.appendChild(rdPlayer());return c}
+  if(rdRun){if(twoCols())c.querySelector(".dhead").appendChild(fullBtn("rd"));c.appendChild(rdPlayer());
+    if(twoCols())c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.rd?" · Esc sai da tela inteira":""}</p>`));return c}
   if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
   {const f=el(`<div class="rdfil"><div class="seg" role="group" aria-label="Quais"></div></div>`),sg=f.querySelector(".seg");
     [[true,`Para hoje (${dueN})`],[false,`Todas (${base.length})`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=v?"rdFDue":"rdFAll";b.textContent=l;b.setAttribute("aria-pressed",rdF.due===v);b.onclick=()=>{rdF.due=v;render()};sg.appendChild(b)});
@@ -8438,7 +8444,7 @@ const HELP=[
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema.
 - **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
