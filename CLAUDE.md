@@ -198,6 +198,8 @@ consultado quando há dúvida. Responda em português.
   com `stGoSpec`/`goRevs`, `#stAdj` → `stAdjWeek`) e `#stF1..4` (`stFacBlocks`: notas `p.res`, `provaStats`, `discFocusSec`, divisão `stsplit`). Dados: `stRes(D)`/`stFac(D)`, `stHist`, `stQ(keys,a,b)`
   (por `qd`), `stTime` + `stSideOf` (r = só residência, f = só faculdade/`D:`/`F-`, b = tema da residência usado na faculdade, `stFacKeys`; o total nunca soma duas vezes), `stTopicAct` (por `ed`).
   `#stPdf` abre o PDF no Perfil; Perfil tem `#pfStats`. `nmInfo("stats")` resume. Dados de exemplo para testes/prints: `tests/seed10.js`.
+  Largura (10/2026): em 2 colunas `#viewStats{max-width:none}` (usa a tela toda); gráficos SVG (`stBars`, `stQuad`, `stExamLine`) têm largura `stW()` = metade da aba
+  (ou a aba inteira em 1 coluna), entre 320 e 760, para o texto não ficar gigante. Teste em t111.
 - Gráficos (Lote 10): `qEvoSvg` com eixo do acerto ajustado, `.qebar.cur` "até hoje", `.qegoal` (meta `qgoal`) e legenda das cores; acerto por especialidade em `.qchrow` (botão que filtra
   `qArea/qSpec`), tendência `.qtr` (30 dias × 90 antes), `.few` com menos de `QCH_FEW`=10, ordem `qChSort` acc|gain (`resid-qchsort`, `#qchS-acc|gain`); Progresso por área = `button.arow`
   (nome inteiro, "N de M temas", subtópicos na dica, toque filtra a área); sem "Atividade nos últimos 14 dias"; Foco › Esta semana com `.fogh` (semana passada) e `.foglt`; `eWeeksEl` com `.ewlow`.
