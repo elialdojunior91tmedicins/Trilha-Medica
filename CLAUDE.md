@@ -230,6 +230,7 @@ consultado quando há dúvida. Responda em português.
   `progress/trash/{id}`), 30 dias (`TR_DAYS`, `trPurgeOld`). `toTrash(kind,...)` é chamado em `delErr`, `cdDel`, `frDel`, `saveNote` (texto
   apagado inteiro, ≥20 caracteres), exclusão de prova, `delSP` e exclusão de disciplina (um item só, com provas e temas próprios via `ownSnap`;
   `trSkip` evita itens duplicados durante a exclusão). `trRestore` devolve por tipo; aviso `#trToast` com Desfazer; lista em Configurações (`trashCardEl`).
+- Rodízio dos subtópicos na revisão (10/2026): `pickSubs(it,"r-rev")` ordena os estudados pela data da última revisão `s.sv` (`{"i<índice>"|"c:<texto>": data}`, `subKey`), nunca revisado primeiro; quantidade `revSubN(n)` = máx(`SUBS_PER_DAY`, ⌈n/4⌉); `reviewTopic` grava `sv` dos mostrados (`markSubsReviewed`, `itemByKey`). Antes era pelo degrau (`step`) e repetia os mesmos no último degrau. Teste: `tests/t119.js`.
 - Intervalo ajustado pelo acerto: `interval(s)` = `INT[step]` × `adaptF(s)` (a partir de step 1; acerto das questões do tema nos últimos 90 dias,
   mín. 5, `adaptAcc`): ≥85% (mín. 8) ×1,4 · ≥75% ×1,2 · <65% ×0,75 · <50% ×0,5. Não vale com ajuste manual ativo (`adj`). Pref `ui.prefs.adapt`.
 - Temas na conta: um documento por tema em `progress/topics/{chave}` (`topicStore`, `saveTopics` grava só o que mudou via `tSaved`);

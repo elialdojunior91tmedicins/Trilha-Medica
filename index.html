@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=4ae16ddc">
+<link rel="stylesheet" href="site.css?v=8ac0f4e8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=4ae16ddc"></script>
-<script src="bridge.js?v=4ae16ddc"></script>
+<script src="config.js?v=8ac0f4e8"></script>
+<script src="bridge.js?v=8ac0f4e8"></script>
 </head>
 <body>
 <script>
@@ -3748,9 +3748,19 @@ let dayPlan=null, planEdit=null;
 function pickSubs(it,kind){const L=subList(it),s=get(it.key);if(!L.length)return [];
   const open=L.filter(x=>!x.done),done=L.filter(x=>x.done);
   let pool;
-  if(kind==="r-rev"&&done.length){const off=((s.step||0)*SUBS_PER_DAY)%done.length;pool=[...done.slice(off),...done.slice(0,off)]}
+  if(kind==="r-rev"&&done.length){const sv=s.sv||{};
+    /* revisão: os subtópicos revisados há mais tempo primeiro (nunca revisado = mais antigo; empate pela ordem da lista);
+       quantidade cresce com o tamanho do tema (≈ 1/4 dos estudados, no mínimo o "Subtópicos por tema") para cobrir o tema em 3–4 revisões */
+    pool=done.map((x,o)=>({x,o,d:sv[subKey(x)]||""})).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.o-b.o).map(y=>y.x);
+    return pool.slice(0,revSubN(done.length)).map(x=>x.t)}
   else pool=open.length?open:L;
   return pool.slice(0,SUBS_PER_DAY).map(x=>x.t)}
+/* subtópico revisado: s.sv = {"i3": data} (da lista padrão, pelo índice) ou {"c:texto": data} (subtópico seu) */
+const subKey=x=>x.j!=null?"c:"+x.t:"i"+x.i;
+const revSubN=n=>Math.min(n,Math.max(SUBS_PER_DAY,Math.ceil(n/4)));
+function itemByKey(k){return BYKEY[k]||FAC_ITEMS.find(i=>i.key===k)||null}
+function markSubsReviewed(x,it){const L=subList(it),subs=new Set(pickSubs(it,"r-rev"));if(!subs.size)return;const sv={},t=today();
+  L.forEach(y=>{if(!y.done)return;const k=subKey(y),v=(x.sv||{})[k];if(subs.has(y.t))sv[k]=t;else if(v)sv[k]=v});x.sv=sv}
 const WEAK_DAY_Q=5;
 function markResDay(P){const has=P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-pfr"&&!(BYKEY[x.k]||{}).own);const d=today(),h=hist[d]||(hist[d]={});if(has)h.res=1;else{delete h.res;if(!Object.keys(h).length)delete hist[d]}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
 function makeDayPlan(){return {d:today(),items:buildPlan().map(({it,cls,txt,sub,pid,ref,n})=>{if(cls==="r-pfr")return {k:it.key,cls,txt,subs:[],pid,ref,n};const x={k:it.key,cls,txt,subs:cls==="r-fac"&&sub?[sub]:pickSubs(it,cls==="r-fac"?"r-new":cls)};if(cls==="r-weak")x.q0=get(it.key).qt||0;
@@ -3774,7 +3784,7 @@ function weakDone(p){if(p.q0===undefined)p.q0=get(p.k).qt||0;return Math.max(0,(
 function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete x.ed;delete x.ing;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
   if(dayPlan){if(dayPlan.rchk)delete dayPlan.rchk[k];if(Array.isArray(dayPlan.revd))dayPlan.revd=dayPlan.revd.filter(y=>y!==k);savePlan()}revArm=null;commit()}
 let revArm=null;
-function reviewTopic(k,good){upd(k,x=>{x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
+function reviewTopic(k,good){const it=itemByKey(k);upd(k,x=>{if(it)markSubsReviewed(x,it);x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
 
 /* cartões do plano: recolhidos por padrão; abertos sozinhos enquanto o tema está sendo estudado (começado e não concluído).
    planOpen guarda o que você abriu ou fechou à mão hoje */
@@ -8815,7 +8825,7 @@ const HELP=[
 - **Quando começa:** a primeira revisão é agendada quando o tema fica **Estudado**: ao marcar o último subtópico ou ao tocar em **Estudei hoje** (ou no nível Estudado). Enquanto está **Estudando**, não há revisão.
 - Desmarcou um subtópico logo depois de concluir? No mesmo dia, o tema volta para Estudando e a revisão é cancelada.
 - **Véspera de prova:** nos 3 dias antes, aparece aqui só o que você já estudou para a prova; o que falta continua no Estudar hoje.
-- Cada revisão sugere alguns subtópicos já estudados, em rodízio.
+- Cada revisão sugere os subtópicos já estudados que você **revisou há mais tempo** (os nunca revisados primeiro). Tema grande traz mais de uma vez (cerca de um quarto dos subtópicos estudados, no mínimo o número de Configurações › Plano), para o tema inteiro passar em 3 ou 4 revisões. Apertar "Tive dificuldade" não faz o rodízio recomeçar.
 - **Véspera:** nos 3 últimos dias antes de uma prova, aparece uma lista rápida do conteúdo dela. Não mexe nos intervalos.
 - **Modo provas ligado:** as revisões da residência ficam pausadas numa lista recolhida.`],
 ["Residência: temas, níveis e incidência",`Na aba **Residência**, toque num tema para abrir tudo dele. No topo, um resumo (nível, próxima revisão, acerto, tempo de foco e erros); abaixo, as partes **Estudo** (a **revisão** em destaque, com a próxima data e o selo atrasada/hoje/em dia; os **subtópicos** com a % feita; **nível** e **peso de incidência** juntos, com as explicações em "O que cada nível quer dizer" e "De onde vem este peso"), **Questões** (**Seu desempenho**: acerto grande e colorido, barrinhas das últimas 8 semanas e o registro das questões feitas fora do app; depois **Gerar questões com o Claude**), **Anotações** (a **página do tema**, a mesma do Caderno, com etiquetas; **Outras páginas ligadas** com **+ Nova página ligada**) e **Erros**, além do botão **⏱ Foco**.

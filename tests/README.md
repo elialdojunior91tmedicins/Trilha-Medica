@@ -51,6 +51,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t116 | Lote 15: provas na íntegra — temas pelo título e assunto da prova, até 3 temas por questão (inteiros em cada tema, 1 vez no dia), gabarito comentado sem fantasmas, figura recortada na questão certa |
 | t117 | Lote 16: catálogo de provas no Perfil (sugestões ao digitar, data estimada pelo mês habitual, lista por região, nome livre) |
 | t118 | Corrigir gabarito no Refazer (era a sua → sai e vira acerto no tema; outra letra → continua; prova na íntegra corrigida junto) |
+| t119 | Rodízio dos subtópicos na revisão (revisados há mais tempo primeiro, ≈1/4 do tema, sem repetir no último degrau, "Tive dificuldade" não recomeça) |
 
 ## Falhas conhecidas do ambiente
 
