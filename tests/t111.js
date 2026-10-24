@@ -25,6 +25,9 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(r.blocks.every(Boolean)&&r.bars===8&&r.cur&&r.goal,name+": 4 blocos; temas por semana (8 barras, \"até hoje\"); horas com a linha da meta");
   ok(r.quad&&r.focus>=2,name+": quadrante tempo × acerto e foco sugerido ("+r.focus+")");
   ok(/Acerto nas questões/.test(r.tab)&&/ainda erraria/.test(r.tab)&&/[▲▼=]/.test(r.tab),name+": tabela deste período × anterior");
+  /* em 2 colunas (computador, iPad deitado) a aba usa a largura toda e os gráficos acompanham o cartão (10/2026) */
+  {const L=await p.evaluate(()=>{const v=document.querySelector('#viewStats'),two=twoCols(),svg=document.querySelector('#stB2 svg');return {two,vw:v.clientWidth,ww:v.parentElement.clientWidth,vb:svg?+svg.getAttribute("viewBox").split(" ")[2]:0,sw:svg?Math.round(svg.getBoundingClientRect().width):0}});
+   ok(!L.two||L.vw>=L.ww-2&&L.vw>800&&L.vb>320&&L.sw/L.vb<1.25,name+": Estatísticas na largura toda, gráfico sem texto gigante "+JSON.stringify(L))}
   await click('#stPer-7');ok(await p.evaluate(()=>stPer===7&&/7 dias/.test(document.querySelector('#stB1 .stlead').textContent)&&localStorage.getItem("resid-stper")==="7"),name+": período 7 dias (lembrado)");
   await click('#stPer-30');
   await click('#stAdj');ok(await p.evaluate(()=>view==="config"&&wpTab==="cur"&&!!document.querySelector('#wpCard')),name+": \"Ajustar a semana\" leva ao planejamento");

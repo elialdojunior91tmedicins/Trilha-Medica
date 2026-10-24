@@ -871,6 +871,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erev .btn{padding:10px 18px;font-size:.95rem}
 /* duas colunas (tablet deitado, notebook, monitor): lista à esquerda; revisar, repetidos e onde melhorar à direita */
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros{max-width:none}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewStats{max-width:none}/* Estatísticas usa a largura toda, como Erros e Faculdade */
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros:not([hidden]){display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:24px;row-gap:20px;align-items:start}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>.eside{display:flex;flex-direction:column;gap:20px;grid-column:2;grid-row:1/span 2;min-width:0}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>.controls{grid-column:1;grid-row:1;min-width:0}
@@ -9010,7 +9011,9 @@ function stKpis(L){const k=el(`<div class="kpis stkpis"></div>`);L.forEach(([a,b
 function stRow(l,r){const x=el(`<div class="strow"><b></b><span class="how"></span></div>`);x.querySelector("b").textContent=l;x.querySelector("span").textContent=r||"";return x}
 const svgEsc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 /* barras por semana: vals [{v,lab,cur,tip}], meta (linha tracejada com rótulo), semana atual mais clara com "até hoje" */
-function stBars(vals,o={}){const W=320,H=128,P={l:26,r:6,t:14,b:22},n=vals.length,mx=Math.max(o.goal||0,...vals.map(x=>x.v),o.min||1)*1.12,bw=(W-P.l-P.r)/n,y=v=>P.t+(H-P.t-P.b)*(1-v/mx);
+/* largura do desenho = largura real do cartão (no computador, os gráficos ficam largos sem crescer o texto) */
+function stW(){const v=document.getElementById("viewStats"),w=v&&v.clientWidth||0;if(!w)return 320;const c=twoCols()?w/2-56:w-40;return Math.max(320,Math.min(760,Math.round(c)))}
+function stBars(vals,o={}){const W=stW(),H=128,P={l:26,r:6,t:14,b:22},n=vals.length,mx=Math.max(o.goal||0,...vals.map(x=>x.v),o.min||1)*1.12,bw=(W-P.l-P.r)/n,y=v=>P.t+(H-P.t-P.b)*(1-v/mx);
   let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${svgEsc(o.aria||"")}">`;
   [0,.5,1].forEach(f=>{const v=mx/1.12*f,yy=y(v);s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="ax" x="${P.l-4}" y="${yy+3}" text-anchor="end">${svgEsc(o.fmt?o.fmt(v):Math.round(v))}</text>`});
   vals.forEach((x,i)=>{const h=Math.max(0,H-P.b-y(x.v)),xx=P.l+i*bw+bw*.18,w=bw*.64;s+=`<g class="stb${x.cur?" cur":""}"><title>${svgEsc(x.tip||"")}</title><rect x="${xx}" y="${H-P.b-h}" width="${w}" height="${h}" rx="2"/>`;
@@ -9019,7 +9022,7 @@ function stBars(vals,o={}){const W=320,H=128,P={l:26,r:6,t:14,b:22},n=vals.lengt
   if(o.goal){const yy=y(o.goal);s+=`<line class="goal" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="goalt" x="${W-P.r}" y="${yy-4}" text-anchor="end">${svgEsc(o.goalLab||"meta")}</text>`}
   return el(s+`</svg>`)}
 /* tempo × acerto por especialidade: x = horas, y = acerto, raio = questões */
-function stQuad(pts,xm){const W=320,H=190,P={l:30,r:8,t:16,b:26},mx=Math.max(xm*2,...pts.map(p=>p.x),1)*1.1,y0=Math.min(.5,Math.floor((Math.min(...pts.map(p=>p.y))-.05)*10)/10),x=v=>P.l+(W-P.l-P.r)*v/mx,y=v=>P.t+(H-P.t-P.b)*(1-(v-y0)/(1-y0));
+function stQuad(pts,xm){const W=stW(),H=190,P={l:30,r:8,t:16,b:26},mx=Math.max(xm*2,...pts.map(p=>p.x),1)*1.1,y0=Math.min(.5,Math.floor((Math.min(...pts.map(p=>p.y))-.05)*10)/10),x=v=>P.l+(W-P.l-P.r)*v/mx,y=v=>P.t+(H-P.t-P.b)*(1-(v-y0)/(1-y0));
   let s=`<svg class="stsvg stquad" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tempo e acerto por especialidade">`;
   const X=x(xm),Y=y(.7);s+=`<rect class="q1" x="${X}" y="${P.t}" width="${W-P.r-X}" height="${Y-P.t}"/><rect class="q2" x="${P.l}" y="${P.t}" width="${X-P.l}" height="${Y-P.t}"/><rect class="q3" x="${P.l}" y="${Y}" width="${X-P.l}" height="${H-P.b-Y}"/><rect class="q4" x="${X}" y="${Y}" width="${W-P.r-X}" height="${H-P.b-Y}"/>`;
   s+=`<text class="ql" x="${W-P.r-2}" y="${P.t-5}" text-anchor="end">funcionando</text><text class="ql" x="${P.l+2}" y="${P.t-5}">dá para manter</text><text class="ql" x="${P.l+4}" y="${H-P.b-5}">falta estudar</text><text class="ql bad" x="${W-P.r-4}" y="${H-P.b-5}" text-anchor="end">mudar o método</text>`;
@@ -9032,7 +9035,7 @@ function stQuad(pts,xm){const W=320,H=190,P={l:30,r:8,t:16,b:26},mx=Math.max(xm*
     const r=el(`<p class="stqg ${k}"><i></i><b></b> <span></span></p>`);r.querySelector("b").textContent=lab+":";r.querySelector("span").textContent=g.map(p=>`${p.full} (${Math.round(p.y*100)}%, ${stH(p.x*3600)})`).join(" · ");L.appendChild(r)});
   w.appendChild(L);return w}
 /* nota nas provas na íntegra ao longo do tempo, uma cor por banca */
-function stExamLine(series){const W=320,H=130,P={l:30,r:8,t:10,b:22},all=series.flatMap(s=>s.pts),d0=Math.min(...all.map(p=>p.n)),d1=Math.max(...all.map(p=>p.n),d0+1),x=n=>P.l+(W-P.l-P.r)*(n-d0)/(d1-d0),y=v=>P.t+(H-P.t-P.b)*(1-v);
+function stExamLine(series){const W=stW(),H=130,P={l:30,r:8,t:10,b:22},all=series.flatMap(s=>s.pts),d0=Math.min(...all.map(p=>p.n)),d1=Math.max(...all.map(p=>p.n),d0+1),x=n=>P.l+(W-P.l-P.r)*(n-d0)/(d1-d0),y=v=>P.t+(H-P.t-P.b)*(1-v);
   let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Nota nas provas na íntegra">`;[.25,.5,.75,1].forEach(v=>{s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${P.l-4}" y="${y(v)+3}" text-anchor="end">${v*100}%</text>`});
   series.forEach((S,i)=>{const L=S.pts.sort((a,b)=>a.n-b.n);s+=`<g class="stser c${i%4}"><polyline points="${L.map(p=>x(p.n)+","+y(p.v)).join(" ")}"/>${L.map(p=>`<circle cx="${x(p.n)}" cy="${y(p.v)}" r="3.5"><title>${svgEsc(S.name+" · "+p.t+": "+Math.round(p.v*100)+"%")}</title></circle>`).join("")}</g>`});
   s+=`<text class="ax" x="${P.l}" y="${H-6}">${svgEsc(br(fromNum(d0)))}</text><text class="ax" x="${W-P.r}" y="${H-6}" text-anchor="end">${svgEsc(br(fromNum(d1)))}</text>`;
