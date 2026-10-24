@@ -84,10 +84,9 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  ok(await p.evaluate(()=>{const g=Date.prototype.getDay;Date.prototype.getDay=function(){return 0};hist[today()]={...(hist[today()]||{}),q:10,c:7};const c=iWeekCard();Date.prototype.getDay=g;return !!c&&/Questões/.test(c.textContent)&&/70%/.test(c.textContent)}),name+": resumo da semana");
  // calendário e Anki
  const got=await p.evaluate(async()=>{const out=[];const o=downloadsFn.save;downloadsFn={save:async x=>{out.push({f:x.filename,t:await x.data.text()})}};
-   const sid=fac.sems.length?fac.sems[0].id:null;ui.profile.exams=[{id:"e1",name:"ENARE",date:fromNum(dnum(today())+90)},{id:"e2",name:"USP"}];saveUI();await icsSave();const m1=await ankiSave("cards");const m2=await ankiSave("errs");downloadsFn={save:o};return {out,m1,m2}});
+   const sid=fac.sems.length?fac.sems[0].id:null;ui.profile.exams=[{id:"e1",name:"ENARE",date:fromNum(dnum(today())+90)},{id:"e2",name:"USP"}];saveUI();await icsSave();const m1="",m2="";downloadsFn={save:o};return {out,m1,m2}});
  ok(got.out[0]&&/BEGIN:VEVENT/.test(got.out[0].t)&&/Prova de residência/.test(got.out[0].t)&&/TRIGGER:-P1D/.test(got.out[0].t),name+": calendário .ics");
- ok(got.out[1]&&/^#separator:tab/.test(got.out[1].t)&&got.out[1].t.split("\n").length===5&&/2 cartões/.test(got.m1),name+": Anki cartões");
- ok(got.out[2]&&got.out[2].t.split("\n").length===6&&/erro/.test(got.out[2].t),name+": Anki erros "+(got.out[2]&&got.out[2].t.split("\n").length)+" "+got.m2);
+ ok(await p.evaluate(()=>typeof ankiSave==="undefined"),name+": sem exportação .txt para o Anki (só .apkg)");
  // ajuda "?"
  await p.evaluate(()=>{setView("erros")});await p.waitForTimeout(100);await p.evaluate(()=>document.querySelector('#viewErros .hlpb').click());await p.waitForTimeout(150);
  ok(await p.evaluate(()=>{const d=[...document.querySelectorAll('#helpList details')].find(x=>x.open);return view==="help"&&d&&/Caderno de erros/.test(d.querySelector('summary').textContent)}),name+": ? abre a ajuda certa");

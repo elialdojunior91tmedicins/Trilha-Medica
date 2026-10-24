@@ -133,7 +133,7 @@ consultado quando há dúvida. Responda em português.
   `cdErrDrafts`: discriminador + por que não a sua; `cdErrClaude` com `cdErrPrompt` = regras do Osler, 4 tipos, `CD_TIPO`/`CDK`), `cdErrSave(e)` guarda com `eid`/`kind`.
   Anki: `cdReady()` (revisão a ≥ `CD_ANKI`=40 dias) → `cdAnkiEl` → `apkgBuild(L)` (banco SQLite escrito à mão em `sqliteBuild`: tabelas col/notes/cards/revlog/graves do esquema 11,
   páginas internas e transbordo; `zipStore` sem compressão + `crc32`; tipo de nota fixo "Osler Flashcard (Nexus)" `APKG_MID`, baralho "Nexus::Cartões dos erros" `APKG_DID`, `guid`="nx"+id,
-  tags `apkgTags`) → `cdExp` (localStorage `resid-cdexp`) → `#cdAnkiDone` `cdAnkiDone()` = lixeira `kind:"cards"` (um item com todos) + `e.ak` no erro. Teste do .apkg sem cartão pronto: `cdTestEl` (`#cdApkgTest`, `cdTestPick` = o mais firme, `cdTestMsg`; não grava `cdExp`; teste t120). Armazenamento continua 1 documento por
+  tags `apkgTags`) → `cdExp` (localStorage `resid-cdexp`) → `#cdAnkiDone` `cdAnkiDone()` = lixeira `kind:"cards"` (um item com todos) + `e.ak` no erro. Anki só por .apkg (10/2026: o usuário testou e preferiu; o .txt `ankiSave` e o link de teste foram retirados). Armazenamento continua 1 documento por
   cartão (`progress/cards/{id}`): os pacotes + IndexedDB ficaram para quando o volume pedir. Teste: `tests/t105.js` (confere o .apkg com o sqlite3 e o zipfile do Python).
   Filtros extras `nFlags` (week|peg|tab|cards, `nFlagOk`) e ordem `nSort`; erros junto `noteErrsEl(k)` (linha "N erros neste tema · M ainda pedem atenção · ver no caderno" + até 3 vivos `eAlive` = vence hoje ou `miss`≥1, sem `e.nt` nem arquivados; `eConcept(e)` = 1ª linha do correto sem "Correta:"; `eOpenOne` abre o erro no caderno, `.ecard[data-eid]`); PDF `notesPDF(keys,free)`;
   caderno livre `freeN` = [{id,t,b,tags,ks,at}] (`resid-free-v1` + Firestore `progress/free/{id}`, `freeCard`/`freeEditor`,
@@ -218,7 +218,7 @@ consultado quando há dúvida. Responda em português.
   backup: `resid-lastbk` gravado por `markBackup()` no Exportar, `resid-bksnooze`), resumo da semana `iWeekCard` (domingo/segunda, `resid-wkdis`),
   Início personalizável `ICARDS`/`applyICustom` (`ui.prefs.ihide`/`iorder`), busca `gsResults`/`renderGSearch` (`#srchBtn`, Ctrl+K, "/"),
   primeiros passos `renderOnb`/`maybeOnb` (só conta vazia, uma vez: `ui.prefs.onb` + `resid-onb-seen`; testes ligam com `window.__wantOnb`),
-  calendário `icsBuild`/`icsSave` (.ics), Anki `ankiSave("cards"|"errs")` (.txt com tabulação), ajuda `goHelp(título)`/`helpBtn(título)` (botão "?").
+  calendário `icsBuild`/`icsSave` (.ics), ajuda `goHelp(título)`/`helpBtn(título)` (botão "?").
   Botões menos usados: erro com "⋯ Ações" (`eMenu`), Foco com "Mais opções" (`.fomore`); Anotações paginadas (`N_PAGE`, `#nMore`).
 - Meta e projeção (Início `#iMeta`): provas de residência em `ui.profile.exams=[{id,name,date?}]` + `mainEx` (lista no Perfil, `exEditorEl`;
   `exList`/`exMain`). `uiSanitize` migra o campo único antigo e faz `goal`/`goalDate` espelharem a principal (o resto do app lê esses dois; `exOk`
