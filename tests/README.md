@@ -50,6 +50,7 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 | t115 | Lote 14: simulado misto completo (Escolher temas, dificuldade, estilo ENAMED, resumo), material em partes com figuras, imagem só no Refazer, Meus simulados |
 | t116 | Lote 15: provas na íntegra — temas pelo título e assunto da prova, até 3 temas por questão (inteiros em cada tema, 1 vez no dia), gabarito comentado sem fantasmas, figura recortada na questão certa |
 | t117 | Lote 16: catálogo de provas no Perfil (sugestões ao digitar, data estimada pelo mês habitual, lista por região, nome livre) |
+| t118 | Corrigir gabarito no Refazer (era a sua → sai e vira acerto no tema; outra letra → continua; prova na íntegra corrigida junto) |
 
 ## Falhas conhecidas do ambiente
 

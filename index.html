@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=b84a71b0">
+<link rel="stylesheet" href="site.css?v=4ae16ddc">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=b84a71b0"></script>
-<script src="bridge.js?v=b84a71b0"></script>
+<script src="config.js?v=4ae16ddc"></script>
+<script src="bridge.js?v=4ae16ddc"></script>
 </head>
 <body>
 <script>
@@ -410,6 +410,7 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[
 .qreg{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
 .qreg .dhead b{font-family:var(--display)}
 .qreg .pnote{margin:0}
+.rdfix{margin:6px 0}.rdfixp{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;display:grid;gap:8px}.rdfixp .gtext{margin:0}.rdfixp .btns{margin:0}
 .qrres{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
 .qrpick{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:1px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 11px;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
 .qrpick:hover{border-color:var(--accent)}.qrpick b{font-size:.93rem}.qrpick span{font-size:.76rem;color:var(--muted)}
@@ -6834,7 +6835,7 @@ const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/,RD_IMG_MAX=
 const fgClean=f=>f&&typeof f==="object"&&+f.no>0?{no:+f.no,name:String(f.name||"").slice(0,140),page:+f.page||0}:null;
 function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:x.k,d:/^\d{4}-\d{2}-\d{2}$/.test(x.d)?x.d:today(),n:Number.isInteger(x.n)&&x.n>0?x.n:1,
   ...(DATE_RE.test(x.due||"")?{due:x.due}:{}),...(Number.isInteger(x.ok)&&x.ok>0?{ok:x.ok}:{}),...(DATE_RE.test(x.okd||"")?{okd:x.okd}:{}),...(Number.isInteger(x.wr)&&x.wr>0?{wr:x.wr}:{}),...(["gen","sim","exam"].includes(x.src)?{src:x.src}:{}),
-  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(linkOk(q.link)?{link:q.link.trim()}:{}),...(q.mat?{mat:true}:{}),...(fgClean(q.fg)?{fg:fgClean(q.fg)}:{})},
+  q:{enunciado:s(q.enunciado),alternativas:q.alternativas.filter(a=>a&&typeof a==="object").map(a=>a.porque?{letra:s(a.letra),texto:s(a.texto),porque:s(a.porque)}:{letra:s(a.letra),texto:s(a.texto)}),correta:s(q.correta),comentario:s(q.comentario),conceito:s(q.conceito),alerta:s(q.alerta),...(q.fonte?{fonte:s(q.fonte)}:{}),...(linkOk(q.link)?{link:q.link.trim()}:{}),...(q.mat?{mat:true}:{}),...(fgClean(q.fg)?{fg:fgClean(q.fg)}:{}),...(/^[A-H]$/.test(q.fx||"")?{fx:q.fx}:{})},...(DATE_RE.test(x.fd||"")?{fd:x.fd}:{}),
   ...(typeof x.img==="string"&&/^data:image\/jpeg;base64,/.test(x.img)&&x.img.length<=RD_IMG_MAX?{img:x.img}:{})}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
@@ -6843,7 +6844,7 @@ async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoSto
 /* chamada quando você erra uma questão gerada */
 function rdAdd(k,q,src,P){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem),t=dnum(today());
   if(ex){ex.n++;ex.d=today();ex.due=fromNum(t+RD_INT[0]);delete ex.ok;delete ex.okd;rdPut(ex);return}
-  const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),n:1,q,due:fromNum(t+RD_INT[0]),src});redo.push(x);
+  const x=rdClean({id:"rd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,d:today(),fd:today(),n:1,q,due:fromNum(t+RD_INT[0]),src});redo.push(x);
   if(redo.length>RD_MAX){const old=redo.sort((a,b)=>a.d<b.d?-1:1).slice(0,redo.length-RD_MAX);old.forEach(o=>rdDel(o.id))}rdPut(x);
   /* figura: só a errada guarda uma versão pequena (some com o item quando ele sai do Refazer) */
   const f=q.fg&&P&&P.figs?P.figs.find(y=>y.no===q.fg.no):null;if(f&&f.blob)figSmall(f.blob).then(u=>{if(u&&redo.includes(x)){x.img=u;rdPut(x);render()}})}
@@ -6853,6 +6854,20 @@ const rdDueList=()=>redo.filter(x=>BYKEY[x.k]&&rdDue(x)<=today());
 function rdHit(x){const t=today();if(x.okd!==t){x.ok=(x.ok||0)+1;x.okd=t}if(x.ok>=RD_NEED){rdDel(x.id);return true}x.due=fromNum(dnum(t)+RD_INT[Math.min(x.ok,RD_INT.length-1)]);rdPut(x);return false}
 function rdMiss(x){x.n++;x.wr=(x.wr||0)+1;x.d=today();delete x.ok;delete x.okd;x.due=fromNum(dnum(today())+RD_INT[0]);rdPut(x)}
 let rdF={due:true,src:"all",rep:false};
+/* Corrigir gabarito (10/2026): vl = letra escolhida na tela (alternativas podem estar embaralhadas). Troca a correta do item (q.fx = a antiga);
+   prova na íntegra: corrige também a prova (exChange recalcula o tema); gerador/simulado: se a sua resposta era a certa, o erro vira acerto no tema
+   (dia do erro = x.fd ou o último dia com erro em qd) e o item sai do Refazer. */
+function rdFix(R,x,vl){const v=R.view[x.id],va=v&&v.alternativas.find(a=>a.letra===vl);if(!va)return;
+  const oa=x.q.alternativas.find(a=>a.texto===va.texto);if(!oa||oa.letra===x.q.correta)return;
+  const old=x.q.correta,right=R.ans===vl;if(!x.q.fx)x.q.fx=old;x.q.correta=oa.letra;delete oa.porque;
+  v.correta=vl;delete va.porque;let exOk=false;
+  if(x.src==="exam"){const st=x.q.enunciado.trim();for(const ex of exams){const i=ex.qs.findIndex(r=>r.k===x.k&&r.q.enunciado.trim()===st);if(i<0)continue;
+      exChange(ex,i,r=>{if(!r.ck)r.ck=r.q.correta;r.an=false;r.q.correta=oa.letra;r.g="b"});exPut(ex);exOk=true;break}}
+  else if(right){const s=get(x.k),cand=Object.keys(s.qd||{}).filter(d=>Array.isArray(s.qd[d])&&s.qd[d][0]>s.qd[d][1]).sort(),
+      D=cand.includes(x.fd)?x.fd:cand.filter(d=>d<=x.d).pop()||cand.pop();
+    if(D){upd(x.k,y=>addQ(y,0,1,D,"Claude"));const h=hist[D];if(h&&(h.q||0)>(h.c||0))h.c=(h.c||0)+1}}
+  if(right){R.okc=(R.okc||0)+1;R.hit++;const r=R.res[R.res.length-1];if(r&&r.k===x.k)r.ok=true;rdDel(x.id)}else rdPut(x);
+  R.fx={id:x.id,right,exam:exOk,vl};R.fixOpen=false;commit();render()}
 const RD_SRC={gen:"Gerador do tema",sim:"Simulado",exam:"Provas na íntegra"};
 function rdStart(ids){rdRun={ids,i:0,ans:null,hit:0,okc:0,done:0,res:[],view:{}};render();setTimeout(()=>{const h=$("#qrdh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},40)}
 /* alternativas embaralhadas no Refazer (não decorar a letra); comentário que cita letras (provas) fica na ordem original */
@@ -6896,7 +6911,15 @@ function rdPlayer(){const R=rdRun,w=el(`<div class="rdplay"></div>`);if(!R.res)R
   c.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${R.ids.length} · ERRADA ${x.n}×`;const tb=c.querySelector(".rdtopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
   c.querySelector(".qstem").textContent=q.enunciado;{const fe=figEl(x.q,null,x.img);if(fe)c.appendChild(fe)}
   c.appendChild(altsEl(q,R.ans,l=>{R.ans=l;R.done++;const ok=l===q.correta;{const h=hist[today()]||(hist[today()]={});h.rq=(h.rq||0)+1}R.res.push({k:x.k,ok});if(ok){R.okc=(R.okc||0)+1;const sameDay=x.okd===today();R.left=rdHit(x);R.same=sameDay;if(R.left)R.hit++}else rdMiss(x);render()}));
-  if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?(R.left?"Correta. Acertou 2 vezes em dias diferentes: saiu da lista.":R.same?"Correta. Você já tinha acertado hoje; volta em 3 dias para confirmar.":"Correta. Volta em 3 dias: acertando de novo, sai da lista."):"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+". Volta amanhã."}</p>`));
+  const F=R.fx&&R.fx.id===x.id?R.fx:null;
+  if(R.ans&&F){c.appendChild(el(`<p class="verdict ${F.right?"ok":"no"}" id="rdFixed">Gabarito corrigido para ${esc(F.vl)}. ${F.right?"Você tinha acertado: saiu da lista"+(x.src==="exam"?"":" e contou como acerto no tema")+".":"A sua resposta continua errada; volta amanhã."}${F.exam?" A prova na íntegra também foi corrigida.":""}</p>`))}
+  else if(R.ans){const ok=R.ans===q.correta;c.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?(R.left?"Correta. Acertou 2 vezes em dias diferentes: saiu da lista.":R.same?"Correta. Você já tinha acertado hoje; volta em 3 dias para confirmar.":"Correta. Volta em 3 dias: acertando de novo, sai da lista."):"Incorreta de novo. A resposta é "+esc(q.correta.replace(/[^A-Z0-9]/g,""))+". Volta amanhã."}</p>`))}
+  if(R.ans){const ok=R.ans===q.correta;
+    if(!ok&&!F){const fb=el(`<div class="rdfix"><button class="link" type="button" id="rdFixB">O gabarito está errado?</button></div>`);fb.querySelector("button").onclick=()=>{R.fixOpen=!R.fixOpen;render()};
+      if(R.fixOpen){const pn=el(`<div class="rdfixp"><p class="gtext">Qual é a alternativa certa? Se for a que você marcou, a questão sai do Refazer${x.src==="exam"?"":" e conta como acerto no tema"}.${x.src==="exam"?" A prova na íntegra é corrigida junto.":""}</p><div class="btns"></div></div>`);
+        q.alternativas.filter(a=>a.letra!==q.correta).forEach(a=>{const b=el(`<button class="btn" type="button"></button>`);b.id="rdFix-"+a.letra;b.textContent=a.letra+(a.letra===R.ans?" (a sua)":"");b.onclick=()=>rdFix(R,x,a.letra);pn.querySelector(".btns").appendChild(b)});
+        fb.appendChild(pn)}c.appendChild(fb)}
+    if(x.q.fx)c.appendChild(el(`<p class="pnote" id="rdFxNote">Gabarito corrigido por você${(()=>{const o=x.q.alternativas.find(a=>a.letra===x.q.fx);if(!o)return "";const t=o.texto.replace(/\s+/g," ").trim();return ` (antes: “${esc(t.length>70?t.slice(0,70)+"…":t)}”)`})()}. O comentário pode ter sido escrito para o gabarito antigo.</p>`));
     c.appendChild(qExplEl(q));
     {const f=qFonteEl(q);if(f)c.appendChild(f)}if(q.alerta&&q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+q.alerta;c.appendChild(p)}
     if(!ok&&(x.wr||0)>=2)c.appendChild(el(`<p class="pnote rdteimnote" id="rdTeim">Você já errou esta questão ${x.wr} vezes ao refazer. Vale levar o ponto para o caderno de erros: lá ele vira revisão com a pista, o conceito e cartões.</p>`));
@@ -8831,7 +8854,7 @@ const HELP=[
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões. **Gabarito errado?** Depois de responder, toque em **O gabarito está errado?** e escolha a alternativa certa. Se for a que você marcou, a questão sai do Refazer e o erro vira acerto no tema; se veio de uma prova na íntegra, a prova é corrigida junto.
 - **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
