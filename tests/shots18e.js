@@ -17,7 +17,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  await p.waitForTimeout(400);
  const shot=async(tag,fn,sel)=>{await p.evaluate(fn);await p.waitForTimeout(400);await p.evaluate(s=>{const c=document.querySelector(s);if(c){c.scrollIntoView({block:"start"});scrollBy(0,-90)}},sel);await p.waitForTimeout(150);await p.screenshot({path:`${OUT}/${tag}-${name}.png`})};
  await shot("1-por-que",()=>{render()},"#eWhy");
- await shot("2-filtro",()=>{render()},'[data-es="all"]');
+ await shot("2-filtros",()=>{eFOpen=true;render()},'#eFBtn');
  await shot("3-semana-prova",()=>{eSide="pw";render()},'[data-es="all"]');
+ await shot("4-temas",()=>{eFOpen=false;eSide="all";render()},'.toplist');
  await ctx.close()}
 console.log(errs.length?"ERROS: "+errs.join(" | "):"ok");await b.close()})();

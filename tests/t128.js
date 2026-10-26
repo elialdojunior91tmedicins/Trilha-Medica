@@ -16,15 +16,18 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
     backStack=[];setView("erros");render()});
   await p.waitForTimeout(150);
   /* 1. Por que você erra · último mês */
-  let r=await p.evaluate(()=>{const g=document.getElementById("eWhy");return g&&{h:g.querySelector(".glabel").textContent,m:(g.querySelector(".emonth")||{}).textContent,L:[...g.querySelectorAll("li")].map(li=>li.querySelector("button").textContent+"|"+li.querySelector("b").textContent),gone:(g.querySelector(".emgone")||{}).textContent||""}});
-  ok(r&&r.h==="Por que você erra · último mês"&&/^4 erros novos nos últimos 30 dias \(5 nos 30 anteriores\)/.test(r.m),name+": resumo do mês: "+(r&&r.m));
-  ok(r.L[0]==="Não vi o EXCETO / INCORRETA|2 erros · nova"&&r.L.includes("Estudei, mas esqueci|1 erro · ▼ 1")&&r.L.includes("Pulei um dado do caso|1 erro · ▼ 1"),name+": causas do mês com a comparação ("+r.L.join(" ; ")+")");
-  ok(/^Melhorou: no último mês você não errou mais por “Lembrei pela metade”\./.test(r.gone),name+": mostra a causa que sumiu: "+r.gone);
+  let r=await p.evaluate(()=>{const g=document.getElementById("eWhy");return g&&{h:g.querySelector(".glabel").textContent,n:g.querySelector(".emnum").textContent,d:(g.querySelector(".emdelta")||{}).textContent,ty:(g.querySelector(".emtype")||{}).textContent,
+    L:[...g.querySelectorAll(".eclist li")].map(li=>li.querySelector(".ecn").textContent+"|"+li.querySelector(".ecc").textContent+"|"+((li.querySelector(".ectr")||{}).textContent||"")),bar:[...g.querySelectorAll(".ecbar i")].map(i=>i.style.width).join(),tip:!!g.querySelector(".ectip"),gone:(g.querySelector(".emgone")||{}).textContent||""}});
+  ok(r&&r.h==="Por que você erra · último mês"&&r.n==="4erros novos em 30 dias"&&r.d==="▼ 1 a menos que nos 30 dias anteriores (5)"&&/Tipo mais comum: Não sabia o conteúdo|Tipo mais comum: Li errado/.test(r.ty),name+": resumo do mês em destaque: "+(r&&[r.n,r.d,r.ty].join(" · ")));
+  ok(r.L[0]==="Não vi o EXCETO / INCORRETA|2 erros|nova"&&r.L.includes("Estudei, mas esqueci|1 erro|▼ 1")&&r.L.includes("Pulei um dado do caso|1 erro|▼ 1")&&r.bar==="100%,50%,50%"&&r.tip,name+": causas em cartões com barra, comparação e dica ("+r.L.join(" ; ")+")");
+  ok(/^Melhorou No último mês você não errou mais por “Lembrei pela metade”\./.test(r.gone),name+": mostra a causa que sumiu: "+r.gone);
   await p.evaluate(()=>{document.querySelector("#eWhy li button").click()});await p.waitForTimeout(150);
   ok(await p.evaluate(()=>eCause==="Não vi o EXCETO / INCORRETA"&&eVis.length===2),name+": tocar na causa mostra os erros dela");
   /* 2. residência × faculdade × semana da prova */
-  r=await p.evaluate(()=>{eClearAll();eFOpen=false;render();const ch=[...document.querySelectorAll('[data-es]')].map(b=>b.dataset.es+":"+b.textContent);return ch});
-  ok(r.join()==="all:Todos · 9,res:Residência · 7,fac:Faculdade · 2,pw:Semana da prova: P2 NCS · 1",name+": filtro rápido Residência · Faculdade · Semana da prova, fora do painel de filtros ("+r.join(" | ")+")");
+  r=await p.evaluate(()=>{eClearAll();eFOpen=false;render();const out=!!document.querySelector('[data-es]');eFOpen=true;render();const pan=document.getElementById("eFPanel"),grp=[...pan.querySelectorAll(".tfgh b, .tfgrp > b, .glabel")].map(x=>x.textContent);window.__out=out;window.__grp=grp;const ch=[...document.querySelectorAll('[data-es]')].map(b=>b.dataset.es+":"+b.textContent);return ch});
+  ok(r.join()==="all:Todos · 9,res:Residência · 7,fac:Faculdade · 2,pw:Semana da prova: P2 NCS · 1",name+": Residência · Faculdade · Semana da prova dentro do painel de Filtros ("+r.join(" | ")+")");
+  r=await p.evaluate(()=>({out:window.__out,inside:!!document.querySelector('#eFPanel [data-es="fac"]'),txt:document.getElementById("eFPanel").textContent}));
+  ok(!r.out&&r.inside&&/Situação.*Origem.*Por que errou.*Onde.*Quando/s.test(r.txt),name+": painel na ordem Situação, Origem, Por que errou, Onde, Quando (escondido até abrir Filtros)");
   const pick=v=>p.evaluate(v=>{document.querySelector(`[data-es="${v}"]`).click();return eVis.map(e=>e.id).sort().join()},v);
   ok(await pick("fac")==="f1,r3",name+": Faculdade = tema da faculdade e erro registrado na prova da faculdade");
   ok(await pick("res")==="o1,o2,o3,o4,o5,r1,r2",name+": Residência = o resto");

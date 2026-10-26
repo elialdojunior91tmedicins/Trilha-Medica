@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=15962bca">
+<link rel="stylesheet" href="site.css?v=ed324f2d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=15962bca"></script>
-<script src="bridge.js?v=15962bca"></script>
+<script src="config.js?v=ed324f2d"></script>
+<script src="bridge.js?v=ed324f2d"></script>
 </head>
 <body>
 <script>
@@ -912,9 +912,20 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .emore{display:flex;flex-direction:column;gap:8px}.emore .tfres{gap:4px 16px}
 .ecard .ehead .ecause{font-style:italic}
 .ecard.arch{opacity:.75;border-left-style:dashed}
-.ecauses ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ecauses li{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:7px}
-.ecauses li .link{color:var(--ink);font-weight:600;font-size:.92rem}.ecauses li b{font:500 .78rem var(--mono);color:var(--due)}.ecauses li span{flex:1 1 100%;font-size:.84rem;color:var(--muted)}
+.emstat{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:2px 0 6px}.emnum{display:flex;align-items:baseline;gap:8px}.emnum b{font:500 2rem/1 var(--display);color:var(--ink)}.emnum span{font-size:.9rem;color:var(--muted)}
+.emdelta{font-size:.8rem;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--track);color:var(--muted)}.emdelta.up{color:var(--due)}.emdelta.down{color:var(--good)}
+.emtype{margin:0 0 12px;font-size:.84rem;color:var(--muted)}.etag{display:inline-block;margin-left:4px;font-weight:600;font-size:.8rem;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--ink)}
+.etag[data-t="conhecimento"]{border-color:var(--due);color:var(--due)}.etag[data-t="interpretacao"]{border-color:var(--l1);color:var(--l1)}.etag[data-t="confusao"]{border-color:var(--l2);color:var(--l2)}
+.eclist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:ec}
+.eclist li{counter-increment:ec;background:var(--bg);border-radius:12px;padding:12px 14px 12px 44px;position:relative}
+.eclist li::before{content:counter(ec);position:absolute;left:14px;top:12px;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font:600 .72rem/18px var(--body);text-align:center;color:var(--muted)}
+.ecrow.link{display:flex;flex-direction:column;gap:7px;width:100%;background:none;border:0;padding:0;text-align:left;text-decoration:none;color:var(--ink);cursor:pointer;font:inherit}
+.ech{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px}.ecn{font-weight:700;font-size:.94rem}.ecrow:hover .ecn{text-decoration:underline}
+.ecm{display:flex;align-items:baseline;gap:8px;white-space:nowrap}.ecc{font:600 .8rem var(--body);color:var(--ink)}
+.ectr{font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}.ectr.up{color:var(--due);border-color:currentColor}.ectr.down{color:var(--good);border-color:currentColor}.ectr.new{color:var(--warn);border-color:currentColor}
+.ecbar{display:block;height:5px;border-radius:99px;background:var(--track);overflow:hidden}.ecbar i{display:block;height:100%;border-radius:99px;background:var(--l1)}
+.ectip{margin:8px 0 0;font-size:.84rem;line-height:1.45;color:var(--muted)}.ectip span{font-weight:700;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-right:2px}
+.emgone{margin:12px 0 0;padding:9px 12px;border-radius:10px;border-left:3px solid var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);font-size:.86rem}.emgone b{color:var(--good);margin-right:4px}
 .erfc .ebody span{font-size:1rem}.erfc .ehint{margin:0}
 .efoot .rv.due{color:var(--due);font-weight:700}
 .ecad{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-top:6px}
@@ -938,9 +949,11 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .trow b{font:500 .85rem var(--mono);text-align:right;font-variant-numeric:tabular-nums}
 .tips{margin:0;font-size:.92rem;background:var(--bg);border-radius:8px;padding:10px 12px}
 .toplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.toplist button{width:100%;display:flex;justify-content:space-between;gap:10px;background:none;border:0;border-bottom:1px solid var(--line);padding:6px 0;color:var(--ink);font:inherit;font-size:.92rem;text-align:left;cursor:pointer}
-.toplist button span:first-child{min-width:0}
-.toplist b{font:500 .85rem var(--mono);color:var(--due);white-space:nowrap}
+.toplist button{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 12px;background:none;border:0;border-bottom:1px solid var(--line);padding:9px 0 10px;color:var(--ink);font:inherit;font-size:.92rem;text-align:left;cursor:pointer}
+.toplist .ttn{display:flex;flex-direction:column;gap:2px;min-width:0}.toplist .ttn>span{font-weight:600}.toplist .ttn small{font-size:.76rem;color:var(--muted)}.toplist .ttn .erepb{margin:3px 0 0;align-self:flex-start}
+.toplist b{font:500 1.1rem var(--display);color:var(--due);min-width:1.6rem;text-align:right}
+.toplist .ttbar{grid-column:1/-1;height:4px;border-radius:99px;background:var(--track);overflow:hidden}.toplist .ttbar i{display:block;height:100%;background:color-mix(in srgb,var(--due) 70%,transparent);border-radius:99px}
+.toplist button:hover .ttn>span{text-decoration:underline}
 .tab{line-height:1.2}
 .qgen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .qgen select{width:auto}
@@ -1410,7 +1423,7 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fresw{color:var(--muted);font-weight:600}.fresw.hi{color:var(--gold)}
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
-.eside0{margin:8px 0 4px}.eside0 .chips{flex-wrap:wrap}
+.fcgrpb{display:flex;flex-direction:column;gap:10px}
 .simquick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--l2);border-radius:10px}.simquick .how{font-size:12.5px}
 .wpprev{margin:0 0 12px}.wpaula{display:block;color:var(--gold);font-size:11px;line-height:1.25;max-width:9.5rem}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
@@ -5670,29 +5683,27 @@ function renderEMore(){const box=$("#eMore");if(!box)return;
   if(eSide!=="all")A.push([eSide==="fac"?"Só da faculdade":eSide==="res"?"Só da residência":`Semana da prova: ${ePwLabel()}`,()=>{eSide="all"}]);
   if(ePer!=="all")A.push([`Últimos ${ePer} dias`,()=>{ePer="all"}]);if(eSrc!=="all")A.push([`Fonte: ${eSrc}`,()=>{eSrc="all"}]);if(eCause!=="all")A.push([`Causa: ${eCause}`,()=>{eCause="all"}]);
   if(eArea!=="all")A.push([fcAreaName(eArea),()=>{eArea="all";eSp="all"}]);if(eArea!=="all"&&eSp!=="all")A.push([eSp,()=>{eSp="all"}]);
-  const G=[];
+  /* Lote 18: painel reorganizado — Situação, Origem (residência, faculdade, semana da prova, fonte), Por que errou (tipo e causa), Onde, Quando */
+  const G=[],set=f=>v=>{f(v);eLimit=E_PAGE};
+  G.push(["Situação","combinam entre si",fcChips(Object.entries(EFLAG).map(([v,l])=>{const n=v==="arch"?act.filter(e=>e.arch).length:act.filter(e=>!e.arch&&(v==="due"?eDueNow(e):v==="rep"?(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)):!(e.cd&&cards.some(x=>x.id===e.cd)))).length;
+    return fcChip(`${l} · ${n}`,eFlags.has(v),()=>{eFlags.has(v)?eFlags.delete(v):eFlags.add(v);eLimit=E_PAGE},null,null,null,{ef:v})}))]);
   {if(eSide==="pw"&&!R.PW)eSide="all";const nF=EA.filter(e=>eIsFac(e,R.FL)).length,L=[["all",`Todos · ${EA.length}`],["res",`Residência · ${EA.length-nF}`],["fac",`Faculdade · ${nF}`]];
     if(R.PW)L.push(["pw",`Semana da prova: ${ePwLabel()} · ${EA.filter(e=>R.PW.has(e.k)).length}`]);
-    /* fica fora do painel de filtros: é o filtro rápido que mais se usa (na semana da prova, um toque) */
-    var eSideRow=el(`<div class="eside0"><div class="chips" role="group" aria-label="Residência ou faculdade"></div></div>`);L.forEach(([v,l])=>eSideRow.firstChild.appendChild(fcChip(l,eSide===v,()=>{eSide=eSide===v&&v!=="all"?"all":v;eLimit=E_PAGE;render()},null,null,null,{es:v})));
-    eSideRow.title="Faculdade = conteúdo dos semestres ativos ou erro registrado numa prova da faculdade"}
-  G.push(["Tipo de erro","por que você errou",fcChips(Object.entries(ETYPES).map(([v,l])=>fcChip(`${l} · ${EA.filter(e=>e.t===v).length}`,eType===v,()=>{eType=eType===v?"all":v;eLimit=E_PAGE},null,null,null,{et:v})))]);
-  G.push(["Situação","combinam com o resto",fcChips(Object.entries(EFLAG).map(([v,l])=>{const n=v==="arch"?act.filter(e=>e.arch).length:act.filter(e=>!e.arch&&(v==="due"?eDueNow(e):v==="rep"?(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)):!(e.cd&&cards.some(x=>x.id===e.cd)))).length;
-    return fcChip(`${l} · ${n}`,eFlags.has(v),()=>{eFlags.has(v)?eFlags.delete(v):eFlags.add(v);eLimit=E_PAGE},null,null,null,{ef:v})}))]);
-  {const row=el(`<div class="qfrow tfsels"></div>`),set=f=>v=>{f(v);eLimit=E_PAGE};
-    row.appendChild(fcSel("ePer","Registrados",[["all","Desde o início"],["7","Últimos 7 dias"],["30","Últimos 30 dias"],["90","Últimos 90 dias"]],ePer,set(v=>ePer=v)));
+    const w=el(`<div class="fcgrpb"></div>`);w.appendChild(fcChips(L.map(([v,l])=>fcChip(l,eSide===v,()=>{eSide=eSide===v&&v!=="all"?"all":v;eLimit=E_PAGE},null,null,v==="fac"?"Conteúdo dos semestres ativos ou erro registrado numa prova da faculdade":null,{es:v}))));
     const srcs={};act.forEach(e=>{const x=(e.s||"").trim();if(x){const k=x.toLowerCase();srcs[k]=srcs[k]||x}});
-    if(Object.keys(srcs).length)row.appendChild(fcSel("eSrc","Fonte",[["all","Todas"],...Object.entries(srcs).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,x])=>[k,x])],srcs[eSrc]?eSrc:"all",set(v=>eSrc=v)));else eSrc="all";
+    if(Object.keys(srcs).length){const row=el(`<div class="qfrow tfsels"></div>`);row.appendChild(fcSel("eSrc","Banca, prova ou fonte",[["all","Todas"],...Object.entries(srcs).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,x])=>[k,x])],srcs[eSrc]?eSrc:"all",set(v=>eSrc=v)));w.appendChild(row)}else eSrc="all";
+    G.push(["Origem","residência, faculdade ou a prova da semana",w])}
+  {const w=el(`<div class="fcgrpb"></div>`);w.appendChild(fcChips(Object.entries(ETYPES).map(([v,l])=>fcChip(`${l} · ${EA.filter(e=>e.t===v).length}`,eType===v,()=>{eType=eType===v?"all":v;eLimit=E_PAGE},null,null,null,{et:v}))));
     const used=new Set(act.map(e=>e.c).filter(Boolean));
-    if(used.size)row.appendChild(fcSel("eCause","Causa",[["all","Todas"],...Object.values(ECAUSES).flat().filter(c=>used.has(c)).map(c=>[c,c])],used.has(eCause)?eCause:"all",set(v=>eCause=v)));else eCause="all";
-    G.push(["Quando e de onde","data do registro, banca ou prova, causa",row])}
+    if(used.size){const row=el(`<div class="qfrow tfsels"></div>`);row.appendChild(fcSel("eCause","Causa",[["all","Todas"],...Object.values(ECAUSES).flat().filter(c=>used.has(c)).map(c=>[c,c])],used.has(eCause)?eCause:"all",set(v=>eCause=v)));w.appendChild(row)}else eCause="all";
+    G.push(["Por que errou","tipo e causa marcados no registro",w])}
   G.push(["Onde","grande área e especialidade",fcWhere("e",eArea,eSp,(a,sp)=>EA.filter(e=>{const it=BYKEY[e.k];return (a==="all"||it.area.code===a)&&(sp==="all"||it.sp===sp)}).length,v=>{eArea=v;eSp="all";eLimit=E_PAGE},v=>{eSp=v;eLimit=E_PAGE})]);
+  {const row=el(`<div class="qfrow tfsels"></div>`);row.appendChild(fcSel("ePer","Registrados",[["all","Desde o início"],["7","Últimos 7 dias"],["30","Últimos 30 dias"],["90","Últimos 90 dias"]],ePer,set(v=>ePer=v)));G.push(["Quando","data do registro",row])}
   const links=[];
   if(downloadsFn){const p=el(`<button class="link" type="button" id="ePdf">Exportar PDF destes erros</button>`);p.onclick=ePdfSave;links.push(p)}
   fcBody(box,{tog:"eFBtn",panelId:"eFPanel",open:eFOpen,onToggle:()=>{eFOpen=!eFOpen;lsSet("resid-efpanel",eFOpen?"1":null)},
     sort:["eOrder",[["sp","Por especialidade"],["new","Mais recentes primeiro"],["due","Próxima revisão primeiro"],["miss","Mais teimosos primeiro"]],eOrder,v=>{eOrder=v}],
     act:A,clearId:"eClear",onClear:eClearAll,groups:G,foot:"",footId:"eRes",links,onDone:()=>{eFOpen=false;lsSet("resid-efpanel",null);render();const l=$("#elist");if(l)l.scrollIntoView({block:"start"})}});
-  {const bar=box.querySelector(".tfbar");if(bar)bar.after(eSideRow);else box.prepend(eSideRow)}
   if(eMsg){const m=el(`<p class="pnote" role="status" id="eMsg"></p>`);m.textContent=eMsg;box.appendChild(m)}}
 /* ----- simulado dos meus erros ----- */
 function eSimItems(n){const act=errors.filter(e=>BYKEY[e.k]&&!e.arch);
@@ -5771,30 +5782,37 @@ function renderErros(){
     /* Lote 18: resumo do mês dentro do "Por que você erra" — causas que mais se repetiram nos últimos 30 dias, comparadas com os 30 anteriores */
     {const t=dnum(today()),ago=e=>t-dnum(e.d),M=errors.filter(e=>BYKEY[e.k]&&ago(e)<=30),M0=errors.filter(e=>BYKEY[e.k]&&ago(e)>30&&ago(e)<=60),cnt=L=>{const o={};L.forEach(e=>{if(e.c)o[e.c]=(o[e.c]||0)+1});return o};
       const cm=cnt(M),c0=cnt(M0),useM=Object.keys(cm).length>0,cs=useM?cm:(()=>{const o={};AE.forEach(e=>{if(e.c)o[e.c]=(o[e.c]||0)+1});return o})(),top=Object.entries(cs).sort((a,b)=>b[1]-a[1]).slice(0,3);
-      if(top.length){const g=el(`<div class="grp ecauses" style="margin-top:14px" id="eWhy"><span class="glabel"></span><p class="how emonth"></p><ul></ul></div>`);g.querySelector(".glabel").textContent=useM?"Por que você erra · último mês":"Por que você erra";
-        const ms=g.querySelector(".emonth");if(useM){const tc={};M.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const dt=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
-          ms.textContent=`${M.length} ${M.length===1?"erro novo":"erros novos"} nos últimos 30 dias${M0.length?` (${M0.length} nos 30 anteriores)`:""}${dt?`; o tipo mais comum foi ${ETYPES[dt].toLowerCase()}`:""}. As causas que mais se repetiram:`}else ms.remove();
-        top.forEach(([c,n])=>{const li=el(`<li><button type="button" class="link"></button><b></b><span></span></li>`);li.querySelector("button").textContent=c;li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
-          const d=useM&&c0[c]!==undefined?n-c0[c]:null;li.querySelector("b").textContent=`${n} ${n===1?"erro":"erros"}${useM?(d===null?" · nova":d>0?` · ▲ ${d}`:d<0?` · ▼ ${-d}`:" · igual"):""}`;li.querySelector("span").textContent=ECTIPS[c]||"";g.querySelector("ul").appendChild(li)});
-        {const gone=useM?Object.keys(c0).filter(c=>!cm[c]):[];if(gone.length){const p=el(`<p class="how emgone"></p>`);p.textContent=`Melhorou: no último mês você não errou mais por ${gone.slice(0,2).map(c=>`“${c}”`).join(" nem por ")}.`;g.appendChild(p)}}
+      if(top.length){const g=el(`<div class="grp ecauses" style="margin-top:16px" id="eWhy"><span class="glabel"></span></div>`);g.querySelector(".glabel").textContent=useM?"Por que você erra · último mês":"Por que você erra";
+        if(useM){const tc={};M.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const dt=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0],d=M.length-M0.length;
+          const st=el(`<div class="emstat"><div class="emnum"><b></b><span></span></div><span class="emdelta"></span></div>`);st.querySelector("b").textContent=M.length;st.querySelector(".emnum span").textContent=M.length===1?"erro novo em 30 dias":"erros novos em 30 dias";
+          const de=st.querySelector(".emdelta");if(M0.length){de.textContent=d>0?`▲ ${d} a mais que nos 30 dias anteriores (${M0.length})`:d<0?`▼ ${-d} a menos que nos 30 dias anteriores (${M0.length})`:`igual aos 30 dias anteriores`;de.classList.add(d>0?"up":d<0?"down":"eq")}else de.remove();g.appendChild(st);
+          if(dt){const p=el(`<p class="emtype">Tipo mais comum: <span class="etag"></span></p>`);p.querySelector(".etag").textContent=ETYPES[dt];p.querySelector(".etag").dataset.t=dt;g.appendChild(p)}}
+        const mx=Math.max(...top.map(x=>x[1])),ul=el(`<ol class="eclist"></ol>`);g.appendChild(ul);
+        top.forEach(([c,n])=>{const d=useM&&c0[c]!==undefined?n-c0[c]:null,tr=!useM?"":d===null?"nova":d>0?`▲ ${d}`:d<0?`▼ ${-d}`:"igual",cls=!useM?"":d===null?"new":d>0?"up":d<0?"down":"eq";
+          const li=el(`<li><button type="button" class="ecrow link"><span class="ech"><span class="ecn"></span><span class="ecm"><b class="ecc"></b><span class="ectr"></span></span></span><span class="ecbar"><i></i></span></button><p class="ectip"><span>Dica</span></p></li>`);
+          li.querySelector(".ecn").textContent=c;li.querySelector(".ecc").textContent=`${n} ${n===1?"erro":"erros"}`;const T=li.querySelector(".ectr");if(tr){T.textContent=tr;T.classList.add(cls);T.title=d===null?"Não apareceu nos 30 dias anteriores":"Comparado com os 30 dias anteriores"}else T.remove();
+          li.querySelector(".ecbar i").style.width=Math.round(n/mx*100)+"%";li.querySelector(".ectip").append(" "+(ECTIPS[c]||""));
+          li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};ul.appendChild(li)});
+        {const gone=useM?Object.keys(c0).filter(c=>!cm[c]):[];if(gone.length){const p=el(`<p class="emgone"><b>Melhorou</b> <span></span></p>`);p.querySelector("span").textContent=`No último mês você não errou mais por ${gone.slice(0,2).map(c=>`“${c}”`).join(" nem por ")}.`;g.appendChild(p)}}
         ins.appendChild(g)}
       else if(errors.length>=3)ins.appendChild(el(`<p class="how" style="margin-top:10px">Dica: ao registrar, marque <b>Por que errei</b>. Com isso o app mostra as causas mais comuns e o que fazer com cada uma.</p>`))}
     const per={};AE.forEach(e=>per[e.k]=(per[e.k]||0)+1);
     const RP0=new Set(eRepeat().tem.map(x=>x[0])),top=Object.entries(per).sort((a,b)=>b[1]-a[1]||RP0.has(b[0])-RP0.has(a[0])).slice(0,5);
     eRepeat().tem.forEach(([k])=>{if(per[k]&&!top.some(x=>x[0]===k)&&top.length<8)top.push([k,per[k]])});
-    const tw=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Temas com mais erros</span><ol class="toplist"></ol></div>`);
-    const RP=new Set(eRepeat().tem.map(x=>x[0]));
-    top.forEach(([k,c])=>{const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=BYKEY[k].t;
-      if(RP.has(k))li.querySelector("span").after(el(`<em class="erepb" title="2 ou mais erros neste tema nos últimos 30 dias">repetiu nos últimos 30 dias</em>`));
+    const tw=el(`<div class="grp" style="margin-top:16px"><span class="glabel">Temas com mais erros</span><ol class="toplist"></ol></div>`);
+    const RP=new Set(eRepeat().tem.map(x=>x[0])),tmx=Math.max(1,...top.map(x=>x[1]));
+    top.forEach(([k,c])=>{const it=BYKEY[k],li=el(`<li><button type="button"><span class="ttn"><span></span><small></small></span><b>${c}</b><span class="ttbar"><i style="width:${Math.round(c/tmx*100)}%"></i></span></button></li>`);li.querySelector(".ttn span").textContent=it.t;
+      li.querySelector("small").textContent=it.sp||it.area.name;li.querySelector("b").title=c===1?"1 erro":`${c} erros`;
+      if(RP.has(k))li.querySelector("small").after(el(`<em class="erepb" title="2 ou mais erros neste tema nos últimos 30 dias">repetiu nos últimos 30 dias</em>`));
       li.querySelector("button").onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};tw.querySelector("ol").appendChild(li)});
     if(top.length)ins.appendChild(tw);
     {const st=eRepeat().stub;if(st.length){const l=el(`<p class="how etmline" id="eTeim"><span></span> <button class="link" type="button">ver primeiro</button></p>`);
       l.querySelector("span").textContent=`${st.length} ${st.length===1?"erro teimoso":"erros teimosos"} (você tocou “Ainda erraria” 2 vezes ou mais): sinal para voltar à teoria.`;l.querySelector("button").onclick=()=>{eOrder="miss";render();const x=$("#elist");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})};ins.appendChild(l)}}
     const ps={};AE.forEach(e=>{const it=BYKEY[e.k];if(it){const g=spKey(it);ps[g]=(ps[g]||0)+1}});
     const ts=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Especialidades com mais erros</span><ol class="toplist"></ol></div>`);
-    Object.entries(ps).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([g,c])=>{const [ac,sp]=[g.slice(0,g.indexOf(":")),g.slice(g.indexOf(":")+1)];
-      const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=`${ac} · ${sp}`;
-      li.querySelector("button").onclick=()=>{eClearAll();eArea=ac;eSp=sp;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};ts.querySelector("ol").appendChild(li)});
+    {const P5=Object.entries(ps).sort((a,b)=>b[1]-a[1]).slice(0,5),smx=Math.max(1,...P5.map(x=>x[1]));P5.forEach(([g,c])=>{const [ac,sp]=[g.slice(0,g.indexOf(":")),g.slice(g.indexOf(":")+1)];
+      const li=el(`<li><button type="button"><span class="ttn"><span></span><small></small></span><b>${c}</b><span class="ttbar"><i style="width:${Math.round(c/smx*100)}%"></i></span></button></li>`);li.querySelector(".ttn span").textContent=sp;li.querySelector("small").textContent=(AREAS.find(x=>x.code===ac)||{name:ac}).name;li.querySelector("b").title=c===1?"1 erro":`${c} erros`;
+      li.querySelector("button").onclick=()=>{eClearAll();eArea=ac;eSp=sp;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};ts.querySelector("ol").appendChild(li)});}
     if(Object.keys(ps).length)ins.appendChild(ts);
   }
   // lista
