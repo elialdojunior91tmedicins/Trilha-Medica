@@ -32,7 +32,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
     const cm=[...document.querySelectorAll('#areas details.area')].find(d=>d.querySelector(".code").textContent==="CM");const ord=cm?[...cm.querySelectorAll('li.t')].map(li=>wOf(BYKEY[li.id.slice(2)])):[];
     const chip=tfActive().map(x=>x[0]);tf.sem=false;render();return {L,w,ord,chip}});
   ok(r.L.sort().join()==="CM-30,CM-7,PED-21",name+": Neste semestre mostra só os temas ligados ao semestre ativo ("+r.L.join()+")");
-  ok(r.w.length===3&&r.w.every(x=>/^peso [123] na residência$/.test(x))&&r.ord.every((v,i,a)=>!i||a[i-1]>=v),name+": cada tema com o peso na residência, os que mais caem primeiro ("+r.w.join(" · ")+")");
+  ok(r.w.length===0&&r.ord.every((v,i,a)=>!i||a[i-1]>=v),name+": os que mais caem na residência primeiro; o peso fica só nas barrinhas (sem texto repetido)");
   ok(r.chip.includes("Neste semestre"),name+": o filtro aparece nas etiquetas dos ativos");
   ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
   await ctx.close()}

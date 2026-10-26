@@ -520,7 +520,6 @@ li.t.open{background:var(--bg)}
 .tsql{list-style:none;margin:0;padding:0 18px 12px calc(18px + 2.6rem + 10px);display:flex;flex-direction:column;gap:2px}
 .tsql label{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;padding:5px 0;cursor:pointer}.tsql input{margin-top:3px;flex:none;width:18px;height:18px}
 .tsqf{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;padding-top:4px}.tsqf .how{font-size:.76rem}
-.meta .semw{color:var(--gold);font-weight:600}
 .lvl{grid-row:1/3;grid-column:3;font:600 .72rem var(--body);letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted);white-space:nowrap}
 .lvl[data-l="1"]{border-color:var(--l1);color:var(--l1)}
 .lvl[data-l="2"]{border-color:var(--l2);color:var(--l2)}
@@ -9443,7 +9442,6 @@ function renderAll(){
       const nx=bulk?null:topicNext(it);
       if(dd!==null&&!(nx&&dd<=0))m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
       if(s.qt){const pp=Math.round(acc(s)*100),[bk]=band(pp);m.appendChild(el(`<span class="st ${bk}">${pp}% em ${s.qt} questões</span>`))}
-      if(tf.sem&&!it.own){const w=wOf(it),x=el(`<span class="semw"></span>`);x.textContent=`peso ${w} na residência`;m.appendChild(x)}
       {const fo=foTot[it.key];if(fo)m.appendChild(el(`<span>⏱ ${fmtMin(fo)}</span>`))}
       if(!nx){if(lvMeets(s))m.appendChild(el(`<span class="lvup">pronto para Dominado</span>`));else if(lvDrop(it.key))m.appendChild(el(`<span class="late">acerto caiu</span>`))}
       const [sd,st]=subCount(it);
