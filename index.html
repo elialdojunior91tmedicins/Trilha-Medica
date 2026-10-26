@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=82366b66">
+<link rel="stylesheet" href="site.css?v=c6d20d3d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=82366b66"></script>
-<script src="bridge.js?v=82366b66"></script>
+<script src="config.js?v=c6d20d3d"></script>
+<script src="bridge.js?v=c6d20d3d"></script>
 </head>
 <body>
 <script>
@@ -2583,7 +2583,8 @@ function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="In
 /* intervalo da revisão: o da tabela, ajustado pelo acerto nas questões do tema (desligável em Configurações) */
 function adaptAcc(s){if(!s.qt)return null;const from=fromNum(dnum(today())-90);let q=0,c=0;const m=s.qd||{};for(const d in m)if(d>=from&&Array.isArray(m[d])){q+=m[d][0]||0;c+=m[d][1]||0}
   if(q<5){q=s.qt||0;c=s.qc||0}return q>=5?{a:c/q,q}:null}
-function adaptF(s){if(ui.prefs.adapt===false||!((s.step||0)>=1))return 1;const r=adaptAcc(s);if(!r)return 1;const a=r.a;return a>=.85&&r.q>=8?1.4:a>=.75?1.2:a<.5?.5:a<.65?.75:1}
+/* auditoria 26/10: o acerto baixo pesa num lugar só (o ponto fraco); aqui ele só alonga a revisão de quem vai bem */
+function adaptF(s){if(ui.prefs.adapt===false||!((s.step||0)>=1))return 1;const r=adaptAcc(s);if(!r)return 1;const a=r.a;return a>=.85&&r.q>=8?1.4:a>=.75?1.2:1}
 function interval(s){const b=INT[Math.min(s.step||0,INT.length-1)];if(s.adjFrom===s.last&&s.adj)return b;const f=adaptF(s);return f===1?b:Math.max(1,Math.min(150,Math.round(b*f)))}
 /* semana de estudos (Configurações › Plano): dias de temas novos, de simulado e de folga (0 = domingo) */
 let WK_NEW=new Set([0,1,2,3,4,5,6]),WK_SIM=new Set(),WK_OFF=new Set();
@@ -5125,7 +5126,7 @@ function ecardEl(e,withTopic){
   if(e.c){const s=el(`<span class="ecause"></span>`);s.textContent=e.c;h.appendChild(s)}
   if(e.arch)c.classList.add("arch");
   c.querySelector(".w").textContent=e.w;eRFill(c.querySelector(".r"),e.r);if(ePista(e)){boldFill(c.querySelector(".p"),ePista(e));c.querySelector(".epista").hidden=false}eExtraBlocks(c,e,true);
-  if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e),bc=eByCard(e);c.querySelector(".rv").textContent=`${bc?"Revisado pelos cartões":du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
+  if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e),bc=eByCard(e);c.querySelector(".rv").textContent=`${e.fm?`Formado em ${br(e.fm)} (volta se você errar o tema de novo)`:bc?"Revisado pelos cartões":du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
   const rb=eCardBtn(e);
   const db=el(`<button class="mini${delArm===e.id?" warn":""}" type="button">${delArm===e.id?"Confirmar exclusão":"Excluir"}</button>`);
@@ -5150,14 +5151,17 @@ function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.
 function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
 /* uma agenda por questão (Lote 17): erro que virou cartão é revisado pelo cartão, não volta na revisão de erros */
 const eByCard=e=>cards.some(x=>x.eid===e.id||(e.cd&&x.id===e.cd));
-const eDueNow=e=>eDue(e)<=today()&&!eByCard(e);
+const eDueNow=e=>eDue(e)<=today()&&!eByCard(e)&&!e.fm;
 const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDueNow(e));
+/* auditoria 26/10: acertou no degrau de 30 dias → o erro se forma (e.fm = data): sai da revisão, continua no caderno; volta se você errar o tema de novo (eNew) */
 function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
-  if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
+  if(good&&eBox(e)>=E_INT.length-1){e.fm=today();e.due=fromNum(dnum(today())+E_INT[E_INT.length-1])}
+  else if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
   else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
   putErr(e)}
 function eNew(k,w,r,t,s,c,p,x){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
-  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
+  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;
+  errors.forEach(o=>{if(o.k===k&&o.fm){delete o.fm;o.box=Math.max(0,eBox(o)-2);o.due=fromNum(dnum(today())+1);putErr(o)}});// errou o tema de novo: os erros formados dele voltamif(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
   x=x||{};if(typeof x.pc==="string"&&x.pc.trim())e.pc=x.pc.trim().slice(0,1200);if(typeof x.dd==="string"&&x.dd.trim())e.dd=x.dd.trim().slice(0,400);
   if(x.qf&&typeof x.qf.e==="string"&&Array.isArray(x.qf.a))e.q={e:x.qf.e,a:x.qf.a.filter(a=>a&&typeof a.t==="string").map(a=>({l:String(a.l||""),t:a.t})),c:String(x.qf.c||""),m:String(x.qf.m||"")};
   errors.push(e);putErr(e);return e}
@@ -5672,10 +5676,16 @@ const QSTEPS=[["errs","Erros","erro","erros"],["redo","Questões para refazer","
 /* Lote 17: a fila do dia cabe no tempo do dia. Ela usa até metade do tempo marcado (mín. 20 min); as revisões de temas entram até onde couber
    (as mais importantes, pela ordem peso × atraso); as outras continuam pendentes e voltam nos próximos dias (e o freio segura os temas novos) */
 const QUEUE_SHARE=.5,QUEUE_MIN=20,REV_DAY_MIN=3;
-function revCapToday(o){const m=dayMin(dnum(today()));if(m<=0)return 0;const bud=Math.max(QUEUE_MIN,Math.round(Math.min(m,240)*QUEUE_SHARE)),rest=bud-(o.errs*MIN_EST.errs+o.redo*MIN_EST.redo+o.cards*MIN_EST.cards);
-  return Math.max(REV_DAY_MIN,Math.floor(rest/MIN_EST.revs))}
-function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0,revAll:0};const o={errs:eDueList().length,redo:Math.min(RD_DAY,rdDueList().length),cards:cdDue().length,notes:0},all=dueCount();
-  const cap=revCapToday(o),done=(hist[today()]||{}).r||0;o.revAll=all;o.revCap=cap;o.revs=Math.min(all,Math.max(0,cap-done));return o}
+/* ordem do orçamento (auditoria 26/10): revisões de temas primeiro (até 70% do tempo da fila), depois erros, cartões e, com o que sobrar, o Refazer */
+const QUEUE_REV=.7;
+function qBudget(){const m=dayMin(dnum(today()));return m<=0?0:Math.max(QUEUE_MIN,Math.round(Math.min(m,240)*QUEUE_SHARE))}
+function revCapToday(){const b=qBudget();return b?Math.max(REV_DAY_MIN,Math.floor(b*QUEUE_REV/MIN_EST.revs)):0}
+function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0,revAll:0};const all=dueCount(),cap=revCapToday(),done=(hist[today()]||{}).r||0,o={notes:0};
+  o.revAll=all;o.revCap=cap;o.revs=Math.min(all,Math.max(0,cap-done));
+  let rest=qBudget()-Math.min(all+done,cap)*MIN_EST.revs;const take=(n,per)=>{const k=Math.max(0,Math.min(n,Math.floor(rest/per)));rest-=k*per;return k};
+  const E=eDueList().length,C=cdDue().length,D=Math.min(RD_DAY,rdDueList().length);
+  o.errs=Math.max(Math.min(E,3),take(E,MIN_EST.errs));o.cards=Math.max(Math.min(C,10),take(C,MIN_EST.cards));o.redo=take(D,MIN_EST.redo);
+  o.errAll=E;o.cardAll=C;o.redoAll=rdDueList().length;return o}
 let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
 function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
@@ -5698,7 +5708,7 @@ function iQueueCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C
   if(!tot){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Nada para revisar hoje: temas, cartões, erros e anotações estão em dia."}</p>`));return c}
   const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab,s1,sn])=>{const n=C[id],on=dayQ&&dayQ.ids[dayQ.i]===id,li=el(`<li class="${n?"":"done"}${on?" on":""}"><span class="iqn"></span><span class="iql"></span><button class="link" type="button">abrir</button></li>`);
     li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;
-    if(id==="revs"&&C.revAll>n){const x=el(`<span class="iqmore"></span>`);x.textContent=`as ${n} mais importantes de ${C.revAll}; as outras ficam para os próximos dias`;li.querySelector(".iql").appendChild(x)}li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+    {const all=C[{revs:"revAll",errs:"errAll",cards:"cardAll",redo:"redoAll"}[id]];if(n&&all>n){const x=el(`<span class="iqmore"></span>`);x.textContent=id==="revs"?`as ${n} mais importantes de ${all}; as outras ficam para os próximos dias`:`${n} de ${all} (o que cabe no tempo de hoje)`;li.querySelector(".iql").appendChild(x)}}li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
   const a=el(`<div class="btns"></div>`);
   if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
@@ -5874,7 +5884,7 @@ function goHelp(title){helpQ="";const i=$("#hq");if(i)i.value="";goSub("help");s
 function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
 
 function render(){
-  if(qAutoRev())persist();
+  if(qAutoRev())persist();rdExpire();
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
   renderAll();applyFull();sbApply();if(view==="notas"&&nTocRender.last)nTocRender(...nTocRender.last);foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
@@ -6126,7 +6136,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
     segRow("Subtópicos por tema","Quantos subtópicos entram nas revisões e nos pontos fracos. Tema novo vem inteiro até 6 subtópicos; maior que isso, em partes de 3 a 4 por dia (subtópico denso conta como dois).",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
   const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
-  pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%; abaixo de 65% encurta para 75%, abaixo de 50% para a metade. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
+  pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%. Acerto baixo não encurta: ele vira ponto fraco (questões), não revisão mais cedo. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
   {const A=dnAsk.all,n=dnPending().length,g=el(`<div class="grp" id="dnAllBox"><span class="glabel">Subtópicos densos</span><p class="gtext how">Denso conta como dois na parte do dia. O Claude pode sugerir quais são, nos temas com 4 ou mais subtópicos (${n?`${n} ainda sem sugestão`:"todos já sugeridos"}). Você corrige em cada tema, e a sua escolha nunca é trocada.</p></div>`);
     if(sampleFn&&!sampleOff&&n){const b=el(`<button class="btn" type="button" id="dnAll">Pedir sugestões ao Claude</button>`);b.disabled=!!(A&&A.st==="loading");b.onclick=dnSuggestAll;g.appendChild(b)}
     if(A&&A.msg){const m=el(`<p class="gstatus" id="dnAllMsg"></p>`);m.textContent=A.msg;g.appendChild(m)}pl.appendChild(g)}
@@ -6917,6 +6927,11 @@ function rdAdd(k,q,src,P){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&
 /* quando volta (antigos sem due: no dia seguinte ao erro) e o que acontece ao responder no Refazer */
 const rdDue=x=>x.due||fromNum(dnum(x.d)+RD_INT[0]);
 const rdDueList=()=>redo.filter(x=>BYKEY[x.k]&&rdDue(x)<=today());
+/* auditoria 26/10: questão que fica RD_EXP dias vencida sem ser feita sai sozinha (o Refazer não cresce sem fim); o aviso fica no cartão até ser visto */
+const RD_EXP=21;
+function rdExpire(){if(store&&!synced)return 0;const lim=fromNum(dnum(today())-RD_EXP),old=redo.filter(x=>rdDue(x)<lim);if(!old.length)return 0;old.forEach(x=>rdDel(x.id));
+  const n=(+lsGet("resid-rdexp","0")||0)+old.length;lsSet("resid-rdexp",String(n));return old.length}
+const rdStudied=k=>{const s=get(k);return !!(s.last||s.l>0||isIng(s))};
 function rdHit(x){const t=today();if(x.okd!==t){x.ok=(x.ok||0)+1;x.okd=t}if(x.ok>=RD_NEED){rdDel(x.id);return true}x.due=fromNum(dnum(t)+RD_INT[Math.min(x.ok,RD_INT.length-1)]);rdPut(x);return false}
 function rdMiss(x){x.n++;x.wr=(x.wr||0)+1;x.d=today();delete x.ok;delete x.okd;x.due=fromNum(dnum(today())+RD_INT[0]);rdPut(x)}
 let rdF={due:true,src:"all",rep:false};
@@ -6944,6 +6959,8 @@ function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filt
   c.querySelector(".todaydate").textContent=redo.length?`${dueN} para hoje · ${base.length} no total`:"";
   if(rdRun){if(twoCols())c.querySelector(".dhead").appendChild(fullBtn("rd"));c.appendChild(rdPlayer());
     if(twoCols())c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.rd?" · Esc sai da tela inteira":""}</p>`));return c}
+  {const n=+lsGet("resid-rdexp","0")||0;if(n){const m=el(`<p class="pnote" id="rdExpNote"><span></span> <button class="link" type="button">Entendi</button></p>`);
+    m.querySelector("span").textContent=`${n} ${n===1?"questão saiu":"questões saíram"} do Refazer por ficar${n===1?"":"em"} ${RD_EXP} dias vencida${n===1?"":"s"} sem ser feita${n===1?"":"s"} (o ponto, se importante, continua no caderno de erros ou volta quando você errar de novo).`;m.querySelector("button").onclick=()=>{lsSet("resid-rdexp",null);render()};c.appendChild(m)}}
   if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
   {const f=el(`<div class="rdfil"><div class="seg" role="group" aria-label="Quais"></div></div>`),sg=f.querySelector(".seg");
     [[true,`Para hoje (${dueN})`],[false,`Todas (${base.length})`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=v?"rdFDue":"rdFAll";b.textContent=l;b.setAttribute("aria-pressed",rdF.due===v);b.onclick=()=>{rdF.due=v;render()};sg.appendChild(b)});
@@ -7549,11 +7566,11 @@ function exAnswer(ex,i,l){const R=exRun,P=exPg(ex.id),old=P.a[i];if(old&&old.l==
   const sec=R&&R.shown?Math.min(1800,Math.max(1,(Date.now()-R.shown)/1000)):0;
   exChange(ex,i,(r,P)=>{P.a[i]={l,d:old?old.d:today(),s:old?old.s:Math.round(sec)}});
   if(!old&&sec)logPace(today(),1,sec);
-  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta)rdAdd(r.k,r.q,"exam");
+  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta&&rdStudied(r.k))rdAdd(r.k,r.q,"exam");
   P.i=i;exPSave(ex.id);commit()}
 function exFinish(ex){const P=exPg(ex.id),S=exScore(ex);
   if(!P.fin){P.fin=today();P.tries.push({d:today(),hit:S.hit,n:S.ans,s:Math.round(S.s)});
-    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta)rdAdd(r.k,r.q,"exam")})}
+    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta&&rdStudied(r.k))rdAdd(r.k,r.q,"exam")})}
   exPSave(ex.id);exRun={id:ex.id,view:"res",i:0,cad:{}};commit()}
 function exRestart(ex){const P=exPg(ex.id);for(const i in P.a){P.h[i]=[...(P.h[i]||[]),{l:P.a[i].l,d:P.a[i].d}].slice(-10)}P.a={};P.fin="";P.i=0;exPSave(ex.id)}
 /* gabarito: "1-A 2-C", "01. B", "Questão 3: D", "4 ANULADA" ou tabela (linha de números + linha de letras) → {número: letra | "X" (anulada)} */
@@ -8890,7 +8907,7 @@ const HELP=[
 ["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer. Residência e faculdade ficam numa lista só, por urgência: conteúdo da faculdade aparece com o selo **FAC**.
 - **Lembrei:** sobe um degrau. Se você lembrou depois de mais tempo que o previsto, o próximo intervalo é pelo menos o tempo que passou. **Difícil:** repete o mesmo intervalo. **Esqueci:** volta dois degraus (1 dia, se estiver no começo). Cada botão mostra em quantos dias a revisão volta.
 - **Questões contam como revisão:** com 5 ou mais questões de um tema no dia em que ele vence, a revisão é marcada sozinha pelo acerto (75% ou mais = Lembrei; 50 a 74% = Difícil; menos = Esqueci). A ordem das revisões é por importância: peso do tema × dias de atraso. Com mais de 20 revisões atrasadas o plano traz só 1 tema novo; com mais de 40, nenhum (dia de pôr em dia). Reler a anotação do tema faz parte da revisão: ela aparece dentro do cartão, com **Ver todas as anotações do tema**.
-- **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo; abaixo de 65% = mais curto; abaixo de 50% = metade. O tema mostra quando o intervalo foi ajustado. Desliga em Configurações.
+- **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo. Acerto baixo **não** encurta o intervalo: o tema vira ponto fraco (questões), para não ser cobrado em três lugares ao mesmo tempo.
 - **Não estudei este tema:** tira o tema das revisões e volta para "não iniciado" (questões, anotações e erros ficam). Escolher o nível **Não iniciado** dentro do tema faz o mesmo.
 - **Quando começa:** a primeira revisão é agendada quando o tema fica **Estudado**: ao marcar o último subtópico ou ao tocar em **Estudei hoje** (ou no nível Estudado). Enquanto está **Estudando**, não há revisão.
 - Desmarcou um subtópico logo depois de concluir? No mesmo dia, o tema volta para Estudando e a revisão é cancelada.
@@ -8934,7 +8951,7 @@ const HELP=[
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões. **Gabarito errado?** Depois de responder, toque em **O gabarito está errado?** e escolha a alternativa certa. Se for a que você marcou, a questão sai do Refazer e o erro vira acerto no tema; se veio de uma prova na íntegra, a prova é corrigida junto.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões. **Gabarito errado?** Depois de responder, toque em **O gabarito está errado?** e escolha a alternativa certa. Se for a que você marcou, a questão sai do Refazer e o erro vira acerto no tema; se veio de uma prova na íntegra, a prova é corrigida junto. Da prova na íntegra entram só as erradas de temas que você já estudou. Questão que fica **21 dias vencida** sem ser feita sai sozinha (o cartão avisa). Na fila do dia, o Refazer usa o tempo que sobra depois das revisões de temas, dos erros e dos cartões.
 - **Onde focar:** uma conta só, usada no simulado (fonte **Onde focar**), na ordem do gráfico por especialidade, na lista de **Seus temas nas questões** e nas Estatísticas: temas que mais caem na prova e onde o acerto está mais longe de 80% (temas sem questões contam como 60%).
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
@@ -8975,7 +8992,7 @@ const HELP=[
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
 - **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). A pista vem numa frase com **negrito** no que decide, e os **Dados decisivos** à parte; o **Ponto-chave** da questão fica num campo próprio; quando a alternativa que você marcou é parecida com a certa, o tipo já vem como **Confundi ou esqueci**. A questão inteira fica guardada no erro: na revisão, **Ver a questão completa** mostra o enunciado e as alternativas. Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
-- **Repetiu nos últimos 30 dias:** em **Onde melhorar › Temas com mais erros**, o selo marca temas com 2 ou mais erros nos últimos 30 dias. Sinal para voltar à teoria ou à anotação. Erro que virou cartão passa a ser revisado pelos cartões (não volta na revisão de erros), e questão levada do Refazer para o caderno sai do Refazer: cada questão tem uma agenda só.
+- **Repetiu nos últimos 30 dias:** em **Onde melhorar › Temas com mais erros**, o selo marca temas com 2 ou mais erros nos últimos 30 dias. Sinal para voltar à teoria ou à anotação. Erro que virou cartão passa a ser revisado pelos cartões (não volta na revisão de erros), e questão levada do Refazer para o caderno sai do Refazer: cada questão tem uma agenda só. **Erro formado:** acertou na revisão de 30 dias, o erro sai da revisão e fica no caderno ("Formado em…"); se você registrar outro erro no mesmo tema, ele volta.
 - **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. Os erros ficam só aqui, no caderno de erros, ligados ao tema (não são mais escritos na anotação; as antigas seções "Meus erros" das anotações foram trazidas para cá).
 - **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.

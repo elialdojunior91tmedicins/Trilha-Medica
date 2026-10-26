@@ -13,7 +13,7 @@ const out=await p.evaluate(([SC,N,SEED,seedSrc])=>{let seed=7;if(SEED){const mod
   for(let d=0;d<N;d++){dayOff=d;const T=today();const skip=(SC==="pausa"&&d>=40&&d<47)||(rnd()<0.08);const m=dayMin(dnum(T));
     const r={d,T,skip,m};
     if(!skip&&m>0){
-      qAutoRev();const C=qCounts();r.C=C;
+      qAutoRev();rdExpire();const C=qCounts();r.C=C;
       eDueList().slice(0,C.errs).forEach(e=>eAnswer(e,rnd()<.75));
       cdDue().forEach(x=>cdAnswer(x,rnd()<.85?3:1));
       rdDueList().slice(0,C.redo).forEach(x=>rnd()<.6?rdHit(x):rdMiss(x));

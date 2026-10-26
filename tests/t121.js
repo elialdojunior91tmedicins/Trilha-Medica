@@ -52,6 +52,18 @@ const A=await p.evaluate(()=>{const q={enunciado:"Caso X do refazer",alternativa
   return {n0,n,left:redo.filter(x=>x.q.enunciado==="Caso X do refazer").length,d0,d1}});
 ok(A.n===1&&A.left===0,"levar ao caderno de erros tira a questão do Refazer");
 ok(A.d0&&!A.d1,"erro que virou cartão sai da revisão de erros (revisado pelo cartão)");
+/* auditoria 26/10: Refazer expira, orçamento com revisões primeiro, erro formado, acerto baixo não encurta */
+const AU=await p.evaluate(()=>{const q={enunciado:"Velha",alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"B",comentario:"c"};rdAdd("CM-6",q,"gen");const x=redo.find(y=>y.q.enunciado==="Velha");x.due=fromNum(dnum(today())-30);
+  const n=rdExpire(),gone=!redo.some(y=>y.q.enunciado==="Velha");
+  const C=qCounts(),bud=qBudget(),usedRev=Math.min(C.revAll+((hist[today()]||{}).r||0),C.revCap)*MIN_EST.revs;
+  const e={id:"efm",k:"CM-8",w:"w",r:"r",t:"conceito",s:"s",d:today(),box:E_INT.length-1,due:today(),rev:4};errors.push(e);eAnswer(e,true);const fm=!!e.fm&&!eDueList().includes(e);
+  eNew("CM-8","outro","certo","conceito","s");const back=!e.fm;
+  const s0={step:2,last:today(),qt:20,qc:4,qd:{[today()]:[20,4]}};const lo=adaptF(s0);
+  return {n,gone,rev70:usedRev<=bud*QUEUE_REV+MIN_EST.revs*REV_DAY_MIN,fm,back,lo}});
+ok(AU.n>=1&&AU.gone,"questão 21+ dias vencida sem ser feita sai do Refazer");
+ok(AU.rev70,"orçamento: revisões de temas com até 70% do tempo da fila");
+ok(AU.fm&&AU.back,"erro acertado no degrau de 30 dias se forma (sai da revisão) e volta com um erro novo no tema");
+ok(AU.lo===1,"acerto baixo não encurta mais o intervalo da revisão");
 /* Início */
 await p.evaluate(()=>{setView("inicio")});await p.waitForTimeout(300);
 const I=await p.evaluate(()=>({tiles:[...document.querySelectorAll("#iBoard .itile .kl")].map(x=>x.textContent),stats:$("#iStats").classList.contains("ihid"),nav:$("#navExtra").textContent.trim(),
