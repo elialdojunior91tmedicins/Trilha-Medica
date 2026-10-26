@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=13aa2fc6">
+<link rel="stylesheet" href="site.css?v=355d70be">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=13aa2fc6"></script>
-<script src="bridge.js?v=13aa2fc6"></script>
+<script src="config.js?v=355d70be"></script>
+<script src="bridge.js?v=355d70be"></script>
 </head>
 <body>
 <script>
@@ -5687,9 +5687,9 @@ function trashCardEl(){trPurgeOld();const c=el(`<section class="card trash" id="
 const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
 /* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
-/* Lote 18: a fila começa pelas revisões dos temas (a parte mais importante, como no orçamento) e termina no plano do dia (tema novo, continuar, faculdade):
+/* Lote 18: a fila começa pelos erros (rápidos, para aquecer; escolha do usuário), depois as revisões dos temas, e termina no plano do dia (tema novo, continuar, faculdade):
    "Começar" percorre tudo em sequência */
-const QSTEPS=[["revs","Temas para revisar","tema","temas"],["errs","Erros","erro","erros"],["weak","Ponto fraco","questão","questões"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["plan","Estudar hoje (plano)","tema","temas"]];
+const QSTEPS=[["errs","Erros","erro","erros"],["revs","Temas para revisar","tema","temas"],["weak","Ponto fraco","questão","questões"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["plan","Estudar hoje (plano)","tema","temas"]];
 /* minutos estimados de cada parte da fila (mesma conta do freio de carga) */
 function qStepMin(id,C){if(id==="plan"){const P=ensurePlan();return planMinutes(P)}return Math.round((C[id]||0)*(id==="weak"?MIN_EST.redo:MIN_EST[id]||0))}
 const qTot=C=>C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs;
@@ -5769,7 +5769,7 @@ function iQueueCard(){const C=qCounts(),tot=qTot(C),all=tot+(C.plan||0),eve=isEv
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
   else if(all&&!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar</button>`);b.onclick=qStart;a.appendChild(b)}
   if(a.children.length)c.appendChild(a);
-  if(all)c.appendChild(el(`<p class="how">Começar percorre tudo na ordem: revisões dos temas (reler a anotação faz parte), erros, ponto fraco, questões para refazer, cartões e o plano. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
+  if(all)c.appendChild(el(`<p class="how">Começar percorre tudo na ordem: erros, revisões dos temas (reler a anotação faz parte), ponto fraco, questões para refazer, cartões e o plano. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
 function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
   if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
   const C=qCounts(),cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),nx=dayQ.ids.slice(dayQ.i+1).find(id=>C[id]),nxs=QSTEPS.find(s=>s[0]===nx);

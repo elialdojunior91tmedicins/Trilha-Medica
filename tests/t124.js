@@ -22,8 +22,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   /* 2. tempo em cada parte e cabe no dia */
   let r=await p.evaluate(()=>{const L=[...document.querySelectorAll('#iQueue .iqlist li')].map(li=>({s:li.dataset.step,t:li.querySelector('.iqt').textContent,n:li.querySelector('.iqn').textContent}));
     return {L,h:$("#iQueue h2").textContent,fit:($("#iQueue .iqfit")||{}).textContent||"",hd:$("#iQueue .todaydate").textContent}});
-  ok(r.h==="Fila do dia"&&r.L.map(x=>x.s).join()==="revs,errs,redo,cards,plan",name+": fila na ordem revisões, erros, refazer, cartões e plano ("+r.L.map(x=>x.s).join()+")");
-  ok(r.L.filter(x=>x.n!=="✓").every(x=>/^≈ /.test(x.t))&&/≈ 20 min/.test(r.L[0].t),name+": cada parte com o tempo estimado ("+r.L.map(x=>x.s+" "+x.t).join(" · ")+")");
+  ok(r.h==="Fila do dia"&&r.L.map(x=>x.s).join()==="errs,revs,redo,cards,plan",name+": fila na ordem erros, revisões, refazer, cartões e plano ("+r.L.map(x=>x.s).join()+")");
+  ok(r.L.filter(x=>x.n!=="✓").every(x=>/^≈ /.test(x.t))&&/≈ 20 min/.test(r.L[1].t),name+": cada parte com o tempo estimado ("+r.L.map(x=>x.s+" "+x.t).join(" · ")+")");
   ok(/Cabe no seu tempo de hoje|Passa ≈/.test(r.fit)&&/itens · ≈/.test(r.hd),name+": diz se cabe no tempo de hoje: "+r.fit);
   r=await p.evaluate(()=>{wpSetDay(null,wdOf(dnum(today())),60);render();return $("#iQueue .iqfit").textContent});
   ok(/^Passa ≈ .* do seu tempo de hoje \(1 ?h\)/.test(r),name+": com 1 h hoje, avisa que passa do tempo: "+r);
@@ -32,11 +32,11 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   ok(await p.evaluate(()=>$("#heroGo").textContent==="Começar →"&&!$("#iqGo")),name+": um botão Começar (na saudação)");
   await p.evaluate(()=>$("#heroGo").scrollIntoView({block:"center"}));await (mob?p.tap('#heroGo'):p.click('#heroGo'));await p.waitForTimeout(250);
   r=await p.evaluate(()=>({ids:dayQ&&dayQ.ids.join(),v:view}));
-  ok(r.ids==="revs,errs,cards,plan"&&r.v==="temas",name+": Começar abre as revisões e a fila vai até o plano ("+r.ids+")");
+  ok(r.ids==="errs,revs,cards,plan"&&r.v==="erros",name+": Começar abre os erros e a fila vai até o plano ("+r.ids+")");
   await p.evaluate(()=>{while(dayQ&&dayQ.ids[dayQ.i]!=="plan")qNext()});await p.waitForTimeout(300);
   r=await p.evaluate(()=>({v:view,on:document.querySelector('#qBar .qbt b').textContent,open:Object.keys(planOpen).some(k=>planOpen[k].v),fo:!!foRun}));
   ok(r.v==="inicio"&&r.open&&/4 de 4/.test(r.on),name+": o último passo abre o plano do dia (tema novo) "+JSON.stringify(r));
-  await p.evaluate(()=>{qStop();if(foRun){foRun=null;foSaveRun()}render()});
+  await p.evaluate(()=>{qStop();erRun=null;cdRun=null;if(foRun){foRun=null;foSaveRun()}render()});
   /* 4. semana da prova: cartões, erros e Refazer dos conteúdos dela primeiro */
   r=await p.evaluate(()=>{const t=dnum(today());fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"NCS",items:["T:CM-30"],sps:[]}],provas:[{id:"p",discId:"d",name:"D2",date:fromNum(t+3),items:["T:CM-30"],done:[]}],own:{}};
     saveFac();render();const pw=($("#iQueue .iqpw")||{}).textContent||"",cd=cdDue().map(x=>x.k),m=[...document.querySelectorAll('#iQueue .iqlist li')].filter(li=>/da prova/.test(li.textContent)).map(li=>li.dataset.step);

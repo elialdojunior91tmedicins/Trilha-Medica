@@ -57,7 +57,7 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  ok(await p.evaluate(()=>{const t=document.querySelector('#iQueue').textContent;return /Erros/.test(t)&&/Cartões/.test(t)}),name+": fila mostra erros e cartões");
  await p.screenshot({path:`inicio-${name}.png`,fullPage:false});
  ok(await p.evaluate(()=>!document.querySelector('#iqGo')),name+": a fila começa pela saudação (sem botão repetido)");await p.evaluate(()=>document.querySelector('#heroGo').scrollIntoView({block:"center"}));await click('#heroGo');await p.waitForTimeout(250);
- ok(await p.evaluate(()=>dayQ&&dayQ.ids[0]==="revs"?view==="temas":view==="erros"&&!!erRun),name+": fila começa pelas revisões dos temas (ou pelos erros)");
+ ok(await p.evaluate(()=>view==="erros"&&!!erRun),name+": fila começa pelos erros");
  await p.evaluate(()=>{while(dayQ&&dayQ.ids[dayQ.i]!=="errs")qNext()});await p.waitForTimeout(250);ok(await p.evaluate(()=>view==="erros"&&!!erRun),name+": passo dos erros abre a revisão dos erros");ok(await vis(p,'#qBar'),name+": barra da fila aparece");
  const bar=await p.evaluate(()=>{const r=document.querySelector('#qBar').getBoundingClientRect(),n=document.querySelector('.appnav');const nr=n&&n.offsetParent!==null?n.getBoundingClientRect():null;return {b:r.bottom,h:innerHeight,overlap:nr?(r.bottom>nr.top+1&&r.top<nr.bottom):false,w:r.width}});
  ok(bar.b<=bar.h+1&&!bar.overlap,name+": barra não cobre a navegação "+JSON.stringify(bar));await p.screenshot({path:`qbar-${name}.png`});
