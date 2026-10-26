@@ -26,8 +26,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  if(name==="fone"||name==="note")await p.screenshot({path:`t95-res-${name}.png`});
  /* placar: Revisões */
  await p.evaluate(()=>{backStack=[];setView("inicio")});await p.waitForTimeout(150);
- await p.evaluate(()=>{const t=[...document.querySelectorAll('#iBoard .itile')].find(x=>/Revisões/.test(x.querySelector('.kl').textContent));t.id="__tile"});await click('#__tile');await p.waitForTimeout(250);
- ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector('#viewTemas .card.revs').offsetParent),name+": o placar Revisões também leva à Residência");
+ ok(await p.evaluate(()=>![...document.querySelectorAll('#iBoard .itile .kl')].some(x=>/Revisões/.test(x.textContent))),name+": placar sem Revisões (o número fica na fila; Lote 17)");
  /* O que fazer agora: revisão atrasada abre o cartão do tema */
  await p.evaluate(()=>{backStack=[];nowSkip=0;setView("inicio")});await p.waitForTimeout(150);
  await p.evaluate(()=>{startStep(nextSteps()[0])});await p.waitForTimeout(350);

@@ -33,7 +33,7 @@ await p.tap('#foAddB');await p.fill('#foAddM','45');await p.tap('.foadd .btn');a
 // estatísticas
 const k=await p.$$eval('#foBody .kpi b',a=>a.map(x=>x.textContent));ok(k[0]==="1h20"&&k[2]==="3","hoje e sessões: "+k.join("|"));
 const mats=await p.$$eval('.fomats .vl',a=>a.map(x=>x.textContent));ok(mats.some(x=>/Hematologia/.test(x)),"tempo por matéria: "+mats.join("|"));
-await p.selectOption('#foGoal','60');await p.waitForTimeout(200);ok(await vis('.fogl'),"linha da meta");
+await p.evaluate(()=>{ui.prefs.hgoal=420;ui.prefs.wday=[60,60,60,60,60,60,60];ui.prefs.wplans={};saveUI();render()});await p.waitForTimeout(200);ok(await vis('.fogl'),"linha da meta");
 ok(await p.evaluate(()=>window.__store["data/users/u1/prefs"]?.prefs?.fgoal===60||true),"meta salva");
 await p.waitForTimeout(800);ok(await p.evaluate(()=>Object.keys(window.__store).filter(k=>k.includes("/progress/focus/")).length===3),"sessões gravadas na conta");
 // excluir

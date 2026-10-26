@@ -690,7 +690,7 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .dpin[aria-pressed="true"]{color:var(--l1);border-color:var(--l1)}
 .nrevbox{display:flex;flex-direction:column;gap:20px}
 .ntoday .ncard.nread{opacity:.7}.nreadb[aria-pressed="true"]{color:var(--good);border-color:var(--good)}
-.nwithout{margin:0}.erep{display:inline-block;margin-left:8px;font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:var(--track);color:var(--warn);font-weight:600}.reread{display:flex;flex-direction:column;gap:6px;margin:4px 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.nwithout{margin:0}.erepb{display:inline-block;margin-left:8px;font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:var(--track);color:var(--warn);font-weight:600}.reread{display:flex;flex-direction:column;gap:6px;margin:4px 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
 .rrhead{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}.rrhead .rrw{font-size:12px;color:var(--muted);flex:1}
 .rrhead .pchev{margin-left:auto}.reread .rrall{align-self:flex-start;font-size:13px}.reread .mdview{max-height:none}.nnoline{margin:4px 2px 0}.nwithout .link{font-size:.85rem}
 .ncover{margin:0}.ncover .link{font-size:.88rem}
@@ -1358,6 +1358,7 @@ html[data-layout="phone"] .herobtns{margin-top:8px}html[data-layout="phone"] .he
 #iBoard{order:-1;gap:14px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{grid-column:1/-1}
 .itiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.iqmore{display:block;font-size:11.5px;font-weight:400;color:var(--muted)}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
 .itile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg);border:1px solid transparent;border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .itile:hover{border-color:var(--accent)}
@@ -3797,7 +3798,7 @@ const revPri=(a,b)=>revScore(b)-revScore(a)||dueIn(get(a.key))-dueIn(get(b.key))
 const REV_BRAKE1=20,REV_BRAKE2=40;
 function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
 /* minutos estimados: fila do dia e plano */
-const MIN_EST={revs:8,errs:2,redo:3,cards:.5,"r-new":45,"r-cont":45,"r-own":45,"r-fac":45,"r-weak":15,"r-pfr":20};
+const MIN_EST={revs:5,errs:1.5,redo:2,cards:.25,"r-new":40,"r-cont":40,"r-own":40,"r-fac":40,"r-weak":10,"r-pfr":15};
 function qMinutes(C){return Math.round(["revs","errs","redo","cards"].reduce((a,id)=>a+(C[id]||0)*MIN_EST[id],0))}
 function planMinutes(P){return P.items.filter(x=>!itemDone(x)).reduce((a,x)=>a+(MIN_EST[x.cls]||30),0)}
 
@@ -3924,7 +3925,7 @@ function renderRevs(){
   const CRv=examCrunch(),allDue=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))),paused=CRv.active?allDue.filter(i=>!i.own):[],POOL=[...ALL,...FAC_ITEMS],due=allDue.filter(i=>!paused.includes(i)).sort(revPri);
   const late=due.filter(i=>dueIn(get(i.key))<0).length;
   const t=dnum(today()),up=POOL.filter(i=>{const d=dueIn(get(i.key));return d!==null&&d>0&&d<=7}).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key)));
-  $("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
+  const QC=qCounts();$("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${QC.revs<due.length?` · cabem hoje ${QC.revs}`:late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
   const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
@@ -5547,9 +5548,11 @@ function renderErros(){
     const tw=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Temas com mais erros</span><ol class="toplist"></ol></div>`);
     const RP=new Set(eRepeat().tem.map(x=>x[0]));
     top.forEach(([k,c])=>{const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=BYKEY[k].t;
-      if(RP.has(k))li.querySelector("span").appendChild(el(`<em class="erep" title="2 ou mais erros neste tema nos últimos 30 dias">repetiu nos últimos 30 dias</em>`));
+      if(RP.has(k))li.querySelector("span").after(el(`<em class="erepb" title="2 ou mais erros neste tema nos últimos 30 dias">repetiu nos últimos 30 dias</em>`));
       li.querySelector("button").onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};tw.querySelector("ol").appendChild(li)});
     if(top.length)ins.appendChild(tw);
+    {const st=eRepeat().stub;if(st.length){const l=el(`<p class="how etmline" id="eTeim"><span></span> <button class="link" type="button">ver primeiro</button></p>`);
+      l.querySelector("span").textContent=`${st.length} ${st.length===1?"erro teimoso":"erros teimosos"} (você tocou “Ainda erraria” 2 vezes ou mais): sinal para voltar à teoria.`;l.querySelector("button").onclick=()=>{eOrder="miss";render();const x=$("#elist");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})};ins.appendChild(l)}}
     const ps={};AE.forEach(e=>{const it=BYKEY[e.k];if(it){const g=spKey(it);ps[g]=(ps[g]||0)+1}});
     const ts=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Especialidades com mais erros</span><ol class="toplist"></ol></div>`);
     Object.entries(ps).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([g,c])=>{const [ac,sp]=[g.slice(0,g.indexOf(":")),g.slice(g.indexOf(":")+1)];
@@ -5643,7 +5646,13 @@ const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
 /* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
 const QSTEPS=[["errs","Erros","erro","erros"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["revs","Temas para revisar","tema","temas"]];
-function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0};return {errs:eDueList().length,redo:Math.min(RD_DAY,rdDueList().length),cards:cdDue().length,notes:0,revs:dueCount()}}
+/* Lote 17: a fila do dia cabe no tempo do dia. Ela usa até metade do tempo marcado (mín. 20 min); as revisões de temas entram até onde couber
+   (as mais importantes, pela ordem peso × atraso); as outras continuam pendentes e voltam nos próximos dias (e o freio segura os temas novos) */
+const QUEUE_SHARE=.5,QUEUE_MIN=20,REV_DAY_MIN=3;
+function revCapToday(o){const m=dayMin(dnum(today()));if(m<=0)return 0;const bud=Math.max(QUEUE_MIN,Math.round(Math.min(m,240)*QUEUE_SHARE)),rest=bud-(o.errs*MIN_EST.errs+o.redo*MIN_EST.redo+o.cards*MIN_EST.cards);
+  return Math.max(REV_DAY_MIN,Math.floor(rest/MIN_EST.revs))}
+function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0,revAll:0};const o={errs:eDueList().length,redo:Math.min(RD_DAY,rdDueList().length),cards:cdDue().length,notes:0},all=dueCount();
+  const cap=revCapToday(o),done=(hist[today()]||{}).r||0;o.revAll=all;o.revCap=cap;o.revs=Math.min(all,Math.max(0,cap-done));return o}
 let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
 function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
@@ -5665,7 +5674,8 @@ function iQueueCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C
   if(qMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=qMsg;c.appendChild(m);qMsg=""}
   if(!tot){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Nada para revisar hoje: temas, cartões, erros e anotações estão em dia."}</p>`));return c}
   const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab,s1,sn])=>{const n=C[id],on=dayQ&&dayQ.ids[dayQ.i]===id,li=el(`<li class="${n?"":"done"}${on?" on":""}"><span class="iqn"></span><span class="iql"></span><button class="link" type="button">abrir</button></li>`);
-    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;
+    if(id==="revs"&&C.revAll>n){const x=el(`<span class="iqmore"></span>`);x.textContent=`as ${n} mais importantes de ${C.revAll}; as outras ficam para os próximos dias`;li.querySelector(".iql").appendChild(x)}li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
   const a=el(`<div class="btns"></div>`);
   if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
@@ -6994,8 +7004,9 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
   return w}
 /* ----- onde ganhar pontos: incidência na prova × o quanto falta para 80% de acerto ----- */
 /* "onde focar" (Lote 17): uma conta só para o simulado, o gráfico por especialidade e as Estatísticas.
-   Peso² × distância de 80% no acerto estimado ((acertos+3)/(questões+5): poucos dados puxam para ~60%). Tema sem questões conta como 60%. */
-function focusScore(it){const s=get(it.key);if(it.own)return 0;const w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return w*w*Math.max(0,0.8-est)}
+   Peso² × distância de 80% no acerto estimado ((acertos+3)/(questões+5): poucos dados puxam para ~60%). Tema estudado sem questões conta como 60%; tema nunca visto não entra. */
+function focusScore(it){const s=get(it.key);if(it.own||!(s.qt||s.last||s.l>0))return 0;// tema nunca estudado nem praticado é assunto do plano (tema novo), não de "onde focar"
+  const w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return w*w*Math.max(0,0.8-est)}
 function focusRank(U){return (U||ALL).filter(i=>!i.own).map(it=>({it,sc:focusScore(it)})).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||wOf(b.it)-wOf(a.it)||a.it.num-b.it.num).map(r=>r.it)}
 function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
   const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);

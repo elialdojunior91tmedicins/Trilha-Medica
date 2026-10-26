@@ -34,9 +34,8 @@ ok(!errs.length,"celular sem erros JS "+errs.join("|"));await ctx.close();
 ctx=await b.newContext({viewport:{width:1366,height:768}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
 p=await ctx.newPage();errs=[];p.on('pageerror',e=>errs.push(e.message));await go();
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"Cardio",items:["T:CM-4"]}],provas:[{id:"p",discId:"d",name:"P2",date:D(5),items:["T:CM-4"],done:[]}],own:{}};saveFac();setView("erros")});
-await p.mouse.move(800,400);await p.mouse.move(30,300,{steps:5});await p.waitForTimeout(300);await p.click('#navExtra button:has-text("Próxima prova")');await p.waitForTimeout(150);
-ok(await p.evaluate(()=>view==="fac"&&facProvaOpen.has("p")&&!!document.getElementById("fp-p")),"atalho Próxima prova abre a prova na Faculdade");
-await p.click('#navExtra button:has-text("Revisões")');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector("#viewTemas .card.revs").offsetParent&&!document.querySelector("#viewInicio .card.revs")),"atalho Revisões vai para a Residência");await p.evaluate(()=>setView("temas"));
+// Lote 17: a barra lateral ficou só com a navegação (sem os atalhos Próxima prova e Revisões)
+ok(await p.evaluate(()=>{render();return !document.querySelector('#navExtra button')}),"barra lateral sem os resumos do dia");await p.evaluate(()=>{goRevs()});await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="temas"&&!!document.querySelector("#viewTemas .card.revs").offsetParent&&!document.querySelector("#viewInicio .card.revs")),"revisões ficam na Residência");await p.evaluate(()=>setView("temas"));
 ok(await p.evaluate(()=>getComputedStyle(document.getElementById("tSeg")).display==="none"&&!!document.querySelector(".revs").offsetParent&&!!document.querySelector("#areas").offsetParent),"computador mostra tudo (sem seções do celular)");
 ok(!errs.length,"computador sem erros JS "+errs.join("|"));await ctx.close();
 // ===== tablet =====

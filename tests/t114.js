@@ -7,7 +7,7 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["tablet",820,1180,true],["no
   await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));
   await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   /* 1. tema repaginado: Estudo */
-  await p.evaluate(()=>{upd("CM-1",x=>{x.last=fromNum(dnum(today())-10);x.step=0;x.qc=6;x.qt=10;x.qd={[today()]:[10,6]}});commit();detTab["CM-1"]="estudo";openTopic("CM-1")});await p.waitForTimeout(300);
+  await p.evaluate(()=>{upd("CM-1",x=>{x.last=fromNum(dnum(today())-10);x.step=0;x.qc=6;x.qt=10;x.qd={[fromNum(dnum(today())-1)]:[10,6]}});commit();detTab["CM-1"]="estudo";openTopic("CM-1")});await p.waitForTimeout(300);
   const E=await p.evaluate(()=>{const d=document.querySelector('#t-CM-1 .detail'),vis=[...d.children].filter(c=>!c.hidden&&c.dataset.tab==="estudo");
     return {order:vis.map(c=>c.classList.contains("drev")?"rev":c.classList.contains("dsubs")?"subs":c.classList.contains("dduo")?"duo":"x").join(),
       st:d.querySelector('.drev').dataset.st,pill:d.querySelector('.drev .dpill').textContent,next:!!d.querySelector('.drev .dnext b'),pct:d.querySelector('.dsubs .dpct').textContent,

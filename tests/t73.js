@@ -49,7 +49,7 @@ else ok(!(await p.evaluate(()=>{const b=document.getElementById("foFullB");retur
 await p.evaluate(()=>{foDiscard()});await p.waitForTimeout(80);
 // 7 e 8
 ok(await p.$$eval('.fohm > i',a=>a.length)===84,name+": mapa com 84 dias");ok(/Seu melhor horário/.test(await txt('.foheat')),name+": melhor horário");
-await p.selectOption('#foWGoal','600');await p.waitForTimeout(80);ok(/na meta da semana/.test(await txt('.foweekx')),name+": meta semanal");ok(/Recorde semanal|Novo recorde/.test(await txt('.foweekx')),name+": recorde semanal");
+await p.evaluate(()=>{ui.prefs.hgoal=600;saveUI();render()});await p.waitForTimeout(80);ok(/na meta da semana/.test(await txt('.foweekx')),name+": meta semanal");ok(/Recorde semanal|Novo recorde/.test(await txt('.foweekx')),name+": recorde semanal");
 ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
 await p.screenshot({path:`foco3-${name}.png`,fullPage:false});
 await ctx.close()}

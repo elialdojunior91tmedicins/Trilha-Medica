@@ -9,9 +9,9 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,las
   sampleFn.json=async()=>[{pergunta:"Qual o critério de HAS no consultório?",resposta:"PA ≥ 140/90 em duas medidas."},{pergunta:"IECA na gestação?",resposta:"Contraindicado."},{pergunta:"",resposta:"x"}];
   commit();setView("notas")});await seg("revisar");
 // 1. reler hoje
-const tt=await p.$$eval('.ntoday .ncard .etopic',a=>a.map(x=>x.textContent));ok(tt.length===1&&tt[0]===await p.evaluate(()=>BYKEY["CM-1"].t),tag+": reler hoje mostra a revisão com anotação");
-ok(/Sem anotação:/.test(await p.$eval('.ntoday',x=>x.textContent)),tag+": lista os temas de hoje sem anotação");
-await click('.ntoday .nreadb');await p.waitForTimeout(150);ok(await p.evaluate(()=>get("CM-1").nread===today())&&/1 de 1 relidas/.test(await p.$eval('.ntoday .todaydate',x=>x.textContent)),tag+": marcar como relida");
+// Lote 17: reler faz parte da revisão do tema (sem o cartão Para reler hoje)
+ok(await p.evaluate(()=>!document.querySelector('.ntoday')&&/Reler a anotação/.test(rereadEl("CM-1").textContent)&&/Sem anotação neste tema/.test(rereadEl("CM-9x"in BYKEY?"CM-9x":"CM-2").textContent)),tag+": reler dentro da revisão; tema sem anotação oferece escrever");
+
 // 2. pegadinhas
 await seg("pegadinhas");const pg=await p.$$eval('.npeg .pglist li',a=>a.map(x=>x.className+":"+x.textContent));
 ok(pg.length===3&&pg.some(x=>/peg:MAPA/.test(x))&&pg.some(x=>/dest:< 130\/80/.test(x))&&pg.some(x=>/peg:Não usar IECA/.test(x)),tag+": pegadinhas e destaques: "+pg.join(" | "));

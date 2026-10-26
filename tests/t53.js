@@ -30,11 +30,9 @@ await click('#rdNext');await p.waitForTimeout(150);await click('.rdplay .btn.pri
 await click('#rdGo');await p.waitForTimeout(150);await click('.rdplay .alt:nth-child(2)');await p.waitForTimeout(200);ok(await p.evaluate(()=>redo.length===1&&redo[0].ok===1&&redo[0].due>today()),tag+": acertou: volta em 3 dias (sai com 2 acertos em dias diferentes)");
 await click('#rdNext');await p.waitForTimeout(150);ok(/1 de 1/.test(await p.$eval('.rdplay .verdict',x=>x.textContent)),tag+": resultado final");await click('.rdplay .btn.primary');
 // onde ganhar pontos
-const g=await p.$$eval('.qglist li',a=>a.length);ok(g===6,tag+": onde ganhar pontos lista 6 ("+g+")");
-const first=await p.$eval('.qglist li .qgt',x=>x.textContent);ok(await p.evaluate(t=>{const it=ALL.find(i=>i.t===t);return wOf(it)===3},first),tag+": primeiro é de incidência muito alta: "+first);
-await p.evaluate(()=>{qArea="CM";qSpec="Cardiologia";render()});await p.waitForTimeout(150);ok(await p.$$eval('.qglist .qgs',a=>a.every(x=>x.textContent.includes("Cardiologia"))),tag+": segue os filtros");
+const g=await p.evaluate(()=>({card:!!document.querySelector('.qgain'),n:focusRank().length}));ok(!g.card&&g.n>=1,tag+": Onde ganhar pontos virou a conta única Onde focar, sem cartão próprio "+JSON.stringify(g));
+ok(await p.evaluate(()=>{const f=focusRank();return f.length&&f.every((it,i)=>i===0||focusScore(f[i-1])>=focusScore(it))}),tag+": Onde focar em ordem de pontuação");
 await p.evaluate(()=>{qArea="all";qSpec="all";render()});
-await click('.qglist li:first-child .mini');await p.waitForTimeout(200);ok(await p.evaluate(()=>!!qReg&&!!qReg.k),tag+": Registrar a partir da prioridade");
 // evolução
 await p.evaluate(()=>setQSeg("resumo"));await p.waitForTimeout(100);
 ok(await p.$$eval('#qEvo .qebar',a=>a.length)>=1,tag+": gráfico de evolução");

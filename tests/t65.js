@@ -31,8 +31,8 @@ const ne=await p.evaluate(()=>{const e=errors[errors.length-1];return {...e,dd:d
 ok(/Salvo no caderno/.test(await p.$eval('#eReg',x=>x.textContent)),tag+": confirmação e segue no mesmo tema");
 await click('#eReg .dhead .link');
 // 3. repetidos + gráfico
-ok(await p.evaluate(()=>!!document.querySelector('.erep')),tag+": cartão erros que se repetem");
-const rep=await p.$eval('.erep',x=>x.textContent);ok(/2 erros/.test(rep)||/3 erros/.test(rep),tag+": tema repetido");ok(/ainda erraria" 3×/.test(rep)||/ainda erraria" 4×/.test(rep),tag+": erro teimoso");
+// Lote 17: o cartão "Erros que se repetem" virou o selo em Onde melhorar e a linha dos teimosos
+ok(await p.evaluate(()=>!document.querySelector('.erep')&&!!document.querySelector('.erepb')),tag+": tema repetido = selo em Onde melhorar");ok(/erros? teimosos?/.test(await p.$eval('#eTeim',x=>x.textContent)),tag+": erro teimoso = linha em Onde melhorar");
 ok(await p.$$eval('.ewk .ewcol',a=>a.length)===8,tag+": gráfico 8 semanas");
 // 4. cartão e anotação
 await p.evaluate(()=>{eOrder="new";render()});

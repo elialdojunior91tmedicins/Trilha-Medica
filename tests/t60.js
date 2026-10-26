@@ -6,7 +6,7 @@ const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.go
 const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";const seg=async s=>{if(mob)await p.evaluate(s=>{tSeg=s;render()},s);await p.waitForTimeout(120)};
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,last:D(-1),step:0}};commit();setView("temas")});await seg("hoje");
 const before=await p.evaluate(()=>JSON.stringify(state)+today());
-await click('#weekBox summary');await p.waitForTimeout(300);
+await p.evaluate(()=>{if(typeof tSeg!=='undefined'&&innerWidth<600){tSeg='rev';render()}const s=document.querySelector('#agWeek summary');s.scrollIntoView({block:'center'})});await click('#agWeek summary');await p.waitForTimeout(300);
 const rows=await p.$$eval('.pwlist li',a=>a.map(x=>x.textContent));ok(rows.length===6,tag+": prévia com 6 dias");
 const [WK,TD]=await p.evaluate(()=>[weekPreview().flatMap(d=>d.items.map(x=>({k:x.k,cls:x.cls}))),ensurePlan().items.map(x=>x.k)]);const keys=WK.filter(x=>x.cls!=="r-cont").map(x=>x.k);
 ok(new Set(keys).size===keys.length&&WK.length>=15&&WK.filter(x=>x.cls==="r-cont").every(x=>WK.some(y=>y.k===x.k&&y.cls!=="r-cont")||TD.includes(x.k)),tag+": temas novos diferentes a cada dia; repetem só para continuar a próxima parte ("+WK.length+")");

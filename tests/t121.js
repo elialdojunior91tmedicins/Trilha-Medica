@@ -68,7 +68,7 @@ ok(await p.evaluate(()=>{const p0={...ui.prefs};delete p0.hgoal;p0.fwgoal=900;re
 const F=await p.evaluate(()=>({src:SIM_SRC.map(x=>x[0]),gain:!!document.querySelector(".qgain")}));
 ok(!F.src.includes("weak")&&F.src.includes("gain"),"simulado: Pontos fracos e Onde ganhar pontos viram uma fonte só (Onde focar)");
 const E=await p.evaluate(()=>{const t=today();["e1","e2","e3"].forEach((id,i)=>errors.push({id,k:"CM-7",w:"w",r:"r",t:"conceito",s:"s",d:t,due:t}));setView("erros");render();
-  return {rep:/Erros que se repetem/.test($("#viewErros").textContent),selo:[...document.querySelectorAll(".erep")].length}});
+  return {rep:/Erros que se repetem/.test($("#viewErros").textContent),selo:[...document.querySelectorAll(".erepb")].length}});
 ok(!E.rep&&E.selo>=1,"Erros: sem o cartão Erros que se repetem; selo repetiu nos últimos 30 dias em Onde melhorar");
 const Q=await p.evaluate(()=>{ALL.slice(0,30).forEach((it,i)=>upd(it.key,x=>addQ(x,10,3+(i%6),today())));setView("quest");setQSeg("temas");render();
   return {rows:document.querySelectorAll("#qlistT>.qrow").length,more:!!$("#qAllT"),cols:getComputedStyle($("#qlistT")).gridTemplateColumns.split(" ").length}});
