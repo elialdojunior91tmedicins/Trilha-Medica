@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=c0f0f292">
+<link rel="stylesheet" href="site.css?v=13aa2fc6">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=c0f0f292"></script>
-<script src="bridge.js?v=c0f0f292"></script>
+<script src="config.js?v=13aa2fc6"></script>
+<script src="bridge.js?v=13aa2fc6"></script>
 </head>
 <body>
 <script>
@@ -1378,10 +1378,19 @@ html[data-layout="phone"] .herobtns{margin-top:8px}html[data-layout="phone"] .he
 .ihome .icol{display:contents}
 .islot:empty{display:none}
 #iProva{order:1}#iToday{order:2}#iStats{order:4}
-#iBoard{order:-1;gap:14px}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{grid-column:1/-1}
+#iBoard{gap:14px}
 .itiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .iqmore{display:block;font-size:11.5px;font-weight:400;color:var(--muted)}
+.iqt{font:500 12.5px var(--mono);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.iqlist li{grid-template-columns:2.4rem minmax(0,1fr) auto auto}
+.iqlist li.plan{border-top:1px dashed var(--line);border-radius:0 0 10px 10px}
+.iqfit{margin:10px 0 0;font-size:13.5px;color:var(--muted)}.iqfit b{color:var(--ink)}.iqfit.over b{color:var(--warn)}
+.iqpw{margin:0 0 10px;padding:8px 12px;border-left:3px solid var(--gold);background:var(--bg);border-radius:0 8px 8px 0;font-size:13.5px}
+.iqday{margin:12px 0 0;display:flex;flex-direction:column;gap:8px}.iqday .iqdh{font:600 12.5px var(--body);color:var(--muted);margin:0}
+.iqdone{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}.iqdone b{font:500 1rem var(--mono);margin-right:3px;font-variant-numeric:tabular-nums}
+.iqlater{margin:0;padding:0 0 0 12px;border-left:3px solid var(--line);font-size:13.5px;color:var(--muted);list-style:none;display:flex;flex-direction:column;gap:3px}
+html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) auto;row-gap:2px}html[data-layout="phone"] .iqlist li .iqt{grid-column:2;grid-row:2}
+.wpprev{margin:0 0 12px}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
 .itile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg);border:1px solid transparent;border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .itile:hover{border-color:var(--accent)}
@@ -2092,9 +2101,8 @@ html[data-layout="tablet"] .nmgrab{display:none}
   <div id="viewInicio" class="wrap ihome" style="width:100%">
     <div class="islot inoticebox" id="iNotice"></div>
     <section class="card ihero" id="iHero" aria-label="Saudação do dia"></section>
-    <section class="card iboard" id="iBoard" aria-label="Seu dia"></section>
     <div class="icol icol1"><div class="islot" id="iQueue"></div><div class="islot" id="iToday"></div></div>
-    <div class="icol icol2"><div class="islot" id="iWeek"></div><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="icol icol2"><section class="card iboard" id="iBoard" aria-label="Seu dia"></section><div class="islot" id="iWeek"></div><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
     <div class="islot icustbox" id="iCust"></div>
   </div>
 
@@ -5400,7 +5408,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
   c.appendChild(el(`<p class="gtext qrdsum">${Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([g,n])=>`<span><b>${n}</b> ${esc(g)}</span>`).join("")}</p>`));
   const n=Math.min(due.length,15),go=el(`<button class="btn primary" type="button" id="erGo"></button>`);go.textContent=`Revisar ${n} ${n===1?"erro":"erros"}`;
   // os mais atrasados primeiro; dentro do mesmo dia, embaralhados
-  go.onclick=()=>{erRun={ids:shuffle(due).sort((a,b)=>eDue(a)<eDue(b)?-1:eDue(a)>eDue(b)?1:0).slice(0,15).map(e=>e.id),i:0,show:false,ok:0,done:0};render();const h=$("#erh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};c.appendChild(go);
+  go.onclick=()=>{const K=pwKeys();erRun={ids:shuffle(due).sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(eDue(a)<eDue(b)?-1:eDue(a)>eDue(b)?1:0)).slice(0,15).map(e=>e.id),i:0,show:false,ok:0,done:0};render();const h=$("#erh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};c.appendChild(go);
   c.appendChild(el(`<p class="how">Você vê o que errou, tenta lembrar o certo e só então abre. Já sabe: volta em 3, 7, 15 e 30 dias. Ainda erraria: volta amanhã.</p>`));return c}
 /* ----- erros que se repetem (últimos 30 dias) ----- */
 function eRepeat(){const t=dnum(today()),by={};errors.forEach(e=>{if(BYKEY[e.k]&&!e.arch&&t-dnum(e.d)<=30)(by[e.k]=by[e.k]||[]).push(e)});
@@ -5679,7 +5687,15 @@ function trashCardEl(){trPurgeOld();const c=el(`<section class="card trash" id="
 const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
 /* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
-const QSTEPS=[["errs","Erros","erro","erros"],["weak","Ponto fraco","questão","questões"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["revs","Temas para revisar","tema","temas"]];
+/* Lote 18: a fila começa pelas revisões dos temas (a parte mais importante, como no orçamento) e termina no plano do dia (tema novo, continuar, faculdade):
+   "Começar" percorre tudo em sequência */
+const QSTEPS=[["revs","Temas para revisar","tema","temas"],["errs","Erros","erro","erros"],["weak","Ponto fraco","questão","questões"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["plan","Estudar hoje (plano)","tema","temas"]];
+/* minutos estimados de cada parte da fila (mesma conta do freio de carga) */
+function qStepMin(id,C){if(id==="plan"){const P=ensurePlan();return planMinutes(P)}return Math.round((C[id]||0)*(id==="weak"?MIN_EST.redo:MIN_EST[id]||0))}
+const qTot=C=>C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs;
+/* semana da prova da faculdade: cartões, erros e Refazer dos conteúdos dela vêm primeiro */
+function pwKeys(){const P=provaWeek();return P.length?new Set(topicKeysOf(P.flatMap(p=>p.items))):null}
+const pwFirst=(K,kOf)=>K?(a,b)=>(K.has(kOf(a))?0:1)-(K.has(kOf(b))?0:1):()=>0;
 /* Lote 17: a fila do dia cabe no tempo do dia. Ela usa até metade do tempo marcado (mín. 20 min); as revisões de temas entram até onde couber
    (as mais importantes, pela ordem peso × atraso); as outras continuam pendentes e voltam nos próximos dias (e o freio segura os temas novos) */
 const QUEUE_SHARE=.5,QUEUE_MIN=20,REV_DAY_MIN=3;
@@ -5687,18 +5703,19 @@ const QUEUE_SHARE=.5,QUEUE_MIN=20,REV_DAY_MIN=3;
 const QUEUE_REV=.7;
 function qBudget(){const m=dayMin(dnum(today()));return m<=0?0:Math.max(QUEUE_MIN,Math.round(Math.min(m,240)*QUEUE_SHARE))}
 function revCapToday(){const b=qBudget();return b?Math.max(REV_DAY_MIN,Math.floor(b*QUEUE_REV/MIN_EST.revs)):0}
-function qCounts(){if(isOffDay())return {errs:0,weak:0,redo:0,cards:0,notes:0,revs:0,revAll:0};const all=dueCount(),cap=revCapToday(),done=(hist[today()]||{}).r||0,o={notes:0};
+function qCounts(){if(isOffDay())return {errs:0,weak:0,redo:0,cards:0,notes:0,revs:0,revAll:0,plan:0};const all=dueCount(),cap=revCapToday(),done=(hist[today()]||{}).r||0,o={notes:0};
   o.revAll=all;o.revCap=cap;o.revs=Math.min(all,Math.max(0,cap-done));
   let rest=qBudget()-Math.min(all+done,cap)*MIN_EST.revs;const take=(n,per)=>{const k=Math.max(0,Math.min(n,Math.floor(rest/per)));rest-=k*per;return k};
   const E=eDueList().length,C=cdDue().length,D=Math.min(RD_DAY,rdDueList().length),W=weakLeft();
   o.errs=Math.max(Math.min(E,3),take(E,MIN_EST.errs));o.weak=W?Math.max(W,0):0;rest-=o.weak*MIN_EST.redo;o.cards=Math.max(Math.min(C,10),take(C,MIN_EST.cards));o.redo=take(D,MIN_EST.redo);
-  o.errAll=E;o.cardAll=C;o.redoAll=rdDueList().length;return o}
+  o.errAll=E;o.cardAll=C;o.redoAll=rdDueList().length;{const P=ensurePlan();o.plan=P.items.filter(x=>!itemDone(x)).length}return o}
 let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
 function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
   if(id==="errs"){setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60)}
   else if(id==="weak"){const W=weakToday();if(W){detTab[W.k]="questoes";openTopic(W.k);setTimeout(()=>{const g=detGet("qf-",W.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}}
-  else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");const ids=rdDueList().sort((a,b)=>(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
+  else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");const K=pwKeys(),ids=rdDueList().sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
+  else if(id==="plan"){const P=ensurePlan(),x=P.items.find(p=>BYKEY[p.k]&&!itemDone(p));setView("inicio");if(x)startStep({k:x.k,kind:"plan"});else setTimeout(()=>{const c=$("#viewInicio .card.today");if(c)c.scrollIntoView({behavior:"smooth",block:"start"})},60)}
   else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
   else goRevs()}
@@ -5710,19 +5727,49 @@ function qNext(){if(!dayQ)return;const C=qCounts();let i=dayQ.i+1;while(i<dayQ.i
   if(i>=dayQ.ids.length){dayQ=null;dayQSave();qMsg="Fila do dia concluída. Bom trabalho!";setView("inicio");return}dayQ.i=i;dayQSave();qGoStep(dayQ.ids[i])}
 function qStop(){dayQ=null;dayQSave();render()}
 let qMsg="";
-function iQueueCard(){const C=qCounts(),tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=tot?`${tot} ${tot===1?"item":"itens"} · ≈ ${fmtMin(qMinutes(C)*60)}`:"";
+/* o que já foi feito hoje (fechamento do dia) */
+function dayDone(){const T=today(),h=hist[T]||{},P=ensurePlan(),o=[];
+  const cd=cards.filter(x=>x.f&&x.f.last===T).length,er=errors.filter(e=>e.lastRev===T).length,fo=foSum(foSess.filter(x=>x.d===T)),pd=P.items.filter(itemDone).length;
+  if(h.r)o.push([h.r,h.r===1?"revisão de tema":"revisões de temas"]);if(h.e)o.push([h.e,h.e===1?"tema estudado":"temas estudados"]);
+  if(h.q)o.push([h.q,`${h.q===1?"questão":"questões"} (${pct(h.c||0,h.q)}%)`]);if(cd)o.push([cd,cd===1?"cartão":"cartões"]);if(er)o.push([er,er===1?"erro revisado":"erros revisados"]);
+  if(fo)o.push([fmtMin(fo),"de foco"]);if(P.items.length)o.push([`${pd}/${P.items.length}`,"do plano"]);return o}
+function iQueueCard(){const C=qCounts(),tot=qTot(C),all=tot+(C.plan||0),eve=isEve(),c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Fila do dia</h2><span class="todaydate"></span></div></section>`);
+  const mins={};QSTEPS.forEach(([id])=>{mins[id]=C[id]?qStepMin(id,C):0});const totMin=Object.values(mins).reduce((a,b)=>a+b,0);
+  c.querySelector(".todaydate").textContent=all?`${all} ${all===1?"item":"itens"} · ≈ ${fmtMin(totMin*60)}`:"";
   if(qMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=qMsg;c.appendChild(m);qMsg=""}
-  if(!tot){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Nada para revisar hoje: temas, cartões, erros e anotações estão em dia."}</p>`));return c}
-  const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab,s1,sn])=>{const n=C[id],on=dayQ&&dayQ.ids[dayQ.i]===id,li=el(`<li class="${n?"":"done"}${on?" on":""}"><span class="iqn"></span><span class="iql"></span><button class="link" type="button">abrir</button></li>`);
-    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;
-    if(id==="weak"){const W=weakToday();if(!W){li.remove();return}const r=accRecent(get(W.k))||{a:acc(get(W.k))||0};li.querySelector(".iql").textContent=`Ponto fraco: ${BYKEY[W.k].t}`;const x=el(`<span class="iqmore"></span>`);x.textContent=`${Math.round(r.a*100)}% de acerto · ${WEAK_DAY_Q} questões hoje; o tema descansa ${WEAK_REST} dias depois`;li.querySelector(".iql").appendChild(x)}
-    {const all=C[{revs:"revAll",errs:"errAll",cards:"cardAll",redo:"redoAll"}[id]];if(n&&all>n){const x=el(`<span class="iqmore"></span>`);x.textContent=id==="revs"?`as ${n} mais importantes de ${all}; as outras ficam para os próximos dias`:`${n} de ${all} (o que cabe no tempo de hoje)`;li.querySelector(".iql").appendChild(x)}}li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+  const K=pwKeys();
+  if(K&&all){const P=provaWeek()[0],n=daysTo(P.date),pe=el(`<p class="iqpw"></p>`);pe.textContent=`Semana da prova ${P.name} (${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}): cartões, erros e questões para refazer dos conteúdos dela vêm primeiro.`;c.appendChild(pe)}
+  if(!all){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Fila e plano em dia: temas, cartões, erros e o plano de hoje estão feitos."}</p>`))}
+  else{const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab])=>{const n=C[id]||0,on=dayQ&&dayQ.ids[dayQ.i]===id;if(id==="plan"&&!ensurePlan().items.length)return;
+      const li=el(`<li class="${n?"":"done"}${on?" on":""}${id==="plan"?" plan":""}"><span class="iqn"></span><span class="iql"></span><span class="iqt"></span><button class="link" type="button">abrir</button></li>`);li.dataset.step=id;
+      li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;li.querySelector(".iqt").textContent=n&&mins[id]?`≈ ${fmtMin(mins[id]*60)}`:"";
+      const more=t=>{const x=el(`<span class="iqmore"></span>`);x.textContent=t;li.querySelector(".iql").appendChild(x)};
+      if(id==="weak"){const W=weakToday();if(!W){li.remove();return}const r=accRecent(get(W.k))||{a:acc(get(W.k))||0};li.querySelector(".iql").textContent=`Ponto fraco: ${BYKEY[W.k].t}`;more(`${Math.round(r.a*100)}% de acerto · ${WEAK_DAY_Q} questões hoje; o tema descansa ${WEAK_REST} dias depois`)}
+      if(id==="plan"&&n){const P=ensurePlan(),L=P.items.filter(x=>!itemDone(x)).map(x=>BYKEY[x.k]&&BYKEY[x.k].t).filter(Boolean);more(L.slice(0,2).join(" · ")+(L.length>2?` e mais ${L.length-2}`:""))}
+      if(id==="revs"&&!n&&C.revAll)more(`as de hoje já foram feitas; ${C.revAll} ${C.revAll===1?"fica":"ficam"} para os próximos dias`);
+      {const al=C[{revs:"revAll",errs:"errAll",cards:"cardAll",redo:"redoAll"}[id]];if(n&&al>n)more(id==="revs"?`as ${n} mais importantes de ${al}; as outras ficam para os próximos dias`:`${n} de ${al} (o que cabe no tempo de hoje)`)}
+      if(K&&n){const L=id==="errs"?eDueList():id==="cards"?cdDue():id==="redo"?rdDueList():null;if(L){const m=Math.min(n,L.filter(x=>K.has(x.k)).length);if(m)more(`${m} da prova`)}}
+      li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+    /* cabe no tempo de hoje? */
+    const dm=dayMin(dnum(today()));if(dm>0&&totMin){const f=el(`<p class="iqfit"></p>`),over=totMin-dm;
+      if(over>0){f.classList.add("over");f.innerHTML=`<b>Passa ≈ ${fmtMin(over*60)} do seu tempo de hoje (${hm(dm)}).</b> Comece pela fila; o que não der do plano volta amanhã.`}
+      else f.innerHTML=`<b>Cabe no seu tempo de hoje (${hm(dm)}).</b>${dm-totMin>=20?` Sobra ≈ ${fmtMin((dm-totMin)*60)}.`:""}`;c.appendChild(f)}}
+  /* fechamento do dia: à noite, ou quando tudo foi feito */
+  if(eve||!all){const D=dayDone();if(D.length||eve){const box=el(`<div class="iqday"><p class="iqdh">Feito hoje</p></div>`);
+      if(D.length){const u=el(`<ul class="iqdone"></ul>`);D.forEach(([v,t])=>{const li=el(`<li><b></b><span></span></li>`);li.querySelector("b").textContent=String(v);li.querySelector("span").textContent=t;u.appendChild(li)});box.appendChild(u)}
+      else box.appendChild(el(`<p class="how">Nada registrado ainda hoje.</p>`));
+      if(eve&&all){box.appendChild(el(`<p class="iqdh">Pode ficar para amanhã</p>`));const u=el(`<ul class="iqlater"></ul>`),add=t=>{const li=el(`<li></li>`);li.textContent=t;u.appendChild(li)};
+        if(C.revs)add(`${C.revs} ${C.revs===1?"revisão de tema":"revisões de temas"}: amanhã voltam primeiro, pelas mais importantes.`);
+        const sm=(C.errs||0)+(C.cards||0)+(C.redo||0);if(sm)add(`Erros, cartões e questões para refazer (${sm}): continuam na fila de amanhã.`);
+        if(C.plan)add(`${C.plan} ${C.plan===1?"tema do plano":"temas do plano"}: o que você começou continua amanhã, de onde parou.`);
+        add("Se der, faça só a primeira parte hoje: as revisões são as que mais pesam.");box.appendChild(u)}
+      c.appendChild(box)}}
   const a=el(`<div class="btns"></div>`);
   if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
-  else if(!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar a fila</button>`);b.onclick=qStart;a.appendChild(b)}
-  c.appendChild(a);c.appendChild(el(`<p class="how">Na ordem: erros, ponto fraco (5 questões), questões para refazer, cartões e temas (reler a anotação faz parte da revisão do tema). Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
+  else if(all&&!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar</button>`);b.onclick=qStart;a.appendChild(b)}
+  if(a.children.length)c.appendChild(a);
+  if(all)c.appendChild(el(`<p class="how">Começar percorre tudo na ordem: revisões dos temas (reler a anotação faz parte), erros, ponto fraco, questões para refazer, cartões e o plano. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
 function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
   if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
   const C=qCounts(),cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),nx=dayQ.ids.slice(dayQ.i+1).find(id=>C[id]),nxs=QSTEPS.find(s=>s[0]===nx);
@@ -5774,7 +5821,10 @@ const HERO_FRASES=["Constância vence intensidade.","Cada questão errada hoje �
 "Hoje é um bom dia para fechar uma lacuna antiga.","Quem mede o progresso enxerga o quanto já andou.","Dias difíceis também contam como dias de estudo.","A prova é longa; o preparo também. Vá no seu passo.",
 "Faça a parte de hoje e deixe o resto para amanhã.","Seu melhor método é o que você consegue repetir todo dia.","O hábito leva você onde a motivação não alcança.","Cada sessão concluída é uma pequena vitória. Some todas."];
 const heroDate=()=>{const s=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)};
-function heroHi(){const h=new Date().getHours();return h>=5&&h<12?"Bom dia":h>=12&&h<18?"Boa tarde":"Boa noite"}
+const nowHour=()=>typeof window.__hour==="number"?window.__hour:new Date().getHours();
+/* Lote 18: depois das 19 h o Início vira o fechamento do dia (o que foi feito e o que pode ficar para amanhã) */
+const DAY_EVE=19,isEve=()=>nowHour()>=DAY_EVE;
+function heroHi(){const h=nowHour();return h>=5&&h<12?"Bom dia":h>=12&&h<18?"Boa tarde":"Boa noite"}
 const heroOn=()=>!iHidden().has("iHero");
 function heroActive(d){const h=hist[d];return !!(h&&((h.e||0)+(h.r||0)+(h.q||0)>0))||foSess.some(x=>x.d===d&&x.sec>=300)}
 /* feitos reais: sequência de dias, questões de ontem, especialidade que melhorou, foco da semana */
@@ -5789,24 +5839,26 @@ function heroFeats(){const out=[],t=dnum(today());
   {const ws=t-(new Date().getDay()+6)%7,s=foSum(foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t));if(s>=5*3600)out.push(`Esta semana você já soma ${fmtMin(s)} de estudo focado.`)}
   return out}
 function heroLine(){const F=heroFeats(),n=dnum(today());return F.length?{feat:true,t:F[n%F.length]}:{feat:false,t:HERO_FRASES[((n%HERO_FRASES.length)+HERO_FRASES.length)%HERO_FRASES.length]}}
-function heroSummary(C){const tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs;if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
+function heroSummary(C){const tot=qTot(C),all=tot+(C.plan||0);if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
   if(dayQ){const left=dayQ.ids.slice(dayQ.i).reduce((a,id)=>a+(C[id]||0),0);return left?`Fila do dia em andamento: ${left===1?"falta 1 item":`faltam ${left} itens`}.`:"Fila do dia quase no fim."}
+  if(isEve()){const D=dayDone().filter(x=>!/do plano/.test(x[1])).slice(0,3).map(([v,t])=>`${v} ${t}`);const m=QSTEPS.reduce((a,[id])=>a+(C[id]?qStepMin(id,C):0),0);
+    return (D.length?`Hoje você fez ${D.join(", ")}.`:"Hoje ainda não teve estudo registrado.")+(all?` Falta ≈ ${fmtMin(m*60)}; o que não der pode ficar para amanhã.`:" Fila e plano feitos. Bom descanso.")}
   if(tot){const m=qMinutes(C);return `Sua fila de hoje está pronta: cerca de ${fmtMin(m*60)}. Comece por ela; o plano vem depois.`}
   const s=nextSteps()[0];return s?`Revisões em dia. Próximo: ${s.t}.`:"Tudo feito por hoje. Bom trabalho."}
 function heroExam(){const out=[],t=dnum(today()),m=exMain();if(isSimDay())out.push("Hoje é dia de simulado e provas.");
   if(m&&m.date){const n=dnum(m.date)-t;if(n===0)out.push(`Hoje é dia de ${m.name}. Boa prova!`);else if(n>0&&n<=365)out.push(`${n===1?"Falta 1 dia":`Faltam ${n} dias`} para ${m.name}.`)}
-  const p=upcomingProvas().find(x=>x.date&&dnum(x.date)-t>=0&&dnum(x.date)-t<=7);if(p){const n=dnum(p.date)-t;out.push(`Prova ${p.name} da faculdade ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}.`)}
+  const p=upcomingProvas().find(x=>x.date&&dnum(x.date)-t>=0&&dnum(x.date)-t<=7);if(p){const n=dnum(p.date)-t;out.push(`${/^prova\b/i.test(p.name)?"":"Prova "}${p.name} da faculdade ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}.`)}
   return out.join(" · ")}
-function heroCard(){const C=qCounts(),tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
+function heroCard(){const C=qCounts(),tot=qTot(C)+(C.plan||0),nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
   const c=el(`<div class="iherob"><span class="hdate"></span><h2 class="hhi"></h2><p class="hsum"></p>${ex?`<p class="hexam"></p>`:""}<p class="hline"></p><div class="herobtns"></div></div>`);
   c.querySelector(".hdate").textContent=heroDate();c.querySelector(".hhi").textContent=`${heroHi()}${nm?", "+nm:""}.`;c.querySelector(".hsum").textContent=heroSummary(C);
   if(ex)c.querySelector(".hexam").textContent=ex;const hl=c.querySelector(".hline");hl.textContent=L.t;if(L.feat)hl.classList.add("feat");
   const B=c.querySelector(".herobtns"),btn=(t,fn)=>{const b=el(`<button class="herobtn" type="button" id="heroGo"></button>`);b.textContent=t+" →";b.onclick=fn;B.appendChild(b)};
   if(dayQ)btn("Continuar a fila",()=>qGoStep(dayQ.ids[dayQ.i]));
-  else if(tot)btn("Começar a fila",qStart);
+  else if(tot)btn("Começar",qStart);
   else if(!isOffDay()){const s=nextSteps()[0];if(s)btn(s.kind==="rev"?"Revisar agora":s.kind==="sim"||s.kind==="exam"?"Fazer agora":"Estudar agora",()=>startStep(s))}
   if(!B.children.length)B.remove();return c}
-const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Sua semana e Planejar a semana (domingo e segunda)"],["iToday","Estudar hoje"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
+const ICARDS=[["iHero","Saudação e frase do dia"],["iQueue","Fila do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iWeek","Sua semana e Planejar a semana (domingo e segunda)"],["iToday","Estudar hoje"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
 let iCustom=false;
 /* Lote 17: "Seu progresso" sai do Início por padrão (continua na Residência e nas Estatísticas); quem personalizou mantém a escolha */
 function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:["iStats"])}
@@ -5931,6 +5983,8 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(p.onb===1)o.prefs.onb=1;
   if(Array.isArray(p.ihide))o.prefs.ihide=p.ihide.filter(x=>typeof x==="string").slice(0,20);
   if(Array.isArray(p.iorder))o.prefs.iorder=p.iorder.filter(x=>typeof x==="string").slice(0,20);
+  /* Lote 18: a fila do dia sobe para logo depois da saudação também em quem já tinha uma ordem salva (uma vez) */
+  if(o.prefs.iorder&&!p.iq18){const a=o.prefs.iorder.filter(x=>x!=="iQueue"),h=a.indexOf("iHero");a.splice(h+1,0,"iQueue");o.prefs.iorder=a}if(o.prefs.iorder||p.iq18)o.prefs.iq18=1;
   if(Number.isInteger(p.fevery)&&p.fevery>=2&&p.fevery<=8)o.prefs.fevery=p.fevery;
   if(["","w","b","r"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
   if(Number.isInteger(p.fvol)&&p.fvol>=0&&p.fvol<=100)o.prefs.fvol=p.fvol;
@@ -6084,7 +6138,10 @@ function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTa
   const body=c.querySelector(".wpbody"),pad=wpTab==="pad",mon=pad?null:wpTab==="next"?cur+7:cur,W=pad?null:wpPlanned(mon),arr=pad?P.wday:wpArr(mon);
   if(pad)body.appendChild(el(`<p class="how">O tempo que você costuma ter em cada dia. Vale para toda semana que você não planejar.</p>`));
   else{const h=el(`<p class="wpst"><b></b> <span></span></p>`);h.querySelector("b").textContent=`${ddmm(mon)} a ${ddmm(mon+6)}`;
-    h.querySelector("span").textContent=W&&W.ok?"· confirmada":W?"· alterada, ainda não confirmada":"· veio da semana padrão";body.appendChild(h)}
+    h.querySelector("span").textContent=W&&W.ok?"· confirmada":W?"· alterada, ainda não confirmada":"· veio da semana padrão";body.appendChild(h);
+    /* Lote 18: antes de planejar, a semana anterior a esta (o que cumpriu, o que atrasou, onde melhorou) */
+    if(mon-7<=cur){const S=wpSumEl(mon-7);if(S){const d=el(`<details class="wpprev" id="wpPrev"><summary></summary></details>`);d.open=!(W&&W.ok);
+      d.querySelector("summary").textContent=mon-7===cur?(wdOf(t)===0?"Antes de planejar: como foi esta semana":"Antes de planejar: esta semana até agora"):"Antes de planejar: como foi a semana passada";d.appendChild(S);body.appendChild(d)}}}
   const days=el(`<div class="wpdays"></div>`);
   WP_ORDER.forEach(d=>{const n=pad?null:mon+((d+6)%7),past=!pad&&n<t,r=el(`<div class="wpday${past?" past":""}${!pad&&n===t?" wpnow":""}"><span class="wpdn"><b></b><small></small></span><div class="wpopts" role="group"></div></div>`);
     r.querySelector("b").textContent=WD3[d];r.querySelector("small").textContent=pad?"":n===t?"hoje":ddmm(n);const g=r.querySelector(".wpopts");g.setAttribute("aria-label",WD_FULL[d]);
@@ -6107,18 +6164,20 @@ function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTa
       b.onclick=()=>{const cur=new Set(ui.prefs.wsim);if(cur.has(d))cur.delete(d);else cur.add(d);ui.prefs.wsim=[...cur];saveUI();render()};g.appendChild(b)}
     body.appendChild(r)}
   return c}
+/* resumo da semana que começa em ws (o que cumpriu, o que atrasou, onde melhorou): no cartão do Início e dentro do Planejar a semana */
+function wpSumEl(ws){const A=weekStats(ws),B=weekStats(ws-7);if(!(A.fo||A.q||A.e||A.rv))return null;
+  const ul=el(`<ul class="wpsum"></ul>`),g=(ui.prefs.hgoal||0)*60,add=(cls,t)=>{const li=el(`<li></li>`);li.className=cls;li.textContent=t;ul.appendChild(li)};
+  const cmp=(a,b,f)=>b?(a>b?` (▲ ${f(a-b)} vs. anterior)`:a<b?` (▼ ${f(b-a)} vs. anterior)`:" (igual à anterior)"):"";
+  add(g&&A.fo>=g?"ok":"",`Foco: ${fmtMin(A.fo)}${g?` de ${fmtMin(g)} da meta${A.fo>=g?" ✓":""}`:""}${cmp(A.fo,B.fo,fmtMin)}`);
+  add("",`Questões: ${A.q}${A.q?` · ${pct(A.c,A.q)}% de acerto`:""}${cmp(A.q,B.q,String)} · temas estudados: ${A.e} · revisões: ${A.rv}`);
+  const late=[...ALL,...FAC_ITEMS].filter(i=>{const d=dueIn(get(i.key));return d!==null&&d<0}).length;if(late)add("late",`Atrasou: ${late} ${late===1?"revisão de tema":"revisões de temas"} (as mais importantes vêm primeiro na fila).`);
+  const best=heroFeats().find(f=>/subiu/.test(f));if(best)add("ok","Melhorou: "+best.replace(/^Seu acerto em /,""));return ul}
 /* Início: cartão pequeno no domingo (próxima semana) e na segunda (esta), até confirmar ou dispensar */
 function wpNoticeEl(){const t=dnum(today()),w=wdOf(t);if(w!==0&&w!==1)return null;const mon=w===0?t+1:t,W=wpPlanned(mon);if(W&&W.ok)return null;if(lsGet("resid-wpdis","")===fromNum(mon))return null;
   /* Lote 17: um cartão só no domingo/segunda — o resumo da semana (o que cumpriu, o que atrasou, onde melhorou) e, embaixo, planejar a próxima */
   const arr=wpArr(mon),tot=arr.reduce((a,m)=>a+m,0),n=el(`<section class="card iweek wpnotice" id="wpNotice" aria-labelledby="wpnh"><div class="dhead"><h2 id="wpnh"></h2></div><ul class="wpsum"></ul><p class="wpplan"><b></b> <span></span></p><div class="btns"><button class="btn primary" type="button" id="wpGo">Planejar a semana</button><button class="link" type="button">Agora não</button></div></section>`);
   n.querySelector("h2").textContent=w===0?"Sua semana":"Semana passada";
-  {const ws=w===0?foWeekStart():foWeekStart()-7,A=weekStats(ws),B=weekStats(ws-7),ul=n.querySelector(".wpsum"),g=(ui.prefs.hgoal||0)*60,add=(cls,t)=>{const li=el(`<li></li>`);li.className=cls;li.textContent=t;ul.appendChild(li)};
-    const cmp=(a,b,f)=>b?(a>b?` (▲ ${f(a-b)} vs. anterior)`:a<b?` (▼ ${f(b-a)} vs. anterior)`:" (igual à anterior)"):"";
-    if(A.fo||A.q||A.e||A.rv){add(g&&A.fo>=g?"ok":"",`Foco: ${fmtMin(A.fo)}${g?` de ${fmtMin(g)} da meta${A.fo>=g?" ✓":""}`:""}${cmp(A.fo,B.fo,fmtMin)}`);
-      add("",`Questões: ${A.q}${A.q?` · ${pct(A.c,A.q)}% de acerto`:""}${cmp(A.q,B.q,String)} · temas estudados: ${A.e} · revisões: ${A.rv}`);
-      const late=[...ALL,...FAC_ITEMS].filter(i=>{const d=dueIn(get(i.key));return d!==null&&d<0}).length;if(late)add("late",`Atrasou: ${late} ${late===1?"revisão de tema":"revisões de temas"} (as mais importantes vêm primeiro na fila).`);
-      const best=heroFeats().find(f=>/subiu/.test(f));if(best)add("ok","Melhorou: "+best.replace(/^Seu acerto em /,""))}
-    else ul.remove()}
+  {const ul=n.querySelector(".wpsum"),x=wpSumEl(mon-7);if(x)ul.replaceWith(x);else ul.remove()}
   n.querySelector(".wpplan b").textContent=w===0?"Planeje a próxima semana.":"Planeje esta semana.";
   n.querySelector(".wpplan span").textContent=`Pela sua semana padrão: ${hm(tot)}${ui.prefs.hgoal?` (meta ${hm(ui.prefs.hgoal)})`:""}. Leva 1 minuto e o plano de cada dia se ajusta ao tempo que você tem.`;
   const [go,no]=n.querySelectorAll("button");go.onclick=()=>{wpTab=w===0?"next":"cur";goSub("config");setTimeout(()=>{const b=$("#wpCard");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};
@@ -8348,8 +8407,8 @@ function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Mat
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
 const cdNewToday=()=>cards.filter(x=>x.f.first===today()).length;
 /* fila de hoje: revisões e aprendizado vencidos + novos até o limite do dia */
-function cdDue(){const T=today(),rev=cards.filter(x=>BYKEY[x.k]&&x.f.st&&x.due<=T).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0),left=Math.max(0,cdNewLimit()-cdNewToday());
-  const nw=left?cards.filter(x=>BYKEY[x.k]&&!x.f.st).sort((a,b)=>(a.at||a.id)<(b.at||b.id)?-1:1).slice(0,left):[];return [...rev,...nw]}
+function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>BYKEY[x.k]&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
+  const nw=left?cards.filter(x=>BYKEY[x.k]&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
 function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const N=fsNext(x,g);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
 const cdReady=()=>cards.filter(x=>BYKEY[x.k]&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
 function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>BYKEY[x.k]&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}

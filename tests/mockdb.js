@@ -1,4 +1,5 @@
 window.__mock=(seed,delay)=>{
+  if(window.__hour===undefined)window.__hour=10;// Lote 18: o Início muda à noite; os testes antigos rodam "de manhã"
   if(window.__noShuffle===undefined)window.__noShuffle=true;// testes antigos escolhem a alternativa pela posição (correta = B)
   if(window.__noRefCheck===undefined)window.__noRefCheck=true;// testes antigos geram questões sem "fonte" (o artefato real descarta essas)
   try{if(!window.__wantOnb&&!localStorage.getItem("resid-onb-seen"))localStorage.setItem("resid-onb-seen","1")}catch(e){}

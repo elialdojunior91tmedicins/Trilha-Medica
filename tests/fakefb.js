@@ -20,7 +20,8 @@ const subs=[];const inCol=(path,k)=>k.startsWith(path+"/")&&!k.slice(path.length
 const dsnap=(path,pp,db)=>{db=db||DB();const v=db[path];return {exists:!!v,id:path.split("/").pop(),data:()=>v?JSON.parse(JSON.stringify(v)):undefined,metadata:{fromCache:false,hasPendingWrites:pp===path}}};
 const qsnap=(path,pp)=>{const db=DB();const docs=Object.keys(db).filter(k=>inCol(path,k)).map(k=>dsnap(k,pp,db));return {docs,size:docs.length,empty:!docs.length,metadata:{fromCache:false,hasPendingWrites:!!pp&&inCol(path,pp)},docChanges:()=>[]}};
 /* docChanges como o Firestore: só o que mudou desde a última resposta desta assinatura */
-const fire=(s,pp)=>setTimeout(()=>{if(!s.col)return s.next(dsnap(s.path,pp));const q=qsnap(s.path,pp),db=DB(),now={},ch=[];
+const fire=(s,pp)=>setTimeout(()=>{if(window.__hour===undefined)window.__hour=10;// Lote 18: o Início muda à noite; testes rodam "de manhã"
+if(!s.col)return s.next(dsnap(s.path,pp));const q=qsnap(s.path,pp),db=DB(),now={},ch=[];
   q.docs.forEach(d=>{const j=JSON.stringify(db[s.path+"/"+d.id]);now[d.id]=j;if(!s.last||s.last[d.id]!==j)ch.push({type:s.last&&d.id in s.last?"modified":"added",doc:d})});
   if(s.last)for(const id in s.last)if(!(id in now))ch.push({type:"removed",doc:{id}});s.last=now;q.docChanges=()=>ch;s.next(q)},0);
 const notify=changed=>subs.forEach(s=>{if(s.col?inCol(s.path,changed):s.path===changed)fire(s,changed)});
