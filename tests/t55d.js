@@ -11,7 +11,7 @@ if(mob){ok(await p.evaluate(()=>!document.querySelector('#qkpis').offsetParent&&
   await click('#qSegBar button[data-q="temas"]');await p.waitForTimeout(150);ok(await p.evaluate(()=>!!document.querySelector('#qlistT').offsetParent&&!document.querySelector('#simGo')?.offsetParent),tag+": Temas mostra a lista");
   await click('#qSegBar button[data-q="praticar"]');await p.waitForTimeout(150)}
 else ok(await p.evaluate(()=>!!document.querySelector('#qkpis').offsetParent&&!!document.querySelector('#simGo').offsetParent&&!!document.querySelector('#qlistT').offsetParent),tag+": computador mostra tudo");
-ok(/Pontos fracos · 2/.test(await p.$eval('.qsim .chips',x=>x.textContent)),tag+": fontes com contagem");
+ok(/Onde focar · \d/.test(await p.$eval('.qsim',x=>x.textContent)),tag+": fontes com contagem");
 await click('.qsim .seg button:nth-child(1)');await click('#simGo');await p.waitForTimeout(500);
 ok(await p.evaluate(()=>sim&&sim.status==="run"&&sim.qs.length===5),tag+": simulado gerado (5)");
 ok(await p.evaluate(()=>/Distúrbios da coagulação|Anemias/.test(__prompts[0])&&/1\. Tema/.test(__prompts[0])),tag+": pedido com temas numerados");

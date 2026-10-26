@@ -33,8 +33,8 @@ for(const name of ["fone","monitor"]){const {ctx,p,click,mob}=await open(name,{}
  ok(await vis(p,'#onb'),name+": primeiros passos aparece numa conta vazia");await p.screenshot({path:`onb-${name}.png`});
  await p.fill('#onbDate','2027-03-10');await p.click('#onb .btn.primary');await p.waitForTimeout(80);
  await p.evaluate(()=>[...document.querySelectorAll('#onb .onbopts button')][1].click());await p.waitForTimeout(80);
- await p.selectOption('#onbF','180');await p.selectOption('#onbN','4');await p.click('#onbFin');await p.waitForTimeout(200);
- ok(await p.evaluate(()=>!document.querySelector('#onb')&&ui.profile.goalDate==="2027-03-10"&&ui.prefs.fgoal===180&&ui.prefs.planN===4&&ui.prefs.onb===1),name+": guarda data, meta e temas por dia");
+ await p.selectOption('#onbF','720');await p.selectOption('#onbN','4');await p.click('#onbFin');await p.waitForTimeout(200);
+ ok(await p.evaluate(()=>!document.querySelector('#onb')&&ui.profile.goalDate==="2027-03-10"&&ui.prefs.hgoal===720&&ui.prefs.planN===4&&ui.prefs.onb===1),name+": guarda data, meta e temas por dia");
  ok(await p.evaluate(()=>!!bulk&&view==="temas"),name+": abre a marcação do que já estudou");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");await ctx.close()}
 {const {ctx,p}=await open("fone",{[U]:{version:2,topics:{"CM-1":{l:1,last:"2026-01-01"}}}},"window.__wantOnb=true;try{localStorage.removeItem('resid-onb-seen')}catch(e){};");
@@ -75,8 +75,8 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  if(!mob){await p.evaluate(()=>{openKey=null;setView("inicio")});await p.keyboard.press('Control+k');await p.waitForTimeout(100);ok(await vis(p,'#gsearch'),name+": Ctrl+K abre a busca");await p.keyboard.press('Escape');await p.waitForTimeout(80);ok(!(await vis(p,'#gsearch')),name+": Esc fecha")}
  // personalizar o Início
  await p.evaluate(()=>{openKey=null;backStack=[];setView("inicio")});await p.waitForTimeout(100);
- await p.evaluate(()=>document.querySelector('#iCustB').click());await p.waitForTimeout(80);await p.evaluate(()=>document.querySelector('#icb-iStats').click());await p.waitForTimeout(80);
- ok(await p.evaluate(()=>{const s=document.querySelector('#iStats');return s&&s.offsetParent===null&&ui.prefs.ihide.includes("iStats")}),name+": esconder cartão do Início");
+ await p.evaluate(()=>document.querySelector('#iCustB').click());await p.waitForTimeout(80);await p.evaluate(()=>document.querySelector('#icb-iProva').click());await p.waitForTimeout(80);
+ ok(await p.evaluate(()=>{const s=document.querySelector('#iProva');return s&&s.offsetParent===null&&ui.prefs.ihide.includes("iProva")&&ui.prefs.ihide.includes("iStats")}),name+": esconder cartão do Início (Seu progresso já vem escondido)");
  await p.evaluate(()=>{const li=document.querySelector('#icb-iQueue').closest('li');li.querySelectorAll('button')[0].click()});await p.waitForTimeout(80);
  ok(await p.evaluate(()=>iOrder().indexOf("iQueue")<iOrder().indexOf("iBoard")),name+": mudar a ordem");
  await p.evaluate(()=>[...document.querySelectorAll('.icust .link')].pop().click());await p.waitForTimeout(80);ok(await p.evaluate(()=>!ui.prefs.ihide&&iOrder()[0]==="iHero"&&iOrder()[1]==="iBoard"),name+": voltar ao padrão");

@@ -8,7 +8,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
  await p.evaluate(()=>{const t=dnum(today()),ws=foWeekStart(),S=(n,min)=>({id:"x"+n+"_"+min,d:fromNum(n),s:new Date(fromNum(n)+"T15:00:00").toISOString(),sec:min*60,m:"p",ref:"",lab:""});
-   foSess=[S(t-7,50),S(ws-7,40),S(ws-14,100),S(t,20)];ui.prefs.fgoal=90;saveUI();commit();backStack=[];setView("foco")});await p.waitForTimeout(250);
+   foSess=[S(t-7,50),S(ws-7,40),S(ws-14,100),S(t,20)];ui.prefs.hgoal=630;ui.prefs.wday=[180,180,180,180,180,180,180];ui.prefs.wplans={};saveUI();commit();backStack=[];setView("foco")});await p.waitForTimeout(250);
  const r=await p.evaluate(()=>{const c=document.querySelector('#foBody .foheat'),kids=[...document.querySelector('#foBody').children].filter(x=>x.offsetParent);
    const last=[...document.querySelectorAll('#foBody .card')].filter(x=>x.offsetParent).sort((a,b)=>b.getBoundingClientRect().bottom-a.getBoundingClientRect().bottom)[0];
    const em=c.querySelector('.fohm > i.l4 em, .fohm > i.l1 em');

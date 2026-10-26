@@ -11,7 +11,7 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);
   foSess=[{id:"x",d:today(),s:"",sec:1800,m:"p",ref:"",lab:""}];ui.prefs.qgoal=100;ui.prefs.fgoal=60;
   ui.profile.exams=[{id:"e1",name:"ENARE",date:D(140)}];ui.profile.mainEx="e1";saveUI();commit();setView("inicio")});await p.waitForTimeout(300);
 const tiles=await p.$$eval('#iBoard .itile',a=>a.map(x=>x.querySelector('.kl').textContent+"="+x.querySelector('b').textContent));
-ok(tiles.length===4&&tiles[0]==="Plano de hoje=0/3"&&tiles[1]==="Revisões=1/3"&&/30\/100/.test(tiles[2])&&/30 min/.test(tiles[3]),tag+": placar "+tiles.join(" | "));
+ok(tiles.length===3&&tiles[0]==="Plano de hoje=0/3"&&/30\/100/.test(tiles[1])&&/30 min/.test(tiles[2]),tag+": placar (Lote 17: sem o número das revisões, que fica na fila) "+tiles.join(" | "));
 const now=await p.$eval('#iBoard .inowtx',x=>x.textContent);ok(/atrasada há 2 dias/.test(now)&&now.includes(await p.evaluate(()=>BYKEY["CM-1"].t)),tag+": primeiro passo é a revisão atrasada: "+now);
 await click('#nowSkip');await p.waitForTimeout(150);ok(/Revisão de hoje/.test(await p.$eval('#iBoard .inowtx',x=>x.textContent)),tag+": outra sugestão: revisão de hoje");
 await click('#nowSkip');await p.waitForTimeout(150);ok(/plano de hoje/i.test(await p.$eval('#iBoard .inowtx',x=>x.textContent)),tag+": depois, tema do plano");
@@ -27,7 +27,7 @@ await click('#viewTemas .rcard[data-k="CM-2"] .psum');await p.waitForTimeout(150
 await p.evaluate(()=>{tSeg="prog";setView("temas")});await p.waitForTimeout(150);
 const pj=await p.$eval('#iMeta .iproj',x=>x.textContent);await p.evaluate(()=>{setView("inicio")});await p.waitForTimeout(150);ok(/Faltam 19\d temas/.test(pj)&&/2,5 por semana/.test(pj),tag+": projeção: "+pj.slice(0,160));
 // atalhos do placar
-await click('#iBoard .itile:nth-child(3)');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="quest"),tag+": questões leva à aba Questões");
+await click('#iBoard .itile:nth-child(2)');await p.waitForTimeout(150);ok(await p.evaluate(()=>view==="quest"),tag+": questões leva à aba Questões");
 await p.evaluate(()=>{foRun=null;foSaveRun();setView("inicio");scrollTo(0,0)});await p.waitForTimeout(200);
 ok(await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth)<=0,tag+": sem rolagem horizontal");
 await p.screenshot({path:`in2-${mob?"fone":"desk"}.png`,fullPage:true});

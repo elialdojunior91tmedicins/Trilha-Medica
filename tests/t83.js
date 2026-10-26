@@ -77,7 +77,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   const res=await p.evaluate(([st0])=>{const e=exams[0],S=exScore(e);const d=st0.ks.map(k=>[(get(k).qt||0)-st0.qt[k][0],(get(k).qc||0)-st0.qt[k][1]]);
     return {S,dq:d.reduce((a,x)=>a+x[0],0),dc:d.reduce((a,x)=>a+x[1],0),hq:((hist[today()]||{}).q||0)-st0.hq,qb:Object.keys(get(e.qs[1].k).qb||{}).includes(qSrcKey("ENARE")),redo:redo.some(x=>x.q.enunciado===e.qs[1].q.enunciado),txt:document.querySelector('.explay').textContent}},[st0]);
   ok(res.S.hit===2&&res.S.ans===3&&/67%/.test(res.txt),name+": resultado: 2 de 3 válidas (anulada e em branco não contam) "+JSON.stringify(res.S));
-  ok(res.dq===3&&res.dc===2&&res.hq===3&&res.qb&&res.redo,name+": as respostas entram no acerto dos temas, no dia, na banca ENARE e a errada vai para Refazer "+JSON.stringify({dq:res.dq,dc:res.dc,hq:res.hq}));
+  ok(res.dq===3&&res.dc===2&&res.hq===3&&res.qb&&!res.redo,name+": as respostas entram no acerto dos temas, no dia, na banca ENARE; a errada de tema ainda não estudado não vai para o Refazer (auditoria 26/10) "+JSON.stringify({dq:res.dq,dc:res.dc,hq:res.hq}));
   await p.evaluate(()=>[...document.querySelectorAll('.exres .link')][1].click());await p.waitForTimeout(120);
   ok(await p.evaluate(()=>/Incorreta\. A resposta é C/.test(document.querySelector('.explay').textContent)&&/Comentário da questão 2/.test(document.querySelector('.explay').textContent)&&document.querySelectorAll('.explay .altwhy').length>=1),name+": no resultado, cada questão abre com a correção, o comentário e o porquê");
   if(name==="fone"||name==="note")await p.screenshot({path:`t83-play-${name}.png`});

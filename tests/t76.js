@@ -46,7 +46,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  /* intervalos pelo acerto */
  const iv=await p.evaluate(()=>{const T=today(),f=(qt,qc,step)=>interval({l:1,last:T,step,qt,qc,qd:{[T]:[qt,qc]}});const r={hi:f(20,18,2),mid:f(20,16,2),lo:f(20,8,2),weak:f(20,12,2),few:f(3,3,2),first:f(20,20,0),base:f(0,0,2)};
    r.adj=interval({l:1,last:T,step:2,qt:20,qc:20,qd:{[T]:[20,20]},adj:3,adjFrom:T});ui.prefs.adapt=false;r.off=f(20,18,2);ui.prefs.adapt=true;return r});
- ok(iv.hi===10&&iv.mid===8&&iv.lo===4&&iv.weak===5&&iv.few===7&&iv.first===1&&iv.base===7&&iv.adj===7&&iv.off===7,name+": intervalos ajustados "+JSON.stringify(iv));
+ ok(iv.hi===10&&iv.mid===8&&iv.lo===7&&iv.weak===7&&iv.few===7&&iv.first===1&&iv.base===7&&iv.adj===7&&iv.off===7,name+": intervalos ajustados "+JSON.stringify(iv));
  const tx=await p.evaluate(()=>{const T=today();state["CM-9"]={l:2,last:T,step:2,qt:20,qc:18,qd:{[T]:[20,18]}};openKey="CM-9";detTab["CM-9"]="estudo";backStack=[];setView("temas");if(typeof setTSeg==="function")setTSeg("lista");render();const d=document.querySelector('#t-CM-9');return d?d.textContent:""});
  ok(/intervalo atual de 10 dias \(mais longo pelo seu acerto de 90%/.test(tx),name+": tema explica o ajuste");
  await ctx.close()}

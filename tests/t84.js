@@ -20,15 +20,14 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
     ui.profile.name="Eli Junior";saveUI();render();const a=document.querySelector('#iHero .hhi').textContent;ui.profile.name="";saveUI();render();const b2=document.querySelector('#iHero .hhi').textContent;ui.profile.name="Eli Junior";saveUI();render();return {out,a,b:b2}});
   ok(hi.out.join("|")==="Bom dia|Boa tarde|Boa noite|Boa noite",name+": Bom dia, Boa tarde e Boa noite pela hora");
   ok(/^(Bom dia|Boa tarde|Boa noite), Eli\.$/.test(hi.a)&&/^(Bom dia|Boa tarde|Boa noite)\.$/.test(hi.b),name+": usa o primeiro nome; sem nome, só a saudação: "+hi.a+" / "+hi.b);
-  ok(await p.evaluate(()=>heroSummary({errs:5,cards:0,notes:0,revs:3})==="3 revisões e 5 erros esperam por você hoje."&&heroSummary({errs:0,cards:0,notes:0,revs:1})==="1 revisão espera por você hoje."
-    &&heroSummary({errs:1,cards:2,notes:1,revs:4})==="4 revisões, 1 erro, 2 cartões e 1 anotação para reler esperam por você hoje."),name+": resumo do que espera hoje, no singular e no plural");
+  ok(await p.evaluate(()=>{dayQ=null;return /^Sua fila de hoje está pronta: cerca de 23 min\./.test(heroSummary({errs:2,redo:0,cards:0,notes:0,revs:4}))&&!/\d+ revisões/.test(heroSummary({errs:2,redo:0,cards:0,notes:0,revs:4}))}),name+": resumo da saudação com o tempo da fila, sem repetir as contagens (Lote 17)");
   /* com pendências: botão da saudação começa a fila; o Revisar hoje não repete o botão */
   await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);
     state["CM-1"]={l:1,last:D(-3),step:0,sd:[]};state["CM-2"]={l:1,last:D(-5),step:0,sd:[]};
     const e={id:"e1",k:"CM-3",w:"Errei a dose",r:"Dose certa",t:"c",s:"",d:D(-2),due:today()};errors.push(e);putErr(e);
     ui.profile.exams=[{id:"x1",name:"ENARE",date:D(12)}];ui.profile.mainEx="x1";saveUI();commit()});await p.waitForTimeout(150);
   const r1=await p.evaluate(()=>{const C=qCounts();return {C,sum:document.querySelector('#iHero .hsum').textContent,want:heroSummary(C),btn:(document.querySelector('#heroGo')||{}).textContent,iq:!!document.querySelector('#iqGo'),ex:(document.querySelector('#iHero .hexam')||{}).textContent}});
-  ok(r1.C.revs>=2&&r1.C.errs>=1&&r1.sum===r1.want&&/esperam por você hoje/.test(r1.sum),name+": mostra o que espera hoje: "+r1.sum);
+  ok(r1.C.revs>=2&&r1.C.errs>=1&&r1.sum===r1.want&&/fila de hoje/.test(r1.sum),name+": mostra o que espera hoje: "+r1.sum);
   ok(r1.btn==="Começar a fila →"&&!r1.iq,name+": botão Começar a fila na saudação, sem botão repetido em Revisar hoje");
   ok(r1.ex==="Faltam 12 dias para ENARE.",name+": contagem até a prova principal: "+r1.ex);
   if(name==="fone"||name==="note"||name==="monitor"){await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`t84-${name}.png`})}

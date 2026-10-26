@@ -459,7 +459,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .rdbytema{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.88rem}.rdbytema li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
 .qflink{color:var(--accent);font-weight:600}
 .ntype{align-self:flex-start;flex-wrap:wrap}.nlisth{margin:6px 0 0;font:700 1.05rem var(--display);color:var(--accent)}.ncadhow{margin:0;font-size:.82rem}.nexport h2{font-size:1.1rem}
-#qFind #qlistT{margin-top:4px}.qfall{margin:0;font-size:.8rem}.qrow.qopen{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+#qFind #qlistT{margin-top:4px}html[data-cols="2"] #qlistT.q2c{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:start}#qlistT .qtophead,#qlistT .qtopmore{grid-column:1/-1;list-style:none}#qlistT .qtophead{margin:2px 0}#qlistT .qtopmore{padding:4px 0}.qfall{margin:0;font-size:.8rem}.qrow.qopen{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .qtp{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}.qtp .glabel{margin:0}.qtp .glabel .how{text-transform:none;letter-spacing:0;font-weight:400}
 .qtpw{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;height:110px}.qtpc{display:flex;flex-direction:column;align-items:center;min-width:0}.qtpv{font:600 .68rem var(--body);color:var(--muted);height:1rem}
 .qtpb{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center}.qtpb i{display:block;width:min(100%,26px);border-radius:4px 4px 0 0;background:var(--accent);opacity:.75}
@@ -690,7 +690,9 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .dpin[aria-pressed="true"]{color:var(--l1);border-color:var(--l1)}
 .nrevbox{display:flex;flex-direction:column;gap:20px}
 .ntoday .ncard.nread{opacity:.7}.nreadb[aria-pressed="true"]{color:var(--good);border-color:var(--good)}
-.nwithout{margin:0}.nwithout .link{font-size:.85rem}
+.nwithout{margin:0}.erepb{display:inline-block;margin-left:8px;font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:var(--track);color:var(--warn);font-weight:600}.reread{display:flex;flex-direction:column;gap:6px;margin:4px 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.rrhead{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}.rrhead .rrw{font-size:12px;color:var(--muted);flex:1}
+.rrhead .pchev{margin-left:auto}.reread .rrall{align-self:flex-start;font-size:13px}.reread .mdview{max-height:none}.nnoline{margin:4px 2px 0}.nwithout .link{font-size:.85rem}
 .ncover{margin:0}.ncover .link{font-size:.88rem}
 .pgsec{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}
 .pgtopic{display:flex;flex-direction:column;gap:3px}.pgtopic>.link{font-weight:600;color:var(--ink);font-size:.9rem;text-align:left}
@@ -1324,7 +1326,8 @@ html[data-layout="phone"] .stsvg .ax,html[data-layout="phone"] .stsvg .goalt{fon
 .wpnote{margin:0;font-size:.84rem;background:var(--gold-soft,rgba(184,145,74,.14));border-radius:10px;padding:8px 10px}
 html[data-layout="phone"] .wpday{grid-template-columns:1fr;gap:4px}html[data-layout="phone"] .wpdn{flex-direction:row;gap:6px;align-items:baseline}
 html[data-layout="phone"] .wpopts{display:grid;grid-template-columns:repeat(5,1fr)}html[data-layout="phone"] .wpo{padding:6px 2px}
-.pday{display:flex;flex-direction:column;gap:8px}.pdrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pday{display:flex;flex-direction:column;gap:8px}.pest{margin:0;font-size:12.5px;color:var(--muted)}.pest.over{color:var(--warn)}.pbrake{margin:0;font-size:13px;padding:8px 10px;border-radius:10px;background:var(--track);border-left:3px solid var(--gold)}
+.revg{gap:8px;flex-wrap:nowrap;width:100%;max-width:420px}.revg .btn{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15;flex:1 1 0;min-width:0;padding-left:6px;padding-right:6px}.revg .btn small{font-size:11px;font-weight:500;opacity:.75}.pdrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .ptime{display:inline-flex;align-items:center;background:var(--bg);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--accent)}
 .pdrow .link{font-size:.84rem}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
 .plight{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.plight .how{margin:0;font-size:.84rem}
@@ -1354,7 +1357,9 @@ html[data-layout="phone"] .herobtns{margin-top:8px}html[data-layout="phone"] .he
 #iProva{order:1}#iToday{order:2}#iStats{order:4}
 #iBoard{order:-1;gap:14px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #iBoard{grid-column:1/-1}
-.itiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.itiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.iqmore{display:block;font-size:11.5px;font-weight:400;color:var(--muted)}
+.wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
 .itile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg);border:1px solid transparent;border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .itile:hover{border-color:var(--accent)}
 .itile b{font:500 1.35rem/1.1 var(--mono);font-variant-numeric:tabular-nums}
@@ -1405,7 +1410,7 @@ html[data-layout="phone"] .pjc i{display:block}
 .exdel{padding-bottom:10px}
 #pfExAdd{align-self:flex-start}
 @media (max-width:560px){.exrow{grid-template-columns:minmax(0,1fr) auto}.exrow .ffield{grid-column:1/-1}.exmain{grid-row:1;padding:0}.exdel{grid-row:1;grid-column:2;padding:0}}
-@media (max-width:640px){.itiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.itiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.itiles .itile .kl{font-size:10px}.itiles .itile .ks{font-size:11px}}
 .ipmain{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;cursor:pointer}
 .ipmain:hover{border-color:var(--accent)}
 .ipdays{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:4.2rem;padding:8px 6px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
@@ -2088,14 +2093,14 @@ html[data-layout="tablet"] .nmgrab{display:none}
   </section>
 
   <div class="side">
-  <section class="card agenda" id="revAgenda" aria-label="Agenda de revisões"></section>
+  <section class="card agenda" id="revAgenda" aria-label="Próximos dias"></section>
   <section class="card revs" aria-labelledby="rh">
     <div class="todayhead"><h2 id="rh">Revisões</h2><span class="revmeta" id="revmeta"></span></div>
     <div id="revVesp"></div>
     <ol class="plan" id="revlist"></ol>
     <div class="revdone" id="revdone" hidden></div>
     <div id="revup"></div>
-    <p class="how">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar. As revisões não ocupam vaga no plano do dia e ficam acumuladas até você fazer. “Lembrei bem” avança para o próximo intervalo; “Tive dificuldade” volta para 1 dia.</p>
+    <p class="how">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar e a anotação para reler. As mais importantes (peso × atraso) vêm primeiro. <b>Lembrei</b> sobe um degrau (e, se passou mais tempo que o previsto, o próximo intervalo leva isso em conta), <b>Difícil</b> repete o intervalo e <b>Esqueci</b> volta dois degraus. Com 5 ou mais questões do tema no dia, a revisão é marcada sozinha pelo acerto.</p>
   </section>
 
   <section class="imeta rmeta" id="iMeta" aria-label="Meta e projeção até a prova" hidden></section>
@@ -2555,7 +2560,8 @@ function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="In
 /* intervalo da revisão: o da tabela, ajustado pelo acerto nas questões do tema (desligável em Configurações) */
 function adaptAcc(s){if(!s.qt)return null;const from=fromNum(dnum(today())-90);let q=0,c=0;const m=s.qd||{};for(const d in m)if(d>=from&&Array.isArray(m[d])){q+=m[d][0]||0;c+=m[d][1]||0}
   if(q<5){q=s.qt||0;c=s.qc||0}return q>=5?{a:c/q,q}:null}
-function adaptF(s){if(ui.prefs.adapt===false||!((s.step||0)>=1))return 1;const r=adaptAcc(s);if(!r)return 1;const a=r.a;return a>=.85&&r.q>=8?1.4:a>=.75?1.2:a<.5?.5:a<.65?.75:1}
+/* auditoria 26/10: o acerto baixo pesa num lugar só (o ponto fraco); aqui ele só alonga a revisão de quem vai bem */
+function adaptF(s){if(ui.prefs.adapt===false||!((s.step||0)>=1))return 1;const r=adaptAcc(s);if(!r)return 1;const a=r.a;return a>=.85&&r.q>=8?1.4:a>=.75?1.2:1}
 function interval(s){const b=INT[Math.min(s.step||0,INT.length-1)];if(s.adjFrom===s.last&&s.adj)return b;const f=adaptF(s);return f===1?b:Math.max(1,Math.min(150,Math.round(b*f)))}
 /* semana de estudos (Configurações › Plano): dias de temas novos, de simulado e de folga (0 = domingo) */
 let WK_NEW=new Set([0,1,2,3,4,5,6]),WK_SIM=new Set(),WK_OFF=new Set();
@@ -2586,7 +2592,16 @@ function addQ(x,t,c,day,src){x.qt=Math.max(0,(x.qt||0)+t);x.qc=Math.max(0,(x.qc|
 function qPeriod(keys,from){let q=0,c=0,und=0,est=0;keys.forEach(k=>{const s=get(k);if(s.qe&&(!from||s.qe.d>=from))est+=s.qe.q||0;if(!from){q+=s.qt||0;c+=s.qc||0;return}
   let dq=0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;dq+=v[0]||0;if(d>=from){q+=v[0]||0;c+=v[1]||0}}und+=Math.max(0,(s.qt||0)-dq)});return {q,c,und,est}}
 const isDue=s=>{const d=dueIn(s);return d!==null&&d<=0};
-const isWeak=s=>s.qt>=WEAK_MIN&&acc(s)<WEAK_PCT;
+/* ponto fraco (auditoria 26/10): acerto RECENTE (últimos 30 dias, mín. 5 questões); sem questões recentes, o acerto total. Quem melhorou sai sozinho */
+function accRecent(s){const from=fromNum(dnum(today())-30);let q=0,c=0;const m=s.qd||{};for(const d in m)if(d>=from&&Array.isArray(m[d])){q+=m[d][0]||0;c+=m[d][1]||0}return q>=WEAK_MIN?{q,c,a:c/q}:null}
+const isWeak=s=>{const r=accRecent(s);return r?r.a<WEAK_PCT:s.qt>=WEAK_MIN&&acc(s)<WEAK_PCT};
+/* o ponto fraco do dia vai para a fila (5 questões), não ocupa vaga do plano; o mesmo tema descansa WEAK_REST dias (s.wkd) e a escolha segue "onde focar" */
+const WEAK_REST=7;
+function weakToday(){if(isOffDay()||examCrunch().active||provaWeek().length)return null;const P=ensurePlan();if(P.wk&&P.wk.d===today()&&BYKEY[P.wk.k])return P.wk;
+  const t=dnum(today()),c=focusRank(ALL.filter(i=>{const s=get(i.key);return isWeak(s)&&!(s.wkd&&t-dnum(s.wkd)<WEAK_REST)}))[0]
+    ||ALL.filter(i=>{const s=get(i.key);return isWeak(s)&&!(s.wkd&&t-dnum(s.wkd)<WEAK_REST)}).sort((a,b)=>wOf(b)-wOf(a))[0];
+  if(!c)return null;P.wk={d:today(),k:c.key,q0:get(c.key).qt||0};try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}return P.wk}
+function weakLeft(){const W=weakToday();if(!W)return 0;const n=Math.max(0,(get(W.k).qt||0)-W.q0);if(n>=WEAK_DAY_Q&&get(W.k).wkd!==today())upd(W.k,x=>{x.wkd=today()});return Math.max(0,WEAK_DAY_Q-n)}
 const isNew=s=>!s.last&&!(s.l>0);
 function dueLabel(d){return d<0?`atrasada ${-d} d`:d===0?"revisar hoje":d===1?"revisar amanhã":`revisar em ${d} d`}
 
@@ -2619,7 +2634,8 @@ let PLAN_N=3;
 function buildPlan(){
   const plan=[],used=new Set();if(isOffDay())return plan;const NEWD=isNewDay(),DM=dayMin(dnum(today())),PLAN_N=dayCap(dnum(today()));
   const add=(it,cls,txt)=>{if(plan.length<PLAN_N&&!used.has(it.key)){used.add(it.key);plan.push({it,cls,txt})}};
-  const rev=ALL.filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))||wOf(b)-wOf(a));
+  const rev=ALL.filter(i=>isDue(get(i.key))).sort(revPri),BR=revBrake();let nNew=0;
+  const addN=(it,cls,txt)=>{if(nNew>=BR.cap||used.has(it.key)||plan.length>=PLAN_N)return;nNew++;add(it,cls,txt)};
   const weak=ALL.filter(i=>isWeak(get(i.key))).sort((a,b)=>(acc(get(a.key))-acc(get(b.key)))-(wOf(a)-wOf(b))*0.1);
   // temas novos: maior incidência primeiro, alternando entre as áreas
   const fresh=[];
@@ -2631,16 +2647,13 @@ function buildPlan(){
   // semana da prova: o conteúdo já estudado volta como "Revisar para a prova"
   provaRvPicks().forEach(o=>{if(plan.length<PLAN_N&&!used.has(o.it.key)){used.add(o.it.key);plan.push({it:o.it,cls:"r-pfr",txt:`Revisar · prova ${inLabel(o.d)}`,pid:o.p.id,ref:o.r,n:o.n})}});
   if(CR.active)return plan;// modo provas: nada da residência
-  if(DM<=30){// dia de 30 min: a vaga é da faculdade ou, sem ela, de um ponto fraco (questões); nada de tema novo
-    if(!provaWeek().length)weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});return plan}
+  if(DM<=30)return plan;// dia de 30 min: só a faculdade; o ponto fraco está na fila do dia (auditoria 26/10)
   if(provaWeek().length)return plan;// semana da prova: sem tema novo nem ponto fraco; as vagas livres ficam para as revisões da residência
-  weak.forEach(i=>{if(plan.length<1)add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto")});
   // temas em andamento ("Estudando") vêm antes de abrir tema novo
   if(NEWD)ALL.filter(i=>{const s=get(i.key);return isIng(s)&&(!subList(i).length||subList(i).some(x=>!x.done))}).sort((a,b)=>(get(a.key).ing.d<get(b.key).ing.d?-1:get(a.key).ing.d>get(b.key).ing.d?1:0)||wOf(b)-wOf(a))
-    .forEach(i=>{const [d,t]=subCount(i),pt=partSubs(i).pt;add(i,"r-cont",pt?`Continuar · Parte ${pt[0]} de ${pt[1]}`:t?`Continuar · ${d} de ${t} subtópicos`:"Continuar")});
-  if(NEWD)fresh.forEach(i=>{const pt=partSubs(i).pt;add(i,"r-new",(wOf(i)===3?"Novo · incidência muito alta":"Tema novo")+(pt?` · ${pt[1]} partes`:""))});
-  weak.forEach(i=>add(i,"r-weak",Math.round(acc(get(i.key))*100)+"% de acerto"));
-  return plan;
+    .forEach(i=>{const [d,t]=subCount(i),pt=partSubs(i).pt;addN(i,"r-cont",pt?`Continuar · Parte ${pt[0]} de ${pt[1]}`:t?`Continuar · ${d} de ${t} subtópicos`:"Continuar")});
+  if(NEWD)fresh.forEach(i=>{const pt=partSubs(i).pt;addN(i,"r-new",(wOf(i)===3?"Novo · incidência muito alta":"Tema novo")+(pt?` · ${pt[1]} partes`:""))});
+  return plan;// ponto fraco: na fila do dia (weakToday), não ocupa vaga do plano
 }
 
 function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i.key).l||0)>=1||get(i.key).last)dw+=w});return Math.round(dw/tw*100)}
@@ -3043,9 +3056,10 @@ function renderNotasView(){
     H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
   // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
-  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length;
+  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=0;
    $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
-   const rb=$("#nRevBox");rb.innerHTML="";rb.append(nTodayCard(),nCardsCard());const pb=$("#nPegBox");pb.innerHTML="";pb.appendChild(nPegCard(vis));
+   const rb=$("#nRevBox");rb.innerHTML="";rb.append(nCardsCard());{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
+     l.querySelector("span").textContent=`${nn} ${nn===1?"tema estudado sem anotação":"temas estudados sem anotação"}.`;l.querySelector("button").onclick=()=>{nNoNote=true;if(nType==="free"){nType="all";lsSet("resid-ntype","all")}setNSeg("livre");render();setTimeout(()=>{const x=$("#nTopicH");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};rb.appendChild(l)}}const pb=$("#nPegBox");pb.innerHTML="";pb.appendChild(nPegCard(vis));
    }
   if(nNoNote){const list=$("#nlist");list.innerHTML="";const nn=noNoteKeys().filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t).includes(nQuery)));
     if(!nn.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema estudado sem anotação com esses filtros.</li>`));
@@ -3641,7 +3655,8 @@ function qUniverse(){// temas da residência + conteúdos da faculdade, com os f
   return pool}
 const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
 function qClearAll(){qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;qWorse=false}
-let qListKeep=null;
+let qListKeep=null,qListAll=false;const QLIST_TOP=10;
+const qFiltOn=()=>!!(qArea!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF||qWorse||qOpenK&&false);
 function renderQFilters(){const box=$("#qFilters");qListKeep=qListKeep||$("#qlistT");if(qListKeep&&qListKeep.parentNode)qListKeep.remove();box.innerHTML="";
   const c=el(`<div class="card tfind" id="qFind" role="search" aria-labelledby="qfh"><div class="tfhead"><h2 id="qfh">Seus temas nas questões</h2><span class="tfcount"></span></div><div class="tfsearch">${FC_ICO}<input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto" aria-label="Buscar tema ou assunto" autocomplete="off"></div><div class="tfilters"></div></div>`);
   box.appendChild(c);const qi=c.querySelector("#qq");qi.value=qQuery;qi.oninput=debounced(()=>{qQuery=qi.value;render()});
@@ -3670,7 +3685,7 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qExamCard(),qRedoCard(U0),qGainCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qExamCard(),qRedoCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
@@ -3690,10 +3705,10 @@ function renderQuest(){
   // gráfico: especialidades (padrão) ou áreas
   /* Lote 10: tendência ▲▼ (30 dias × 90 antes), poucas questões esmaecidas, ordem "onde ganhar mais pontos" (incidência² × distância de 80%), toque filtra */
   const groups={};vis.forEach(x=>{const key=qChartBy==="area"?x.it.area.code:x.it.area.code+"|"+x.it.sp;const g=groups[key]||(groups[key]={key,code:x.it.area.code,sp:qChartBy==="area"?"":x.it.sp,lab:qChartBy==="area"?x.it.area.name:`${x.it.sp} · ${x.it.area.code}`,c:0,t:0,ks:[],w:0});g.c+=x.c;g.t+=x.t;g.ks.push(x.it.key);g.w+=wOf(x.it)});
-  const t0=dnum(today()),G=Object.values(groups).map(g=>{const a=stQ(g.ks,t0-29,t0),b=stQ(g.ks,t0-119,t0-30),tr=a.q>=5&&b.q>=5?Math.round((a.c/a.q-b.c/b.q)*100):null,w=g.w/g.ks.length;return {...g,tr,gain:w*w*Math.max(0,.8-g.c/g.t)*Math.sqrt(g.ks.length)}});
+  const t0=dnum(today()),G=Object.values(groups).map(g=>{const a=stQ(g.ks,t0-29,t0),b=stQ(g.ks,t0-119,t0-30),tr=a.q>=5&&b.q>=5?Math.round((a.c/a.q-b.c/b.q)*100):null,w=g.w/g.ks.length;return {...g,tr,gain:g.ks.reduce((a,k)=>a+(BYKEY[k]?focusScore(BYKEY[k]):0),0)}});
   const rows=G.sort(qChSort==="gain"?(a,b)=>b.gain-a.gain||a.c/a.t-b.c/b.t:(a,b)=>a.c/a.t-b.c/b.t||b.t-a.t);
   $("#qChartTitle").textContent=qChartBy==="area"?"Acerto por área":"Acerto por especialidade";
-  const tog=`<div class="qchctl"><div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div><div class="seg qchsort" role="group" aria-label="Ordem"><button type="button" id="qchS-acc" data-s="acc" aria-pressed="${qChSort!=="gain"}">Menor acerto</button><button type="button" id="qchS-gain" data-s="gain" aria-pressed="${qChSort==="gain"}">Onde ganhar mais pontos</button></div></div>`;
+  const tog=`<div class="qchctl"><div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div><div class="seg qchsort" role="group" aria-label="Ordem"><button type="button" id="qchS-acc" data-s="acc" aria-pressed="${qChSort!=="gain"}">Menor acerto</button><button type="button" id="qchS-gain" data-s="gain" aria-pressed="${qChSort==="gain"}">Onde focar</button></div></div>`;
   const qchRows=L=>L.map(g=>{const p=pct(g.c,g.t),[bk,bl]=band(p),few=g.t<QCH_FEW,tr=g.tr===null||Math.abs(g.tr)<5?"":`<span class="qtr ${g.tr>0?"up":"down"}" title="últimos 30 dias × os 90 anteriores">${g.tr>0?"▲":"▼"} ${Math.abs(g.tr)}</span>`;
     return `<button type="button" class="vrow qchrow${few?" few":""}" data-code="${esc(g.code)}" data-sp="${esc(g.sp)}"><div class="vtop"><span class="vl">${esc(g.lab)}</span>${tr}<span class="hv">${p}%</span><span class="hn">${few?"poucas questões · ":""}${g.c}/${g.t}</span></div><div class="hbar track1"><i class="pbar ${bk}" style="width:${Math.max(p,1)}%" data-tip="${esc(g.lab)}: ${g.c} de ${g.t} (${p}%) · ${bl}${few?" · poucas questões, ainda pouco confiável":""}"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></button>`}).join("");
   $("#qChart").innerHTML=tog+(T?qchRows(rows.slice(0,qMore?rows.length:12))+(rows.length>12?`<button class="link qmore" type="button">${qMore?"Mostrar menos":`Mostrar todas as ${rows.length}`}</button>`:"")+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span><span>▲▼ = últimos 30 dias × os 90 anteriores · toque para filtrar</span></div>`:
@@ -3711,7 +3726,13 @@ function renderQuest(){
     const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+" · "+String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
     li.querySelector(".qname").textContent=it.t;const qt=li.querySelector(".qt"),open=qOpenK===it.key;qt.setAttribute("aria-expanded",open);qt.onclick=()=>{qOpenK=open?null:it.key;render()};if(open)li.classList.add("qopen");
     li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);li.appendChild(open?qTopicPanel(it):qRowExtra(it));return li};
-  const items=vis.map(x=>x.it);
+  const items=vis.map(x=>x.it);list.classList.remove("q2c");
+  /* Lote 17: sem filtro, a lista mostra os 10 que mais pedem atenção (a conta do "onde focar"; depois o menor acerto) e "Ver todos" */
+  if(!qListAll&&!qFiltOn()&&items.length>QLIST_TOP){const fr=new Map(focusRank(items).map((it,i)=>[it.key,i])),ac=it=>S.get(it.key).c/S.get(it.key).t;
+    const top=[...items].sort((a,b)=>(fr.has(a.key)?fr.get(a.key):1e3)-(fr.has(b.key)?fr.get(b.key):1e3)||ac(a)-ac(b)).slice(0,QLIST_TOP);
+    list.appendChild(el(`<li class="qtophead how">Os ${QLIST_TOP} temas que mais pedem atenção (mais cobrados e com acerto mais longe de 80%).</li>`));list.classList.add("q2c");
+    top.forEach(it=>list.appendChild(row(it)));const m=el(`<li class="qtopmore"><button class="btn" type="button" id="qAllT"></button></li>`);m.querySelector("button").textContent=`Ver todos os ${items.length} temas`;m.querySelector("button").onclick=()=>{qListAll=true;render()};list.appendChild(m);return}
+  if(qListAll&&items.length>QLIST_TOP){const m=el(`<li class="qtophead"><button class="link" type="button" id="qTopT">Mostrar só os ${QLIST_TOP} que mais pedem atenção</button></li>`);m.querySelector("button").onclick=()=>{qListAll=false;render()};list.appendChild(m)}
   if(qSort==="num"){const ai=it=>{const i=AREAS.indexOf(it.area);return i<0?99:i},si=it=>{const i=(it.area.specs||[]).findIndex(z=>z.name===it.sp);return i<0?99:i};items.sort((a,b)=>ai(a)-ai(b)||si(a)-si(b)||(a.sp||"").localeCompare(b.sp||"","pt")||(a.own-b.own)||a.num-b.num);appendGrouped(list,items,x=>x,row,["tema","temas"])}
   else{items.sort(qSort==="low"?(a,b)=>S.get(a.key).c/S.get(a.key).t-S.get(b.key).c/S.get(b.key).t||S.get(b.key).t-S.get(a.key).t:(a,b)=>S.get(b.key).t-S.get(a.key).t);items.forEach(it=>list.appendChild(row(it)))}
 }
@@ -3761,7 +3782,32 @@ function weakDone(p){if(p.q0===undefined)p.q0=get(p.k).qt||0;return Math.max(0,(
 function resetStudy(k){upd(k,x=>{delete x.last;delete x.step;delete x.pre;delete x.ed;delete x.ing;x.l=0;delete x.sd;if(Array.isArray(x.cs))x.cs=x.cs.map(c=>({...c,d:false}))});
   if(dayPlan){if(dayPlan.rchk)delete dayPlan.rchk[k];if(Array.isArray(dayPlan.revd))dayPlan.revd=dayPlan.revd.filter(y=>y!==k);savePlan()}revArm=null;commit()}
 let revArm=null;
-function reviewTopic(k,good){const it=itemByKey(k);upd(k,x=>{if(it)markSubsReviewed(x,it);x.last=today();x.step=good?Math.min((x.step||0)+1,INT.length-1):0;if(good)x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(k);commit()}
+/* revisão do tema (Lote 17): 0 = Esqueci (volta 2 degraus), 1 = Difícil (repete o intervalo), 2 = Lembrei (sobe 1 degrau; lembrou depois do previsto → o próximo
+   intervalo é pelo menos o tempo que de fato passou). true/false antigos = Lembrei/Difícil. o.auto = marcada pelas questões do dia (s.ar = {d,a} acerto) */
+const REV_G=[["Esqueci","volta 2 degraus"],["Difícil","repete o intervalo"],["Lembrei","sobe 1 degrau"]];
+function revNext(s,g){const st=s.step||0,mx=INT.length-1;if(g===1)return st;if(g!==2)return Math.max(0,st-2);let n=Math.min(st+1,mx);
+  if(s.last){const gone=dnum(today())-dnum(s.last),pl=interval(s);if(gone>pl)while(n<mx&&INT[n]<gone)n++}return n}
+function revPreview(s,g){const n=revNext(s,g),x={...s,step:n,last:today()};delete x.adj;delete x.adjFrom;return interval(x)}
+function reviewTopic(k,good,o){const g=good===true?2:good===false?1:good,it=itemByKey(k);o=o||{};
+  upd(k,x=>{if(it)markSubsReviewed(x,it);const n=revNext(x,g);x.last=today();x.step=n;x.rg=g;if(o.auto)x.ar={d:today(),a:o.acc};else delete x.ar;if(g===2)x.l=Math.max(x.l||0,2)});
+  logAct("r");markReviewed(k);if(!o.quiet)commit()}
+function revBtns(k,cls){const s=get(k),w=el(`<div class="pacts revg${cls?" "+cls:""}"></div>`);[2,1,0].forEach(g=>{const d=revPreview(s,g),b=el(`<button class="btn${g===2?" primary":""}" type="button"><span></span><small></small></button>`);
+    b.id=`rg${g}-${k}`;b.querySelector("span").textContent=REV_G[g][0];b.querySelector("small").textContent=d===1?"1 dia":d+" dias";b.title=`${REV_G[g][0]}: ${REV_G[g][1]} (próxima em ${d===1?"1 dia":d+" dias"})`;b.onclick=()=>reviewTopic(k,g);w.appendChild(b)});return w}
+/* questões contam como revisão: no dia em que o tema vence, ${QREV_MIN}+ questões dele marcam a revisão sozinhas, com a resposta pelo acerto */
+const QREV_MIN=5;
+function qAutoRev(){if(isOffDay()||(store&&!synced))return false;const T=today();let ch=false;
+  [...ALL,...FAC_ITEMS].forEach(it=>{const s=get(it.key);if(!isDue(s)||s.last===T)return;const v=(s.qd||{})[T];if(!Array.isArray(v)||(v[0]||0)<QREV_MIN)return;
+    const a=(v[1]||0)/v[0],g=a>=.75?2:a>=.5?1:0;reviewTopic(it.key,g,{auto:true,quiet:true,acc:Math.round(a*100)});ch=true});return ch}
+/* pilha por importância: peso × (dias de atraso + 1); empate = mais atrasada */
+const revScore=it=>(wOf(it)||2)*(1+Math.max(0,-(dueIn(get(it.key))||0)));
+const revPri=(a,b)=>revScore(b)-revScore(a)||dueIn(get(a.key))-dueIn(get(b.key));
+/* freio de carga: muitas revisões atrasadas → menos (ou nenhum) tema novo */
+const REV_BRAKE1=20,REV_BRAKE2=40;
+function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
+/* minutos estimados: fila do dia e plano */
+const MIN_EST={revs:5,errs:1.5,redo:2,cards:.25,"r-new":40,"r-cont":40,"r-own":40,"r-fac":40,"r-weak":10,"r-pfr":15};
+function qMinutes(C){return Math.round(["revs","errs","redo","cards"].reduce((a,id)=>a+(C[id]||0)*MIN_EST[id],0)+(C.weak||0)*MIN_EST.redo)}
+function planMinutes(P){return P.items.filter(x=>!itemDone(x)).reduce((a,x)=>a+(MIN_EST[x.cls]||30),0)}
 
 /* cartões do plano: recolhidos por padrão; abertos sozinhos enquanto o tema está sendo estudado (começado e não concluído).
    planOpen guarda o que você abriu ou fechou à mão hoje */
@@ -3773,7 +3819,12 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
   const cb=w.querySelector("#pTimeChg");cb.textContent=tdOpen?"Fechar":m>=180?"Tenho menos tempo hoje":m===0?"Vou estudar hoje":"Tenho mais ou menos tempo hoje";cb.setAttribute("aria-expanded",tdOpen);cb.onclick=()=>{tdOpen=!tdOpen;render()};
   if(tdOpen){const g=el(`<div class="seg pdseg" role="group" aria-label="Tempo de hoje"></div>`);WP_MIN.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="tdm-"+v;b.textContent=WP_LAB[v];b.setAttribute("aria-pressed",v===m);b.onclick=()=>{tdOpen=false;if(v!==m)setTodayMin(v)};g.appendChild(b)});
     w.appendChild(g);w.appendChild(el(`<p class="how">Muda só hoje (fica no plano desta semana). O que você já começou continua no plano.</p>`))}
-  if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"]].filter(x=>x[2]);
+  if(m>0){const qm=qMinutes(qCounts()),pm=dayPlan&&dayPlan.d===today()?planMinutes(dayPlan):0,tot=qm+pm,e=el(`<p class="pest" id="pEst"></p>`);
+    e.textContent=`Tempo estimado: fila ≈ ${fmtMin(qm*60)} + plano ≈ ${fmtMin(pm*60)} = ${fmtMin(tot*60)}${m<180?` · você tem ${WP_LAB[m]}`:""}`;if(m<180&&tot>m)e.classList.add("over");w.appendChild(e)}
+  {const BR=revBrake();if(BR.cap<99&&!CR.active&&!PW.length&&m>=60){const b=el(`<p class="pbrake" id="pBrake"></p>`);
+    b.textContent=BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
+    if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont")&&!itemStarted(x)).length>BR.cap)b.textContent+=" O plano de hoje foi montado antes: toque em Refazer plano para aplicar.";w.appendChild(b)}}
+  if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"],...(()=>{const W=C.weak&&weakToday();return W&&BYKEY[W.k]?[["weak","Ponto fraco · "+BYKEY[W.k].t,C.weak,"questões"]]:[]})()].filter(x=>x[2]);
     const b=el(`<div class="plight" id="pLight"><p class="how">Dia curto: só o que é leve e não pode acumular. Nada de tema novo hoje.</p><ul></ul></div>`),ul=b.querySelector("ul");
     if(!L.length)ul.appendChild(el(`<li class="how">Nada vencendo hoje. Se sobrar tempo, faça algumas questões.</li>`));
     {const S=cdGenScope(),n=cdGenIds(S).length;if(n){const g=el(`<div class="plgen" id="pLightGenBox"><span><b></b> <span class="how"></span></span><button class="btn" type="button" id="pLightGen">Revisão geral</button></div>`);
@@ -3782,7 +3833,7 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
     if(L.length){const go=el(`<button class="btn primary" type="button" id="pLightGo">Começar</button>`);go.onclick=qStart;b.appendChild(go)}if(b._gen)b.appendChild(b._gen);w.appendChild(b)}
   return w}
 function renderPlan(){
-  {const wb=$("#weekBox");if(wb){wb.innerHTML="";if(view==="temas")wb.appendChild(weekEl())}}
+  {const wb=$("#weekBox");if(wb)wb.innerHTML=""}// Lote 17: a prévia dos próximos dias foi para o cartão "Próximos dias" (renderAgenda)
   const P=ensurePlan(),pl=$("#plan");pl.innerHTML="";const compact=true;if(planOpen.d!==P.d)planOpen={d:P.d};
   const CR=examCrunch(),cb=$("#crunchBar");cb.hidden=!CR.active;{const pn=$("#planNote");pn.hidden=!planNote;pn.textContent=planNote}
   if(CR.active)cb.textContent=(CR.manual?`Modo provas ligado manualmente até ${br(CR.until)}${CR.provas.length?` (${CR.provas.map(p=>p.name).join(", ")})`:""}. Residência pausada; o plano é só da faculdade.`:`Modo provas: ${CR.provas.length} provas entre ${br(CR.from)} e ${br(CR.until)} (${CR.provas.map(p=>p.name).join(", ")}). Residência pausada até ${br(CR.until)}; o plano é só da faculdade.`)+`${P.items.some(x=>x.cls!=="r-fac"&&x.cls!=="r-pfr"&&x.cls!=="r-own"&&!(BYKEY[x.k]||{}).own)?" Toque em Refazer plano para aplicar hoje.":""}`;
@@ -3828,6 +3879,7 @@ function renderPlan(){
       if(p.subs.length){const ul=el(`<ul class="wsubs"></ul>`);p.subs.forEach(t=>{const li=document.createElement("li");li.textContent=t;ul.appendChild(li)});body.appendChild(ul)}
       body.appendChild(el(`<div class="wprog"><div class="meter"><i style="width:${Math.min(100,n/WEAK_DAY_Q*100)}%"></i></div><span>${Math.min(n,WEAK_DAY_Q)} de ${WEAK_DAY_Q} questões hoje</span></div>`));
     }else if(p.subs.length){
+      if(p.cls==="r-cont"&&(notes[p.k]||"").trim())body.appendChild(rereadEl(p.k));
       body.appendChild(el(`<p class="plabel">${p.cls==="r-rev"?"Revisar hoje":p.cls==="r-fac"?"Estudar para a prova":"Estudar hoje"}:</p>`));
       const ul=el(`<ul class="psubs"></ul>`);
       p.subs.forEach((t,n)=>{const x=L.find(y=>y.t===t);if(!x)return;const id=`ps-${p.k}-${n}`;
@@ -3838,8 +3890,7 @@ function renderPlan(){
       body.appendChild(ul);
       if(p.cls==="r-rev"&&!done){const allc=p.subs.every(t=>(p.chk||[]).includes(t));
         body.appendChild(el(`<p class="phint">${allc?"Subtópicos revisados. Como foi?":"Marque cada subtópico ao revisar e depois confirme como foi a revisão."}</p>`));
-        const rb=el(`<div class="pacts"><button class="btn primary" type="button">Revisei: lembrei bem</button><button class="btn" type="button">Tive dificuldade</button></div>`);
-        const [g,h]=rb.querySelectorAll("button");g.onclick=()=>reviewTopic(p.k,true);h.onclick=()=>reviewTopic(p.k,false);body.appendChild(rb)}
+        body.appendChild(revBtns(p.k))}
     }else{body.appendChild(el(`<p class="phint">Este tema não tem subtópicos. Estude o tema inteiro${it.own?" ou crie subtópicos ao abrir o tema":""}.</p>`));
       if(!done){const sb=el(`<button class="btn primary" type="button" style="align-self:flex-start">Estudei hoje</button>`);
         sb.onclick=()=>{const first=!get(p.k).last;upd(p.k,x=>{x.last=today();if(first)x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");p.subs=[];savePlan();commit()};body.appendChild(sb)}}
@@ -3878,10 +3929,10 @@ let revOpen={},revOpenD="";
 function renderRevs(){
   if(revOpenD!==today()){revOpen={};revOpenD=today()}
   renderVesp();
-  const CRv=examCrunch(),allDue=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))),paused=CRv.active?allDue.filter(i=>!i.own):[],POOL=[...ALL,...FAC_ITEMS],due=allDue.filter(i=>!paused.includes(i)).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))||wOf(b)-wOf(a));
+  const CRv=examCrunch(),allDue=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))),paused=CRv.active?allDue.filter(i=>!i.own):[],POOL=[...ALL,...FAC_ITEMS],due=allDue.filter(i=>!paused.includes(i)).sort(revPri);
   const late=due.filter(i=>dueIn(get(i.key))<0).length;
   const t=dnum(today()),up=POOL.filter(i=>{const d=dueIn(get(i.key));return d!==null&&d>0&&d<=7}).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key)));
-  $("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
+  const QC=qCounts();$("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${QC.revs<due.length?` · cabem hoje ${QC.revs}`:late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
   const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
@@ -3902,8 +3953,9 @@ function renderRevs(){
       body.appendChild(ul);
       const rest=L.filter(x=>x.done).length-subs.length;if(rest>0)body.appendChild(el(`<p class="phint">Os outros ${rest} subtópicos já estudados entram nas próximas revisões, em rodízio.</p>`))}
     else body.appendChild(el(`<p class="phint">Nenhum subtópico marcado neste tema: revise o tema como um todo.</p>`));
-    const acts=el(`<div class="pacts"><button class="btn primary" type="button">Lembrei bem</button><button class="btn" type="button">Tive dificuldade</button></div>`);
-    const [g,h]=acts.querySelectorAll("button");g.onclick=()=>reviewTopic(it.key,true);h.onclick=()=>reviewTopic(it.key,false);
+    body.appendChild(rereadEl(it.key));
+    body.appendChild(el(`<p class="phint">Como foi? Cada botão mostra quando a revisão volta.</p>`));
+    body.appendChild(revBtns(it.key));const acts=el(`<div class="pacts"></div>`);
     if(!sampleOff){const q=el(`<button class="mini" type="button">Gerar questões</button>`);q.onclick=()=>{genFocus[it.key]="__hoje";openTopic(it.key);setTimeout(()=>{const x=detGet("qf-",it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(q)}
     {const fz=el(`<button class="mini" type="button" title="Contar o tempo de revisão deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);acts.appendChild(fz)}
     body.appendChild(acts);
@@ -3920,7 +3972,7 @@ function renderRevs(){
   const rt=(ensurePlan().revd||[]).filter(k=>BYKEY[k]);
   $("#revdone").hidden=!rt.length;
   if(rt.length){$("#revdone").innerHTML="";$("#revdone").appendChild(el(`<span class="plabel">Revisadas hoje · ${rt.length}</span>`));
-    const w=el(`<div class="rtags"></div>`);rt.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`);b.textContent="✓ "+BYKEY[k].t;b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w)}
+    const w=el(`<div class="rtags"></div>`);rt.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`),ar=get(k).ar;b.textContent="✓ "+BYKEY[k].t+(ar&&ar.d===today()?` · questões ${ar.a}%`:"");b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w)}
   // próximas
   const ub=$("#revup");ub.innerHTML="";
   if(up.length){const det=el(`<details class="plain revup"${revUpOpen?" open":""}><summary>Próximas revisões nos próximos 7 dias · ${up.length}</summary><ul class="uplist"></ul></details>`);
@@ -5057,7 +5109,7 @@ function ecardEl(e,withTopic){
   if(e.c){const s=el(`<span class="ecause"></span>`);s.textContent=e.c;h.appendChild(s)}
   if(e.arch)c.classList.add("arch");
   c.querySelector(".w").textContent=e.w;eRFill(c.querySelector(".r"),e.r);if(ePista(e)){boldFill(c.querySelector(".p"),ePista(e));c.querySelector(".epista").hidden=false}eExtraBlocks(c,e,true);
-  if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e);c.querySelector(".rv").textContent=`${du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
+  if(e.arch)c.querySelector(".rv").textContent=`Arquivado em ${br(e.arch)}${e.rev?` · revisado ${e.rev}×`:""}`;else{const du=eDue(e),bc=eByCard(e);c.querySelector(".rv").textContent=`${e.fm?`Formado em ${br(e.fm)} (volta se você errar o tema de novo)`:bc?"Revisado pelos cartões":du<=today()?"Revisar hoje":"Próxima revisão "+br(du)}${e.rev?` · revisado ${e.rev}×`:""}${e.miss?` · ainda erraria ${e.miss}×`:""}`;if(du<=today())c.querySelector(".rv").classList.add("due")}
   const ft=c.querySelector(".efoot");
   const rb=eCardBtn(e);
   const db=el(`<button class="mini${delArm===e.id?" warn":""}" type="button">${delArm===e.id?"Confirmar exclusão":"Excluir"}</button>`);
@@ -5080,13 +5132,20 @@ let erRun=null,eReg=null,eMenu=null;
 function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.box:Math.min(e.rev||0,E_INT.length-1)}
 // erros antigos (sem data marcada) entram pela data do último "revisei" ou do registro
 function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
-const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDue(e)<=today());
+/* uma agenda por questão (Lote 17): erro que virou cartão é revisado pelo cartão, não volta na revisão de erros */
+const eByCard=e=>cards.some(x=>x.eid===e.id||(e.cd&&x.id===e.cd));
+const eDueNow=e=>eDue(e)<=today()&&!eByCard(e)&&!e.fm;
+const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDueNow(e));
+/* auditoria 26/10: acertou no degrau de 30 dias → o erro se forma (e.fm = data): sai da revisão, continua no caderno; volta se você errar o tema de novo (eNew) */
 function eAnswer(e,good){e.rev=(e.rev||0)+1;e.lastRev=today();
-  if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
+  if(good&&eBox(e)>=E_INT.length-1){e.fm=today();e.due=fromNum(dnum(today())+E_INT[E_INT.length-1])}
+  else if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
   else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
   putErr(e)}
 function eNew(k,w,r,t,s,c,p,x){const e={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),k,w:w.trim(),r:r.trim(),t:ETYPES[t]?t:"conhecimento",s:(s||"").trim(),d:today(),rev:0,box:0,due:fromNum(dnum(today())+E_INT[0])};
-  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
+  if(c&&(ECAUSES[e.t]||[]).includes(c))e.c=c;
+  errors.forEach(o=>{if(o.k===k&&o.fm){delete o.fm;o.box=Math.max(0,eBox(o)-2);o.due=fromNum(dnum(today())+1);putErr(o)}});/* errou o tema de novo: os erros formados dele voltam */
+  if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
   x=x||{};if(typeof x.pc==="string"&&x.pc.trim())e.pc=x.pc.trim().slice(0,1200);if(typeof x.dd==="string"&&x.dd.trim())e.dd=x.dd.trim().slice(0,400);
   if(x.qf&&typeof x.qf.e==="string"&&Array.isArray(x.qf.a))e.q={e:x.qf.e,a:x.qf.a.filter(a=>a&&typeof a.t==="string").map(a=>({l:String(a.l||""),t:a.t})),c:String(x.qf.c||""),m:String(x.qf.m||"")};
   errors.push(e);putErr(e);return e}
@@ -5227,7 +5286,7 @@ function errFormEl(D,pre,onSave,ids){const I={w:pre+"w",r:pre+"r",t:pre+"t",s:pr
   return f}
 /* "Levar para o caderno" dentro do simulado e do refazer */
 function eCadEl(H,idx,k,q,mine,src){const st=H[idx],w=el(`<div class="ecad"></div>`);
-  if(st&&st.saved){w.appendChild(el(`<p class="pnote" role="status">No caderno de erros. Ele volta para você revisar amanhã.</p>`));return w}
+  if(st&&st.saved){w.appendChild(el(`<p class="pnote" role="status">No caderno de erros. Ele volta para você revisar amanhã.${st.rd?" Saiu do Refazer: a partir de agora esta questão é revisada só no caderno.":""}</p>`));return w}
   if(!st){const b=el(`<button class="btn" type="button">Levar para o caderno de erros</button>`);b.onclick=()=>{H[idx]={...qDraft(q,mine,src),k};render();setTimeout(()=>{const f=$("#ecq-r");if(f)f.focus()},30)};w.classList.add("bare");w.appendChild(b);return w}
   w.appendChild(el(`<span class="glabel">Levar para o caderno de erros</span>`));
   w.appendChild(el(`<p class="how">O app já resumiu a questão. Ajuste com as suas palavras: é isso que você vai revisar.</p>`));
@@ -5238,7 +5297,7 @@ function eCadEl(H,idx,k,q,mine,src){const st=H[idx],w=el(`<div class="ecad"></di
       if(S&&S.st==="error"){const e=el(`<span class="err"></span>`);e.textContent=S.msg;bx.appendChild(e)}
       else if(!S)bx.appendChild(el(`<span class="how">Opcional. ${window.__site?"No site, você copia o pedido, cola no Claude e traz a resposta.":"Reescreve mais curto, com a pista e o conceito."}</span>`))}
     w.appendChild(bx)}
-  w.appendChild(errFormEl(st,"ecq-",()=>{H[idx]={saved:true};render()}));
+  w.appendChild(errFormEl(st,"ecq-",()=>{H[idx]={saved:true,rd:rdForget(k,q)};render()}));
   const c=el(`<button class="link" type="button">Cancelar</button>`);c.onclick=()=>{delete H[idx];render()};w.appendChild(c);return w}
 /* ----- registro rápido na própria aba ----- */
 function eRegPanel(){const R=eReg,w=el(`<div class="qreg" id="eReg"><div class="dhead"><b>Registrar erro</b><button class="link" type="button">Fechar</button></div></div>`);
@@ -5381,7 +5440,7 @@ const EFLAG={due:"Para revisar hoje",rep:"Que se repetem",nocard:"Sem cartão",a
 function eRepKeys(){const r=eRepeat();return {tem:new Set(r.tem.map(([k])=>k)),stub:new Set(r.stub.map(e=>e.id))}}
 function eExtraOk(e,R){
   if(eFlags.has("arch")?!e.arch:e.arch)return false;
-  if(eFlags.has("due")&&!(eDue(e)<=today()))return false;
+  if(eFlags.has("due")&&!eDueNow(e))return false;
   if(eFlags.has("rep")&&!(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)))return false;
   if(eFlags.has("nocard")&&e.cd&&cards.some(x=>x.id===e.cd))return false;
   if(ePer!=="all"&&dnum(today())-dnum(e.d)>+ePer)return false;
@@ -5400,7 +5459,7 @@ function renderEMore(){const box=$("#eMore");if(!box)return;
   if(eArea!=="all")A.push([fcAreaName(eArea),()=>{eArea="all";eSp="all"}]);if(eArea!=="all"&&eSp!=="all")A.push([eSp,()=>{eSp="all"}]);
   const G=[];
   G.push(["Tipo de erro","por que você errou",fcChips(Object.entries(ETYPES).map(([v,l])=>fcChip(`${l} · ${EA.filter(e=>e.t===v).length}`,eType===v,()=>{eType=eType===v?"all":v;eLimit=E_PAGE},null,null,null,{et:v})))]);
-  G.push(["Situação","combinam com o resto",fcChips(Object.entries(EFLAG).map(([v,l])=>{const n=v==="arch"?act.filter(e=>e.arch).length:act.filter(e=>!e.arch&&(v==="due"?eDue(e)<=today():v==="rep"?(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)):!(e.cd&&cards.some(x=>x.id===e.cd)))).length;
+  G.push(["Situação","combinam com o resto",fcChips(Object.entries(EFLAG).map(([v,l])=>{const n=v==="arch"?act.filter(e=>e.arch).length:act.filter(e=>!e.arch&&(v==="due"?eDueNow(e):v==="rep"?(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)):!(e.cd&&cards.some(x=>x.id===e.cd)))).length;
     return fcChip(`${l} · ${n}`,eFlags.has(v),()=>{eFlags.has(v)?eFlags.delete(v):eFlags.add(v);eLimit=E_PAGE},null,null,null,{ef:v})}))]);
   {const row=el(`<div class="qfrow tfsels"></div>`),set=f=>v=>{f(v);eLimit=E_PAGE};
     row.appendChild(fcSel("ePer","Registrados",[["all","Desde o início"],["7","Últimos 7 dias"],["30","Últimos 30 dias"],["90","Últimos 90 dias"]],ePer,set(v=>ePer=v)));
@@ -5477,7 +5536,7 @@ function renderErros(){
     if(eReg)top.appendChild(eRegPanel());else{const a=el(`<div class="btns etopacts"><button class="btn" type="button" id="eRegB">+ Registrar erro</button></div>`);a.querySelector("button").onclick=()=>{eReg={};render();setTimeout(()=>{const i=$("#erq");if(i)i.focus()},30)};
       if(!sampleOff&&errors.some(e=>BYKEY[e.k]&&!e.arch)){const sb=el(`<button class="btn" type="button" id="eSimB">Simulado dos meus erros</button>`);sb.disabled=!sampleFn;sb.title="O Claude cria questões novas sobre os pontos que você já errou";sb.onclick=eSimGo;a.appendChild(sb)}
       top.appendChild(a)}
-    if(errors.some(e=>!e.arch))top.appendChild(eRevCard());const rp=eRepCard();if(rp)top.appendChild(rp)}
+    if(errors.some(e=>!e.arch))top.appendChild(eRevCard());}// Lote 17: "Erros que se repetem" virou o selo "repetiu" em Onde melhorar › Temas com mais erros
   const ins=$("#insight");ins.innerHTML="";
   if(!errors.length){ins.appendChild(el(`<p class="gtext">Seu caderno está vazio. Errou uma questão? Toque em <b>+ Registrar erro</b> (ou abra o tema, aba Erros) e anote o que errou e o conceito correto. Os erros voltam para você revisar em intervalos crescentes.</p>`))}
   else{
@@ -5495,11 +5554,16 @@ function renderErros(){
         top.forEach(([c,n])=>{const li=el(`<li><button type="button" class="link"></button><b></b><span></span></li>`);li.querySelector("button").textContent=c;li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};li.querySelector("b").textContent=`${n} ${n===1?"erro":"erros"}`;li.querySelector("span").textContent=ECTIPS[c]||"";g.querySelector("ul").appendChild(li)});ins.appendChild(g)}
       else if(errors.length>=3)ins.appendChild(el(`<p class="how" style="margin-top:10px">Dica: ao registrar, marque <b>Por que errei</b>. Com isso o app mostra as causas mais comuns e o que fazer com cada uma.</p>`))}
     const per={};AE.forEach(e=>per[e.k]=(per[e.k]||0)+1);
-    const top=Object.entries(per).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const RP0=new Set(eRepeat().tem.map(x=>x[0])),top=Object.entries(per).sort((a,b)=>b[1]-a[1]||RP0.has(b[0])-RP0.has(a[0])).slice(0,5);
+    eRepeat().tem.forEach(([k])=>{if(per[k]&&!top.some(x=>x[0]===k)&&top.length<8)top.push([k,per[k]])});
     const tw=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Temas com mais erros</span><ol class="toplist"></ol></div>`);
+    const RP=new Set(eRepeat().tem.map(x=>x[0]));
     top.forEach(([k,c])=>{const li=el(`<li><button type="button"><span></span><b>${c} ${c===1?"erro":"erros"}</b></button></li>`);li.querySelector("span").textContent=BYKEY[k].t;
+      if(RP.has(k))li.querySelector("span").after(el(`<em class="erepb" title="2 ou mais erros neste tema nos últimos 30 dias">repetiu nos últimos 30 dias</em>`));
       li.querySelector("button").onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};tw.querySelector("ol").appendChild(li)});
     if(top.length)ins.appendChild(tw);
+    {const st=eRepeat().stub;if(st.length){const l=el(`<p class="how etmline" id="eTeim"><span></span> <button class="link" type="button">ver primeiro</button></p>`);
+      l.querySelector("span").textContent=`${st.length} ${st.length===1?"erro teimoso":"erros teimosos"} (você tocou “Ainda erraria” 2 vezes ou mais): sinal para voltar à teoria.`;l.querySelector("button").onclick=()=>{eOrder="miss";render();const x=$("#elist");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})};ins.appendChild(l)}}
     const ps={};AE.forEach(e=>{const it=BYKEY[e.k];if(it){const g=spKey(it);ps[g]=(ps[g]||0)+1}});
     const ts=el(`<div class="grp" style="margin-top:14px"><span class="glabel">Especialidades com mais erros</span><ol class="toplist"></ol></div>`);
     Object.entries(ps).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([g,c])=>{const [ac,sp]=[g.slice(0,g.indexOf(":")),g.slice(g.indexOf(":")+1)];
@@ -5592,12 +5656,25 @@ function trashCardEl(){trPurgeOld();const c=el(`<section class="card trash" id="
 const SITE_URL="https://elialdojunior91tmedicins.github.io/Trilha-Medica/";
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},lsSet=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
 /* ----- 1. fila única do dia: erros, cartões, anotações para reler e temas ----- */
-const QSTEPS=[["errs","Erros","erro","erros"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["notes","Anotações para reler","anotação","anotações"],["revs","Temas para revisar","tema","temas"]];
-function qCounts(){if(isOffDay())return {errs:0,redo:0,cards:0,notes:0,revs:0};return {errs:eDueList().length,redo:Math.min(RD_DAY,rdDueList().length),cards:cdDue().length,notes:notesTodayKeys().filter(x=>(notes[x.k]||"").trim()&&get(x.k).nread!==today()).length,revs:dueCount()}}
+const QSTEPS=[["errs","Erros","erro","erros"],["weak","Ponto fraco","questão","questões"],["redo","Questões para refazer","questão","questões"],["cards","Cartões","cartão","cartões"],["revs","Temas para revisar","tema","temas"]];
+/* Lote 17: a fila do dia cabe no tempo do dia. Ela usa até metade do tempo marcado (mín. 20 min); as revisões de temas entram até onde couber
+   (as mais importantes, pela ordem peso × atraso); as outras continuam pendentes e voltam nos próximos dias (e o freio segura os temas novos) */
+const QUEUE_SHARE=.5,QUEUE_MIN=20,REV_DAY_MIN=3;
+/* ordem do orçamento (auditoria 26/10): revisões de temas primeiro (até 70% do tempo da fila), depois erros, cartões e, com o que sobrar, o Refazer */
+const QUEUE_REV=.7;
+function qBudget(){const m=dayMin(dnum(today()));return m<=0?0:Math.max(QUEUE_MIN,Math.round(Math.min(m,240)*QUEUE_SHARE))}
+function revCapToday(){const b=qBudget();return b?Math.max(REV_DAY_MIN,Math.floor(b*QUEUE_REV/MIN_EST.revs)):0}
+function qCounts(){if(isOffDay())return {errs:0,weak:0,redo:0,cards:0,notes:0,revs:0,revAll:0};const all=dueCount(),cap=revCapToday(),done=(hist[today()]||{}).r||0,o={notes:0};
+  o.revAll=all;o.revCap=cap;o.revs=Math.min(all,Math.max(0,cap-done));
+  let rest=qBudget()-Math.min(all+done,cap)*MIN_EST.revs;const take=(n,per)=>{const k=Math.max(0,Math.min(n,Math.floor(rest/per)));rest-=k*per;return k};
+  const E=eDueList().length,C=cdDue().length,D=Math.min(RD_DAY,rdDueList().length),W=weakLeft();
+  o.errs=Math.max(Math.min(E,3),take(E,MIN_EST.errs));o.weak=W?Math.max(W,0):0;rest-=o.weak*MIN_EST.redo;o.cards=Math.max(Math.min(C,10),take(C,MIN_EST.cards));o.redo=take(D,MIN_EST.redo);
+  o.errAll=E;o.cardAll=C;o.redoAll=rdDueList().length;return o}
 let dayQ=null;try{const v=JSON.parse(lsGet("resid-dayq","null"));if(v&&v.d===today()&&Array.isArray(v.ids))dayQ=v}catch(e){}
 function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
   if(id==="errs"){setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60)}
+  else if(id==="weak"){const W=weakToday();if(W){detTab[W.k]="questoes";openTopic(W.k);setTimeout(()=>{const g=detGet("qf-",W.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}}
   else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");const ids=rdDueList().sort((a,b)=>(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
   else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
@@ -5610,17 +5687,19 @@ function qNext(){if(!dayQ)return;const C=qCounts();let i=dayQ.i+1;while(i<dayQ.i
   if(i>=dayQ.ids.length){dayQ=null;dayQSave();qMsg="Fila do dia concluída. Bom trabalho!";setView("inicio");return}dayQ.i=i;dayQSave();qGoStep(dayQ.ids[i])}
 function qStop(){dayQ=null;dayQSave();render()}
 let qMsg="";
-function iQueueCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=tot?`${tot} ${tot===1?"item":"itens"}`:"";
+function iQueueCard(){const C=qCounts(),tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs,c=el(`<section class="card iqueue" id="iQueue" aria-labelledby="iqh"><div class="dhead"><h2 id="iqh">Revisar hoje</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=tot?`${tot} ${tot===1?"item":"itens"} · ≈ ${fmtMin(qMinutes(C)*60)}`:"";
   if(qMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=qMsg;c.appendChild(m);qMsg=""}
   if(!tot){c.appendChild(el(`<p class="cempty">${isOffDay()?`Hoje é folga: as revisões voltam ${nextStudyLabel()}.`:"Nada para revisar hoje: temas, cartões, erros e anotações estão em dia."}</p>`));return c}
   const ul=el(`<ul class="iqlist"></ul>`);QSTEPS.forEach(([id,lab,s1,sn])=>{const n=C[id],on=dayQ&&dayQ.ids[dayQ.i]===id,li=el(`<li class="${n?"":"done"}${on?" on":""}"><span class="iqn"></span><span class="iql"></span><button class="link" type="button">abrir</button></li>`);
-    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
+    li.querySelector(".iqn").textContent=n?String(n):"✓";li.querySelector(".iql").textContent=lab;
+    if(id==="weak"){const W=weakToday();if(!W){li.remove();return}const r=accRecent(get(W.k))||{a:acc(get(W.k))||0};li.querySelector(".iql").textContent=`Ponto fraco: ${BYKEY[W.k].t}`;const x=el(`<span class="iqmore"></span>`);x.textContent=`${Math.round(r.a*100)}% de acerto · ${WEAK_DAY_Q} questões hoje; o tema descansa ${WEAK_REST} dias depois`;li.querySelector(".iql").appendChild(x)}
+    {const all=C[{revs:"revAll",errs:"errAll",cards:"cardAll",redo:"redoAll"}[id]];if(n&&all>n){const x=el(`<span class="iqmore"></span>`);x.textContent=id==="revs"?`as ${n} mais importantes de ${all}; as outras ficam para os próximos dias`:`${n} de ${all} (o que cabe no tempo de hoje)`;li.querySelector(".iql").appendChild(x)}}li.querySelector("button").onclick=()=>qGoStep(id);if(!n)li.querySelector("button").remove();ul.appendChild(li)});c.appendChild(ul);
   const a=el(`<div class="btns"></div>`);
   if(dayQ){const cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),b=el(`<button class="btn primary" type="button" id="iqGo"></button>`);b.textContent=`Continuar: ${cur?cur[1].toLowerCase():"próximo"}`;b.onclick=()=>qGoStep(dayQ.ids[dayQ.i]);
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
   else if(!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar a fila</button>`);b.onclick=qStart;a.appendChild(b)}
-  c.appendChild(a);c.appendChild(el(`<p class="how">Na ordem: erros, cartões, anotações para reler e temas. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
+  c.appendChild(a);c.appendChild(el(`<p class="how">Na ordem: erros, ponto fraco (5 questões), questões para refazer, cartões e temas (reler a anotação faz parte da revisão do tema). Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
 function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
   if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
   const C=qCounts(),cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),nx=dayQ.ids.slice(dayQ.i+1).find(id=>C[id]),nxs=QSTEPS.find(s=>s[0]===nx);
@@ -5639,7 +5718,6 @@ function iNoticeEl(){const box=el(`<div class="inotices"></div>`);
   if(hasData()&&!logged&&(days===null?age>=30:days>=30)&&!(snooze&&snooze>=today())){const n=el(`<div class="inote warn"><p></p><div class="btns"><button class="btn" type="button">Fazer backup agora</button><button class="link" type="button">Lembrar em 7 dias</button></div></div>`);
     n.querySelector("p").textContent=days===null?"Você nunca fez um backup dos seus dados. Sem conta, eles ficam só neste aparelho: um backup evita perder tudo se o navegador for limpo.":`Seu último backup foi há ${days} dias. Exporte um novo para não perder o que estudou desde então.`;
     const [go,sn]=n.querySelectorAll("button");go.onclick=()=>{goSub("config");setTimeout(()=>{const b=$("#bkSave");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};sn.onclick=()=>{lsSet("resid-bksnooze",fromNum(dnum(today())+7));render()};box.appendChild(n)}
-  {const wn=wpNoticeEl();if(wn)box.appendChild(wn)}
   return box.children.length?box:null}
 /* ----- 4. resumo da semana (domingo: esta semana; segunda: a que passou) ----- */
 function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
@@ -5688,16 +5766,15 @@ function heroFeats(){const out=[],t=dnum(today());
   {const ws=t-(new Date().getDay()+6)%7,s=foSum(foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t));if(s>=5*3600)out.push(`Esta semana você já soma ${fmtMin(s)} de estudo focado.`)}
   return out}
 function heroLine(){const F=heroFeats(),n=dnum(today());return F.length?{feat:true,t:F[n%F.length]}:{feat:false,t:HERO_FRASES[((n%HERO_FRASES.length)+HERO_FRASES.length)%HERO_FRASES.length]}}
-function heroSummary(C){const tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs;if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
+function heroSummary(C){const tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs;if(isOffDay())return `Hoje é seu dia de folga. Descanse: as revisões voltam ${nextStudyLabel()}.`;
   if(dayQ){const left=dayQ.ids.slice(dayQ.i).reduce((a,id)=>a+(C[id]||0),0);return left?`Fila do dia em andamento: ${left===1?"falta 1 item":`faltam ${left} itens`}.`:"Fila do dia quase no fim."}
-  if(tot){const P=[[C.revs,"revisão","revisões"],[C.errs,"erro","erros"],[C.redo||0,"questão para refazer","questões para refazer"],[C.cards,"cartão","cartões"],[C.notes,"anotação para reler","anotações para reler"]].filter(x=>x[0]).map(([n,a,b])=>`${n} ${n===1?a:b}`);
-    const txt=P.length>1?P.slice(0,-1).join(", ")+" e "+P[P.length-1]:P[0];return `${txt} ${tot===1?"espera":"esperam"} por você hoje.`}
+  if(tot){const m=qMinutes(C);return `Sua fila de hoje está pronta: cerca de ${fmtMin(m*60)}. Comece por ela; o plano vem depois.`}
   const s=nextSteps()[0];return s?`Revisões em dia. Próximo: ${s.t}.`:"Tudo feito por hoje. Bom trabalho."}
 function heroExam(){const out=[],t=dnum(today()),m=exMain();if(isSimDay())out.push("Hoje é dia de simulado e provas.");
   if(m&&m.date){const n=dnum(m.date)-t;if(n===0)out.push(`Hoje é dia de ${m.name}. Boa prova!`);else if(n>0&&n<=365)out.push(`${n===1?"Falta 1 dia":`Faltam ${n} dias`} para ${m.name}.`)}
   const p=upcomingProvas().find(x=>x.date&&dnum(x.date)-t>=0&&dnum(x.date)-t<=7);if(p){const n=dnum(p.date)-t;out.push(`Prova ${p.name} da faculdade ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}.`)}
   return out.join(" · ")}
-function heroCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
+function heroCard(){const C=qCounts(),tot=C.errs+(C.weak||0)+(C.redo||0)+C.cards+C.notes+C.revs,nm=(ui.profile.name||"").trim().split(/\s+/)[0],L=heroLine(),ex=heroExam();
   const c=el(`<div class="iherob"><span class="hdate"></span><h2 class="hhi"></h2><p class="hsum"></p>${ex?`<p class="hexam"></p>`:""}<p class="hline"></p><div class="herobtns"></div></div>`);
   c.querySelector(".hdate").textContent=heroDate();c.querySelector(".hhi").textContent=`${heroHi()}${nm?", "+nm:""}.`;c.querySelector(".hsum").textContent=heroSummary(C);
   if(ex)c.querySelector(".hexam").textContent=ex;const hl=c.querySelector(".hline");hl.textContent=L.t;if(L.feat)hl.classList.add("feat");
@@ -5706,9 +5783,10 @@ function heroCard(){const C=qCounts(),tot=C.errs+(C.redo||0)+C.cards+C.notes+C.r
   else if(tot)btn("Começar a fila",qStart);
   else if(!isOffDay()){const s=nextSteps()[0];if(s)btn(s.kind==="rev"?"Revisar agora":s.kind==="sim"||s.kind==="exam"?"Fazer agora":"Estudar agora",()=>startStep(s))}
   if(!B.children.length)B.remove();return c}
-const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Resumo da semana (domingo e segunda)"],["iToday","Estudar hoje"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
+const ICARDS=[["iHero","Saudação e frase do dia"],["iBoard","Seu dia (placar e o que fazer agora)"],["iQueue","Revisar hoje (fila do dia)"],["iWeek","Sua semana e Planejar a semana (domingo e segunda)"],["iToday","Estudar hoje"],["iProva","Próxima prova"],["iStats","Seu progresso"]];
 let iCustom=false;
-function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:[])}
+/* Lote 17: "Seu progresso" sai do Início por padrão (continua na Residência e nas Estatísticas); quem personalizou mantém a escolha */
+function iHidden(){return new Set(Array.isArray(ui.prefs.ihide)?ui.prefs.ihide:["iStats"])}
 function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(id=>ICARDS.some(c=>c[0]===id)):[];if(o.length&&!o.includes("iHero"))o.unshift("iHero");ICARDS.forEach(c=>{if(!o.includes(c[0]))o.push(c[0])});return o}
 function applyICustom(){const H=iHidden(),O=iOrder();ICARDS.forEach(([id])=>{const e=document.getElementById(id);if(!e)return;e.classList.toggle("ihid",H.has(id));e.style.order=String(O.indexOf(id)+1)})}
 function iCustomEl(){const w=el(`<div class="icustom"></div>`);
@@ -5756,7 +5834,7 @@ function needOnb(){return !!window.claude&&synced&&!ui.prefs.onb&&!hasData()&&!f
 function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
   if(!ov){ov=el(`<div class="gsearch onbov" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbh"><div class="gsbox onbbox"></div></div>`);document.body.appendChild(ov)}
   const b=ov.querySelector(".onbbox");b.innerHTML="";const O=onb,dots=el(`<p class="onbdots"></p>`);for(let i=0;i<3;i++)dots.appendChild(el(`<i class="${i<=O.step?"on":""}"></i>`));b.appendChild(dots);
-  const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.fgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
+  const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.hgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
     if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null;render()}else{redoPlan();render()}};
   const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
   if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo ao Nexus</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
@@ -5767,13 +5845,13 @@ function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
   else if(O.step===1){b.append(el(`<h2 id="onbh">Você já estudou para a residência?</h2>`),el(`<p class="gtext">Se já estudou alguns temas, marque quais: eles entram nas revisões em vez de aparecerem como novos.</p>`));
     const a=el(`<div class="onbopts"><button class="btn" type="button">Estou começando agora</button><button class="btn" type="button">Já estudei alguns temas</button></div>`),[x,y]=a.querySelectorAll("button");
     x.onclick=()=>{O.prev=false;O.step=2;renderOnb()};y.onclick=()=>{O.prev=true;O.step=2;renderOnb()};b.append(a,skip)}
-  else{b.append(el(`<h2 id="onbh">Quanto tempo por dia?</h2>`),el(`<p class="gtext">A meta de foco aparece no Início e na aba Foco. Os temas por dia definem o tamanho do plano.</p>`));
-    const g=el(`<div class="onbgrid"><label class="qfsel"><span>Meta diária de foco</span><select id="onbF"></select></label><label class="qfsel"><span>Temas novos por dia</span><select id="onbN"></select></label></div>`);
-    const sf=g.querySelector("#onbF"),sn=g.querySelector("#onbN");[[0,"Sem meta"],[60,"1 h"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[300,"5 h"],[360,"6 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sf.appendChild(o)});
+  else{b.append(el(`<h2 id="onbh">Quanto tempo por semana?</h2>`),el(`<p class="gtext">A meta da semana aparece no Início, no Foco e nas Estatísticas (a do dia é ela dividida pelos dias de estudo). Os temas por dia definem o tamanho do plano.</p>`));
+    const g=el(`<div class="onbgrid"><label class="qfsel"><span>Meta por semana</span><select id="onbF"></select></label><label class="qfsel"><span>Temas novos por dia</span><select id="onbN"></select></label></div>`);
+    const sf=g.querySelector("#onbF"),sn=g.querySelector("#onbN");[[300,"5 h"],[420,"7 h"],[600,"10 h"],[720,"12 h"],[900,"15 h"],[1200,"20 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sf.appendChild(o)});
     [2,3,4,5].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=`${v} temas${v===3?" (sugerido)":""}`;sn.appendChild(o)});sf.value=String(O.fgoal);sn.value=String(O.planN);sf.onchange=()=>O.fgoal=+sf.value;sn.onchange=()=>O.planN=+sn.value;b.appendChild(g);
     const a=el(`<div class="btns"><button class="btn primary" type="button" id="onbFin"></button><button class="btn" type="button">Voltar</button></div>`),[f,bk]=a.querySelectorAll("button");f.textContent=O.prev?"Concluir e marcar o que já estudei":"Concluir";f.onclick=()=>fin(O.prev?"bulk":"");bk.onclick=()=>{O.step=1;renderOnb()};b.append(a,skip)}}
 let onbTried=false;const ONB_SEEN0=lsGet("resid-onb-seen","")==="1";
-function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&&!ONB_SEEN0){lsSet("resid-onb-seen","1");onb={step:0,date:"",prev:false,fgoal:ui.prefs.fgoal||120,planN:ui.prefs.planN||3};renderOnb()}}
+function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&&!ONB_SEEN0){lsSet("resid-onb-seen","1");onb={step:0,date:"",prev:false,fgoal:ui.prefs.hgoal||600,planN:ui.prefs.planN||3};renderOnb()}}
 /* ----- 5. calendário (.ics) ----- */
 function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
 function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
@@ -5792,6 +5870,7 @@ function goHelp(title){helpQ="";const i=$("#hq");if(i)i.value="";goSub("help");s
 function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
 
 function render(){
+  if(qAutoRev())persist();rdExpire();
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
   renderAll();applyFull();sbApply();if(view==="notas"&&nTocRender.last)nTocRender(...nTocRender.last);foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}
@@ -5818,7 +5897,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* planejamento semanal: minutos por dia (0 domingo … 6 sábado) na semana padrão, meta em minutos e as semanas planejadas (segunda → {m,ok}) */
   {const okM=a=>Array.isArray(a)&&a.length===7&&a.every(v=>WP_MIN.includes(v));
     o.prefs.wday=okM(p.wday)?[...p.wday]:[0,1,2,3,4,5,6].map(d=>o.prefs.woff.includes(d)?0:o.prefs.wnew.includes(d)?180:30);
-    o.prefs.hgoal=Number.isInteger(p.hgoal)&&p.hgoal>=0&&p.hgoal<=3000?p.hgoal:600;
+    o.prefs.hgoal=Number.isInteger(p.hgoal)&&p.hgoal>=0&&p.hgoal<=3000?p.hgoal:Number.isInteger(p.fwgoal)&&p.fwgoal>0&&p.fwgoal<=3000?p.fwgoal:600;// Lote 17: quem só tinha a meta semanal de foco fica com ela
     const W={};if(p.wplans&&typeof p.wplans==="object")Object.keys(p.wplans).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&p.wplans[k]&&okM(p.wplans[k].m)).sort().slice(-3).forEach(k=>{W[k]={m:[...p.wplans[k].m],ok:p.wplans[k].ok?1:0}});o.prefs.wplans=W;
     if(okM(p.wday)){const w=o.prefs.wday,Dz=v=>Array.isArray(v)?v.filter(x=>Number.isInteger(x)&&x>=0&&x<=6):[];let nw=[0,1,2,3,4,5,6].filter(d=>w[d]>=60);if(!nw.length)nw=[0,1,2,3,4,5,6].filter(d=>w[d]>0);
       o.prefs.wnew=nw.length?nw:[1];o.prefs.woff=[0,1,2,3,4,5,6].filter(d=>w[d]===0);o.prefs.wsim=[...new Set(Dz(p.wsim))].sort()}
@@ -5895,7 +5974,7 @@ function nmInfo(v){try{
   if(v==="fac"){const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);return [`${up.name} · ${inLabel(dd)}`,dd<=7?"late":""]}}
   if(v==="quest"){const h=hist[today()];if(h&&h.q)return [`Hoje: ${h.q} ${h.q===1?"questão":"questões"}, ${pct(h.c||0,h.q)}% de acerto`,""]}
   if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,nf=freeN.length;if(nk||nf)return [[nf?`${nf} no caderno livre`:"",nk?`${nk} ${nk===1?"tema":"temas"} com anotações`:""].filter(Boolean).join(" · "),""]}
-  if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${ui.prefs.fgoal?` de ${fmtMin(ui.prefs.fgoal*60)}`:""}`,"",foRun?"●":0]}
+  if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${foDG()?` de ${fmtMin(foDG()*60)}`:""}`,"",foRun?"●":0]}
   if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}
   if(v==="stats"){const V=stVerdRes(stRes(30)),a=V[0],b=V[1];if(a[1]==="na"&&b[1]==="na")return [NM_SUB.stats,""];return [[a[1]!=="na"?a[2]:"",b[1]!=="na"?`chegar a tempo: ${b[2].toLowerCase()}`:""].filter(Boolean).join(" · "),b[1]==="bad"||b[1]==="warn"?"late":""]}}catch(e){}return [NM_SUB[v]||"",""]}
 function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
@@ -6007,9 +6086,18 @@ function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTa
   return c}
 /* Início: cartão pequeno no domingo (próxima semana) e na segunda (esta), até confirmar ou dispensar */
 function wpNoticeEl(){const t=dnum(today()),w=wdOf(t);if(w!==0&&w!==1)return null;const mon=w===0?t+1:t,W=wpPlanned(mon);if(W&&W.ok)return null;if(lsGet("resid-wpdis","")===fromNum(mon))return null;
-  const arr=wpArr(mon),tot=arr.reduce((a,m)=>a+m,0),n=el(`<div class="inote wpnotice" id="wpNotice"><p><b></b> <span></span></p><div class="btns"><button class="btn primary" type="button" id="wpGo">Planejar a semana</button><button class="link" type="button">Agora não</button></div></div>`);
-  n.querySelector("b").textContent=w===0?"Planeje a próxima semana.":"Planeje esta semana.";
-  n.querySelector("span").textContent=`Pela sua semana padrão: ${hm(tot)}${ui.prefs.hgoal?` (meta ${hm(ui.prefs.hgoal)})`:""}. Leva 1 minuto e o plano de cada dia se ajusta ao tempo que você tem.`;
+  /* Lote 17: um cartão só no domingo/segunda — o resumo da semana (o que cumpriu, o que atrasou, onde melhorou) e, embaixo, planejar a próxima */
+  const arr=wpArr(mon),tot=arr.reduce((a,m)=>a+m,0),n=el(`<section class="card iweek wpnotice" id="wpNotice" aria-labelledby="wpnh"><div class="dhead"><h2 id="wpnh"></h2></div><ul class="wpsum"></ul><p class="wpplan"><b></b> <span></span></p><div class="btns"><button class="btn primary" type="button" id="wpGo">Planejar a semana</button><button class="link" type="button">Agora não</button></div></section>`);
+  n.querySelector("h2").textContent=w===0?"Sua semana":"Semana passada";
+  {const ws=w===0?foWeekStart():foWeekStart()-7,A=weekStats(ws),B=weekStats(ws-7),ul=n.querySelector(".wpsum"),g=(ui.prefs.hgoal||0)*60,add=(cls,t)=>{const li=el(`<li></li>`);li.className=cls;li.textContent=t;ul.appendChild(li)};
+    const cmp=(a,b,f)=>b?(a>b?` (▲ ${f(a-b)} vs. anterior)`:a<b?` (▼ ${f(b-a)} vs. anterior)`:" (igual à anterior)"):"";
+    if(A.fo||A.q||A.e||A.rv){add(g&&A.fo>=g?"ok":"",`Foco: ${fmtMin(A.fo)}${g?` de ${fmtMin(g)} da meta${A.fo>=g?" ✓":""}`:""}${cmp(A.fo,B.fo,fmtMin)}`);
+      add("",`Questões: ${A.q}${A.q?` · ${pct(A.c,A.q)}% de acerto`:""}${cmp(A.q,B.q,String)} · temas estudados: ${A.e} · revisões: ${A.rv}`);
+      const late=[...ALL,...FAC_ITEMS].filter(i=>{const d=dueIn(get(i.key));return d!==null&&d<0}).length;if(late)add("late",`Atrasou: ${late} ${late===1?"revisão de tema":"revisões de temas"} (as mais importantes vêm primeiro na fila).`);
+      const best=heroFeats().find(f=>/subiu/.test(f));if(best)add("ok","Melhorou: "+best.replace(/^Seu acerto em /,""))}
+    else ul.remove()}
+  n.querySelector(".wpplan b").textContent=w===0?"Planeje a próxima semana.":"Planeje esta semana.";
+  n.querySelector(".wpplan span").textContent=`Pela sua semana padrão: ${hm(tot)}${ui.prefs.hgoal?` (meta ${hm(ui.prefs.hgoal)})`:""}. Leva 1 minuto e o plano de cada dia se ajusta ao tempo que você tem.`;
   const [go,no]=n.querySelectorAll("button");go.onclick=()=>{wpTab=w===0?"next":"cur";goSub("config");setTimeout(()=>{const b=$("#wpCard");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};
   no.onclick=()=>{lsSet("resid-wpdis",fromNum(mon));render()};return n}
 function segRow(lab,how,opts,cur,on){const g=el(`<div class="cfrow"><div class="cfl"><b></b><span class="gtext how"></span></div><div class="seg" role="group"></div></div>`);
@@ -6034,7 +6122,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
     segRow("Subtópicos por tema","Quantos subtópicos entram nas revisões e nos pontos fracos. Tema novo vem inteiro até 6 subtópicos; maior que isso, em partes de 3 a 4 por dia (subtópico denso conta como dois).",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
   const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
-  pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%; abaixo de 65% encurta para 75%, abaixo de 50% para a metade. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
+  pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%. Acerto baixo não encurta: ele vira ponto fraco (questões), não revisão mais cedo. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
   {const A=dnAsk.all,n=dnPending().length,g=el(`<div class="grp" id="dnAllBox"><span class="glabel">Subtópicos densos</span><p class="gtext how">Denso conta como dois na parte do dia. O Claude pode sugerir quais são, nos temas com 4 ou mais subtópicos (${n?`${n} ainda sem sugestão`:"todos já sugeridos"}). Você corrige em cada tema, e a sua escolha nunca é trocada.</p></div>`);
     if(sampleFn&&!sampleOff&&n){const b=el(`<button class="btn" type="button" id="dnAll">Pedir sugestões ao Claude</button>`);b.disabled=!!(A&&A.st==="loading");b.onclick=dnSuggestAll;g.appendChild(b)}
     if(A&&A.msg){const m=el(`<p class="gstatus" id="dnAllMsg"></p>`);m.textContent=A.msg;g.appendChild(m)}pl.appendChild(g)}
@@ -6049,7 +6137,6 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   // foco
   const fo=el(`<section class="card"><div class="dhead"><h2>Foco</h2></div></section>`);
   fo.append(segRow("Pomodoro","Minutos de foco + pausa. Em Personalizar, na aba Foco, você escolhe outros tempos.",[["25+5","25 + 5"],["50+10","50 + 10"],...(!(P.fw===25&&P.fb===5)&&!(P.fw===50&&P.fb===10)?[[`${P.fw}+${P.fb}`,`${P.fw} + ${P.fb}`]]:[])],`${P.fw}+${P.fb}`,v=>{const [w,b]=v.split("+").map(Number);ui.prefs.fw=w;ui.prefs.fb=b;saveUI();render()}),
-    segRow("Meta diária de foco","Aparece na aba Foco, com a sequência de dias na meta.",[[0,"Sem meta"],[60,"1 h"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[360,"6 h"]],P.fgoal,v=>{ui.prefs.fgoal=v;saveUI();render()}),
     segRow("Som ao finalizar","Toca quando o ciclo ou a pausa terminam, com o app aberto.",[[true,"Ligado"],[false,"Desligado"]],!!P.fsnd,v=>{ui.prefs.fsnd=v;saveUI();render()}),
     segRow("Tela acesa durante o foco","Quando o aparelho permite.",[[true,"Sim"],[false,"Não"]],!!P.fwake,v=>{ui.prefs.fwake=v;saveUI();render()}));
   box.appendChild(fo);
@@ -6114,7 +6201,7 @@ function reportData(o){const t=dnum(today()),from=o.period==="all"?null:fromNum(
     if(t==="T"&&BYKEY[id])return BYKEY[id].own?o.fac:o.res;if(t==="D")return o.fac;return true};
   const fl=foSess.filter(x=>inP(x.d)&&foIn(x)),fby={};fl.forEach(x=>{const m=foMat(x),r=fby[m.id]||(fby[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
   const fdm={};fl.forEach(x=>{fdm[x.d]=(fdm[x.d]||0)+x.sec});const fFirst=fl.length?fl.map(x=>x.d).sort()[0]:null;
-  const Fo={n:fl.length,sec:foSum(fl),days:Object.keys(fdm).length,span:from?t-dnum(from)+1:(fFirst?t-dnum(fFirst)+1:0),goalDays:ui.prefs.fgoal?Object.values(fdm).filter(v=>v>=ui.prefs.fgoal*60).length:0,by:Object.values(fby).sort((a,b)=>b.sec-a.sec)};
+  const Fo={n:fl.length,sec:foSum(fl),days:Object.keys(fdm).length,span:from?t-dnum(from)+1:(fFirst?t-dnum(fFirst)+1:0),goalDays:foDG()?Object.values(fdm).filter(v=>v>=foDG()*60).length:0,by:Object.values(fby).sort((a,b)=>b.sec-a.sec)};
   return {from,S,first:Object.keys(hist).sort()[0],errs,topics,tc,qRes:qs(ALL.map(i=>i.key)),qFac:qs([...facKeys]),sems,sel,mk,F,Fo}}
 function topicTips(it,list,s){const tips=[],n=t=>list.filter(x=>x.t===t).length,subs=[...new Set(list.map(x=>x.s).filter(Boolean))].slice(0,3),sl=subs.join(", ");
   if(n("conhecimento"))tips.push(`Volte à teoria ${sl?"de "+sl:"do tema"} antes de fazer novas questões. Estude pelos subtópicos e marque-os: eles entram nas revisões espaçadas.`);
@@ -6155,7 +6242,7 @@ function buildReport(o){const R=reportData(o),P=new MiniPDF("Panorama de estudos
     para(`Questões, acerto, estudos e erros contam só o período e as matérias escolhidas.${F.est?` ${F.est} questões foram registradas antes de 08/10/2026, quando o app ainda não guardava a data por tema: a data delas foi estimada pelo último estudo do tema.`:""}${R.from&&F.und?` ${F.und} questões antigas de temas nunca estudados não têm data e só entram em "Tudo".`:""}`,{size:8,color:C.mut,after:4})}
   else kpis([["Dias com estudo",String(R.S.act),`sequência atual: ${streak()} dia${streak()===1?"":"s"}`],["Temas estudados",String(R.S.e),"temas começados"],["Revisões",String(R.S.r),"revisões espaçadas feitas"],["Questões",String(R.S.q),R.S.q?`${pctS(R.S.c,R.S.q)} de acerto`:"nenhuma no período"]]);
   // tempo de foco
-  if(R.Fo.n){const Fo=R.Fo,g=ui.prefs.fgoal;h2("Tempo de estudo (Foco)");
+  if(R.Fo.n){const Fo=R.Fo,g=foDG();h2("Tempo de estudo (Foco)");
     kpis([["Tempo total",fmtMin(Fo.sec),`${Fo.n} ${Fo.n===1?"sessão":"sessões"}`],["Dias com foco",String(Fo.days),Fo.span?`de ${Fo.span} dia${Fo.span===1?"":"s"} no período`:""],["Média por dia",fmtMin(Fo.span?Fo.sec/Fo.span:0),`${fmtMin(Fo.days?Fo.sec/Fo.days:0)} nos dias com foco`],g?["Dias na meta",String(Fo.goalDays),`meta de ${fmtMin(g*60)} por dia`]:["Sessão média",fmtMin(Fo.sec/Fo.n),"pomodoro, cronômetro e manual"]]);
     const w=CW,mx=Fo.by[0].sec;table([{t:"Matéria",w:w*.44},{t:"Tempo",w:w*.14,al:"r"},{t:"Sessões",w:w*.13,al:"r"},{t:"Parte do tempo",w:w*.29}],Fo.by.slice(0,15).map(r=>[r.lab,fmtMin(r.sec),String(r.n),{bar:[[r.sec/mx,C.acc]]}]));
     if(Fo.by.length>15)para(`+ ${Fo.by.length-15} matérias com menos tempo.`,{size:7.6,color:C.mut});
@@ -6422,7 +6509,7 @@ function placeShared(){const t=$(".card.today"),r=$(".card.revs");if(!t||!r)retu
 function renderInicio(){{const h=$("#iHero");h.innerHTML="";h.appendChild(heroCard())}renderInicioBoard();renderInicioProva();renderInicioStats();
   {const n=$("#iNotice");n.innerHTML="";const x=iNoticeEl();if(x)n.appendChild(x)}
   {const q=$("#iQueue");q.innerHTML="";const c=iQueueCard();c.querySelector(".dhead").appendChild(helpBtn("Revisões"));q.appendChild(c)}
-  {const w=$("#iWeek");w.innerHTML="";const x=iWeekCard();if(x)w.appendChild(x)}
+  {const w=$("#iWeek");w.innerHTML="";const x=wpNoticeEl();if(x)w.appendChild(x)}
   {const c=$("#iCust");c.innerHTML="";c.appendChild(iCustomEl())}applyICustom()}
 function renderInicioProva(){const box=$("#iProva");box.innerHTML="";const ups=upcomingProvas(),CR=examCrunch();
   const hd=el(`<div class="dhead"><h2>Próxima prova</h2><span class="todaydate"></span></div>`);box.appendChild(hd);
@@ -6490,11 +6577,8 @@ function renderTSeg(dueN){const vt=$("#viewTemas");vt.dataset.seg=tSeg;
 /* computador: atalhos no menu lateral */
 function renderNavExtra(P,dueN){const box=$("#navExtra");box.innerHTML="";
   const add=(k,v,cls,fn)=>{const b=el(`<button type="button"><span class="nk"></span><span class="nv${cls?" "+cls:""}"></span></button>`);b.querySelector(".nk").textContent=k;b.querySelector(".nv").textContent=v;b.onclick=fn;box.appendChild(b)};
-  if(P.items.length){const d=P.items.filter(itemDone).length;add("Estudar hoje",`${d} de ${P.items.length} temas`,"",()=>{setView("inicio")})}
-  add("Revisões",dueN?`${dueN} pendente${dueN===1?"":"s"}`:"em dia",dueN?"late":"",()=>goRevs());
-  const up=upcomingProvas()[0];if(up){const dd=daysTo(up.date);add("Próxima prova",`${up.name} · ${inLabel(dd)}`,dd<=7?"late":"",()=>goProva(up))}
-  const CR=examCrunch();if(CR.active)add("Modo provas",`ligado até ${br(CR.until)}`,"late",()=>setView("fac"));
-  {const td=foSum(foSess.filter(x=>x.d===today())),g=ui.prefs.fgoal*60;add("Foco hoje",foRun?"sessão em andamento":`${fmtMin(td)}${g?` de ${fmtMin(g)}`:""}`,"",()=>setView("foco"))}}
+  /* Lote 17: a barra lateral fica só com a navegação e os selos (os números do dia moram no Início); só o modo provas, que muda o app inteiro, aparece aqui */
+  const CR=examCrunch();if(CR.active)add("Modo provas",`ligado até ${br(CR.until)}`,"late",()=>setView("fac"));box.hidden=!box.children.length}
 /* ---------- Foco: pomodoro e cronômetro que contam o tempo de estudo ---------- */
 /* sessões: {id, d:"AAAA-MM-DD", s:ISO do início, sec, m:"p"|"c"|"x" (pomodoro, cronômetro, manual), ref:"T:<tema>"|"D:<disciplina>"|"", lab} */
 const LSFO="resid-focus-v1",LSFR="resid-focus-run",LSFP="resid-focus-pick",FO_C=2*Math.PI*46;
@@ -6570,7 +6654,11 @@ function foSetRef(r){foPick.ref=r;foSavePick();if(foRun){foRun.ref=r;foSaveRun()
 function foGo(key){foSetRef("T:"+key);backStack=[];setView("foco")}
 /* ----- estatísticas ----- */
 function foDayTotals(){const m={};foSess.forEach(x=>{m[x.d]=(m[x.d]||0)+x.sec});return m}
-function foGoalStreak(m){const g=ui.prefs.fgoal*60;if(!g)return 0;let n=0,t=dnum(today());if((m[today()]||0)<g)t--;while((m[fromNum(t)]||0)>=g){n++;t--}return n}
+/* uma meta só (Lote 17): a semanal do Planejar a semana (ui.prefs.hgoal, minutos). A do dia = semanal ÷ dias de estudo desta semana (múltiplo de 5 min) */
+function foStudyDays(){const ws=wpMon(dnum(today()));let n=0;for(let i=0;i<7;i++)if(dayMin(ws+i)>0)n++;return Math.max(1,n)}
+function foDG(){const h=ui.prefs.hgoal||0;return h?Math.max(5,Math.round(h/foStudyDays()/5)*5):0}
+function foGoalLink(){const b=el(`<button class="link" type="button" id="foGoalChg">Mudar a meta</button>`);b.onclick=()=>{goSub("config");setTimeout(()=>{const c=$("#wpCard");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},80)};return b}
+function foGoalStreak(m){const g=foDG()*60;if(!g)return 0;let n=0,t=dnum(today());if((m[today()]||0)<g)t--;while((m[fromNum(t)]||0)>=g){n++;t--}return n}
 const foWeekStart=()=>dnum(today())-(new Date().getDay()+6)%7;// segunda-feira
 function foActiveDiscs(){return fac.discs.filter(d=>{const s=semOf(d.semId);return s&&!s.archived})}
 /* ----- tela ----- */
@@ -6628,7 +6716,7 @@ function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foSh
     mo.append(foLinkEl(),foNoiseEl(),c.querySelector(".foopts"));c.appendChild(mo)}
   c.appendChild(el(`<p class="how fohow">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
   const m=c.querySelector(".fomsg");m.textContent=foMsg;m.hidden=!foMsg;return c}
-function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=P.fgoal*60;
+function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=foDG()*60;
   const wk=foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t),tot=foSum(wk),td=m[today()]||0,act=new Set(wk.map(x=>x.d)).size,st=foGoalStreak(m);
   const c=el(`<section class="card dash" aria-labelledby="fowh"><div class="dhead"><h2 id="fowh">Esta semana</h2><span class="todaydate">tempo de estudo efetivamente salvo</span></div><div class="kpis"></div><div class="fowk" role="img"></div><div class="fogoal"></div></section>`);
   c.querySelector(".kpis").innerHTML=`<div class="kpi"><span class="kl">Hoje</span><b>${fmtMin(td)}</b><span class="ks">${g?`${Math.min(100,Math.round(td/g*100))}% da meta de ${fmtMin(g)}`:"sem meta diária"}</span>${g?`<div class="meter"><i style="width:${Math.min(100,td/g*100)}%"></i></div>`:""}</div>
@@ -6638,10 +6726,8 @@ function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeek
   const days=["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"],vals=days.map((_,i)=>m[fromNum(ws+i)]||0),pv=days.map((_,i)=>m[fromNum(ws-7+i)]||0),mx=Math.max(g,...vals,...pv,1);
   const box=c.querySelector(".fowk");box.setAttribute("aria-label","Minutos de foco por dia da semana: "+days.map((d,i)=>`${d} ${Math.round(vals[i]/60)} min`).join(", "));
   box.innerHTML=days.map((d,i)=>{const n=ws+i,v=vals[i],fut=n>t;return `<div class="fod${n===t?" now":""}${fut?" fut":""}"><span class="fov">${v?fmtMin(v).replace(" min","m"):""}</span><div class="fob">${pv[i]?`<b class="fogh" style="height:${pv[i]/mx*100}%" aria-hidden="true"></b>`:""}<i style="height:${v/mx*100}%" data-tip="${d} ${br(fromNum(n))}: ${fmtMin(v)}${g?` (meta ${fmtMin(g)})`:""} · semana passada: ${fmtMin(pv[i])}" class="${g&&v>=g?"ok":""}"></i></div><span class="fox">${d}</span></div>`}).join("")+(g?`<span class="fogl" style="bottom:calc(1.3rem + ${g/mx}*(100% - 2.6rem))" aria-hidden="true"><span class="foglt">meta ${fmtMin(g)}</span></span>`:"");
-  const gl=c.querySelector(".fogoal"),sel=el(`<label class="qfsel fogsel"><span>Meta diária de foco</span><select id="foGoal"></select></label>`),s=sel.querySelector("select");
-  [[0,"Sem meta"],[30,"30 min"],[60,"1 h"],[90,"1h30"],[120,"2 h"],[180,"3 h"],[240,"4 h"],[300,"5 h"],[360,"6 h"],[480,"8 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});
-  if(![0,30,60,90,120,180,240,300,360,480].includes(P.fgoal)){const o=document.createElement("option");o.value=P.fgoal;o.textContent=fmtMin(P.fgoal*60);s.appendChild(o)}
-  s.value=String(P.fgoal);s.onchange=()=>{ui.prefs.fgoal=+s.value;saveUI();render()};gl.appendChild(sel);
+  const gl=c.querySelector(".fogoal"),gt=el(`<p class="how fogtxt" id="foGoal"></p>`);
+  gt.textContent=g?`Meta do dia: ${fmtMin(g)} (a meta de ${fmtMin(P.hgoal*60)} por semana dividida pelos ${foStudyDays()} dias de estudo). `:"Sem meta semanal. ";gt.appendChild(foGoalLink());gl.appendChild(gt);
   gl.appendChild(el(`<span class="how">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
   c.appendChild(foWeekExtra());return c}
 function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foPer==="30"?t-29:-Infinity;
@@ -6706,7 +6792,7 @@ function foAfterCard(){const A=foAfter;if(!A||!BYKEY[A.k])return null;const it=B
 /* ----- 2. vincular em um toque: plano de hoje e revisões ----- */
 function foQuickEl(){const ref=(foRun?foRun.ref:foPick.ref)||"",seen=new Set(),L=[];
   ensurePlan().items.forEach(p=>{if(BYKEY[p.k]&&!seen.has(p.k)){seen.add(p.k);L.push({k:p.k,tag:"plano"})}});
-  [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))).forEach(i=>{if(L.length<7&&!seen.has(i.key)){seen.add(i.key);L.push({k:i.key,tag:"revisão"})}});
+  [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort(revPri).forEach(i=>{if(L.length<7&&!seen.has(i.key)){seen.add(i.key);L.push({k:i.key,tag:"revisão"})}});
   /* disciplinas da faculdade ainda sem conteúdo: as horas contam para a disciplina */
   const E=foActiveDiscs().filter(d=>!discRefs(d).some(refOk));
   if(!L.length&&!E.length)return null;
@@ -6750,7 +6836,7 @@ function foNoiseEl(){const P=ui.prefs,w=el(`<div class="fonoise"><span class="gl
 /* mapa das últimas 12 semanas: fica no fim da aba; em tela larga (computador, iPad deitado) ocupa as duas colunas,
    com os minutos dentro de cada dia, o total de cada semana e o melhor horário ao lado */
 const foHM=v=>{const m=Math.round(v/60);return m<60?String(m):Math.floor(m/60)+"h"+(m%60?String(m%60).padStart(2,"0"):"")};
-function foHeatCard(){const m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),start=ws-7*11,g=ui.prefs.fgoal*60;
+function foHeatCard(){const m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),start=ws-7*11,g=foDG()*60;
   const vals=[];for(let n=start;n<=ws+6;n++)vals.push(m[fromNum(n)]||0);const mx=Math.max(1,...vals),ref=g||mx;
   const r3=Math.max(60,Math.round(ref/3/300)*300),r6=Math.max(120,Math.round(ref*2/3/300)*300),lvl=v=>!v?0:v>=ref?4:v>=r6?3:v>=r3?2:1;
   const c=el(`<section class="card foheat" aria-labelledby="fohh"><div class="dhead"><h2 id="fohh">Nas últimas 12 semanas</h2><span class="todaydate"></span></div><div class="fohwrap"><div class="fohmain"><div class="fohm" role="img"></div><div class="fohleg"></div></div><div class="fohside"><div class="fohstats"></div><div class="fohour"></div></div></div></section>`);
@@ -6784,7 +6870,7 @@ function foHeatCard(){const m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),sta
   hb.appendChild(bx);return c}
 /* ----- 8. meta semanal e recorde; 6. distrações na semana ----- */
 function foWeekTotals(){const w={};foSess.forEach(x=>{const n=dnum(x.d),d=new Date(x.d+"T12:00:00").getDay(),ws=n-(d+6)%7;w[ws]=(w[ws]||0)+x.sec});return w}
-function foWeekExtra(){const P=ui.prefs,W=foWeekTotals(),ws=foWeekStart(),cur=W[ws]||0,past=Object.entries(W).filter(([k])=>+k<ws),rec=past.length?past.reduce((a,b)=>b[1]>a[1]?b:a):null,wg=P.fwgoal*60;
+function foWeekExtra(){const P=ui.prefs,W=foWeekTotals(),ws=foWeekStart(),cur=W[ws]||0,past=Object.entries(W).filter(([k])=>+k<ws),rec=past.length?past.reduce((a,b)=>b[1]>a[1]?b:a):null,wg=(P.hgoal||0)*60;
   const w=el(`<div class="foweekx"></div>`);
   if(wg){const r=el(`<div class="fowg"><div class="qgtop"><b></b><span></span></div><div class="meter"><i style="width:${Math.min(100,cur/wg*100)}%"></i></div></div>`);r.querySelector("b").textContent=fmtMin(cur);r.querySelector("span").textContent=`de ${fmtMin(wg)} na meta da semana${cur>=wg?" · meta batida":""}`;if(cur>=wg)r.classList.add("ok");w.appendChild(r)}
   const line=el(`<p class="how forec"></p>`);
@@ -6793,10 +6879,7 @@ function foWeekExtra(){const P=ui.prefs,W=foWeekTotals(),ws=foWeekStart(),cur=W[
   if(line.textContent)w.appendChild(line);
   const t=dnum(today()),dz=x=>Number.isInteger(x.dz)?x.dz:0,cw=foSess.filter(x=>x.m!=="x"&&dnum(x.d)>=ws),pw=foSess.filter(x=>x.m!=="x"&&dnum(x.d)>=ws-7&&dnum(x.d)<ws),cd=cw.reduce((a,x)=>a+dz(x),0),pd=pw.reduce((a,x)=>a+dz(x),0);
   if(cd||pd){const p=el(`<p class="how fodz"></p>`);const avg=cw.length?cd/cw.length:0;p.textContent=`Distrações nesta semana: ${cd}${cw.length?` (${String(Math.round(avg*10)/10).replace(".",",")} por sessão)`:""} · semana passada: ${pd}.`;w.appendChild(p)}
-  const gs=el(`<label class="qfsel fogsel"><span>Meta semanal de foco</span><select id="foWGoal"></select></label>`),s=gs.querySelector("select");
-  [[0,"Sem meta"],[300,"5 h"],[600,"10 h"],[900,"15 h"],[1200,"20 h"],[1500,"25 h"],[1800,"30 h"],[2400,"40 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});
-  if(![0,300,600,900,1200,1500,1800,2400].includes(P.fwgoal)){const o=document.createElement("option");o.value=P.fwgoal;o.textContent=fmtMin(P.fwgoal*60);s.appendChild(o)}
-  s.value=String(P.fwgoal);s.onchange=()=>{ui.prefs.fwgoal=+s.value;saveUI();render()};w.appendChild(gs);return w}
+  return w}
 
 function renderFoco(){const b=$("#foBody");b.innerHTML="";const L=el(`<div class="focol foleft"></div>`),R=el(`<div class="focol foright"></div>`);
   const A=foAfterCard(),t=foTimerCard(),w=foWeekCard(),h=foHeatCard(),m=foMatCard(),l=foListCard();w.classList.add("foweekc");m.classList.add("fomatc");l.classList.add("folistc");
@@ -6817,6 +6900,8 @@ function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
 async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
+/* levou a questão para o caderno de erros: sai do Refazer (uma agenda por questão) */
+function rdForget(k,q){const stem=((q&&q.enunciado)||"").trim();if(!stem)return 0;const L=redo.filter(x=>x.k===k&&x.q.enunciado.trim()===stem);L.forEach(x=>rdDel(x.id));return L.length}
 async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoStore)try{await redoStore.doc(id).delete()}catch(e){}}
 /* chamada quando você erra uma questão gerada */
 function rdAdd(k,q,src,P){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&&x.q.enunciado.trim()===stem),t=dnum(today());
@@ -6828,6 +6913,11 @@ function rdAdd(k,q,src,P){const stem=q.enunciado.trim(),ex=redo.find(x=>x.k===k&
 /* quando volta (antigos sem due: no dia seguinte ao erro) e o que acontece ao responder no Refazer */
 const rdDue=x=>x.due||fromNum(dnum(x.d)+RD_INT[0]);
 const rdDueList=()=>redo.filter(x=>BYKEY[x.k]&&rdDue(x)<=today());
+/* auditoria 26/10: questão que fica RD_EXP dias vencida sem ser feita sai sozinha (o Refazer não cresce sem fim); o aviso fica no cartão até ser visto */
+const RD_EXP=21;
+function rdExpire(){if(store&&!synced)return 0;const lim=fromNum(dnum(today())-RD_EXP),old=redo.filter(x=>rdDue(x)<lim);if(!old.length)return 0;old.forEach(x=>rdDel(x.id));
+  const n=(+lsGet("resid-rdexp","0")||0)+old.length;lsSet("resid-rdexp",String(n));return old.length}
+const rdStudied=k=>{const s=get(k);return !!(s.last||s.l>0||isIng(s))};
 function rdHit(x){const t=today();if(x.okd!==t){x.ok=(x.ok||0)+1;x.okd=t}if(x.ok>=RD_NEED){rdDel(x.id);return true}x.due=fromNum(dnum(t)+RD_INT[Math.min(x.ok,RD_INT.length-1)]);rdPut(x);return false}
 function rdMiss(x){x.n++;x.wr=(x.wr||0)+1;x.d=today();delete x.ok;delete x.okd;x.due=fromNum(dnum(today())+RD_INT[0]);rdPut(x)}
 let rdF={due:true,src:"all",rep:false};
@@ -6855,6 +6945,8 @@ function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filt
   c.querySelector(".todaydate").textContent=redo.length?`${dueN} para hoje · ${base.length} no total`:"";
   if(rdRun){if(twoCols())c.querySelector(".dhead").appendChild(fullBtn("rd"));c.appendChild(rdPlayer());
     if(twoCols())c.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima${fullOn.rd?" · Esc sai da tela inteira":""}</p>`));return c}
+  {const n=+lsGet("resid-rdexp","0")||0;if(n){const m=el(`<p class="pnote" id="rdExpNote"><span></span> <button class="link" type="button">Entendi</button></p>`);
+    m.querySelector("span").textContent=`${n} ${n===1?"questão saiu":"questões saíram"} do Refazer por ficar${n===1?"":"em"} ${RD_EXP} dias vencida${n===1?"":"s"} sem ser feita${n===1?"":"s"} (o ponto, se importante, continua no caderno de erros ou volta quando você errar de novo).`;m.querySelector("button").onclick=()=>{lsSet("resid-rdexp",null);render()};c.appendChild(m)}}
   if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
   {const f=el(`<div class="rdfil"><div class="seg" role="group" aria-label="Quais"></div></div>`),sg=f.querySelector(".seg");
     [[true,`Para hoje (${dueN})`],[false,`Todas (${base.length})`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=v?"rdFDue":"rdFAll";b.textContent=l;b.setAttribute("aria-pressed",rdF.due===v);b.onclick=()=>{rdF.due=v;render()};sg.appendChild(b)});
@@ -6937,6 +7029,11 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
   if(R.msg){const m=el(`<p class="err" role="alert"></p>`);m.textContent=R.msg;w.appendChild(m)}
   return w}
 /* ----- onde ganhar pontos: incidência na prova × o quanto falta para 80% de acerto ----- */
+/* "onde focar" (Lote 17): uma conta só para o simulado, o gráfico por especialidade e as Estatísticas.
+   Peso² × distância de 80% no acerto estimado ((acertos+3)/(questões+5): poucos dados puxam para ~60%). Tema estudado sem questões conta como 60%; tema nunca visto não entra. */
+function focusScore(it){const s=get(it.key);if(it.own||!(s.qt||s.last||s.l>0))return 0;// tema nunca estudado nem praticado é assunto do plano (tema novo), não de "onde focar"
+  const w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return w*w*Math.max(0,0.8-est)}
+function focusRank(U){return (U||ALL).filter(i=>!i.own).map(it=>({it,sc:focusScore(it)})).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||wOf(b.it)-wOf(a.it)||a.it.num-b.it.num).map(r=>r.it)}
 function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
   const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);
   if(!rows.length){c.appendChild(el(`<p class="cempty">${U.some(i=>!i.own)?"Todos os temas deste filtro estão com 80% ou mais de acerto. Mantenha as revisões.":"Escolha temas da residência nos filtros para ver as prioridades."}</p>`));return c}
@@ -7098,8 +7195,8 @@ function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;
   box.querySelector(".qgtxt").textContent=`${ok?"Dentro":"Acima"} do tempo da prova (${fmtPace(ref)})${ok?"":`: ${fmtPace(avg-ref)} a mais por questão`}.${n7?` Últimos 7 dias: ${fmtPace(s7/n7)}.`:""}`;
   w.append(box,sel);return w}
 /* simulado misto: questões de vários temas num bloco só */
-let sim=null,simCfg={src:"weak",n:10,dif:"mista",est:"res"},simSubs={},simPF={q:"",area:"all",lv:"all",inc:0};
-const SIM_SRC=[["pick","Escolher temas"],["weak","Pontos fracos"],["gain","Onde ganhar pontos"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
+let sim=null,simCfg={src:"gain",n:10,dif:"mista",est:"res"},simSubs={},simPF={q:"",area:"all",lv:"all",inc:0};
+const SIM_SRC=[["pick","Escolher temas"],["gain","Onde focar"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
 /* Lote 14: dificuldade e estilo do simulado */
 const SIM_DIF=[["mista","Mista"],["facil","Fácil"],["media","Média"],["dificil","Difícil"]],SIM_EST=[["res","Residência"],["inep","ENAMED / INEP"]];
 const SIM_DIF_TXT={mista:"Misture os níveis: cerca de 30% fáceis, 50% médias e 20% difíceis.",facil:"Nível fácil: casos típicos, que cobram o conceito central de forma direta, com distratores que quem estudou distingue sem dificuldade.",
@@ -7110,8 +7207,7 @@ function simCfgSnap(){return {mode:simCfg.mode==="mat"?"mat":"temas",src:simCfg.
 const simProva=()=>fac.provas.find(x=>x.id===simCfg.pid&&x.date>=today())||upcomingProvas().find(p=>p.items.some(refOk));
 function simSrcList(){const p=simProva(),L=SIM_SRC;return p?[["prova",`Prova: ${p.name}`],...L]:L}
 function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
-  if(src==="weak")return pool.filter(i=>{const s=get(i.key);return s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT}).sort((a,b)=>acc(get(a.key))-acc(get(b.key)));
-  if(src==="gain")return U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return {it,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,15).map(r=>r.it);
+  if(src==="gain"||src==="weak")return focusRank(U).slice(0,15);// "Pontos fracos" e "Onde ganhar pontos" viraram uma fonte só
   if(src==="due")return pool.filter(i=>isDue(get(i.key)));
   if(src==="plan")return ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean);
   if(src==="prova"){const p=simProva();return p?topicKeysOf(p.items).map(k=>BYKEY[k]):[]}
@@ -7130,7 +7226,7 @@ Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complica�
 ${simStyleTxt(sim&&sim.cfg)}
 
 ${fixedFormat(items.length)}`}
-const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados onde você está longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões que você errou",pick:"Busque e marque temas e subtópicos",filter:"Os temas que aparecem com os filtros da aba"};
+const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados com acerto mais longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões que você errou",pick:"Busque e marque temas e subtópicos",filter:"Os temas que aparecem com os filtros da aba"};
 /* simulado a partir do material: as questões seguem o material; o Claude indica o tema da residência mais próximo de cada uma */
 function simMatPrompt(n,P,avoid){return promptText.trim()+`
 
@@ -7456,11 +7552,11 @@ function exAnswer(ex,i,l){const R=exRun,P=exPg(ex.id),old=P.a[i];if(old&&old.l==
   const sec=R&&R.shown?Math.min(1800,Math.max(1,(Date.now()-R.shown)/1000)):0;
   exChange(ex,i,(r,P)=>{P.a[i]={l,d:old?old.d:today(),s:old?old.s:Math.round(sec)}});
   if(!old&&sec)logPace(today(),1,sec);
-  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta)rdAdd(r.k,r.q,"exam");
+  const r=ex.qs[i];if(P.mode==="e"&&r.k&&r.q.correta&&!r.an&&l!==r.q.correta&&rdStudied(r.k))rdAdd(r.k,r.q,"exam");
   P.i=i;exPSave(ex.id);commit()}
 function exFinish(ex){const P=exPg(ex.id),S=exScore(ex);
   if(!P.fin){P.fin=today();P.tries.push({d:today(),hit:S.hit,n:S.ans,s:Math.round(S.s)});
-    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta)rdAdd(r.k,r.q,"exam")})}
+    if(P.mode==="p")ex.qs.forEach((r,i)=>{const a=P.a[i];if(a&&r.k&&r.q.correta&&!r.an&&a.l!==r.q.correta&&rdStudied(r.k))rdAdd(r.k,r.q,"exam")})}
   exPSave(ex.id);exRun={id:ex.id,view:"res",i:0,cad:{}};commit()}
 function exRestart(ex){const P=exPg(ex.id);for(const i in P.a){P.h[i]=[...(P.h[i]||[]),{l:P.a[i].l,d:P.a[i].d}].slice(-10)}P.a={};P.fin="";P.i=0;exPSave(ex.id)}
 /* gabarito: "1-A 2-C", "01. B", "Questão 3: D", "4 ANULADA" ou tabela (linha de números + linha de letras) → {número: letra | "X" (anulada)} */
@@ -7918,7 +8014,7 @@ document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun)return;const 
 let nowSkip=0;// quantas sugestões o "Outra sugestão" já pulou hoje
 /* candidatos ao próximo passo, do mais urgente para o menos */
 function nextSteps(){const out=[],P=ensurePlan(),CR=examCrunch();if(isOffDay())return out;
-  const due=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))||wOf(b)-wOf(a));
+  const due=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&!(CR.active&&!i.own)).sort(revPri);
   due.filter(i=>dueIn(get(i.key))<0).forEach(it=>{const n=-dueIn(get(it.key));out.push({k:it.key,kind:"rev",t:it.t,why:`Revisão atrasada há ${n} ${n===1?"dia":"dias"}`})});
   if(isSimDay()){const ex=exams.find(e=>!exPg(e.id).fin);out.push(ex?{kind:"exam",id:ex.id,t:`Prova na íntegra: ${ex.name}`,why:"Hoje é dia de simulado e provas"}:{kind:"sim",n:20,t:"Simulado misto de 20 questões",why:"Hoje é dia de simulado e provas"})}
   const planItems=P.items.filter(p=>BYKEY[p.k]&&!itemDone(p));
@@ -7934,7 +8030,7 @@ function startStep(s){
   if(s.kind==="redo"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const b=$("#rdGo");if(b)b.click()},60);return}
   if(s.kind==="errs"){backStack=[];setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60);return}
   if(s.kind==="exam"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const x=document.getElementById("exr-"+s.id);if(x)x.scrollIntoView({block:"center"})},60);return}
-  if(s.kind==="sim"){simCfg={src:[...ALL,...FAC_ITEMS].some(i=>{const x=get(i.key);return x.qt>=WEAK_MIN&&x.qc/x.qt<WEAK_PCT})?"weak":"gain",n:s.n||10};backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60);return}
+  if(s.kind==="sim"){simCfg={src:"gain",n:s.n||10};backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60);return}
   // tema: liga o Foco no tema e abre o cartão no Início
   foPick.ref="T:"+s.k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}
   if(s.kind==="plan")planOpen[s.k]={v:true,done:false};else revOpen[s.k]={v:true};
@@ -7942,14 +8038,13 @@ function startStep(s){
   render();setTimeout(()=>{const card=[...document.querySelectorAll("#viewInicio .card.today .pcard")].find(c=>c.dataset.k===s.k);if(card)card.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML="";
   const P=ensurePlan(),done=P.items.filter(itemDone).length,h=hist[today()]||{},revDone=h.r||0,revDue=dueCount(),t=dnum(today()),ws=t-(new Date().getDay()+6)%7,W=qWeekQ(ws),qg=ui.prefs.qgoal,
-    fs=foSum(foSess.filter(x=>x.d===today())),fg=ui.prefs.fgoal*60;
+    fs=foSum(foSess.filter(x=>x.d===today())),fg=foDG()*60;
   const tile=(lab,val,sub,frac,cls,fn)=>{const b=el(`<button class="itile${cls?" "+cls:""}" type="button"><span class="kl"></span><b></b><span class="ks"></span><span class="meter"><i style="width:${Math.min(100,Math.max(0,frac*100))}%"></i></span></button>`);
     b.querySelector(".kl").textContent=lab;b.querySelector("b").textContent=val;b.querySelector(".ks").textContent=sub;b.onclick=fn;return b};
   const g=el(`<div class="itiles"></div>`);
   g.append(tile("Plano de hoje",`${done}/${P.items.length}`,P.items.length?(done===P.items.length?"concluído":`${P.items.length-done} ${P.items.length-done===1?"tema falta":"temas faltam"}`):"nada para hoje",P.items.length?done/P.items.length:1,done===P.items.length?"ok":"",()=>{const c=$("#viewInicio .card.today");if(c)c.scrollIntoView({behavior:"smooth",block:"start"})}),
-    tile("Revisões",`${revDone}/${revDone+revDue}`,revDue?`${revDue} ${revDue===1?"pendente":"pendentes"}`:"em dia",revDone+revDue?revDone/(revDone+revDue):1,revDue?"":"ok",()=>goRevs()),
     tile(qg?"Questões da semana":"Questões na semana",qg?`${W.q}/${qg}`:String(W.q),qg?(W.q>=qg?"meta batida":`faltam ${qg-W.q}`):"sem meta semanal",qg?W.q/qg:0,qg&&W.q>=qg?"ok":"",()=>{backStack=[];setView("quest");setQSeg("resumo")}),
-    tile("Foco hoje",fg?`${fmtMin(fs)}`:fmtMin(fs),foRun?"sessão em andamento":fg?(fs>=fg?"meta batida":`meta de ${fmtMin(fg)}`):"sem meta diária",fg?fs/fg:0,fg&&fs>=fg?"ok":"",()=>{backStack=[];setView("foco")}));
+    (()=>{const wg=(ui.prefs.hgoal||0)*60,wk=foSum(foSess.filter(x=>dnum(x.d)>=foWeekStart()&&dnum(x.d)<=t));return tile("Foco na semana",fmtMin(wk),foRun?"sessão em andamento":wg?(wk>=wg?"meta batida":`meta de ${fmtMin(wg)} · hoje ${fmtMin(fs)}`):"sem meta",wg?wk/wg:0,wg&&wk>=wg?"ok":"",()=>{backStack=[];setView("foco")})})());
   box.appendChild(g);
   // o que fazer agora
   const steps=nextSteps(),s=steps.length?steps[nowSkip%steps.length]:null,nw=el(`<div class="inow"></div>`);
@@ -8066,8 +8161,10 @@ function agBalance(){const D=agDays(),cap=agCap(D),T=today();let moved=0;
       if(lighter===undefined)break;
       const it=D[d].sort((a,b)=>wOf(a)-wOf(b)).shift();D[lighter].push(it);setDue(it,lighter)}}
   agMsg=moved?`${moved} ${moved===1?"revisão foi remanejada":"revisões foram remanejadas"} para no máximo ${cap} por dia.`:"A agenda já está equilibrada.";commit()}
-function renderAgenda(){const box=$("#revAgenda");if(!box)return;box.innerHTML="";const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.map(x=>x.length),1),T=dnum(today()),wd=["D","S","T","Q","Q","S","S"];
-  box.appendChild(el(`<div class="dhead"><h2>Agenda de revisões</h2><span class="todaydate">próximos 14 dias</span></div>`));
+function renderAgenda(){const box=$("#revAgenda");if(!box)return;box.innerHTML="";renderAgenda0(box);if(view==="temas"){const w=weekEl();w.id="agWeek";box.appendChild(w)}}
+/* "Próximos dias" (Lote 17): agenda das revisões (14 dias) + o plano dos próximos 6 dias num cartão só */
+function renderAgenda0(box){const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.map(x=>x.length),1),T=dnum(today()),wd=["D","S","T","Q","Q","S","S"];
+  box.appendChild(el(`<div class="dhead"><h2>Próximos dias</h2><span class="todaydate">revisões em 14 dias e plano em 6</span></div>`));
   const tot=D.reduce((a,x)=>a+x.length,0);
   if(!tot){box.appendChild(el(`<p class="cempty">Nenhuma revisão nos próximos 14 dias. Elas aparecem aqui conforme você estuda os temas.</p>`));return}
   const g=el(`<div class="agrid" role="list"></div>`);
@@ -8128,7 +8225,7 @@ function weekPreview(){const snap=state,out=[];
       plan.forEach(x=>simStudy(x.it.key,x.cls==="r-new"||x.cls==="r-cont"?partSubs(x.it).subs:null));
       revs.forEach(x=>{const s={...get(x.key)};s.last=today();s.step=Math.min((s.step||0)+1,INT.length-1);delete s.adj;state[x.key]=s})}}
   finally{dayOff=0;state=snap}return out}
-function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}><summary>Ver os próximos 6 dias</summary></details>`);w.addEventListener("toggle",()=>{if(w.open!==weekOpen){weekOpen=w.open;render()}});
+function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}><summary>Plano dos próximos 6 dias</summary></details>`);w.addEventListener("toggle",()=>{if(w.open!==weekOpen){weekOpen=w.open;render()}});
   if(!weekOpen)return w;
   const wd=["dom","seg","ter","qua","qui","sex","sáb"],ol=el(`<ol class="pwlist"></ol>`);
   weekPreview().forEach(D=>{const li=el(`<li><span class="pwd"></span><span class="pwi"></span><span class="pwr"></span></li>`);li.querySelector(".pwd").textContent=`${wd[new Date(D.d+"T12:00:00").getDay()]} ${br(D.d)}`;
@@ -8151,6 +8248,16 @@ let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
   [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))).forEach(i=>add(i.key,"Revisão de hoje"));
   P.items.forEach(p=>add(p.k,"Plano de hoje"));return out}
+/* reler = parte da revisão do tema (Lote 17): a página principal do tema dentro do cartão da revisão (e do "Continuar"), recolhida;
+   "Ver todas as anotações do tema" abre a aba Anotações do tema (página principal + páginas ligadas do caderno) */
+let rrOpen=new Set();
+function rereadEl(k){const t=(notes[k]||"").trim(),it=BYKEY[k],w=el(`<div class="reread"></div>`),open=rrOpen.has(k);
+  if(!t){const p=el(`<p class="how">Sem anotação neste tema. <button class="link" type="button">Escrever</button></p>`);p.querySelector("button").onclick=()=>{detTab[k]="notas";noteMode[k]="editar";openTopic(k)};w.appendChild(p);return w}
+  const h=el(`<button class="rrhead" type="button" aria-expanded="${open}"><span class="glabel">Reler a anotação</span><span class="rrw"></span><span class="pchev" aria-hidden="true"></span></button>`);
+  h.querySelector(".rrw").textContent=`${wordCount(t)} palavras`;h.onclick=()=>{open?rrOpen.delete(k):rrOpen.add(k);render()};w.appendChild(h);
+  if(open){const v=el(`<div class="mdview"></div>`);v.innerHTML=md(notes[k],{fold:k});w.appendChild(v)}
+  const n=(typeof freeN!=="undefined"?freeN:[]).filter(f=>(f.ks||[]).includes(k)).length,a=el(`<button class="link rrall" type="button"></button>`);
+  a.textContent=n?`Ver todas as anotações do tema (+${n} ${n===1?"página ligada":"páginas ligadas"})`:"Ver todas as anotações do tema";a.onclick=()=>{detTab[k]="notas";openTopic(k)};w.appendChild(a);return w}
 function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||"").trim()),without=L.filter(x=>!(notes[x.k]||"").trim()),T=today(),read=withN.filter(x=>get(x.k).nread===T).length;
   const c=el(`<section class="card ntoday" aria-labelledby="nth"><div class="dhead"><h2 id="nth">Para reler hoje</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=withN.length?`${read} de ${withN.length} relidas`:"";
@@ -8478,7 +8585,7 @@ function renderNFlags(keys,vis){const box=$("#nFBody");if(!box)return;keys=keys|
 /* erros do caderno junto da anotação */
 /* erros do tema junto da anotação: uma linha de resumo e só os erros "vivos" (vencem hoje ou teimosos), no máximo 3,
    sem os que já foram levados para a anotação (e.nt) nem os arquivados; uma linha por erro, com o conceito certo */
-const eAlive=e=>!e.arch&&(eDue(e)<=today()||(e.miss||0)>=1);
+const eAlive=e=>!e.arch&&(eDueNow(e)||(e.miss||0)>=1&&!eByCard(e));
 function eConcept(e){const L=String(e.r||"").split(/\n+/).map(x=>x.trim()).filter(Boolean),t=(L.find(x=>!/^Correta:|^Por que a minha/i.test(x))||L[0]||"").replace(/\s+/g," ");
   if(t.length<=150)return t;const c=t.slice(0,150),sp=c.lastIndexOf(" ");let o=sp>90?c.slice(0,sp):c;
   for(let i=0;i<3;i++)o=o.replace(/[,;:.\s]+$/,"").replace(/\s+(e|ou|de|da|do|das|dos|a|o|as|os|em|no|na|com|para|por|que|um|uma)$/i,"");return o+"…"}
@@ -8748,7 +8855,7 @@ function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai 
 
 const HELP=[
 ["Comece aqui",`Um dia de estudo no Nexus, em 5 passos:
-1. **Início:** na saudação do topo, toque em **Começar a fila**. O app passa pelos erros, cartões, anotações para reler e temas para revisar, um depois do outro; a barra de baixo leva ao próximo.
+1. **Início:** na saudação do topo, toque em **Começar a fila**. O app passa pelos erros, questões para refazer, cartões e temas para revisar (com a anotação para reler dentro de cada tema), um depois do outro; o cartão mostra quanto tempo a fila deve levar; a barra de baixo leva ao próximo.
 2. **Estudar hoje:** estude os 3 temas do plano. **Começar com o Foco** conta o tempo; ao terminar, marque os subtópicos que viu.
 3. **Questões:** faça questões dos temas do dia (no tema, **Gerar questões**, ou registre as de bancos em **+ Registrar questões**).
 4. **Erros:** errou? **Levar para o caderno de erros**. Ele volta para você revisar amanhã.
@@ -8762,7 +8869,7 @@ const HELP=[
 - **Site e artefato:** use o **site** como principal. O artefato no Claude guarda os dados separado; para levar o progresso, use o backup.
 - **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Caderno › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki.
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
-- **Resumo da semana:** no domingo e na segunda, o Início compara a sua semana com a anterior.
+- **Sua semana e Planejar a semana:** no domingo e na segunda, um cartão só no Início mostra o que você cumpriu na semana (foco × meta, questões, temas, revisões), o que atrasou e onde melhorou, e logo embaixo leva a planejar a semana.
 - O botão **?** ao lado de vários cartões abre a parte certa desta ajuda.`],
 ["Primeiros passos",`O checklist tem **198 temas** de alta recorrência nas 5 grandes áreas. Todo dia ele propõe **3 temas** para estudar, agenda as **revisões** de tudo o que você já estudou e mostra onde você mais erra.
 - Comece pela aba **Início**: ela mostra a próxima prova, o plano do dia (**Estudar hoje**), o que há para revisar (**Revisar hoje**) e o seu progresso na residência e na faculdade.
@@ -8770,7 +8877,7 @@ const HELP=[
 - Marque os subtópicos conforme estuda. O tema estudado volta sozinho para revisão.
 - Na aba **Faculdade**, crie o semestre (uma pasta) e, dentro dele, as disciplinas e as provas: elas passam a ocupar vagas no plano quando se aproximam.
 - Registre erros no **caderno de erros** e escreva **anotações** dentro de cada tema.`],
-["Estudar hoje",`O plano tem **3 temas** e fica fixo até o dia virar. Sem provas por perto, ele traz um ponto fraco (se houver), depois os temas que você está **Estudando** (para terminar antes de abrir outro) e temas novos de maior incidência.
+["Estudar hoje",`O plano tem **3 temas** e fica fixo até o dia virar. Sem provas por perto, ele traz os temas que você está **Estudando** (para terminar antes de abrir outro) e temas novos de maior incidência.
 - **Temas grandes em partes:** tema com até 6 subtópicos vem inteiro no dia. Maior que isso vem em **partes de 3 a 4 subtópicos** ("Tema novo · Parte 1 de 4"); no dia seguinte, o plano traz a próxima parte ("Continuar · Parte 2 de 4"). O tema fica **Estudando** até a última parte e só então entra nas revisões.
 - **Subtópico denso** (ex.: Anemias carenciais) conta como dois no tamanho da parte. **O Claude já revisou os 198 temas** e deixou marcados os densos (selo tracejado "denso · Claude"); temas curtos mas pesados, como Valvopatias e Endemias, já vêm em partes. Corrija dentro do tema (**Marcar subtópicos densos**) ou peça ao Claude: no tema (**Pedir sugestão ao Claude**) ou em todos de uma vez (**⚙ Configurações › Plano › Subtópicos densos**). A sugestão aparece tracejada e já vale; toque no selo para tirar ou em **Confirmar sugestões**. A sua escolha nunca é trocada por uma sugestão nova.
 - **Placar do dia** (topo do Início): plano, revisões, questões da semana e foco de hoje, cada um com barra; toque para ir até a parte certa.
@@ -8778,15 +8885,15 @@ const HELP=[
 - **Meta e projeção** (na Residência; no celular, na parte **Progresso**): com as provas de residência cadastradas no Perfil, o app mostra quantos temas faltam ver, quantos por semana são necessários até a prova principal e o seu ritmo das últimas 4 semanas (temas novos estudados). Se não couber, diz quantos temas ficariam de fora. Sem data, mostra só o ritmo e quando você termina de ver tudo.
 - **Ver semanas:** abre a linha do tempo até a prova, semana a semana: temas novos, revisões previstas (⚠ = semana pesada), cartões vencendo e a meta de questões. Semanas com prova da faculdade, fechamento de SP ou outra prova de residência aparecem marcadas e recebem menos temas novos; as outras compensam. Tudo se recalcula a cada dia, com o que você fez.
 - **Cartões recolhidos:** cada tema do plano (Início e Residência) e cada revisão (Residência) aparecem resumidos (quantos subtópicos já fez e quais são). Toque na linha do resumo para abrir os subtópicos e os botões. O tema que você começou (marcou algo e ainda não concluiu) fica aberto sozinho; ao concluir, fecha. Dá para abrir e fechar à mão a qualquer momento.
-- **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. Ponto fraco: faça 5 questões dele no dia.
+- **Concluir:** marque os subtópicos do dia. Tema sem subtópicos: **Estudei hoje**. O ponto fraco não ocupa vaga do plano: ele está na fila do dia (5 questões).
 - **Estudou outro tema?** Ele entra no lugar de um tema proposto ainda não iniciado. **Desfazer troca** volta atrás.
 - **Trocar subtópicos:** escolha até 6 para o dia.
 - **Refazer plano:** monta de novo, mantendo o que você já começou.
 - **Prova nova nos próximos 7 dias:** o plano se refaz sozinho e avisa "Plano de hoje atualizado".`],
 ["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias**. As revisões não ocupam vaga no plano e se acumulam até você fazer. Residência e faculdade ficam numa lista só, por urgência: conteúdo da faculdade aparece com o selo **FAC**.
-- **Lembrei bem:** avança para o próximo intervalo.
-- **Tive dificuldade:** volta para 1 dia.
-- **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo; abaixo de 65% = mais curto; abaixo de 50% = metade. O tema mostra quando o intervalo foi ajustado. Desliga em Configurações.
+- **Lembrei:** sobe um degrau. Se você lembrou depois de mais tempo que o previsto, o próximo intervalo é pelo menos o tempo que passou. **Difícil:** repete o mesmo intervalo. **Esqueci:** volta dois degraus (1 dia, se estiver no começo). Cada botão mostra em quantos dias a revisão volta.
+- **Questões contam como revisão:** com 5 ou mais questões de um tema no dia em que ele vence, a revisão é marcada sozinha pelo acerto (75% ou mais = Lembrei; 50 a 74% = Difícil; menos = Esqueci). A ordem das revisões é por importância: peso do tema × dias de atraso. Com mais de 20 revisões atrasadas o plano traz só 1 tema novo; com mais de 40, nenhum (dia de pôr em dia). Reler a anotação do tema faz parte da revisão: ela aparece dentro do cartão, com **Ver todas as anotações do tema**.
+- **Ajuste pelo acerto:** a partir da 2ª revisão, o intervalo muda com o seu acerto nas questões do tema (últimos 90 dias, mínimo de 5): 85% ou mais (mín. 8 questões) = 40% mais longo; 75% = 20% mais longo. Acerto baixo **não** encurta o intervalo: o tema vira ponto fraco (questões), para não ser cobrado em três lugares ao mesmo tempo.
 - **Não estudei este tema:** tira o tema das revisões e volta para "não iniciado" (questões, anotações e erros ficam). Escolher o nível **Não iniciado** dentro do tema faz o mesmo.
 - **Quando começa:** a primeira revisão é agendada quando o tema fica **Estudado**: ao marcar o último subtópico ou ao tocar em **Estudei hoje** (ou no nível Estudado). Enquanto está **Estudando**, não há revisão.
 - Desmarcou um subtópico logo depois de concluir? No mesmo dia, o tema volta para Estudando e a revisão é cancelada.
@@ -8814,11 +8921,11 @@ const HELP=[
 - **Sugestões de nível** (acima da lista): quando um tema Revisado bate os critérios (80%+ em 10+ questões e 2 revisões seguidas sem dificuldade), o app propõe **Marcar como Dominado**; se um Dominado cair para menos de 70% nos últimos 30 dias (5+ questões), propõe **Voltar para Revisado**. **Agora não** esconde a sugestão por 14 dias.
 - **Próximos 6 dias** (no fim do Estudar hoje, na Residência): prévia dos temas que o plano deve propor em cada dia e quantas revisões caem, supondo que você cumpre o plano e as revisões. É só uma previsão: o plano de cada dia é montado naquele dia.
 - **Temas fixados (★):** dentro do tema, toque em **☆ Fixar**. Os fixados aparecem numa seção no topo da lista, com estrela na linha, e têm o atalho de filtro **★ Fixados**. Toque na estrela para desafixar.
-- **Agenda de revisões** (parte Revisões): quantas revisões caem em cada um dos próximos 14 dias; toque num dia para ver os temas. Quando um dia passa do ritmo confortável, **Equilibrar** adianta revisões para dias mais leves (ou adia no máximo 3 dias, se não houver espaço antes) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. Revisar o tema volta a contar pelos intervalos normais.
+- **Próximos dias** (parte Revisões): quantas revisões caem em cada um dos próximos 14 dias; toque num dia para ver os temas. Quando um dia passa do ritmo confortável, **Equilibrar** adianta revisões para dias mais leves (ou adia no máximo 3 dias, se não houver espaço antes) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. Revisar o tema volta a contar pelos intervalos normais. No mesmo cartão, **Plano dos próximos 6 dias** mostra a prévia do plano.
 - **Já estudei alguns temas antes do app** (abaixo dos filtros): marque de uma vez os temas que você já tinha estudado (toque em cada um ou em **Selecionar os não iniciados desta especialidade**), escolha **Estudados** ou **Já revisados** e confirme. A 1ª revisão fica espalhada pelos próximos dias (alguns por dia) e não conta como estudo de hoje. **Desfazer** volta como estava.`],
 ["Questões",`As questões são geradas pelo Claude dentro de cada tema, com comentário, e cada resposta conta no seu acerto.
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
-- **Ponto fraco:** menos de 60% de acerto com 5 ou mais questões.
+- **Ponto fraco:** menos de 60% de acerto nas questões dos últimos 30 dias (mínimo de 5; sem questões recentes, conta o acerto total). Quem melhora sai sozinho. Um por dia entra na **fila do dia** como 5 questões, escolhido pela conta "onde focar"; depois o tema descansa 7 dias.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
 - **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
 - **Simulado misto** (em Praticar), em três passos. **1. De onde vêm as questões:** **Dos meus temas** — **Escolher temas** (busque qualquer tema ou subtópico, filtre por área, situação e incidência, marque os temas e, se quiser, só alguns subtópicos de cada um), **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje**, **Meus erros**, **Questões para refazer** (casos novos sobre as que você errou), **Filtro atual** e, com prova da faculdade perto, a **Prova** — ou **De um material meu** (um ou mais arquivos, até **100 mil caracteres** no total; o material vai em partes, uma por pedido, revezando, e as páginas com figura viram **figuras numeradas**: o Claude pode fazer questões com elas e a figura, recortada, aparece junto da questão). **2. Como vai ser:** quantas questões (5, 10, 20 ou 30), **dificuldade** (Mista, Fácil, Média, Difícil) e **estilo** (Residência ou **ENAMED/INEP**: caso clínico contextualizado, comando direto e 4 alternativas). **3. Resumo:** confira questões, tempo estimado, dificuldade, estilo e temas antes de começar. Uma questão por vez, com o tempo medido; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer (a figura só fica guardada, menor, nas erradas, até saírem do Refazer). **Encerrar** mostra o resultado das que você já respondeu.
@@ -8830,13 +8937,13 @@ const HELP=[
 - **Ritmo** (em Resumo): tempo médio por questão nos últimos 30 dias, comparado com o tempo da prova que você escolhe (2 a 4 min por questão). Conta o simulado e os registros em que você informa o **Tempo (min)**.
 - **+ Registrar questões** (no topo da aba Questões): para questões feitas fora (bancos, provas antigas). Digite o tema, escolha na lista, ponha feitas, acertos e o dia. **Desfazer** apaga o último registro; com erros, o botão leva ao caderno daquele tema.
 - **Evolução:** questões por semana (barras) e acerto (linha) nas últimas 12 semanas, comparando esta semana com a média das 4 anteriores. Segue os filtros de tema, área e acerto.
-- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões. **Gabarito errado?** Depois de responder, toque em **O gabarito está errado?** e escolha a alternativa certa. Se for a que você marcou, a questão sai do Refazer e o erro vira acerto no tema; se veio de uma prova na íntegra, a prova é corrigida junto.
-- **Onde ganhar pontos:** temas que mais caem na prova (incidência) e onde o acerto está mais longe de 80%. Temas sem questões contam como 60%. Cada um tem **Registrar** e **Gerar questões**.
+- **Refazer as que errei:** toda questão que você erra (gerador do tema, simulado misto e provas na íntegra) fica guardada, com o comentário. Ela **volta no dia seguinte**; acertou, volta em 3 dias; **sai da lista depois de 2 acertos em dias diferentes** (acertar logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As **alternativas vêm embaralhadas**. As que vencem hoje entram na **fila do dia** do Início. Filtros: **Para hoje** ou **Todas**, **de onde veio** (gerador, simulado, provas) e **Erradas 2+ vezes**. Errou 2 vezes no próprio Refazer (selo **teimosa**)? O app sugere levar o ponto ao caderno de erros. No fim, mostra o seu **% de acerto ao refazer**, também por tema. No computador e no iPad deitado, **⛶ Tela inteira** deixa só o Refazer na tela (A a E respondem, espaço vai para a próxima, Esc sai). No simulado misto, a fonte **Para refazer** cria casos novos sobre essas questões (acertar conta no Refazer). Refazer não muda o acerto do tema, mas conta na **meta semanal** de questões. **Gabarito errado?** Depois de responder, toque em **O gabarito está errado?** e escolha a alternativa certa. Se for a que você marcou, a questão sai do Refazer e o erro vira acerto no tema; se veio de uma prova na íntegra, a prova é corrigida junto. Da prova na íntegra entram só as erradas de temas que você já estudou. Questão que fica **21 dias vencida** sem ser feita sai sozinha (o cartão avisa). Na fila do dia, o Refazer usa o tempo que sobra depois das revisões de temas, dos erros e dos cartões.
+- **Onde focar:** uma conta só, usada no simulado (fonte **Onde focar**), na ordem do gráfico por especialidade, na lista de **Seus temas nas questões** e nas Estatísticas: temas que mais caem na prova e onde o acerto está mais longe de 80% (temas sem questões contam como 60%).
 - **Meta semanal:** escolha quantas questões quer fazer de segunda a domingo (também em ⚙ Configurações). Mostra quantas faltam por dia e a sequência de semanas na meta. Conta todas as questões: geradas, registradas e as lançadas no tema.
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
 - **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
 - **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros. Se a mesma fonte aparecer com dois nomes (ex.: "Questões no Claude" e "Claude"), o cartão sugere **Juntar**; em **Juntar ou renomear fontes** você escolhe a fonte e o novo nome (ou o nome de outra, para somar as duas), em todos os temas e nas provas importadas. Dá para **Desfazer** logo depois. "Claude" não muda de nome, porque é onde caem as geradas.
-- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (marca o tema em **Escolher temas**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou.
+- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (marca o tema em **Escolher temas**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou. Sem filtro, a lista mostra os **10 temas que mais pedem atenção**; **Ver todos** mostra o resto. No computador, em duas colunas.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **Referências:** cada questão gerada traz a **referência específica** (diretriz ou consenso com sociedade, ano e seção; livro e capítulo; manual do Ministério da Saúde) e o comentário e o porquê de cada alternativa se apoiam nela; nada de "confira na diretriz". **No site**, o pedido manda o Claude **pesquisar e confirmar** a referência na internet e trazer o **link** (Abrir a referência). **No artefato**, sem internet, o Claude só usa o que conhece com segurança e troca a questão quando não há fonte segura (o app descarta questão sem referência). Com material seu, o material é a fonte (página ou slide).
@@ -8845,10 +8952,10 @@ const HELP=[
 - **Comentário organizado:** depois de responder, a explicação começa pelo **Gabarito** (a alternativa certa), segue com **Por que X está certa**, o **Ponto-chave** em destaque (quando a prova traz), o **Conceito-chave** ou a **Take home message** e a **Fonte**. O porquê de cada alternativa errada fica embaixo dela, e a que você marcou aparece destacada (**Por que a sua não serve**). Provas importadas antes, com o comentário num bloco só ("Alternativa A — …"), são separadas do mesmo jeito na hora de mostrar.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
 ["Caderno",`A aba **Caderno** é um caderno só: as **páginas livres** (aula, plantão, dicas) e a **página de cada tema**, que é a mesma anotação da aba Residência — editar num lugar muda no outro, e tudo é salvo enquanto você escreve.
-- **Partes** (no celular e no tablet em pé): **Caderno** (abre primeiro), **Revisar** (Para reler hoje e Cartões) e **Pegadinhas**. No computador, tudo numa página só. Os erros ficam na aba **Erros**.
+- **Partes** (no celular e no tablet em pé): **Caderno** (abre primeiro), **Revisar** (Cartões) e **Pegadinhas**. No computador, tudo numa página só. Os erros ficam na aba **Erros**.
 - **Uma busca só:** procura nas páginas livres e nas dos temas (título, texto e etiquetas). Embaixo, escolha **Todas**, **Livres** ou **Temas**. **Etiquetas** (#aula, #plantão…) filtram os dois tipos.
 - **Página do tema e páginas ligadas:** cada tema tem **uma página principal** e quantas **páginas ligadas** você quiser. Uma página nova ligada a **um** tema que ainda não tem anotação **vira a página do tema** (com título e etiquetas); se o tema já tem, ela fica como página ligada e aparece no tema em **Outras páginas ligadas**. No tema, **+ Nova página ligada** abre o caderno já ligado a ele.
-- **Para reler hoje:** as anotações dos temas com revisão hoje ou no plano do dia; toque em **Reli** depois de ler. Os temas de hoje sem anotação aparecem embaixo.
+- **Reler:** a anotação de cada tema aparece dentro da revisão dele (Residência › Revisões) e no plano quando você continua um tema. Em **Revisar**, a linha "N temas estudados sem anotação · ver" abre esses temas no Caderno.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
 - **Cartões** (Caderno › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
 - **Temas estudados sem anotação:** em **Filtros › Mostrar só**, lista os temas que você já estudou e ainda não têm página, com atalho para escrever o resumo.
@@ -8871,7 +8978,7 @@ const HELP=[
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte.
 - **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). A pista vem numa frase com **negrito** no que decide, e os **Dados decisivos** à parte; o **Ponto-chave** da questão fica num campo próprio; quando a alternativa que você marcou é parecida com a certa, o tipo já vem como **Confundi ou esqueci**. A questão inteira fica guardada no erro: na revisão, **Ver a questão completa** mostra o enunciado e as alternativas. Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
-- **Erros que se repetem:** temas com 2 ou mais erros nos últimos 30 dias e erros em que você tocou **Ainda erraria** várias vezes. Sinal para voltar à teoria ou à anotação.
+- **Repetiu nos últimos 30 dias:** em **Onde melhorar › Temas com mais erros**, o selo marca temas com 2 ou mais erros nos últimos 30 dias. Sinal para voltar à teoria ou à anotação. Erro que virou cartão passa a ser revisado pelos cartões (não volta na revisão de erros), e questão levada do Refazer para o caderno sai do Refazer: cada questão tem uma agenda só. **Erro formado:** acertou na revisão de 30 dias, o erro sai da revisão e fica no caderno ("Formado em…"); se você registrar outro erro no mesmo tema, ele volta.
 - **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. Os erros ficam só aqui, no caderno de erros, ligados ao tema (não são mais escritos na anotação; as antigas seções "Meus erros" das anotações foram trazidas para cá).
 - **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.
@@ -8920,7 +9027,7 @@ const HELP=[
 - **Me distraí:** toque cada vez que perder o foco durante a sessão (no computador, tecla **D**). A sessão guarda quantas foram e a semana compara com a anterior.
 - **Som de fundo:** ruído branco, marrom ou chuva, gerado pelo próprio app (funciona sem internet), com volume. Toca só durante o foco e para na pausa.
 - **Tela inteira** (tablet deitado e computador): com o relógio correndo, esconde o resto da aba. No computador: espaço pausa e continua, D conta distração, Esc sai.
-- **Esta semana:** hoje, total, sessões e um gráfico de segunda a domingo. Com uma **meta diária**, aparecem a linha da meta e a sequência de dias na meta. Com uma **meta semanal**, aparece a barra da semana; embaixo, o seu **recorde** semanal.
+- **Esta semana:** hoje, total, sessões e um gráfico de segunda a domingo. A meta é uma só: a **meta por semana** de Configurações › Plano › Planejar a semana. A meta do dia é ela dividida pelos dias de estudo da semana (linha tracejada e sequência de dias na meta) e a barra da semana usa a semanal; embaixo, o seu **recorde** semanal.
 - **Nas últimas 12 semanas** (no fim da aba): um quadradinho por dia, mais escuro quanto mais foco. A legenda diz quantos minutos vale cada tom (o mais escuro = meta diária batida). No computador e no iPad deitado, o cartão ocupa a largura toda e mostra os minutos dentro de cada dia, com o nome do dia e a data de cada semana. Embaixo, o **total de cada semana** em barras. Ao lado vêm a média nos dias com foco, a melhor semana, esta semana comparada à anterior até o mesmo dia e o seu **melhor horário** nos últimos 30 dias.
 - **Tempo por matéria:** semana, 30 dias ou tudo; temas contam na especialidade e disciplinas pelo nome.
 - **Sessões recentes:** toque no × para excluir. **+ Adicionar tempo** registra estudo feito sem o relógio (aula, ambulatório, leitura).
@@ -9160,7 +9267,7 @@ function stResBlocks(R){const out=[],per=`${R.D} dias`;
     const miss=R.sps.filter(s=>s.left&&s.sec<3600&&!(bad&&s.k===bad.k)).sort((a,b)=>b.inc-a.inc)[0];
     if(miss)add(`${miss.S.name}: falta estudar`,`${miss.left} ${miss.left===1?"tema":"temas"} por ver${miss.sec?`, só ${stH(miss.sec)} no período`:", nada no período"}`,"Ver temas",()=>stGoSpec(miss.A.code,miss.S.name));
     const due=dueCount();if(due)add(`${due} ${due===1?"revisão pendente":"revisões pendentes"}`,"revisão em dia segura o que você já estudou","Revisar agora",()=>goRevs(),true);
-    else{const wk=ALL.filter(i=>isWeak(get(i.key))).sort((a,b)=>acc(get(a.key))-acc(get(b.key)))[0];if(wk)add(`Ponto fraco: ${wk.t}`,`${pct(get(wk.key).qc||0,get(wk.key).qt||0)}% em ${get(wk.key).qt} questões`,"Abrir tema",()=>openTopic(wk.key),true)}
+    else{const wk=focusRank()[0];if(wk)add(`Onde focar: ${wk.t}`,`${pct(get(wk.key).qc||0,get(wk.key).qt||0)}% em ${get(wk.key).qt} questões`,"Abrir tema",()=>openTopic(wk.key),true)}
     if(fx.children.length>1)c.appendChild(fx);
     out.push(c)}
   return out}
