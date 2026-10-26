@@ -514,6 +514,13 @@ li.t.open{background:var(--bg)}
 .topic{min-width:0}
 .meta{grid-column:2;font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px}
 .meta .late{color:var(--due);font-weight:600}
+.tnext{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;padding:0 18px 10px calc(18px + 2.6rem + 10px);margin-top:-6px;font-size:.8rem}
+.tnx{font-weight:600;color:var(--accent)}.tnx.late{color:var(--due)}.tnx.warn{color:var(--warn)}.tnx.ok{color:var(--good)}.tnx.go{color:var(--accent)}
+.tsq{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:99px;padding:3px 10px;font:600 .76rem var(--body);cursor:pointer}.tsq[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.tsql{list-style:none;margin:0;padding:0 18px 12px calc(18px + 2.6rem + 10px);display:flex;flex-direction:column;gap:2px}
+.tsql label{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;padding:5px 0;cursor:pointer}.tsql input{margin-top:3px;flex:none;width:18px;height:18px}
+.tsqf{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;padding-top:4px}.tsqf .how{font-size:.76rem}
+.meta .semw{color:var(--gold);font-weight:600}
 .lvl{grid-row:1/3;grid-column:3;font:600 .72rem var(--body);letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1.5px solid var(--line);color:var(--muted);white-space:nowrap}
 .lvl[data-l="1"]{border-color:var(--l1);color:var(--l1)}
 .lvl[data-l="2"]{border-color:var(--l2);color:var(--l2)}
@@ -1016,7 +1023,7 @@ body.noscroll{overflow:hidden}
 @media (max-width:560px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:480px){.tab{font-size:.8rem;padding:8px 4px}}
 @media (max-width:480px){.sphead button{padding:10px 14px}}
-@media (max-width:480px){.item{grid-template-columns:2.1rem 1fr auto;padding:11px 14px}summary{padding:14px}.detail{padding:4px 14px 16px}}
+@media (max-width:480px){.tnext,.tsql{padding-left:calc(14px + 2.1rem + 10px);padding-right:14px}.item{grid-template-columns:2.1rem 1fr auto;padding:11px 14px}summary{padding:14px}.detail{padding:4px 14px 16px}}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s ease}}
 
 /* ===== layouts por aparelho =====
@@ -2669,17 +2676,29 @@ function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i
 function counts(items){const c=[0,0,0,0,0];items.forEach(it=>{const s=get(it.key);c[s.l||0]++;if(isIng(s)&&!(s.l>0))c[4]++});return c}
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
 /* filtros da lista: situação (vários juntos = "ou") e atalhos (todos juntos = "e"), mais área e especialidade */
-let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};
-function tfNarrow(){return !!(tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin)}
-function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.area!=="all"||tf.sp!=="all"}
-function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,area:"all",sp:"all"};filter="all"}
+let tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,sem:false,area:"all",sp:"all"};
+function tfNarrow(){return !!(tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.sem)}
+function tfOn(){return tf.lv.size||tf.due||tf.weak||tf.noq||tf.high||tf.pin||tf.sem||tf.area!=="all"||tf.sp!=="all"}
+function tfReset(){tf={lv:new Set(),due:false,weak:false,noq:false,high:false,pin:false,sem:false,area:"all",sp:"all"};filter="all"}
+/* Lote 18: temas ligados aos conteúdos da faculdade dos semestres ativos (o "mapa do que importa" no que você vê agora) */
+function semKeys(){const ks=new Set();activeSems().forEach(id=>semDiscs(id).forEach(d=>topicKeysOf(discRefs(d)).forEach(k=>ks.add(k))));return ks}
+let semKS=null;
 const tfLevel=s=>!s.last&&!(s.l>0)?(s.ing?"i":0):(s.l||1);
 function matches(it){const s=get(it.key);
   if(tf.lv.size&&!tf.lv.has(tfLevel(s)))return false;
+  if(tf.sem&&!(semKS||(semKS=semKeys())).has(it.key))return false;
   if(tf.due&&!isDue(s))return false;if(tf.weak&&!isWeak(s))return false;if(tf.noq&&s.qt)return false;if(tf.high&&(it.own||wOf(it)!==3))return false;if(tf.pin&&!s.pin)return false;
   if(tf.area!=="all"&&it.area.code!==tf.area)return false;if(tf.sp!=="all"&&it.sp!==tf.sp)return false;
   return !query||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")+" "+(notes[it.key]||"")).includes(query)}
 
+/* Lote 18: próximo passo de cada tema, numa linha curta na lista ([texto, classe]); null = em dia (a data da revisão já aparece) */
+function topicNext(it){const s=get(it.key),dd=dueIn(s),L=subList(it),pt=L.length?partSubs(it).pt:null;
+  if(isIng(s))return [pt?`Continuar · parte ${pt[0]} de ${pt[1]}`:"Terminar os subtópicos","go"];
+  if(!s.last&&!(s.l>0))return [pt?`Começar · parte 1 de ${pt[1]}`:"Começar a estudar",""];
+  if(dd!==null&&dd<0)return [`Revisar · atrasada ${-dd} d`,"late"];if(dd===0)return ["Revisar hoje","late"];
+  if(lvDrop(it.key))return ["Acerto caiu: faça questões","warn"];if(isWeak(s))return ["Acerto baixo: faça questões","warn"];
+  if(!s.qt)return ["Faça questões do tema",""];if(lvMeets(s))return ["Pronto para Dominado","ok"];return null}
+let subQ=null;// tema com a lista rápida de subtópicos aberta na Residência
 /* subtópicos: padrão (índice em s.sd) + próprios (s.cs) */
 function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{},df=DN_DEF[it.key]||[];
   return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||(df.includes(i)?"c":"")})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||""}))]}
@@ -8150,7 +8169,7 @@ function fcBody(box,o){box.innerHTML="";
     box.appendChild(pn)}
   if(!o.foot&&!o.footId&&!(o.links||[]).some(Boolean))return;
   const ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=o.foot||"";if(o.footId)ft.querySelector("span").id=o.footId;(o.links||[]).forEach(x=>x&&ft.appendChild(x));box.appendChild(ft)}
-const TF_SHORT=[["due","Revisão pendente","Temas com revisão vencida hoje ou atrasada"],["weak","Pontos fracos","Acerto abaixo de 60% em 5 ou mais questões"],["noq","Sem questões","Temas sem nenhuma questão registrada"],["high","Incidência muito alta","Os que mais caem nas provas (3 barrinhas)"],["pin","★ Fixados","Temas que você fixou com a estrela"]];
+const TF_SHORT=[["due","Revisão pendente","Temas com revisão vencida hoje ou atrasada"],["weak","Pontos fracos","Acerto abaixo de 60% em 5 ou mais questões"],["noq","Sem questões","Temas sem nenhuma questão registrada"],["high","Incidência muito alta","Os que mais caem nas provas (3 barrinhas)"],["pin","★ Fixados","Temas que você fixou com a estrela"],["sem","Neste semestre","Temas ligados aos conteúdos da faculdade do semestre atual, os que mais caem na residência primeiro"]];
 const TF_LV=[[0,"Não iniciados","l0"],["i","Estudando","li"],[1,"Estudados","l1"],[2,"Revisados","l2"],[3,"Dominados","l3"]];
 function tfActive(){const L=[];TF_LV.forEach(([v,t])=>{if(tf.lv.has(v))L.push([t,()=>tf.lv.delete(v)])});TF_SHORT.forEach(([k,t])=>{if(tf[k])L.push([t,()=>{tf[k]=false}])});
   if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area);L.push([A?A.name:"Faculdade (sem área)",()=>{tf.area="all";tf.sp="all"}])}if(tf.sp!=="all")L.push([tf.sp,()=>{tf.sp="all"}]);return L}
@@ -9393,6 +9412,7 @@ function renderAll(){
   renderDash();renderInicioMeta();renderResMap();renderLvSug();renderPins();
   renderTFilters();
   // áreas
+  semKS=null;
   const errN={};errors.forEach(e=>errN[e.k]=(errN[e.k]||0)+1);
   const foTot={};foSess.forEach(x=>{if(x.ref&&x.ref[0]==="T"){const k=x.ref.slice(2);foTot[k]=(foTot[k]||0)+x.sec}});
   const box=$("#areas"); box.innerHTML="";
@@ -9403,7 +9423,8 @@ function renderAll(){
     const isFac=a===FAC_AREA, facIn=FAC_ITEMS.filter(it=>it.area===a&&matches(it)).sort((x,y)=>x.t.localeCompare(y.t,"pt"));
     if(isFac&&!facIn.length)return;
     const ac=counts(isFac?[]:a.items), vis=isFac?[]:a.items.filter(matches);
-    if(sortBy==="inc")vis.sort((x,y)=>wOf(y)-wOf(x)||x.num-y.num);
+    if(tf.sem&&!vis.length&&!facIn.length)return;// Neste semestre: só as áreas com temas do semestre
+    if(sortBy==="inc"||tf.sem)vis.sort((x,y)=>wOf(y)-wOf(x)||x.num-y.num);
     const d=document.createElement("details"); d.className="area";
     d.open=openAreas.has(a.code)||!!query||tfNarrow()||tf.area===a.code;
     {const fo=!!query||tfNarrow()||tf.area===a.code;d.addEventListener("toggle",()=>{if(fo&&d.open)return;d.open?openAreas.add(a.code):openAreas.delete(a.code);if(!d.open&&openKey&&BYKEY[openKey]&&BYKEY[openKey].area===a){openKey=null;render()}if(!d.open&&tf.area===a.code){tf.area="all";tf.sp="all";render()}})}
@@ -9419,17 +9440,27 @@ function renderAll(){
       if(it.own){const x=el(`<span class="facchip"></span>`);x.textContent="FAC"+(it.origin?" · "+it.origin:"");if(it.originFull)x.title=it.originFull;m.appendChild(x)}else m.appendChild(incEl(wOf(it),wOf(it)===3));
       const fb=facBadge(it.key);if(fb){const x=el(`<span class="fbadge"></span>`);x.textContent=`Prova de ${fb.d.name} · ${br(fb.p.date)}`;m.appendChild(x)}
       else if(!it.own&&facL[it.key]){const L0=facL[it.key],x=el(`<span class="fbadge"></span>`);x.textContent=`Faculdade · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");m.appendChild(x)}
-      if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
+      const nx=bulk?null:topicNext(it);
+      if(dd!==null&&!(nx&&dd<=0))m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
       if(s.qt){const pp=Math.round(acc(s)*100),[bk]=band(pp);m.appendChild(el(`<span class="st ${bk}">${pp}% em ${s.qt} questões</span>`))}
+      if(tf.sem&&!it.own){const w=wOf(it),x=el(`<span class="semw"></span>`);x.textContent=`peso ${w} na residência`;m.appendChild(x)}
       {const fo=foTot[it.key];if(fo)m.appendChild(el(`<span>⏱ ${fmtMin(fo)}</span>`))}
-      if(lvMeets(s))m.appendChild(el(`<span class="lvup">pronto para Dominado</span>`));else if(lvDrop(it.key))m.appendChild(el(`<span class="late">acerto caiu</span>`));
-      const [sd,st]=subCount(it); if(sd)m.appendChild(el(`<span>${sd}/${st} subtópicos</span>`));
+      if(!nx){if(lvMeets(s))m.appendChild(el(`<span class="lvup">pronto para Dominado</span>`));else if(lvDrop(it.key))m.appendChild(el(`<span class="late">acerto caiu</span>`))}
+      const [sd,st]=subCount(it);
       if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
       const ne=errN[it.key]||0; if(ne)m.appendChild(el(`<span>${ne} ${ne===1?"erro":"erros"} no caderno</span>`));
       if(!m.children.length)m.remove();
       if(bulk){const can=tfLevel(s)===0,on=bulk.sel.has(it.key);li.classList.add("bulkrow");if(on)li.classList.add("bsel");const b=li.querySelector(".item");b.setAttribute("aria-pressed",on);b.removeAttribute("aria-expanded");
         b.querySelector(".num").innerHTML=can?`<span class="bchk" aria-hidden="true">${on?"✓":""}</span>`:"";if(!can){b.disabled=true;b.title="Já tem estudo registrado"}else b.onclick=()=>bulkToggle(it.key);return li}
       li.querySelector(".item").onclick=()=>{openKey=open?null:it.key;formErr="";subErr="";clearArm=null;render()};
+      /* próximo passo + marcar subtópicos sem abrir o tema */
+      if(!open&&(nx||st)){const L=el(`<div class="tnext"></div>`);if(nx){const x=el(`<span class="tnx"></span>`);x.textContent="→ "+nx[0];if(nx[1])x.classList.add(nx[1]);L.appendChild(x)}
+        if(st){const qo=subQ===it.key,b=el(`<button type="button" class="tsq" aria-expanded="${qo}"></button>`);b.id="tsq-"+it.key;b.textContent=`☑ ${sd}/${st} subtópicos`;b.title="Marcar subtópicos sem abrir o tema";
+          b.onclick=()=>{subQ=qo?null:it.key;render()};L.appendChild(b)}
+        li.appendChild(L);
+        if(st&&subQ===it.key){const u=el(`<ul class="tsql"></ul>`);subList(it).forEach((x,j)=>{const r=el(`<li><label><input type="checkbox"><span></span></label></li>`),cb=r.querySelector("input");cb.checked=x.done;cb.id=`tsq-${it.key}-${j}`;
+            r.querySelector("span").textContent=x.t;cb.onchange=()=>toggleSub(it,x);u.appendChild(r)});
+          const f=el(`<li class="tsqf"><button class="link" type="button">Fechar</button><span class="how">Marque o que você estudou fora do app; o tema segue as mesmas regras de quando você marca dentro dele.</span></li>`);f.querySelector("button").onclick=()=>{subQ=null;render()};u.appendChild(f);li.appendChild(u)}}
       if(open){const det=renderDetail(it);if(it.own)det.appendChild(dupBox(it));li.appendChild(det)}
       return li};
     const extraSpecs=[...new Set(facIn.map(it=>it.sp))].filter(n=>!(a.specs||[]).some(x=>x.name===n)).map(name=>({name,items:[],extra:true}));
