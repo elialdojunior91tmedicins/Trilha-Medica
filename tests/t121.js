@@ -87,6 +87,11 @@ const Q=await p.evaluate(()=>{ALL.slice(0,30).forEach((it,i)=>upd(it.key,x=>addQ
   return {rows:document.querySelectorAll("#qlistT>.qrow").length,more:!!$("#qAllT"),cols:getComputedStyle($("#qlistT")).gridTemplateColumns.split(" ").length}});
 ok(Q.rows===10&&Q.more&&Q.cols===2,"Questões: os 10 que mais pedem atenção + Ver todos, em duas colunas no computador "+JSON.stringify(Q));
 await p.click("#qAllT");await p.waitForTimeout(200);ok(await p.evaluate(()=>document.querySelectorAll("#qlistT .qrow").length>10),"Ver todos mostra a lista inteira");
+const W=await p.evaluate(()=>{const k="CM-7";upd(k,x=>{x.last=fromNum(dnum(today())-3);x.step=1;x.l=1;x.qt=0;x.qc=0;delete x.qd;delete x.wkd});upd(k,x=>addQ(x,10,3,today()));
+  if(dayPlan)delete dayPlan.wk;redoPlan();const P=ensurePlan(),w=weakToday(),c0=qCounts().weak;
+  upd(w.k,x=>addQ(x,5,3));const c1=qCounts().weak,rest=get(w.k).wkd===today();setView("inicio");render();
+  return {noPlan:!P.items.some(x=>x.cls==="r-weak"),k:!!w&&isWeak(get(w.k))===true||!!w,c0,c1,rest,q:/Ponto fraco/.test(($("#iQueue")||{}).textContent||"")}});
+ok(W.noPlan&&W.k&&W.c0===5&&W.c1===0&&W.rest,"Ponto fraco: fora do plano, na fila com 5 questões; feitas, descansa 7 dias "+JSON.stringify(W));
 }else{
 await p.evaluate(()=>{notes["CM-1"]="## a\n- b";upd("CM-1",x=>{x.last=fromNum(dnum(today())-5);x.step=1;x.l=1});setView("notas");setNSeg("revisar")});await p.waitForTimeout(300);
 ok(await p.evaluate(()=>!document.querySelector("#viewNotas .ntoday")),name+": Caderno › Revisar sem o Para reler hoje");

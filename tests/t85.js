@@ -43,7 +43,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   /* 4. tempo de hoje: 30 min = só o leve; 1 h = 1 tema; 2 h = 2; 3 h+ = o plano inteiro */
   const r4=await p.evaluate(wd=>{ui.prefs.wday=[0,1,2,3,4,5,6].map(d=>d===wd?30:180);saveUI();redoPlan();const P=ensurePlan();backStack=[];setView("temas");render();
     return {n:P.items.length,cls:P.items.map(x=>x.cls),meta:document.querySelector('#planmeta').textContent,due:dueIn(get("CM-1")),light:!!document.querySelector('#pLight'),lt:(document.querySelector('#pLight')||{}).textContent||"",tm:document.querySelector('#pTime').textContent}},T.wd);
-  ok(r4.n===1&&r4.cls[0]==="r-weak"&&r4.light&&/Revisões de temas/.test(r4.lt)&&/30 min/.test(r4.tm),name+": dia de 30 min: sem tema novo, só o ponto fraco, com o leve (cartões, erros, revisões) "+JSON.stringify(r4));
+  ok(r4.n===0&&r4.light&&/Revisões de temas/.test(r4.lt)&&/Ponto fraco/.test(r4.lt)&&/30 min/.test(r4.tm),name+": dia de 30 min: sem tema novo; o ponto fraco vai na fila, com o leve (cartões, erros, revisões) "+JSON.stringify(r4));
   /* revisão geral com cartões dos temas da semana (dia de 30 min) */
   const g0=await p.evaluate(()=>{const t=dnum(today()),k="CM-5",s=get(k);s.last=today();s.step=0;s.ed=[today()];state[k]=s;commit();
     for(let i=0;i<3;i++){const x=cdClean({id:"cg"+i,k,q:"Q"+i,a:"A"+i,box:0,due:fromNum(t+5),n:0,ok:0,src:"eu",f:{st:2,s:5,d:5,last:fromNum(t-2),reps:2,lapses:0,first:fromNum(t-9)}});cards.push(x)}

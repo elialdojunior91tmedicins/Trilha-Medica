@@ -17,6 +17,7 @@ const out=await p.evaluate(([SC,N,SEED,seedSrc])=>{let seed=7;if(SEED){const mod
       eDueList().slice(0,C.errs).forEach(e=>eAnswer(e,rnd()<.75));
       cdDue().forEach(x=>cdAnswer(x,rnd()<.85?3:1));
       rdDueList().slice(0,C.redo).forEach(x=>rnd()<.6?rdHit(x):rdMiss(x));
+      if(C.weak){const W=weakToday();if(W){upd(W.k,x=>addQ(x,5,3));logAct("q",5,3);weakLeft()}}
       const due=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort(revPri).slice(0,C.revs);
       due.forEach(it=>{const x=rnd();reviewTopic(it.key,x<.7?2:x<.9?1:0,{quiet:true})});
       const P=ensurePlan();r.plan=P.items.map(x=>x.cls).join(",");r.planK=P.items.map(x=>x.cls+":"+x.k).join(",");
