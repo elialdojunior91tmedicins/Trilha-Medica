@@ -70,7 +70,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  await p.waitForTimeout(1200);const s1=await p.evaluate(()=>JSON.stringify(window.__store));await p.waitForTimeout(2000);
  ok(s1===await p.evaluate(()=>JSON.stringify(window.__store)),name+": não fica regravando sozinho (sem eco entre aparelhos)");
  /* 8. conexão caiu: ao voltar para o app, confere tudo */
- await p.evaluate(u=>{window.__store[u+"progress/topics/CM-6"]={l:3,last:today(),step:2};liveRefAt=0;liveHidAt=Date.now()-400000;document.dispatchEvent(new Event("visibilitychange"))},U);await p.waitForTimeout(400);
+ await p.evaluate(u=>{window.__store[u+"progress/topics/CM-6"]={l:3,last:today(),step:2};liveRefAt=0;liveHidAt=Date.now()-2000000;document.dispatchEvent(new Event("visibilitychange"))},U);await p.waitForTimeout(400);
  ok(await p.evaluate(()=>state["CM-6"]&&state["CM-6"].l===3),name+": ao voltar para o app depois de um tempo, busca o que não chegou ao vivo");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
  await ctx.close()}

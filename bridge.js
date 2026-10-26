@@ -27,12 +27,27 @@
   const wrapQuery = q => ({ docs: q.docs.map(wrapSnap), size: q.size, empty: q.empty, metadata: meta(q),
     docChanges: () => (q.docChanges ? q.docChanges() : []).map(c => ({ type: c.type, doc: wrapSnap(c.doc), oldIndex: c.oldIndex, newIndex: c.newIndex })) });
   /* onSnapshot: o app ouve as mudanças feitas em outros aparelhos (mesma interface do banco do Claude) */
-  const listen = (ref, wrap) => (next, err) => ref.onSnapshot(s => next(wrap(s)), e => { if (err) err({ code: (e && e.code) || "unavailable", message: String(e && e.message || e) }); });
+  /* opts.meta (Lote 18): o app usa a 1ª resposta do servidor como a carga inicial (sem ler tudo de novo com get());
+     para saber quando ela chegou, ouve também as mudanças de metadados, mas depois só repassa o que mudou de verdade */
+  const listen = (ref, wrap) => (next, err, opts) => {
+    const onErr = e => { if (err) err({ code: (e && e.code) || "unavailable", message: String(e && e.message || e) }); };
+    if (!(opts && opts.meta)) return ref.onSnapshot(s => next(wrap(s)), onErr);
+    let server = false;
+    return ref.onSnapshot({ includeMetadataChanges: true }, s => {
+      const fc = !!(s.metadata && s.metadata.fromCache);
+      if (!server) { if (!fc) server = true; next(wrap(s)); return; }
+      if (s.docChanges && !s.docChanges().length) return; // lista: só metadados mudaram (gravação confirmada)
+      next(wrap(s));
+    }, onErr);
+  };
   const wrapDoc = ref => ({
     id: ref.id,
     get: () => ref.get().then(wrapSnap),
     set: d => ref.set(clean(d)),
     delete: () => ref.delete(),
+    /* pacotes (Lote 18): muda só alguns campos de um mapa (null = apaga o campo), sem regravar o documento inteiro;
+       dois aparelhos mexendo em itens diferentes do mesmo pacote não se atrapalham */
+    patch: (field, m) => { const o = {}; for (const k in m) o[k] = m[k] === null ? firebase.firestore.FieldValue.delete() : m[k]; return ref.set({ [field]: o }, { merge: true }); },
     onSnapshot: listen(ref, wrapSnap),
     collection: n => wrapCol(ref.collection(n))
   });
@@ -41,6 +56,9 @@
     get: () => ref.get().then(wrapQuery),
     onSnapshot: listen(ref, wrapQuery)
   });
+  /* gravação em lote: nas listas guardadas em pacotes (erros, cartões, foco, Refazer) um pedido por pacote, não um por item */
+  const putAll = (st, list) => st.putMany ? st.putMany(list) : Promise.all(list.map(x => st.doc(x.id).set(clean(x))));
+  const delAll = (st, ids) => st.delMany ? st.delMany(ids) : Promise.all(ids.map(id => st.doc(id).delete()));
   const dbApi = { doc: p => wrapDoc(fs.doc(p)), collection: p => wrapCol(fs.collection(p)) };
 
   /* ---------------- salvar arquivos ---------------- */
@@ -369,8 +387,8 @@
       if (settingsDoc) await settingsDoc.set({ prompt: promptText, updatedAt: now });
       if (d.ui && typeof uiDoc !== "undefined" && uiDoc) await uiDoc.set({ ...ui, updatedAt: now });
       const es = await errStore.get(), ids = new Set(errors.map(e => e.id));
-      await Promise.all(es.docs.filter(x => !ids.has(x.id)).map(x => errStore.doc(x.id).delete()));
-      await Promise.all(errors.map(e => errStore.doc(e.id).set({ ...e })));
+      await delAll(errStore, es.docs.filter(x => !ids.has(x.id)).map(x => x.id));
+      await putAll(errStore, errors);
       const ns = await notesStore.get();
       await Promise.all(ns.docs.filter(x => !notes[x.id]).map(x => notesStore.doc(x.id).delete()));
       await Promise.all(Object.keys(notes).map(k => notesStore.doc(k).set({ t: notes[k], updatedAt: noteAt[k] || now })));
@@ -399,18 +417,18 @@
       }
       if (hasCards && typeof cardStore !== "undefined" && cardStore) {
         const cs = await cardStore.get(), cids = new Set(cards.map(x => x.id));
-        await Promise.all(cs.docs.filter(x => !cids.has(x.id)).map(x => cardStore.doc(x.id).delete()));
-        await Promise.all(cards.map(x => cardStore.doc(x.id).set({ ...x })));
+        await delAll(cardStore, cs.docs.filter(x => !cids.has(x.id)).map(x => x.id));
+        await putAll(cardStore, cards);
       }
       if (hasRedo && typeof redoStore !== "undefined" && redoStore) {
         const rs = await redoStore.get(), rids = new Set(redo.map(x => x.id));
-        await Promise.all(rs.docs.filter(x => !rids.has(x.id)).map(x => redoStore.doc(x.id).delete()));
-        await Promise.all(redo.map(x => redoStore.doc(x.id).set({ ...x })));
+        await delAll(redoStore, rs.docs.filter(x => !rids.has(x.id)).map(x => x.id));
+        await putAll(redoStore, redo);
       }
       if (hasFocus && typeof focStore !== "undefined" && focStore) {
         const fs = await focStore.get(), fids = new Set(foSess.map(x => x.id));
-        await Promise.all(fs.docs.filter(x => !fids.has(x.id)).map(x => focStore.doc(x.id).delete()));
-        await Promise.all(foSess.map(x => focStore.doc(x.id).set({ ...x })));
+        await delAll(focStore, fs.docs.filter(x => !fids.has(x.id)).map(x => x.id));
+        await putAll(focStore, foSess);
       }
     }
   }

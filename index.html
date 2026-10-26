@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=88813bfa">
+<link rel="stylesheet" href="site.css?v=c0f0f292">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=88813bfa"></script>
-<script src="bridge.js?v=88813bfa"></script>
+<script src="config.js?v=c0f0f292"></script>
+<script src="bridge.js?v=c0f0f292"></script>
 </head>
 <body>
 <script>
@@ -8457,7 +8457,7 @@ function cdAnkiEl(){const R=cdReady(),w=el(`<div class="cdanki"><span class="gla
 function cdAnkiDone(){const ids=new Set((cdExp&&cdExp.ids)||[]),L=cards.filter(x=>ids.has(x.id));if(!L.length){cdExp=null;render();return}
   toTrash("cards",`${L.length} ${L.length===1?"cartão exportado":"cartões exportados"} para o Anki`,br(today()),L);
   L.forEach(x=>{const e=x.eid&&errors.find(y=>y.id===x.eid);if(e){e.ak=(e.ak||0)+1;putErr(e)}});
-  cards=cards.filter(x=>!ids.has(x.id));cdSaveLocal();if(cardStore)L.forEach(x=>{cardStore.doc(x.id).delete().catch(()=>{})});cdExp=null;try{localStorage.removeItem("resid-cdexp")}catch(x){}render()}
+  cards=cards.filter(x=>!ids.has(x.id));cdSaveLocal();if(cardStore){if(cardStore.delMany)cardStore.delMany(L.map(x=>x.id)).catch(()=>{});else L.forEach(x=>{cardStore.doc(x.id).delete().catch(()=>{})})}cdExp=null;try{localStorage.removeItem("resid-cdexp")}catch(x){}render()}
 /* ---- .apkg feito no aparelho: banco SQLite (formato do Anki, esquema 11) escrito à mão + zip sem compressão ---- */
 function sqlVar(v){if(v<=0x7f)return [v];const t=[];let x=v;while(x>0){t.push(x%128);x=Math.floor(x/128)}t.reverse();return t.map((b,i)=>i<t.length-1?b|0x80:b)}
 const sqlTE=new TextEncoder();
@@ -9543,6 +9543,69 @@ function liveNotes(snap){if(!snap)return;let ch=false;const ids=new Set(),ae=doc
     const v=d.data();if(!v||typeof v.t!=="string"||!v.t.trim()||notes[k]===v.t)continue;notes[k]=v.t;if(v.updatedAt)noteAt[k]=v.updatedAt;ch=true}
   const seen=liveSeen.notes;if(seen)for(const k of seen)if(!ids.has(k)&&notes[k]!=null&&!noteTimers[k]&&!edit(k)){delete notes[k];delete noteAt[k];ch=true}
   liveSeen.notes=ids;if(ch){saveNotesLocal();liveRender()}}
+/* pacotes (Lote 18, 1.2 2º passo): no site, erros, cartões, foco e Refazer ficam em poucos documentos
+   (progress/<lista>pk/p0…pN; campo i = {id: item em JSON}) em vez de um documento por item: cada abertura lê umas 30 páginas em vez de milhares.
+   Gravar um item muda só o campo dele (patch = set com merge), então dois aparelhos mexendo no mesmo pacote não apagam o que o outro fez.
+   Item grande (> PK_BIG, ex.: Refazer com figura) fica no documento próprio da coleção antiga (progress/<lista>/{id}). O que estiver na coleção antiga
+   e couber num pacote vai para o pacote quando a lista chega do servidor (migração; também pega o que uma versão antiga do app gravar lá).
+   A interface é a mesma de uma coleção (doc(id).set/delete, get, onSnapshot): o resto do app não sabe a diferença. No artefato (sem patch) nada muda. */
+const PK_BIG=60000,PK_FULL=700000,PK_N={errors:8,cards:8,focus:4,redo:8};
+function pkHash(id){let h=7;for(let i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))|0;return Math.abs(h)}
+function packStore(prog,name){const old=prog.collection(name),col=prog.collection(name+"pk"),N=PK_N[name]||8;
+  if(typeof col.doc("p0").patch!=="function")return old;// artefato do Claude: um documento por item, como sempre
+  const loc=new Map(),size={},moved=new Map();// loc: id → "pN" (pacote) | "L" (documento próprio)
+  const patch=(b,m)=>col.doc(b).patch("i",m);
+  const pick=(id,len)=>{const c=loc.get(id);if(c&&c!=="L"&&(size[c]||0)+len<PK_FULL)return c;const h="p"+(pkHash(id)%N);if((size[h]||0)+len<PK_FULL)return h;
+    for(let j=0;j<64;j++){const b="p"+j;if((size[b]||0)+len<PK_FULL)return b}return h};
+  /* agrupa as gravações por pacote: um pedido por pacote */
+  async function putMany(list){const by={},w=[];
+    for(const x0 of list){if(!x0||typeof x0.id!=="string")continue;const j=JSON.stringify(x0),id=x0.id,c=loc.get(id);
+      if(j.length>PK_BIG){loc.set(id,"L");w.push(old.doc(id).set(JSON.parse(j)));if(c&&c!=="L")(by[c]=by[c]||{})[id]=null;continue}
+      const b=pick(id,j.length);loc.set(id,b);size[b]=(size[b]||0)+j.length;(by[b]=by[b]||{})[id]=j;
+      if(c&&c!==b){if(c==="L")w.push(old.doc(id).delete().catch(()=>{}));else if(!(by[c]&&typeof by[c][id]==="string"))(by[c]=by[c]||{})[id]=null}}
+    for(const b in by)w.push(patch(b,by[b]));await Promise.all(w)}
+  async function delMany(ids){const by={},w=[];
+    for(const id of ids){const c=loc.get(id);loc.delete(id);if(c==="L"||!c)w.push(old.doc(id).delete().catch(()=>{}));if(c!=="L"){const b=c||"p"+(pkHash(id)%N);(by[b]=by[b]||{})[id]=null}}
+    for(const b in by)w.push(patch(b,by[b]));await Promise.all(w)}
+  /* junta pacotes + coleção antiga numa resposta igual à de uma coleção; a coleção antiga ganha se o item estiver nos dois (versão antiga gravou depois) */
+  function combine(P,L){const docs=[],at=new Map();for(const k of Object.keys(size))delete size[k];
+    for(const d of (P&&P.docs)||[]){const m=(d.data()||{}).i||{};let n=0;
+      for(const id in m){const j=m[id];if(typeof j!=="string")continue;n+=j.length;if(at.has(id))continue;
+        const doc={id,data:()=>{try{return JSON.parse(j)}catch(e){return null}},metadata:{fromCache:false,hasPendingWrites:false}};at.set(id,docs.length);docs.push(doc);loc.set(id,d.id)}
+      size[d.id]=n}
+    for(const d of (L&&L.docs)||[]){if(at.has(d.id))docs[at.get(d.id)]=d;else docs.push(d);loc.set(d.id,"L")}
+    const fc=!!((P&&P.metadata&&P.metadata.fromCache)||(L&&L.metadata&&L.metadata.fromCache));
+    return {docs,size:docs.length,empty:!docs.length,metadata:{fromCache:fc,hasPendingWrites:false},L}}
+  /* migração: item pequeno na coleção antiga vai para o pacote (só com a resposta do servidor e sem gravação pendente) */
+  let migT=null;
+  function migrate(S){if(!S||S.metadata.fromCache||!S.L)return;const go=[];
+    for(const d of S.L.docs){if(pend(d))continue;const v=d.data();if(!v||typeof v!=="object")continue;const j=JSON.stringify({...v,id:d.id});
+      if(j.length>PK_BIG||moved.get(d.id)===j)continue;moved.set(d.id,j);go.push({...v,id:d.id})}
+    if(!go.length)return;clearTimeout(migT);migT=setTimeout(async()=>{try{
+      const by={};for(const x of go){const j=JSON.stringify(x),b=pick(x.id,j.length);size[b]=(size[b]||0)+j.length;(by[b]=by[b]||{})[x.id]=j}
+      for(const b in by)await patch(b,by[b]);
+      for(const x of go){loc.set(x.id,Object.keys(by).find(b=>x.id in by[b]));await old.doc(x.id).delete().catch(()=>{})}}catch(e){}},1500)}
+  return {pack:true,name,
+    doc:id=>({id,set:x=>putMany([{...x,id}]),delete:()=>delMany([id])}),
+    putMany,delMany,
+    async get(){const [P,L]=await Promise.all([col.get(),old.get()]);const S=combine(P,L);migrate(S);return S},
+    onSnapshot(next,err,opts){let P=null,L=null;
+      const emit=()=>{if(!P||!L)return;const S=combine(P,L);next(S);migrate(S)};
+      const u1=col.onSnapshot(s=>{P=s;emit()},err,opts),u2=old.onSnapshot(s=>{L=s;emit()},err,opts);
+      return ()=>{try{u1&&u1()}catch(e){}try{u2&&u2()}catch(e){}}}}}
+/* carga sem leitura dupla (Lote 18): cada documento/lista é assinado UMA vez (liveOpen, todos juntos no começo da carga);
+   a 1ª resposta do servidor serve de carga (liveFirst, no lugar do get()) e as seguintes viram a sincronização ao vivo.
+   Antes, get() + onSnapshot liam tudo duas vezes a cada abertura. Resposta só do cache com internet: espera o servidor até LIVE_WAIT. */
+const LIVE_WAIT=8000,liveSub=new Map();
+function liveOpen(ref){if(!ref||typeof ref.onSnapshot!=="function"||liveSub.has(ref))return;
+  const o={fn:null,first:null,later:null,cache:null,fail:null};o.p=new Promise(r=>{o.ok=r});let tm=null;
+  const take=s=>{if(o.first)return;clearTimeout(tm);o.first=s;o.ok(s)};
+  liveSub.set(ref,o);
+  try{ref.onSnapshot(s=>{try{
+      if(!o.first){if(s&&s.metadata&&s.metadata.fromCache&&navigator.onLine!==false){o.cache=s;if(!tm)tm=setTimeout(()=>take(o.cache),LIVE_WAIT);return}take(s);return}
+      if(o.fn)o.fn(s);else o.later=s}catch(e){console.error(e)}},
+    e=>{o.fail=e||1;if(!o.first){clearTimeout(tm);o.ok(null)}},{meta:true})}catch(e){o.fail=e||1;o.ok(null)}}
+async function liveFirst(ref){const o=liveSub.get(ref);const s=o?await o.p:null;return s||ref.get()}
 /* listas com id (erros, caderno livre, lixeira, cartões, refazer, foco): atualiza o objeto no lugar (sessões abertas continuam apontando para ele) */
 function liveList(name,snap,get,set,ok,saveLocal,after){if(!snap)return;const ids=new Set();let arr=get(),ch=false;const byId=new Map(arr.map(x=>[x.id,x]));
   for(const d of snap.docs){ids.add(d.id);if(pend(d))continue;const v=ok(liveClone(d.data()));if(!v)continue;const cur=byId.get(v.id);
@@ -9553,23 +9616,26 @@ function liveList(name,snap,get,set,ok,saveLocal,after){if(!snap)return;const id
   if(ch){set(arr);saveLocal();if(after)after();liveRender()}}
 function liveStart(){if(liveOn)return;liveOn=true;
   const L=(name,get,set,ok,saveLocal,after)=>s=>liveList(name,s,get,set,ok,saveLocal,after);
-  liveRefs=[[store,liveProgress],[topicStore,liveTopics],[facStore,liveFac],[uiDoc,liveUI],[settingsDoc,liveSettings],[notesStore,liveNotes],
-    [errStore,L("err",()=>errors,v=>{errors=v},x=>errOk(x)?x:null,saveErrsLocal)],
-    [freeStore,L("free",()=>freeN,v=>{freeN=v},x=>frOk(x)?frClean(x):null,frSaveLocal)],
-    [trashStore,L("trash",()=>trash,v=>{trash=v},x=>trOk(x)?x:null,trSaveLocal)],
-    [cardStore,L("cards",()=>cards,v=>{cards=v},x=>cdOk(x)?cdClean(x):null,cdSaveLocal)],
-    [redoStore,L("redo",()=>redo,v=>{redo=v},x=>rdOk(x)?rdClean(x):null,rdSaveLocal)],
-    [simStore,L("sims",()=>sims,v=>{sims=v},x=>smOk(x)?smClean(x):null,smSaveLocal,()=>sims.sort((a,b)=>a.at<b.at?1:-1))],
-    [exStore,L("exams",()=>exams,v=>{exams=v},x=>exOk(x)?exClean(x):null,exSaveLocal)],
-    [exPStore,L("exprog",()=>exProg,v=>{exProg=v},x=>exPOk(x)&&!exATimer[x.id]?exPClean(x):null,exSaveLocal)],
-    [focStore,L("focus",()=>foSess,v=>{foSess=v},x=>foOk(x)?foClean(x):null,foSaveLocal,()=>foSess.sort((a,b)=>a.s<b.s?1:-1))]].filter(r=>r[0]);
-  for(const [ref,fn] of liveRefs)if(typeof ref.onSnapshot==="function")try{ref.onSnapshot(s=>{try{fn(s)}catch(e){console.error(e)}},()=>{})}catch(e){}}
-/* ao voltar para o app depois de mais de 5 min em segundo plano (tela bloqueada) ou quando a internet volta, confere tudo de uma vez,
+  liveRefs=[[store,liveProgress],[topicStore,liveTopics,"topics"],[facStore,liveFac],[uiDoc,liveUI],[settingsDoc,liveSettings],[notesStore,liveNotes,"notes"],
+    [errStore,L("err",()=>errors,v=>{errors=v},x=>errOk(x)?x:null,saveErrsLocal),"err"],
+    [freeStore,L("free",()=>freeN,v=>{freeN=v},x=>frOk(x)?frClean(x):null,frSaveLocal),"free"],
+    [trashStore,L("trash",()=>trash,v=>{trash=v},x=>trOk(x)?x:null,trSaveLocal),"trash"],
+    [cardStore,L("cards",()=>cards,v=>{cards=v},x=>cdOk(x)?cdClean(x):null,cdSaveLocal),"cards"],
+    [redoStore,L("redo",()=>redo,v=>{redo=v},x=>rdOk(x)?rdClean(x):null,rdSaveLocal),"redo"],
+    [simStore,L("sims",()=>sims,v=>{sims=v},x=>smOk(x)?smClean(x):null,smSaveLocal,()=>sims.sort((a,b)=>a.at<b.at?1:-1)),"sims"],
+    [exStore,L("exams",()=>exams,v=>{exams=v},x=>exOk(x)?exClean(x):null,exSaveLocal),"exams"],
+    [exPStore,L("exprog",()=>exProg,v=>{exProg=v},x=>exPOk(x)&&!exATimer[x.id]?exPClean(x):null,exSaveLocal),"exprog"],
+    [focStore,L("focus",()=>foSess,v=>{foSess=v},x=>foOk(x)?foClean(x):null,foSaveLocal,()=>foSess.sort((a,b)=>a.s<b.s?1:-1)),"focus"]].filter(r=>r[0]);
+  for(const [ref,fn,name] of liveRefs){const o=liveSub.get(ref);
+    /* a assinatura aberta na carga continua: a 1ª resposta já foi usada (só marca o que foi visto); as seguintes vão para fn */
+    if(o&&o.first&&!o.fail){if(name&&o.first.docs)liveSeen[name]=new Set(o.first.docs.map(d=>d.id));o.fn=fn;if(o.later){const l=o.later;o.later=null;try{fn(l)}catch(e){console.error(e)}}continue}
+    if(typeof ref.onSnapshot==="function")try{ref.onSnapshot(s=>{try{fn(s)}catch(e){console.error(e)}},()=>{})}catch(e){}}}
+/* ao voltar para o app depois de mais de 30 min em segundo plano (tela bloqueada) ou quando a internet volta, confere tudo de uma vez,
    caso alguma conexão tenha caído (a conexão ao vivo volta sozinha; isto é só garantia, e é raro para não gastar leituras do banco) */
 let liveHidAt=0;
 async function liveRefresh(force){if(!liveOn||(!force&&Date.now()-liveRefAt<60000))return;liveRefAt=Date.now();
   for(const [ref,fn] of liveRefs)try{fn(await ref.get())}catch(e){}}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")liveHidAt=Date.now();else if(liveHidAt&&Date.now()-liveHidAt>300000)liveRefresh()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")liveHidAt=Date.now();else if(liveHidAt&&Date.now()-liveHidAt>1800000)liveRefresh()});
 window.addEventListener("online",()=>liveRefresh(true));
 
 (async()=>{
@@ -9577,18 +9643,22 @@ window.addEventListener("online",()=>liveRefresh(true));
     const [db,user]=await Promise.all([window.claude?.use?.("db"),window.claude?.use?.("user")]);
     const uid=user?await user.id():null;
     if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();setTimeout(maybeOnb,0);return}
-    store=db.doc("data/users/"+uid+"/progress");
-    facStore=db.doc("data/users/"+uid+"/faculdade");
-    try{const fs=await facStore.get();const fd=fs.exists?fs.data():null;
+    const P="data/users/"+uid+"/",prog=db.doc(P+"progress"),R={prog,fac:db.doc(P+"faculdade"),topics:prog.collection("topics"),settings:db.doc(P+"settings"),ui:db.doc(P+"prefs"),
+      err:packStore(prog,"errors"),free:prog.collection("free"),trash:prog.collection("trash"),cards:packStore(prog,"cards"),sims:prog.collection("sims"),redo:packStore(prog,"redo"),
+      exams:prog.collection("exams"),exprog:prog.collection("exprog"),focus:packStore(prog,"focus"),notes:prog.collection("notes")};
+    for(const r of Object.values(R))liveOpen(r);// todas as assinaturas de uma vez: as respostas chegam juntas
+    store=prog;
+    facStore=R.fac;
+    try{const fs=await liveFirst(facStore);const fd=fs.exists?fs.data():null;
       if(facValid(fd)&&!facTouched){fac={sems:fd.sems,discs:fd.discs,provas:fd.provas,own:fd.own};if(fd.crunch&&typeof fd.crunch==="object")fac.crunch={mode:fd.crunch.mode,until:fd.crunch.until};registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}}
       else if(fac.sems.length||facTouched)saveFac()}catch(e){}
-    const snap=await store.get();
+    const snap=await liveFirst(store);
     const data=snap.exists?snap.data():null;
-    topicStore=store.collection("topics");let remoteT=null;
-    if(data&&data.split){try{const ts=await topicStore.get();remoteT={};ts.docs.forEach(d=>{remoteT[d.id]=d.data()})}catch(e){remoteT=null}}
+    topicStore=R.topics;let remoteT=null;
+    if(data&&data.split){try{const ts=await liveFirst(topicStore);remoteT={};ts.docs.forEach(d=>{remoteT[d.id]=d.data()})}catch(e){remoteT=null}}
     else if(data&&(data.topics||data.levels)){remoteT=data.topics||data.levels;
       /* conta já dividida, mas uma versão antiga do app voltou a gravar tudo junto: junta os dois, ficando com o registro mais recente de cada tema */
-      try{const ts=await topicStore.get();if(ts.docs.length){remoteT={...remoteT};ts.docs.forEach(d=>{const a=d.data(),b=remoteT[d.id];if(!b||tNewer(a,b))remoteT[d.id]=a})}}catch(e){}}
+      try{const ts=await liveFirst(topicStore);if(ts.docs.length){remoteT={...remoteT};ts.docs.forEach(d=>{const a=d.data(),b=remoteT[d.id];if(!b||tNewer(a,b))remoteT[d.id]=a})}}catch(e){}}
     if(data&&data.split&&remoteT)for(const k in remoteT)tSaved[k]=JSON.stringify(remoteT[k]);
     if(data&&data.hist&&typeof data.hist==="object"){for(const k in data.hist){const r=data.hist[k],l=hist[k]||{};hist[k]={};for(const f of ["e","r","q","c","res","tq","ts"]){const v=Math.max(r[f]||0,l[f]||0);if(v)hist[k][f]=v}}try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
     if(data&&data.plan&&data.plan.d===today()&&Array.isArray(data.plan.items)){dayPlan=renamePlanLabels(data.plan);try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}}
@@ -9597,45 +9667,45 @@ window.addEventListener("online",()=>liveRefresh(true));
       if(!(data.plan&&data.plan.d===today())&&!planTouched)dayPlan=null;// plano montado antes de carregar a conta: refaz com o progresso real
       synced=true;facSyncAll();render();if(estChanged||!data.split||touchedEarly.size||!dayPlan||!(data.plan&&data.plan.d===today())){estChanged=false;persist()}}
     else{synced=true;facSyncAll();if(Object.keys(state).length)persist()}
-    settingsDoc=db.doc("data/users/"+uid+"/settings");
-    try{const ss=await settingsDoc.get();const sp=ss.exists&&ss.data().prompt;
+    settingsDoc=R.settings;
+    try{const ss=await liveFirst(settingsDoc);const sp=ss.exists&&ss.data().prompt;
       if(typeof sp==="string"&&sp.trim()){promptText=promptUp(sp);try{localStorage.setItem(LSP,promptText)}catch(e){}if(!promptEdited)$("#promptBox").value=promptText}}catch(e){}
-    uiDoc=db.doc("data/users/"+uid+"/prefs");
-    try{const us=await uiDoc.get();const ud=us.exists?us.data():null;if(ud&&!uiTouched){ui=uiSanitize(ud);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();render()}else if(uiTouched)saveUI()}catch(e){}
-    errStore=store.collection("errors");
-    const es=await errStore.get();
+    uiDoc=R.ui;
+    try{const us=await liveFirst(uiDoc);const ud=us.exists?us.data():null;if(ud&&!uiTouched){ui=uiSanitize(ud);try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();render()}else if(uiTouched)saveUI()}catch(e){}
+    errStore=R.err;
+    const es=await liveFirst(errStore);
     const remote=es.docs.map(d=>d.data()).filter(errOk);
     const rids=new Set(remote.map(e=>e.id)),localOnly=errors.filter(e=>!rids.has(e.id));
     if(remote.length){errors=[...remote.map(e=>({...e})),...localOnly];saveErrsLocal();render()}
     for(const e of localOnly)await putErr(e);
-    freeStore=store.collection("free");
-    try{const fq=await freeStore.get(),rem=fq.docs.map(d=>d.data()).filter(frOk).map(frClean),ids=new Set(rem.map(x=>x.id)),lo=freeN.filter(x=>!ids.has(x.id));
+    freeStore=R.free;
+    try{const fq=await liveFirst(freeStore),rem=fq.docs.map(d=>d.data()).filter(frOk).map(frClean),ids=new Set(rem.map(x=>x.id)),lo=freeN.filter(x=>!ids.has(x.id));
       if(rem.length){freeN=[...rem,...lo];frSaveLocal();render()}for(const x of lo)await frPut(x)}catch(e){}
-    trashStore=store.collection("trash");
-    try{const tq=await trashStore.get(),rem=tq.docs.map(d=>d.data()).filter(trOk),ids=new Set(rem.map(x=>x.id)),lo=trash.filter(x=>!ids.has(x.id));
+    trashStore=R.trash;
+    try{const tq=await liveFirst(trashStore),rem=tq.docs.map(d=>d.data()).filter(trOk),ids=new Set(rem.map(x=>x.id)),lo=trash.filter(x=>!ids.has(x.id));
       if(rem.length){trash=[...rem,...lo];trSaveLocal()}for(const x of lo)await trPut(x);trPurgeOld()}catch(e){}
-    cardStore=store.collection("cards");
-    try{const cq=await cardStore.get(),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),lo=cards.filter(x=>!ids.has(x.id));
+    cardStore=R.cards;
+    try{const cq=await liveFirst(cardStore),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),lo=cards.filter(x=>!ids.has(x.id));
       if(rem.length){cards=[...rem,...lo];cdSaveLocal();render()}for(const x of lo)await cdPut(x)}catch(e){}
-    simStore=store.collection("sims");
-    try{const sq=await simStore.get(),rem=sq.docs.map(d=>d.data()).filter(smOk).map(smClean),ids=new Set(rem.map(x=>x.id)),lo=sims.filter(x=>!ids.has(x.id));
+    simStore=R.sims;
+    try{const sq=await liveFirst(simStore),rem=sq.docs.map(d=>d.data()).filter(smOk).map(smClean),ids=new Set(rem.map(x=>x.id)),lo=sims.filter(x=>!ids.has(x.id));
       if(rem.length){sims=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);smSaveLocal();render()}for(const x of lo)await smPut(x)}catch(e){}
-    redoStore=store.collection("redo");
-    try{const rq=await redoStore.get(),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
+    redoStore=R.redo;
+    try{const rq=await liveFirst(redoStore),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
       if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
-    exStore=store.collection("exams");exPStore=store.collection("exprog");
+    exStore=R.exams;exPStore=R.exprog;
     exFigStore=store.collection("exfig");
-    try{const q1=await exStore.get(),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),lo=exams.filter(x=>!ids.has(x.id));
+    try{const q1=await liveFirst(exStore),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),lo=exams.filter(x=>!ids.has(x.id));
       if(rem.length){exams=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);exSaveLocal();render()}for(const x of lo)await exPut(x)}catch(e){}
-    try{const q2=await exPStore.get(),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),lo=exProg.filter(x=>!ids.has(x.id));
+    try{const q2=await liveFirst(exPStore),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),lo=exProg.filter(x=>!ids.has(x.id));
       if(rem.length){exProg=[...rem,...lo];exSaveLocal();render()}for(const x of lo)await exPWrite(x.id)}catch(e){}
     try{const q3=await exFigStore.get(),seen=new Set();q3.docs.forEach(d=>{const v=d.data();if(exfOk(v)){seen.add(v.id);if(!exFigs[v.id]){exFigs[v.id]=exfClean(v);idbDo("readwrite",st=>st.put(exFigs[v.id]))}}});
       for(const x of Object.values(exFigs))if(!seen.has(x.id))try{await exFigStore.doc(x.id).set({...x})}catch(e){}exfPurge()}catch(e){}
-    focStore=store.collection("focus");
-    try{const fq=await focStore.get(),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
+    focStore=R.focus;
+    try{const fq=await liveFirst(focStore),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
       if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}
-    notesStore=store.collection("notes");
-    try{const ns=await notesStore.get();let changed=false;
+    notesStore=R.notes;
+    try{const ns=await liveFirst(notesStore);let changed=false;
       ns.docs.forEach(d=>{const v=d.data();if(BYKEY[d.id]&&v&&typeof v.t==="string"&&v.t.trim()&&notes[d.id]!==v.t){
         const ae=document.activeElement;if(!(ae&&(ae.id==="nt-"+d.id||ae.id==="fnt-"+d.id))){notes[d.id]=v.t;if(v.updatedAt)noteAt[d.id]=v.updatedAt;changed=true}}});
       const remoteIds=new Set(ns.docs.map(d=>d.id));

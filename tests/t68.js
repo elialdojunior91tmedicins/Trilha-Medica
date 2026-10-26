@@ -23,7 +23,7 @@ await c('#erGo');await p.waitForTimeout(100);await c('#erShow');await p.waitForT
 const first=await p.evaluate(()=>erRun.ids[0]);if(await p.$('#erArch'))await c('#erArch');else await c('#erGood');await p.waitForTimeout(150);
 await p.evaluate(()=>{erRun=null;const e=errors.find(x=>x.k!=="CM-1")||errors[0];cdErrSave(e);eToNote(errors.find(x=>x.k==="CM-1"))});await p.waitForTimeout(1500);
 ok(!(await p.evaluate(()=>window.__fbInvalid||0)),tag+": nada recusado pelo Firestore");
-const db=await p.evaluate(()=>JSON.parse(localStorage.getItem("__fbdb")));const ed=Object.entries(db).filter(([k])=>/progress\/errors\//.test(k)).map(([,v])=>v);
+const db=await p.evaluate(()=>(d=>{for(const k of Object.keys(d)){const m=k.match(/^(.*\/progress\/)(\w+)pk\/p\d+$/);if(m)for(const id in (d[k].i||{}))d[m[1]+m[2]+"/"+id]=JSON.parse(d[k].i[id])}return d})(JSON.parse(localStorage.getItem("__fbdb"))));const ed=Object.entries(db).filter(([k])=>/progress\/errors\//.test(k)).map(([,v])=>v);
 ok(ed.length===2,tag+": 2 erros na conta");ok(ed.some(e=>e.c==="Lembrei pela metade"&&e.s==="ENARE"&&e.box===0&&e.due),tag+": causa e revisão gravadas");
 ok(ed.some(e=>e.k==="CM-1"&&(e.arch||e.box===3)&&e.nt),tag+": revisão/arquivo e anotação gravados "+JSON.stringify(ed.find(e=>e.k==="CM-1")));
 ok(ed.some(e=>e.cd)&&Object.keys(db).some(k=>/progress\/cards\//.test(k)),tag+": cartão gravado");
