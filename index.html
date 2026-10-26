@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=ec8fc426">
+<link rel="stylesheet" href="site.css?v=15962bca">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=ec8fc426"></script>
-<script src="bridge.js?v=ec8fc426"></script>
+<script src="config.js?v=15962bca"></script>
+<script src="bridge.js?v=15962bca"></script>
 </head>
 <body>
 <script>
@@ -1410,6 +1410,7 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fresw{color:var(--muted);font-weight:600}.fresw.hi{color:var(--gold)}
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
+.eside0{margin:8px 0 4px}.eside0 .chips{flex-wrap:wrap}
 .simquick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--l2);border-radius:10px}.simquick .how{font-size:12.5px}
 .wpprev{margin:0 0 12px}.wpaula{display:block;color:var(--gold);font-size:11px;line-height:1.25;max-width:9.5rem}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
@@ -5638,9 +5639,15 @@ const ECTIPS={"Nunca estudei isso":"Esses temas precisam de teoria antes de ques
 const eAct=e=>!e.arch;
 function eArchive(e,on){eMenu=null;if(on)e.arch=today();else delete e.arch;putErr(e);render()}
 /* ----- filtros extras ----- */
-let eFlags=new Set(),ePer="all",eSrc="all",eCause="all",eVis=[],eMsg="";
+let eFlags=new Set(),ePer="all",eSrc="all",eCause="all",eVis=[],eMsg="",eSide="all";
+/* Lote 18: erro da faculdade = tema só da faculdade, tema da residência usado nos semestres ativos, ou registrado numa prova da faculdade */
+function eIsFac(e,FL){const it=BYKEY[e.k];if(!it)return false;if(it.own||it.area===FAC_AREA)return true;if((FL||facLinkMap())[e.k])return true;
+  const src=(e.s||"").trim().toLowerCase();return !!src&&fac.provas.some(p=>p.name.trim().toLowerCase()===src)}
+/* semana da prova: temas da prova da faculdade e dos fechamentos de SP dos próximos 7 dias */
+function ePwKeys(){const K=new Set(pwKeys()||[]);spFechas(rvDays()).forEach(f=>topicKeysOf(f.p.items).forEach(k=>K.add(k)));return K.size?K:null}
+function ePwLabel(){const P=provaWeek(),F=spFechas(rvDays());return [...P.map(p=>p.name),...F.map(f=>spShort(f.s.name))].slice(0,2).join(" e ")}
 const EFLAG={due:"Para revisar hoje",rep:"Que se repetem",nocard:"Sem cartão",arch:"Arquivados"};
-function eRepKeys(){const r=eRepeat();return {tem:new Set(r.tem.map(([k])=>k)),stub:new Set(r.stub.map(e=>e.id))}}
+function eRepKeys(){const r=eRepeat();return {tem:new Set(r.tem.map(([k])=>k)),stub:new Set(r.stub.map(e=>e.id)),FL:facLinkMap(),PW:ePwKeys()}}
 function eExtraOk(e,R){
   if(eFlags.has("arch")?!e.arch:e.arch)return false;
   if(eFlags.has("due")&&!eDueNow(e))return false;
@@ -5648,19 +5655,27 @@ function eExtraOk(e,R){
   if(eFlags.has("nocard")&&e.cd&&cards.some(x=>x.id===e.cd))return false;
   if(ePer!=="all"&&dnum(today())-dnum(e.d)>+ePer)return false;
   if(eSrc!=="all"&&(e.s||"").trim().toLowerCase()!==eSrc)return false;
-  if(eCause!=="all"&&(e.c||"")!==eCause)return false;return true}
-const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all";
+  if(eCause!=="all"&&(e.c||"")!==eCause)return false;
+  if(eSide==="fac"&&!eIsFac(e,R.FL))return false;if(eSide==="res"&&eIsFac(e,R.FL))return false;
+  if(eSide==="pw"&&!(R.PW&&R.PW.has(e.k)))return false;return true}
+const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all"||eSide!=="all";
 let eFOpen=(()=>{try{return localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
-function eClearAll(){eFlags.clear();ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
+function eClearAll(){eFlags.clear();eSide="all";ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
 /* mostrar os erros de um tema: limpa os outros filtros (senão podia não sobrar nada) e, se o tema só tem arquivados, abre os arquivados */
 function eGoTopic(k){eClearAll();eTopicKey=k;eLimit=E_PAGE;if(!errors.some(e=>e.k===k&&!e.arch)&&errors.some(e=>e.k===k&&e.arch))eFlags.add("arch")}
 function renderEMore(){const box=$("#eMore");if(!box)return;
   const R=eRepKeys(),act=errors.filter(e=>BYKEY[e.k]),EA=act.filter(e=>eFlags.has("arch")?e.arch:!e.arch);
   {const c=$("#eFCount");if(c)c.textContent=`${EA.length} ${EA.length===1?"erro":"erros"}${eFlags.has("arch")?" arquivados":""}`}
   const A=[];if(eType!=="all")A.push([ETYPES[eType],()=>{eType="all"}]);Object.entries(EFLAG).forEach(([v,l])=>{if(eFlags.has(v))A.push([l,()=>eFlags.delete(v)])});
+  if(eSide!=="all")A.push([eSide==="fac"?"Só da faculdade":eSide==="res"?"Só da residência":`Semana da prova: ${ePwLabel()}`,()=>{eSide="all"}]);
   if(ePer!=="all")A.push([`Últimos ${ePer} dias`,()=>{ePer="all"}]);if(eSrc!=="all")A.push([`Fonte: ${eSrc}`,()=>{eSrc="all"}]);if(eCause!=="all")A.push([`Causa: ${eCause}`,()=>{eCause="all"}]);
   if(eArea!=="all")A.push([fcAreaName(eArea),()=>{eArea="all";eSp="all"}]);if(eArea!=="all"&&eSp!=="all")A.push([eSp,()=>{eSp="all"}]);
   const G=[];
+  {if(eSide==="pw"&&!R.PW)eSide="all";const nF=EA.filter(e=>eIsFac(e,R.FL)).length,L=[["all",`Todos · ${EA.length}`],["res",`Residência · ${EA.length-nF}`],["fac",`Faculdade · ${nF}`]];
+    if(R.PW)L.push(["pw",`Semana da prova: ${ePwLabel()} · ${EA.filter(e=>R.PW.has(e.k)).length}`]);
+    /* fica fora do painel de filtros: é o filtro rápido que mais se usa (na semana da prova, um toque) */
+    var eSideRow=el(`<div class="eside0"><div class="chips" role="group" aria-label="Residência ou faculdade"></div></div>`);L.forEach(([v,l])=>eSideRow.firstChild.appendChild(fcChip(l,eSide===v,()=>{eSide=eSide===v&&v!=="all"?"all":v;eLimit=E_PAGE;render()},null,null,null,{es:v})));
+    eSideRow.title="Faculdade = conteúdo dos semestres ativos ou erro registrado numa prova da faculdade"}
   G.push(["Tipo de erro","por que você errou",fcChips(Object.entries(ETYPES).map(([v,l])=>fcChip(`${l} · ${EA.filter(e=>e.t===v).length}`,eType===v,()=>{eType=eType===v?"all":v;eLimit=E_PAGE},null,null,null,{et:v})))]);
   G.push(["Situação","combinam com o resto",fcChips(Object.entries(EFLAG).map(([v,l])=>{const n=v==="arch"?act.filter(e=>e.arch).length:act.filter(e=>!e.arch&&(v==="due"?eDueNow(e):v==="rep"?(R.tem.has(e.k)&&dnum(today())-dnum(e.d)<=30||R.stub.has(e.id)):!(e.cd&&cards.some(x=>x.id===e.cd)))).length;
     return fcChip(`${l} · ${n}`,eFlags.has(v),()=>{eFlags.has(v)?eFlags.delete(v):eFlags.add(v);eLimit=E_PAGE},null,null,null,{ef:v})}))]);
@@ -5677,6 +5692,7 @@ function renderEMore(){const box=$("#eMore");if(!box)return;
   fcBody(box,{tog:"eFBtn",panelId:"eFPanel",open:eFOpen,onToggle:()=>{eFOpen=!eFOpen;lsSet("resid-efpanel",eFOpen?"1":null)},
     sort:["eOrder",[["sp","Por especialidade"],["new","Mais recentes primeiro"],["due","Próxima revisão primeiro"],["miss","Mais teimosos primeiro"]],eOrder,v=>{eOrder=v}],
     act:A,clearId:"eClear",onClear:eClearAll,groups:G,foot:"",footId:"eRes",links,onDone:()=>{eFOpen=false;lsSet("resid-efpanel",null);render();const l=$("#elist");if(l)l.scrollIntoView({block:"start"})}});
+  {const bar=box.querySelector(".tfbar");if(bar)bar.after(eSideRow);else box.prepend(eSideRow)}
   if(eMsg){const m=el(`<p class="pnote" role="status" id="eMsg"></p>`);m.textContent=eMsg;box.appendChild(m)}}
 /* ----- simulado dos meus erros ----- */
 function eSimItems(n){const act=errors.filter(e=>BYKEY[e.k]&&!e.arch);
@@ -5752,9 +5768,16 @@ function renderErros(){
     {const wk=eWeeksEl();if(wk)ins.appendChild(wk)}
     const dom=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
     const tip=el(`<p class="tips" style="margin-top:12px"></p>`);tip.textContent=ETIPS[dom];ins.appendChild(tip);
-    {const cs={};AE.forEach(e=>{if(e.c)cs[e.c]=(cs[e.c]||0)+1});const top=Object.entries(cs).sort((a,b)=>b[1]-a[1]).slice(0,3);
-      if(top.length){const g=el(`<div class="grp ecauses" style="margin-top:14px"><span class="glabel">Por que você erra</span><ul></ul></div>`);
-        top.forEach(([c,n])=>{const li=el(`<li><button type="button" class="link"></button><b></b><span></span></li>`);li.querySelector("button").textContent=c;li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};li.querySelector("b").textContent=`${n} ${n===1?"erro":"erros"}`;li.querySelector("span").textContent=ECTIPS[c]||"";g.querySelector("ul").appendChild(li)});ins.appendChild(g)}
+    /* Lote 18: resumo do mês dentro do "Por que você erra" — causas que mais se repetiram nos últimos 30 dias, comparadas com os 30 anteriores */
+    {const t=dnum(today()),ago=e=>t-dnum(e.d),M=errors.filter(e=>BYKEY[e.k]&&ago(e)<=30),M0=errors.filter(e=>BYKEY[e.k]&&ago(e)>30&&ago(e)<=60),cnt=L=>{const o={};L.forEach(e=>{if(e.c)o[e.c]=(o[e.c]||0)+1});return o};
+      const cm=cnt(M),c0=cnt(M0),useM=Object.keys(cm).length>0,cs=useM?cm:(()=>{const o={};AE.forEach(e=>{if(e.c)o[e.c]=(o[e.c]||0)+1});return o})(),top=Object.entries(cs).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      if(top.length){const g=el(`<div class="grp ecauses" style="margin-top:14px" id="eWhy"><span class="glabel"></span><p class="how emonth"></p><ul></ul></div>`);g.querySelector(".glabel").textContent=useM?"Por que você erra · último mês":"Por que você erra";
+        const ms=g.querySelector(".emonth");if(useM){const tc={};M.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const dt=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
+          ms.textContent=`${M.length} ${M.length===1?"erro novo":"erros novos"} nos últimos 30 dias${M0.length?` (${M0.length} nos 30 anteriores)`:""}${dt?`; o tipo mais comum foi ${ETYPES[dt].toLowerCase()}`:""}. As causas que mais se repetiram:`}else ms.remove();
+        top.forEach(([c,n])=>{const li=el(`<li><button type="button" class="link"></button><b></b><span></span></li>`);li.querySelector("button").textContent=c;li.querySelector("button").onclick=()=>{eCause=c;render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
+          const d=useM&&c0[c]!==undefined?n-c0[c]:null;li.querySelector("b").textContent=`${n} ${n===1?"erro":"erros"}${useM?(d===null?" · nova":d>0?` · ▲ ${d}`:d<0?` · ▼ ${-d}`:" · igual"):""}`;li.querySelector("span").textContent=ECTIPS[c]||"";g.querySelector("ul").appendChild(li)});
+        {const gone=useM?Object.keys(c0).filter(c=>!cm[c]):[];if(gone.length){const p=el(`<p class="how emgone"></p>`);p.textContent=`Melhorou: no último mês você não errou mais por ${gone.slice(0,2).map(c=>`“${c}”`).join(" nem por ")}.`;g.appendChild(p)}}
+        ins.appendChild(g)}
       else if(errors.length>=3)ins.appendChild(el(`<p class="how" style="margin-top:10px">Dica: ao registrar, marque <b>Por que errei</b>. Com isso o app mostra as causas mais comuns e o que fazer com cada uma.</p>`))}
     const per={};AE.forEach(e=>per[e.k]=(per[e.k]||0)+1);
     const RP0=new Set(eRepeat().tem.map(x=>x[0])),top=Object.entries(per).sort((a,b)=>b[1]-a[1]||RP0.has(b[0])-RP0.has(a[0])).slice(0,5);
