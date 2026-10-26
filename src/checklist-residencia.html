@@ -1387,6 +1387,7 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fresw{color:var(--muted);font-weight:600}.fresw.hi{color:var(--gold)}
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
+.simquick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--l2);border-radius:10px}.simquick .how{font-size:12.5px}
 .wpprev{margin:0 0 12px}.wpaula{display:block;color:var(--gold);font-size:11px;line-height:1.25;max-width:9.5rem}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
 .itile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg);border:1px solid transparent;border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
@@ -3323,7 +3324,7 @@ function dWeeks(s){const t=dnum(today()),out=[];for(let w=7;w>=0;w--){const a=t-
 function detGet(pre,k){detTab[k]=pre==="ew-"?"erros":pre==="nt-"?"notas":"questoes";render();return document.getElementById(pre+k)}
 
 /* gerador de questões */
-function buildPrompt(it,nq,o){
+function buildPrompt(it,nq,o){const fs=o.fac?facStyleTxt():"";
   const past=errors.filter(e=>e.k===it.key).sort(byNewest).slice(0,5).map(e=>"- "+e.r.replace(/\s+/g," ").slice(0,240));
   return promptText.trim()+`
 
@@ -3338,7 +3339,7 @@ Já foram feitas questões sobre os conceitos abaixo. Não repita esses conceito
 ${o.avoid.slice(-30).map(c=>"- "+c).join("\n")}`:"")+
   (past.length&&o.first&&!o.mat?`
 O estudante já errou questões sobre estes pontos deste tema. Inclua pelo menos uma questão que cobre um deles por outro ângulo:
-${past.join("\n")}`:"")+(o.mat?genMatPrompt(o.mat):"")+`
+${past.join("\n")}`:"")+(o.mat?genMatPrompt(o.mat):"")+(fs?"\n\n"+fs:"")+`
 
 ${fixedFormat(nq)}`;
 }
@@ -3522,7 +3523,7 @@ async function generate(it){
     let subs=[];if(!focus&&order.length&&!M){for(let i=0;i<k;i++)subs.push(order[(g.pos+i)%order.length])}
     const site=!!window.__site,mo=M?(site?{title:"Gerar questões do seu material",hint:(M.attach||M.scan||M.imgs&&M.imgs.length)?"Copie o pedido, abra uma conversa nova no app do Claude ou em claude.ai, ANEXE o seu material (PDF, slides ou fotos) e cole o pedido.":"Copie o pedido e cole numa conversa nova no app do Claude ou em claude.ai. O texto do seu material já vai junto."}:(M.imgs&&M.imgs.length?{images:M.imgs}:{})):{};
     try{
-      const data=await sampleFn.json(buildPrompt(it,k,{focus,subs,avoid:g.qs.map(q=>q.conceito||q.enunciado.slice(0,120)),first:g.qs.length===0,mat:M}),{...mo,signal:g.ctl.signal,cache:false,
+      const data=await sampleFn.json(buildPrompt(it,k,{focus,subs,avoid:g.qs.map(q=>q.conceito||q.enunciado.slice(0,120)),first:g.qs.length===0,mat:M,fac:genFacOn(it)}),{...mo,signal:g.ctl.signal,cache:false,
         onText:()=>{const s=document.getElementById("gs-"+it.key);if(s)s.textContent=`Escrevendo as questões ${g.qs.length+1} a ${g.qs.length+k} de ${g.n}…`}});
       if(gen[it.key]!==g)return;
       const qs=validQs(data).slice(0,k);qs.forEach(q=>{if(M){q.mat=true;figBind(q,M)}else delete q.figura});
@@ -3555,6 +3556,9 @@ function toCaderno(it,qi){
   const f=detGet("ew-",it.key);if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus({preventScroll:true})}
 }
 function setQCount(v){qCount=Math.max(1,Math.min(QMAX,Math.round(v)||10));try{localStorage.setItem("resid-qcount",String(qCount))}catch(e){}}
+/* estilo da faculdade no gerador do tema: padrão ligado quando o tema é da faculdade (ou ligado a ela) e há prova modelo */
+let genSty={};
+const genFacOn=it=>facModels().length>0&&(genSty[it.key]!==undefined?genSty[it.key]:!!(it.own||facLinkMap()[it.key]));
 function renderGen(it){
   const g=gen[it.key];
   const box=el(`<div class="grp dblk dgen"><span class="glabel">Gerar questões com o Claude</span></div>`);
@@ -3566,6 +3570,8 @@ function renderGen(it){
       const fs=fr.querySelector("select");subs.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;fs.appendChild(o)});
       fs.value=genFocus[it.key]||"";fs.onchange=()=>{genFocus[it.key]=fs.value};
       box.appendChild(fr)}
+    if(facModels().length){const on=genFacOn(it),w=el(`<div class="qgen"><span class="gtext">Estilo</span><div class="seg" role="group" aria-label="Estilo das questões"></div></div>`);
+      [[false,"Residência"],[true,"Da minha faculdade"]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=`qsty-${it.key}-${v?"fac":"res"}`;b.textContent=l;b.setAttribute("aria-pressed",on===v);b.onclick=()=>{genSty[it.key]=v;render()};w.querySelector(".seg").appendChild(b)});box.appendChild(w)}
     const row=el(`<div class="qgen"><label for="qn-${it.key}" class="gtext">Quantidade</label><input class="qnum" id="qn-${it.key}" type="number" inputmode="numeric" min="1" max="${QMAX}" value="${qCount}"><div class="qpre" role="group" aria-label="Sugestões de quantidade"></div></div>`);
     const inp=row.querySelector("input");
     inp.onchange=()=>{setQCount(Number(inp.value));inp.value=qCount;pre.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",Number(x.dataset.v)===qCount))};
@@ -7422,18 +7428,34 @@ function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;
   w.append(box,sel);return w}
 /* simulado misto: questões de vários temas num bloco só */
 let sim=null,simCfg={src:"gain",n:10,dif:"mista",est:"res"},simSubs={},simPF={q:"",area:"all",lv:"all",inc:0};
-const SIM_SRC=[["pick","Escolher temas"],["gain","Onde focar"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
+const SIM_SRC=[["pick","Escolher temas"],["week","Temas da semana"],["gain","Onde focar"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
 /* Lote 14: dificuldade e estilo do simulado */
 const SIM_DIF=[["mista","Mista"],["facil","Fácil"],["media","Média"],["dificil","Difícil"]],SIM_EST=[["res","Residência"],["inep","ENAMED / INEP"]];
+const simEstList=()=>facModels().length?[...SIM_EST,["fac","Da minha faculdade"]]:SIM_EST;
 const SIM_DIF_TXT={mista:"Misture os níveis: cerca de 30% fáceis, 50% médias e 20% difíceis.",facil:"Nível fácil: casos típicos, que cobram o conceito central de forma direta, com distratores que quem estudou distingue sem dificuldade.",
   media:"Nível médio, como a média das provas de residência.",dificil:"Nível difícil: apresentações atípicas ou com o dado decisivo sutil, exceções, condutas de segunda linha e distratores muito próximos da correta (sem pegadinha de português)."};
 const SIM_EST_TXT={res:"",inep:"Estilo ENAMED/INEP: cada questão é uma situação-problema contextualizada (caso clínico com os dados necessários, alguns irrelevantes, como na prática do médico generalista no SUS), com comando claro e afirmativo (sem \"exceto\", \"incorreta\" ou \"não\" no comando) e exatamente 4 alternativas (A a D), homogêneas e plausíveis, com uma única correta. Use 4 alternativas mesmo que as instruções acima falem em cinco."};
-function simStyleTxt(c){c=c||simCfg;return [SIM_DIF_TXT[c.dif]||SIM_DIF_TXT.mista,SIM_EST_TXT[c.est]||""].filter(Boolean).join("\n")}
+function simStyleTxt(c){c=c||simCfg;return [SIM_DIF_TXT[c.dif]||SIM_DIF_TXT.mista,c.est==="fac"?facStyleTxt():SIM_EST_TXT[c.est]||""].filter(Boolean).join("\n")}
+/* Lote 18: provas antigas da faculdade (importadas como prova na íntegra e marcadas "Modelo da faculdade") ensinam ao gerador o jeito de cobrar:
+   tamanho do caso, nº de alternativas, caso clínico ou pergunta direta, comando negativo, e 2 exemplos só de formato */
+const facModels=()=>exams.filter(e=>e.mod&&e.qs.some(r=>r.q&&r.q.enunciado));
+function facStyle(){const Q=facModels().flatMap(e=>e.qs.filter(r=>r.q&&r.q.enunciado&&!r.an).map(r=>r.q));if(!Q.length)return null;
+  const words=Q.map(q=>q.enunciado.trim().split(/\s+/).length).sort((a,b)=>a-b),med=words[Math.floor(words.length/2)];
+  const na={};Q.forEach(q=>{const n=q.alternativas.length;na[n]=(na[n]||0)+1});const alt=+Object.keys(na).sort((a,b)=>na[b]-na[a])[0];
+  const caso=Q.filter(q=>/\b(anos|paciente|procura|admitid|comparece|refere|queixa)\b/i.test(q.enunciado)).length/Q.length,neg=Q.filter(q=>/\b(exceto|incorreta|falsa|n[ãa]o\s+(é|está|se))\b/i.test(q.enunciado.split(/[.?!]\s/).pop()||"")).length/Q.length;
+  const ex=Q.filter(q=>q.enunciado.length>=120).slice(0,2);return {n:Q.length,med,alt,caso,neg,ex,names:facModels().map(e=>e.name)}}
+function facStyleTxt(){const F=facStyle();if(!F)return "";
+  return `Estilo da faculdade do estudante: imite o JEITO de cobrar das provas da faculdade dele (${F.names.slice(0,3).map(n=>`"${n}"`).join(", ")}; ${F.n} questões analisadas), não o conteúdo.
+- Enunciado com cerca de ${F.med} palavras${F.caso>=.5?"; a maioria em forma de caso clínico":F.caso>=.2?"; parte em caso clínico, parte em pergunta direta":"; perguntas diretas, quase sem caso clínico"}.
+- Exatamente ${F.alt} alternativas (${"ABCDEFGH".slice(0,F.alt).split("").join(", ")}), mesmo que as instruções acima falem em outro número.
+- ${F.neg>=.15?`Cerca de ${Math.round(F.neg*100)}% das questões com comando negativo ("exceto", "incorreta"), como nessas provas.`:"Comando afirmativo (quase nunca \"exceto\" ou \"incorreta\")."}
+${F.ex.length?`Exemplos de formato (não copie o conteúdo nem o caso):\n${F.ex.map((q,i)=>`Exemplo ${i+1}: ${q.enunciado.replace(/\s+/g," ").slice(0,600)}\n${q.alternativas.map(a=>`${a.letra}) ${a.texto.replace(/\s+/g," ").slice(0,140)}`).join("\n")}`).join("\n\n")}`:""}`}
 function simCfgSnap(){return {mode:simCfg.mode==="mat"?"mat":"temas",src:simCfg.src,n:simCfg.n,dif:simCfg.dif||"mista",est:simCfg.est||"res",picks:[...simPick].filter(k=>BYKEY[k]),subs:JSON.parse(JSON.stringify(simSubs)),pid:simCfg.pid||""}}
 const simProva=()=>fac.provas.find(x=>x.id===simCfg.pid&&x.date>=today())||upcomingProvas().find(p=>p.items.some(refOk));
 function simSrcList(){const p=simProva(),L=SIM_SRC;return p?[["prova",`Prova: ${p.name}`],...L]:L}
 function simTopics(src,U){const pool=[...ALL,...FAC_ITEMS];
-  if(src==="gain"||src==="weak")return focusRank(U).slice(0,15);// "Pontos fracos" e "Onde ganhar pontos" viraram uma fonte só
+  if(src==="gain"||src==="weak")return focusRank(U).slice(0,15);
+  if(src==="week"){const ws=fromNum(wpMon(dnum(today()))),L=pool.filter(i=>{const s=get(i.key);return (s.ed||[]).some(d=>d>=ws)||(s.last&&s.last>=ws)||(s.qd&&Object.keys(s.qd).some(d=>d>=ws))});return L}// "Pontos fracos" e "Onde ganhar pontos" viraram uma fonte só
   if(src==="due")return pool.filter(i=>isDue(get(i.key)));
   if(src==="plan")return ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean);
   if(src==="prova"){const p=simProva();return p?topicKeysOf(p.items).map(k=>BYKEY[k]):[]}
@@ -7452,7 +7474,7 @@ Varie o tipo de pergunta entre os itens (diagnóstico, conduta, exame, complica�
 ${simStyleTxt(sim&&sim.cfg)}
 
 ${fixedFormat(items.length)}`}
-const SIM_DESC={prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados com acerto mais longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões que você errou",pick:"Busque e marque temas e subtópicos",filter:"Os temas que aparecem com os filtros da aba"};
+const SIM_DESC={week:"O que você estudou ou revisou nesta semana",prova:"Os temas da prova da faculdade",weak:"Temas com acerto abaixo de 60%",gain:"Os mais cobrados com acerto mais longe de 80%",due:"Temas com revisão hoje",plan:"Os temas de Estudar hoje",errs:"Casos novos sobre o que você já errou",redo:"Casos novos sobre as questões que você errou",pick:"Busque e marque temas e subtópicos",filter:"Os temas que aparecem com os filtros da aba"};
 /* simulado a partir do material: as questões seguem o material; o Claude indica o tema da residência mais próximo de cada uma */
 function simMatPrompt(n,P,avoid){return promptText.trim()+`
 
@@ -7509,7 +7531,7 @@ function simNext(){const S=sim;S.i++;S.shown=Date.now();if(S.i>=S.qs.length&&S.g
 /* resumo antes de começar */
 function simSummaryEl(mode,T,nq){const w=el(`<div class="simsum"><ul></ul></div>`),ul=w.querySelector("ul"),li=(lab,val)=>{const x=el(`<li><span></span><b></b></li>`);x.firstChild.textContent=lab;x.lastChild.textContent=val;ul.appendChild(x)};
   li("Questões",`${nq} · ≈ ${Math.max(1,Math.round(nq*ui.prefs.qpace/60))} min no seu ritmo (${fmtPace(ui.prefs.qpace)} por questão)`);
-  li("Dificuldade",(SIM_DIF.find(x=>x[0]===(simCfg.dif||"mista"))||SIM_DIF[0])[1]);li("Estilo",(SIM_EST.find(x=>x[0]===(simCfg.est||"res"))||SIM_EST[0])[1]);
+  li("Dificuldade",(SIM_DIF.find(x=>x[0]===(simCfg.dif||"mista"))||SIM_DIF[0])[1]);li("Estilo",(simEstList().find(x=>x[0]===(simCfg.est||"res"))||SIM_EST[0])[1]);
   if(mode==="mat"){const P=genMatOn(simMat)&&(simMat.items||[]).some(msItemOk)?msPack(simMat):null;li("Material",P?`${P.names.join(", ")}${P.chunks.length>1?` · ${P.chunks.length} partes`:""}${P.figs.length?` · ${P.figs.length} ${P.figs.length===1?"figura":"figuras"}`:""}`:simMat&&simMat.attach?"anexado na conversa do Claude":"nenhum ainda")}
   else if(simCfg.src==="errs")li("Temas",`casos novos sobre ${nq} ${nq===1?"erro":"erros"} do caderno`);
   else if(simCfg.src==="redo")li("Temas",`casos novos sobre ${nq} ${nq===1?"questão":"questões"} do Refazer`);
@@ -7549,6 +7571,10 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
   const S=sim;if(S&&S.status!=="error")c.querySelector(".dhead").appendChild(fullBtn("sim"));
   if(!S||S.status==="error"){
     c.appendChild(el(`<p class="how">Um bloco de questões inéditas, uma por vez, medindo o seu tempo em cada uma. Cada resposta conta no acerto do tema; as erradas vão para Refazer.</p>`));
+    /* Lote 18: bloco rápido de 5 com um toque (temas da semana misturados; sem temas na semana, onde focar) */
+    {const wk=simTopics("week",U),T=wk.length?wk:simTopics("gain",U);if(T.length){const q=el(`<div class="simquick"><button class="btn primary" type="button" id="simQuick">⚡ Bloco rápido · 5 questões</button><span class="how"></span></div>`);
+      q.querySelector(".how").textContent=wk.length?`Misturando ${Math.min(wk.length,5)} dos ${wk.length} temas que você estudou ou revisou nesta semana.`:"Nada estudado nesta semana ainda: vêm de Onde focar.";
+      q.querySelector("button").disabled=!sampleFn;q.querySelector("button").onclick=()=>{simCfg={...simCfg,mode:"temas",src:wk.length?"week":"gain",n:5};simStart(U)};c.appendChild(q)}}
     if(S&&S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;c.appendChild(m)}
     const f=el(`<div class="simcfg"></div>`),mode=simCfg.mode==="mat"?"mat":"temas";
     f.appendChild(el(`<div class="simstep"><span class="simnum">1</span><b>De onde vêm as questões</b></div>`));
@@ -7563,7 +7589,9 @@ function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="sim
       L.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=id+v;b.textContent=l;b.setAttribute("aria-pressed",cur===v);b.onclick=()=>{fn(v);render()};w.querySelector(".seg").appendChild(b)});f.appendChild(w)};
     row("Questões",[5,10,20,30].map(v=>[v,String(v)]),simCfg.n,"simN-",v=>{simCfg.n=v});
     row("Dificuldade",SIM_DIF,simCfg.dif||"mista","simD-",v=>{simCfg.dif=v});
-    row("Estilo",SIM_EST,simCfg.est||"res","simE-",v=>{simCfg.est=v});
+    if(simCfg.est==="fac"&&!facModels().length)simCfg.est="res";
+    row("Estilo",simEstList(),simCfg.est||"res","simE-",v=>{simCfg.est=v});
+    if(simCfg.est==="fac")f.appendChild(el(`<p class="how simesth">No jeito das provas da sua faculdade marcadas como modelo (tamanho do caso, número de alternativas e forma de perguntar).</p>`));
     if(simCfg.est==="inep")f.appendChild(el(`<p class="how simesth">Como no ENAMED: caso clínico contextualizado da prática do generalista, comando direto e 4 alternativas (A a D).</p>`));
     const T2=mode==="mat"?[]:simTopics(simCfg.src,U),nq=mode==="temas"&&simCfg.src==="errs"?Math.min(simCfg.n,errors.filter(e=>BYKEY[e.k]&&!e.arch).length):mode==="temas"&&simCfg.src==="redo"?Math.min(simCfg.n,redo.filter(x=>BYKEY[x.k]).length):simCfg.n;
     f.appendChild(el(`<div class="simstep"><span class="simnum">3</span><b>Resumo</b></div>`));f.appendChild(simSummaryEl(mode,T2,nq));c.appendChild(f);
@@ -7631,7 +7659,7 @@ function simHistEl(U){const w=el(`<div class="simhist"><div class="dbh"><span cl
   L.forEach(x=>{const li=el(`<li class="smrow" id="sm-${x.id}"><div class="smh"><b class="smlab"></b><span class="smpct"></span></div><span class="smmeta"></span><div class="smacts"></div></li>`),p=pct(x.hit,x.ans);
     li.querySelector(".smlab").textContent=x.lab||"Simulado";const pc=li.querySelector(".smpct");pc.textContent=`${p}%`;pc.dataset.c=p>=80?"ok":p>=65?"mid":"bad";
     const tr=x.tries.length?x.tries[x.tries.length-1]:null;
-    li.querySelector(".smmeta").textContent=`${br(x.d)} · ${x.hit} de ${x.ans} · ${fmtPace(x.tt)} · ${(SIM_DIF.find(d=>d[0]===x.dif)||SIM_DIF[0])[1].toLowerCase()}${x.est==="inep"?" · ENAMED":""}${tr?` · refeito em ${br(tr.d)}: ${tr.hit} de ${tr.ans}`:""}`;
+    li.querySelector(".smmeta").textContent=`${br(x.d)} · ${x.hit} de ${x.ans} · ${fmtPace(x.tt)} · ${(SIM_DIF.find(d=>d[0]===x.dif)||SIM_DIF[0])[1].toLowerCase()}${x.est==="inep"?" · ENAMED":x.est==="fac"?" · estilo da faculdade":""}${tr?` · refeito em ${br(tr.d)}: ${tr.hit} de ${tr.ans}`:""}`;
     const a=li.querySelector(".smacts"),btn=(id,t,fn,cls)=>{const b=el(`<button class="mini${cls?" "+cls:""}" type="button"></button>`);b.id=id;b.textContent=t;b.onclick=fn;a.appendChild(b);return b};
     btn("smv-"+x.id,simRev&&simRev.id===x.id?"Fechar":"Rever",()=>{simRev=simRev&&simRev.id===x.id?null:{id:x.id,i:null};render()});
     btn("smr-"+x.id,"Refazer estas",()=>simRerun(x)).title="As mesmas questões, embaralhadas; não conta no acerto";
@@ -7667,7 +7695,7 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
 function exKs(r){const k=typeof r.k==="string"?r.k:"";return Array.isArray(r.ks)?[...new Set(r.ks.filter(x=>typeof x==="string"&&BYKEY[x]&&!BYKEY[x].own&&x!==k))].slice(0,2):[]}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
 function exClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
-  return {id:x.id,name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),links:Array.isArray(x.links)?[...new Set(x.links.filter(r=>typeof r==="string"&&/^(T|O):[A-Za-z0-9_-]{1,60}$/.test(r)))].slice(0,12):[],qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
+  return {id:x.id,...(x.mod?{mod:1}:{}),name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),links:Array.isArray(x.links)?[...new Set(x.links.filter(r=>typeof r==="string"&&/^(T|O):[A-Za-z0-9_-]{1,60}$/.test(r)))].slice(0,12):[],qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
 function exPOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"}
 function exPClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,a={},h={},A=x.a&&typeof x.a==="object"?x.a:{},H=x.h&&typeof x.h==="object"?x.h:{};
   for(const i in A){const v=A[i];if(v&&typeof v.l==="string"&&D.test(v.d))a[i]={l:v.l.slice(0,3),d:v.d,s:Math.max(0,Math.min(1800,Math.round(+v.s||0)))}}
@@ -8219,6 +8247,7 @@ function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).l
   const ed=sb(`exed-${ex.id}`,"Revisar questões",()=>{exEdit=exEdit&&exEdit.id===ex.id?null:{id:ex.id,flt:ex.qs.some(r=>exFilterOk(r,"chk"))?"chk":"all",show:12,T:null};exKey=null;render()});ed.setAttribute("aria-expanded",!!(exEdit&&exEdit.id===ex.id));
   const lk=sb(`exlk-${ex.id}`,(ex.links||[]).length?"Ligações":"Ligar a temas",()=>{exLinkEd=exLinkEd&&exLinkEd.id===ex.id?null:{id:ex.id,q:""};exEdit=null;exKey=null;render()});lk.setAttribute("aria-expanded",!!(exLinkEd&&exLinkEd.id===ex.id));
   const kb=sb(`exkb-${ex.id}`,"Colar gabarito",()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)});kb.setAttribute("aria-expanded",!!(exKey&&exKey.id===ex.id));
+  {const mb=sb(`exmod-${ex.id}`,ex.mod?"✓ Modelo da faculdade":"Usar como modelo da faculdade",()=>{if(ex.mod)delete ex.mod;else ex.mod=1;exPut(ex);render()});mb.setAttribute("aria-pressed",!!ex.mod);mb.title="Prova da sua faculdade: o gerador e o simulado imitam o jeito dela de cobrar (tamanho do caso, nº de alternativas, forma de perguntar)"}
   sb(`exdel-${ex.id}`,exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir",()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}},exArm==="del"+ex.id).classList.add("exdelb");
   if(exKey&&exKey.id===ex.id)li.appendChild(exKeyEl(ex));
   if(exLinkEd&&exLinkEd.id===ex.id)li.appendChild(exLinksEl(ex));
