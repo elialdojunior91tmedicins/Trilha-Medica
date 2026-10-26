@@ -121,7 +121,7 @@ function buildBackup(uid) {
   if (prog.topics && typeof prog.topics === "object") topics = prog.topics; // conta antiga (v2)
   listCol(base + "progress/topics").forEach(function (d) { topics[d.id] = d.data; });
   var fac = getDoc(base + "faculdade");
-  if (fac) { fac = { sems: fac.sems || [], discs: fac.discs || [], provas: fac.provas || [], own: fac.own || {}, crunch: fac.crunch }; if (!fac.crunch) delete fac.crunch; }
+  if (fac) { fac = { sems: fac.sems || [], discs: fac.discs || [], provas: fac.provas || [], own: fac.own || {}, crunch: fac.crunch, aulas: fac.aulas, ents: fac.ents, canc: fac.canc }; ["crunch", "aulas", "ents", "canc"].forEach(function (k) { if (!fac[k] || (Array.isArray(fac[k]) && !fac[k].length)) delete fac[k]; }); } // aulas fixas, entregas e cancelamentos: Lote 18
   var settings = getDoc(base + "settings") || {};
   var prefs = getDoc(base + "prefs");
   var notes = {}, noteAt = {};

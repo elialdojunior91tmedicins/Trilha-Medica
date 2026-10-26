@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=8c2b718a">
+<link rel="stylesheet" href="site.css?v=ee43a547">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=8c2b718a"></script>
-<script src="bridge.js?v=8c2b718a"></script>
+<script src="config.js?v=ee43a547"></script>
+<script src="bridge.js?v=ee43a547"></script>
 </head>
 <body>
 <script>
@@ -1396,7 +1396,21 @@ html[data-layout="phone"] .herobtns{margin-top:8px}html[data-layout="phone"] .he
 .iqdone{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}.iqdone b{font:500 1rem var(--mono);margin-right:3px;font-variant-numeric:tabular-nums}
 .iqlater{margin:0;padding:0 0 0 12px;border-left:3px solid var(--line);font-size:13.5px;color:var(--muted);list-style:none;display:flex;flex-direction:column;gap:3px}
 html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) auto;row-gap:2px}html[data-layout="phone"] .iqlist li .iqt{grid-column:2;grid-row:2}
-.wpprev{margin:0 0 12px}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
+.fscal{margin:4px 0 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.fscal>summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;padding:12px 14px;flex-wrap:wrap}
+.fcalh{font-weight:700}.fcalc{font-size:12.5px;color:var(--muted)}.fcalb{padding:0 14px 14px;display:flex;flex-direction:column;gap:12px}
+.fgl{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}.fgl>li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;font-size:14px}.fgd{font-weight:600}.fgt{color:var(--muted)}
+.fgcanc{flex-direction:column;align-items:stretch!important;padding:8px 10px;background:var(--bg);border-radius:8px}.fgdays{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.fcalw{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}.fcw{display:grid;grid-template-columns:7.2rem minmax(0,1fr);gap:8px;padding:8px 0;border-bottom:1px solid var(--line);align-items:start}
+.fcw.free{padding:4px 0}.fcw.free .fcwd b{font-weight:500;color:var(--muted)}.fcwd{display:flex;flex-direction:column;font-size:13px}.fcwd small{font-size:11px;color:var(--muted)}.fcw.heavy .fcwd small{color:var(--gold);font-weight:700}
+.fcw.heavy{background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 12%,transparent),transparent 70%)}.fcw.now .fcwd b{color:var(--accent)}
+.fcwe{display:flex;flex-wrap:wrap;gap:6px;min-width:0}.fce{display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:1px solid var(--line);border-left:4px solid var(--muted);background:var(--bg);border-radius:8px;padding:5px 9px;font:inherit;font-size:12.5px;cursor:pointer;max-width:100%;color:var(--ink)}
+.fce b{font-size:11.5px}.fce span{color:var(--muted);overflow-wrap:anywhere}.fce.k-p{border-left-color:var(--due)}.fce.k-f{border-left-color:var(--gold)}.fce.k-e{border-left-color:var(--l2)}.fce.done{opacity:.55;text-decoration:line-through}.fce[aria-expanded="true"]{outline:2px solid var(--accent)}
+.fcwed{padding:4px 0 10px}.fcaled{background:var(--bg);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.fcalform{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end}.fcalform .btns{grid-column:1/-1}
+.pfac{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}.pfac li{display:flex;flex-direction:column;gap:6px;padding:9px 12px;border-left:3px solid var(--gold);background:var(--bg);border-radius:0 8px 8px 0;font-size:13.5px}.pfacb{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fresw{color:var(--muted);font-weight:600}.fresw.hi{color:var(--gold)}
+.fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
+@media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
+.wpprev{margin:0 0 12px}.wpaula{display:block;color:var(--gold);font-size:11px;line-height:1.25;max-width:9.5rem}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
 .itile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg);border:1px solid transparent;border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .itile:hover{border-color:var(--accent)}
@@ -2607,7 +2621,9 @@ const wdOf=n=>((n+4)%7+7)%7;// dnum 0 = 01/01/1970, uma quinta
 /* planejamento semanal (10/2026): tempo de cada dia = a semana planejada (ui.prefs.wplans[segunda]) ou a semana padrão (ui.prefs.wday) */
 const WP_MIN=[0,30,60,120,180],WP_LAB={0:"Folga",30:"30 min",60:"1 h",120:"2 h",180:"3 h+"};let HAS_OFF=false;
 const wpMon=n=>n-((wdOf(n)+6)%7);
-function dayMin(n){const P=ui.prefs,wp=P.wplans&&P.wplans[fromNum(wpMon(n))],a=wp?wp.m:P.wday;return Array.isArray(a)?a[wdOf(n)]:180}
+/* Lote 18: dia com aula fixa (grade da Faculdade) perde 1 degrau de tempo a cada 2 h de aula (mín. 30 min); o dia que você escolheu à mão (wp.o) vale como está */
+function dayMin(n){const P=ui.prefs,wp=P.wplans&&P.wplans[fromNum(wpMon(n))],a=wp?wp.m:P.wday,w=wdOf(n);if(!Array.isArray(a))return 180;
+  return wp&&Array.isArray(wp.o)&&wp.o.includes(w)?a[w]:gradeAdj(a[w],n)}
 /* quantos temas cabem no dia: folga 0 · 30 min só o leve (1 vaga só para a faculdade) · 1 h 1 · 2 h 2 · 3 h+ o número do plano */
 function dayCap(n){const m=dayMin(n);return m<=0?0:m<=30?1:m<=60?1:m<=120?Math.min(2,PLAN_N):PLAN_N}
 const isOffDay=()=>dayMin(dnum(today()))===0;
@@ -3873,6 +3889,7 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
   {const BR=revBrake();if(BR.cap<99&&!CR.active&&!PW.length&&m>=60){const b=el(`<p class="pbrake" id="pBrake"></p>`);
     b.textContent=BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
     if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont")&&!itemStarted(x)).length>BR.cap)b.textContent+=" O plano de hoje foi montado antes: toque em Refazer plano para aplicar.";w.appendChild(b)}}
+  if(m>0){const fn=facDayNotesEl();if(fn)w.appendChild(fn)}
   if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"],...(()=>{const W=C.weak&&weakToday();return W&&BYKEY[W.k]?[["weak","Ponto fraco · "+BYKEY[W.k].t,C.weak,"questões"]]:[]})()].filter(x=>x[2]);
     const b=el(`<div class="plight" id="pLight"><p class="how">Dia curto: só o que é leve e não pode acumular. Nada de tema novo hoje.</p><ul></ul></div>`),ul=b.querySelector("ul");
     if(!L.length)ul.appendChild(el(`<li class="how">Nada vencendo hoje. Se sobrar tempo, faça algumas questões.</li>`));
@@ -4083,7 +4100,7 @@ function refLabel(r){const x=refTopic(r),it=x&&BYKEY[x.k];if(!it)return "";retur
 function refKind(r){return r.startsWith("O:")?"Próprio":r.startsWith("S:")?"Subtópico":"Residência"}
 function activeSems(){return fac.sems.filter(s=>!s.archived).map(s=>s.id)}
 function upcomingProvas(){const t=today(),act=new Set(activeSems());
-  return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
+  return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&!p.adi&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
 function itemStudied(p,r){if((p.done||[]).includes(r))return true;const T=refTopics(r);if(!T.length)return true;return T.every(x=>topicStudied(p,x))}
 /* um tema (ou os subtópicos ligados dele) estudado na janela da prova */
 function topicStudied(p,x){if(!BYKEY[x.k])return true;const s=get(x.k),start=fromNum(dnum(p.date)-(p.win||FAC_WIN));
@@ -4159,7 +4176,7 @@ function examCrunch(){const ov=crunchOverride();
   if(ov&&ov.mode==="on")return {active:true,manual:true,from:today(),until:ov.until,provas:upcomingProvas().filter(p=>p.date<=ov.until)};
   return auto}
 function examCrunchAuto(){const act=new Set(activeSems()),t=dnum(today());
-  const ps=fac.provas.filter(p=>{const d=discOf(p.discId);return d&&act.has(d.semId)&&dnum(p.date)>=t-CRUNCH_SPAN}).sort((a,b)=>a.date<b.date?-1:1);
+  const ps=fac.provas.filter(p=>{const d=discOf(p.discId);return d&&!p.adi&&act.has(d.semId)&&dnum(p.date)>=t-CRUNCH_SPAN}).sort((a,b)=>a.date<b.date?-1:1);
   let best=null;
   for(let i=0;i<ps.length;i++){const grp=ps.filter(p=>dnum(p.date)>=dnum(ps[i].date)&&dnum(p.date)<=dnum(ps[i].date)+CRUNCH_SPAN-1);
     if(grp.length<CRUNCH_N)continue;const first=dnum(grp[0].date),last=dnum(grp[grp.length-1].date);
@@ -4204,7 +4221,7 @@ function facPsyMig(){const fx=r=>{if(typeof r!=="string"||!r.startsWith("S:CM-50
     if(drop.size||add.length)o.links=[...o.links.filter(Ln=>!drop.has(Ln)),...add]}}
 function facNormalize(){fac.discs.forEach(d=>{if(!Array.isArray(d.items))d.items=[];if(!Array.isArray(d.sps))d.sps=[];
   if(!d.info||typeof d.info!=="object")d.info={};if(d.links&&!Array.isArray(d.links))delete d.links;d.sps.forEach(s=>{if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.objs))s.objs=[];if(s.links&&!Array.isArray(s.links))delete s.links;if(s.fech!==undefined&&!/^\d{4}-\d{2}-\d{2}$/.test(s.fech))delete s.fech;if(s.fdone&&!Array.isArray(s.fdone))delete s.fdone;if(s.lead!==undefined&&!(Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30))delete s.lead})});
-  facMigrateSP();facPsyMig();
+  facMigrateSP();facPsyMig();facXNorm();
   for(const id in fac.own){const o=fac.own[id];if(!o)continue;if(o.link!==undefined){if(o.link&&!o.links)o.links=[o.link];delete o.link}
     if(o.links!==undefined){const seen=new Set();o.links=(Array.isArray(o.links)?o.links:[]).filter(L=>L&&typeof L==="object"&&typeof L.k==="string"&&RESKEY(L.k)&&!seen.has(L.k)&&seen.add(L.k))
       .map(L=>({k:L.k,subs:Array.isArray(L.subs)?[...new Set(L.subs.filter(t=>typeof t==="string"&&t))]:[]}));if(!o.links.length)delete o.links}}
@@ -4573,7 +4590,7 @@ function provaStudyNext(p){const r=provaNext(p);if(!r)return;const d=provaDiscs(
 function provaSimGo(p){simCfg={src:"prova",pid:p.id,n:10};sim=null;backStack=[];setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60)}
 /* provas já feitas (até 30 dias) sem resultado registrado */
 function provasToClose(){const t=dnum(today()),act=new Set(activeSems());
-  return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&act.has(d.semId)&&!p.res&&dnum(p.date)<t&&t-dnum(p.date)<=30}).sort(byDate)}
+  return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&!p.adi&&act.has(d.semId)&&!p.res&&dnum(p.date)<t&&t-dnum(p.date)<=30}).sort(byDate)}
 const fmtN=n=>String(Math.round(n*100)/100).replace(".",",");
 function parseNota(v){const s=String(v||"").trim().replace(",",".");if(!s)return null;const n=Number(s);return isFinite(n)&&n>=0&&n<=1000?n:NaN}
 function provaResEl(p){const d=discOf(p.discId),R=facRes&&facRes.pid===p.id?facRes:(facRes={pid:p.id,n:"",of:"10",errs:0,open:null,D:null,msg:""});
@@ -4654,7 +4671,7 @@ const spLead=s=>Number.isInteger(s.lead)&&s.lead>=1&&s.lead<=30?s.lead:SP_LEAD;
 function spAsProva(d,s){const pr=primaryRef(s),pk=pr&&refTopic(pr).k,obj=pk&&BYKEY[pk]?s.objs.map(o=>`S:${pk}:${o}`):[];
   return {id:"sp:"+s.id,discId:d.id,name:`${spShort(s.name)} (fechamento)`,date:s.fech,items:[...s.items,...obj],done:s.fdone||[],win:spLead(s)+3,sp:s}}
 function spFechas(maxDays){const t=today(),act=new Set(activeSems()),out=[];
-  fac.discs.forEach(d=>{if(!act.has(d.semId))return;(d.sps||[]).forEach(s=>{if(typeof s.fech!=="string"||s.fech<t)return;const dd=daysTo(s.fech);if(dd<=maxDays)out.push({d,s,dd,p:spAsProva(d,s)})})});
+  fac.discs.forEach(d=>{if(!act.has(d.semId))return;(d.sps||[]).forEach(s=>{if(typeof s.fech!=="string"||s.fech<t||s.fadi)return;const dd=daysTo(s.fech);if(dd<=maxDays)out.push({d,s,dd,p:spAsProva(d,s)})})});
   return out.sort((a,b)=>a.dd-b.dd)}
 /* vagas no plano do dia: 1 por SP (2 nos 2 últimos dias), no máximo 2 no total */
 function spPlanPicks(){const out=[],seen=new Set();
@@ -4687,6 +4704,134 @@ function spFechEl(d,s,L){const w=el(`<div class="fspfd"><label class="fcru">Fech
   se.onchange=()=>{const n=+se.value;if(n===SP_LEAD)delete s.lead;else s.lead=n;saveFac();if(s.fech)redoPlan();else render()};w.appendChild(sl);
   w.appendChild(el(`<p class="gtext how">Com a data, os objetivos e os conteúdos desta ${esc(L.sp)} entram no plano do dia nos ${ld} dias antes do fechamento (1 vaga; 2 nos últimos 2 dias) e aparecem em Próximas provas. Conta como pronto o que você estudar nesse período (e até 3 dias antes dele).</p>`));
   return w}
+
+/* ===== Lote 18 › Faculdade: grade fixa (aulas), entregas, calendário do semestre, preparo da aula, depois da SP, objetivos por foto, peso na residência =====
+   fac.aulas=[{id,semId,wd(0=domingo),ini,fim,t,discId?}] · fac.canc={"AAAA-MM-DD":[id da aula]} (cancelada naquele dia) · fac.ents=[{id,discId,t,date|adi,done?}]
+   prova adiada p.adi=1 e fechamento adiado s.fadi=1 (sem data valendo: saem do plano até ganhar data nova) · s.pos = fechamento já "dispensado" no aviso pós-SP */
+const HM_RE=/^([01]\d|2[0-3]):[0-5]\d$/,hmMin=t=>+t.slice(0,2)*60+ +t.slice(3),hm2=t=>t.slice(3)==="00"?String(+t.slice(0,2))+"h":String(+t.slice(0,2))+"h"+t.slice(3);
+const aulaOk=a=>!!(a&&typeof a==="object"&&typeof a.id==="string"&&typeof a.semId==="string"&&Number.isInteger(a.wd)&&a.wd>=0&&a.wd<=6&&HM_RE.test(a.ini||"")&&HM_RE.test(a.fim||"")&&hmMin(a.fim)>hmMin(a.ini));
+const entOk=e=>!!(e&&typeof e==="object"&&typeof e.id==="string"&&typeof e.discId==="string"&&typeof e.t==="string"&&e.t.trim()&&(e.adi||DATE_RE.test(e.date||"")));
+function facXNorm(){
+  if(Array.isArray(fac.aulas)){fac.aulas=fac.aulas.filter(aulaOk).map(a=>({id:a.id,semId:a.semId,wd:a.wd,ini:a.ini,fim:a.fim,t:String(a.t||"Aula").slice(0,40),...(typeof a.discId==="string"&&a.discId?{discId:a.discId}:{})}));if(!fac.aulas.length)delete fac.aulas}else delete fac.aulas;
+  if(Array.isArray(fac.ents)){fac.ents=fac.ents.filter(entOk).map(e=>({id:e.id,discId:e.discId,t:e.t.trim().slice(0,80),...(e.adi?{adi:1}:{date:e.date}),...(e.done?{done:1}:{})}));if(!fac.ents.length)delete fac.ents}else delete fac.ents;
+  if(fac.canc&&typeof fac.canc==="object"&&!Array.isArray(fac.canc)){const lim=fromNum(dnum(today())-30),o={};for(const d in fac.canc)if(DATE_RE.test(d)&&d>=lim&&Array.isArray(fac.canc[d])){const a=[...new Set(fac.canc[d].filter(x=>typeof x==="string"))];if(a.length)o[d]=a}
+    if(Object.keys(o).length)fac.canc=o;else delete fac.canc}else delete fac.canc}
+function facXCopy(src,dst){if(!src)return;if(Array.isArray(src.aulas)&&src.aulas.length)dst.aulas=src.aulas;if(Array.isArray(src.ents)&&src.ents.length)dst.ents=src.ents;if(src.canc&&typeof src.canc==="object"&&Object.keys(src.canc).length)dst.canc=src.canc}
+/* aulas que valem no dia n (semestres ativos, sem as canceladas naquele dia) */
+function aulasOn(n){try{const d=fromNum(n),c=new Set((fac.canc||{})[d]||[]),act=new Set(activeSems());return (fac.aulas||[]).filter(a=>act.has(a.semId)&&a.wd===wdOf(n)&&!c.has(a.id)).sort((a,b)=>a.ini<b.ini?-1:1)}catch(e){return []}}
+function gradeAdj(m,n){if(!(m>30))return m;const mins=aulasOn(n).reduce((t,a)=>t+hmMin(a.fim)-hmMin(a.ini),0),st=Math.floor(mins/120);if(!st)return m;let i=WP_MIN.indexOf(m);if(i<0)i=WP_MIN.length-1;return WP_MIN[Math.max(1,i-st)]}
+const WD_SHORT=["dom","seg","ter","qua","qui","sex","sáb"];
+/* o que acontece no semestre, com data ou adiado */
+function semEvents(sem){const ds=semDiscs(sem.id),ids=new Set(ds.map(d=>d.id)),E=[];
+  semProvas(sem).forEach(p=>E.push({k:"p",id:p.id,t:p.name,sub:provaDiscName(p),date:p.adi?null:p.date,o:p}));
+  ds.forEach(d=>(d.sps||[]).forEach(x=>{if(x.fech||x.fadi)E.push({k:"f",id:x.id,t:spShort(x.name),sub:d.name,date:x.fadi?null:x.fech,o:x,d})}));
+  (fac.ents||[]).filter(e=>ids.has(e.discId)).forEach(e=>E.push({k:"e",id:e.id,t:e.t,sub:(discOf(e.discId)||{}).name||"",date:e.adi?null:e.date,o:e}));return E}
+const CAL_K={p:"Prova",f:"Fechamento",e:"Entrega"};
+let calEd=null,calAdd=null;// evento aberto para editar ({k,id}); formulário aberto ("ent"|"aula") de um semestre
+function calSetDate(ev,v){const near=x=>x&&daysTo(x)>=0&&daysTo(x)<=FAC_WIN;const was=ev.k==="p"?!ev.o.adi&&ev.o.date:ev.k==="f"?!ev.o.fadi&&ev.o.fech:null;
+  if(ev.k==="p"){if(v){ev.o.date=v;delete ev.o.adi}else ev.o.adi=1}
+  else if(ev.k==="f"){if(v){ev.o.fech=v;delete ev.o.fadi}else ev.o.fadi=1}
+  else{if(v){ev.o.date=v;delete ev.o.adi}else{ev.o.adi=1;delete ev.o.date}}
+  calEd=null;saveFac();
+  if(ev.k!=="e"&&(near(was)||near(v)))redoPlan(v?`Plano de hoje atualizado: ${CAL_K[ev.k].toLowerCase()} “${ev.t}” agora em ${br(v)}. O que você já tinha começado foi mantido.`:`“${ev.t}” marcada como adiada: saiu do plano até ganhar data nova.`);else render()}
+function calEventBtn(ev,sem){const b=el(`<button type="button" class="fce k-${ev.k}"></button>`),on=calEd&&calEd.id===ev.id;b.id=`fce-${ev.k}-${ev.id}`;b.setAttribute("aria-expanded",on);
+  b.innerHTML=`<b></b><span></span>`;b.querySelector("b").textContent=`${CAL_K[ev.k]}${ev.date?" · "+WD_SHORT[wdOf(dnum(ev.date))]+" "+ddmm(dnum(ev.date)):" · adiada"}`;b.querySelector("span").textContent=ev.t+(ev.sub?" · "+ev.sub:"");
+  if(ev.k==="e"&&ev.o.done)b.classList.add("done");b.onclick=()=>{calEd=on?null:{id:ev.id};render()};return b}
+function calEditEl(ev){const w=el(`<div class="fcaled"><label class="ffield"><span>Data</span><input type="date" class="etext"></label><div class="btns"></div></div>`),i=w.querySelector("input");i.id="fced-"+ev.id;i.value=ev.date||"";
+  const a=w.querySelector(".btns"),bt=(t,fn,cls)=>{const b=el(`<button type="button"></button>`);b.className=cls||"btn";b.textContent=t;b.onclick=fn;a.appendChild(b);return b};
+  bt("Salvar a data",()=>{if(DATE_RE.test(i.value))calSetDate(ev,i.value)},"btn primary").id="fcedOk-"+ev.id;
+  if(ev.date)bt(ev.k==="p"?"Adiada, sem data nova":"Adiado, sem data nova",()=>calSetDate(ev,null)).id="fcedAdi-"+ev.id;
+  if(ev.k==="e"){bt(ev.o.done?"Ainda não entreguei":"Já entreguei",()=>{if(ev.o.done)delete ev.o.done;else ev.o.done=1;calEd=null;saveFac();render()}).id="fcedDone-"+ev.id;
+    bt("Excluir",()=>{fac.ents=(fac.ents||[]).filter(x=>x!==ev.o);calEd=null;saveFac();render()},"link")}
+  else bt(ev.k==="p"?"Abrir a prova":"Abrir a SP",()=>{calEd=null;if(ev.k==="p")goProva(ev.o);else{facOpenSem.add(ev.d.semId);facOpenDisc.add(ev.d.id);facOpenSP.add(ev.o.id);render();scrollToId("sp-"+ev.o.id)}},"link");
+  w.appendChild(el(`<p class="how">Mudou a data? O plano se reorganiza sozinho. Sem data nova ainda? Marque como adiada: sai do plano até você pôr a data.</p>`));return w}
+/* calendário do semestre: da semana atual até o último evento (mín. 8, máx. 26 semanas); semana pesada = prova + outra coisa, ou 3+ itens */
+function semCalEl(sem){if(sem.archived)return null;const E=semEvents(sem),t=dnum(today()),m0=wpMon(t),dated=E.filter(e=>e.date&&dnum(e.date)>=m0),later=E.filter(e=>!e.date),ds=semDiscs(sem.id);
+  const last=dated.reduce((a,e)=>Math.max(a,dnum(e.date)),m0),nw=Math.min(26,Math.max(8,Math.floor((last-m0)/7)+1));
+  const aulas=(fac.aulas||[]).filter(a=>a.semId===sem.id).sort((a,b)=>(a.wd+6)%7-(b.wd+6)%7||(a.ini<b.ini?-1:1));
+  const heavyN=[...Array(nw)].map((_,i)=>dated.filter(e=>{const n=dnum(e.date);return n>=m0+7*i&&n<m0+7*i+7})).filter(L=>L.some(e=>e.k==="p")&&L.length>=2||L.length>=3).length;
+  const w=el(`<details class="fscal" id="fcal-${sem.id}"><summary><span class="fcalh">Calendário do semestre</span><span class="fcalc"></span></summary><div class="fcalb"></div></details>`);
+  w.open=facCalOpen.has(sem.id);w.addEventListener("toggle",()=>{w.open?facCalOpen.add(sem.id):facCalOpen.delete(sem.id)});
+  w.querySelector(".fcalc").textContent=[dated.length?`${dated.length} ${dated.length===1?"data":"datas"}`:"",heavyN?`${heavyN} ${heavyN===1?"semana pesada":"semanas pesadas"}`:"",aulas.length?`${aulas.length} ${aulas.length===1?"aula fixa":"aulas fixas"}`:""].filter(Boolean).join(" · ")||"vazio";
+  const b=w.querySelector(".fcalb");
+  /* grade fixa */
+  {const g=el(`<div class="fgrade" id="fgr-${sem.id}"><span class="glabel">Toda semana</span><ul class="fgl"></ul></div>`),ul=g.querySelector("ul");
+    if(!aulas.length)ul.appendChild(el(`<li class="how">Nenhuma aula fixa. Cadastre as que se repetem toda semana (ex.: tutoria na quinta à tarde): nesses dias o Planejar a semana já vem com menos tempo de estudo, e na véspera o plano lembra de revisar os objetivos da SP.</li>`));
+    aulas.forEach(a=>{const li=el(`<li><span class="fgd"></span><span class="fgt"></span><button class="link" type="button">cancelar um dia</button><button class="link" type="button">remover</button></li>`);
+      li.querySelector(".fgd").textContent=`${WD_FULL[a.wd][0].toUpperCase()+WD_FULL[a.wd].slice(1)} · ${hm2(a.ini)}–${hm2(a.fim)}`;{const dn=a.discId&&discOf(a.discId)?discOf(a.discId).name:"";li.querySelector(".fgt").textContent=a.t+(dn&&norm(dn)!==norm(a.t)?` · ${dn}`:"")}
+      const [cb,rb]=li.querySelectorAll("button");cb.id="fgc-"+a.id;cb.setAttribute("aria-expanded",calEd&&calEd.aula===a.id);cb.onclick=()=>{calEd=calEd&&calEd.aula===a.id?null:{aula:a.id};render()};
+      rb.onclick=()=>{fac.aulas=fac.aulas.filter(x=>x!==a);saveFac();redoPlan("Aula fixa removida: o tempo de estudo do dia voltou ao da sua semana.")};
+      ul.appendChild(li);
+      if(calEd&&calEd.aula===a.id){const c=el(`<li class="fgcanc"><span class="how">Imprevisto? Marque o dia em que a aula não vai acontecer: o tempo volta para o plano desse dia, sem mexer na grade.</span><div class="fgdays"></div></li>`),dd=c.querySelector(".fgdays");
+        for(let n=t,k=0;k<4&&n<t+35;n++){if(wdOf(n)!==a.wd)continue;k++;const d=fromNum(n),on=((fac.canc||{})[d]||[]).includes(a.id),x=el(`<button type="button" class="wpo"></button>`);x.id=`fgx-${a.id}-${d}`;x.setAttribute("aria-pressed",on);x.textContent=`${on?"✕ ":""}${WD_SHORT[a.wd]} ${ddmm(n)}`;
+          x.onclick=()=>{const C={...(fac.canc||{})},L=new Set(C[d]||[]);on?L.delete(a.id):L.add(a.id);if(L.size)C[d]=[...L];else delete C[d];fac.canc=C;saveFac();if(n===t)redoPlan(on?"A aula de hoje voltou: o tempo de estudo foi ajustado.":"Aula de hoje cancelada: o tempo voltou para o plano.");else render()};dd.appendChild(x)}
+        ul.appendChild(c)}});
+    b.appendChild(g)}
+  /* semanas */
+  const ol=el(`<ol class="fcalw"></ol>`);
+  for(let i=0;i<nw;i++){const a=m0+7*i,L=dated.filter(e=>{const n=dnum(e.date);return n>=a&&n<a+7}).sort((x,y)=>x.date<y.date?-1:1),heavy=L.some(e=>e.k==="p")&&L.length>=2||L.length>=3;
+    const li=el(`<li class="fcw${heavy?" heavy":""}${i===0?" now":""}${L.length?"":" free"}"><span class="fcwd"><b></b><small></small></span><div class="fcwe"></div></li>`);
+    li.querySelector("b").textContent=`${ddmm(a)}–${ddmm(a+6)}`;li.querySelector("small").textContent=i===0?"esta semana":heavy?"semana pesada":i===1?"próxima":"";
+    const ev=li.querySelector(".fcwe");if(!L.length)ev.appendChild(el(`<span class="how">livre</span>`));L.forEach(e=>ev.appendChild(calEventBtn(e,sem)));ol.appendChild(li);
+    L.filter(e=>calEd&&calEd.id===e.id).forEach(e=>{const x=el(`<li class="fcwed"></li>`);x.appendChild(calEditEl(e));ol.appendChild(x)})}
+  b.appendChild(ol);
+  if(later.length){const g=el(`<div class="fcallater"><span class="glabel">Adiados, sem data nova</span><div class="fcwe"></div></div>`);later.forEach(e=>{g.querySelector(".fcwe").appendChild(calEventBtn(e,sem));if(calEd&&calEd.id===e.id)g.appendChild(calEditEl(e))});b.appendChild(g)}
+  /* adicionar entrega ou aula fixa */
+  const tb=el(`<div class="btns fcaladd"></div>`),mk=(k,lab)=>{const x=el(`<button class="btn" type="button"></button>`);x.id=`fca${k}-${sem.id}`;x.textContent=lab;x.setAttribute("aria-expanded",calAdd===k+sem.id);x.onclick=()=>{calAdd=calAdd===k+sem.id?null:k+sem.id;render()};tb.appendChild(x)};
+  if(ds.length)mk("e","+ Entrega");mk("a","+ Aula fixa");b.appendChild(tb);
+  const dsel=(withNone)=>{const se=document.createElement("select");se.className="etext";if(withNone){const o=document.createElement("option");o.value="";o.textContent="Nenhuma";se.appendChild(o)}ds.forEach(d=>{const o=document.createElement("option");o.value=d.id;o.textContent=d.name;se.appendChild(o)});return se};
+  if(calAdd==="e"+sem.id){const f=el(`<form class="fcalform"><label class="ffield"><span>Entrega</span><input class="etext" maxlength="80" placeholder="Ex.: Relatório da prática, apresentação"></label><label class="ffield"><span>Data</span><input type="date" class="etext"></label><label class="ffield"><span>Disciplina</span></label><div class="btns"><button class="btn primary" type="submit">Adicionar entrega</button></div></form>`);
+    const [ni,di]=f.querySelectorAll("input"),se=dsel(false);f.querySelectorAll("label")[2].appendChild(se);ni.id="fcen-"+sem.id;di.id="fced0-"+sem.id;se.id="fces-"+sem.id;
+    f.onsubmit=ev=>{ev.preventDefault();const tx=ni.value.trim();if(!tx){ni.focus();return}if(!DATE_RE.test(di.value)){di.focus();return}fac.ents=[...(fac.ents||[]),{id:fuid(),discId:se.value,t:tx.slice(0,80),date:di.value}];calAdd=null;saveFac();render()};b.appendChild(f)}
+  if(calAdd==="a"+sem.id){const f=el(`<form class="fcalform"><label class="ffield"><span>Dia</span><select class="etext"></select></label><label class="ffield"><span>Começa</span><input type="time" class="etext" value="14:00"></label><label class="ffield"><span>Termina</span><input type="time" class="etext" value="18:00"></label><label class="ffield"><span>Nome</span><input class="etext" maxlength="40" placeholder="Ex.: Tutoria"></label><label class="ffield"><span>Disciplina (opcional)</span></label><div class="btns"><button class="btn primary" type="submit">Adicionar aula</button></div></form>`);
+    const wd=f.querySelector("select");[1,2,3,4,5,6,0].forEach(d=>{const o=document.createElement("option");o.value=d;o.textContent=WD_FULL[d];wd.appendChild(o)});wd.value="4";wd.id="fcaw-"+sem.id;
+    const [ii,fi,ti]=f.querySelectorAll("input");ii.id="fcai-"+sem.id;fi.id="fcaf-"+sem.id;ti.id="fcat-"+sem.id;const se=dsel(true);se.id="fcad-"+sem.id;f.querySelectorAll("label")[4].appendChild(se);
+    const er=el(`<p class="err" hidden></p>`);f.insertBefore(er,f.querySelector(".btns"));
+    f.onsubmit=ev=>{ev.preventDefault();const a={id:fuid(),semId:sem.id,wd:+wd.value,ini:ii.value,fim:fi.value,t:(ti.value.trim()||"Aula").slice(0,40),...(se.value?{discId:se.value}:{})};
+      if(!aulaOk(a)){er.hidden=false;er.textContent="Confira os horários: o fim tem que ser depois do começo.";return}fac.aulas=[...(fac.aulas||[]),a];calAdd=null;saveFac();redoPlan(`Aula fixa adicionada: ${WD_FULL[a.wd]} ${hm2(a.ini)}–${hm2(a.fim)}. O tempo de estudo desse dia foi ajustado.`)};b.appendChild(f)}
+  b.appendChild(el(`<p class="how">Toque numa data para mudar ou marcar como adiada. Nas 3 semanas antes de cada prova o plano do dia já reserva espaço para ela; semanas pesadas aparecem em dourado para você se adiantar.</p>`));
+  return w}
+let facCalOpen=new Set();
+/* SP "aberta" da disciplina: a que fecha primeiro a partir de amanhã; sem data, a última da lista */
+function openSPOf(d,n){const S=(d.sps||[]).filter(x=>!x.fadi);const f=S.filter(x=>x.fech&&dnum(x.fech)>=n).sort((a,b)=>a.fech<b.fech?-1:1)[0];return f||S[S.length-1]||null}
+/* avisos da Faculdade no Estudar hoje: preparo para a aula de amanhã, entregas perto, SP que acabou de fechar */
+function facDayNotes(){const t=dnum(today()),out=[];
+  aulasOn(t+1).forEach(a=>{const d=a.discId&&discOf(a.discId),sp=d&&openSPOf(d,t+1);if(!sp)return;const [od,ot]=objStats(sp);
+    out.push({id:"prep-"+a.id,t:`Amanhã tem ${a.t} (${hm2(a.ini)}): revise os objetivos da ${spShort(sp.name)}${ot?` (${od} de ${ot} marcados)`:""}.`,acts:[["Ver objetivos",()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(sp.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+sp.id),60)}]]})});
+  (fac.ents||[]).forEach(e=>{if(e.done||e.adi||!DATE_RE.test(e.date||""))return;const n=daysTo(e.date),d=discOf(e.discId);if(n<0||n>3||!d||!activeSems().includes(d.semId))return;
+    out.push({id:"ent-"+e.id,t:`Entrega ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}: ${e.t} (${d.name}).`,acts:[["Já entreguei",()=>{e.done=1;saveFac();render()}]]})});
+  fac.discs.forEach(d=>{if(!activeSems().includes(d.semId))return;(d.sps||[]).forEach(sp=>{if(!sp.fech||sp.fadi||sp.pos===sp.fech)return;const n=t-dnum(sp.fech);if(n<0||n>3)return;
+    const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
+    const acts=[];if(pk&&BYKEY[pk]&&!sampleOff)acts.push(["Gerar questões",()=>{detTab[pk]="questoes";openTopic(pk);setTimeout(()=>{const g=detGet("qf-",pk);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}]);
+    if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(cs.map(c=>c.id))}]);
+    acts.push(["Dispensar",()=>{sp.pos=sp.fech;saveFac();render()}]);
+    out.push({id:"pos-"+sp.id,t:`${spShort(sp.name)} fechou ${n===0?"hoje":n===1?"ontem":`há ${n} dias`}: faça questões${cs.length?" e os cartões":""} dela enquanto está fresco.`,acts})})});
+  return out}
+function facDayNotesEl(){const L=facDayNotes();if(!L.length)return null;const w=el(`<ul class="pfac" id="pFac"></ul>`);
+  L.forEach(x=>{const li=el(`<li><span></span><span class="pfacb"></span></li>`);li.id="pf-"+x.id;li.querySelector("span").textContent=x.t;x.acts.forEach(([lab,fn],i)=>{const b=el(`<button type="button"></button>`);b.className=i===x.acts.length-1&&lab==="Dispensar"?"link":"btn";b.textContent=lab;b.onclick=fn;li.querySelector(".pfacb").appendChild(b)});w.appendChild(li)});return w}
+/* peso na residência de um conteúdo da faculdade (o maior entre os temas ligados) */
+function resWeight(r){let w=0;refTopics(r).forEach(x=>{const it=BYKEY[x.k];if(it&&!it.own&&it.area!==FAC_AREA)w=Math.max(w,wOf(it))});return w}
+function resWeightEl(w){if(!w)return null;const x=el(`<span class="fresw"></span>`);x.textContent=`vale para a residência · peso ${w}`;x.title=w===3?"Cai muito na residência: vale estudar a fundo":w===2?"Cai com frequência na residência":"Cai pouco na residência";if(w===3)x.classList.add("hi");return x}
+/* objetivos da SP por foto: o Claude lê a página e cada objetivo (ou questão de aprendizagem) vira subtópico; sugere o tema da residência mais próximo */
+let objF={};
+function objFPrompt(){return `A imagem é a página de uma SP (sessão de tutoria) ou de uma disciplina de um curso de medicina.\nListe os objetivos de aprendizagem (ou, na tutoria, as questões de aprendizagem) exatamente como estão escritos, um por item, sem numeração e sem comentários. Ignore cabeçalho, datas, nomes de professores e bibliografia.\nResponda só com JSON: {"tipo":"objetivos" ou "questoes","itens":["...","..."]}`}
+function jsonFromText(tx){const s=String(tx||""),i=s.search(/[\[{]/);if(i<0)return null;for(let j=s.length;j>i;j--){const c=s[j-1];if(c!=="}"&&c!=="]")continue;try{return JSON.parse(s.slice(i,j))}catch(e){}}return null}
+async function objFRun(sid,file){const S=objF[sid]={st:"busy",list:[],msg:""};render();
+  try{const blob=await imgShrink(file),r=await sampleFn(objFPrompt(),{images:[blob],cache:false,title:"Objetivos da SP por foto",hint:"Anexe a foto na conversa do Claude e cole aqui a resposta (JSON com os itens)."});
+    if(objF[sid]!==S)return;const J=jsonFromText(r&&r.text),items=(J&&Array.isArray(J.itens)?J.itens:Array.isArray(J)?J:[]).map(x=>String(x||"").replace(/^\s*([-*•]|\d+[.)])\s*/,"").trim()).filter(Boolean).slice(0,40);
+    if(!items.length){S.st="err";S.msg="Não achei objetivos na resposta. Tente uma foto mais nítida, só da parte dos objetivos.";render();return}
+    S.tipo=J&&J.tipo==="questoes"?"questoes":"objetivos";S.list=items.map(t=>{const sc=impTemaScores(t,""),k=Object.keys(sc).sort((a,b)=>sc[b]-sc[a])[0];return {t:t.slice(0,200),on:true,k:k&&sc[k]>=3?k:null,lk:false}});S.st="rev";render()}
+  catch(e){if(objF[sid]!==S)return;S.st="err";S.msg=e&&e.code==="cancelled"?"":"Não foi possível ler a foto agora. Tente de novo.";render()}}
+function objFEl(d,sp,L){const S=objF[sp.id],w=el(`<div class="fobjf"></div>`);
+  if(!S||S.st==="err"){const lb=el(`<label class="btn fobjfb"><input type="file" accept="image/*" hidden>📷 Ler os objetivos de uma foto</label>`),fi=lb.querySelector("input");fi.id="fof-"+sp.id;
+    fi.onchange=()=>{const f=fi.files&&fi.files[0];if(f)objFRun(sp.id,f)};w.appendChild(lb);if(S&&S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}return w}
+  if(S.st==="busy"){w.appendChild(el(`<p class="gstatus" role="status">Lendo a foto com o Claude…</p>`));return w}
+  const h=el(`<p class="how"></p>`);h.textContent=`O Claude achou ${S.list.length} ${S.tipo==="questoes"?"questões de aprendizagem":"objetivos"}. Desmarque o que não quiser; cada um vira um objetivo (subtópico) desta ${L.sp}. Onde houver um tema da residência parecido, você pode ligar a ${L.sp} a ele.`;w.appendChild(h);
+  const ul=el(`<ul class="fobjl"></ul>`);S.list.forEach((x,i)=>{const li=el(`<li><label><input type="checkbox"><span></span></label></li>`),cb=li.querySelector("input");cb.id=`fofi-${sp.id}-${i}`;cb.checked=x.on;cb.onchange=()=>{x.on=cb.checked};li.querySelector("span").textContent=x.t;
+    if(x.k&&BYKEY[x.k]&&!sp.items.includes("T:"+x.k)){const l=el(`<label class="fobjlk"><input type="checkbox"><span></span></label>`),c2=l.querySelector("input");c2.id=`fofk-${sp.id}-${i}`;c2.checked=x.lk;c2.onchange=()=>{x.lk=c2.checked};l.querySelector("span").textContent=`ligar à residência: ${BYKEY[x.k].t}`;li.appendChild(l)}ul.appendChild(li)});w.appendChild(ul);
+  const a=el(`<div class="btns"><button class="btn primary" type="button">Adicionar</button><button class="link" type="button">Cancelar</button></div>`),[ok,no]=a.querySelectorAll("button");ok.id="fofOk-"+sp.id;
+  ok.onclick=()=>{let n=0;S.list.forEach(x=>{if(x.on&&!sp.objs.includes(x.t)){sp.objs.push(x.t);n++}if(x.lk&&x.k&&BYKEY[x.k]&&!sp.items.includes("T:"+x.k))sp.items.push("T:"+x.k)});delete objF[sp.id];saveFac();syncObjs(sp);commit()};
+  no.onclick=()=>{delete objF[sp.id];render()};w.appendChild(a);return w}
 
 function renderFac(){
   const v=$("#viewFac");if(!v)return;facShown=new Set();
@@ -4741,6 +4886,7 @@ function semFolder(s){const L=lv(s),open=facOpenSem.has(s.id),ds=semDiscs(s.id),
     wv.querySelector("span").textContent=`O nome de um nível ficou com número (${Object.values(s.lv).filter(v=>/\d/.test(v)).map(v=>`“${v}”`).join(", ")}). Esse campo é o nome do nível para o semestre todo, por isso os textos aparecem estranhos.`;
     wv.querySelector("button").id="flvfix-"+s.id;wv.querySelector("button").onclick=()=>{const o={};for(const k in s.lv)if(!/\d/.test(s.lv[k]))o[k]=s.lv[k];if(Object.keys(o).length)s.lv=o;else delete s.lv;saveFac();render()};body.appendChild(wv)}
   if(facSemAdj===s.id)body.appendChild(semAdjust(s,L));
+  {const cal=semCalEl(s);if(cal)body.appendChild(cal)}
   if(impHere)body.appendChild(ementaPanel(s,L));
   else if(I.done&&I.doneSem===s.id){const p=el(`<p class="gstatus" role="status"></p>`);p.textContent=I.done;body.appendChild(p)}
   // disciplinas
@@ -5026,6 +5172,7 @@ function spRow(d,s,L,edit,i){const open=facOpenSP.has(s.id),keys=topicKeysOf(s.i
   const li=el(`<li class="t fspr${open?" open":""}" id="sp-${s.id}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${st.l}"></span><span class="meta"></span></button></li>`);
   li.querySelector(".num").textContent=spNum(s,i);li.querySelector(".topic").textContent=spClean(s.name);li.querySelector(".lvl").textContent=st.t;
   const m=li.querySelector(".meta"),add=(t,c)=>{const x=document.createElement("span");x.textContent=t;if(c)x.className=c;m.appendChild(x)};
+  {const rw=resWeightEl(Math.max(0,...s.items.map(resWeight)));if(rw)m.appendChild(rw)}
   if(sx&&sx.links){m.appendChild(el(`<span class="facchip lnk">FAC ↔ RES</span>`));add(sx.links.length>1?`ligada a ${sx.links.length} temas · ${sx.links.filter(linkDone).length} de ${sx.links.length} estudados`:`ligada a ${BYKEY[sx.k].t}`)}
   if(nest)add(`+ ${nest} conteúdo${nest>1?"s":""}`);
   if(ot)add(`${od}/${ot} objetivos`);if(due)add(due>1?`${due} revisões pendentes`:"revisão pendente","late");
@@ -5037,7 +5184,7 @@ function facTopicRow(it,r,x,d,s,L,edit,onRemove){const s0=get(it.key),lsv=s0,dd=
   const li=el(`<li class="t${open?" open":""}${it.own?" own":""}"><button class="item" type="button" aria-expanded="${open}"><span class="num"></span><span class="topic"></span><span class="lvl" data-l="${lvKey(lsv)}">${lvName(lsv)}</span><span class="meta"></span></button></li>`);
   li.querySelector(".num").textContent=it.own||x.own?"FAC":it.area.code;li.querySelector(".topic").textContent=x.own?fac.own[x.own].t:x.sub||it.t;
   const m=li.querySelector(".meta"),multi=!!(x.links&&x.links.length>1);
-  if(it.own)m.appendChild(el(`<span class="facchip">FAC</span>`));else if(x.own)m.appendChild(el(`<span class="facchip lnk">FAC ↔ RES</span>`));else m.appendChild(incEl(wOf(it),wOf(it)===3));
+  if(it.own)m.appendChild(el(`<span class="facchip">FAC</span>`));else if(x.own){m.appendChild(el(`<span class="facchip lnk">FAC ↔ RES</span>`));const rw=resWeightEl(resWeight(r));if(rw)m.appendChild(rw)}else{const rw=resWeightEl(wOf(it));if(rw)m.appendChild(rw)}
   const sp=document.createElement("span");sp.textContent=multi?`ligado a ${x.links.length} temas`:x.own?`ligado a ${it.t}${x.subs.length?"":" (tema inteiro)"}`:x.sub?`subtópico de ${it.t}`:it.area===FAC_AREA?"só na Faculdade":it.sp;m.appendChild(sp);
   if(multi)m.appendChild(el(`<span>${x.links.filter(linkDone).length} de ${x.links.length} ligados estudados</span>`));
   else if(x.own&&x.subs.length){const SL=subList(it),n=x.subs.filter(t=>(SL.find(y=>y.t===t)||{}).done).length;m.appendChild(el(`<span>${n}/${x.subs.length} subtópicos ligados</span>`))}
@@ -5063,7 +5210,8 @@ function spDetail(d,s,L){const box=el(`<div class="detail fspd"></div>`),self="O
   {const of=el(`<details class="plain fobjd"${facNew["o"+s.id]||!s.objs.length?" open":""}><summary>+ Objetivos</summary><form class="addsub fobjadd"><textarea class="etext" rows="2" maxlength="2000"></textarea><button class="btn" type="submit">Adicionar objetivos</button></form></details>`);
     const ta=of.querySelector("textarea");ta.id="fo-"+s.id;ta.placeholder="Um objetivo por linha (pode colar vários)";ta.setAttribute("aria-label","Novos objetivos");ta.value=facNew["o"+s.id]||"";ta.oninput=()=>facNew["o"+s.id]=ta.value;
     of.querySelector("form").onsubmit=ev=>{ev.preventDefault();const lines=ta.value.split(/\n+/).map(t=>t.replace(/^\s*([-*•]|\d+[.)])\s*/,"").trim()).filter(Boolean);if(!lines.length)return;
-      lines.forEach(t=>{t=t.slice(0,200);if(!s.objs.includes(t))s.objs.push(t)});facNew["o"+s.id]="";saveFac();syncObjs(s);commit()};og.appendChild(of)}
+      lines.forEach(t=>{t=t.slice(0,200);if(!s.objs.includes(t))s.objs.push(t)});facNew["o"+s.id]="";saveFac();syncObjs(s);commit()};og.appendChild(of);
+    if(!sampleOff)og.appendChild(objFEl(d,s,L))}
   box.appendChild(og);
   // estudar a própria SP (o progresso dela, ou o do tema da residência ligado)
   if(sit){const g=el(`<div class="grp fspstudy"><span class="glabel"></span></div>`);g.querySelector(".glabel").textContent=sx.links?`Estudar esta ${L.sp} · ${sx.links.length>1?"tema principal: "+sit.t:"pelo tema ligado"}`:`Estudar esta ${L.sp}`;
@@ -5991,7 +6139,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   {const okM=a=>Array.isArray(a)&&a.length===7&&a.every(v=>WP_MIN.includes(v));
     o.prefs.wday=okM(p.wday)?[...p.wday]:[0,1,2,3,4,5,6].map(d=>o.prefs.woff.includes(d)?0:o.prefs.wnew.includes(d)?180:30);
     o.prefs.hgoal=Number.isInteger(p.hgoal)&&p.hgoal>=0&&p.hgoal<=3000?p.hgoal:Number.isInteger(p.fwgoal)&&p.fwgoal>0&&p.fwgoal<=3000?p.fwgoal:600;// Lote 17: quem só tinha a meta semanal de foco fica com ela
-    const W={};if(p.wplans&&typeof p.wplans==="object")Object.keys(p.wplans).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&p.wplans[k]&&okM(p.wplans[k].m)).sort().slice(-3).forEach(k=>{W[k]={m:[...p.wplans[k].m],ok:p.wplans[k].ok?1:0}});o.prefs.wplans=W;
+    const W={};if(p.wplans&&typeof p.wplans==="object")Object.keys(p.wplans).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&p.wplans[k]&&okM(p.wplans[k].m)).sort().slice(-3).forEach(k=>{W[k]={m:[...p.wplans[k].m],ok:p.wplans[k].ok?1:0};const ov=p.wplans[k].o;if(Array.isArray(ov)){const a=[...new Set(ov.filter(x=>Number.isInteger(x)&&x>=0&&x<=6))].sort();if(a.length)W[k].o=a}});o.prefs.wplans=W;
     if(okM(p.wday)){const w=o.prefs.wday,Dz=v=>Array.isArray(v)?v.filter(x=>Number.isInteger(x)&&x>=0&&x<=6):[];let nw=[0,1,2,3,4,5,6].filter(d=>w[d]>=60);if(!nw.length)nw=[0,1,2,3,4,5,6].filter(d=>w[d]>0);
       o.prefs.wnew=nw.length?nw:[1];o.prefs.woff=[0,1,2,3,4,5,6].filter(d=>w[d]===0);o.prefs.wsim=[...new Set(Dz(p.wsim))].sort()}
     o.prefs.wsim=o.prefs.wsim.filter(d=>o.prefs.wday[d]>0)}
@@ -6137,16 +6285,16 @@ let wpTab=null,wpMsg="";const WP_ORDER=[1,2,3,4,5,6,0],WD3=["Dom","Seg","Ter","Q
 const hm=m=>{m=Math.round(m);const h=Math.floor(m/60),r=m%60;return h?(r?`${h} h ${String(r).padStart(2,"0")}`:`${h} h`):`${r} min`};
 const ddmm=n=>{const d=fromNum(n);return d.slice(8,10)+"/"+d.slice(5,7)};
 function wpPlanned(mon){return ui.prefs.wplans[fromNum(mon)]||null}
-function wpArr(mon){const W=wpPlanned(mon);return W?W.m:ui.prefs.wday}
+function wpArr(mon){const W=wpPlanned(mon),b=W?W.m:ui.prefs.wday;return b.map((m,d)=>W&&Array.isArray(W.o)&&W.o.includes(d)?m:gradeAdj(m,mon+((d+6)%7)))}
 /* muda um dia; mon=null = semana padrão. Mexer no dia de hoje refaz o plano de hoje (mantém o começado) */
 function wpSetDay(mon,d,m){const P=ui.prefs,t=dnum(today());
   if(mon===null){const w=[...P.wday];w[d]=m;if(w.filter(x=>x===0).length>5){wpMsg="No máximo 5 dias de folga na semana padrão.";render();return}wpMsg="";P.wday=w;wpLegacy()}
-  else{const k=fromNum(mon),W=P.wplans[k]?{...P.wplans[k],m:[...P.wplans[k].m]}:{m:[...P.wday],ok:0};W.m[d]=m;P.wplans={...P.wplans,[k]:W}}
+  else{const k=fromNum(mon),W=P.wplans[k]?{...P.wplans[k],m:[...P.wplans[k].m]}:{m:[...P.wday],ok:0};W.m[d]=m;W.o=[...new Set([...(W.o||[]),d])].sort();P.wplans={...P.wplans,[k]:W}}
   saveUI();const todayHit=(mon===null&&!wpPlanned(wpMon(t))&&wdOf(t)===d)||(mon===wpMon(t)&&wdOf(t)===d);
   if(todayHit)redoPlan(`Plano de hoje ajustado para ${WP_LAB[m].toLowerCase()}. O que você já tinha começado foi mantido.`);else render()}
 /* mantém os campos antigos (wnew/woff) coerentes para quem ainda lê */
 function wpLegacy(){const P=ui.prefs,w=P.wday;let nw=[0,1,2,3,4,5,6].filter(d=>w[d]>=60);if(!nw.length)nw=[0,1,2,3,4,5,6].filter(d=>w[d]>0);P.wnew=nw.length?nw:[1];P.woff=[0,1,2,3,4,5,6].filter(d=>w[d]===0);P.wsim=P.wsim.filter(d=>w[d]>0)}
-function wpConfirm(mon){const k=fromNum(mon),P=ui.prefs,W=P.wplans[k]||{m:[...P.wday],ok:0};P.wplans={...P.wplans,[k]:{m:[...W.m],ok:1}};saveUI();render()}
+function wpConfirm(mon){const k=fromNum(mon),P=ui.prefs,W=P.wplans[k]||{m:[...P.wday],ok:0};P.wplans={...P.wplans,[k]:{m:[...W.m],...(W.o?{o:[...W.o]}:{}),ok:1}};saveUI();render()}
 function wpReset(mon){const k=fromNum(mon),P=ui.prefs,o={...P.wplans};delete o[k];P.wplans=o;saveUI();const t=dnum(today());if(mon===wpMon(t))redoPlan("Esta semana voltou à semana padrão.");else render()}
 /* o tempo de hoje, pelo link do Estudar hoje */
 function setTodayMin(m){const t=dnum(today());wpSetDay(wpMon(t),wdOf(t),m)}
@@ -6162,7 +6310,8 @@ function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTa
       d.querySelector("summary").textContent=mon-7===cur?(wdOf(t)===0?"Antes de planejar: como foi esta semana":"Antes de planejar: esta semana até agora"):"Antes de planejar: como foi a semana passada";d.appendChild(S);body.appendChild(d)}}}
   const days=el(`<div class="wpdays"></div>`);
   WP_ORDER.forEach(d=>{const n=pad?null:mon+((d+6)%7),past=!pad&&n<t,r=el(`<div class="wpday${past?" past":""}${!pad&&n===t?" wpnow":""}"><span class="wpdn"><b></b><small></small></span><div class="wpopts" role="group"></div></div>`);
-    r.querySelector("b").textContent=WD3[d];r.querySelector("small").textContent=pad?"":n===t?"hoje":ddmm(n);const g=r.querySelector(".wpopts");g.setAttribute("aria-label",WD_FULL[d]);
+    r.querySelector("b").textContent=WD3[d];r.querySelector("small").textContent=pad?"":n===t?"hoje":ddmm(n);
+    if(!pad){const A=aulasOn(n),W0=wpPlanned(mon),base=(W0?W0.m:P.wday)[d];if(A.length&&!(W0&&W0.o&&W0.o.includes(d))&&arr[d]!==base){const x=el(`<small class="wpaula"></small>`);x.textContent=`aula: ${A.map(a=>`${a.t} ${hm2(a.ini)}–${hm2(a.fim)}`).join(", ")} · menos tempo`;r.querySelector(".wpdn").appendChild(x)}}const g=r.querySelector(".wpopts");g.setAttribute("aria-label",WD_FULL[d]);
     WP_MIN.forEach(m=>{const on=arr[d]===m,b=el(`<button type="button" class="wpo${m===0?" off":""}${!pad&&on&&W&&P.wday[d]!==m?" chg":""}" aria-pressed="${on}"></button>`);b.id=`wp-${d}-${m}`;b.textContent=WP_LAB[m];b.disabled=past;
       b.onclick=()=>{if(!on)wpSetDay(mon,d,m)};g.appendChild(b)});days.appendChild(r)});
   body.appendChild(days);
@@ -9620,7 +9769,7 @@ function liveTopics(snap){if(!snap)return;let ch=false;const ids=new Set();
   liveSeen.topics=ids;
   if(ch){try{localStorage.setItem(LS2,JSON.stringify(state))}catch(e){}liveRender()}}
 function liveFac(snap){if(!snap||!snap.exists||facTimer||echo(snap,liveW.fac))return;const d=noUpd(snap.data());if(!facValid(d)||stab(d)===stab(fac))return;
-  const n={sems:d.sems,discs:d.discs,provas:d.provas,own:d.own};if(d.crunch&&typeof d.crunch==="object")n.crunch={mode:d.crunch.mode,until:d.crunch.until};
+  const n={sems:d.sems,discs:d.discs,provas:d.provas,own:d.own};if(d.crunch&&typeof d.crunch==="object")n.crunch={mode:d.crunch.mode,until:d.crunch.until};facXCopy(d,n);
   if(stab(n)===stab(fac))return;fac=liveClone(n);registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}liveRender()}
 function liveUI(snap){if(!snap||!snap.exists||uiTimer||echo(snap,liveW.ui))return;const n=uiSanitize(liveClone(noUpd(snap.data())));if(stab(n)===stab(ui))return;
   ui=n;try{localStorage.setItem(LSUI,JSON.stringify(ui))}catch(e){}applyUI();liveRender()}
@@ -9738,7 +9887,7 @@ window.addEventListener("online",()=>liveRefresh(true));
     store=prog;
     facStore=R.fac;
     try{const fs=await liveFirst(facStore);const fd=fs.exists?fs.data():null;
-      if(facValid(fd)&&!facTouched){fac={sems:fd.sems,discs:fd.discs,provas:fd.provas,own:fd.own};if(fd.crunch&&typeof fd.crunch==="object")fac.crunch={mode:fd.crunch.mode,until:fd.crunch.until};registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}}
+      if(facValid(fd)&&!facTouched){fac={sems:fd.sems,discs:fd.discs,provas:fd.provas,own:fd.own};if(fd.crunch&&typeof fd.crunch==="object")fac.crunch={mode:fd.crunch.mode,until:fd.crunch.until};facXCopy(fd,fac);registerOwn();try{localStorage.setItem(LSF,JSON.stringify(fac))}catch(e){}}
       else if(fac.sems.length||facTouched)saveFac()}catch(e){}
     const snap=await liveFirst(store);
     const data=snap.exists?snap.data():null;
