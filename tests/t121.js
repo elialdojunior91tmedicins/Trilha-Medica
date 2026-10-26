@@ -43,6 +43,7 @@ const B=await p.evaluate(()=>{const t=dnum(today()),ks=ALL.map(i=>i.key).filter(
   redoPlan();setView("inicio");return {a,p1,b2,p2,note:($("#pBrake")||{}).textContent||"",est:($("#pEst")||{}).textContent||""}});
 ok(B.a.cap===0&&B.p1===0,"mais de 40 revisões atrasadas: nenhum tema novo "+JSON.stringify([B.a,B.p1]));
 ok(B.b2.cap===1&&B.p2<=1,"mais de 20: no máximo 1 tema novo "+JSON.stringify([B.b2,B.p2]));
+ok(await p.evaluate(()=>{const C=qCounts();return C.revAll>C.revs&&C.revs===Math.max(0,C.revCap-((hist[today()]||{}).r||0))&&qMinutes(C)<=Math.max(QUEUE_MIN,Math.min(dayMin(dnum(today())),240)*QUEUE_SHARE)+MIN_EST.revs*REV_DAY_MIN}),"a fila do dia cabe no tempo: só as revisões mais importantes que cabem; as outras ficam para os próximos dias");
 ok(/revisões atrasadas/.test(B.note)&&/Tempo estimado: fila ≈/.test(B.est),"Estudar hoje avisa o freio e mostra o tempo estimado: "+B.est);
 /* uma agenda por questão */
 const A=await p.evaluate(()=>{const q={enunciado:"Caso X do refazer",alternativas:["A","B"].map(l=>({letra:l,texto:"Alt "+l})),correta:"B",comentario:"c"};rdAdd("CM-5",q,"gen");const n0=redo.length;const n=rdForget("CM-5",q);
