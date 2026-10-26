@@ -367,6 +367,17 @@ consultado quando há dúvida. Responda em português.
   no topo (no computador tudo numa página), com "📷 Ler imagem" (`#nImg`, `#nImgBox`) e busca própria `#frq` (`frQ`). Em toda questão respondida (gerador, simulado, Refazer, prova): `qActsEl(q,mine,{k,src,tok})`
   (estado em `qActS` WeakMap) = "Levar para a anotação" (`qPoints` → lista marcável `.qpick`, `#qp-<id>-<ponto>`, `#qpgo-<id>`; `conNote` grava em "## Conceitos das questões" com o selo `{{q:…}}` só nas provas,
   nas outras a origem e a data) e "Criar cartão" (`qCardDrafts` → `cdErrEl` com erro virtual `virtual:true, okq`; `cdErrSave` não liga a erro). Simulado: "Encerrar" = `#simEnd`. Teste t110.
+- Lote 17 (10/2026): **enxugamento**. Revisões: `reviewTopic(k,g,o)` com g 0 Esqueci (`revNext`: step−2, mín. 0) · 1 Difícil (mesmo step) · 2 Lembrei (step+1; lembrou depois do previsto → sobe até `INT[n]`≥ dias passados);
+  `true/false` antigos = 2/1; `s.rg` = última resposta; botões `revBtns(k)` (`#rg<g>-<chave>`, dias por `revPreview`). `qAutoRev()` no início de `render()`: tema vencido com ≥`QREV_MIN`=5 questões hoje (`qd[hoje]`) é revisado sozinho
+  pelo acerto (≥75% 2 · ≥50% 1 · senão 0; `s.ar={d,a}`; selo "questões N%" em Revisadas hoje). Ordem `revPri` = peso × (atraso+1) (`revScore`) em revisões, plano, `nextSteps`, Foco.
+  Freio `revBrake()` (atrasadas `dueIn<0`: >`REV_BRAKE1`=20 → 1 tema novo/continuar; >`REV_BRAKE2`=40 → 0; `addN` no `buildPlan`), aviso `#pBrake` e tempo `#pEst` (`qMinutes`/`planMinutes`, `MIN_EST`) no `planDayEl`.
+  Uma agenda por questão: `rdForget(k,q)` ao salvar no caderno pelo `eCadEl` (tira do Refazer); `eByCard(e)`/`eDueNow(e)`: erro com cartão (`eid`/`e.cd`) não entra em `eDueList` nem no filtro "due" ("Revisado pelos cartões").
+  Reler = parte da revisão: `rereadEl(k)` (`.reread`, `rrOpen`, "Ver todas as anotações do tema") no `.rcard` e no plano `r-cont`; fila `QSTEPS` sem "notes" (`qCounts().notes`=0); `nTodayCard` não é mais usado (Caderno › Revisar = cartões + `#nNoLine`).
+  Início: placar sem "Revisões" (tiles Plano · Questões na semana · Foco na semana), saudação com o tempo da fila, `#iQueue` com "N itens · ≈ tempo"; `iHidden()` padrão `["iStats"]`; `renderNavExtra` só com o modo provas;
+  domingo/segunda um cartão só `wpNoticeEl` (`#wpNotice` no slot `#iWeek`: `.wpsum` cumpriu/atrasou/melhorou + planejar; `iWeekCard` sem uso). Meta única `ui.prefs.hgoal`: `foDG()` = semanal ÷ `foStudyDays()` (substitui `fgoal`;
+  `fwgoal` migra para `hgoal` no `uiSanitize`), sem os seletores do Foco (`#foGoal` é texto + `foGoalLink`). "Próximos dias" = `renderAgenda` (`renderAgenda0` + `weekEl` `#agWeek`). "Onde focar": `focusScore`/`focusRank`
+  (peso² × distância de 80%, sem questões = 60%) no simulado (fonte `gain` "Onde focar"; `weak` antigo vira `gain`), na ordem `qChSort` gain, nas Estatísticas e na lista de Questões (`qListAll`, `QLIST_TOP`=10, `#qAllT`/`#qTopT`, `.q2c` 2 colunas);
+  `qGainCard` e `eRepCard` saíram (selo `.erep` em Onde melhorar). Teste: `tests/t121.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
