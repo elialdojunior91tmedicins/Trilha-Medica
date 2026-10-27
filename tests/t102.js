@@ -37,7 +37,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
   /* configurações */
   await p.evaluate(()=>goSub("config"));await p.waitForTimeout(250);
   ok(await p.evaluate(()=>{const r=[...document.querySelectorAll('.cfrow')].find(x=>/Barra lateral/.test(x.textContent));return r&&[...r.querySelectorAll('button')].map(b=>b.textContent).join()==="Automática,Sempre aberta,Sempre recolhida"&&r.querySelector('[aria-pressed="true"]').textContent==="Sempre recolhida"}),name+": Configurações › Aparência › Barra lateral");
-  await p.evaluate(()=>{[...[...document.querySelectorAll('.cfrow')].find(x=>/Barra lateral/.test(x.textContent)).querySelectorAll('button')][0].id="__auto"});await click('#__auto');
+  await p.evaluate(()=>{const m=document.getElementById("cfm-ap");if(m)m.open=true;[...[...document.querySelectorAll('.cfrow')].find(x=>/Barra lateral/.test(x.textContent)).querySelectorAll('button')][0].id="__auto"});await click('#__auto');
   ok(await p.evaluate(()=>sbPin===""&&localStorage.getItem("resid-sbpin")===null),name+": Automática volta ao padrão");
   ok(!(await p.$('#navMenuBtn').then(x=>x.isVisible())),name+": sem ≡ no topo");
  } else {

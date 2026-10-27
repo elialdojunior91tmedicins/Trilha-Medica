@@ -1401,6 +1401,10 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
 .fcgrpb{display:flex;flex-direction:column;gap:10px}
+.cfmore{margin-top:6px;border-top:1px solid var(--line);padding-top:8px}.cfmore>summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--accent);padding:4px 0}.cfmb{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.cfphase{margin:0 0 12px;font-size:.88rem;color:var(--muted)}.cfhl{outline:2px solid var(--gold);outline-offset:3px;transition:outline-color .6s}
+.qgedit{font-size:.8rem;margin-top:4px}.phhow{margin:10px 0 0;font-size:.9rem}
+html[data-calm="1"] .meta .late,html[data-calm="1"] .tnx.late,html[data-calm="1"] .late{color:var(--warn)}
 .stsem{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px}
 .stsh,.stsr{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(64px,.8fr) minmax(76px,.9fr);gap:4px 14px;align-items:center}
 .stsh{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:0 12px}
@@ -2669,7 +2673,8 @@ function weakToday(){if(isOffDay()||examCrunch().active||provaWeek().length)retu
   if(!c)return null;P.wk={d:today(),k:c.key,q0:get(c.key).qt||0};try{localStorage.setItem(LSDP,JSON.stringify(dayPlan))}catch(e){}return P.wk}
 function weakLeft(){const W=weakToday();if(!W)return 0;const n=Math.max(0,(get(W.k).qt||0)-W.q0);if(n>=WEAK_DAY_Q&&get(W.k).wkd!==today())upd(W.k,x=>{x.wkd=today()});return Math.max(0,WEAK_DAY_Q-n)}
 const isNew=s=>!s.last&&!(s.l>0);
-function dueLabel(d){return d<0?`atrasada ${-d} d`:d===0?"revisar hoje":d===1?"revisar amanhã":`revisar em ${d} d`}
+const calmOn=()=>{try{return !!ui.prefs.calm}catch(e){return false}};
+function dueLabel(d){return d<0?(calmOn()?`pendente há ${-d} d`:`atrasada ${-d} d`):d===0?"revisar hoje":d===1?"revisar amanhã":`revisar em ${d} d`}
 
 /* Lote 11 (10/2026): a psiquiatria (CM-50) foi dividida em 4 temas. PSY_MAP: índice antigo do subtópico → [tema, índice novo] */
 const PSY_MAP={0:["CM-50",0],1:["CM-50",1],2:["CM-62",1],3:["CM-62",2],4:["CM-50",2],5:["CM-50",4],6:["CM-50",5],7:["CM-62",3],8:["CM-50",6],9:["CM-62",4],10:["CM-50",7],11:["CM-62",5],12:["CM-62",0],13:["CM-60",1],14:["CM-60",3],15:["CM-61",0],16:["CM-61",1]};
@@ -2746,7 +2751,7 @@ function matches(it){const s=get(it.key);
 function topicNext(it){const s=get(it.key),dd=dueIn(s),L=subList(it),pt=L.length?partSubs(it).pt:null;
   if(isIng(s))return [pt?`Continuar · parte ${pt[0]} de ${pt[1]}`:"Terminar os subtópicos","go"];
   if(!s.last&&!(s.l>0))return [pt?`Começar · parte 1 de ${pt[1]}`:"Começar a estudar",""];
-  if(dd!==null&&dd<0)return [`Revisar · atrasada ${-dd} d`,"late"];if(dd===0)return ["Revisar hoje","late"];
+  if(dd!==null&&dd<0)return [calmOn()?`Revisar · pendente há ${-dd} d`:`Revisar · atrasada ${-dd} d`,"late"];if(dd===0)return ["Revisar hoje","late"];
   if(lvDrop(it.key))return ["Acerto caiu: faça questões","warn"];if(isWeak(s))return ["Acerto baixo: faça questões","warn"];
   if(!s.qt)return ["Faça questões do tema",""];if(lvMeets(s))return ["Pronto para Dominado","ok"];return null}
 let subQ=null;// tema com a lista rápida de subtópicos aberta na Residência
@@ -6266,6 +6271,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(o.prefs.iorder&&!p.iq18){const a=o.prefs.iorder.filter(x=>x!=="iQueue"),h=a.indexOf("iHero");a.splice(h+1,0,"iQueue");o.prefs.iorder=a}if(o.prefs.iorder||p.iq18)o.prefs.iq18=1;
   if(Number.isInteger(p.fevery)&&p.fevery>=2&&p.fevery<=8)o.prefs.fevery=p.fevery;
   if(["","w","b","r","s","f"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
+  if(typeof p.calm==="boolean")o.prefs.calm=p.calm;
   if(Number.isInteger(p.fvol)&&p.fvol>=0&&p.fvol<=100)o.prefs.fvol=p.fvol;
   if(Number.isInteger(p.fwgoal)&&p.fwgoal>=0&&p.fwgoal<=6000)o.prefs.fwgoal=p.fwgoal;
   if(typeof p.fsnd==="boolean")o.prefs.fsnd=p.fsnd;
@@ -6275,6 +6281,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(typeof p.adapt==="boolean")o.prefs.adapt=p.adapt;
   if([120,150,180,210,240].includes(p.qpace))o.prefs.qpace=p.qpace;
   if(typeof f.name==="string")o.profile.name=f.name.trim().slice(0,40);
+  if(["clinico","internato","reta"].includes(f.phase))o.profile.phase=f.phase;
   if(typeof f.goal==="string")o.profile.goal=f.goal.trim().slice(0,60);
   if(typeof f.goalDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(f.goalDate))o.profile.goalDate=f.goalDate;
   /* provas de residência: lista + principal; goal/goalDate passam a espelhar a principal (o resto do app lê esses dois) */
@@ -6283,7 +6290,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   if(!ex||(!ex.length&&(o.profile.goal||o.profile.goalDate)&&!f.exOk)){ex=(o.profile.goal||o.profile.goalDate)?[{id:"ex0",name:o.profile.goal||"Prova de residência",...(o.profile.goalDate?{date:o.profile.goalDate}:{})}]:[]}
   o.profile.exams=ex;o.profile.exOk=true;const mn=ex.find(e=>e.id===f.mainEx)||ex[0];if(mn){o.profile.mainEx=mn.id;o.profile.goal=mn.name;o.profile.goalDate=mn.date||""}else{o.profile.goal="";o.profile.goalDate=""}
   return o}
-function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.layout;R.dataset.font=P.font;
+function applyUI(){const P=ui.prefs,R=document.documentElement;R.dataset.skin=P.layout;R.dataset.font=P.font;R.dataset.calm=P.calm?"1":"0";
   if(P.theme==="auto"){if(R.dataset.themeOwn){R.removeAttribute("data-theme");delete R.dataset.themeOwn}}else{R.setAttribute("data-theme",P.theme);R.dataset.themeOwn="1"}
   PLAN_N=P.planN;SUBS_PER_DAY=P.subN;WK_NEW=new Set([0,1,2,3,4,5,6].filter(d=>P.wday[d]>=60));WK_SIM=new Set(P.wsim);WK_OFF=new Set([0,1,2,3,4,5,6].filter(d=>P.wday[d]===0));
   HAS_OFF=WK_OFF.size>0||Object.values(P.wplans||{}).some(w=>w.m.includes(0));INT.splice(0,INT.length,...INT_SETS[P.ints]);FAC_WIN=P.facWin;RES_MIN_WEEK=P.resWeek;
@@ -6367,6 +6374,7 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
   const av=hd.querySelector(".pfav"),ini=initials(P.name);if(ini)av.textContent=ini;else av.innerHTML=`<svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg>`;
   const ni=hd.querySelector("input");ni.value=P.name;ni.onchange=()=>{ui.profile.name=ni.value;saveUI();render()};box.appendChild(hd);
   if(!window.__site){const n=el(`<section class="card inote"><p><b>Use o site como principal.</b> Os dados deste artefato ficam separados do site. Para levar o progresso: <b>Configurações › Backup › Exportar</b> aqui e <b>Importar backup</b> no site.</p><div class="btns"><a class="btn" target="_blank" rel="noopener">Abrir o site</a></div></section>`);n.querySelector("a").href=SITE_URL;box.appendChild(n)}
+  box.appendChild(phaseEl());
   // provas de residência
   const mt=exEditorEl();
   box.appendChild(mt);
@@ -6465,9 +6473,27 @@ function wpNoticeEl(){const t=dnum(today()),w=wdOf(t);if(w!==0&&w!==1)return nul
 function segRow(lab,how,opts,cur,on){const g=el(`<div class="cfrow"><div class="cfl"><b></b><span class="gtext how"></span></div><div class="seg" role="group"></div></div>`);
   g.querySelector("b").textContent=lab;const h=g.querySelector(".how");if(how)h.textContent=how;else h.remove();g.querySelector(".seg").setAttribute("aria-label",lab);
   opts.forEach(([v,t])=>{const b=el(`<button type="button"></button>`);b.textContent=t;b.setAttribute("aria-pressed",cur===v);b.onclick=()=>on(v);g.querySelector(".seg").appendChild(b)});return g}
+/* Lote 18: "Mais opções" dentro de cada cartão de Configurações (lembrado neste aparelho) */
+let cfOpen=new Set((()=>{try{return JSON.parse(localStorage.getItem("resid-cfmore")||"[]")}catch(e){return []}})());
+function cfLayer(card,key,labels,nodes){const rows=[...card.querySelectorAll(":scope>.cfrow")].filter(r=>labels.includes((r.querySelector(".cfl b")||{}).textContent)),N=[...nodes.filter(Boolean),...rows];if(!N.length)return;
+  const d=el(`<details class="cfmore"><summary>Mais opções</summary><div class="cfmb"></div></details>`);d.id="cfm-"+key;d.open=cfOpen.has(key);d.addEventListener("toggle",()=>{d.open?cfOpen.add(key):cfOpen.delete(key);try{localStorage.setItem("resid-cfmore",JSON.stringify([...cfOpen]))}catch(e){}});
+  N.forEach(n=>d.querySelector(".cfmb").appendChild(n));card.appendChild(d)}
+function cfGo(id){goSub("config");setTimeout(()=>{const x=document.getElementById(id);if(x){x.scrollIntoView({behavior:"smooth",block:"start"});x.classList.add("cfhl");setTimeout(()=>x.classList.remove("cfhl"),1600)}},80)}
+/* Lote 18: perfil por fase do curso — uma escolha ajusta várias opções (cada uma continua editável) */
+const PHASES={clinico:{lab:"Ciclo clínico",how:"A faculdade vem primeiro no plano; a residência funciona como mapa do que importa. Meta e projeção discretas, sem marcar atraso.",set:{facWin:28,resWeek:1,qgoal:100,calm:true}},
+  internato:{lab:"Internato",how:"Faculdade e residência equilibradas; mais questões por semana e um dia de simulado.",set:{facWin:21,resWeek:2,qgoal:200,calm:false,wsim:[6]}},
+  reta:{lab:"Reta final",how:"A residência é a principal; meta e projeção ativas, e o plano cobra ritmo para chegar a tempo na prova.",set:{facWin:14,resWeek:3,qgoal:300,calm:false,wsim:[6]}}};
+function phaseSuggest(){const L=fac.sems.filter(x=>!x.archived).map(x=>+(String(x.name).match(/\d+/)||[0])[0]).filter(Boolean),n=L.length?Math.max(...L):0,m=exMain(),d=m&&m.date?daysTo(m.date):null;
+  return d!==null&&d>=0&&d<=270||n>=11?"reta":n>=9?"internato":"clinico"}
+function setPhase(ph){if(!PHASES[ph])return;ui.profile.phase=ph;const S=PHASES[ph].set;for(const k in S)ui.prefs[k]=Array.isArray(S[k])?[...S[k]]:S[k];saveUI();applyUI();redoPlan(`Fase do curso: ${PHASES[ph].lab}. O plano de hoje foi refeito com as opções dela.`);render()}
+function phaseEl(){const ph=ui.profile.phase,sg=phaseSuggest(),c=el(`<section class="card" id="pfPhase"><div class="dhead"><h2>Fase do curso</h2></div><p class="gtext how"></p><div class="seg" role="group" aria-label="Fase do curso"></div><p class="phhow"></p><p class="how phnote">Escolher a fase muda: antecedência das provas, residência garantida na semana, meta de questões, marcação de atraso e dia de simulado. Cada uma continua editável em Configurações.</p></section>`);
+  c.querySelector("p.how").textContent=ph?(ph!==sg?`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`:"Você pode trocar quando quiser."):`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`;
+  Object.entries(PHASES).forEach(([v,x])=>{const b=el(`<button type="button"></button>`);b.id="ph-"+v;b.textContent=x.lab+(v===sg&&v!==ph?" · sugerida":"");b.setAttribute("aria-pressed",ph===v);b.onclick=()=>setPhase(v);c.querySelector(".seg").appendChild(b)});
+  c.querySelector(".phhow").textContent=ph?PHASES[ph].how:"";if(!ph)c.querySelector(".phhow").remove();return c}
 function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs;
   const back=el(`<button class="link fback" type="button">← Voltar</button>`);back.onclick=goBack;box.appendChild(back);
   box.appendChild(el(`<h2 class="cftitle">Configurações</h2>`));
+  {const ph=ui.profile.phase,r=el(`<p class="cfphase"><span></span> <button class="link" type="button">mudar no Perfil</button></p>`);r.querySelector("span").textContent=ph?`Fase do curso: ${PHASES[ph].lab}. Ela já ajustou as opções abaixo; você pode mudar cada uma.`:"Escolha a fase do curso no Perfil para o app ajustar as opções de uma vez.";r.querySelector("button").onclick=()=>{goSub("perfil");setTimeout(()=>{const x=$("#pfPhase");if(x)x.scrollIntoView({block:"center"})},60)};box.appendChild(r)}
   if(uiNote){const n=el(`<p class="pnote" role="status"></p>`);n.textContent=uiNote;box.appendChild(n)}
   // aparência
   const ap=el(`<section class="card"><div class="dhead"><h2>Aparência</h2></div><span class="glabel">Layout</span><div class="lays"></div></section>`),ly=ap.querySelector(".lays");
@@ -6484,6 +6510,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   pl.append(segRow("Temas por dia","Quantos temas o Estudar hoje propõe.",[[2,"2"],[3,"3"],[4,"4"],[5,"5"]],P.planN,v=>planChange("planN",v)),
     segRow("Subtópicos por tema","Quantos subtópicos entram nas revisões e nos pontos fracos. Tema novo vem inteiro até 6 subtópicos; maior que isso, em partes de 3 a 4 por dia (subtópico denso conta como dois).",[[2,"2"],[3,"3"],[4,"4"]],P.subN,v=>planChange("subN",v)));
   const ir=segRow("Intervalos das revisões",`${INT_SETS[P.ints].join(" · ")} dias. Muda as próximas revisões de todos os temas.`,Object.keys(INT_SETS).map(k=>[k,INT_LAB[k]]),P.ints,v=>{ui.prefs.ints=v;saveUI();uiNote="";render()});pl.appendChild(ir);
+  pl.appendChild(segRow("Marcar atraso","Desligado: revisões passadas da data aparecem como “pendentes”, em âmbar, sem vermelho (bom no ciclo clínico, quando a faculdade vem primeiro).",[[true,"Ligado"],[false,"Desligado"]],!P.calm,v=>{ui.prefs.calm=!v;saveUI();applyUI();render()}));
   pl.appendChild(segRow("Ajustar pelo acerto","A partir da 2ª revisão: acerto de 85% ou mais nas questões do tema (mín. 8) alonga o intervalo em 40%, de 75% em 20%. Acerto baixo não encurta: ele vira ponto fraco (questões), não revisão mais cedo. Usa as questões dos últimos 90 dias (mín. 5).",[[true,"Ligado"],[false,"Desligado"]],P.adapt!==false,v=>{ui.prefs.adapt=v;saveUI();render()}));
   {const A=dnAsk.all,n=dnPending().length,g=el(`<div class="grp" id="dnAllBox"><span class="glabel">Subtópicos densos</span><p class="gtext how">Denso conta como dois na parte do dia. O Claude pode sugerir quais são, nos temas com 4 ou mais subtópicos (${n?`${n} ainda sem sugestão`:"todos já sugeridos"}). Você corrige em cada tema, e a sua escolha nunca é trocada.</p></div>`);
     if(sampleFn&&!sampleOff&&n){const b=el(`<button class="btn" type="button" id="dnAll">Pedir sugestões ao Claude</button>`);b.disabled=!!(A&&A.st==="loading");b.onclick=dnSuggestAll;g.appendChild(b)}
@@ -6502,13 +6529,19 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
     segRow("Som ao finalizar","Toca quando o ciclo ou a pausa terminam, com o app aberto.",[[true,"Ligado"],[false,"Desligado"]],!!P.fsnd,v=>{ui.prefs.fsnd=v;saveUI();render()}),
     segRow("Tela acesa durante o foco","Quando o aparelho permite.",[[true,"Sim"],[false,"Não"]],!!P.fwake,v=>{ui.prefs.fwake=v;saveUI();render()}));
   box.appendChild(fo);
-  const qm=el(`<section class="card"><div class="dhead"><h2>Questões</h2></div></section>`);
-  qm.appendChild(segRow("Meta semanal de questões","De segunda a domingo, contando todas as questões (geradas, registradas e as do tema).",[[0,"Sem meta"],[100,"100"],[200,"200"],[300,"300"],[500,"500"],...(![0,100,200,300,500].includes(P.qgoal)?[[P.qgoal,String(P.qgoal)]]:[])],P.qgoal,v=>{ui.prefs.qgoal=v;saveUI();render()}));box.appendChild(qm);
+  const qm=el(`<section class="card" id="cfQ"><div class="dhead"><h2>Questões</h2></div></section>`);
+  qm.append(segRow("Meta semanal de questões","De segunda a domingo, contando todas as questões (geradas, registradas e as do tema).",[[0,"Sem meta"],[100,"100"],[150,"150"],[200,"200"],[300,"300"],[500,"500"],...(![0,100,150,200,300,500].includes(P.qgoal)?[[P.qgoal,String(P.qgoal)]]:[])],P.qgoal,v=>{ui.prefs.qgoal=v;saveUI();render()}),
+    segRow("Tempo da prova","Quanto a prova dá por questão; o seu ritmo nos simulados é comparado com ele.",[[120,"2 min"],[150,"2min30"],[180,"3 min"],[210,"3min30"],[240,"4 min"]],P.qpace,v=>{ui.prefs.qpace=v;saveUI();render()}));box.appendChild(qm);box.appendChild(qm);
   // questões, backup e ajuda
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
     const b=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);b.querySelector("b").textContent=t;b.querySelector("span").textContent=d;b.onclick=fn;ql.appendChild(b)});
   box.appendChild(qb);box.appendChild(trashCardEl());
+  /* Lote 18: configurações em camadas — o que se usa sempre fica à vista; o resto em "Mais opções" de cada cartão */
+  cfLayer(ap,"ap",["Barra lateral"],[ap.querySelector(":scope>.glabel"),ap.querySelector(".lays")]);
+  cfLayer(pl,"pl",["Subtópicos por tema","Intervalos das revisões","Ajustar pelo acerto","Marcar atraso"],[pl.querySelector("#dnAllBox")]);
+  cfLayer(fc,"fc",["Residência garantida"],[fc.querySelector(".cfcrunch")]);
+  cfLayer(fo,"fo",["Som ao finalizar","Tela acesa durante o foco"],[]);
   const rs=el(`<button class="link" type="button">Voltar tudo ao padrão</button>`);rs.onclick=()=>{ui.prefs={...UI_DEF.prefs};saveUI();uiNote="Configurações de volta ao padrão.";render()};box.appendChild(rs)}
 
 /* ---------- PDF: gerador próprio (Helvetica, A4, sem bibliotecas: funciona sem internet) ---------- */
@@ -7468,12 +7501,14 @@ function qGoalEl(){const g=ui.prefs.qgoal,t=dnum(today()),ws=t-(new Date().getDa
   [[0,"Sem meta"],[50,"50"],[100,"100"],[150,"150"],[200,"200"],[300,"300"],[400,"400"],[500,"500"],[700,"700"],[1000,"1.000"]].forEach(([v,lab])=>{const o=document.createElement("option");o.value=v;o.textContent=v?lab+" questões":lab;s.appendChild(o)});
   if(![0,50,100,150,200,300,400,500,700,1000].includes(g)){const o=document.createElement("option");o.value=g;o.textContent=g+" questões";s.appendChild(o)}
   s.value=String(g);s.onchange=()=>{ui.prefs.qgoal=+s.value;saveUI();render()};
-  if(!g){w.appendChild(el(`<p class="how qgtxt">Nesta semana: <b>${W.q}</b> ${W.q===1?"questão":"questões"}. Defina uma meta semanal para acompanhar o ritmo.</p>`));w.appendChild(sel);return w}
+  /* Lote 18: a meta é escolhida em Configurações; aqui só o valor, com um atalho */
+  const ed=el(`<button class="link qgedit" type="button" id="qGoalEd"></button>`);ed.textContent=g?`meta ${g.toLocaleString("pt-BR")}/semana ✎`:"definir meta semanal ✎";ed.onclick=()=>cfGo("cfQ");
+  if(!g){w.appendChild(el(`<p class="how qgtxt">Nesta semana: <b>${W.q}</b> ${W.q===1?"questão":"questões"}. Defina uma meta semanal para acompanhar o ritmo.</p>`));w.appendChild(ed);return w}
   let st=0,k=ws-7;while(qWeekQ(k).g>=g){st++;k-=7}if(W.q>=g)st++;
   const left=7-(t-ws),miss=Math.max(0,g-W.q),pc=Math.min(100,W.q/g*100);
   const box=el(`<div class="qgm"><div class="qgtop"><b>${W.q.toLocaleString("pt-BR")}</b><span>de ${g.toLocaleString("pt-BR")} questões nesta semana</span></div><div class="meter${W.q>=g?" ok":""}"><i style="width:${pc}%"></i></div><p class="how qgtxt"></p></div>`);
   box.querySelector(".qgtxt").textContent=W.q>=g?`Meta da semana batida${W.q>g?` (+${W.q-g})`:""}.${st>1?` ${st} semanas seguidas na meta.`:""}`:`Faltam ${miss}: cerca de ${Math.ceil(miss/left)} por dia até domingo.${st?` Sequência: ${st} ${st===1?"semana":"semanas"} na meta.`:""}`+(W.rq?` Inclui ${W.rq} ${W.rq===1?"refeita":"refeitas"} (Refazer e Meus simulados).`:"");
-  w.append(box,sel);return w}
+  w.append(box,ed);return w}
 /* tendência: acerto dos últimos 30 dias contra os 90 dias antes deles (mínimo de 5 questões em cada) */
 function qTrend(k){const s=get(k),t=dnum(today());let rq=0,rc=0,pq=0,pc=0;
   for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=t-dnum(d);if(n<0)continue;if(n<30){rq+=v[0]||0;rc+=v[1]||0}else if(n<120){pq+=v[0]||0;pc+=v[1]||0}}
@@ -7569,10 +7604,11 @@ function qPaceEl(){const t=dnum(today());let n=0,s=0,n7=0,s7=0;for(let i=0;i<30;
   const ref=ui.prefs.qpace,w=el(`<div class="qpace"></div>`);
   const sel=el(`<label class="qfsel qgsel"><span>Tempo da prova</span><select id="qPaceSel"></select></label>`),sl=sel.querySelector("select");
   [[120,"2 min por questão"],[150,"2min30s"],[180,"3 min"],[210,"3min30s"],[240,"4 min"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;sl.appendChild(o)});sl.value=String(ref);sl.onchange=()=>{ui.prefs.qpace=+sl.value;saveUI();render()};
-  if(!n){w.appendChild(el(`<p class="how qgtxt"><b>Ritmo:</b> ainda sem questões cronometradas. O simulado mede o tempo de cada questão; no registro rápido, informe quantos minutos levou.</p>`));w.appendChild(sel);return w}
+  const ed=el(`<button class="link qgedit" type="button" id="qPaceEd"></button>`);ed.textContent=`tempo da prova: ${fmtPace(ref)} ✎`;ed.onclick=()=>cfGo("cfQ");
+  if(!n){w.appendChild(el(`<p class="how qgtxt"><b>Ritmo:</b> ainda sem questões cronometradas. O simulado mede o tempo de cada questão; no registro rápido, informe quantos minutos levou.</p>`));w.appendChild(ed);return w}
   const avg=s/n,ok=avg<=ref,box=el(`<div class="qgm"><div class="qgtop"><b>${fmtPace(avg)}</b><span>por questão nos últimos 30 dias (${n} cronometradas)</span></div><div class="meter pace${ok?" ok":" slow"}"><i style="width:${Math.min(100,avg/ref/1.5*100)}%"></i><span class="pref" style="left:${100/1.5}%"></span></div><p class="how qgtxt"></p></div>`);
   box.querySelector(".qgtxt").textContent=`${ok?"Dentro":"Acima"} do tempo da prova (${fmtPace(ref)})${ok?"":`: ${fmtPace(avg-ref)} a mais por questão`}.${n7?` Últimos 7 dias: ${fmtPace(s7/n7)}.`:""}`;
-  w.append(box,sel);return w}
+  w.append(box,ed);return w}
 /* simulado misto: questões de vários temas num bloco só */
 let sim=null,simCfg={src:"gain",n:10,dif:"mista",est:"res"},simSubs={},simPF={q:"",area:"all",lv:"all",inc:0};
 const SIM_SRC=[["pick","Escolher temas"],["week","Temas da semana"],["gain","Onde focar"],["due","Revisões de hoje"],["plan","Plano de hoje"],["errs","Meus erros"],["redo","Questões para refazer"],["filter","Filtro atual"]];
