@@ -73,7 +73,7 @@ ok(await p.evaluate(()=>dnPending().length===0&&ALL.every(i=>i.own||DN_DEF[i.key
 ok(await p.evaluate(()=>{const it=BYKEY["CM-47"];return subList(it).filter(dnHeavy).length===5&&subParts(subList(it)).length===3}),tag+": Endemias vem em 3 partes");
 await p.evaluate(()=>{goSub("config")});await p.waitForTimeout(300);ok(!(await p.$('#dnAll'))&&/todos já sugeridos/.test(await p.$eval('#dnAllBox',x=>x.textContent)),tag+": sem pendentes, sem botão de lote");
 calls=[];await p.evaluate(()=>{Object.keys(DN_DEF).slice(0,60).forEach(k=>delete DN_DEF[k]);goSub("config")});await p.waitForTimeout(300);
-const pend=await p.evaluate(()=>dnPending().length);await click('#dnAll');await p.waitForFunction(()=>dnAsk.all&&dnAsk.all.st!=="loading",null,{timeout:20000});
+const pend=await p.evaluate(()=>dnPending().length);await p.evaluate(()=>document.querySelectorAll('details.cfmore').forEach(d=>d.open=true));await p.waitForTimeout(100);await click('#dnAll');await p.waitForFunction(()=>dnAsk.all&&dnAsk.all.st!=="loading",null,{timeout:20000});
 ok(calls.length===Math.ceil(pend/45)&&await p.evaluate(()=>dnPending().length===0),tag+`: lote em ${calls.length} partes (${pend} temas)`);
 ok(/Pronto/.test(await p.$eval('#dnAllMsg',x=>x.textContent)),tag+": mensagem do lote");
 // plano visível: cartão com Parte

@@ -387,6 +387,25 @@ consultado quando há dúvida. Responda em português.
   antiga e couber vai para o pacote ao chegar do servidor; se o item está nos dois, vale a coleção antiga). A interface é a de uma coleção (o resto do app não muda); no artefato
   (sem `patch`) continua um documento por item. Backup do Drive lê os pacotes (`packed()`). Testes: `tests/t122.js`, `tests/t123.js` (`mockdb.js` conta leituras em
   `window.__reads` e tem `patch` com `window.__packs`; `fakefb.js` tem set com merge, `FieldValue.delete` e `docChanges`). Medição: `tests/perf18.js` (não é teste).
+- Lote 18, seções 2–11 (10/2026; testes t124–t132):
+  **Início** (t124): `QSTEPS` = errs, revs, weak, redo, cards, plan (fila até o plano); `qStepMin`/`qTot`; `pwKeys`/`pwFirst` põem o da semana de prova da faculdade primeiro (cdDue, erGo, redo);
+  `iQueueCard` "Fila do dia" (2º em `ICARDS`, migração única `iq18`; `.iqfit`, `.iqpw`, `dayDone()`), fechamento do dia depois de `DAY_EVE`=19 (`nowHour()`/`isEve()`; testes: `window.__hour`, 10 por padrão nos mocks);
+  botão da saudação "Começar"; `#iBoard` dentro de `icol2`; `wpSumEl(ws)` no `wpNoticeEl` e em `wpCardEl` (`#wpPrev`).
+  **Residência** (t125): `topicNext(it)` → linha `.tnext`/`.tnx`; lista rápida `subQ` (`#tsq-<k>`, `.tsql`, caixas `tsq-<k>-<j>`); filtro `tf.sem` "Neste semestre" (`TF_SHORT`; `semKeys`, cache `semKS`, ordem por peso, áreas vazias somem; peso só nas barrinhas).
+  **Faculdade** (t126): `fac.aulas=[{id,semId,wd,ini,fim,t,discId?}]`, `fac.ents=[{id,discId,t,date|adi,done?}]`, `fac.canc={data:[aulaId]}` (30 dias), prova `p.adi`, SP `s.fadi`/`s.pos`; `facXNorm` (em facNormalize) e `facXCopy` (liveFac e carga);
+  `aulasOn(n)`, `gradeAdj(m,n)` (cada 2 h de aula tira um degrau de `WP_MIN`, mín. 30 min; `dayMin` respeita `wp.o` = dias escolhidos à mão; `.wpaula`); `semCalEl(sem)` (`#fcal-<id>`, `facCalOpen`, `calEd`, `calAdd`, `#fcae-/#fcaa-`, `fce-<k>-<id>`, `fced-/fcedOk-/fcedAdi-/fcedDone-`, grade `#fgr-`, `#fgx-<aula>-<data>`);
+  `facDayNotes()`/`facDayNotesEl()` (`#pFac`: pf-prep-/pf-ent-/pf-pos-/pf-rd-); `resWeight`/`resWeightEl` (`.fresw`); objetivos por foto `objF`/`objFRun`/`objFEl`/`jsonFromText` (`#fof-`, `#fofi-`, `#fofk-`, `#fofOk-`).
+  Adiados ficam fora de upcomingProvas, examCrunchAuto, provasToClose, spFechas.
+  **Questões** (t127): `SIM_SRC` "week"; `#simQuick` (5 questões); `ex.mod` (`#exmod-<id>`, `exClean`); `facModels`/`facStyle`/`facStyleTxt`, `simEstList` com "fac"; gerador `genSty`/`genFacOn` (`#qsty-<k>-fac|res`), `buildPrompt(...,{fac})`.
+  **Erros** (t128): `eSide` res|fac|all, `eIsFac`, `ePwKeys`/`ePwLabel`, `eRepKeys` → {FL,PW}; Filtros = Situação, Origem (chips `data-es` + Fonte), Por que errou (tipo + Causa), Onde, Quando;
+  `#eWhy` "Por que você erra · último mês" (`.emstat/.emdelta/.emtype/.etag`, `ol.eclist` `.ecrow.link .ecn .ecc .ectr .ecbar .ectip`, `.emgone`); `.toplist` (`.ttn`, `.ttbar`). Tocar na causa não muda o período.
+  **Caderno** (t129): `TPL_DOENCA`, `tplSP`/`noteSP`, `useModel(k,m)` (`state[k].nm`), `modelBtns` (`#nm-doenca-<k>`, `#nm-sp-<k>`), `npathEl(k)`; `noteDress(rv,k)` (sem seções vazias, `.peg`, `.ntrecho`);
+  cartão do trecho `trE`/`trStart`/`trDrafts`/`trPrompt` (`cdErrPrompt` usa `e.trecho`), `tcMsg`, `#trSelBtn` (selectionchange), `#nsec-<k>`; leitura da prova `nProvaRd`/`provaReadEl` (`#nProvaRead`)/`provaReadGo`.
+  **Foco** (t130): `FO_NOISE` r Chuva, s Riacho, f Lareira, w branco, b marrom; gravações `sounds/chuva.mp3|riacho.mp3|lareira.mp3` (+ `sounds/CREDITOS.md`; laços feitos de gravações do Blanket, CC BY/CC0/domínio público), `FO_REC`, `FO_CRED`,
+  `foRecLoad` (Cache API "nexus-sons"; sem rede = som gerado); `sw.js` mantém caches "nexus-*". No artefato os mp3 são arquivos publicados junto (`files`).
+  **Estatísticas** (t131): `stFac` → semA/semT/sem; `#stSem` (`.stsh .stsr .stsn .stst .stsv .stsm .stsb`; "mais resultado por hora" só com ≥3 h; nota < 60%); `#stFacRes`; `.stdisc .stnr`.
+  **Configurações** (t132): `cfLayer(card,key,labels,nodes)` → `details.cfmore#cfm-ap|pl|fc|fo` (`resid-cfmore`), `cfGo(id)`; cartão `#cfQ` (meta semanal e tempo da prova; Questões mostra `#qGoalEd`/`#qPaceEd`);
+  "Marcar atraso" `ui.prefs.calm` (`calmOn()`, `html[data-calm]` âmbar, "pendente há N d"); fases `PHASES` clinico|internato|reta (`phaseSuggest`, `setPhase`, `phaseEl` `#pfPhase`/`#ph-<v>`, `.cfphase`; `ui.profile.phase`).
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
