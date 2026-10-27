@@ -381,7 +381,11 @@ consultado quando há dúvida. Responda em português.
 - Leituras da conta (Lote 18, 10/2026): a carga não lê mais tudo duas vezes. `liveOpen(ref)` abre UMA assinatura por documento/lista (todas juntas no começo da carga, objeto `R`);
   `liveFirst(ref)` devolve a 1ª resposta do servidor (resposta só do cache com internet espera até `LIVE_WAIT`=8 s) no lugar do `get()`; `liveStart` reaproveita a assinatura
   (`liveSub`: marca `liveSeen` com a 1ª resposta e aplica só as seguintes). `bridge.js`: `onSnapshot(next,err,{meta:true})` ouve metadados até a 1ª resposta do servidor e depois
-  ignora lista sem `docChanges`. `liveRefresh` só depois de 30 min em segundo plano. Pacotes: no site, erros, cartões, foco e Refazer ficam em `progress/<lista>pk/pN`
+  ignora lista sem `docChanges`. `liveRefresh` só depois de 30 min em segundo plano.
+  Apagado em outro aparelho (27/10/2026, defeito do Refazer que "voltava" depois de 2 acertos): na carga, item que só existe no aparelho era enviado de volta.
+  Agora `loOnly(name,S,arr,ids,first)` usa os ids já vistos no servidor (`seenAll`, localStorage `resid-seen-v1`, gravado por `seenSave` na carga e no `liveList` com
+  resposta do servidor): visto antes e ausente agora = apagado em outro aparelho → sai daqui; nunca visto → é enviado. Sem lista ainda (1ª abertura), só o Refazer
+  (`first`) descarta o que só existe aqui quando a conta já tem itens. Pacotes: `dual` marca item na coleção antiga E num pacote; apagar tira dos dois. Teste: `tests/t133.js`. Pacotes: no site, erros, cartões, foco e Refazer ficam em `progress/<lista>pk/pN`
   (campo `i` = {id: item em JSON}; `packStore(prog,nome)`, `PK_N` pacotes, `pkHash`; grava só o campo do item com `doc.patch(campo,{id:json|null})` = set com merge, então
   dois aparelhos não se apagam; `putMany`/`delMany` agrupam por pacote; item > `PK_BIG`=60 mil caracteres fica no documento próprio da coleção antiga; o que estiver na coleção
   antiga e couber vai para o pacote ao chegar do servidor; se o item está nos dois, vale a coleção antiga). A interface é a de uma coleção (o resto do app não muda); no artefato

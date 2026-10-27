@@ -10018,7 +10018,7 @@ const PK_BIG=60000,PK_FULL=700000,PK_N={errors:8,cards:8,focus:4,redo:8};
 function pkHash(id){let h=7;for(let i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))|0;return Math.abs(h)}
 function packStore(prog,name){const old=prog.collection(name),col=prog.collection(name+"pk"),N=PK_N[name]||8;
   if(typeof col.doc("p0").patch!=="function")return old;// artefato do Claude: um documento por item, como sempre
-  const loc=new Map(),size={},moved=new Map();// loc: id → "pN" (pacote) | "L" (documento próprio)
+  const loc=new Map(),size={},moved=new Map(),dual=new Map();// dual: id na coleção antiga E num pacote → o pacote (para apagar dos dois)// loc: id → "pN" (pacote) | "L" (documento próprio)
   const patch=(b,m)=>col.doc(b).patch("i",m);
   const pick=(id,len)=>{const c=loc.get(id);if(c&&c!=="L"&&(size[c]||0)+len<PK_FULL)return c;const h="p"+(pkHash(id)%N);if((size[h]||0)+len<PK_FULL)return h;
     for(let j=0;j<64;j++){const b="p"+j;if((size[b]||0)+len<PK_FULL)return b}return h};
@@ -10027,10 +10027,12 @@ function packStore(prog,name){const old=prog.collection(name),col=prog.collectio
     for(const x0 of list){if(!x0||typeof x0.id!=="string")continue;const j=JSON.stringify(x0),id=x0.id,c=loc.get(id);
       if(j.length>PK_BIG){loc.set(id,"L");w.push(old.doc(id).set(JSON.parse(j)));if(c&&c!=="L")(by[c]=by[c]||{})[id]=null;continue}
       const b=pick(id,j.length);loc.set(id,b);size[b]=(size[b]||0)+j.length;(by[b]=by[b]||{})[id]=j;
-      if(c&&c!==b){if(c==="L")w.push(old.doc(id).delete().catch(()=>{}));else if(!(by[c]&&typeof by[c][id]==="string"))(by[c]=by[c]||{})[id]=null}}
+      if(c&&c!==b){if(c==="L")w.push(old.doc(id).delete().catch(()=>{}));else if(!(by[c]&&typeof by[c][id]==="string"))(by[c]=by[c]||{})[id]=null}
+      {const d2=dual.get(id);dual.delete(id);if(d2&&d2!==b&&!(by[d2]&&typeof by[d2][id]==="string"))(by[d2]=by[d2]||{})[id]=null}}
     for(const b in by)w.push(patch(b,by[b]));await Promise.all(w)}
   async function delMany(ids){const by={},w=[];
-    for(const id of ids){const c=loc.get(id);loc.delete(id);if(c==="L"||!c)w.push(old.doc(id).delete().catch(()=>{}));if(c!=="L"){const b=c||"p"+(pkHash(id)%N);(by[b]=by[b]||{})[id]=null}}
+    for(const id of ids){const c=loc.get(id),d2=dual.get(id);loc.delete(id);dual.delete(id);if(c==="L"||!c)w.push(old.doc(id).delete().catch(()=>{}));if(c!=="L"){const b=c||"p"+(pkHash(id)%N);(by[b]=by[b]||{})[id]=null}
+      if(d2)(by[d2]=by[d2]||{})[id]=null}// estava nos dois lugares: some dos dois (senão a cópia do pacote voltava)
     for(const b in by)w.push(patch(b,by[b]));await Promise.all(w)}
   /* junta pacotes + coleção antiga numa resposta igual à de uma coleção; a coleção antiga ganha se o item estiver nos dois (versão antiga gravou depois) */
   function combine(P,L){const docs=[],at=new Map();for(const k of Object.keys(size))delete size[k];
@@ -10038,7 +10040,7 @@ function packStore(prog,name){const old=prog.collection(name),col=prog.collectio
       for(const id in m){const j=m[id];if(typeof j!=="string")continue;n+=j.length;if(at.has(id))continue;
         const doc={id,data:()=>{try{return JSON.parse(j)}catch(e){return null}},metadata:{fromCache:false,hasPendingWrites:false}};at.set(id,docs.length);docs.push(doc);loc.set(id,d.id)}
       size[d.id]=n}
-    for(const d of (L&&L.docs)||[]){if(at.has(d.id))docs[at.get(d.id)]=d;else docs.push(d);loc.set(d.id,"L")}
+    dual.clear();for(const d of (L&&L.docs)||[]){if(at.has(d.id)){docs[at.get(d.id)]=d;dual.set(d.id,loc.get(d.id))}else docs.push(d);loc.set(d.id,"L")}
     const fc=!!((P&&P.metadata&&P.metadata.fromCache)||(L&&L.metadata&&L.metadata.fromCache));
     return {docs,size:docs.length,empty:!docs.length,metadata:{fromCache:fc,hasPendingWrites:false},L}}
   /* migração: item pequeno na coleção antiga vai para o pacote (só com a resposta do servidor e sem gravação pendente) */
@@ -10071,13 +10073,23 @@ function liveOpen(ref){if(!ref||typeof ref.onSnapshot!=="function"||liveSub.has(
       if(o.fn)o.fn(s);else o.later=s}catch(e){console.error(e)}},
     e=>{o.fail=e||1;if(!o.first){clearTimeout(tm);o.ok(null)}},{meta:true})}catch(e){o.fail=e||1;o.ok(null)}}
 async function liveFirst(ref){const o=liveSub.get(ref);const s=o?await o.p:null;return s||ref.get()}
+/* apagado em outro aparelho (27/10/2026): cada aparelho guarda os ids que já viu no servidor, por lista. Ao abrir, item que só existe aqui
+   e que o servidor já teve foi apagado em outro aparelho (ex.: saiu do Refazer com 2 acertos) → sai daqui também, em vez de ser enviado de volta.
+   Só o que nunca chegou ao servidor (criado sem conta ou antes do login) é enviado. Resposta só do cache não decide nada. */
+const LSSEEN="resid-seen-v1";let seenAll=(()=>{try{const v=JSON.parse(localStorage.getItem(LSSEEN)||"{}");return v&&typeof v==="object"?v:{}}catch(e){return {}}})();
+function seenSave(name,ids){seenAll[name]=[...ids];try{localStorage.setItem(LSSEEN,JSON.stringify(seenAll))}catch(e){}}
+function loOnly(name,S,arr,ids,first){const lo=arr.filter(x=>!ids.has(x.id));if(S&&S.metadata&&S.metadata.fromCache)return {lo,gone:0};
+  const prev=Array.isArray(seenAll[name])?new Set(seenAll[name]):null;seenSave(name,ids);
+  /* 1ª abertura com esta versão (ainda sem a lista do que foi visto): no Refazer, conta já em uso = o que só existe aqui foi apagado em outro aparelho */
+  if(!prev){if(first&&ids.size){return {lo:[],gone:lo.length}}return {lo,gone:0}}
+  const keep=lo.filter(x=>!prev.has(x.id));return {lo:keep,gone:lo.length-keep.length}}
 /* listas com id (erros, caderno livre, lixeira, cartões, refazer, foco): atualiza o objeto no lugar (sessões abertas continuam apontando para ele) */
 function liveList(name,snap,get,set,ok,saveLocal,after){if(!snap)return;const ids=new Set();let arr=get(),ch=false;const byId=new Map(arr.map(x=>[x.id,x]));
   for(const d of snap.docs){ids.add(d.id);if(pend(d))continue;const v=ok(liveClone(d.data()));if(!v)continue;const cur=byId.get(v.id);
     if(cur){if(stab(cur)!==stab(v)){for(const f of Object.keys(cur))if(!(f in v))delete cur[f];Object.assign(cur,v);ch=true}}
     else{arr.push(v);byId.set(v.id,v);ch=true}}
   const seen=liveSeen[name];if(seen){const gone=[...seen].filter(id=>!ids.has(id)&&byId.has(id));if(gone.length){const g=new Set(gone);arr=arr.filter(x=>!g.has(x.id));ch=true}}
-  liveSeen[name]=ids;
+  liveSeen[name]=ids;if(!(snap.metadata&&snap.metadata.fromCache))seenSave(name,ids);
   if(ch){set(arr);saveLocal();if(after)after();liveRender()}}
 function liveStart(){if(liveOn)return;liveOn=true;
   const L=(name,get,set,ok,saveLocal,after)=>s=>liveList(name,s,get,set,ok,saveLocal,after);
@@ -10140,35 +10152,35 @@ window.addEventListener("online",()=>liveRefresh(true));
     errStore=R.err;
     const es=await liveFirst(errStore);
     const remote=es.docs.map(d=>d.data()).filter(errOk);
-    const rids=new Set(remote.map(e=>e.id)),localOnly=errors.filter(e=>!rids.has(e.id));
-    if(remote.length){errors=[...remote.map(e=>({...e})),...localOnly];saveErrsLocal();render()}
+    const rids=new Set(remote.map(e=>e.id)),{lo:localOnly,gone:eGone}=loOnly("err",es,errors,rids);
+    if(remote.length||eGone){errors=[...remote.map(e=>({...e})),...localOnly];saveErrsLocal();render()}
     for(const e of localOnly)await putErr(e);
     freeStore=R.free;
-    try{const fq=await liveFirst(freeStore),rem=fq.docs.map(d=>d.data()).filter(frOk).map(frClean),ids=new Set(rem.map(x=>x.id)),lo=freeN.filter(x=>!ids.has(x.id));
-      if(rem.length){freeN=[...rem,...lo];frSaveLocal();render()}for(const x of lo)await frPut(x)}catch(e){}
+    try{const fq=await liveFirst(freeStore),rem=fq.docs.map(d=>d.data()).filter(frOk).map(frClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("free",fq,freeN,ids);
+      if(rem.length||gone){freeN=[...rem,...lo];frSaveLocal();render()}for(const x of lo)await frPut(x)}catch(e){}
     trashStore=R.trash;
-    try{const tq=await liveFirst(trashStore),rem=tq.docs.map(d=>d.data()).filter(trOk),ids=new Set(rem.map(x=>x.id)),lo=trash.filter(x=>!ids.has(x.id));
-      if(rem.length){trash=[...rem,...lo];trSaveLocal()}for(const x of lo)await trPut(x);trPurgeOld()}catch(e){}
+    try{const tq=await liveFirst(trashStore),rem=tq.docs.map(d=>d.data()).filter(trOk),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("trash",tq,trash,ids);
+      if(rem.length||gone){trash=[...rem,...lo];trSaveLocal()}for(const x of lo)await trPut(x);trPurgeOld()}catch(e){}
     cardStore=R.cards;
-    try{const cq=await liveFirst(cardStore),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),lo=cards.filter(x=>!ids.has(x.id));
-      if(rem.length){cards=[...rem,...lo];cdSaveLocal();render()}for(const x of lo)await cdPut(x)}catch(e){}
+    try{const cq=await liveFirst(cardStore),rem=cq.docs.map(d=>d.data()).filter(cdOk).map(cdClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("cards",cq,cards,ids);
+      if(rem.length||gone){cards=[...rem,...lo];cdSaveLocal();render()}for(const x of lo)await cdPut(x)}catch(e){}
     simStore=R.sims;
-    try{const sq=await liveFirst(simStore),rem=sq.docs.map(d=>d.data()).filter(smOk).map(smClean),ids=new Set(rem.map(x=>x.id)),lo=sims.filter(x=>!ids.has(x.id));
-      if(rem.length){sims=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);smSaveLocal();render()}for(const x of lo)await smPut(x)}catch(e){}
+    try{const sq=await liveFirst(simStore),rem=sq.docs.map(d=>d.data()).filter(smOk).map(smClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("sims",sq,sims,ids);
+      if(rem.length||gone){sims=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);smSaveLocal();render()}for(const x of lo)await smPut(x)}catch(e){}
     redoStore=R.redo;
-    try{const rq=await liveFirst(redoStore),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),lo=redo.filter(x=>!ids.has(x.id));
-      if(rem.length){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
+    try{const rq=await liveFirst(redoStore),rem=rq.docs.map(d=>d.data()).filter(rdOk).map(rdClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("redo",rq,redo,ids,true);
+      if(rem.length||gone){redo=[...rem,...lo];rdSaveLocal();render()}for(const x of lo)await rdPut(x)}catch(e){}
     exStore=R.exams;exPStore=R.exprog;
     exFigStore=store.collection("exfig");
-    try{const q1=await liveFirst(exStore),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),lo=exams.filter(x=>!ids.has(x.id));
-      if(rem.length){exams=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);exSaveLocal();render()}for(const x of lo)await exPut(x)}catch(e){}
-    try{const q2=await liveFirst(exPStore),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),lo=exProg.filter(x=>!ids.has(x.id));
-      if(rem.length){exProg=[...rem,...lo];exSaveLocal();render()}for(const x of lo)await exPWrite(x.id)}catch(e){}
+    try{const q1=await liveFirst(exStore),rem=q1.docs.map(d=>d.data()).filter(exOk).map(exClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("exams",q1,exams,ids);
+      if(rem.length||gone){exams=[...rem,...lo].sort((a,b)=>a.at<b.at?1:-1);exSaveLocal();render()}for(const x of lo)await exPut(x)}catch(e){}
+    try{const q2=await liveFirst(exPStore),rem=q2.docs.map(d=>d.data()).filter(exPOk).map(exPClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("exprog",q2,exProg,ids);
+      if(rem.length||gone){exProg=[...rem,...lo];exSaveLocal();render()}for(const x of lo)await exPWrite(x.id)}catch(e){}
     try{const q3=await exFigStore.get(),seen=new Set();q3.docs.forEach(d=>{const v=d.data();if(exfOk(v)){seen.add(v.id);if(!exFigs[v.id]){exFigs[v.id]=exfClean(v);idbDo("readwrite",st=>st.put(exFigs[v.id]))}}});
       for(const x of Object.values(exFigs))if(!seen.has(x.id))try{await exFigStore.doc(x.id).set({...x})}catch(e){}exfPurge()}catch(e){}
     focStore=R.focus;
-    try{const fq=await liveFirst(focStore),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),lo=foSess.filter(x=>!ids.has(x.id));
-      if(rem.length){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}
+    try{const fq=await liveFirst(focStore),rem=fq.docs.map(d=>d.data()).filter(foOk).map(foClean),ids=new Set(rem.map(x=>x.id)),{lo,gone}=loOnly("focus",fq,foSess,ids);
+      if(rem.length||gone){foSess=[...rem,...lo].sort((a,b)=>a.s<b.s?1:-1);foSaveLocal();render()}for(const x of lo)await foPut(x)}catch(e){}
     notesStore=R.notes;
     try{const ns=await liveFirst(notesStore);let changed=false;
       ns.docs.forEach(d=>{const v=d.data();if(BYKEY[d.id]&&v&&typeof v.t==="string"&&v.t.trim()&&notes[d.id]!==v.t){

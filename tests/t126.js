@@ -15,8 +15,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
     ui.prefs.wday=[180,180,180,180,180,180,180];ui.prefs.wplans={};saveUI();dayPlan=makeDayPlan();savePlan();backStack=[];setView("fac");facOpenSem.add("s");facCalOpen.add("s");render()});
   await p.waitForTimeout(150);
   /* 1. calendário dentro do semestre */
-  let r=await p.evaluate(()=>{const c=document.getElementById("fcal-s");return c&&{open:c.open,sum:c.querySelector(".fcalc").textContent,w:c.querySelectorAll(".fcw").length,ev:[...c.querySelectorAll(".fce")].map(x=>x.id),heavy:c.querySelectorAll(".fcw.heavy").length}});
-  ok(r&&r.open&&r.w>=8&&r.ev.includes("fce-p-p1")&&r.ev.includes("fce-f-sp2")&&!r.ev.includes("fce-f-sp1"),name+": calendário do semestre com as semanas, prova e fechamento futuros ("+(r&&r.sum)+")");
+  let r=await p.evaluate(()=>{const c=document.getElementById("fcal-s");return c&&{open:c.open,sum:c.querySelector(".fcalc").textContent,w:c.querySelectorAll(".fcw").length,ev:[...c.querySelectorAll(".fce")].map(x=>x.id),heavy:c.querySelectorAll(".fcw.heavy").length,past:wpMon(dnum(today()))<=dnum(today())-1}});
+  ok(r&&r.open&&r.w>=8&&r.ev.includes("fce-p-p1")&&r.ev.includes("fce-f-sp2")&&(r.past||!r.ev.includes("fce-f-sp1")),name+": calendário do semestre com as semanas, prova e fechamento futuros ("+(r&&r.sum)+")");
   ok(r.heavy===1,name+": semana com prova e fechamento = semana pesada");
   /* 2. aula fixa amanhã: menos tempo no dia; na véspera (hoje) lembra de revisar os objetivos da SP aberta */
   await tap('#fcaa-s');

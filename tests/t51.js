@@ -25,7 +25,7 @@ await p.tap('#foPill');await p.waitForTimeout(200);ok(await vis('#foEnd'),"pílu
 await p.tap('#foPauseB');await p.tap('#foEnd');await p.waitForTimeout(300);st=await p.evaluate(()=>({n:foSess.length,sec:foSess[0].sec,m:foSess[0].m}));ok(st.n===2&&st.sec>=600&&st.sec<605&&st.m==="c","cronômetro salvo: "+JSON.stringify(st));
 ok(!(await vis('#foPill')),"sem pílula parado");
 // recarregar no meio de uma sessão mantém
-await p.tap('#foStart');await p.evaluate(()=>{foRun.t0-=3*60000;foSaveRun()});await p.waitForTimeout(300);await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
+await p.tap('#foStart');await p.evaluate(()=>{foRun.t0-=3*60000;foSaveRun();localStorage.removeItem('resid-seen-v1')});await p.waitForTimeout(300);await p.reload();await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 await p.waitForFunction(()=>foRun&&foEl()>=180000,null,{polling:100,timeout:5000}).catch(()=>{});ok(await p.evaluate(()=>foRun&&foEl()>=180000),"recarregar mantém a sessão em andamento");
 await p.evaluate(()=>setView("foco"));await p.waitForTimeout(200);await p.tap('#foDisc');await p.tap('#foDisc');await p.waitForTimeout(200);ok(await p.evaluate(()=>foRun===null&&foSess.length===2),"descartar em dois toques");
 // manual
