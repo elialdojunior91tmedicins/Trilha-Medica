@@ -13,9 +13,9 @@ for(const [name,w,h,mob] of [["note",1366,900,false],["fone",390,844,true]]){
     const S=(id,d,sec,ref)=>({id,d:D(d),s:D(d)+"T10:00:00.000Z",sec,m:"p",ref,lab:""});
     foSess.push(S("f1",40,3600,"T:CM-1"),S("f2",30,3600,"D:a"),S("f3",25,4*3600,"T:CM-30"),S("f4",10,2*3600,"D:b"),S("f5",5,3600,"D:c"),S("f6",3,1800,"T:CM-7"));foSaveLocal();
     stSide="fac";stPer=30;backStack=[];setView("stats");render();
-    const R=[...document.querySelectorAll("#stSem .stsr")].map(x=>[x.querySelector(".stsn").textContent,x.querySelector(".stst").textContent,x.querySelector(".stsv").textContent,(x.querySelector(".stsb")||{}).textContent||""].join("|"));
+    const R=[...document.querySelectorAll("#stSem .stsr")].map(x=>[x.querySelector(".stsn b").textContent,x.querySelector(".stst b").textContent,x.querySelector(".stsv b").textContent+" "+x.querySelector(".stsv small").textContent,(x.querySelector(".stsb")||{}).textContent||""].join("|"));
     const fr=document.getElementById("stFacRes");return {R,fr:fr&&fr.textContent}});
-  ok(r.R[0]==="Tutoria|2 h|nota 90%|mais resultado por hora"&&r.R[1]==="TBL|6 h|nota 45%|nota baixa: rever o jeito de estudar"&&r.R[2]==="Morfofuncional|1 h|sem nota ainda|",name+": resumo do semestre: tempo × nota por disciplina ("+r.R.join(" ; ")+")");
+  ok(r.R[0]==="Tutoria|2 h|90% 1 prova|"&&r.R[1]==="TBL|6 h|45% 1 prova|nota baixa: rever o jeito de estudar"&&r.R[2]==="Morfofuncional|1 h|– sem nota|",name+": resumo do semestre: tempo × nota (selo de resultado por hora só com 3 h+ de foco) ("+r.R.join(" ; ")+")");
   ok(/^\d+%No semestre, \d+% do que você estudou na faculdade \(.+ de 9 h\) também avançou temas da residência/.test(r.fr||""),name+": quanto da faculdade conta para a residência: "+r.fr);
   ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
   await ctx.close()}

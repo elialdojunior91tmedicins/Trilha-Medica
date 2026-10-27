@@ -1401,9 +1401,16 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
 .fcgrpb{display:flex;flex-direction:column;gap:10px}
-.stsem{display:flex;flex-direction:column;gap:6px;margin:6px 0 10px}.stsr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:2px 12px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line);font-size:.9rem}
-.stsn{font-weight:600;min-width:0}.stst{color:var(--muted);font-variant-numeric:tabular-nums}.stsv{font-weight:600;font-size:.84rem}.stsv.ok{color:var(--good)}.stsv.warn{color:var(--warn)}.stsv.bad{color:var(--due)}
-.stsb{grid-column:1/-1;justify-self:start;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid currentColor}.stsb.good{color:var(--good)}.stsb.bad{color:var(--due)}
+.stsem{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px}
+.stsh,.stsr{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(64px,.8fr) minmax(76px,.9fr);gap:4px 14px;align-items:center}
+.stsh{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:0 12px}
+.stsr{background:var(--bg);border-radius:12px;padding:11px 12px}
+.stsn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}.stsn b{font-size:.92rem;overflow-wrap:anywhere}
+.stst,.stsv{display:flex;flex-direction:column;gap:4px;min-width:0}.stst b,.stsv b{font:500 1.15rem/1 var(--display);font-variant-numeric:tabular-nums}.stsv small{font-size:.72rem;color:var(--muted)}
+.stsm{display:block;height:5px;border-radius:99px;background:var(--track);overflow:hidden}.stsm i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.stsv.ok b{color:var(--good)}.stsv.ok .stsm i{background:var(--good)}.stsv.warn b{color:var(--warn)}.stsv.warn .stsm i{background:var(--warn)}.stsv.bad b{color:var(--due)}.stsv.bad .stsm i{background:var(--due)}
+.stsb{font-size:.68rem;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid currentColor}.stsb.good{color:var(--good)}.stsb.bad{color:var(--due)}
+.stdisc .stnr{grid-template-columns:minmax(0,1fr) auto;gap:5px 12px;padding:2px 0}.stdisc .stnr .stnn{font-weight:600}.stdisc .stnr .meter{grid-column:1/-1;grid-row:2;height:6px}.stdisc .stnr b{font:500 1rem var(--display)}
 .stfr{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--bg)}.stfr b{font:500 1.8rem/1 var(--display);color:var(--l2)}.stfr span{font-size:.88rem}.stfr .meter{grid-column:1/-1}
 .npath{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:2px 0 10px}.ncrumb{font-size:.78rem;color:var(--muted)}.nsels{display:flex;flex-wrap:wrap;gap:6px}
 .nsel{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}.nsel.res{border-color:var(--accent);color:var(--accent)}.nsel.fac{border-color:var(--l2);color:var(--l2)}.nsel.mod{border-color:var(--gold);color:var(--gold)}
@@ -9691,10 +9698,13 @@ function stFacBlocks(F){const out=[],per=`${F.D} dias`;
     if(F.discT.length){const mx=Math.max(1,...F.discT.map(x=>x.s));const L=el(`<div class="stdisc"></div>`);F.discT.forEach(x=>{const r=el(`<div class="stnr"><span class="stnn"></span><div class="meter"><i></i></div><b></b></div>`);r.querySelector(".stnn").textContent=x.d.name;r.querySelector("i").style.width=x.s/mx*100+"%";r.querySelector("b").textContent=stH(x.s);L.appendChild(r)});
       c.appendChild(stRow("Foco por disciplina",`últimos ${per}`));c.appendChild(L)}else c.appendChild(el(`<p class="how stempty">Nenhuma disciplina ativa.</p>`));
     /* resumo do semestre: tempo × nota em cada disciplina */
-    if(F.sem.length){c.appendChild(stRow("Resumo do semestre",`tempo de foco × nota, desde ${br(fromNum(F.semA))}`));const L=el(`<div class="stsem" id="stSem"></div>`),wn=F.sem.filter(x=>x.n&&x.s>=3600);
+    if(F.sem.length){c.appendChild(stRow("Resumo do semestre",`tempo de foco × nota, desde ${br(fromNum(F.semA))}`));const L=el(`<div class="stsem" id="stSem"></div>`),wn=F.sem.filter(x=>x.n&&x.s>=3*3600);
       const best=wn.length>1?wn.reduce((a,b)=>a.v/a.s>=b.v/b.s?a:b):null,heavy=F.sem.filter(x=>x.n&&x.v<.6).sort((a,b)=>b.s-a.s)[0];
-      F.sem.forEach(x=>{const r=el(`<div class="stsr"><span class="stsn"></span><span class="stst"></span><span class="stsv"></span><span class="stsb"></span></div>`);r.querySelector(".stsn").textContent=x.d.name;r.querySelector(".stst").textContent=x.s?stH(x.s):"sem foco";
-        const v=r.querySelector(".stsv");if(x.n){v.textContent=`nota ${Math.round(x.v*100)}%${x.n>1?` (${x.n} provas)`:""}`;v.classList.add(x.v>=.7?"ok":x.v>=.5?"warn":"bad")}else v.textContent="sem nota ainda";
+      const smx=Math.max(1,...F.sem.map(x=>x.s));L.appendChild(el(`<div class="stsh" aria-hidden="true"><span>Disciplina</span><span>Foco</span><span>Nota média</span></div>`));
+      F.sem.forEach(x=>{const r=el(`<div class="stsr"><div class="stsn"><b></b><span class="stsb"></span></div><div class="stst"><b></b><span class="stsm"><i></i></span></div><div class="stsv"><b></b><small></small><span class="stsm"><i></i></span></div></div>`);
+        r.querySelector(".stsn b").textContent=x.d.name;r.querySelector(".stst b").textContent=x.s?stH(x.s):"–";r.querySelector(".stst i").style.width=Math.round(x.s/smx*100)+"%";
+        const v=r.querySelector(".stsv");if(x.n){v.querySelector("b").textContent=`${Math.round(x.v*100)}%`;v.querySelector("small").textContent=x.n>1?`${x.n} provas`:"1 prova";v.classList.add(x.v>=.7?"ok":x.v>=.5?"warn":"bad");v.querySelector("i").style.width=Math.round(x.v*100)+"%"}
+        else{v.querySelector("b").textContent="–";v.querySelector("small").textContent="sem nota";v.querySelector(".stsm").remove()}
         const bd=r.querySelector(".stsb");if(best&&x===best){bd.textContent="mais resultado por hora";bd.classList.add("good")}else if(heavy&&x===heavy){bd.textContent="nota baixa: rever o jeito de estudar";bd.classList.add("bad")}else bd.remove();L.appendChild(r)});
       c.appendChild(L);if(!F.sem.some(x=>x.n))c.appendChild(el(`<p class="how stnote">Registre as notas das provas (Faculdade › Próximas provas, depois da prova) para comparar o tempo com o resultado.</p>`))}
     const adj=el(`<div class="btns"><button class="btn" type="button" id="stAdjF">Ajustar a semana</button></div>`);adj.querySelector("button").onclick=stAdjWeek;c.appendChild(adj);out.push(c)}
