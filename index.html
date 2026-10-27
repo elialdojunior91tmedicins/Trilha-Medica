@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=1efd548f">
+<link rel="stylesheet" href="site.css?v=55073973">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=1efd548f"></script>
-<script src="bridge.js?v=1efd548f"></script>
+<script src="config.js?v=55073973"></script>
+<script src="bridge.js?v=55073973"></script>
 </head>
 <body>
 <script>
@@ -6277,7 +6277,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* Lote 18: a fila do dia sobe para logo depois da saudação também em quem já tinha uma ordem salva (uma vez) */
   if(o.prefs.iorder&&!p.iq18){const a=o.prefs.iorder.filter(x=>x!=="iQueue"),h=a.indexOf("iHero");a.splice(h+1,0,"iQueue");o.prefs.iorder=a}if(o.prefs.iorder||p.iq18)o.prefs.iq18=1;
   if(Number.isInteger(p.fevery)&&p.fevery>=2&&p.fevery<=8)o.prefs.fevery=p.fevery;
-  if(["","w","b","r","s","f","c"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
+  if(["","w","b","r","s","f"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
   if(Number.isInteger(p.fvol)&&p.fvol>=0&&p.fvol<=100)o.prefs.fvol=p.fvol;
   if(Number.isInteger(p.fwgoal)&&p.fwgoal>=0&&p.fwgoal<=6000)o.prefs.fwgoal=p.fwgoal;
   if(typeof p.fsnd==="boolean")o.prefs.fsnd=p.fsnd;
@@ -7185,9 +7185,9 @@ function foDotsEl(){const P=ui.prefs,ev=P.fevery,n=foSeriesNow(),inCycle=n%ev,on
   for(let i=0;i<ev;i++)w.appendChild(el(`<i class="${i<done?"on":foRun&&foRun.ph==="w"&&i===done?"cur":""}"></i>`));
   w.appendChild(el(`<span>${onLong?`pausa longa de ${P.flong} min`:`pausa longa a cada ${ev} ciclos`}</span>`));return w}
 /* ----- 5. som de fundo: gravações reais (Lote 18; arquivos em sounds/, baixados só quando tocam e guardados no aparelho) e ruídos gerados no app ----- */
-const FO_NOISE={r:"Chuva",s:"Riacho",f:"Lareira",c:"Cafeteria",w:"Ruído branco",b:"Ruído marrom"};
-const FO_REC={r:"sounds/chuva.mp3",s:"sounds/riacho.mp3",f:"sounds/lareira.mp3",c:"sounds/cafeteria.mp3"};
-const FO_CRED="Chuva: alex36917, editada por Porrumentzio (CC BY) · Riacho: gluckose (CC0) · Lareira: ezwa e Cafeteria: stephan (domínio público). Gravações do app livre Blanket; fontes em freesound.org e soundbible.com.";
+const FO_NOISE={r:"Chuva",s:"Riacho",f:"Lareira",w:"Ruído branco",b:"Ruído marrom"};
+const FO_REC={r:"sounds/chuva.mp3",s:"sounds/riacho.mp3",f:"sounds/lareira.mp3"};
+const FO_CRED="Chuva: alex36917, editada por Porrumentzio (CC BY) · Riacho: gluckose (CC0) · Lareira: ezwa (domínio público). Gravações do app livre Blanket; fontes em freesound.org e soundbible.com.";
 let foRecBuf={},foRecP={},foRecErr={};
 /* baixa a gravação uma vez (Cache API quando houver) e decodifica; sem internet, cai no som gerado */
 function foRecLoad(t){if(foRecBuf[t])return Promise.resolve(foRecBuf[t]);if(foRecP[t])return foRecP[t];

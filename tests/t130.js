@@ -11,7 +11,7 @@ for(const [name,w,h,mob] of [["note",1366,900,false],["fone",390,844,true]]){
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   await p.evaluate(()=>{backStack=[];setView("foco");const m=document.querySelector(".fomore");if(m)m.open=true;render()});
   let r=await p.evaluate(()=>{const d=document.querySelector(".fomore");if(d)d.open=true;return [...document.querySelectorAll('.fonoise .chip')].map(x=>x.dataset.fn+":"+x.textContent)});
-  ok(r.join()==="off:Desligado,r:Chuva,s:Riacho,f:Lareira,c:Cafeteria,w:Ruído branco,b:Ruído marrom",name+": opções de som: 4 gravações e 2 ruídos ("+r.join(" | ")+")");
+  ok(r.join()==="off:Desligado,r:Chuva,s:Riacho,f:Lareira,w:Ruído branco,b:Ruído marrom",name+": opções de som: 3 gravações e 2 ruídos ("+r.join(" | ")+")");
   ok(!got.length,name+": nenhuma gravação é baixada ao abrir o Foco");
   await p.evaluate(()=>[...document.querySelectorAll('.fonoise .chip')].find(x=>x.dataset.fn==="r").click());
   await p.waitForFunction(()=>foRecBuf.r||foRecErr.r,null,{timeout:15000}).catch(()=>{});
