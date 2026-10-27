@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync('mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 // 1) migração: questões antigas sem dia ganham a data do último estudo, e é gravado na conta
-const D0=new Date();const iso=n=>{const d=new Date(D0);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const D0=new Date();const iso=n=>{const d=new Date(D0);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const seed={"data/users/u1/progress":{topics:{"CM-37":{l:1,last:iso(-3),qt:30,qc:15,qd:{[iso(-1)]:[10,8]}},"CM-34":{l:0,qt:4,qc:2}}}};
 let ctx=await b.newContext({viewport:{width:1366,height:900}});await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;try{['resid-qfpanel','resid-efpanel','resid-nfpanel'].forEach(k=>localStorage.setItem(k,'1'))}catch(e){};;window.__mock(${JSON.stringify(seed)},5);`);
 let p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});await p.waitForTimeout(1200);

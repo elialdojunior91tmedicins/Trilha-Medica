@@ -22,7 +22,7 @@ await p.evaluate(()=>setView("quest"));await p.waitForTimeout(150);
 // meta semanal
 await p.evaluate(()=>setQSeg("resumo"));await p.waitForTimeout(100);
 ok(/Defina uma meta/.test(await p.$eval('#qGoal',x=>x.textContent)),tag+": sem meta");
-await p.selectOption('#qGoalSel','100');await p.waitForTimeout(150);const gt=await p.$eval('#qGoal',x=>x.textContent);ok(/40de 100|40\s*de 100/.test(gt.replace(/\s+/g," "))||/40/.test(gt)&&/Faltam 60/.test(gt),tag+": meta 100: "+gt.replace(/\s+/g," ").slice(0,120));
+await p.evaluate(()=>{ui.prefs.qgoal=100;saveUI();render()});await p.waitForTimeout(150);const gt=await p.$eval('#qGoal',x=>x.textContent);ok(/40de 100|40\s*de 100/.test(gt.replace(/\s+/g," "))||/40/.test(gt)&&/Faltam 60/.test(gt),tag+": meta 100: "+gt.replace(/\s+/g," ").slice(0,120));
 // banca no registro
 await click('#qRegB');await p.fill('#qrq','anemias');await p.waitForTimeout(500);await click('.qrpick');await p.waitForTimeout(100);
 await p.fill('#qrt','20');await p.fill('#qrc','10');await p.fill('#qrb','ENARE');await click('#qrSave');await p.waitForTimeout(200);

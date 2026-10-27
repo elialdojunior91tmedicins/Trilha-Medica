@@ -65,7 +65,7 @@ ok(await p.evaluate(()=>/Gerenciar conta/.test(document.getElementById("acctBtn"
 await p.evaluate(t=>__site.importFlow(t),JSON.stringify(BK));await p.waitForTimeout(300);
 await navTo(p,()=>p.click('.smodal button:has-text("Importar")'));await boot(p);
 const db=await p.evaluate(()=>JSON.parse(localStorage.getItem("__fbdb")));const ks=Object.keys(db);
-ok(ks.some(k=>/progress$/.test(k))&&ks.some(k=>/faculdade$/.test(k))&&ks.some(k=>/notes\/CM-1$/.test(k))&&ks.some(k=>/errors\/e1$/.test(k))&&ks.some(k=>/settings$/.test(k)),"importação gravou tudo na conta: "+ks.length+" documentos");
+ok(ks.some(k=>/progress$/.test(k))&&ks.some(k=>/faculdade$/.test(k))&&ks.some(k=>/notes\/CM-1$/.test(k))&&ks.some(k=>/errors\/e1$/.test(k)||(/errorspk\/p\d+$/.test(k)&&/"e1"/.test(JSON.stringify(Object.keys((db[k]||{}).i||{})))))&&ks.some(k=>/settings$/.test(k)),"importação gravou tudo na conta: "+ks.length+" documentos");
 ok(db[ks.find(k=>/progress\/topics\/CM-1$/.test(k))].qt===10,"progresso na conta confere");
 // outro aparelho: entrar com o mesmo e-mail
 const st=await p.evaluate(()=>({db:localStorage.getItem("__fbdb"),us:localStorage.getItem("__fbusers")}));

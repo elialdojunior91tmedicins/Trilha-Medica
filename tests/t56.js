@@ -19,7 +19,7 @@ await p.evaluate(()=>{rdAdd("CM-37",{enunciado:"Caso X",alternativas:[{letra:"A"
   foSess.unshift({id:"foT1",d:today(),s:new Date().toISOString(),sec:1500,m:"p",ref:"T:CM-37",lab:"x"});foPut(foSess[0]);ui.prefs.qgoal=200;ui.prefs.fgoal=120;ui.prefs.qpace=150;saveUI();render()});
 await p.waitForTimeout(1500);
 ok(!(await p.evaluate(()=>window.__fbInvalid||0)),"nada recusado pelo Firestore");
-const db=await p.evaluate(()=>JSON.parse(localStorage.getItem("__fbdb")));const ks=Object.keys(db);
+const db=await p.evaluate(()=>(d=>{for(const k of Object.keys(d)){const m=k.match(/^(.*\/progress\/)(\w+)pk\/p\d+$/);if(m)for(const id in (d[k].i||{}))d[m[1]+m[2]+"/"+id]=JSON.parse(d[k].i[id])}return d})(JSON.parse(localStorage.getItem("__fbdb"))));const ks=Object.keys(db);
 ok(ks.some(k=>/progress\/redo\//.test(k))&&ks.some(k=>/progress\/focus\//.test(k)),"refazer e foco gravados na conta");
 const pk=ks.find(k=>/progress\/topics\/CM-16$/.test(k));ok(db[pk]&&db[pk].qb&&db[pk].qb.ENARE,"banca gravada na conta");
 const pg=ks.find(k=>/progress$/.test(k));ok(db[pg].hist&&Object.values(db[pg].hist).some(h=>h.tq===12),"ritmo gravado no histórico da conta");

@@ -121,7 +121,7 @@ function buildBackup(uid) {
   if (prog.topics && typeof prog.topics === "object") topics = prog.topics; // conta antiga (v2)
   listCol(base + "progress/topics").forEach(function (d) { topics[d.id] = d.data; });
   var fac = getDoc(base + "faculdade");
-  if (fac) { fac = { sems: fac.sems || [], discs: fac.discs || [], provas: fac.provas || [], own: fac.own || {}, crunch: fac.crunch }; if (!fac.crunch) delete fac.crunch; }
+  if (fac) { fac = { sems: fac.sems || [], discs: fac.discs || [], provas: fac.provas || [], own: fac.own || {}, crunch: fac.crunch, aulas: fac.aulas, ents: fac.ents, canc: fac.canc }; ["crunch", "aulas", "ents", "canc"].forEach(function (k) { if (!fac[k] || (Array.isArray(fac[k]) && !fac[k].length)) delete fac[k]; }); } // aulas fixas, entregas e cancelamentos: Lote 18
   var settings = getDoc(base + "settings") || {};
   var prefs = getDoc(base + "prefs");
   var notes = {}, noteAt = {};
@@ -129,11 +129,22 @@ function buildBackup(uid) {
     if (d.data && typeof d.data.t === "string" && d.data.t.trim()) { notes[d.id] = d.data.t; if (d.data.updatedAt) noteAt[d.id] = d.data.updatedAt; }
   });
   var arr = function (n) { return listCol(base + "progress/" + n).map(function (d) { return d.data; }); };
+  /* erros, cartões, foco e Refazer ficam em pacotes (Lote 18): progress/<lista>pk/pN, campo i = {id: item em JSON};
+     item grande e o que uma versão antiga gravou continuam na coleção antiga (que ganha quando o item está nos dois, como no app) */
+  var packed = function (n) {
+    var out = [], at = {};
+    listCol(base + "progress/" + n + "pk").forEach(function (d) {
+      var m = (d.data && d.data.i) || {};
+      Object.keys(m).forEach(function (id) { if (typeof m[id] !== "string" || at[id] !== undefined) return; try { at[id] = out.length; out.push(JSON.parse(m[id])); } catch (e) {} });
+    });
+    arr(n).forEach(function (x) { if (x && at[x.id] !== undefined) out[at[x.id]] = x; else out.push(x); });
+    return out;
+  };
   var data = {
     topics: topics, hist: prog.hist || {}, plan: prog.plan || null, notes: notes, noteAt: noteAt,
-    errors: arr("errors"), fac: fac || { sems: [], discs: [], provas: [], own: {} },
+    errors: packed("errors"), fac: fac || { sems: [], discs: [], provas: [], own: {} },
     prompt: typeof settings.prompt === "string" ? settings.prompt : undefined,
-    focus: arr("focus"), redo: arr("redo"), cards: arr("cards"), free: arr("free"),
+    focus: packed("focus"), redo: packed("redo"), cards: packed("cards"), free: arr("free"),
     exams: arr("exams"), examProg: arr("exprog"), sims: arr("sims"), exfigs: arr("exfig")
   };
   if (prefs) { delete prefs.updatedAt; data.ui = prefs; } // a conta guarda a data da gravação junto; o backup do app não

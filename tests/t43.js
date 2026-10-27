@@ -14,7 +14,7 @@ await p.evaluate(()=>{tSeg="prog";setView("temas")});await p.waitForTimeout(150)
 ok(/ENARE 2027/.test(await p.textContent('#iMeta'))&&/faltam 100 dias/.test(await p.textContent('#iMeta'))&&await p.evaluate(()=>!!document.querySelector('#iMeta').offsetParent),"meta na Residência (Progresso) com contagem");await p.evaluate(()=>setView("inicio"));
 // config
 await p.tap('#cfgBtn');await p.waitForTimeout(150);
-await p.tap('#cfBody button.lay:has-text("Compacto")');ok(await p.evaluate(()=>document.documentElement.dataset.skin==="compact"),"layout Compacto aplicado");
+await p.evaluate(()=>{document.querySelectorAll('details.cfmore').forEach(d=>d.open=true)});await p.tap('#cfBody button.lay:has-text("Compacto")');ok(await p.evaluate(()=>document.documentElement.dataset.skin==="compact"),"layout Compacto aplicado");
 await p.tap('#cfBody .cfrow:has-text("Tema") button:has-text("Escuro")');ok(await p.evaluate(()=>document.documentElement.getAttribute("data-theme")==="dark"),"tema escuro");
 await p.tap('#cfBody .cfrow:has-text("Tema") button:has-text("Automático")');ok(await p.evaluate(()=>!document.documentElement.hasAttribute("data-theme")),"tema automático solta o atributo");
 await p.tap('#cfBody .cfrow:has-text("Tamanho da letra") button:has-text("Grande")');ok(await p.evaluate(()=>getComputedStyle(document.documentElement).fontSize==="18px"),"letra grande");

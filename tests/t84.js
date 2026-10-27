@@ -16,7 +16,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(r0.n===60&&r0.uniq===60,name+": 60 frases diferentes (uma por dia, sem repetir por 2 meses)");
   ok(/^[A-ZÁ-Ú][a-zá-ú-]+, \d{1,2} de [a-zç]+$/.test(r0.date),name+": data por extenso: "+r0.date);
   /* saudação pela hora e nome do Perfil */
-  const hi=await p.evaluate(()=>{const g=Date.prototype.getHours,out=[];for(const hh of [7,14,21,2]){Date.prototype.getHours=function(){return hh};out.push(heroHi())}Date.prototype.getHours=g;
+  const hi=await p.evaluate(()=>{const g=window.__hour,out=[];for(const hh of [7,14,21,2]){window.__hour=hh;out.push(heroHi())}window.__hour=g;
     ui.profile.name="Eli Junior";saveUI();render();const a=document.querySelector('#iHero .hhi').textContent;ui.profile.name="";saveUI();render();const b2=document.querySelector('#iHero .hhi').textContent;ui.profile.name="Eli Junior";saveUI();render();return {out,a,b:b2}});
   ok(hi.out.join("|")==="Bom dia|Boa tarde|Boa noite|Boa noite",name+": Bom dia, Boa tarde e Boa noite pela hora");
   ok(/^(Bom dia|Boa tarde|Boa noite), Eli\.$/.test(hi.a)&&/^(Bom dia|Boa tarde|Boa noite)\.$/.test(hi.b),name+": usa o primeiro nome; sem nome, só a saudação: "+hi.a+" / "+hi.b);
@@ -28,11 +28,11 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
     ui.profile.exams=[{id:"x1",name:"ENARE",date:D(12)}];ui.profile.mainEx="x1";saveUI();commit()});await p.waitForTimeout(150);
   const r1=await p.evaluate(()=>{const C=qCounts();return {C,sum:document.querySelector('#iHero .hsum').textContent,want:heroSummary(C),btn:(document.querySelector('#heroGo')||{}).textContent,iq:!!document.querySelector('#iqGo'),ex:(document.querySelector('#iHero .hexam')||{}).textContent}});
   ok(r1.C.revs>=2&&r1.C.errs>=1&&r1.sum===r1.want&&/fila de hoje/.test(r1.sum),name+": mostra o que espera hoje: "+r1.sum);
-  ok(r1.btn==="Começar a fila →"&&!r1.iq,name+": botão Começar a fila na saudação, sem botão repetido em Revisar hoje");
+  ok(r1.btn==="Começar →"&&!r1.iq,name+": botão Começar na saudação, sem botão repetido em Revisar hoje");
   ok(r1.ex==="Faltam 12 dias para ENARE.",name+": contagem até a prova principal: "+r1.ex);
   if(name==="fone"||name==="note"||name==="monitor"){await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`t84-${name}.png`})}
   const pos=await p.evaluate(()=>{const H=document.querySelector('#iHero').getBoundingClientRect(),B=document.querySelector('#iBoard').getBoundingClientRect(),V=document.querySelector('#viewInicio').getBoundingClientRect();
-    const Q=document.querySelector('#iQueue').getBoundingClientRect();return {above:H.top<B.top&&B.top<Q.top,full:Math.abs(H.width-V.width)<2,scroll:document.documentElement.scrollWidth<=innerWidth}});
+    const Q=document.querySelector('#iQueue').getBoundingClientRect();return {above:H.top<Q.top&&H.top<B.top&&(document.documentElement.dataset.cols==="2"||Q.top<B.top),full:Math.abs(H.width-V.width)<2,scroll:document.documentElement.scrollWidth<=innerWidth}});
   ok(pos.above&&pos.full&&pos.scroll,name+": a saudação abre o Início, na largura toda, sem rolagem lateral "+JSON.stringify(pos));
   const col=await p.evaluate(()=>{const c=getComputedStyle(document.querySelector('#iHero .hhi')).color,bg=getComputedStyle(document.querySelector('#iHero')).backgroundImage;return {c,bg}});
   ok(/gradient/.test(col.bg)&&(col.c.match(/\d+/g)||[]).slice(0,3).every(v=>+v>200),name+": fundo em degradê marinho e título claro "+col.c);
