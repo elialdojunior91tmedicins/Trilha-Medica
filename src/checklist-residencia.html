@@ -6254,7 +6254,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* Lote 18: a fila do dia sobe para logo depois da saudação também em quem já tinha uma ordem salva (uma vez) */
   if(o.prefs.iorder&&!p.iq18){const a=o.prefs.iorder.filter(x=>x!=="iQueue"),h=a.indexOf("iHero");a.splice(h+1,0,"iQueue");o.prefs.iorder=a}if(o.prefs.iorder||p.iq18)o.prefs.iq18=1;
   if(Number.isInteger(p.fevery)&&p.fevery>=2&&p.fevery<=8)o.prefs.fevery=p.fevery;
-  if(["","w","b","r"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
+  if(["","w","b","r","s","f","c"].includes(p.fnoise))o.prefs.fnoise=p.fnoise;
   if(Number.isInteger(p.fvol)&&p.fvol>=0&&p.fvol<=100)o.prefs.fvol=p.fvol;
   if(Number.isInteger(p.fwgoal)&&p.fwgoal>=0&&p.fwgoal<=6000)o.prefs.fwgoal=p.fwgoal;
   if(typeof p.fsnd==="boolean")o.prefs.fsnd=p.fsnd;
@@ -7161,8 +7161,18 @@ function foDotsEl(){const P=ui.prefs,ev=P.fevery,n=foSeriesNow(),inCycle=n%ev,on
   const w=el(`<p class="fodots" aria-label=""></p>`);w.setAttribute("aria-label",`Ciclo ${Math.min(done+(foRun&&foRun.ph==="w"?1:0),ev)} de ${ev} até a pausa longa`);
   for(let i=0;i<ev;i++)w.appendChild(el(`<i class="${i<done?"on":foRun&&foRun.ph==="w"&&i===done?"cur":""}"></i>`));
   w.appendChild(el(`<span>${onLong?`pausa longa de ${P.flong} min`:`pausa longa a cada ${ev} ciclos`}</span>`));return w}
-/* ----- 5. ruído de fundo (gerado no próprio app) ----- */
-const FO_NOISE={w:"Branco",b:"Marrom",r:"Chuva"};
+/* ----- 5. som de fundo: gravações reais (Lote 18; arquivos em sounds/, baixados só quando tocam e guardados no aparelho) e ruídos gerados no app ----- */
+const FO_NOISE={r:"Chuva",s:"Riacho",f:"Lareira",c:"Cafeteria",w:"Ruído branco",b:"Ruído marrom"};
+const FO_REC={r:"sounds/chuva.mp3",s:"sounds/riacho.mp3",f:"sounds/lareira.mp3",c:"sounds/cafeteria.mp3"};
+const FO_CRED="Chuva: alex36917, editada por Porrumentzio (CC BY) · Riacho: gluckose (CC0) · Lareira: ezwa e Cafeteria: stephan (domínio público). Gravações do app livre Blanket; fontes em freesound.org e soundbible.com.";
+let foRecBuf={},foRecP={},foRecErr={};
+/* baixa a gravação uma vez (Cache API quando houver) e decodifica; sem internet, cai no som gerado */
+function foRecLoad(t){if(foRecBuf[t])return Promise.resolve(foRecBuf[t]);if(foRecP[t])return foRecP[t];
+  foRecP[t]=(async()=>{const url=FO_REC[t];let res=null;try{if(window.caches){const c=await caches.open("nexus-sons");res=await c.match(url);if(!res){const r=await fetch(url);if(r.ok){try{await c.put(url,r.clone())}catch(e){}res=r}}}}catch(e){}
+    if(!res){res=await fetch(url);if(!res.ok)throw new Error("http "+res.status)}const ab=await res.arrayBuffer();foUnlock();if(!foActx)throw new Error("sem áudio");
+    const buf=await new Promise((ok,no)=>{try{const p=foActx.decodeAudioData(ab,ok,no);if(p&&p.then)p.then(ok,no)}catch(e){no(e)}});foRecBuf[t]=buf;delete foRecErr[t];return buf})()
+    .catch(e=>{foRecErr[t]=1;delete foRecP[t];throw e});
+  foRecP[t].then(()=>{delete foRecP[t];foNoiseSync();render()},()=>{foNoiseSync();render()});return foRecP[t]}
 function foNoiseBuf(type){const A=foActx,len=A.sampleRate*4,buf=A.createBuffer(1,len,A.sampleRate),d=buf.getChannelData(0);let last=0,b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
   for(let i=0;i<len;i++){const w=Math.random()*2-1;
     if(type==="w")d[i]=w*0.5;
@@ -7173,15 +7183,22 @@ function foNoiseSync(){const P=ui.prefs,want=!!(foRun&&foRun.ph==="w"&&foRun.t0&
   try{if(!want){if(foNoise){const N=foNoise;foNoise=null;N.g.gain.setTargetAtTime(0,foActx.currentTime,0.15);setTimeout(()=>{try{N.s.stop()}catch(e){}},600)}return}
     foUnlock();if(!foActx)return;const vol=Math.max(0,Math.min(100,P.fvol))/100*0.6;
     if(foNoise&&foNoise.type!==P.fnoise){try{foNoise.s.stop()}catch(e){}foNoise=null}
-    if(!foNoise){const s=foActx.createBufferSource(),g=foActx.createGain();s.buffer=foNoiseBuf(P.fnoise);s.loop=true;let out=s;
-      if(P.fnoise==="r"){const f=foActx.createBiquadFilter();f.type="lowpass";f.frequency.value=2200;s.connect(f);out=f}
-      g.gain.value=0;out.connect(g);g.connect(foActx.destination);s.start();foNoise={s,g,type:P.fnoise}}
+    if(!foNoise){const rec=FO_REC[P.fnoise];let buf=null;
+      if(rec&&!foRecErr[P.fnoise]){buf=foRecBuf[P.fnoise];if(!buf){foRecLoad(P.fnoise).catch(()=>{});return}}
+      const gen=!buf,gt=gen&&rec?(P.fnoise==="r"?"r":"b"):P.fnoise;// sem a gravação: chuva gerada, ou ruído marrom no lugar dos outros
+      const s=foActx.createBufferSource(),g=foActx.createGain();s.buffer=buf||foNoiseBuf(gt);s.loop=true;let out=s;
+      if(buf){s.loopStart=0.06;s.loopEnd=Math.max(1,buf.duration-0.06)}
+      if(gen&&(gt==="r"||gt==="w")){const f=foActx.createBiquadFilter();f.type="lowpass";f.frequency.value=gt==="r"?2200:7000;s.connect(f);out=f}// ruído branco mais suave, menos "chiado"
+      g.gain.value=0;out.connect(g);g.connect(foActx.destination);if(buf)s.start(0,0.06);else s.start();foNoise={s,g,type:P.fnoise,rec:!!buf}}
     foNoise.g.gain.setTargetAtTime(vol,foActx.currentTime,0.25)}catch(e){foNoise=null}}
 function foNoiseEl(){const P=ui.prefs,w=el(`<div class="fonoise"><span class="glabel">Som de fundo</span><div class="chips" role="group" aria-label="Som de fundo"></div></div>`),ch=w.querySelector(".chips");
-  [["","Desligado"],...Object.entries(FO_NOISE)].forEach(([v,t])=>{const b=el(`<button class="chip" type="button" aria-pressed="${(P.fnoise||"")===v}"></button>`);b.textContent=t;b.dataset.fn=v||"off";b.onclick=()=>{foUnlock();ui.prefs.fnoise=v;saveUI();render()};ch.appendChild(b)});
+  [["","Desligado"],...Object.entries(FO_NOISE)].forEach(([v,t])=>{const b=el(`<button class="chip" type="button" aria-pressed="${(P.fnoise||"")===v}"></button>`);b.textContent=t;b.dataset.fn=v||"off";if(FO_REC[v])b.title="Gravação real";
+    b.onclick=()=>{foUnlock();ui.prefs.fnoise=v;saveUI();if(FO_REC[v]&&!foRecBuf[v])foRecLoad(v).catch(()=>{});render()};ch.appendChild(b)});
+  {const t=P.fnoise;if(FO_REC[t]){const st=el(`<p class="how fonst"></p>`);st.textContent=foRecErr[t]?"Não deu para baixar a gravação agora (sem internet?): tocando um som gerado no lugar.":foRecP[t]&&!foRecBuf[t]?"Baixando a gravação (uma vez só; depois fica no aparelho)…":"Gravação real.";w.appendChild(st)}}
   if(P.fnoise){const r=el(`<label class="fovol"><span>Volume</span><input type="range" min="5" max="100" step="5" id="foVol"></label>`),i=r.querySelector("input");i.value=P.fvol;
     i.oninput=()=>{ui.prefs.fvol=+i.value;foNoiseSync()};i.onchange=()=>saveUI();w.appendChild(r);
-    w.appendChild(el(`<p class="how">Toca só durante o foco; para na pausa. Use fones para não incomodar ninguém.</p>`))}
+    w.appendChild(el(`<p class="how">Toca só durante o foco; para na pausa. Use fones para não incomodar ninguém.</p>`));
+    if(FO_REC[P.fnoise]){const d=el(`<details class="focred"><summary>Créditos das gravações</summary><p class="how"></p></details>`);d.querySelector("p").textContent=FO_CRED;w.appendChild(d)}}
   return w}
 /* ----- 7. mapa das 12 semanas e melhor horário ----- */
 /* mapa das últimas 12 semanas: fica no fim da aba; em tela larga (computador, iPad deitado) ocupa as duas colunas,
