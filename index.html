@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=ed324f2d">
+<link rel="stylesheet" href="site.css?v=0b3513ba">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=ed324f2d"></script>
-<script src="bridge.js?v=ed324f2d"></script>
+<script src="config.js?v=0b3513ba"></script>
+<script src="bridge.js?v=0b3513ba"></script>
 </head>
 <body>
 <script>
@@ -1424,6 +1424,16 @@ html[data-layout="phone"] .iqlist li{grid-template-columns:2.2rem minmax(0,1fr) 
 .fobjf{margin-top:8px;display:flex;flex-direction:column;gap:8px}.fobjfb{align-self:flex-start;cursor:pointer}.fobjl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.fobjl li{display:flex;flex-direction:column;gap:2px;font-size:14px}.fobjl label{display:flex;gap:8px;align-items:flex-start}.fobjlk{font-size:12.5px;color:var(--muted);padding-left:26px}
 @media (max-width:480px){.fcw{grid-template-columns:1fr}.fcwd{flex-direction:row;gap:8px;align-items:baseline}}
 .fcgrpb{display:flex;flex-direction:column;gap:10px}
+.npath{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:2px 0 10px}.ncrumb{font-size:.78rem;color:var(--muted)}.nsels{display:flex;flex-wrap:wrap;gap:6px}
+.nsel{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}.nsel.res{border-color:var(--accent);color:var(--accent)}.nsel.fac{border-color:var(--l2);color:var(--l2)}.nsel.mod{border-color:var(--gold);color:var(--gold)}
+.mdview details.mdsec.peg{background:color-mix(in srgb,#f2c94c 18%,var(--surface));border:1px solid color-mix(in srgb,#d9a514 45%,transparent);border-radius:10px;padding:6px 12px;margin:10px 0}
+.mdview details.mdsec.peg>summary{color:#8a6100}:root[data-theme="dark"] .mdview details.mdsec.peg>summary{color:#f2c94c}
+.ntrecho{display:block;margin:6px 0 2px;background:none;border:0;padding:0;font:600 .76rem var(--body);color:var(--accent);cursor:pointer;opacity:.75}.ntrecho:hover{opacity:1;text-decoration:underline}
+.nreadacts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:8px 0}.nreadacts .how{font-size:.78rem}
+.nmstart{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.trselbtn{white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom));z-index:60;border:0;border-radius:99px;background:var(--accent);color:var(--surface);font:700 .9rem var(--body);padding:11px 18px;box-shadow:0 6px 18px -6px rgb(0 0 0 / .45);cursor:pointer}
+html[data-cols="2"] .trselbtn{bottom:28px}
+.nprova .nprp{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
 .simquick{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--l2);border-radius:10px}.simquick .how{font-size:12.5px}
 .wpprev{margin:0 0 12px}.wpaula{display:block;color:var(--gold);font-size:11px;line-height:1.25;max-width:9.5rem}.wpprev>summary{cursor:pointer;font-weight:600;font-size:14px;margin-bottom:8px}
 .wpsum{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}.wpsum li{padding-left:12px;border-left:3px solid var(--line)}.wpsum li.ok{border-color:var(--good)}.wpsum li.late{border-color:var(--warn)}.wpnotice .wpplan{margin:0 0 10px}
@@ -2975,6 +2985,66 @@ const TPL_TABELA=`| Critério | Opção A | Opção B |
 | Diagnóstico |  |  |
 | Conduta |  |  |`;
 function tplSubs(it){return subList(it).map(x=>`## ${x.t}\n- `).join("\n\n")}
+/* ===== Lote 18 › Caderno: modelos de página (Doença, Resumo de SP), cabeçalho da página, seções vazias somem na leitura, Pegadinhas em destaque,
+   "+ Seção livre", cartão a partir de um trecho (seção inteira ou texto selecionado) e a leitura da véspera da prova. O modelo usado fica em state[k].nm ===== */
+const TPL_DOENCA=`## Definição e causa\n\n\n## Quadro clínico\n\n\n## Diagnóstico\n\n\n## Tratamento\n\n\n## Diferenciais\n\n\n## Pegadinhas\n> `;
+const NM_LAB={doenca:"Doença",sp:"Resumo de SP"};
+/* SP ligada ao tema (para o modelo Resumo de SP): a SP do próprio conteúdo da faculdade ou a SP ativa que liga este tema */
+function noteSP(k){const it=BYKEY[k];if(!it)return null;if(it.own){const o=fac.own[k.slice(2)];if(o&&o.spId){const d=discOf(o.discId),sp=d&&(d.sps||[]).find(x=>x.id===o.spId);if(sp)return sp}}
+  const L=facLinkMap()[k];return L&&L.s||null}
+function tplSP(k){const sp=noteSP(k);if(!sp)return "";return (sp.objs.length?sp.objs:["Objetivo 1"]).map(o=>`## ${o}\n\n`).join("\n")+`\n## Pegadinhas\n> `}
+function useModel(k,m){const t=m==="sp"?tplSP(k):TPL_DOENCA;if(!t)return;const cur=(notes[k]||"").replace(/\s+$/,"");replaceNote(k,(cur?cur+"\n\n":"")+t);upd(k,x=>{x.nm=m});commit();noteMode[k]="editar";render()}
+function modelBtns(k,cls){const w=el(`<span class="nmodels"></span>`);[["doenca","Modelo: Doença"],...(noteSP(k)?[["sp","Modelo: Resumo de SP"]]:[])].forEach(([m,lab])=>{const b=el(`<button type="button"></button>`);b.className=cls||"tool txt";b.id=`nm-${m}-${k}`;b.textContent=lab;b.onmousedown=e=>e.preventDefault();b.onclick=()=>useModel(k,m);w.appendChild(b)});return w}
+/* cabeçalho da página: Caderno › especialidade › tema, com os selos RES · peso, FAC · SP e o modelo */
+function npathEl(k){const it=BYKEY[k],s=get(k),L=facLinkMap()[k],sp=noteSP(k),w=el(`<div class="npath"><span class="ncrumb"></span><span class="nsels"></span></div>`);
+  w.querySelector(".ncrumb").textContent=["Caderno",it.sp||it.area.name,it.t].join(" › ");const S=w.querySelector(".nsels"),add=(t,c)=>{const x=el(`<span class="nsel"></span>`);x.textContent=t;if(c)x.classList.add(c);S.appendChild(x)};
+  if(!it.own&&it.area!==FAC_AREA)add(`RES · peso ${wOf(it)}`,"res");if(sp)add(`FAC · ${spShort(sp.name)}`,"fac");else if(L)add(`FAC · ${L.d.name}`,"fac");else if(it.own)add("FAC","fac");if(s.nm&&NM_LAB[s.nm])add(`Modelo ${NM_LAB[s.nm]}`,"mod");return w}
+/* leitura: seções vazias somem, Pegadinhas em destaque, cada seção com "+ Criar cartão do trecho" */
+function noteDress(rv,k){rv.dataset.nk=k;
+  [...rv.querySelectorAll("details.mdsec")].reverse().forEach(d=>{const b=d.querySelector(":scope>.mdsb");if(!b||!b.textContent.replace(/\s|\[\[\s*\]\]/g,"").trim()&&!b.querySelector("img,table,.flow"))d.remove()});
+  rv.querySelectorAll("details.mdsec").forEach(d=>{const sm=d.querySelector(":scope>summary"),t=sm?sm.textContent.trim():"";if(/^pegadinhas?\b/i.test(t))d.classList.add("peg");
+    const b=d.querySelector(":scope>.mdsb");if(!b||d.querySelector(":scope>.mdsb>details.mdsec"))return;const x=el(`<button type="button" class="ntrecho">+ Criar cartão do trecho</button>`);
+    x.onclick=()=>trStart(k,(t+": "+b.textContent.replace(/\s+/g," ").trim()).slice(0,900));b.appendChild(x)})}
+/* cartão a partir de um trecho: rascunho do app (lacuna no termo em negrito/destaque, ou "termo: definição") + "Melhorar com o Claude" */
+let trE={};
+function trDrafts(k,txt){const it=BYKEY[k],L=esc(cdLabel(it)),t=txt.replace(/\s+/g," ").trim(),src=notes[k]||"",out=[];
+  const strong=(src.match(/\*\*([^*\n]{2,80})\*\*|==([^=\n]{2,80})==/g)||[]).map(x=>x.replace(/\*\*|==/g,"")).find(x=>t.includes(x));
+  if(strong){out.push({kind:"lac",q:`<b>${L}.</b> ${esc(clCut(t,300)).replace(esc(strong),"[...]")}`,a:`<b>${esc(strong)}</b><br><br><i>${esc(clCut(t,300))}</i>`,ref:"",keep:true})}
+  const m=t.match(/^(.{3,120}?)\s*[:=–—-]\s+(.{3,})$/);
+  if(m)out.push({kind:"disc",q:`<b>${L}.</b> ${esc(m[1])}?`,a:`<b>${esc(clCut(m[2],220))}</b>`,ref:"",keep:!strong});
+  if(!out.length)out.push({kind:"disc",q:`<b>${L}.</b> O que você precisa lembrar sobre: ${esc(clCut(t,140))}`,a:`<b>${esc(clCut(t,300))}</b>`,ref:"",keep:true});
+  return out}
+function trStart(k,txt){const id="tr-"+k;delete cdErr[id];trE[k]={id,virtual:true,trecho:txt,k,okq:true,w:"",p:"",r:txt,t:"conhecimento",c:"",s:"",onSaved:ids=>{tcMsg[k]=`${ids.length} ${ids.length===1?"cartão guardado":"cartões guardados"} em Caderno › Revisar.`;delete trE[k]}};
+  cdErr[id]={list:trDrafts(k,txt)};trSel=null;render();setTimeout(()=>{const x=document.querySelector(`.cderr[data-eid="${id}"]`);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
+let tcMsg={},trSel=null;
+function trPrompt(e){const it=BYKEY[e.k];return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de um TRECHO da anotação dele.
+Tema: ${it?it.t:""} (${it?areaLabel(it):""}).
+Trecho: ${String(e.trecho||"").slice(0,1500)}
+
+Crie de 1 a 3 cartões que cubram o que é importante neste trecho (pergunta direta, lacuna com [...] ou contraste). Um conceito por cartão.
+Regras do Padrão Osler:
+- Question: rótulo da ENTIDADE específica em <b>negrito</b> terminado em ponto, depois a pergunta ou lacuna; o rótulo não pode entregar a resposta.
+- Answer: 1ª linha = resposta em <b>negrito</b>; depois <br><br><i>explicação curta</i>. "Note:" só quando houver armadilha.
+- Reference: só se o trecho citar a fonte; senão "".
+- Só as tags HTML b, i, u, br, ul, ol, li.
+Responda apenas com um array JSON: [{"tipo":"discriminador"|"lacuna"|"contraste","question":"...","answer":"...","reference":"..."}]
+Escreva em português do Brasil.`}
+/* texto selecionado numa página do tema (modo Ler): aparece "Criar cartão com o trecho" */
+document.addEventListener("selectionchange",()=>{const sl=window.getSelection&&window.getSelection(),tx=sl&&String(sl).replace(/\s+/g," ").trim();let k=null;
+  if(tx&&tx.length>=8&&sl.rangeCount){const n=sl.getRangeAt(0).commonAncestorContainer,e=n.nodeType===1?n:n.parentElement,v=e&&e.closest&&e.closest(".mdview[data-nk]");if(v)k=v.dataset.nk}
+  const b=document.getElementById("trSelBtn");if(k){trSel={k,tx:tx.slice(0,900)};if(!b){const x=el(`<button type="button" id="trSelBtn" class="trselbtn">+ Cartão com o trecho selecionado</button>`);x.onmousedown=e=>e.preventDefault();x.onclick=()=>{if(trSel)trStart(trSel.k,trSel.tx)};document.body.appendChild(x)}}
+  else if(b){setTimeout(()=>{const s2=window.getSelection&&String(window.getSelection()).trim();if(!s2){const bb=document.getElementById("trSelBtn");if(bb)bb.remove();trSel=null}},200)}});
+/* leitura da véspera: as páginas dos conteúdos da prova numa leitura só (Caderno) */
+let nProvaRd=null;
+function provaReadKeys(p){return topicKeysOf(p.items).filter(k=>(notes[k]||"").trim())}
+function provaReadEl(){const p=fac.provas.find(x=>x.id===nProvaRd);if(!p){nProvaRd=null;return null}const K=provaReadKeys(p);
+  const c=el(`<section class="card nprova" id="nProvaRead"><div class="dhead"><h2></h2><button class="link" type="button">Fechar a leitura</button></div><p class="how"></p></section>`);
+  c.querySelector("h2").textContent=`Leitura da prova · ${p.name}`;c.querySelector(".dhead .link").onclick=()=>{nProvaRd=null;render()};
+  c.querySelector("p.how").textContent=`${K.length} ${K.length===1?"página":"páginas"} dos conteúdos da prova (${inLabel(daysTo(p.date))}), numa leitura só. As seções vazias não aparecem; toque no título de uma seção para recolher.`;
+  K.forEach(k=>{const it=BYKEY[k],sec=el(`<article class="nprp"></article>`);sec.appendChild(npathEl(k));const v=el(`<div class="mdview"></div>`);v.innerHTML=md(notes[k],{fold:k});noteDress(v,k);sec.appendChild(v);
+    const a=el(`<button class="link" type="button">Abrir o tema</button>`);a.onclick=()=>{detTab[k]="notas";openTopic(k)};sec.appendChild(a);c.appendChild(sec)});
+  if(!K.length)c.appendChild(el(`<p class="cempty">Nenhum conteúdo desta prova tem página no Caderno ainda.</p>`));return c}
+function provaReadGo(p){nProvaRd=p.id;nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const x=$("#nProvaRead");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}
 function tplErros(it){const mine=errors.filter(e=>e.k===it.key).sort(byNewest);
   return mine.length?"## Meus erros neste tema\n"+mine.map(e=>"- "+e.r.replace(/\s*\n\s*/g," — ")).join("\n"):null}
 
@@ -3038,6 +3108,7 @@ function renderNotes(it,full){
     const pop=el(`<div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div>`);
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
+    tb.appendChild(modelBtns(k));
     [["Modelo de resumo",()=>insertBlock(ta,k,TPL_RESUMO)],["Seções dos subtópicos",()=>insertBlock(ta,k,tplSubs(it))]].forEach(([lab,fn])=>{
       const b=el(`<button type="button" class="tool txt"></button>`);b.textContent=lab;b.onmousedown=e=>e.preventDefault();b.onclick=fn;
       if(lab==="Meus erros"&&!errors.some(e=>e.k===k)){b.disabled=true;b.title="Nenhum erro deste tema no caderno"}tb.appendChild(b)});
@@ -3051,9 +3122,14 @@ function renderNotes(it,full){
     box.append(tb,ta,pop);
   }else{
     const rv=el(`<div class="mdview"></div>`);
-    if(has){rv.innerHTML=md(notes[k],{fold:k});if(rv.querySelector("details.mdsec")){const all=el(`<button class="mini" type="button" id="nfold-${k}"></button>`),anyClosed=!!rv.querySelector("details.mdsec:not([open])");all.textContent=anyClosed?"Abrir tudo":"Fechar tudo";
-        all.onclick=()=>{const D=[...document.querySelectorAll(`details.mdsec[data-fk="${k}"]`)],op=D.some(d=>!d.open);D.forEach(d=>{d.open=op});all.textContent=op?"Fechar tudo":"Abrir tudo"};head.insertBefore(all,fb)}}else{rv.classList.add("mdempty");rv.textContent="Nada anotado ainda. Toque em Editar para escrever, usar um modelo ou pedir um resumo ao Claude."}
+    if(has)box.appendChild(npathEl(k));
+    if(has){rv.innerHTML=md(notes[k],{fold:k});noteDress(rv,k);if(rv.querySelector("details.mdsec")){const all=el(`<button class="mini" type="button" id="nfold-${k}"></button>`),anyClosed=!!rv.querySelector("details.mdsec:not([open])");all.textContent=anyClosed?"Abrir tudo":"Fechar tudo";
+        all.onclick=()=>{const D=[...document.querySelectorAll(`details.mdsec[data-fk="${k}"]`)],op=D.some(d=>!d.open);D.forEach(d=>{d.open=op});all.textContent=op?"Fechar tudo":"Abrir tudo"};head.insertBefore(all,fb)}}else{rv.classList.add("mdempty");rv.textContent="Nada anotado ainda. Comece com um modelo, toque em Editar para escrever ou peça um resumo ao Claude.";const mb=modelBtns(k,"btn");mb.classList.add("nmstart");rv.appendChild(mb)}
     box.appendChild(rv);
+    if(has){const a=el(`<div class="nreadacts"><button class="mini" type="button">+ Seção livre</button><span class="how">Selecione um trecho para criar um cartão com ele.</span></div>`);a.querySelector("button").id="nsec-"+k;
+      a.querySelector("button").onclick=()=>{const cur=(notes[k]||"").replace(/\s+$/,"");replaceNote(k,cur+"\n\n## Nova seção\n");noteMode[k]="editar";render();setTimeout(()=>{const t=document.getElementById((full?"fnt-":"nt-")+k);if(t){t.focus();const i=t.value.lastIndexOf("Nova seção");t.setSelectionRange(i,i+10)}},40)};box.appendChild(a)}
+    if(trE[k])box.appendChild(cdErrEl(trE[k]));
+    if(tcMsg[k]){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=tcMsg[k];delete tcMsg[k];box.appendChild(m)}
   }
   const foot=el(`<div class="nfoot"><span data-nw="${k}"></span><span class="nstat" data-ns="${k}"></span></div>`);
   foot.firstChild.textContent=noteFoot(k);if(has||tgOf(k).length)foot.appendChild(tgRowEl(k));
@@ -3131,7 +3207,7 @@ function renderNotasView(){
   const words=keys.reduce((s,k)=>s+wordCount(notes[k]),0);
   $("#nsum").textContent=keys.length?`${keys.length} ${keys.length===1?"tema anotado":"temas anotados"} de ${TOTAL} · ${words.toLocaleString("pt-BR")} palavras`:"Nenhuma anotação ainda.";
   const vis=keys.filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t+" "+notes[k]+" "+tgOf(k).join(" ")).includes(nQuery))&&(freeTag==="all"||tgOf(k).includes(freeTag))&&nFlagOk(k));
-  {const fb=$("#nFreeBox");fb.innerHTML="";fb.appendChild(freeCard())}renderNFlags(keys,vis);
+  {const fb=$("#nFreeBox");fb.innerHTML="";if(nProvaRd){const r=provaReadEl();if(r)fb.appendChild(r)}fb.appendChild(freeCard())}renderNFlags(keys,vis);
   {const L=$("#nlist"),H=$("#nTopicH"),hideT=nType==="free"&&!nNoNote;L.hidden=hideT;H.hidden=hideT||(nType!=="all"&&!nNoNote);
     H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
@@ -3155,7 +3231,7 @@ function renderNotasView(){
     const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);
     c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}${tgOf(k).length?" · "+tgOf(k).map(t=>"#"+t).join(" "):""}`;
     c.querySelector(".ehead span:last-child").textContent=`${wordCount(notes[k])} palavras${noteAt[k]?" · "+whenLabel(noteAt[k]):""}`;
-    const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open)mv.classList.remove("clamp");{const ne=noteErrsEl(k);if(ne)mv.after(ne)}if(open)c.querySelector(".efoot").before(wkBackEl({kind:"t",id:k}));
+    const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open){mv.classList.remove("clamp");noteDress(mv,k);mv.before(npathEl(k))}{const ne=noteErrsEl(k);if(ne)mv.after(ne)}if(open)c.querySelector(".efoot").before(wkBackEl({kind:"t",id:k}));
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
     ed.onclick=()=>{noteMode[k]="editar";focusKey=k;render()};
     return c};
@@ -4820,6 +4896,8 @@ function facDayNotes(){const t=dnum(today()),out=[];
     out.push({id:"prep-"+a.id,t:`Amanhã tem ${a.t} (${hm2(a.ini)}): revise os objetivos da ${spShort(sp.name)}${ot?` (${od} de ${ot} marcados)`:""}.`,acts:[["Ver objetivos",()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(sp.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+sp.id),60)}]]})});
   (fac.ents||[]).forEach(e=>{if(e.done||e.adi||!DATE_RE.test(e.date||""))return;const n=daysTo(e.date),d=discOf(e.discId);if(n<0||n>3||!d||!activeSems().includes(d.semId))return;
     out.push({id:"ent-"+e.id,t:`Entrega ${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}: ${e.t} (${d.name}).`,acts:[["Já entreguei",()=>{e.done=1;saveFac();render()}]]})});
+  provaWeek().forEach(p=>{const K=provaReadKeys(p);if(!K.length)return;const n=daysTo(p.date);
+    out.push({id:"rd-"+p.id,t:`Revisar para a prova ${p.name} (${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}): leia as ${K.length} ${K.length===1?"página":"páginas"} dos conteúdos dela numa leitura só.`,acts:[["Ler as anotações da prova",()=>provaReadGo(p)]]})});
   fac.discs.forEach(d=>{if(!activeSems().includes(d.semId))return;(d.sps||[]).forEach(sp=>{if(!sp.fech||sp.fadi||sp.pos===sp.fech)return;const n=t-dnum(sp.fech);if(n<0||n>3)return;
     const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
     const acts=[];if(pk&&BYKEY[pk]&&!sampleOff)acts.push(["Gerar questões",()=>{detTab[pk]="questoes";openTopic(pk);setTimeout(()=>{const g=detGet("qf-",pk);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}]);
@@ -8701,7 +8779,7 @@ function cdErrDrafts(e){const it=BYKEY[e.k],L=esc(cdLabel(it)),P=cdErrParse(e),r
     if(P.mine)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(P.mine)}${e.p?" neste caso":""}?`,a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
   else out.push({kind:"disc",q:`<b>${L}.</b> ${esc(eOneLine(e.w))}${e.p?` (${esc(e.p)})`:""} &rarr; qual é o certo?`,a:`<b>${esc(eOneLine(e.r).slice(0,200))}</b>`,ref,keep:true});
   return out}
-function cdErrPrompt(e){const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de ${e.okq?"uma QUESTÃO que ele acertou (talvez no chute) e quer fixar. O cartão mira o que decide a questão":"um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro"}, não um resumo do tema.
+function cdErrPrompt(e){if(e.trecho)return trPrompt(e);const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de ${e.okq?"uma QUESTÃO que ele acertou (talvez no chute) e quer fixar. O cartão mira o que decide a questão":"um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro"}, não um resumo do tema.
 Tema: ${it?it.t:""} (${it?areaLabel(it):""}). Tipo de erro: ${ETYPES[e.t]||""}${e.c?`; causa: ${e.c}`:""}.
 O que ele errou: ${eOneLine(e.w)}${e.p?`\nPista do caso: ${e.p}`:""}
 Conceito correto: ${String(e.r||"").slice(0,1500)}
@@ -8723,12 +8801,12 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
   try{const data=await sampleFn.json(cdErrPrompt(e),{signal:S.ctl.signal,cache:false,title:"Cartões do erro",hint:"Cole aqui a resposta do Claude (o JSON com os cartões)."});if(cdErr[e.id]!==S)return;
     const arr=(Array.isArray(data)?data:[]).filter(c=>c&&typeof c.question==="string"&&typeof c.answer==="string"&&c.question.trim()&&c.answer.trim()).slice(0,4);
     if(!arr.length){S.st="error";S.msg="O Claude não devolveu cartões num formato que o app reconheça. Os do app continuam abaixo."}
-    else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
+    else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:!!e.trecho||kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
 function cdErrSave(e){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id})}).id);
   if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
-function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
+function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.trecho?"Cartões deste trecho":e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.trecho?"Rascunhos feitos pelo app a partir do trecho (lacuna no termo em negrito ou destaque). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões. Para cartões melhores, peça ao Claude.":e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{delete cdErr[e.id];render()};const ol=w.querySelector("ol");
   S.list.forEach((c,i)=>{const li=el(`<li class="cdit"><label class="cdck"><input type="checkbox"> <span class="cdk"></span></label><div class="oscard mini"><div class="osq"></div><div class="osa"></div><div class="osref"></div></div></li>`);
     const cb=li.querySelector("input");cb.id=`cdk-${e.id}-${i}`;cb.checked=!!c.keep;cb.onchange=()=>{c.keep=cb.checked;render()};li.querySelector(".cdk").textContent=(CDK[c.kind]||"Cartão")+(c.sug?" · sugerido para este erro":"");
