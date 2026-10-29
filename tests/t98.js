@@ -8,19 +8,22 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
- const click=async s=>{await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(200)};
+ const click=async s=>{/* Lote 20: no celular o painel aberto é uma folha por cima da tela; o botão Filtros fecha pelo × da folha e o resto da tela é tocado por trás */
+   const how=await p.evaluate(s=>{const sh=[...document.querySelectorAll('.tfsheet')].find(x=>x.checkVisibility()),x=document.querySelector(s);if(!sh||!x||sh.contains(x))return "";if(/^#(tfTog|[qen]FBtn)$/.test(s)){sh.querySelector('.tfsx').click();return "x"}x.click();return "js"},s);
+   if(how){await p.waitForTimeout(200);return}
+   await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(200)};
  await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);["CM-1","CM-4","CM-34","PED-3","GO-2"].forEach((k,i)=>{state[k]={l:1,last:D(-3-i),step:0,qt:10+i,qc:3+i*2,qd:{[D(-2)]:[10+i,3+i*2]}};notes[k]="## Resumo\n"+(i<2?"> pegadinha\n":"")+"texto "+k});
    errors.push({id:"e1",k:"CM-1",w:"Errei a dose",r:"Dose certa",t:"conhecimento",s:"ENARE 2024",d:D(-2)},{id:"e2",k:"PED-3",w:"Li errado",r:"x",t:"interpretacao",s:"USP",d:D(-10)},{id:"e3",k:"CM-4",w:"Confundi",r:"y",t:"confusao",s:"ENARE 2024",d:D(-1)});commit()});
- const T=[["quest","q","qFind","#qlistT .qname",5,"PED"],["erros","e","eFind","#elist .etopic",3,"PED"],["notas","n","nFind","#nlist .ncard .etopic",5,"PED"]];
+ const T=[["quest","q","qFBar","#qlistT .qname",5,"PED"],["erros","e","eFind","#elist .etopic",3,"PED"],["notas","n","nFind","#nlist .ncard .etopic",5,"PED"]];
  for(const [v,pre,card,rows,total,area] of T){
   await p.evaluate(v=>{backStack=[];setView(v);if(v==="quest")setQSeg("temas");if(v==="notas")setNSeg("todas")},v);await p.waitForTimeout(250);
   const n=()=>p.$$eval(rows,a=>a.filter(x=>x.checkVisibility()).length);
   /* 1. cartão com busca, Filtros fechado e Ordem */
-  const r1=await p.evaluate(([pre,card])=>({c:!!document.getElementById(card),s:!!document.querySelector('#'+card+' .tfsearch .search'),tog:(document.getElementById(pre+"FBtn")||{}).getAttribute?.("aria-expanded"),panel:!!document.getElementById(pre+"FPanel"),sort:!!document.querySelector('#'+card+' .tfsort select')}),[pre,card]);
+  const r1=await p.evaluate(([pre,card])=>({c:!!document.getElementById(card),s:!!document.querySelector('#'+card+' .tfsearch .search'),tog:(document.getElementById(pre+"FBtn")||{}).getAttribute?.("aria-expanded"),panel:!!document.getElementById(pre+"FPanel"),sort:!!document.querySelector('#'+card+' .tfsort select, #'+(card==="qFBar"?"qFind":card)+' .tfsort select')}),[pre,card]);
   ok(r1.c&&r1.s&&r1.tog==="false"&&!r1.panel&&r1.sort,`${name} ${v}: cartão com busca, Filtros fechado e Ordem `+JSON.stringify(r1));
   ok(await n()===total,`${name} ${v}: lista completa (${await n()})`);
   /* 2. abre e lembra */
-  await click('#'+pre+'FBtn');ok(await p.evaluate(pre=>!!document.getElementById(pre+"FPanel")&&localStorage.getItem({q:"resid-qfpanel",e:"resid-efpanel",n:"resid-nfpanel"}[pre])==="1",pre),`${name} ${v}: Filtros abre o painel e a aba lembra`);
+  await click('#'+pre+'FBtn');ok(await p.evaluate(pre=>!!document.getElementById(pre+"FPanel")&&(localStorage.getItem({q:"resid-qfpanel",e:"resid-efpanel",n:"resid-nfpanel"}[pre])==="1")===(document.documentElement.dataset.layout!=="phone"||!!window.__noSheet),pre),`${name} ${v}: Filtros abre o painel e a aba lembra`);
   /* 3. Grande área com contagem */
   const opt=await p.evaluate(([pre,a])=>{const o=[...document.querySelectorAll('#'+pre+'Area option')].find(x=>x.value===a);return o?o.textContent:""},[pre,area]);
   ok(/^Pediatria \(1\)$/.test(opt),`${name} ${v}: Grande área mostra a contagem: ${opt}`);

@@ -15,7 +15,7 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["ipad578",578,820,true],["no
   if(name==="note")ok(V.free&&V.list&&V.rev&&/nFreeBox/.test(V.order),name+": no computador tudo numa página, caderno livre no topo "+JSON.stringify(V));
   else ok(V.free&&V.list&&!V.rev,name+": a parte Caderno mostra as páginas livres e as dos temas juntas "+JSON.stringify(V));
   if(SHOT&&name==="fone")await p.screenshot({path:SHOT+'/l8-caderno-fone.png'});
-  await p.evaluate(()=>document.querySelector('#nTy-topic').click());await p.waitForTimeout(150);
+  await p.evaluate(()=>{nFOpen=true;render();document.querySelector('#nTy-topic').click()});await p.waitForTimeout(150);
   ok(await p.evaluate(()=>document.querySelector('#nlist').getClientRects().length>0&&!document.querySelector('.nfree .elist')),name+": tipo Temas mostra só as páginas dos temas");
   await p.evaluate(()=>{nType="all";lsSet("resid-ntype","all");render()});
   /* 2. prova na íntegra: Levar para a anotação com pontos marcáveis */

@@ -21,7 +21,7 @@ ok(await p.evaluate(()=>errors[errors.length-1].c==="Pulei um dado do caso"),tag
 // 7. filtros
 ok(/Para revisar hoje · 3/.test(await p.$eval('#eMore',x=>x.textContent)),tag+": chip para revisar hoje "+(await p.$eval('#eMore .chips',x=>x.textContent)));
 await click('#eMore [data-ef="due"]');await p.waitForTimeout(100);ok(await n()===3,tag+": filtro para revisar hoje "+await n());await click('#eMore [data-ef="due"]');
-await p.selectOption('#ePer','30');await p.waitForTimeout(100);ok(await n()===3,tag+": período 30 dias "+await n());await p.selectOption('#ePer','all');
+await p.evaluate(()=>document.querySelector('#ePer-30').click());await p.waitForTimeout(100);ok(await n()===3,tag+": período 30 dias "+await n());await p.evaluate(()=>document.querySelector('#ePer-all').click());
 await p.selectOption('#eSrc','enare');await p.waitForTimeout(100);ok(await n()===2,tag+": fonte sem diferenciar maiúscula");await p.selectOption('#eSrc','all');
 await click('#eMore [data-ef="rep"]');await p.waitForTimeout(100);ok(await n()>=2,tag+": que se repetem "+await n());await click('#eMore [data-ef="rep"]');
 await p.selectOption('#eOrder','miss');await p.waitForTimeout(100);ok(/Insuficiência|cardíaca/i.test(await p.$eval('#elist .ecard .etopic',x=>x.textContent))||true,tag+": ordem mais teimosos");

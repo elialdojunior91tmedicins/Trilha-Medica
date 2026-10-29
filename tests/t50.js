@@ -4,11 +4,11 @@ const ctx=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMo
 const p=await ctx.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-37":{l:1,last:D(-2),qt:20,qc:8,qd:{[D(-2)]:[20,8]}},"CM-34":{l:1,last:D(-1),qt:10,qc:9,qd:{[D(-1)]:[10,9]}},"CM-6":{l:1,last:D(-1),qt:12,qc:6,qd:{[D(-1)]:[12,6]}}};commit();setView("quest");setQSeg("temas")});await p.waitForTimeout(300);
 const vis=s=>p.evaluate(s=>{const e=document.querySelector(s);return !!e&&e.offsetParent!==null},s);
-ok(await vis('#qq'),"busca visível");ok(await vis('#qFBtn'),"botão Filtros visível");ok(!(await vis('#qPer')),"filtros recolhidos");
-await p.tap('#qFBtn');await p.waitForTimeout(200);ok(await vis('#qPer')&&await vis('#qArea'),"Filtros abre o painel");
-await p.selectOption('#qAccSel','good');await p.waitForTimeout(200);ok(await vis('#qPer'),"painel continua aberto ao filtrar");
+ok(await vis('#qq'),"busca visível");ok(await vis('#qFBtn'),"botão Filtros visível");ok(!(await vis('#qPer-7')),"filtros recolhidos");
+await p.tap('#qFBtn');await p.waitForTimeout(200);ok(await vis('#qPer-7')&&await vis('#qArea'),"Filtros abre o painel");
+await p.tap('#qAcc-good');await p.waitForTimeout(200);ok(await vis('#qPer-7'),"painel continua aberto ao filtrar");
 await p.screenshot({path:'q-fone-open.png'});
-await p.tap('.tfdone');await p.waitForTimeout(300);ok(!(await vis('#qPer')),"Ver resultados recolhe");
+await p.tap('.tfdone');await p.waitForTimeout(300);ok(!(await vis('#qPer-7')),"Ver resultados recolhe");
 ok(await p.$eval('#qFBtn b',x=>x.textContent)==="1","contador de filtros ativos: 1");ok(await vis('#qClear'),"Limpar filtros visível com painel fechado");
 ok((await p.$$eval('#qlistT .qname',a=>a.length))===1,"filtro aplicado na lista");
 await p.tap('#qClear');await p.waitForTimeout(200);ok(!(await p.$('#qFBtn b')),"limpar zera o contador");

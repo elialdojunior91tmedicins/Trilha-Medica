@@ -24,7 +24,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   ok(await p.evaluate(()=>exList()[1].name==="Hospital XYZ 2027"&&!exList()[1].date),name+": dá para digitar uma prova que não está no catálogo");
   /* catálogo por região */
   await click('#pfExCat');
-  const C=await p.evaluate(()=>({reg:[...document.querySelectorAll('#excPanel .seg button')].map(b=>b.textContent).join(),on:document.querySelector('#excPanel .seg [aria-pressed="true"]').textContent,
+  const C=await p.evaluate(()=>({reg:[...document.querySelectorAll('#excPanel .seg button')].map(b=>b.textContent.replace(/ · \d+$/,"")).join(),on:document.querySelector('#excPanel .seg [aria-pressed="true"]').textContent.replace(/ · \d+$/,""),
     heads:[...document.querySelectorAll('#excPanel .exch2')].map(x=>x.textContent).join(),first:document.querySelector('#excPanel .excrow b').textContent,huol:[...document.querySelectorAll('#excPanel .excrow')].find(r=>/HUOL/.test(r.textContent)).querySelector('button').textContent}));
   ok(C.reg==="Nacionais,Nordeste,Norte,Centro-Oeste,Sudeste,Sul"&&C.on==="Nordeste"&&C.heads==="Principais,Outras"&&/HUOL/.test(C.first)&&C.huol==="Na sua lista",name+": catálogo abre no Nordeste, com HUOL no topo já marcado "+JSON.stringify(C));
   await click('#excR-SE');const iI=await p.evaluate(()=>EX_CAT.findIndex(c=>c.n==="IAMSPE"));

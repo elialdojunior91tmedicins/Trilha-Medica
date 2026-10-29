@@ -51,10 +51,10 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   await click('#rdNext');ok(await p.evaluate(()=>/Você acertou 0% ao refazer/.test(document.querySelector('#rdEnd').textContent)),name+": no fim, o % de acerto ao refazer");
   await p.evaluate(()=>{rdRun=null;render()});await p.waitForTimeout(100);
   const r5=await p.evaluate(()=>{const c=document.querySelector('.qredo');return {dd:c.querySelector('.todaydate').textContent,n:c.querySelectorAll('.rdlist li').length}});
-  await click('#rdFAll');await p.evaluate(()=>{rdList=true;render()});await p.waitForTimeout(100);
+  await click('#rdF-all');await p.evaluate(()=>{rdList=true;render()});await p.waitForTimeout(100);
   const r6=await p.evaluate(()=>document.querySelectorAll('.qredo .rdlist li').length);
-  await p.selectOption('#rdFSrc','gen');await p.waitForTimeout(150);const r7=await p.evaluate(()=>document.querySelectorAll('.qredo .rdlist li').length);
-  await p.selectOption('#rdFSrc','all');await click('#rdFRep');const r8=await p.evaluate(()=>[...document.querySelectorAll('.qredo .rdlist li')].map(l=>l.textContent));
+  await click('#rdFSrc-gen');await p.waitForTimeout(150);const r7=await p.evaluate(()=>document.querySelectorAll('.qredo .rdlist li').length);
+  await click('#rdFSrc-gen');await click('#rdFRep');const r8=await p.evaluate(()=>[...document.querySelectorAll('.qredo .rdlist li')].map(l=>l.textContent));
   ok(/para hoje/.test(r5.dd)&&r6===3&&r7===1&&r8.length===2&&r8.some(t=>/teimosa/.test(t)),name+": filtros para hoje/todas, de onde veio e erradas 2+ vezes "+JSON.stringify([r5.dd,r6,r7,r8.length]));
   /* simulado: fonte Para refazer */
   await p.waitForTimeout(600);const r9=await p.evaluate(()=>{const L=simSrcList().map(x=>x[0]),T=simTopics("redo",[]).map(i=>i.key),I=rdSimItems(5),pr=simPrompt(I);

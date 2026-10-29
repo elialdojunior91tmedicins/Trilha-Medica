@@ -9,7 +9,7 @@ await p.evaluate(()=>{localStorage.clear();const D=n=>fromNum(dnum(today())+n);
  fac={sems:[{id:"s",name:"6° Semestre",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:["T:CM-37","T:CM-34"],info:{},eixos:[],sps:[]}],provas:[],own:{}};saveFac();commit();
  downloadsFn={save:async({filename,data})=>{const ab=await data.arrayBuffer();window.__saved={filename,b64:btoa(String.fromCharCode(...new Uint8Array(ab)))}}};setView("perfil")});
 await p.waitForTimeout(150);await p.tap('#pfBody button:has-text("Exportar PDF")');
-const per=await p.$$eval('.pdfpan .cfrow:has-text("Período") .seg button',x=>x.map(e=>e.textContent));ok(per.join(",")==="7 dias,14 dias,21 dias,30 dias,60 dias,90 dias,Tudo","períodos: "+per.join(","));
+const per=await p.$$eval('.pdfpan .cfrow:has-text("Período") .seg button',x=>x.map(e=>e.textContent));ok(per.join(",")==="7 dias,15 dias,30 dias,60 dias,90 dias,Tudo","períodos: "+per.join(","));
 const gen=async(f)=>{await p.evaluate(()=>{window.__saved=null});await p.tap('.pdfpan button:has-text("Gerar PDF")');await p.waitForFunction(()=>window.__saved,null,{timeout:5000});const v=await p.evaluate(()=>window.__saved);fs.writeFileSync(f,Buffer.from(v.b64,'base64'));return execSync(`pdftotext -layout ${f} -`).toString()};
 // 7 dias: só e1 e e3
 await p.tap('.pdfpan button:has-text("7 dias")');let t=await gen('f7.pdf');ok(/últimos 7 dias/.test(t)&&/PTT com coagulograma/.test(t)&&/Não vi o exceto/.test(t)&&!/PTI x PTT/.test(t)&&!/XABCDE/.test(t),"7 dias filtra os erros do período");
