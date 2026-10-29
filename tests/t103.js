@@ -87,7 +87,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
    const O=await p.evaluate(()=>[...document.querySelectorAll('#nPdfScope option')].map(o=>o.textContent));
    ok(O[0].startsWith("Caderno todo")&&O.some(x=>/^Clínica Médica \(\d+\)$/.test(x))&&O.some(x=>/^Pediatria \(1\)$/.test(x)),name+": PDF permite escolher o caderno todo ou uma área "+JSON.stringify(O))}
  const toc=await p.evaluate(()=>({on:!document.querySelector('#nToc').hidden,items:[...document.querySelectorAll('#nToc .ntt button')].map(x=>x.textContent)}));
- const want=["note","full"].includes(name);ok(want?toc.on&&toc.items.length===4:!toc.on,name+(want?": sumário lateral com os temas da página ":": sem sumário lateral nesta tela ")+JSON.stringify(toc));
+ const want=["note","full","tabDeitado"].includes(name);/* Lote 19: no computador e no iPad deitado o sumário fica na coluna da direita do Caderno */ok(want?toc.on&&toc.items.length===4:!toc.on,name+(want?": sumário lateral com os temas da página ":": sem sumário lateral nesta tela ")+JSON.stringify(toc));
  if(want){await p.evaluate(()=>{document.querySelector('#nToc .ntt button').id="__t1"});await click("#__t1");await p.waitForTimeout(1500);
    {const tp=await p.evaluate(()=>Math.round(document.getElementById("nc-"+document.querySelector("#__t1").dataset.k).getBoundingClientRect().top));ok(tp>=-5&&tp<h/2,name+": tocar no sumário rola até o tema "+tp)}
    if(name==="note")await p.screenshot({path:`t103-notas-${name}.png`})}

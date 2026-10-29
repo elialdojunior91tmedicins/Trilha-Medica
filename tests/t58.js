@@ -21,8 +21,8 @@ await click('#tfl0');await click('#tfhigh');await p.waitForTimeout(150);ok(/tema
 await click('#tfClear');await p.waitForTimeout(120);
 // 2. abas do tema
 await p.evaluate(()=>openTopic("CM-1"));await p.waitForTimeout(250);
-ok(await p.evaluate(()=>{const d=document.querySelector('#t-CM-1 .detail');return !!d.querySelector('.dsum')&&[...d.children].filter(c=>c.dataset.tab&&!c.hidden).every(c=>c.dataset.tab==="estudo")}),tag+": tema abre na aba Estudo com resumo");
-const chips=await p.$$eval('#t-CM-1 .dchip',a=>a.map(x=>x.textContent));ok(chips.length===5&&/40% em 10/.test(chips.join("|")),tag+": resumo "+chips.join(" | "));
+ok(await p.evaluate(()=>{const d=document.querySelector('#t-CM-1 .detail');return !d.querySelector('.dsum')&&[...d.children].filter(c=>c.dataset.tab&&!c.hidden).every(c=>c.dataset.tab==="estudo")}),tag+": tema abre na aba Estudo, sem os quadrinhos repetidos (Lote 19)");
+ok(await p.evaluate(()=>/40% em 10/.test(document.querySelector('#t-CM-1>.item').textContent)),tag+": acerto continua na linha do tema");
 await click('#t-CM-1 .dtabs button[data-dt="questoes"]');await p.waitForTimeout(150);ok(await p.isVisible('#qt-CM-1')&&!(await p.isVisible('#t-CM-1 .subs')),tag+": aba Questões");
 await click('#t-CM-1 .dtabs button[data-dt="erros"]');await p.waitForTimeout(150);ok(await p.isVisible('#ew-CM-1'),tag+": aba Erros");
 await click('#t-CM-1 .dtabs button[data-dt="notas"]');await p.waitForTimeout(150);ok(await p.evaluate(()=>[...document.querySelectorAll('#t-CM-1 .detail>[data-tab="notas"]')].some(x=>!x.hidden)),tag+": aba Anotações");

@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=00d3caf5">
+<link rel="stylesheet" href="site.css?v=768563f2">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=00d3caf5"></script>
-<script src="bridge.js?v=00d3caf5"></script>
+<script src="config.js?v=768563f2"></script>
+<script src="bridge.js?v=768563f2"></script>
 </head>
 <body>
 <script>
@@ -41,7 +41,7 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
 /* Layout: prontuário de estudo — plano do dia no topo, resumo, e uma ficha por grande área; cada tema abre seus controles de revisão e questões */
 :root{
   /* Nexus: azul-marinho (confiança), dourado (conquista), off-white (clareza), grafite (apoio) */
-  --bg:#f3f0e9; --surface:#fbfaf6; --ink:#141b2d; --muted:#5c6375; --line:#e1dacb;
+  --bg:#f3f0e9; --surface:#fbfaf6; --ink:#141b2d; --muted:#5c6375; --muted2:#454c5e; --line:#e1dacb; --late:#a46d12; --late-soft:#f6ead2;
   --accent:#16264a; --accent-soft:#e5e8ef; --on-accent:#f7f3ea; --gold:#b8914a; --gold-ink:#8a6a2b; --lg1:#d8b46e; --lg2:#ad8438; --lg3:#6f511c;
   --l1:#9a6a12; --l2:#2c5896; --l3:#25724f; --due:#ad3a2b; --due-soft:#f5e3dc; --danger:#a5261d; --li:#6b4c9a;
   --mi:#9277c4; --m1:#c39a48; --m2:#3e6aa8; --m3:#2f8560; --good:#2f8560; --warn:#b07f1f; --bad:#b4483a; --track:#e8e2d5; --tipbg:#141b2d; --tipfg:#f3f0e9;
@@ -51,13 +51,13 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
   --mono:"Manrope",ui-sans-serif,system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
+  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --muted2:#bcc3d0; --line:#243049; --late:#e0b25c; --late-soft:#33291a;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
   --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80; --li:#bba3e8;
   --mi:#9a80d0; --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
   --hero1:#1a2a4d; --hero2:#121d36; --hero3:#0b1324; --heroglow:rgb(207 171 99 / .30); --heroink:#f3ead8; --herosub:rgb(243 234 216 / .70); --herogold:#dcbb78; --herobtn:#cfab63; --herobtnink:#0a1121; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --line:#243049;
+  --bg:#0a1121; --surface:#111a2d; --ink:#ece6da; --muted:#9aa2b3; --muted2:#bcc3d0; --line:#243049; --late:#e0b25c; --late-soft:#33291a;
   --accent:#cfab63; --accent-soft:#1e2a45; --on-accent:#0a1121; --gold:#cfab63; --gold-ink:#d9b874; --lg1:#f1ddb0; --lg2:#c9a25a; --lg3:#8a6528;
   --l1:#e2b458; --l2:#80a7e0; --l3:#5fc495; --due:#ee8b75; --due-soft:#3a2226; --danger:#f08a80; --li:#bba3e8;
   --mi:#9a80d0; --m1:#c39a48; --m2:#5b88cc; --m3:#3fa577; --good:#3fa577; --warn:#c39a48; --bad:#d0644d; --track:#1f2a40; --tipbg:#ece6da; --tipfg:#0a1121;
@@ -2022,6 +2022,72 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .cderr{display:flex;flex-direction:column;gap:8px;border:1px solid var(--accent);border-radius:12px;padding:12px;background:var(--bg);margin-top:6px}.cderr .how{margin:0}
 .cdlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px}
 .cdit{display:flex;flex-direction:column;gap:6px}.cdck{display:flex;align-items:center;gap:8px;font:600 .82rem var(--body)}.cdck input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* Lote 19 — explicações atrás do "?" */
+.hx{display:none!important}
+.hx.hxshow{display:block!important;background:var(--accent-soft);border-radius:10px;padding:9px 12px;margin:6px 0;color:var(--ink);animation:hxin .18s ease}
+.hxmore.hxshow{background:none;padding:0 12px;margin-top:-2px}
+@keyframes hxin{from{opacity:0;transform:translateY(-3px)}to{opacity:1}}
+.hlpb.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.hxrow{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--muted);cursor:pointer;margin:4px 0}
+@media (prefers-reduced-motion:reduce){.hx.hxshow{animation:none}}
+
+/* Lote 19 — rótulos legíveis: um tamanho acima, cinza mais escuro, menos espaço entre letras */
+.kl,.plabel,.glabel,.exch2,.ebody b,.qexp b,.qfonte b,.navextra .nk,.pjhead,.sbpl,.cdfc figcaption,.stsh,.fost,.agw,.fpdh2,.stq{font-size:.78rem;letter-spacing:.025em;color:var(--muted2)}
+.dchip span{font-size:.72rem;letter-spacing:.025em;color:var(--muted2)}
+.trk,.ifk,.imetab .ikl,.nta,.ntfree button,.fl-lab,.qgab span,.ectip span,.altwhy.mine b{letter-spacing:.03em;font-size:.74rem}
+.hxnew{margin-left:8px;margin-right:auto}
+
+/* Lote 19 — sem caixas dentro de caixas: no tema aberto só o cartão de fora tem borda; os blocos se separam por espaço e linha fina */
+.detail>.grp:not(.notes),.dduo{background:none!important;border:0!important;border-top:1px solid var(--line)!important;border-radius:0!important;padding:16px 0 2px!important}
+.detail>.grp:not(.notes):first-of-type{border-top:0!important}
+.drev,.drev[data-st]{border-left:0!important}
+.dduo>.grp{background:none;border:0;padding:0}
+.iqlist li{background:none;border-radius:0;border-top:1px solid var(--line);padding:10px 2px}
+.iqlist li:first-child{border-top:0}
+
+/* Lote 19 — menos vermelho: atraso em âmbar (vermelho fica para prova perto, erro e resposta errada); selos da barra na cor da marca; peso sem vermelho */
+.late,.revmeta.late,.meta .late,.tnx.late,.iprow .late b,.navextra .nv.late,.nms.late,.efoot .rv.due,.agday.over .agn{color:var(--late)}
+.rcard .reason.r-rev,.r-rev,.drev[data-st=late] .dpill{background:var(--late-soft);color:var(--late)}
+.agday.over .agb i{background:var(--late)}
+.rmc.due,.rmk.due{box-shadow:inset 0 0 0 2px var(--late)}
+.kpi.alert{box-shadow:inset 3px 0 0 var(--late)}
+html[data-layout] .appnav .ecount,html[data-sb="rail"] .appnav:not(.peek) .tab .ecount{background:var(--accent);color:var(--on-accent)}
+html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav #rcount,html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav #ecount{color:var(--accent)}
+.nmb{background:var(--accent);color:var(--on-accent)}
+.inc[data-w="1"] i:nth-child(1),.inc[data-w="2"] i:nth-child(-n+2),.inc[data-w="3"] i{background:var(--gold-ink)}
+.inc b{color:var(--gold-ink)}
+/* barras de acerto finas e neutras; a cor fica só no número */
+.qchrow .hbar{height:5px!important}
+.qchrow .pbar{background:color-mix(in srgb,var(--muted) 55%,transparent)!important}
+.qchrow .hv{font-weight:700}.hv-good{color:var(--good)}.hv-warn{color:var(--warn)}.hv-bad{color:var(--bad)}
+.toplist .ttbar i{background:color-mix(in srgb,var(--muted) 55%,transparent)}
+.toplist b{color:var(--ink)}
+
+/* Lote 19 — telas grandes: Questões, Erros e Caderno usam a largura em duas colunas; letra um pouco maior a partir de 1600px */
+.nside{display:contents}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) :is(#viewQuest,#viewNotas,#viewErros){max-width:1480px!important}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull){display:grid;grid-auto-flow:row dense;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:20px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull)>*{grid-column:1/-1;min-width:0}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull)>.dash.qs-res{grid-column:1}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull)>#qSrcBox{grid-column:1}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull)>#qExtra{grid-column:2;grid-row:span 2}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewNotas:not(.vfull){display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);align-items:start;column-gap:24px;row-gap:20px;padding-right:0!important}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewNotas:not(.vfull)>*{grid-column:1;min-width:0}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewNotas:not(.vfull)>.nside{display:flex;flex-direction:column;gap:20px;grid-column:2;grid-row:1/span 30;align-self:stretch}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewNotas:not(.vfull) .nside .ntoc{position:sticky;top:16px;right:auto;width:auto;max-height:calc(100vh - 32px)}
+@media (min-width:1600px){html[data-layout="desktop"]:not([data-font="g"]){font-size:106.25%}html[data-layout="desktop"] body{font-size:17px}}
+
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:not(.vfull)>#qExtra{display:flex;flex-direction:column}
+.qbar .hbar{height:5px}.qbar .pbar{background:color-mix(in srgb,var(--muted) 55%,transparent)!important}
+.hxrow .hxb{margin:0}.hxrow{justify-content:flex-start}
+
+/* Lote 19 — sem códigos internos na lista de temas */
+.item:has(>.num:empty){grid-template-columns:0 minmax(0,1fr) auto}
+
+/* Lote 19 — saudação visível no modo escuro: tom um pouco mais claro e contorno dourado fino */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}}
+:root[data-theme="dark"] #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}
 </style>
 
 <div class="wrap">
@@ -2180,7 +2246,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <div class="meter" id="planbar" hidden><i></i></div>
     <ol class="plan" id="plan"></ol>
     <div id="weekBox"></div>
-    <p class="how">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; na semana da prova, o que você já estudou volta para revisão e não entram temas novos da residência; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
+    <p class="how hx">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; na semana da prova, o que você já estudou volta para revisão e não entram temas novos da residência; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
   </section>
 
   <div class="side">
@@ -2191,7 +2257,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
     <ol class="plan" id="revlist"></ol>
     <div class="revdone" id="revdone" hidden></div>
     <div id="revup"></div>
-    <p class="how">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar e a anotação para reler. As mais importantes (peso × atraso) vêm primeiro. <b>Lembrei</b> sobe um degrau (e, se passou mais tempo que o previsto, o próximo intervalo leva isso em conta), <b>Difícil</b> repete o intervalo e <b>Esqueci</b> volta dois degraus. Com 5 ou mais questões do tema no dia, a revisão é marcada sozinha pelo acerto.</p>
+    <p class="how hx">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar e a anotação para reler. As mais importantes (peso × atraso) vêm primeiro. <b>Lembrei</b> sobe um degrau (e, se passou mais tempo que o previsto, o próximo intervalo leva isso em conta), <b>Difícil</b> repete o intervalo e <b>Esqueci</b> volta dois degraus. Com 5 ou mais questões do tema no dia, a revisão é marcada sozinha pelo acerto.</p>
   </section>
 
   <section class="imeta rmeta" id="iMeta" aria-label="Meta e projeção até a prova" hidden></section>
@@ -3202,7 +3268,7 @@ const N_PAGE=30;let nLimit=N_PAGE;
 /* sumário lateral das anotações (computador com espaço à direita): área › especialidade › tema, acompanha a rolagem */
 let nTocObs=null,nPdfOpt=null;
 function nTocRender(shown,more){nTocRender.last=[shown,more];const T=$("#nToc"),V=$("#viewNotas");if(nTocObs){nTocObs.disconnect();nTocObs=null}
-  const pl=parseFloat(getComputedStyle(document.body).paddingLeft)||0,room=window.innerWidth-pl-32,on=view==="notas"&&twoCols()&&!nNoNote&&shown.length>=2&&room>=900+290&&!V.classList.contains("vfull");
+  const pl=parseFloat(getComputedStyle(document.body).paddingLeft)||0,room=window.innerWidth-pl-32,on=view==="notas"&&twoCols()&&!nNoNote&&shown.length>=2&&room>=1000&&!V.classList.contains("vfull");
   V.classList.toggle("hastoc",on);T.hidden=!on;T.innerHTML="";if(!on)return;
   T.appendChild(el(`<div class="ntoch"><b>Nesta página</b><span>${shown.length} ${shown.length===1?"tema":"temas"}${more?" (mostre mais para ver o resto)":""}</span></div>`));
   const ul=el(`<ul class="ntocl"></ul>`);let la="",ls="";
@@ -3245,7 +3311,7 @@ function renderNotasView(){
   const card=k=>{const it=BYKEY[k],open=nOpen.has(k);
     const c=el(`<li class="ncard${open?" open":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span><span></span></div><div class="mdview clamp"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini" type="button">Editar</button></div></li>`);
     const tb=c.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);
-    c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?"":" · "+String(it.num).padStart(3,"0")}${tgOf(k).length?" · "+tgOf(k).map(t=>"#"+t).join(" "):""}`;
+    c.querySelector(".nloc").textContent=`${it.area.code}${it.sp?" · "+it.sp:""}${tgOf(k).length?" · "+tgOf(k).map(t=>"#"+t).join(" "):""}`;
     c.querySelector(".ehead span:last-child").textContent=`${wordCount(notes[k])} palavras${noteAt[k]?" · "+whenLabel(noteAt[k]):""}`;
     const mv=c.querySelector(".mdview");c.id="nc-"+k;mv.innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);if(open){mv.classList.remove("clamp");noteDress(mv,k);mv.before(npathEl(k))}{const ne=noteErrsEl(k);if(ne)mv.after(ne)}if(open)c.querySelector(".efoot").before(wkBackEl({kind:"t",id:k}));
     const [tg,ed]=c.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nOpen.delete(k):nOpen.add(k);render()};
@@ -3331,7 +3397,7 @@ function dnBoxEl(it,L){const k=it.key,ed=dnEdit===k,P=subParts(L),s=get(k),bx=el
   if(sampleFn&&!sampleOff){const b=el(`<button class="link" type="button" id="dnAsk-${k}"></button>`);b.textContent=A&&A.st==="loading"?"Perguntando ao Claude…":s.dnAt?"Pedir nova sugestão ao Claude":"Pedir sugestão ao Claude";b.disabled=!!(A&&A.st==="loading");b.onclick=()=>dnSuggest(it);bx.appendChild(b)}
   if(L.some(x=>x.dn==="c")){const c=el(`<button class="link" type="button" id="dnOk-${k}">Confirmar sugestões</button>`);c.onclick=()=>{upd(k,s=>{const d={...(s.dn||{})};L.forEach(x=>{if(x.dn==="c"&&x.i!==undefined)d[x.i]="u"});s.dn=d;if(s.cs)s.cs=s.cs.map(x=>x.dn==="c"?{...x,dn:"u"}:x)});commit()};bx.appendChild(c)}
   if(A&&A.msg){const m=el(`<p class="how dnmsg"></p>`);m.textContent=A.msg;bx.appendChild(m)}
-  else if(ed)bx.appendChild(el(`<p class="how">Toque em “normal” ou “denso” ao lado de cada subtópico. Tracejado = sugerido pelo Claude; a sua escolha sempre vale.</p>`));
+  else if(ed)bx.appendChild(el(`<p class="how hx">Toque em “normal” ou “denso” ao lado de cada subtópico. Tracejado = sugerido pelo Claude; a sua escolha sempre vale.</p>`));
   return bx}
 function renderDetail(it,o={}){
   const s=get(it.key), d=dueIn(s), a=acc(s);
@@ -3366,10 +3432,8 @@ function renderDetail(it,o={}){
   else{const next=fromNum(dnum(today())+d);
     const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;pill.textContent=dueLabel(d);g2.dataset.st=d<0?"late":d===0?"today":"ok";
     p.innerHTML=`<span class="dnext">Próxima revisão: <b></b></span><span class="dsub"></span>`;p.querySelector("b").textContent=br(next);
-    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}. Lembrou bem: o intervalo cresce. Teve dificuldade: volta para 1 dia.`;
-    const g=el(`<button class="btn primary">Revisei: lembrei bem</button>`);g.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=Math.min((x.step||0)+1,INT.length-1);x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(it.key);commit()};
-    const h=el(`<button class="btn">Revisei: tive dificuldade</button>`);h.onclick=()=>{upd(it.key,x=>{x.last=today();x.step=0});logAct("r");markReviewed(it.key);commit()};
-    bt.append(g,h);}
+    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
+    bt.appendChild(revBtns(it.key,"drevb"));}
   box.appendChild(g2);
   // subtópicos
   const L=subList(it),[sdn,stot]=subCount(it);
@@ -3435,15 +3499,13 @@ function renderDetail(it,o={}){
   let tab=detTab[it.key]||"estudo";if(formErr)tab="questoes";if(eErr)tab="erros";if(subErr)tab="estudo";detTab[it.key]=tab;
   [...box.children].forEach(c=>{c.dataset.tab=tabOf(c);c.hidden=c.dataset.tab!==tab});
   const fo=foSum(foSess.filter(x=>x.ref==="T:"+it.key)),nt=(notes[it.key]||"").trim();
-  const sum=el(`<div class="dsum"></div>`),chip=(lab,val,t,cls)=>{const b=el(`<button type="button" class="dchip${cls?" "+cls:""}"><span></span><b></b></button>`);b.querySelector("span").textContent=lab;b.querySelector("b").textContent=val;b.onclick=()=>{detTab[it.key]=t;render()};sum.appendChild(b)};
-  chip("Nível",lvName(s),"estudo");chip("Revisão",s.last?dueLabel(d):"sem estudo","estudo",s.last&&d<=0?"late":"");
-  chip("Acerto",s.qt?`${Math.round(a*100)}% em ${s.qt}`:"sem questões","questoes",s.qt&&isWeak(s)?"late":"");chip("Foco",fo?fmtMin(fo):"0 min","estudo");chip("Erros",String(mine.length),"erros");
+  /* Lote 19: sem os quadrinhos Nível/Revisão/Acerto/Foco/Erros (repetiam a linha do tema e o bloco Revisão) */
   const tb=el(`<div class="seg dtabs" role="tablist" aria-label="Partes do tema"></div>`);
   [["estudo","Estudo"],["questoes","Questões"],["notas","Anotações"],["erros","Erros"]].forEach(([v,l])=>{const b=el(`<button type="button" role="tab" aria-pressed="${tab===v}" aria-selected="${tab===v}"></button>`);
     b.textContent=l+(v==="erros"&&mine.length?` · ${mine.length}`:v==="notas"&&nt?" ✓":"");b.dataset.dt=v;b.onclick=()=>{detTab[it.key]=v;render()};tb.appendChild(b)});
   const pn=el(`<button class="mini dpin" type="button"></button>`);pn.textContent=s.pin?"★ Fixado":"☆ Fixar";pn.setAttribute("aria-pressed",!!s.pin);pn.title=s.pin?"Tirar dos fixados":"Fixar este tema no topo da lista";pn.onclick=()=>togglePin(it.key);tb.appendChild(pn);
   const fz=el(`<button class="mini dfoco" type="button" title="Contar o tempo de estudo deste tema">⏱ Foco</button>`);fz.onclick=()=>foGo(it.key);tb.appendChild(fz);
-  box.prepend(sum,tb);
+  box.prepend(tb);
   return box;
 }
 let detTab={};
@@ -3572,7 +3634,7 @@ function msEl(S,o){const site=!!window.__site,on=genMatOn(S),ID=o.id,its=S?S.ite
     const u=el(`<div class="msuse"><div class="msbar${raw>GM_TOTAL?" over":""}"><i style="width:${w}%"></i></div><span class="mst"></span></div>`);
     u.querySelector(".mst").textContent=`Material: ${raw<1000?raw+" caracteres":Math.round(raw/1000)+" mil"} de ${GM_TOTAL/1000} mil caracteres${raw>GM_TOTAL?" (passou)":""}${nc>1?` · vai em ${nc} partes, uma por pedido`:""}${P.figs.length?` · ${P.figs.length} ${P.figs.length===1?"figura":"figuras"}`:""}${!site&&ni?` · ${ni} ${ni===1?"página escaneada":"páginas escaneadas"}`:""}`;b.appendChild(u);
     if(nc>1)b.appendChild(el(`<p class="how mspart">Cada pedido ao Claude leva uma parte (até ${GM_MAX/1000} mil caracteres), revezando: com várias questões, todas as partes são cobertas.</p>`));
-    if(P.figs.length)b.appendChild(el(`<p class="how msfig">Páginas com figura (exames, ECG, esquemas) viram figuras numeradas: o Claude pode fazer questões com elas, e a figura aparece junto da questão. Ela só fica guardada, menor, se você errar (no Refazer, até sair de lá).</p>`));
+    if(P.figs.length)b.appendChild(el(`<p class="how msfig hx">Páginas com figura (exames, ECG, esquemas) viram figuras numeradas: o Claude pode fazer questões com elas, e a figura aparece junto da questão. Ela só fica guardada, menor, se você errar (no Refazer, até sair de lá).</p>`));
     if(P.cut){const p=el(`<p class="pnote mscut"></p>`);p.textContent=`Passou do limite: cortei um pouco de cada para caber (${P.parts.filter(x=>x.txt).map(x=>`${x.name}: ${x.pct}%`).join(" · ")}). As questões usam só esse trecho de cada um.`;b.appendChild(p)}
     if(site&&(P.scan||P.imgs.length)){b.appendChild(el(`<p class="pnote">No site, anexe na conversa do Claude os arquivos com páginas escaneadas ou fotos quando colar o pedido.</p>`))}}
   if(site&&!ok.length){const l=el(`<label class="gmatt"><input type="checkbox"> Vou anexar o material direto na conversa do Claude</label>`),c=l.querySelector("input");c.id=ID("a");c.checked=!!(S&&S.attach);
@@ -3855,7 +3917,7 @@ function renderQFilters(){const box=$("#qFilters");qListKeep=qListKeep||$("#qlis
     sort:["qSort",[["num","Por especialidade"],["low","Menor acerto primeiro"],["most","Mais questões primeiro"]],qSort,v=>{qSort=v}],
     act:A,clearId:"qClear",onClear:qClearAll,groups:G,foot:A.length||qQuery?(nU?`${nU} ${nU===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com questões nesses filtros"):"",
     onDone:()=>{qFOpen=false;lsSet("resid-qfpanel",null);render();const k=$("#qkpis");if(k)k.scrollIntoView({block:"start"})}});
-  c.appendChild(el(`<p class="how qfall">Os filtros valem para toda a aba (resumo, gráficos, simulado e Refazer). Toque num tema para ver os detalhes dele aqui.</p>`));
+  c.appendChild(el(`<p class="how qfall hx">Os filtros valem para toda a aba (resumo, gráficos, simulado e Refazer). Toque num tema para ver os detalhes dele aqui.</p>`));
   if(qListKeep)c.appendChild(qListKeep)}
 function renderQuest(){
   renderQFilters();
@@ -3887,7 +3949,7 @@ function renderQuest(){
   $("#qChartTitle").textContent=qChartBy==="area"?"Acerto por área":"Acerto por especialidade";
   const tog=`<div class="qchctl"><div class="seg qchtog" role="group" aria-label="Agrupar gráfico"><button type="button" data-by="spec" aria-pressed="${qChartBy==="spec"}">Especialidades</button><button type="button" data-by="area" aria-pressed="${qChartBy==="area"}">Áreas</button></div><div class="seg qchsort" role="group" aria-label="Ordem"><button type="button" id="qchS-acc" data-s="acc" aria-pressed="${qChSort!=="gain"}">Menor acerto</button><button type="button" id="qchS-gain" data-s="gain" aria-pressed="${qChSort==="gain"}">Onde focar</button></div></div>`;
   const qchRows=L=>L.map(g=>{const p=pct(g.c,g.t),[bk,bl]=band(p),few=g.t<QCH_FEW,tr=g.tr===null||Math.abs(g.tr)<5?"":`<span class="qtr ${g.tr>0?"up":"down"}" title="últimos 30 dias × os 90 anteriores">${g.tr>0?"▲":"▼"} ${Math.abs(g.tr)}</span>`;
-    return `<button type="button" class="vrow qchrow${few?" few":""}" data-code="${esc(g.code)}" data-sp="${esc(g.sp)}"><div class="vtop"><span class="vl">${esc(g.lab)}</span>${tr}<span class="hv">${p}%</span><span class="hn">${few?"poucas questões · ":""}${g.c}/${g.t}</span></div><div class="hbar track1"><i class="pbar ${bk}" style="width:${Math.max(p,1)}%" data-tip="${esc(g.lab)}: ${g.c} de ${g.t} (${p}%) · ${bl}${few?" · poucas questões, ainda pouco confiável":""}"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></button>`}).join("");
+    return `<button type="button" class="vrow qchrow${few?" few":""}" data-code="${esc(g.code)}" data-sp="${esc(g.sp)}"><div class="vtop"><span class="vl">${esc(g.lab)}</span>${tr}<span class="hv hv-${bk}">${p}%</span><span class="hn">${few?"poucas questões · ":""}${g.c}/${g.t}</span></div><div class="hbar track1"><i class="pbar ${bk}" style="width:${Math.max(p,1)}%" data-tip="${esc(g.lab)}: ${g.c} de ${g.t} (${p}%) · ${bl}${few?" · poucas questões, ainda pouco confiável":""}"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></button>`}).join("");
   $("#qChart").innerHTML=tog+(T?qchRows(rows.slice(0,qMore?rows.length:12))+(rows.length>12?`<button class="link qmore" type="button">${qMore?"Mostrar menos":`Mostrar todas as ${rows.length}`}</button>`:"")+`<div class="clegend"><span><i class="sw" style="background:var(--good)"></i>Bom (80%+)</span><span><i class="sw" style="background:var(--warn)"></i>Regular (60–79%)</span><span><i class="sw" style="background:var(--bad)"></i>Fraco (&lt;60%)</span><span><i class="refk"></i>linha de 60%</span><span>▲▼ = últimos 30 dias × os 90 anteriores · toque para filtrar</span></div>`:
     `<p class="cempty">${[...ALL,...FAC_ITEMS].some(i=>get(i.key).qt)?"Nenhuma questão com esses filtros.":"Ainda não há questões registradas. Responda questões geradas pelo Claude ou registre acertos dentro de cada tema."}</p>`);
   $("#qChart").querySelectorAll(".qchtog button").forEach(b=>b.onclick=()=>{qChartBy=b.dataset.by;render()});
@@ -3900,7 +3962,7 @@ function renderQuest(){
   if(!vis.length){list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema com esses filtros.</li>`));return}
   const S=new Map(vis.map(x=>[x.it.key,x]));
   const row=it=>{const x=S.get(it.key),pp=pct(x.c,x.t),[k,l]=band(pp);
-    const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+" · "+String(it.num).padStart(3,"0")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b>${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
+    const li=el(`<li class="qrow"><button type="button" class="qt"><span class="qname"></span><span class="qmeta">${it.own?"FAC":it.area.code+(it.sp?" · "+esc(it.sp):"")}</span></button><div class="qbar"><div class="hbar track1"><i class="pbar ${k}" style="width:${Math.max(pp,1)}%"></i><span class="ref" style="left:60%" aria-hidden="true"></span></div></div><div class="qnums"><b class="hv-${k}">${pp}%</b><span>${x.c}/${x.t}</span><span class="st ${k}">${l}</span></div></li>`);
     li.querySelector(".qname").textContent=it.t;const qt=li.querySelector(".qt"),open=qOpenK===it.key;qt.setAttribute("aria-expanded",open);qt.onclick=()=>{qOpenK=open?null:it.key;render()};if(open)li.classList.add("qopen");
     li.querySelector(".hbar").setAttribute("data-tip",`${it.t}: ${x.c} acertos em ${x.t} questões (${pp}%) ${perL}`);li.appendChild(open?qTopicPanel(it):qRowExtra(it));return li};
   const items=vis.map(x=>x.it);list.classList.remove("q2c");
@@ -4024,7 +4086,7 @@ function renderPlan(){
       <div class="pa"></div><div class="pbody"></div><div class="pacts"></div></li>`);
     const tb=li.querySelector(".ptitle"),pfr=p.cls==="r-pfr";tb.textContent=pfr?refLabel(p.ref)||it.t:it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=done?(pfr?"Revisado":isIng(get(p.k))?"Parte concluída":"Concluído"):(p.cls==="r-new"&&!p.pt?"Tema novo":p.txt);if(done)li.querySelector(".reason").className="reason r-done";
-    const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · ${String(it.num).padStart(3,"0")} · `;pa.appendChild(incEl(wOf(it),false));
+    const pa=li.querySelector(".pa");pa.textContent=`${it.area.code}${it.sp?" · "+it.sp:""} · `;pa.appendChild(incEl(wOf(it),false));
     if(compact&&!editing){const rev=p.cls==="r-rev";let prog,started=false;
       if(p.cls==="r-weak"){const n=weakDone(p);started=n>0;prog=`${Math.min(n,WEAK_DAY_Q)} de ${WEAK_DAY_Q} questões`}
       else if(pfr){const PV=fac.provas.find(x=>x.id===p.pid);prog=`Revisão ${p.n||1} de ${FAC_RV_MAX}${PV?" · "+PV.name:""}`}
@@ -4601,7 +4663,7 @@ function linkedAllEl(x){const g=el(`<div class="grp flinkall"><span class="glabe
     r.querySelector(".link").onclick=()=>openTopic(L.k);
     if(n){const dd=el(`<details class="plain"><summary>Ver a anotação</summary><div class="mdview"></div></details>`);dd.querySelector(".mdview").innerHTML=mdC(n);r.appendChild(dd)}
     g.appendChild(r)});
-  g.appendChild(el(`<p class="how">Cada tema guarda as próprias anotações, erros e cartões. Aqui aparece tudo junto; para editar, abra o tema.</p>`));return g}
+  g.appendChild(el(`<p class="how hx">Cada tema guarda as próprias anotações, erros e cartões. Aqui aparece tudo junto; para editar, abra o tema.</p>`));return g}
 function linkPickEl(id){const Ls=ownLinks(id),o=fac.own[id]||{},g=el(`<div class="grp flink"><span class="glabel"></span><p class="gtext how"></p></div>`);
   g.querySelector(".glabel").textContent=Ls.length?"Ligado à residência":"Ligar a um tema da residência";
   g.querySelector(".how").textContent=Ls.length?"O progresso é o dos temas abaixo: estudar, revisar ou fazer questões em qualquer um deles avança aqui também. Com mais de um tema, conta como estudado quando todos estiverem estudados.":"Mantém este nome aqui na Faculdade, mas o progresso passa a ser o do tema da residência: estudar, revisar ou fazer questões em qualquer um dos dois avança os dois. Dá para ligar ao tema inteiro ou só a alguns subtópicos, e a mais de um tema.";
@@ -4856,7 +4918,7 @@ function calEditEl(ev){const w=el(`<div class="fcaled"><label class="ffield"><sp
   if(ev.k==="e"){bt(ev.o.done?"Ainda não entreguei":"Já entreguei",()=>{if(ev.o.done)delete ev.o.done;else ev.o.done=1;calEd=null;saveFac();render()}).id="fcedDone-"+ev.id;
     bt("Excluir",()=>{fac.ents=(fac.ents||[]).filter(x=>x!==ev.o);calEd=null;saveFac();render()},"link")}
   else bt(ev.k==="p"?"Abrir a prova":"Abrir a SP",()=>{calEd=null;if(ev.k==="p")goProva(ev.o);else{facOpenSem.add(ev.d.semId);facOpenDisc.add(ev.d.id);facOpenSP.add(ev.o.id);render();scrollToId("sp-"+ev.o.id)}},"link");
-  w.appendChild(el(`<p class="how">Mudou a data? O plano se reorganiza sozinho. Sem data nova ainda? Marque como adiada: sai do plano até você pôr a data.</p>`));return w}
+  w.appendChild(el(`<p class="how hx">Mudou a data? O plano se reorganiza sozinho. Sem data nova ainda? Marque como adiada: sai do plano até você pôr a data.</p>`));return w}
 /* calendário do semestre: da semana atual até o último evento (mín. 8, máx. 26 semanas); semana pesada = prova + outra coisa, ou 3+ itens */
 function semCalEl(sem){if(sem.archived)return null;const E=semEvents(sem),t=dnum(today()),m0=wpMon(t),dated=E.filter(e=>e.date&&dnum(e.date)>=m0),later=E.filter(e=>!e.date),ds=semDiscs(sem.id);
   const last=dated.reduce((a,e)=>Math.max(a,dnum(e.date)),m0),nw=Math.min(26,Math.max(8,Math.floor((last-m0)/7)+1));
@@ -4874,7 +4936,7 @@ function semCalEl(sem){if(sem.archived)return null;const E=semEvents(sem),t=dnum
       const [cb,rb]=li.querySelectorAll("button");cb.id="fgc-"+a.id;cb.setAttribute("aria-expanded",calEd&&calEd.aula===a.id);cb.onclick=()=>{calEd=calEd&&calEd.aula===a.id?null:{aula:a.id};render()};
       rb.onclick=()=>{fac.aulas=fac.aulas.filter(x=>x!==a);saveFac();redoPlan("Aula fixa removida: o tempo de estudo do dia voltou ao da sua semana.")};
       ul.appendChild(li);
-      if(calEd&&calEd.aula===a.id){const c=el(`<li class="fgcanc"><span class="how">Imprevisto? Marque o dia em que a aula não vai acontecer: o tempo volta para o plano desse dia, sem mexer na grade.</span><div class="fgdays"></div></li>`),dd=c.querySelector(".fgdays");
+      if(calEd&&calEd.aula===a.id){const c=el(`<li class="fgcanc"><span class="how hx">Imprevisto? Marque o dia em que a aula não vai acontecer: o tempo volta para o plano desse dia, sem mexer na grade.</span><div class="fgdays"></div></li>`),dd=c.querySelector(".fgdays");
         for(let n=t,k=0;k<4&&n<t+35;n++){if(wdOf(n)!==a.wd)continue;k++;const d=fromNum(n),on=((fac.canc||{})[d]||[]).includes(a.id),x=el(`<button type="button" class="wpo"></button>`);x.id=`fgx-${a.id}-${d}`;x.setAttribute("aria-pressed",on);x.textContent=`${on?"✕ ":""}${WD_SHORT[a.wd]} ${ddmm(n)}`;
           x.onclick=()=>{const C={...(fac.canc||{})},L=new Set(C[d]||[]);on?L.delete(a.id):L.add(a.id);if(L.size)C[d]=[...L];else delete C[d];fac.canc=C;saveFac();if(n===t)redoPlan(on?"A aula de hoje voltou: o tempo de estudo foi ajustado.":"Aula de hoje cancelada: o tempo voltou para o plano.");else render()};dd.appendChild(x)}
         ul.appendChild(c)}});
@@ -4901,7 +4963,7 @@ function semCalEl(sem){if(sem.archived)return null;const E=semEvents(sem),t=dnum
     const er=el(`<p class="err" hidden></p>`);f.insertBefore(er,f.querySelector(".btns"));
     f.onsubmit=ev=>{ev.preventDefault();const a={id:fuid(),semId:sem.id,wd:+wd.value,ini:ii.value,fim:fi.value,t:(ti.value.trim()||"Aula").slice(0,40),...(se.value?{discId:se.value}:{})};
       if(!aulaOk(a)){er.hidden=false;er.textContent="Confira os horários: o fim tem que ser depois do começo.";return}fac.aulas=[...(fac.aulas||[]),a];calAdd=null;saveFac();redoPlan(`Aula fixa adicionada: ${WD_FULL[a.wd]} ${hm2(a.ini)}–${hm2(a.fim)}. O tempo de estudo desse dia foi ajustado.`)};b.appendChild(f)}
-  b.appendChild(el(`<p class="how">Toque numa data para mudar ou marcar como adiada. Nas 3 semanas antes de cada prova o plano do dia já reserva espaço para ela; semanas pesadas aparecem em dourado para você se adiantar.</p>`));
+  b.appendChild(el(`<p class="how hx">Toque numa data para mudar ou marcar como adiada. Nas 3 semanas antes de cada prova o plano do dia já reserva espaço para ela; semanas pesadas aparecem em dourado para você se adiantar.</p>`));
   return w}
 let facCalOpen=new Set();
 /* SP "aberta" da disciplina: a que fecha primeiro a partir de amanhã; sem data, a última da lista */
@@ -5620,7 +5682,7 @@ function eRegPanel(){const R=eReg,w=el(`<div class="qreg" id="eReg"><div class="
     const n=norm((R.query||"").trim());if(n.length>=2){const res=[...ALL,...FAC_ITEMS].map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,7);
       const ul=el(`<ul class="qrres"></ul>`);if(!res.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));
       res.forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>{R.k=x.key;render();setTimeout(()=>{const f=$("#erg-w");if(f)f.focus()},30)};ul.appendChild(li)});w.appendChild(ul)}
-    else w.appendChild(el(`<p class="how">Errou uma questão fora do app (banco, prova antiga, aula)? Escolha o tema e anote o erro e o conceito certo.</p>`));return w}
+    else w.appendChild(el(`<p class="how hx">Errou uma questão fora do app (banco, prova antiga, aula)? Escolha o tema e anote o erro e o conceito certo.</p>`));return w}
   const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
   ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
   w.appendChild(errFormEl(R,"erg-",e=>{eReg={k:e.k,t:e.t,s:e.s,w:"",r:"",saved:e.k};render()}));return w}
@@ -5689,7 +5751,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
   const n=Math.min(due.length,15),go=el(`<button class="btn primary" type="button" id="erGo"></button>`);go.textContent=`Revisar ${n} ${n===1?"erro":"erros"}`;
   // os mais atrasados primeiro; dentro do mesmo dia, embaralhados
   go.onclick=()=>{const K=pwKeys();erRun={ids:shuffle(due).sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(eDue(a)<eDue(b)?-1:eDue(a)>eDue(b)?1:0)).slice(0,15).map(e=>e.id),i:0,show:false,ok:0,done:0};render();const h=$("#erh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};c.appendChild(go);
-  c.appendChild(el(`<p class="how">Você vê o que errou, tenta lembrar o certo e só então abre. Já sabe: volta em 3, 7, 15 e 30 dias. Ainda erraria: volta amanhã.</p>`));return c}
+  c.appendChild(el(`<p class="how hx">Você vê o que errou, tenta lembrar o certo e só então abre. Já sabe: volta em 3, 7, 15 e 30 dias. Ainda erraria: volta amanhã.</p>`));return c}
 /* ----- erros que se repetem (últimos 30 dias) ----- */
 function eRepeat(){const t=dnum(today()),by={};errors.forEach(e=>{if(BYKEY[e.k]&&!e.arch&&t-dnum(e.d)<=30)(by[e.k]=by[e.k]||[]).push(e)});
   return {tem:Object.entries(by).filter(([,l])=>l.length>=2).sort((a,b)=>b[1].length-a[1].length),stub:errors.filter(e=>BYKEY[e.k]&&!e.arch&&(e.miss||0)>=2).sort((a,b)=>b.miss-a.miss)}}
@@ -6076,7 +6138,7 @@ function iQueueCard(){const C=qCounts(),tot=qTot(C),all=tot+(C.plan||0),eve=isEv
     const x=el(`<button class="link" type="button">Sair da fila</button>`);x.onclick=qStop;if(heroOn())a.append(x);else a.append(b,x)}
   else if(all&&!heroOn()){const b=el(`<button class="btn primary" type="button" id="iqGo">Começar</button>`);b.onclick=qStart;a.appendChild(b)}
   if(a.children.length)c.appendChild(a);
-  if(all)c.appendChild(el(`<p class="how">Começar percorre tudo na ordem: erros, revisões dos temas (reler a anotação faz parte), ponto fraco, questões para refazer, cartões e o plano. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
+  if(all)c.appendChild(el(`<p class="how hx">Começar percorre tudo na ordem: erros, revisões dos temas (reler a anotação faz parte), ponto fraco, questões para refazer, cartões e o plano. Termine cada parte e toque em <b>Próximo</b>, na barra de baixo.</p>`));return c}
 function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)bar.remove();document.body.classList.remove("hasqbar");return}
   if(!bar){bar=el(`<div class="dqbar" id="qBar" role="region" aria-label="Fila do dia"></div>`);document.body.appendChild(bar)}bar.innerHTML="";document.body.classList.add("hasqbar");
   const C=qCounts(),cur=QSTEPS.find(s=>s[0]===dayQ.ids[dayQ.i]),nx=dayQ.ids.slice(dayQ.i+1).find(id=>C[id]),nxs=QSTEPS.find(s=>s[0]===nx);
@@ -6173,7 +6235,7 @@ function iOrder(){const o=Array.isArray(ui.prefs.iorder)?ui.prefs.iorder.filter(
 function applyICustom(){const H=iHidden(),O=iOrder();ICARDS.forEach(([id])=>{const e=document.getElementById(id);if(!e)return;e.classList.toggle("ihid",H.has(id));e.style.order=String(O.indexOf(id)+1)})}
 function iCustomEl(){const w=el(`<div class="icustom"></div>`);
   if(!iCustom){const b=el(`<button class="link" type="button" id="iCustB">Personalizar o Início</button>`);b.onclick=()=>{iCustom=true;render()};w.appendChild(b);return w}
-  const H=iHidden(),O=iOrder(),c=el(`<section class="card icust"><div class="dhead"><h2>Personalizar o Início</h2><button class="link" type="button">Concluir</button></div><p class="how">Escolha o que aparece e a ordem. Nada é apagado: o que você esconder continua nas outras abas.</p><ul class="icl"></ul><button class="link" type="button">Voltar ao padrão</button></section>`);
+  const H=iHidden(),O=iOrder(),c=el(`<section class="card icust"><div class="dhead"><h2>Personalizar o Início</h2><button class="link" type="button">Concluir</button></div><p class="how hx">Escolha o que aparece e a ordem. Nada é apagado: o que você esconder continua nas outras abas.</p><ul class="icl"></ul><button class="link" type="button">Voltar ao padrão</button></section>`);
   c.querySelector(".dhead .link").onclick=()=>{iCustom=false;render()};
   const ul=c.querySelector(".icl"),save=()=>{saveUI();render()};
   O.forEach((id,i)=>{const lab=ICARDS.find(x=>x[0]===id)[1],li=el(`<li><label><input type="checkbox"><span></span></label><button class="mini" type="button" aria-label="Subir">↑</button><button class="mini" type="button" aria-label="Descer">↓</button></li>`);
@@ -6249,8 +6311,29 @@ async function icsSave(){if(!downloadsFn)return;const r=icsBuild();if(!r.n){icsM
   catch(e){icsMsg=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o arquivo agora."}render()}
 /* ----- 14. ajuda: abrir uma seção ----- */
 function goHelp(title){helpQ="";const i=$("#hq");if(i)i.value="";goSub("help");setTimeout(()=>{const idx=HELP.findIndex(h=>h[0]===title);const d=document.querySelector(`#helpList details[data-i="${idx}"]`);if(d){d.open=true;d.scrollIntoView({block:"start"})}},40)}
-function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
+function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.dataset.help=title;b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
 
+/* Lote 19: Caderno em duas colunas no computador — coluna da direita (#nSide) com Cartões, Pegadinhas, PDF e o sumário; no celular é display:contents */
+(()=>{const V=document.getElementById("viewNotas");if(!V||document.getElementById("nSide"))return;const S=document.createElement("div");S.id="nSide";S.className="nside";
+  ["nRevBox","nPegBox"].forEach(id=>{const n=document.getElementById(id);if(n)S.appendChild(n)});const ex=V.querySelector(".nexport");if(ex)S.appendChild(ex);
+  const t=document.getElementById("nToc");if(t)S.appendChild(t);V.appendChild(S)})();
+/* Lote 19 (10/2026): explicações fixas dos cartões (.hx) ficam recolhidas atrás do "?" do cabeçalho do cartão.
+   O "?" mostra a explicação ali mesmo; se o cartão tinha o "?" da Ajuda, o mesmo botão abre a explicação com "Mais na Ajuda". */
+const hxOpen=new Set();
+function hxKey(card,head){return card.id||card.getAttribute("aria-labelledby")||(head?head.textContent.replace(/\?/g,"").trim().slice(0,40):"")}
+function hxScan(root){(root||document).querySelectorAll(".hx:not([data-hx])").forEach(p=>{p.dataset.hx="1";
+  const card=p.closest(".card,.imeta,section,details")||p.parentElement;if(!card)return;
+  if(card.dataset.hxc){hxShow(card);return}card.dataset.hxc="1";
+  const head=[...card.children].find(c=>c.matches(".dhead,.todayhead,.cdhead,.fhead,header"))||null;
+  const key=hxKey(card,head);let b=head&&head.querySelector(".hlpb");const help=b&&b.dataset.help;
+  if(!b){b=el(`<button class="hlpb hxb hxnew" type="button" aria-label="Como funciona">?</button>`);b.title="Como funciona";
+    if(head){const h=head.querySelector("h2,h3");h&&h.parentElement===head?h.after(b):head.appendChild(b)}else{const w=el(`<div class="hxrow"></div>`);w.appendChild(b);w.appendChild(el(`<span>Como funciona</span>`));p.before(w);w.onclick=e=>{if(e.target!==b)b.click()}}}
+  else b.classList.add("hxb");
+  if(help&&!card.querySelector(".hxmore")){const m=el(`<p class="hx hxmore" data-hx="1"><button class="link" type="button">Mais na Ajuda →</button></p>`);m.querySelector("button").onclick=()=>goHelp(help);const last=[...card.querySelectorAll(".hx:not(.hxmore)")].filter(x=>x.closest(".card,.imeta,section,details")===card).pop()||p;last.after(m)}
+  b.onclick=e=>{e.stopPropagation();e.preventDefault();hxOpen.has(key)?hxOpen.delete(key):hxOpen.add(key);hxShow(card)};card.dataset.hxk=key;hxShow(card)})}
+function hxShow(card){const on=hxOpen.has(card.dataset.hxk);card.querySelectorAll(".hx").forEach(x=>{if(x.closest(".card,.imeta,section,details")===card)x.classList.toggle("hxshow",on)});
+  card.querySelectorAll(".hxb").forEach(b=>{b.setAttribute("aria-expanded",on?"true":"false");b.classList.toggle("on",on)})}
+(()=>{let q=0;const go=()=>{q=0;hxScan()};new MutationObserver(()=>{if(!q)q=requestAnimationFrame(go)}).observe(document.documentElement,{childList:true,subtree:true})})();
 function render(){
   if(qAutoRev())persist();rdExpire();
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
@@ -6443,10 +6526,10 @@ function wpReset(mon){const k=fromNum(mon),P=ui.prefs,o={...P.wplans};delete o[k
 /* o tempo de hoje, pelo link do Estudar hoje */
 function setTodayMin(m){const t=dnum(today());wpSetDay(wpMon(t),wdOf(t),m)}
 function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTab=wdOf(t)===0?"next":"cur";
-  const c=el(`<div class="wpcard" id="wpCard"><div class="wph"><b>Planejar a semana</b><span class="gtext how">O tempo que você tem em cada dia decide o tamanho do Estudar hoje: 30 min = só cartões, erros e revisões; 1 h ≈ 1 tema; 2 h ≈ 2 temas; 3 h+ = o plano inteiro.</span></div><div class="seg wptabs" role="group" aria-label="Qual semana"></div><div class="wpbody"></div></div>`);
+  const c=el(`<div class="wpcard" id="wpCard"><div class="wph"><b>Planejar a semana</b><span class="gtext how hx">O tempo que você tem em cada dia decide o tamanho do Estudar hoje: 30 min = só cartões, erros e revisões; 1 h ≈ 1 tema; 2 h ≈ 2 temas; 3 h+ = o plano inteiro.</span></div><div class="seg wptabs" role="group" aria-label="Qual semana"></div><div class="wpbody"></div></div>`);
   const tg=c.querySelector(".wptabs");[["cur","Esta semana"],["next","Próxima semana"],["pad","Semana padrão"]].forEach(([v,lab])=>{const b=el(`<button type="button"></button>`);b.id="wpT-"+v;b.textContent=lab;b.setAttribute("aria-pressed",wpTab===v);b.onclick=()=>{wpTab=v;wpMsg="";render()};tg.appendChild(b)});
   const body=c.querySelector(".wpbody"),pad=wpTab==="pad",mon=pad?null:wpTab==="next"?cur+7:cur,W=pad?null:wpPlanned(mon),arr=pad?P.wday:wpArr(mon);
-  if(pad)body.appendChild(el(`<p class="how">O tempo que você costuma ter em cada dia. Vale para toda semana que você não planejar.</p>`));
+  if(pad)body.appendChild(el(`<p class="how hx">O tempo que você costuma ter em cada dia. Vale para toda semana que você não planejar.</p>`));
   else{const h=el(`<p class="wpst"><b></b> <span></span></p>`);h.querySelector("b").textContent=`${ddmm(mon)} a ${ddmm(mon+6)}`;
     h.querySelector("span").textContent=W&&W.ok?"· confirmada":W?"· alterada, ainda não confirmada":"· veio da semana padrão";body.appendChild(h);
     /* Lote 18: antes de planejar, a semana anterior a esta (o que cumpriu, o que atrasou, onde melhorou) */
@@ -6468,9 +6551,9 @@ function wpCardEl(){const P=ui.prefs,t=dnum(today()),cur=wpMon(t);if(!wpTab)wpTa
     if(!(W&&W.ok)){const ok=el(`<button class="btn primary" type="button" id="wpOk">Confirmar a semana</button>`);ok.onclick=()=>wpConfirm(mon);bt.appendChild(ok)}
     if(W){const rs=el(`<button class="btn" type="button" id="wpReset">Voltar à semana padrão</button>`);rs.onclick=()=>wpReset(mon);bt.appendChild(rs)}
     if(bt.children.length)body.appendChild(bt);
-    body.appendChild(el(`<p class="how">Contorno dourado = diferente da semana padrão. Semana que você não planejar segue a padrão.</p>`))}
+    body.appendChild(el(`<p class="how hx">Contorno dourado = diferente da semana padrão. Semana que você não planejar segue a padrão.</p>`))}
   else{body.appendChild(segRow("Meta por semana","Quanto você quer estudar por semana (residência e faculdade juntas). Aparece aqui e em Estatísticas.",[[300,"5 h"],[420,"7 h"],[480,"8 h"],[540,"9 h"],[600,"10 h"],[720,"12 h"]],P.hgoal,v=>{ui.prefs.hgoal=v;saveUI();render()}));
-    const L="DSTQQSS",r=el(`<div class="wkrow" id="wkCfg"><div class="wkl"><b>Simulados e provas</b><span class="how">Nesses dias o Início sugere um simulado ou uma prova na íntegra.</span></div><div class="wkdays" role="group" aria-label="Simulados e provas"></div></div>`),g=r.querySelector(".wkdays");
+    const L="DSTQQSS",r=el(`<div class="wkrow" id="wkCfg"><div class="wkl"><b>Simulados e provas</b><span class="how hx">Nesses dias o Início sugere um simulado ou uma prova na íntegra.</span></div><div class="wkdays" role="group" aria-label="Simulados e provas"></div></div>`),g=r.querySelector(".wkdays");
     for(let d=0;d<7;d++){const on=P.wsim.includes(d),b=el(`<button type="button" class="wkd wsim" aria-pressed="${on}"></button>`);b.id=`wk-wsim-${d}`;b.textContent=L[d];b.title=WD_FULL[d];b.disabled=P.wday[d]===0;
       b.onclick=()=>{const cur=new Set(ui.prefs.wsim);if(cur.has(d))cur.delete(d);else cur.add(d);ui.prefs.wsim=[...cur];saveUI();render()};g.appendChild(b)}
     body.appendChild(r)}
@@ -6509,7 +6592,7 @@ const PHASES={clinico:{lab:"Ciclo clínico",how:"A faculdade vem primeiro no pla
 function phaseSuggest(){const L=fac.sems.filter(x=>!x.archived).map(x=>+(String(x.name).match(/\d+/)||[0])[0]).filter(Boolean),n=L.length?Math.max(...L):0,m=exMain(),d=m&&m.date?daysTo(m.date):null;
   return d!==null&&d>=0&&d<=270||n>=11?"reta":n>=9?"internato":"clinico"}
 function setPhase(ph){if(!PHASES[ph])return;ui.profile.phase=ph;const S=PHASES[ph].set;for(const k in S)ui.prefs[k]=Array.isArray(S[k])?[...S[k]]:S[k];saveUI();applyUI();redoPlan(`Fase do curso: ${PHASES[ph].lab}. O plano de hoje foi refeito com as opções dela.`);render()}
-function phaseEl(){const ph=ui.profile.phase,sg=phaseSuggest(),c=el(`<section class="card" id="pfPhase"><div class="dhead"><h2>Fase do curso</h2></div><p class="gtext how"></p><div class="seg" role="group" aria-label="Fase do curso"></div><p class="phhow"></p><p class="how phnote">Escolher a fase muda: antecedência das provas, residência garantida na semana, meta de questões, marcação de atraso e dia de simulado. Cada uma continua editável em Configurações.</p></section>`);
+function phaseEl(){const ph=ui.profile.phase,sg=phaseSuggest(),c=el(`<section class="card" id="pfPhase"><div class="dhead"><h2>Fase do curso</h2></div><p class="gtext how hx"></p><div class="seg" role="group" aria-label="Fase do curso"></div><p class="phhow"></p><p class="how phnote">Escolher a fase muda: antecedência das provas, residência garantida na semana, meta de questões, marcação de atraso e dia de simulado. Cada uma continua editável em Configurações.</p></section>`);
   c.querySelector("p.how").textContent=ph?(ph!==sg?`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`:"Você pode trocar quando quiser."):`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`;
   Object.entries(PHASES).forEach(([v,x])=>{const b=el(`<button type="button"></button>`);b.id="ph-"+v;b.textContent=x.lab+(v===sg&&v!==ph?" · sugerida":"");b.setAttribute("aria-pressed",ph===v);b.onclick=()=>setPhase(v);c.querySelector(".seg").appendChild(b)});
   c.querySelector(".phhow").textContent=ph?PHASES[ph].how:"";if(!ph)c.querySelector(".phhow").remove();return c}
@@ -6795,7 +6878,7 @@ function projWeeksEl(M){const w=el(`<div class="pjw" id="projWeeks"></div>`),qg=
     if(x.ev.length){const ev=el(`<span class="pjev"></span>`);x.ev.forEach(e=>{const c=el(`<span class="pjchip ${e.k}${e.main?" main":""}"></span>`);c.textContent=`${e.k==="fac"?"Prova":e.k==="res"?"Residência":"Fechamento"} · ${e.k==="sp"?e.t.replace(/^Fechamento: /,""):e.t} (${br(e.d)})`;if(e.sub)c.title=e.sub;ev.appendChild(c)});r.appendChild(ev)}
     w.appendChild(r)});
   if(M.W.length>PJ_SHOW){const m=el(`<button class="link" type="button" id="projAll"></button>`);m.textContent=projAll?"Mostrar menos":`Ver todas as ${M.W.length} semanas`;m.onclick=()=>{projAll=!projAll;render()};w.appendChild(m)}
-  w.appendChild(el(`<p class="how">Semanas com prova da faculdade ou de residência recebem menos temas novos; as outras compensam. As revisões contam as já agendadas e as dos temas novos previstos. Tudo se recalcula a cada dia, com o que você fez.</p>`));
+  w.appendChild(el(`<p class="how hx">Semanas com prova da faculdade ou de residência recebem menos temas novos; as outras compensam. As revisões contam as já agendadas e as dos temas novos previstos. Tudo se recalcula a cada dia, com o que você fez.</p>`));
   return w}
 function projEl(){const M=projModel(),w=el(`<div class="iproj"></div>`),fmt=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1});
   if(!M.left){w.innerHTML=`<p class="ks"><b>Todos os ${TOTAL} temas já foram vistos.</b> Até a prova: revisões e questões, principalmente nos pontos fracos.</p>`}
@@ -6880,7 +6963,7 @@ function excDate(m){if(!m)return "";const t=today(),y=+t.slice(0,4);let d=`${y}-
 let excJust=null;
 function excPick(id,c){const y=exList().find(z=>z.id===id);if(!y)return;excJust=id;setTimeout(()=>{if(excJust===id)excJust=null},400);y.name=c.n;if(!y.date||y.est){const d=excDate(c.m);if(d){y.date=d;y.est=1}else{delete y.date;delete y.est}}excQ[id]="";saveUI();render()}
 function excAdd(c){const id="ex"+Date.now().toString(36),L2=exList(),d=excDate(c.m);ui.profile.exams=[...L2,{id,name:c.n,...(d?{date:d,est:1}:{})}];if(!L2.length)ui.profile.mainEx=id;saveUI();render()}
-function excPanelEl(){const w=el(`<div class="excat" id="excPanel"><div class="seg" role="group" aria-label="Região"></div><ul class="exclist"></ul><p class="how">Lista de 10/2026 (Medway, MedCof, BIP, Estratégia MED). Banca e mês podem mudar a cada edital: confira o edital. "Pelo ENARE" = a instituição seleciona pela prova nacional.</p></div>`),sg=w.querySelector(".seg");
+function excPanelEl(){const w=el(`<div class="excat" id="excPanel"><div class="seg" role="group" aria-label="Região"></div><ul class="exclist"></ul><p class="how hx">Lista de 10/2026 (Medway, MedCof, BIP, Estratégia MED). Banca e mês podem mudar a cada edital: confira o edital. "Pelo ENARE" = a instituição seleciona pela prova nacional.</p></div>`),sg=w.querySelector(".seg");
   EXC_REG.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="excR-"+v;b.textContent=l;b.setAttribute("aria-pressed",excReg===v);b.onclick=()=>{excReg=v;render()};sg.appendChild(b)});
   const ul=w.querySelector("ul"),has=new Set(exList().map(x=>norm(x.name||"")));
   [["Principais",EX_CAT.filter(c=>c.r===excReg&&!c.o)],["Outras",EX_CAT.filter(c=>c.r===excReg&&c.o)]].forEach(([h,L])=>{if(!L.length)return;ul.appendChild(el(`<li class="exch2">${h}</li>`));
@@ -6888,7 +6971,7 @@ function excPanelEl(){const w=el(`<div class="excat" id="excPanel"><div class="s
       const b=li.querySelector("button"),on=has.has(norm(c.n));b.id="excA-"+EX_CAT.indexOf(c);b.textContent=on?"Na sua lista":"+ Adicionar";b.disabled=on||exList().length>=12;b.onclick=()=>excAdd(c);ul.appendChild(li)})});
   return w}
 function exEditorEl(){const P=ui.profile,L=exList(),main=exMain();
-  const mt=el(`<section class="card pfex"><div class="dhead"><h2>Provas de residência</h2></div><p class="gtext how">Cadastre as provas que vai prestar e marque a principal: ela guia a projeção do Início. Sem data, o Início mostra só o seu ritmo; as outras aparecem marcadas na linha do tempo e no calendário.</p><ul class="exlist"></ul><div class="btns"><button class="btn" type="button" id="pfExAdd">+ Adicionar prova</button><button class="btn" type="button" id="pfExCat"></button></div><p class="pfcount"></p></section>`);
+  const mt=el(`<section class="card pfex"><div class="dhead"><h2>Provas de residência</h2></div><p class="gtext how hx">Cadastre as provas que vai prestar e marque a principal: ela guia a projeção do Início. Sem data, o Início mostra só o seu ritmo; as outras aparecem marcadas na linha do tempo e no calendário.</p><ul class="exlist"></ul><div class="btns"><button class="btn" type="button" id="pfExAdd">+ Adicionar prova</button><button class="btn" type="button" id="pfExCat"></button></div><p class="pfcount"></p></section>`);
   {const cb=mt.querySelector("#pfExCat");cb.textContent=excOpen?"Fechar o catálogo":"Ver provas por região";cb.setAttribute("aria-expanded",excOpen);cb.onclick=()=>{excOpen=!excOpen;render()};if(excOpen)mt.insertBefore(excPanelEl(),mt.querySelector(".pfcount"))}
   const ul=mt.querySelector(".exlist");
   L.forEach(x=>{const li=el(`<li class="exrow"><label class="exmain"><input type="radio" name="pfMain"><span>Principal</span></label><label class="ffield"><span>Prova</span><input class="etext exn" maxlength="60" placeholder="Ex.: ENARE 2027, USP-SP, SUS-SP"></label><label class="ffield"><span>Data (se já souber)</span><input class="etext exd" type="date"></label><button class="link warn exdel" type="button">remover</button></li>`);
@@ -7132,7 +7215,7 @@ function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foSh
   {const mo=el(`<details class="fomore"><summary></summary></details>`),P2=ui.prefs,rf=(foRun?foRun.ref:foPick.ref)||"";if(foMoreOpts)mo.open=true;mo.addEventListener("toggle",()=>{foMoreOpts=mo.open});
     mo.querySelector("summary").textContent=`Mais opções${rf?" · "+(foRefLabel(rf)||"vínculo"):""}${P2.fnoise?" · som de fundo":""}`;
     mo.append(foLinkEl(),foNoiseEl(),c.querySelector(".foopts"));c.appendChild(mo)}
-  c.appendChild(el(`<p class="how fohow">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
+  c.appendChild(el(`<p class="how fohow hx">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
   const m=c.querySelector(".fomsg");m.textContent=foMsg;m.hidden=!foMsg;return c}
 function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=foDG()*60;
   const wk=foSess.filter(x=>dnum(x.d)>=ws&&dnum(x.d)<=t),tot=foSum(wk),td=m[today()]||0,act=new Set(wk.map(x=>x.d)).size,st=foGoalStreak(m);
@@ -7146,7 +7229,7 @@ function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeek
   box.innerHTML=days.map((d,i)=>{const n=ws+i,v=vals[i],fut=n>t;return `<div class="fod${n===t?" now":""}${fut?" fut":""}"><span class="fov">${v?fmtMin(v).replace(" min","m"):""}</span><div class="fob">${pv[i]?`<b class="fogh" style="height:${pv[i]/mx*100}%" aria-hidden="true"></b>`:""}<i style="height:${v/mx*100}%" data-tip="${d} ${br(fromNum(n))}: ${fmtMin(v)}${g?` (meta ${fmtMin(g)})`:""} · semana passada: ${fmtMin(pv[i])}" class="${g&&v>=g?"ok":""}"></i></div><span class="fox">${d}</span></div>`}).join("")+(g?`<span class="fogl" style="bottom:calc(1.3rem + ${g/mx}*(100% - 2.6rem))" aria-hidden="true"><span class="foglt">meta ${fmtMin(g)}</span></span>`:"");
   const gl=c.querySelector(".fogoal"),gt=el(`<p class="how fogtxt" id="foGoal"></p>`);
   gt.textContent=g?`Meta do dia: ${fmtMin(g)} (a meta de ${fmtMin(P.hgoal*60)} por semana dividida pelos ${foStudyDays()} dias de estudo). `:"Sem meta semanal. ";gt.appendChild(foGoalLink());gl.appendChild(gt);
-  gl.appendChild(el(`<span class="how">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
+  gl.appendChild(el(`<span class="how hx">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
   c.appendChild(foWeekExtra());return c}
 function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foPer==="30"?t-29:-Infinity;
   const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),g={};list.forEach(x=>{const m=foMat(x);const r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
@@ -7159,7 +7242,7 @@ function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foP
   return c}
 function foListCard(){const c=el(`<section class="card" aria-labelledby="folh"><div class="dhead"><h2 id="folh">Sessões recentes</h2><button class="link" type="button" id="foAddB"></button></div><div class="foaddbox"></div><ol class="folist"></ol></section>`);
   const ab=c.querySelector("#foAddB");ab.textContent=foAdd?"Fechar":"+ Adicionar tempo";ab.onclick=()=>{foAdd=foAdd?null:{d:today(),min:"",msg:""};render()};
-  if(foAdd){const f=el(`<div class="foadd"><p class="how">Para estudo feito sem o cronômetro (aula, ambulatório, leitura). Fica vinculado ao que estiver escolhido em <b>Vincular a</b>, acima.</p><div class="focus-form"><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label><label class="qfsel"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label><button class="btn primary" type="button">Salvar</button></div><p class="err" role="alert"></p></div>`);
+  if(foAdd){const f=el(`<div class="foadd"><p class="how hx">Para estudo feito sem o cronômetro (aula, ambulatório, leitura). Fica vinculado ao que estiver escolhido em <b>Vincular a</b>, acima.</p><div class="focus-form"><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label><label class="qfsel"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label><button class="btn primary" type="button">Salvar</button></div><p class="err" role="alert"></p></div>`);
     const id=f.querySelector("#foAddD"),im=f.querySelector("#foAddM");id.value=foAdd.d;id.max=today();im.value=foAdd.min;id.oninput=()=>{foAdd.d=id.value};im.oninput=()=>{foAdd.min=im.value};f.querySelector(".err").textContent=foAdd.msg;
     f.querySelector("button").onclick=()=>{const mn=Math.round(+im.value),d=id.value;if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){foAdd.msg="Escolha um dia até hoje.";render();return}if(!(mn>=1&&mn<=720)){foAdd.msg="Digite de 1 a 720 minutos.";render();return}
       const ref=foPick.ref||"",x={id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d,s:d+"T12:00:00.000Z",sec:mn*60,m:"x",ref,lab:foRefLabel(ref)};
@@ -7396,7 +7479,7 @@ function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filt
   go.onclick=()=>rdStart(list.slice(0,10).map(x=>x.id));acts.appendChild(go);
   if(list.length>10){const all=el(`<button class="btn" type="button">Todas (${list.length})</button>`);all.onclick=()=>rdStart(list.map(x=>x.id));acts.appendChild(all)}
   const vl=el(`<button class="link" type="button">${rdList?"Esconder lista":"Ver lista"}</button>`);vl.onclick=()=>{rdList=!rdList;render()};acts.appendChild(vl);c.appendChild(acts);
-  c.appendChild(el(`<p class="how">A questão errada volta no dia seguinte; acertou, volta em 3 dias; <b>sai da lista depois de 2 acertos em dias diferentes</b> (um acerto logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As alternativas vêm embaralhadas. Refazer não muda o seu acerto nos temas.</p>`));
+  c.appendChild(el(`<p class="how hx">A questão errada volta no dia seguinte; acertou, volta em 3 dias; <b>sai da lista depois de 2 acertos em dias diferentes</b> (um acerto logo depois de ver a resposta pode ser só memória). Errou de novo, recomeça. As alternativas vêm embaralhadas. Refazer não muda o seu acerto nos temas.</p>`));
   if(rdList){const ul=el(`<ul class="rdlist"></ul>`);list.slice(0,80).forEach(x=>{const it=BYKEY[x.k];const li=el(`<li><span class="rdl"><b></b><span></span></span><button class="foxb" type="button" aria-label="Remover da lista">×</button></li>`);
       li.querySelector("b").textContent=x.q.enunciado.replace(/\s+/g," ").slice(0,110)+(x.q.enunciado.length>110?"…":"");const dd=rdDue(x);li.querySelector(".rdl span").textContent=`${it.t} · errada ${x.n}×${x.ok?` · acertou ${x.ok} de ${RD_NEED}`:""} · ${dd<=T?"para hoje":"volta em "+br(dd)}${x.src?` · ${RD_SRC[x.src]}`:""}`;if((x.wr||0)>=2)li.querySelector(".rdl b").insertAdjacentHTML("beforeend",' <span class="rdteim">teimosa</span>');
       const xb=li.querySelector("button");if(rdArm===x.id){xb.textContent="Remover?";xb.classList.add("warn");xb.onclick=()=>{rdArm=null;rdDel(x.id).then(render);render()}}else xb.onclick=()=>{rdArm=x.id;render()};ul.appendChild(li)});
@@ -7446,7 +7529,7 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
     const n=norm((R.query||"").trim());if(n.length>=2){const res=[...ALL,...FAC_ITEMS].map(x=>{const t=norm(x.t),sub=norm(subList(x).map(y=>y.t).join(" ")+" "+(x.sp||""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||a.x.num-b.x.num).slice(0,7);
       const ul=el(`<ul class="qrres"></ul>`);if(!res.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`));
       res.forEach(({x})=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`);li.querySelector("b").textContent=x.t;li.querySelector("span").textContent=`${x.own?"FAC":x.area.code} · ${x.sp||x.area.name}`;li.querySelector("button").onclick=()=>{R.k=x.key;R.msg="";render();setTimeout(()=>{const f=$("#qrt");if(f)f.focus()},30)};ul.appendChild(li)});w.appendChild(ul)}
-    else w.appendChild(el(`<p class="how">Para questões de bancos (Medcel, Estratégia, MedCof…) ou provas antigas: escolha o tema e digite quantas fez e acertou.</p>`))}
+    else w.appendChild(el(`<p class="how hx">Para questões de bancos (Medcel, Estratégia, MedCof…) ou provas antigas: escolha o tema e digite quantas fez e acertou.</p>`))}
   else{const ch=el(`<p class="qrsel"><b></b><span></span><button class="link" type="button">trocar tema</button></p>`);ch.querySelector("b").textContent=it.t;ch.querySelector("span").textContent=` · ${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`;
     ch.querySelector("button").onclick=()=>{R.k=null;render()};w.appendChild(ch);
     const f=el(`<div class="focus-form qrform"><label class="qfsel"><span>Feitas</span><input type="number" id="qrt" min="1" max="500" inputmode="numeric"></label><label class="qfsel"><span>Acertos</span><input type="number" id="qrc" min="0" max="500" inputmode="numeric"></label><label class="qfsel"><span>Dia</span><input type="date" id="qrd"></label><label class="qfsel"><span>Tempo (min)</span><input type="number" id="qrm" min="1" max="600" inputmode="numeric" placeholder="opcional"></label><label class="qfsel qrsrc"><span>Banca ou fonte</span><input type="text" id="qrb" list="qrbl" maxlength="30" placeholder="opcional (ex.: ENARE)" autocomplete="off"><datalist id="qrbl"></datalist></label><button class="btn primary" type="button" id="qrSave">Salvar</button></div>`);
@@ -7472,7 +7555,7 @@ function focusRank(U){return (U||ALL).filter(i=>!i.own).map(it=>({it,sc:focusSco
 function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
   const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);
   if(!rows.length){c.appendChild(el(`<p class="cempty">${U.some(i=>!i.own)?"Todos os temas deste filtro estão com 80% ou mais de acerto. Mantenha as revisões.":"Escolha temas da residência nos filtros para ver as prioridades."}</p>`));return c}
-  c.appendChild(el(`<p class="how">Temas que mais caem na prova e onde o seu acerto está mais longe de 80%. Temas sem questões contam como 60% até você fazer algumas.</p>`));
+  c.appendChild(el(`<p class="how hx">Temas que mais caem na prova e onde o seu acerto está mais longe de 80%. Temas sem questões contam como 60% até você fazer algumas.</p>`));
   const ol=el(`<ol class="qglist"></ol>`),sh=rows.slice(0,qGainMore?20:6);
   sh.forEach((r,i)=>{const it=r.it,p=r.qt?pct(r.qc,r.qt):null,[bk]=p===null?["warn"]:band(p);
     const li=el(`<li><span class="qgn">${i+1}</span><span class="qgm"><button class="qgt" type="button"></button><span class="qgs"></span></span><span class="qga"></span></li>`);
@@ -7776,7 +7859,7 @@ function simPickerEl(){const w=el(`<div class="simpick"></div>`),pool=[...ALL,..
 function qSimCard(U){const c=el(`<section class="card qsim" aria-labelledby="simh"><div class="dhead"><h2 id="simh">Simulado misto</h2><span class="todaydate" id="simClock"></span></div></section>`);
   const S=sim;if(S&&S.status!=="error")c.querySelector(".dhead").appendChild(fullBtn("sim"));
   if(!S||S.status==="error"){
-    c.appendChild(el(`<p class="how">Um bloco de questões inéditas, uma por vez, medindo o seu tempo em cada uma. Cada resposta conta no acerto do tema; as erradas vão para Refazer.</p>`));
+    c.appendChild(el(`<p class="how hx">Um bloco de questões inéditas, uma por vez, medindo o seu tempo em cada uma. Cada resposta conta no acerto do tema; as erradas vão para Refazer.</p>`));
     /* Lote 18: bloco rápido de 5 com um toque (temas da semana misturados; sem temas na semana, onde focar) */
     {const wk=simTopics("week",U),T=wk.length?wk:simTopics("gain",U);if(T.length){const q=el(`<div class="simquick"><button class="btn primary" type="button" id="simQuick">⚡ Bloco rápido · 5 questões</button><span class="how"></span></div>`);
       q.querySelector(".how").textContent=wk.length?`Misturando ${Math.min(wk.length,5)} dos ${wk.length} temas que você estudou ou revisou nesta semana.`:"Nada estudado nesta semana ainda: vêm de Onde focar.";
@@ -7970,7 +8053,7 @@ function exRelink(ex,links){const B=ex.qs.map((_,i)=>exContrib(ex,i));ex.links=[
   B.forEach((b,i)=>{const l=[...b];A[i].forEach(c=>{const j=l.findIndex(x=>x.k===c.k&&x.d===c.d&&x.c===c.c&&!!x.x===!!c.x);if(j>=0)l.splice(j,1);else add.push(c)});left.push(...l)});
   exCount(left,-1,exSrc(ex));exCount(add,1,exSrc(ex));exPut(ex);commit();render()}
 function exLinkLabel(r){const k=exRefKey(r),it=BYKEY[k];if(!it)return "";return r.startsWith("O:")?(fac.own[r.slice(2)]||{}).t||it.t:it.t}
-function exLinksEl(ex){const E=exLinkEd,w=el(`<div class="exlinks"><span class="glabel">Ligar esta prova a temas</span><p class="how">Ligada a um tema da residência ou a um conteúdo da faculdade (SP, conteúdo FAC), a prova aparece dentro dele. Num conteúdo da faculdade, o acerto da prova conta também nele (sem contar duas vezes se ele já for ligado ao mesmo tema da questão).</p><div class="exlchips"></div></div>`);
+function exLinksEl(ex){const E=exLinkEd,w=el(`<div class="exlinks"><span class="glabel">Ligar esta prova a temas</span><p class="how hx">Ligada a um tema da residência ou a um conteúdo da faculdade (SP, conteúdo FAC), a prova aparece dentro dele. Num conteúdo da faculdade, o acerto da prova conta também nele (sem contar duas vezes se ele já for ligado ao mesmo tema da questão).</p><div class="exlchips"></div></div>`);
   const ch=w.querySelector(".exlchips");(ex.links||[]).forEach((r,i)=>{const lab=exLinkLabel(r);if(!lab)return;const b=el(`<button class="fchip" type="button"></button>`);b.id=`exlx-${ex.id}-${i}`;b.textContent=`${r.startsWith("O:")?"FAC · ":""}${lab} ×`;b.title="Tirar a ligação";b.onclick=()=>exRelink(ex,ex.links.filter(x=>x!==r));ch.appendChild(b)});
   if(!ch.children.length)ch.appendChild(el(`<span class="how">Ainda não ligada.</span>`));
   const cnt={};ex.qs.forEach(r=>{if(r.k&&BYKEY[r.k])cnt[r.k]=(cnt[r.k]||0)+1});const have=new Set(exLinkKeys(ex)),sug=Object.entries(cnt).filter(([k])=>!have.has(k)).sort((a,b)=>b[1]-a[1]).slice(0,4);
@@ -7995,7 +8078,7 @@ function exLost(ex){const P=exPg(ex.id),sp={};
     x.q++;if(a.l===r.q.correta){x.c++;return}const tp=x.tops[it.key]||(x.tops[it.key]={k:it.key,qs:[]});tp.qs.push(i)});
   return Object.values(sp).filter(x=>x.q>=EX_DROP_MIN&&x.c/x.q<EX_DROP).map(x=>({...x,tops:Object.values(x.tops).sort((a,b)=>b.qs.length-a.qs.length)})).sort((a,b)=>a.c/a.q-b.c/b.q||b.q-a.q)}
 function exLostEl(ex,R){const L=exLost(ex);if(!L.length)return null;
-  const g=el(`<section class="exlost" aria-labelledby="exlh"><h3 id="exlh">Onde você perdeu pontos</h3><p class="how">Especialidades com 3 ou mais questões e acerto abaixo de 60% nesta prova. Abra o tema para estudar ou gere questões; toque numa questão para ver o comentário e, se quiser, levá-la ao caderno de erros.</p></section>`);
+  const g=el(`<section class="exlost" aria-labelledby="exlh"><h3 id="exlh">Onde você perdeu pontos</h3><p class="how hx">Especialidades com 3 ou mais questões e acerto abaixo de 60% nesta prova. Abra o tema para estudar ou gere questões; toque numa questão para ver o comentário e, se quiser, levá-la ao caderno de erros.</p></section>`);
   L.forEach((x,n)=>{const s=el(`<div class="exlsp"><div class="exlh"><b></b><span class="ks"></span></div><ul class="exltops"></ul></div>`);s.querySelector("b").textContent=x.lab;
     s.querySelector(".ks").textContent=`${pct(x.c,x.q)}% · ${x.c} de ${x.q}`;const ul=s.querySelector("ul");
     x.tops.forEach(tp=>{const it=BYKEY[tp.k],li=el(`<li><div class="exltt"><button class="link exlopen" type="button"></button><span class="ks"></span></div><div class="exlacts"><span class="exlqs"></span></div></li>`);
@@ -8415,7 +8498,7 @@ function exPlayEl(ex){const R=exRun,P=exPg(ex.id),c=el(`<div class="explay"></di
   if(!review)c.appendChild(el(`<p class="how erkeys">${P.mode==="p"?"Modo prova: o resultado e os comentários aparecem no fim. Dá para voltar e trocar a resposta até finalizar.":"Modo estudo: a correção aparece a cada questão."} Teclado: A a E escolhem · → próxima · ← anterior${fullOn.ex&&twoCols()?" · Esc sai da tela inteira":""}</p>`));
   return c}
 function exEditEl(ex){const S=exEdit,w=el(`<div class="exedit"></div>`);
-  w.appendChild(el(`<p class="how">Mudar a resposta, anular ou trocar o tema recalcula o seu acerto nas questões que você já respondeu.</p>`));
+  w.appendChild(el(`<p class="how hx">Mudar a resposta, anular ou trocar o tema recalcula o seu acerto nas questões que você já respondeu.</p>`));
   if(!S.T||!ex.qs[S.T.i])S.T=null;
   w.appendChild(exListEl(ex.qs,S,{pre:"e",T:S.T,setT:v=>{S.T=v;render()},
     setTopic:(i,k,add)=>{exChange(ex,i,r=>{if(add){if(k&&k!==r.k)r.ks=[...new Set([...(r.ks||[]),k])].slice(0,2)}else{r.k=k;r.ks=(r.ks||[]).filter(x=>x!==k);if(!k||!r.ks.length)delete r.ks}});exPut(ex);commit()},
@@ -8637,7 +8720,7 @@ function renderAgenda0(box){const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.m
   const info=el(`<p class="how"></p>`);info.textContent=`${tot} ${tot===1?"revisão":"revisões"} em 14 dias · ritmo confortável: até ${cap} por dia.${over?` ${over} ${over===1?"dia passa":"dias passam"} disso.`:""}`;box.appendChild(info);
   if(agMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=agMsg;box.appendChild(m)}
   if(over){const eb=el(`<button class="btn" type="button" id="agBal">Equilibrar</button>`);eb.onclick=agBalance;box.appendChild(eb);
-    box.appendChild(el(`<p class="how">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}
+    box.appendChild(el(`<p class="how hx">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}
   if(agOpen!==null&&D[agOpen]){const ul=el(`<ul class="uplist aglist"></ul>`);D[agOpen].sort((a,b)=>wOf(b)-wOf(a)).forEach(it=>{const li=el(`<li><span class="ud"></span><button class="link" type="button"></button></li>`);li.querySelector(".ud").textContent=dueLabel(dueIn(get(it.key)));const bt=li.querySelector("button");bt.textContent=it.t;bt.onclick=()=>openTopic(it.key);ul.appendChild(li)});
     if(!D[agOpen].length)ul.appendChild(el(`<li class="how">Nenhuma revisão neste dia.</li>`));box.appendChild(ul)}}
 /* ---------- Residência: mapa, sugestões de nível ---------- */
@@ -8668,7 +8751,7 @@ function renderLvSug(){const box=$("#lvSug");if(!box)return;box.innerHTML="";con
     const no=el(`<button class="btn" type="button">Agora não</button>`);no.onclick=()=>{upd(x.it.key,s=>{s.lvDis=today()});commit()};
     li.querySelector(".btns").append(go,no);ul.appendChild(li)});
   box.appendChild(ul);if(L.length>5)box.appendChild(el(`<p class="how">+ ${L.length-5} temas com sugestão.</p>`));
-  box.appendChild(el(`<p class="how">Dominado: 80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade. Volta para Revisado se o acerto dos últimos 30 dias cair abaixo de 70% (com 5+ questões). "Agora não" esconde por 14 dias.</p>`))}
+  box.appendChild(el(`<p class="how hx">Dominado: 80% ou mais em 10+ questões e duas revisões seguidas sem dificuldade. Volta para Revisado se o acerto dos últimos 30 dias cair abaixo de 70% (com 5+ questões). "Agora não" esconde por 14 dias.</p>`))}
 /* ---------- Residência: prévia da semana e temas fixados ---------- */
 let weekOpen=false;
 /* simula os próximos 6 dias supondo que você cumpre o plano e faz as revisões de cada dia (nada é salvo) */
@@ -8692,7 +8775,7 @@ function weekEl(){const w=el(`<details class="plain pweek"${weekOpen?" open":""}
   weekPreview().forEach(D=>{const li=el(`<li><span class="pwd"></span><span class="pwi"></span><span class="pwr"></span></li>`);li.querySelector(".pwd").textContent=`${wd[new Date(D.d+"T12:00:00").getDay()]} ${br(D.d)}`;
     const box=li.querySelector(".pwi"),dw=wdOf(dnum(D.d));if(WK_OFF.has(dw)){li.classList.add("pwoff");box.textContent="folga"}else if(!D.items.length)box.textContent=WK_NEW.has(dw)?"sem temas novos":"sem temas novos (dia sem temas novos)";if(WK_SIM.has(dw)&&!WK_OFF.has(dw))box.append(D.items.length?" · simulado":"simulado");D.items.forEach((x,j)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[x.k].t;b.title=x.txt;b.onclick=()=>openTopic(x.k);if(j)box.append(" · ");box.appendChild(b)});
     li.querySelector(".pwr").textContent=D.rev?`${D.rev} ${D.rev===1?"revisão":"revisões"}`:"";ol.appendChild(li)});
-  w.appendChild(ol);w.appendChild(el(`<p class="how">Prévia supondo que você cumpre o plano e as revisões de cada dia. O plano de cada dia só é montado naquele dia e muda conforme o que você fizer (questões, provas da faculdade, pontos fracos).</p>`));return w}
+  w.appendChild(ol);w.appendChild(el(`<p class="how hx">Prévia supondo que você cumpre o plano e as revisões de cada dia. O plano de cada dia só é montado naquele dia e muda conforme o que você fizer (questões, provas da faculdade, pontos fracos).</p>`));return w}
 /* temas fixados (estrela) */
 function togglePin(k){upd(k,s=>{if(s.pin)delete s.pin;else s.pin=1});commit()}
 function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";const P=[...ALL,...FAC_ITEMS].filter(i=>get(i.key).pin);box.hidden=!P.length||!!bulk;if(box.hidden)return;
@@ -8813,7 +8896,7 @@ function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria
   if(cdRun){c.querySelector(".dhead").appendChild(fullBtn("cd"));const R=cdRun,x=cards.find(y=>y.id===R.ids[R.i]);
     if(R.gen){const g=el(`<p class="pnote cdgen" id="cdGenNote"></p>`);g.textContent=`${R.gen}: ${Math.min(R.i+1,R.ids.length)} de ${R.ids.length} cartões. Conta como revisão normal de cada cartão.`;c.appendChild(g)}
     if(!x||R.i>=R.ids.length){c.appendChild(el(`<p class="verdict ok">Fim por hoje: ${R.done} ${R.done===1?"resposta":"respostas"} (Errei ${R.g[1]} · Difícil ${R.g[2]} · Bom ${R.g[3]} · Fácil ${R.g[4]}).</p>`));
-      c.appendChild(el(`<p class="how">Cada cartão volta no dia em que você estaria perto de esquecer (FSRS): quem você acertou com facilidade some por mais tempo.</p>`));
+      c.appendChild(el(`<p class="how hx">Cada cartão volta no dia em que você estaria perto de esquecer (FSRS): quem você acertou com facilidade some por mais tempo.</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{cdRun=null;render()};c.appendChild(b);return c}
     const it=BYKEY[x.k],left=R.ids.length-R.i,card=el(`<div class="oscard${R.show?" flip":""}"><div class="oshead"><span class="qn"></span><button class="link fctopic" type="button"></button></div><div class="osq"></div><div class="osa" hidden></div><div class="osref" hidden></div></div>`);
     card.querySelector(".qn").textContent=`${!x.f.st?"NOVO · ":x.f.st===2?"":"APRENDENDO · "}FALTAM ${left}`;const tb=card.querySelector(".fctopic");tb.textContent=it?it.t:"";tb.onclick=()=>openTopic(x.k);
@@ -8888,7 +8971,7 @@ function cdAnkiEl(){const R=cdReady(),w=el(`<div class="cdanki"><span class="gla
     const b=el(`<div class="btns"><button class="btn primary" type="button" id="cdAnkiDone">Já importei no Anki</button><button class="link" type="button" id="cdAnkiUndo">Ainda não</button></div>`);
     b.querySelector("#cdAnkiDone").onclick=cdAnkiDone;b.querySelector("#cdAnkiUndo").onclick=()=>{cdExp=null;try{localStorage.removeItem("resid-cdexp")}catch(x){}render()};if(!n)b.querySelector("#cdAnkiDone").disabled=true;w.appendChild(b);return w}
   if(!R.length){w.appendChild(el(`<p class="how">Quando um cartão estiver a ${CD_ANKI} dias ou mais da próxima revisão, ele aparece aqui para ir para o Anki, com o intervalo preservado.</p>`));return w}
-  w.appendChild(el(`<p class="how">Já estão firmes: vão para o Anki como cartões em revisão (não como novos), no tipo de nota "Osler Flashcard (Nexus)", com tags do tema e do erro.</p>`));
+  w.appendChild(el(`<p class="how hx">Já estão firmes: vão para o Anki como cartões em revisão (não como novos), no tipo de nota "Osler Flashcard (Nexus)", com tags do tema e do erro.</p>`));
   const b=el(`<button class="btn" type="button" id="cdApkg"></button>`);b.textContent=`Exportar ${R.length} para o Anki (.apkg)`;b.disabled=!downloadsFn;b.onclick=async()=>{b.disabled=true;b.textContent="Gerando…";
     try{const u=await apkgBuild(R);await downloadsFn.save({filename:`nexus-anki-${today()}.apkg`,data:new Blob([u],{type:"application/octet-stream"})});cdExp={d:today(),ids:R.map(x=>x.id)};try{localStorage.setItem("resid-cdexp",JSON.stringify(cdExp))}catch(x){}}
     catch(x){b.textContent=x&&(x.code==="declined"||x.code==="cancelled")?"Download cancelado":"Não foi possível gerar agora"}render()};w.appendChild(b);return w}
@@ -9159,7 +9242,7 @@ function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nF
   c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
   if(freeEdit)c.appendChild(freeEditor());
   if(frMsg){const m=el(`<p class="pnote" role="status" id="frMsg"></p>`);m.textContent=frMsg;c.appendChild(m);frMsg=""}
-  c.appendChild(el(`<p class="how ncadhow">Um caderno só: páginas livres (aula, plantão, dicas) e a página de cada tema, que é a mesma anotação da aba Residência. Página nova ligada a um tema que ainda não tem anotação vira a página dele.</p>`));
+  c.appendChild(el(`<p class="how ncadhow hx">Um caderno só: páginas livres (aula, plantão, dicas) e a página de cada tema, que é a mesma anotação da aba Residência. Página nova ligada a um tema que ainda não tem anotação vira a página dele.</p>`));
   {const sr=el(`<div class="tfsearch frsearch">${FC_ICO}<input class="search" id="frq" type="search" placeholder="Buscar no caderno (páginas livres e temas)" aria-label="Buscar no caderno" autocomplete="off"></div>`),i=sr.querySelector("input");i.value=frQRaw;
     i.oninput=debounced(()=>{frQRaw=i.value;frQ=norm(i.value.trim());nQuery=frQ;render();const x=$("#frq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});c.appendChild(sr)}
   {const nT=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).length,g=el(`<div class="seg ntype" role="group" aria-label="Tipo de página"></div>`);
@@ -9331,7 +9414,7 @@ const HELP=[
 - **Anki:** os cartões firmes (a **40 dias** ou mais da próxima revisão) aparecem em Caderno › **Cartões** › **Prontos para o Anki**. **Exportar para o Anki (.apkg)** gera um pacote com o tipo de nota **Osler Flashcard (Nexus)** (Question, Answer, Reference), as tags do tema e do erro e o intervalo de cada cartão: no Anki, Arquivo › Importar e marque **importar o progresso** (include scheduling), para entrarem como revisão e não como novos. Depois toque em **Já importei no Anki**: eles saem do app (ficam 30 dias na lixeira) e o erro guarda que já foi para o Anki.
 - **Calendário:** em Faculdade › Próximas provas, **Adicionar ao calendário** gera um arquivo .ics com provas, fechamentos de SP e a prova de residência, com lembrete 1 dia antes.
 - **Sua semana e Planejar a semana:** no domingo e na segunda, um cartão só no Início mostra o que você cumpriu na semana (foco × meta, questões, temas, revisões), o que atrasou e onde melhorou, e logo embaixo leva a planejar a semana.
-- O botão **?** ao lado de vários cartões abre a parte certa desta ajuda.`],
+- **O botão ? dos cartões:** a explicação de como cada cartão funciona fica atrás do **?** no cabeçalho dele. Toque para ver ali mesmo; toque de novo para esconder. Quando há mais detalhes, aparece **Mais na Ajuda →**.`],
 ["Primeiros passos",`O checklist tem **198 temas** de alta recorrência nas 5 grandes áreas. Todo dia ele propõe **3 temas** para estudar, agenda as **revisões** de tudo o que você já estudou e mostra onde você mais erra.
 - Comece pela aba **Início**: ela mostra a próxima prova, o plano do dia (**Estudar hoje**), o que há para revisar (**Revisar hoje**) e o seu progresso na residência e na faculdade.
 - A aba **Residência** tem a lista dos 198 temas, o plano (o mesmo do Início), as **revisões dos temas** (é aqui que você revisa cada tema; no Início, **Temas para revisar › abrir** traz você para cá) e os gráficos completos.
@@ -9707,7 +9790,7 @@ function renderStats(){const box=$("#stBody");if(!box)return;box.innerHTML="";
   const v=el(`<div class="stverd" id="stVerd"></div>`),g=el(`<div class="stgrid"></div>`);box.appendChild(v);box.appendChild(g);
   if(stSide==="res"){const R=stRes(stPer);stVerdRes(R).forEach(x=>v.appendChild(stTile(...x)));stResBlocks(R).forEach(c=>g.appendChild(c))}
   else{const F=stFac(stPer);stVerdFac(F).forEach(x=>v.appendChild(stTile(...x)));stFacBlocks(F).forEach(c=>g.appendChild(c))}
-  const ft=el(`<div class="stfoot"><button class="btn" type="button" id="stPdf">Exportar PDF</button><span class="how">O tempo vem das sessões do Foco. Estudo sem o Foco não entra nas horas.</span></div>`);
+  const ft=el(`<div class="stfoot"><button class="btn" type="button" id="stPdf">Exportar PDF</button><span class="how hx">O tempo vem das sessões do Foco. Estudo sem o Foco não entra nas horas.</span></div>`);
   ft.querySelector("button").onclick=()=>{pdfOpt.open=true;pdfOpt.msg="";goSub("perfil");setTimeout(()=>{const b=$(".pdfpan");if(b)b.scrollIntoView({block:"center",behavior:"smooth"})},80)};box.appendChild(ft)}
 function stTable(rows){const t=el(`<table class="sttab"><tbody></tbody></table>`),tb=t.querySelector("tbody");rows.forEach(([l,v,dl])=>{const r=el(`<tr><td></td><td class="stv1"></td><td class="std"></td></tr>`);r.children[0].textContent=l;r.children[1].textContent=v;r.children[2].textContent=dl[1];if(dl[0])r.children[2].classList.add(dl[0]);tb.appendChild(r)});return t}
 function stResBlocks(R){const out=[],per=`${R.D} dias`;
@@ -9716,7 +9799,7 @@ function stResBlocks(R){const out=[],per=`${R.D} dias`;
     const parts=[];if(dA[0]==="up")parts.push("<strong>acertou mais</strong>");else if(dA[0]==="dn")parts.push("<strong>acertou menos</strong>");if(dQ[0])parts.push(dQ[0]==="up"?"fez mais questões":"fez menos questões");if(dE[0])parts.push(dE[0]==="up"?"estudou <strong>mais temas novos</strong>":"estudou <strong>menos temas novos</strong>");
     stLead(c,parts.length?`Nos últimos ${per}, comparado aos ${per} anteriores, você ${parts.join(", ").replace(/, ([^,]*)$/," e $1")}.`:`Nos últimos ${per}: ${R.Q.q} questões e ${R.H.e} temas novos.`);
     c.appendChild(stTable([["Acerto nas questões",stPct(R.acc),dA],["Questões feitas",R.Q.q.toLocaleString("pt-BR"),dQ],["Temas novos estudados",String(R.H.e),dE],["Revisões feitas",String(R.H.r),dR],["Erros que você ainda erraria",String(R.still),dS]]));
-    c.appendChild(el(`<p class="how stnote">"Ainda erraria" = erros do caderno que você errou de novo na revisão no período. Menos é melhor.</p>`));
+    c.appendChild(el(`<p class="how stnote hx">"Ainda erraria" = erros do caderno que você errou de novo na revisão no período. Menos é melhor.</p>`));
     const ser={};exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);if(!P)return;(P.tries||[]).forEach(tr=>{if(!tr.n)return;const b=ex.banca||"Outras";(ser[b]=ser[b]||[]).push({n:dnum(tr.d),v:tr.hit/tr.n,t:ex.name})})});
     const S=Object.keys(ser).map(name=>({name,pts:ser[name]}));c.appendChild(stRow("Nota nas provas na íntegra","cada ponto é uma prova terminada"));
     if(S.reduce((s,x)=>s+x.pts.length,0)>=2)c.appendChild(stExamLine(S));else c.appendChild(el(`<p class="how stempty">Termine pelo menos duas provas na íntegra (Questões › Praticar) para ver a nota ao longo do tempo.</p>`));
@@ -9765,7 +9848,7 @@ function stFacBlocks(F){const out=[],per=`${F.D} dias`;
     c.appendChild(stTable([["Acerto nas questões (conteúdos FAC)",stPct(F.acc),dA],["Questões feitas",String(F.Q.q),stDelta(F.Q.q,F.QP.q)],["Conteúdos estudados",String(F.TA.nw),stDelta(F.TA.nw,F.TP.nw)],["Revisões feitas",String(F.TA.rv),stDelta(F.TA.rv,F.TP.rv)]]));
     if(F.notas.length){const L=el(`<div class="stnotas"></div>`);F.notas.slice(-8).reverse().forEach(x=>{const r=el(`<div class="stnr"><span class="stnn"></span><div class="meter"><i></i></div><b></b></div>`);r.querySelector(".stnn").textContent=`${x.p.name} · ${provaDiscName(x.p)}`;
       r.querySelector("i").style.width=Math.min(100,x.v*100)+"%";r.querySelector("i").className=x.v>=.7?"ok":x.v>=.5?"warn":"bad";r.querySelector("b").textContent=`${(+x.p.res.n).toLocaleString("pt-BR")} / ${x.p.res.of||10}`;L.appendChild(r)});c.appendChild(stRow("Notas das provas","as mais recentes primeiro"));c.appendChild(L)}
-    c.appendChild(el(`<p class="how stnote">Conteúdo da faculdade ligado a um tema da residência tem um progresso só e conta nos dois lados.</p>`));out.push(c)}
+    c.appendChild(el(`<p class="how stnote hx">Conteúdo da faculdade ligado a um tema da residência tem um progresso só e conta nos dois lados.</p>`));out.push(c)}
   /* 2. provas e fechamentos */
   {const c=stCard(2,"Vou chegar a tempo?","stF2");stLead(c,F.up.length||F.fe.length?"Quanto de cada prova e fechamento dos próximos 30 dias já está pronto, comparado aos dias que faltam.":"Nenhuma prova nem fechamento de SP nos próximos 30 dias.");
     const L=el(`<div class="stprov"></div>`);F.up.forEach(({p,st})=>{const r=el(`<div class="stpr"><div class="strow"><b></b><span class="stpill"></span></div><div class="meter"><i></i></div><span class="how"></span></div>`);r.querySelector("b").textContent=p.name;
@@ -9805,7 +9888,8 @@ function renderAll(){
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):"";$("#ecount").title=n?`${n} ${n===1?"erro para revisar":"erros para revisar"} hoje`:""}
   {const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;$("#ncount").textContent=nk?String(nk):""}
   const P0=ensurePlan(),dueN=dueCount();
-  $("#rcount").textContent=dueN?String(dueN):"";$("#rcount").title=dueN?`${dueN} revisões pendentes`:"";
+  /* Lote 19: o selo mostra o que cabe fazer hoje (fila do dia), não a dívida inteira */
+  {let fit=dueN;try{fit=Math.min(dueN,qCounts().revs)}catch(e){}$("#rcount").textContent=fit?String(fit):"";$("#rcount").title=fit?`${fit} ${fit===1?"revisão cabe":"revisões cabem"} hoje${dueN>fit?` (${dueN} pendentes)`:""}`:""}
   renderTSeg(dueN);renderNavExtra(P0,dueN);
   // só a aba aberta é redesenhada (as outras são montadas ao abrir)
   if(view!=="temas")$("#areas").innerHTML="";if(view!=="fac"){$("#facSems").innerHTML="";$("#facCrunch").innerHTML=""}if(view!=="config")$("#cfBody").innerHTML="";
@@ -9856,7 +9940,7 @@ function renderAll(){
     const ol=document.createElement("ol");
     if(!vis.length&&!facIn.length)ol.appendChild(el(`<li class="empty">Nenhum tema desta área neste filtro.</li>`));
     const row=it=>{const s=get(it.key),l=s.l||0,lsv=s,dd=dueIn(s),open=openKey===it.key;
-      const li=el(`<li class="t${open?" open":""}${it.own?" own":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">${it.own?"FAC":String(it.num).padStart(3,"0")}</span><span class="topic"></span><span class="lvl" data-l="${lvKey(lsv)}">${lvName(lsv)}</span><span class="meta"></span></button></li>`);
+      const li=el(`<li class="t${open?" open":""}${it.own?" own":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">${it.own?"FAC":""}</span><span class="topic"></span><span class="lvl" data-l="${lvKey(lsv)}">${lvName(lsv)}</span><span class="meta"></span></button></li>`);
       li.querySelector(".topic").textContent=(s.pin?"★ ":"")+it.t;
       const m=li.querySelector(".meta");
       if(it.own){const x=el(`<span class="facchip"></span>`);x.textContent="FAC"+(it.origin?" · "+it.origin:"");if(it.originFull)x.title=it.originFull;m.appendChild(x)}else m.appendChild(incEl(wOf(it),wOf(it)===3));
