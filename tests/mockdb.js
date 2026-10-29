@@ -15,7 +15,8 @@ window.__mock=(seed,delay)=>{
   window.__remote=(path,d)=>{if(d==null)delete store[path];else store[path]=JSON.parse(JSON.stringify(d));notify(path,false)};
   const docRef=path=>({path,
     async get(){hit(path);await wait();const v=store[path];return {exists:!!v,id:path.split("/").pop(),data:()=>JSON.parse(JSON.stringify(v))}},
-    async set(d){store[path]=JSON.parse(JSON.stringify(d));notify(path,true);await wait()},// como o Firestore: a gravação vale na hora para este aparelho
+    async set(d){if(window.__failSet&&window.__failSet.test(path)){await wait();const e=new Error("Document exceeds the maximum allowed size of 1,048,576 bytes");e.code="invalid-argument";throw e}// Lote 20: imita gravação recusada
+      store[path]=JSON.parse(JSON.stringify(d));notify(path,true);await wait()},// como o Firestore: a gravação vale na hora para este aparelho
     async delete(){delete store[path];notify(path,true);await wait()},
     /* pacotes (Lote 18): o artefato do Claude não tem patch; window.__packs liga aqui para testar os pacotes pelo preview */
     ...(window.__packs?{async patch(f,m){const d=store[path]||{},o=d[f]&&typeof d[f]==="object"?d[f]:{};for(const k in m){if(m[k]===null)delete o[k];else o[k]=JSON.parse(JSON.stringify(m[k]))}d[f]=o;store[path]=d;hit("w:"+path);notify(path,true);await wait()}}:{}),

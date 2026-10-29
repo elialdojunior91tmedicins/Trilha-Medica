@@ -1448,6 +1448,8 @@ html[data-cols="2"] .trselbtn{bottom:28px}
 .pjtog{font-size:.84rem;margin-top:2px}
 .trtoast{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;background:var(--tipbg);color:var(--tipfg);border-radius:10px;padding:10px 16px;font-size:.9rem;box-shadow:0 6px 20px rgb(0 0 0 / .25);max-width:calc(100% - 24px)}
 .trtoast .link{color:var(--tipfg);font-weight:600}
+.trtoast.svfail{width:min(560px,calc(100vw - 32px));box-sizing:border-box;flex-wrap:wrap;background:var(--late-soft,#fdf1dc);color:var(--ink);border:1px solid var(--late)}.trtoast.svfail .link{color:var(--ink)}
+body .trtoast~.trtoast.svfail{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 html[data-layout="phone"] .trtoast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 body.hasqbar .trtoast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 .trlist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
@@ -2883,8 +2885,8 @@ function saveNote(k,v){const old=notes[k]||"";
   clearTimeout(noteTimers[k]);if(!notesStore)return;
   noteTimers[k]=setTimeout(async()=>{noteTimers[k]=0;
     try{const d=notesStore.doc(k);if(notes[k])await d.set({t:notes[k],updatedAt:noteAt[k]});else await d.delete();
-      setNoteStatus(k,"Salvo na sua conta")}
-    catch(e){setNoteStatus(k,e&&e.code==="quota_exceeded"?"Espaço da conta cheio; ficou salvo neste navegador":"Não foi possível salvar na conta; ficou salvo neste navegador")}},900)}
+      setNoteStatus(k,"Salvo na sua conta");saveOk("nt:"+k)}
+    catch(e){if(notes[k])saveFail("nt:"+k,`a anotação de ${topicName(k)}`,e,()=>saveNote(k,notes[k]));setNoteStatus(k,e&&e.code==="quota_exceeded"?"Espaço da conta cheio; ficou salvo neste navegador":"Não foi possível salvar na conta; ficou salvo neste navegador")}},900)}
 function replaceNote(k,v){noteUndo[k]=notes[k]||"";saveNote(k,v)}
 
 /* markdown simples → HTML seguro */
@@ -5474,7 +5476,7 @@ function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string
   if(e.q!=null&&!(e.q&&typeof e.q==="object"&&typeof e.q.e==="string"&&Array.isArray(e.q.a)))delete e.q;return true}
 function saveErrsLocal(){try{localStorage.setItem(LSE,JSON.stringify(errors))}catch(x){}}
 async function putErr(e){saveErrsLocal();if(!errStore)return;
-  try{await errStore.doc(e.id).set({...e})}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador")}}
+  const k="er:"+e.id;try{await errStore.doc(e.id).set({...e});saveOk(k)}catch(x){setSave(x&&x.code==="quota_exceeded"?"Caderno cheio na conta: exclua erros antigos para salvar novos.":"Não foi possível salvar o erro na conta; ficou salvo neste navegador");if(errors.includes(e))saveFail(k,"erro do caderno",x,()=>putErr(e))}}
 async function delErr(id){{const e=errors.find(x=>x.id===id);if(e)toTrash("err",topicName(e.k),e.w,e)}errors=errors.filter(e=>e.id!==id);saveErrsLocal();render();if(errStore)try{await errStore.doc(id).delete()}catch(x){}}
 /* ---------- Caderno de erros: revisão ativa, registro rápido, erros repetidos, cartão e anotação ---------- */
 const E_INT=[1,3,7,15,30];
@@ -5497,7 +5499,9 @@ function eNew(k,w,r,t,s,c,p,x){const e={id:Date.now().toString(36)+Math.random()
   errors.forEach(o=>{if(o.k===k&&o.fm){delete o.fm;o.box=Math.max(0,eBox(o)-2);o.due=fromNum(dnum(today())+1);putErr(o)}});/* errou o tema de novo: os erros formados dele voltam */
   if(typeof p==="string"&&p.trim())e.p=p.trim().slice(0,600);
   x=x||{};if(typeof x.pc==="string"&&x.pc.trim())e.pc=x.pc.trim().slice(0,1200);if(typeof x.dd==="string"&&x.dd.trim())e.dd=x.dd.trim().slice(0,400);
-  if(x.qf&&typeof x.qf.e==="string"&&Array.isArray(x.qf.a))e.q={e:x.qf.e,a:x.qf.a.filter(a=>a&&typeof a.t==="string").map(a=>({l:String(a.l||""),t:a.t})),c:String(x.qf.c||""),m:String(x.qf.m||"")};
+  if(x.qf&&typeof x.qf.e==="string"&&Array.isArray(x.qf.a)){e.q={e:x.qf.e,a:x.qf.a.filter(a=>a&&typeof a.t==="string").map(a=>({l:String(a.l||""),t:a.t,...(typeof a.p==="string"&&a.p.trim()?{p:a.p.trim().slice(0,1200)}:{})})),c:String(x.qf.c||""),m:String(x.qf.m||"")};
+    /* Lote 20: comentário e conceito inteiros, para os cartões não saírem cortados */
+    if(typeof x.qf.cm==="string"&&x.qf.cm.trim())e.q.cm=x.qf.cm.trim().slice(0,4000);if(typeof x.qf.co==="string"&&x.qf.co.trim())e.q.co=x.qf.co.trim().slice(0,600)}
   errors.push(e);putErr(e);return e}
 const eOneLine=s=>String(s||"").split("\n").map(cmTidy).filter(Boolean).join(" ").replace(/\s+/g," ").trim();
 /* rascunho a partir de uma questão respondida (geradas, simulado, refazer) */
@@ -5564,7 +5568,7 @@ function conNote(k,head,lines,tok,src){const cur=notes[k]||"",item=`- **${head}*
 function qCardDrafts(q,mine,k){const Q=qSplit(q),it=BYKEY[k],L=esc(it?it.t:""),r=Q.alternativas.find(a=>a.letra===Q.correta),m=mine&&mine!==Q.correta?Q.alternativas.find(a=>a.letra===mine):null;
   const ask=(clSents(Q.enunciado).filter(x=>/\?$/.test(x)).pop()||"qual é a resposta?").replace(/^\s*/,""),clue=qData(Q)||qClue(Q),exp=cmTidy(Q.pc||Q.conceito||Q.th||clSents(cmTidy(Q.comentario)).slice(0,2).join(" "));
   const out=[{kind:"disc",q:`<b>${L}.</b> ${clue?esc(clue)+" &rarr; ":""}${esc(clCut(ask,160))}`,a:`<b>${esc(r?r.texto:"")}</b>${exp?`<br><br><i>${esc(exp)}</i>`:""}`,ref:"",keep:true}];
-  if(m)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(clCut(m.texto,90))}${clue?" neste caso":""}?`,a:`<b>${esc(cmTidy(m.porque||"Não se encaixa no caso: veja o conceito."))}</b><br><br><i>A resposta é <b>${esc(r?r.texto:"")}</b>.${exp?" "+esc(exp):""}</i>`,ref:"",keep:true});
+  if(m)out.push({kind:"nao",q:cdNaoQ(L,m.texto,!!clue),a:`<b>${esc(cmTidy(m.porque||"Não se encaixa no caso: veja o conceito."))}</b><br><br><i>A resposta é <b>${esc(r?r.texto:"")}</b>.${exp?" "+esc(exp):""}</i>`,ref:"",keep:true});
   return out}
 function qActsEl(q,mine,ctx){const st=qSt(q),k=ctx.k,ok=!!BYKEY[k],w=el(`<div class="qacts"><div class="btns"></div></div>`),B=w.querySelector(".btns");
   const nb=el(`<button class="btn" type="button"></button>`);nb.id="qan-"+st.id;nb.textContent=st.noted?"Na anotação ✓":st.pick?"Fechar":"Levar para a anotação";nb.disabled=!ok||!!st.noted;if(!ok)nb.title="Escolha o tema desta questão primeiro";
@@ -5592,7 +5596,7 @@ function qDraft(q,mine,src){const Q=qSplit(q),m=Q.alternativas.find(a=>a.letra==
   if(!parts.length&&r)parts.push(`Correta: ${r.texto}`);
   if(m&&m.porque&&m.letra!==Q.correta){const pq=clCut(m.porque,240)+".",mt=norm(m.texto).slice(0,18);parts.push(mt&&norm(pq).startsWith(mt)?`Por que não a minha: ${pq}`:`Por que não ${clCut(m.texto,60)}: ${pq}`)}
   return {w,p:qClueRich(Q),dd:qData(Q),pc:cmTidy(Q.pc||"").slice(0,1200),r:parts.join("\n").replace(/\.\.$/,".").trim(),t:m&&r&&m.letra!==r.letra&&qLike(m.texto,r.texto)?"confusao":"conhecimento",s:src||"",
-    qf:{e:Q.enunciado.slice(0,8000),a:Q.alternativas.map(a=>({l:a.letra,t:a.texto.slice(0,2000)})),c:Q.correta||"",m:mine||""},
+    qf:{e:Q.enunciado.slice(0,8000),a:Q.alternativas.map(a=>({l:a.letra,t:a.texto.slice(0,2000),...(a.porque?{p:cmTidy(a.porque).slice(0,1200)}:{})})),c:Q.correta||"",m:mine||"",cm:cmTidy(Q.comentario||"").slice(0,4000),co:(Q.conceito||cmTidy(Q.pc||"")||cmTidy(Q.th||"")).trim().slice(0,600)},
     q:{e:Q.enunciado,m:m?m.texto:"",c:r?r.texto:"",cm:Q.comentario,co:Q.conceito||"",pq:m&&m.porque||""}}}
 /* "Resumir com o Claude" (opcional): reescreve o rascunho curto, com a pista e o conceito */
 function eSumPrompt(D){const x=D.q||{};return `Você ajuda um estudante de medicina a montar o caderno de erros. A partir da questão abaixo, escreva em português do Brasil, curto e direto:
@@ -5971,6 +5975,21 @@ function renderErros(){
   if(vis.length>shown.length){const m=el(`<li><button class="btn" type="button">Mostrar mais ${Math.min(E_PAGE,vis.length-shown.length)} (de ${vis.length-shown.length} restantes)</button></li>`);m.querySelector("button").onclick=()=>{eLimit+=E_PAGE;render()};list.appendChild(m)}
 }
 
+/* ===================== Lote 20: aviso quando a gravação na conta falha ===================== */
+/* Sem internet o Firestore guarda e envia depois (não falha). Falha de verdade = permissão, cota ou item grande demais (1 MB por documento).
+   O item fica neste aparelho; o aviso diz o quê e o motivo, e "Tentar de novo" (também ao voltar a internet e a cada 2 min) refaz as gravações. */
+const svQ=new Map();let svT=0;
+const svBig=x=>/maximum|too large|exceed|size/i.test(String(x&&(x.message||x.code)||""));
+function saveFail(key,what,err,retry){svQ.set(key,{what,big:svBig(err),quota:!!(err&&err.code==="quota_exceeded"),retry});svToast();clearInterval(svT);svT=setInterval(svRetry,120000)}
+function saveOk(key){if(svQ.delete(key)){svToast();if(!svQ.size)clearInterval(svT)}}
+async function svRetry(){const L=[...svQ.entries()];for(const [k,v] of L){try{if(v.retry)await v.retry()}catch(e){}}}
+function svToast(){let t=$("#svFail");if(!svQ.size){if(t)t.remove();return}
+  if(!t){t=el(`<div class="trtoast svfail" id="svFail" role="alert"><span></span><button class="link" type="button" id="svRetry">Tentar de novo</button><button class="link" type="button" id="svClose">Fechar</button></div>`);document.body.appendChild(t);
+    t.querySelector("#svRetry").onclick=()=>svRetry();t.querySelector("#svClose").onclick=()=>t.remove()}
+  const V=[...svQ.values()],w=[...new Set(V.map(v=>v.what))],big=V.some(v=>v.big),qt=V.some(v=>v.quota);
+  t.querySelector("span").textContent=`Não foi possível salvar na sua conta: ${w.slice(0,3).join(", ")}${w.length>3?` e mais ${w.length-3}`:""}${big?" (grande demais para a conta: o limite é 1 MB por item)":qt?" (espaço da conta cheio)":""}. Ficou salvo neste aparelho; os outros aparelhos não veem até salvar.`}
+addEventListener("online",()=>{if(svQ.size)svRetry()});
+
 /* ===================== LIXEIRA: o que é apagado fica 30 dias e pode voltar ===================== */
 const LSTR="resid-trash-v1",TR_DAYS=30,TR_MAX=300;
 const TR_KIND={err:"Erro",card:"Cartão",free:"Caderno livre",exam:"Prova importada",note:"Anotação",prova:"Prova",sp:"SP",disc:"Disciplina"};
@@ -5978,7 +5997,7 @@ let trash=[],trashStore=null,trSkip=false,trArm=null,trMsg="";
 function trOk(x){return !!x&&typeof x.id==="string"&&!!TR_KIND[x.kind]&&typeof x.j==="string"&&typeof x.at==="string"}
 try{const v=JSON.parse(localStorage.getItem(LSTR)||"[]");if(Array.isArray(v))trash=v.filter(trOk)}catch(e){trash=[]}
 function trSaveLocal(){try{localStorage.setItem(LSTR,JSON.stringify(trash))}catch(e){}}
-async function trPut(x){trSaveLocal();if(!trashStore)return;try{await trashStore.doc(x.id).set({...x})}catch(e){}}
+async function trPut(x){trSaveLocal();if(!trashStore)return;const k="tr:"+x.id;try{await trashStore.doc(x.id).set({...x});saveOk(k)}catch(e){saveFail(k,"item da lixeira",e,()=>trPut(x))}}
 async function trDrop(id){trash=trash.filter(x=>x.id!==id);trSaveLocal();if(trashStore)try{await trashStore.doc(id).delete()}catch(e){}}
 function trLeft(x){return Math.max(0,TR_DAYS-Math.floor((Date.now()-Date.parse(x.at))/864e5))}
 function trPurgeOld(){trash.filter(x=>trLeft(x)<=0).forEach(x=>trDrop(x.id))}
@@ -7073,7 +7092,7 @@ const FO_MODE={p:"Pomodoro",c:"Cronômetro",x:"Manual"};
 function foSaveRun(){try{foRun?localStorage.setItem(LSFR,JSON.stringify(foRun)):localStorage.removeItem(LSFR)}catch(e){}}
 function foSaveLocal(){try{localStorage.setItem(LSFO,JSON.stringify(foSess))}catch(e){}}
 function foSavePick(){try{localStorage.setItem(LSFP,JSON.stringify(foPick))}catch(e){}}
-async function foPut(x){foSaveLocal();if(!focStore)return;try{await focStore.doc(x.id).set({...x})}catch(e){setSave("Não foi possível salvar a sessão de foco na conta; ficou salva neste navegador")}}
+async function foPut(x){foSaveLocal();if(!focStore)return;const k="fo:"+x.id;try{await focStore.doc(x.id).set({...x});saveOk(k)}catch(e){setSave("Não foi possível salvar a sessão de foco na conta; ficou salva neste navegador");if(foSess.includes(x))saveFail(k,"sessão de foco",e,()=>foPut(x))}}
 async function foDelete(id){foSess=foSess.filter(x=>x.id!==id);foDel=null;foSaveLocal();render();if(focStore)try{await focStore.doc(id).delete()}catch(e){}}
 function foRefLabel(ref){const t=(ref||"")[0],id=(ref||"").slice(2);
   if(t==="T"){const it=BYKEY[id];return it?it.t:""}
@@ -7255,9 +7274,8 @@ function foAfterCard(){const A=foAfter;if(!A||!BYKEY[A.k])return null;const it=B
     c.appendChild(g)}
   const a=el(`<div class="btns foabtns"></div>`);
   if(!s.last){const st=el(`<button class="btn primary" type="button" id="foaStudy">Estudei hoje</button>`);st.onclick=()=>{upd(A.k,x=>{x.last=today();x.step=0;x.l=Math.max(x.l||0,1)});logAct("e");adoptTopic(A.k);commit()};a.appendChild(st)}
-  else if(s.last<today()&&isDue(s)){const g=el(`<button class="btn primary" type="button" id="foaRevG">Revisei: lembrei bem</button>`),h=el(`<button class="btn" type="button">Revisei: tive dificuldade</button>`);
-    g.onclick=()=>{upd(A.k,x=>{x.last=today();x.step=Math.min((x.step||0)+1,INT.length-1);x.l=Math.max(x.l||0,2)});logAct("r");markReviewed(A.k);commit()};
-    h.onclick=()=>{upd(A.k,x=>{x.last=today();x.step=0});logAct("r");markReviewed(A.k);commit()};a.append(g,h)}
+  else if(s.last<today()&&isDue(s)){/* Lote 20: as mesmas 3 respostas das Revisões (Esqueci · Difícil · Lembrei) */
+    const rv=el(`<div class="foarev"><span class="glabel">Revisei este tema</span></div>`);rv.appendChild(revBtns(A.k,"foarevb"));c.appendChild(rv)}
   else if(s.last===today())a.appendChild(el(`<span class="pnote foaok">Estudo de hoje já registrado neste tema.</span>`));
   const qb=el(`<button class="btn" type="button" id="foaQ">Registrar questões</button>`);qb.onclick=()=>{foAfterQ=foAfterQ?null:{t:"",c:""};render();setTimeout(()=>{const x=$("#foaQt");if(x)x.focus()},40)};a.appendChild(qb);
   const op=el(`<button class="link" type="button">Abrir o tema</button>`);op.onclick=()=>openTopic(A.k);a.appendChild(op);c.appendChild(a);
@@ -7394,7 +7412,7 @@ function rdClean(x){const q=x.q,s=v=>typeof v==="string"?v:"";return {id:x.id,k:
   ...(typeof x.img==="string"&&/^data:image\/jpeg;base64,/.test(x.img)&&x.img.length<=RD_IMG_MAX?{img:x.img}:{})}}
 try{const v=JSON.parse(localStorage.getItem(LSRD)||"[]");if(Array.isArray(v))redo=v.filter(rdOk).map(rdClean)}catch(e){}
 function rdSaveLocal(){try{localStorage.setItem(LSRD,JSON.stringify(redo))}catch(e){}}
-async function rdPut(x){rdSaveLocal();if(!redoStore)return;try{await redoStore.doc(x.id).set({...x})}catch(e){}}
+async function rdPut(x){rdSaveLocal();if(!redoStore)return;const k="rd:"+x.id;try{await redoStore.doc(x.id).set({...x});saveOk(k)}catch(e){if(redo.includes(x))saveFail(k,"questão para refazer",e,()=>rdPut(x))}}
 /* levou a questão para o caderno de erros: sai do Refazer (uma agenda por questão) */
 function rdForget(k,q){const stem=((q&&q.enunciado)||"").trim();if(!stem)return 0;const L=redo.filter(x=>x.k===k&&x.q.enunciado.trim()===stem);L.forEach(x=>rdDel(x.id));return L.length}
 async function rdDel(id){redo=redo.filter(x=>x.id!==id);rdSaveLocal();if(redoStore)try{await redoStore.doc(id).delete()}catch(e){}}
@@ -7903,7 +7921,7 @@ function smClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",D=/^\d{4}
     tries:Array.isArray(x.tries)?x.tries.filter(t=>t&&D.test(t.d)).map(t=>({d:t.d,hit:+t.hit||0,ans:+t.ans||0})).slice(-10):[]}}
 try{const v=JSON.parse(localStorage.getItem(LSSIM)||"[]");if(Array.isArray(v))sims=v.filter(smOk).map(smClean)}catch(e){}
 function smSaveLocal(){try{localStorage.setItem(LSSIM,JSON.stringify(sims))}catch(e){}}
-async function smPut(x){smSaveLocal();if(!simStore)return;try{await simStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))}catch(e){}}
+async function smPut(x){smSaveLocal();if(!simStore)return;const k="sm:"+x.id;try{await simStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(sims.includes(x))saveFail(k,"simulado",e,()=>smPut(x))}}
 async function smDel(id){sims=sims.filter(x=>x.id!==id);smSaveLocal();render();if(simStore)try{await simStore.doc(id).delete()}catch(e){}}
 function simLab(c,S){if(c.mode==="mat"){const P=S&&S.P;return "Do material"+(P&&P.names&&P.names.length?": "+P.names.join(", ").slice(0,100):"")}
   const L=simSrcList().find(x=>x[0]===c.src)||SIM_SRC.find(x=>x[0]===c.src),b=L?L[1]:"Simulado";return c.src==="pick"&&c.picks.length?`${b}: ${c.picks.slice(0,3).map(k=>BYKEY[k]?BYKEY[k].t:"").filter(Boolean).join(", ")}${c.picks.length>3?` e mais ${c.picks.length-3}`:""}`:b}
@@ -7971,9 +7989,9 @@ function exPClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,a={},h={},A=x.a&&typeof x.a==
 try{const v=JSON.parse(localStorage.getItem(LSEX)||"[]");if(Array.isArray(v))exams=v.filter(exOk).map(exClean)}catch(e){}
 try{const v=JSON.parse(localStorage.getItem(LSEXP)||"[]");if(Array.isArray(v))exProg=v.filter(exPOk).map(exPClean)}catch(e){}
 function exSaveLocal(){try{localStorage.setItem(LSEX,JSON.stringify(exams))}catch(e){}try{localStorage.setItem(LSEXP,JSON.stringify(exProg))}catch(e){}}
-async function exPut(ex){exSaveLocal();if(!exStore)return;try{await exStore.doc(ex.id).set(JSON.parse(JSON.stringify(ex)))}catch(e){}}
+async function exPut(ex){exSaveLocal();if(!exStore)return;const k="ex:"+ex.id;try{await exStore.doc(ex.id).set(JSON.parse(JSON.stringify(ex)));saveOk(k)}catch(e){if(exams.includes(ex))saveFail(k,`a prova “${ex.name}”`,e,()=>exPut(ex))}}
 function exPg(id){let P=exProg.find(x=>x.id===id);if(!P){P=exPClean({id});exProg.push(P)}return P}
-async function exPWrite(id){const P=exProg.find(x=>x.id===id);if(P&&exPStore)try{await exPStore.doc(id).set(JSON.parse(JSON.stringify(P)))}catch(e){}}
+async function exPWrite(id){const P=exProg.find(x=>x.id===id),k="exp:"+id;if(P&&exPStore)try{await exPStore.doc(id).set(JSON.parse(JSON.stringify(P)));saveOk(k)}catch(e){saveFail(k,"respostas de uma prova",e,()=>exPWrite(id))}}
 function exPSave(id){exSaveLocal();clearTimeout(exATimer[id]);const t=setTimeout(async()=>{await exPWrite(id);if(exATimer[id]===t)delete exATimer[id]},1500);exATimer[id]=t}
 function exFlush(){for(const id of Object.keys(exATimer)){clearTimeout(exATimer[id]);delete exATimer[id];exPWrite(id)}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")exFlush()});
@@ -7985,7 +8003,7 @@ let idbP=null;function idb(){if(!idbP)idbP=new Promise((res,rej)=>{try{const r=i
 async function idbDo(mode,fn){try{const d=await idb();return await new Promise((res,rej)=>{const t=d.transaction("f",mode),st=t.objectStore("f"),q=fn(st);t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)})}catch(e){return null}}
 const exfOk=x=>!!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.ex==="string"&&typeof x.img==="string"&&/^data:image\/jpeg;base64,/.test(x.img)&&x.img.length<=EXF_MAX;
 const exfClean=x=>({id:x.id,ex:x.ex,i:+x.i||0,img:x.img});
-async function exfPut(x){exFigs[x.id]=x;await idbDo("readwrite",st=>st.put(x));if(exFigStore)try{await exFigStore.doc(x.id).set({...x})}catch(e){}}
+async function exfPut(x){exFigs[x.id]=x;await idbDo("readwrite",st=>st.put(x));const k="exf:"+x.id;if(exFigStore)try{await exFigStore.doc(x.id).set({...x});saveOk(k)}catch(e){if(exFigs[x.id])saveFail(k,"figura de prova",e,()=>exfPut(x))}}
 async function exfDel(id){delete exFigs[id];await idbDo("readwrite",st=>st.delete(id));if(exFigStore)try{await exFigStore.doc(id).delete()}catch(e){}}
 idbDo("readonly",st=>st.getAll()).then(L=>{(L||[]).filter(exfOk).forEach(x=>{if(!exFigs[x.id])exFigs[x.id]=exfClean(x)})});
 /* a imagem de uma questão: da memória, do aparelho ou da conta (e redesenha quando chega) */
@@ -8840,7 +8858,7 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
-async function cdPut(x){cdSaveLocal();if(!cardStore)return;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)))}catch(e){}}
+async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
 async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",cdPlain(x.q).slice(0,120),topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
 function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src,at:new Date().toISOString(),...(o||{})});cards.push(x);cdPut(x);return x}
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
@@ -8897,16 +8915,31 @@ function cdCfgEl(){const w=el(`<details class="plain cdcfg"><summary>Ajustes dos
 /* ---- cartões a partir de um erro: rascunho do app (2 cartões) ou do Claude no padrão Osler ---- */
 const CDK={disc:"Discriminador",nao:"Por que não a sua",lac:"Lacuna",arm:"Armadilha",con:"Contraste"};
 function cdLabel(it){return it?it.t:""}
-function cdErrParse(e){const R=String(e.r||"").split("\n").map(cmTidy).filter(Boolean).join("\n"),m=/^Marquei (.+?); a certa era (.+)$/.exec(eOneLine(e.w)),why=cmTidy((/(?:^|\n)Por que não[^:]*:\s*(.+)/.exec(R)||[])[1]||""),concept=R.split("\n").filter(l=>!/^Por que não/.test(l)&&!/^Correta:/.test(l)).join(" ").trim();return {mine:m&&m[1],right:m&&m[2],why,concept}}
+function cdErrParse(e){const R=String(e.r||"").split("\n").map(cmTidy).filter(Boolean).join("\n"),m=/^Marquei (.+?); a certa era (.+)$/.exec(eOneLine(e.w)),why=cmTidy((/(?:^|\n)Por que não[^:]*:\s*(.+)/.exec(R)||[])[1]||""),concept=R.split("\n").filter(l=>!/^Por que não/.test(l)&&!/^Correta:/.test(l)).join(" ").trim();
+  const o={mine:m&&m[1],right:m&&m[2],why,concept};
+  /* Lote 20: o "Errei" guarda as alternativas cortadas (~90 letras); a questão inteira (e.q) tem o texto completo, o porquê e o comentário */
+  const Q=e.q&&Array.isArray(e.q.a)?e.q:null;if(Q){const mi=Q.a.find(a=>a.l===Q.m),ri=Q.a.find(a=>a.l===Q.c);
+    if(ri&&ri.t)o.right=cmTidy(ri.t);if(mi&&mi.t&&Q.m!==Q.c)o.mine=cmTidy(mi.t);if(mi&&mi.p&&Q.m!==Q.c)o.why=cmTidy(mi.p);
+    if(/…$/.test(o.concept)||!o.concept){const cm=clSents(cmTidy(Q.cm||"")).slice(0,2).join(" ");const full=[Q.co||"",cm].filter(Boolean).join(" ");if(full)o.concept=full}}
+  return o}
+/* "por que não X": alternativa curta na própria pergunta; longa (mais de ~80 letras) em linha própria, inteira */
+function cdNaoQ(L,txt,ctx){const t=String(txt||"").replace(/\s+/g," ").trim();
+  return t.length<=80?`<b>${L}.</b> Por que <u>não</u> ${esc(t)}${ctx?" neste caso":""}?`:`<b>${L}.</b> Por que esta alternativa <u>não</u> serve${ctx?" neste caso":""}?<br><br><i>${esc(t)}</i>`}
 function cdErrDrafts(e){const it=BYKEY[e.k],L=esc(cdLabel(it)),P=cdErrParse(e),ref=e.s?`<i>Questão</i>, em <b>${esc(e.s)}</b>.`:"",out=[];
-  if(P.right){out.push({kind:"disc",q:`<b>${L}.</b> ${e.p?esc(e.p)+" &rarr; ":""}qual é a resposta?`,a:`<b>${esc(P.right)}</b>${P.concept?`<br><br><i>${esc(P.concept)}</i>`:""}`,ref,keep:true});
-    if(P.mine)out.push({kind:"nao",q:`<b>${L}.</b> Por que <u>não</u> ${esc(P.mine)}${e.p?" neste caso":""}?`,a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
+  if(P.right){out.push({kind:"disc",q:`<b>${L}.</b> ${e.p?mdBold(e.p)+" &rarr; ":""}qual é a resposta?`,a:`<b>${esc(P.right)}</b>${P.concept?`<br><br><i>${esc(P.concept)}</i>`:""}`,ref,keep:true});
+    if(P.mine)out.push({kind:"nao",q:cdNaoQ(L,P.mine,!!e.p),a:`<b>${esc(P.why||"Não se encaixa no caso: veja o conceito.")}</b><br><br><i>A resposta é <b>${esc(P.right)}</b>.${P.concept?" "+esc(P.concept):""}</i>`,ref,keep:true})}
   else out.push({kind:"disc",q:`<b>${L}.</b> ${esc(eOneLine(e.w))}${e.p?` (${esc(e.p)})`:""} &rarr; qual é o certo?`,a:`<b>${esc(eOneLine(e.r).slice(0,200))}</b>`,ref,keep:true});
   return out}
+/* Lote 20: cartões do app que saíram com a alternativa cortada ("…") são refeitos pelos dados completos do erro (e.q); o agendamento (FSRS) fica.
+   Só os montados pelo app (src "eu", tipos discriminador/por que não, ligados a um erro); os do Claude ficam como estão. Roda depois de carregar a conta. */
+function cdFixCut(){let n=0;cards.forEach(x=>{if(x.src!=="eu"||!x.h||!x.eid||!["disc","nao"].includes(x.kind))return;if(!/…/.test(cdPlain(x.q)+cdPlain(x.a)))return;
+    const e=errors.find(y=>y.id===x.eid);if(!e||!e.q||!Array.isArray(e.q.a))return;const d=cdErrDrafts(e).find(y=>y.kind===x.kind);if(!d)return;
+    if(/…/.test(cdPlain(d.q)+cdPlain(d.a))&&(cdPlain(d.q)+cdPlain(d.a)).length<=(cdPlain(x.q)+cdPlain(x.a)).length)return;
+    if(d.q===x.q&&d.a===x.a)return;x.q=cdSafe(d.q);x.a=cdSafe(d.a);cdPut(x);n++});if(n)render();return n}
 function cdErrPrompt(e){if(e.trecho)return trPrompt(e);const it=BYKEY[e.k],P=cdErrParse(e);return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de ${e.okq?"uma QUESTÃO que ele acertou (talvez no chute) e quer fixar. O cartão mira o que decide a questão":"um ERRO que ele cometeu numa questão. O cartão mira o ponto cego que causou o erro"}, não um resumo do tema.
 Tema: ${it?it.t:""} (${it?areaLabel(it):""}). Tipo de erro: ${ETYPES[e.t]||""}${e.c?`; causa: ${e.c}`:""}.
-O que ele errou: ${eOneLine(e.w)}${e.p?`\nPista do caso: ${e.p}`:""}
-Conceito correto: ${String(e.r||"").slice(0,1500)}
+O que ele errou: ${P.mine&&P.right?`marcou "${P.mine}"; a certa era "${P.right}"`:eOneLine(e.w)}${e.p?`\nPista do caso: ${e.p}`:""}${e.q&&e.q.e?`\nEnunciado da questão: ${e.q.e.replace(/\s+/g," ").slice(0,2500)}`:""}${P.why?`\nPor que a que ele marcou não serve: ${P.why}`:""}
+Conceito correto: ${String(e.r||"").slice(0,1500)}${e.q&&e.q.cm?`\nComentário da questão: ${e.q.cm.slice(0,2000)}`:""}
 
 Crie 4 cartões, um de cada tipo, nesta ordem:
 1. "discriminador": o detalhe do caso que separa a resposta certa da que ele marcou (pergunta direta).
@@ -9210,7 +9243,7 @@ function frOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof
 function frClean(x){return {id:x.id,t:typeof x.t==="string"?x.t.slice(0,120):"",b:x.b.slice(0,NOTE_MAX),tags:Array.isArray(x.tags)?x.tags.filter(t=>typeof t==="string"&&t.trim()).map(t=>t.trim().toLowerCase().slice(0,24)).slice(0,8):[],ks:Array.isArray(x.ks)?x.ks.filter(k=>typeof k==="string").slice(0,10):[],at:typeof x.at==="string"?x.at:new Date().toISOString()}}
 try{const v=JSON.parse(localStorage.getItem(LSFR2)||"[]");if(Array.isArray(v))freeN=v.filter(frOk).map(frClean)}catch(e){}
 function frSaveLocal(){try{localStorage.setItem(LSFR2,JSON.stringify(freeN))}catch(e){}}
-async function frPut(x){frSaveLocal();if(!freeStore)return;try{await freeStore.doc(x.id).set({...x})}catch(e){}}
+async function frPut(x){frSaveLocal();if(!freeStore)return;const k="fr:"+x.id;try{await freeStore.doc(x.id).set({...x});saveOk(k)}catch(e){if(freeN.includes(x))saveFail(k,`a página “${x.t||"Sem título"}” do Caderno`,e,()=>frPut(x))}}
 async function frDel(id){{const f=freeN.find(x=>x.id===id);if(f)toTrash("free",f.t||"Sem título",(f.b||"").replace(/\s+/g," ").slice(0,80),f)}freeN=freeN.filter(x=>x.id!==id);frSaveLocal();render();if(freeStore)try{await freeStore.doc(id).delete()}catch(e){}}
 let frQ="",frQRaw="",frMsg="";
 function freeVisible(){const Q=frQ||nQuery;return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!Q||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(Q))).sort((a,b)=>b.at.localeCompare(a.at))}
@@ -9512,7 +9545,7 @@ const HELP=[
 - **Onde registrar:** na aba **Erros**, toque em **+ Registrar erro** e digite o tema; ou dentro do tema, aba Erros. Errou no **Simulado misto** ou em **Refazer as que errei**? Toque em **Levar para o caderno de erros**: o app já monta um resumo curto: **O que eu errei** ("Marquei X; a certa era Y"), **Pista do caso** (a frase do enunciado que deveria ter levado à resposta; dá para editar) e **Conceito correto** (tirado do comentário, com o porquê da sua não servir). A pista vem numa frase com **negrito** no que decide, e os **Dados decisivos** à parte; o **Ponto-chave** da questão fica num campo próprio; quando a alternativa que você marcou é parecida com a certa, o tipo já vem como **Confundi ou esqueci**. A questão inteira fica guardada no erro: na revisão, **Ver a questão completa** mostra o enunciado e as alternativas. Ajuste com as suas palavras. Se quiser, **✦ Resumir com o Claude** reescreve tudo mais curto (no site, por copiar e colar); **Voltar ao do app** desfaz. A pista aparece no erro e na revisão, antes de abrir a resposta.
 - **Revisar erros:** o erro volta para você no dia seguinte. Você vê só o que errou, tenta lembrar o certo e toca em **Mostrar o correto**. **Agora sei** manda o erro para daqui a 3, 7, 15 e 30 dias; **Ainda erraria** traz de volta amanhã. Os erros do dia também aparecem no **O que fazer agora** do Início.
 - **Repetiu nos últimos 30 dias:** em **Onde melhorar › Temas com mais erros**, o selo marca temas com 2 ou mais erros nos últimos 30 dias. Sinal para voltar à teoria ou à anotação. Erro que virou cartão passa a ser revisado pelos cartões (não volta na revisão de erros), e questão levada do Refazer para o caderno sai do Refazer: cada questão tem uma agenda só. **Erro formado:** acertou na revisão de 30 dias, o erro sai da revisão e fica no caderno ("Formado em…"); se você registrar outro erro no mesmo tema, ele volta.
-- **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. Os erros ficam só aqui, no caderno de erros, ligados ao tema (não são mais escritos na anotação; as antigas seções "Meus erros" das anotações foram trazidas para cá).
+- **Criar cartões** (no erro, ⋯ Ações): o app monta **dois cartões** no padrão Osler, mirando o ponto cego: o **discriminador** (o que separa a certa da que você marcou, com a pista do caso) e **por que não a sua**. **✦ Melhorar com o Claude** reescreve no padrão Osler (rótulo da entidade em negrito, resposta em negrito, explicação em itálico, Note: quando há armadilha, fonte sem inventar) e oferece também **lacuna** e **armadilha** (ou **contraste**, sugerido quando o erro foi de confusão), desmarcadas. Marque os que quer e **Guardar**. Os cartões usam as alternativas inteiras da questão guardada no erro (alternativa longa fica numa linha própria); os que saíram cortados antes foram refeitos sozinhos, sem mudar a data da próxima revisão. Os erros ficam só aqui, no caderno de erros, ligados ao tema (não são mais escritos na anotação; as antigas seções "Meus erros" das anotações foram trazidas para cá).
 - **Temas e especialidades com mais erros** (em Onde melhorar) contam só os erros ativos. Tocar num tema limpa os outros filtros; se o tema só tiver erros arquivados (Resolvidos), o app abre os arquivados. Na Residência, o tema mostra os arquivados à parte ("3 arquivados · ver").
 - **Por que errei** (opcional, no formulário): uma causa mais precisa que o tipo, como "Não vi o EXCETO" ou "Troquei condutas". Em **Onde melhorar**, "Por que você erra" mostra as causas mais comuns e o que fazer com cada uma.
 - **Simulado dos meus erros:** o Claude cria questões novas sobre os pontos que você já errou (outro caso, mesmo conceito). Acertou um erro que vencia hoje: conta como "Agora sei". Errou: ele volta amanhã. Também aparece como **Meus erros** no Simulado misto da aba Questões.
@@ -9559,7 +9592,7 @@ const HELP=[
 - **Cronômetro:** conta até você tocar em **Encerrar e salvar**. Menos de 1 minuto não é salvo. **Descartar** apaga a sessão em andamento.
 - **Estudar agora:** toque num tema do plano ou das revisões de hoje para vincular a sessão a ele em um toque.
 - **Vincular a:** um tema (os do plano e das revisões de hoje aparecem primeiro) ou uma disciplina da faculdade. Dá para mudar com o relógio correndo. Disciplina ainda sem conteúdo também aparece (em **Estudar agora** e na lista, marcada "sem conteúdo"): as horas contam para a disciplina e continuam nela quando ela ganhar conteúdos. Nos cartões do **Estudar hoje** e das **Revisões**, o botão **Foco** já abre o relógio no tema.
-- **O que você estudou?** Ao terminar uma sessão ligada a um tema, aparece um cartão para marcar os subtópicos que você viu, **Estudei hoje** (ou **Revisei**, se o tema estava para revisão) e **Registrar questões**. Assim o tema avança no checklist sem sair do Foco.
+- **O que você estudou?** Ao terminar uma sessão ligada a um tema, aparece um cartão para marcar os subtópicos que você viu, **Estudei hoje** (ou, se o tema estava para revisão, as mesmas respostas das Revisões: **Esqueci**, **Difícil** ou **Lembrei**) e **Registrar questões**. Assim o tema avança no checklist sem sair do Foco.
 - **Me distraí:** toque cada vez que perder o foco durante a sessão (no computador, tecla **D**). A sessão guarda quantas foram e a semana compara com a anterior.
 - **Som de fundo:** **chuva**, **riacho** e **lareira** (gravações reais, baixadas na primeira vez que tocam e guardadas no aparelho; sem internet, o app usa um som gerado parecido) e **ruído branco** ou **marrom** (gerados pelo app). Com volume. Toca só durante o foco e para na pausa. Créditos das gravações em sounds/CREDITOS.md no site.
 - **Tela inteira** (tablet deitado e computador): com o relógio correndo, esconde o resto da aba. No computador: espaço pausa e continua, D conta distração, Esc sai.
@@ -9614,6 +9647,7 @@ No seletor **Faculdade**: notas das provas, quanto de cada prova e fechamento do
 - **Desfazer a última importação:** até 7 dias, no mesmo aparelho.
 - Exporte por último ao migrar: o que você estudar depois não vai no arquivo.
 - **Lembrete:** sem conta no site, o Início avisa quando o último backup passou de 30 dias (ou se você nunca fez um). **Lembrar em 7 dias** adia o aviso.
+- **Gravação na conta que falha:** sem internet o app guarda e envia depois. Se a conta recusar uma gravação (item grande demais, espaço cheio), aparece um aviso embaixo da tela dizendo o quê e o motivo; o item fica no aparelho e **Tentar de novo** (ou a volta da internet) envia de novo.
 - **Lixeira:** em **⚙ Configurações › Lixeira** ficam por 30 dias os erros, cartões, anotações (quando você apaga todo o texto), notas do caderno livre, provas, SPs e disciplinas apagados. Logo depois de apagar, aparece **Desfazer** embaixo da tela.`],
 ["Site: instalar, conta e sem internet",`Endereço: **elialdojunior91tmedicins.github.io/Trilha-Medica**
 - **Instalar (iPad/iPhone):** abra o site no Safari › **Compartilhar** › **Adicionar à Tela de Início**. Abre em tela cheia. No computador, o Chrome oferece **Instalar** na barra de endereço.
@@ -9978,8 +10012,8 @@ function persist(){
   setSave("Salvando…"); clearTimeout(saveTimer);
   if(!synced)return;// antes de ler a conta, só no aparelho; ao sincronizar, o que mudou é enviado
   saveTimer=setTimeout(async()=>{saveTimer=0;try{if(topicStore){await saveTopics();liveW.prog=stab({version:3,split:true,hist,plan:dayPlan});await store.set({version:3,split:true,hist,plan:dayPlan,updatedAt:new Date().toISOString()})}
-      else await store.set({version:2,topics:state,hist,plan:dayPlan,updatedAt:new Date().toISOString()});setSave("Progresso salvo na sua conta")}
-    catch(e){setSave(e&&e.code==="unavailable"?"Sem conexão no momento. Sua próxima marcação salva tudo de novo.":"Não foi possível salvar na conta; salvo neste navegador")}},700);
+      else await store.set({version:2,topics:state,hist,plan:dayPlan,updatedAt:new Date().toISOString()});setSave("Progresso salvo na sua conta");saveOk("prog")}
+    catch(e){if(!(e&&e.code==="unavailable"))saveFail("prog","o progresso dos temas",e,()=>persist());setSave(e&&e.code==="unavailable"?"Sem conexão no momento. Sua próxima marcação salva tudo de novo.":"Não foi possível salvar na conta; salvo neste navegador")}},700);
 }
 
 try{const lu=JSON.parse(localStorage.getItem(LSUI)||"null");if(lu)ui=uiSanitize(lu)}catch(e){}applyUI();
@@ -10203,7 +10237,7 @@ window.addEventListener("online",()=>liveRefresh(true));
   try{
     const [db,user]=await Promise.all([window.claude?.use?.("db"),window.claude?.use?.("user")]);
     const uid=user?await user.id():null;
-    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();setTimeout(maybeOnb,0);return}
+    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();setTimeout(maybeOnb,0);return}
     const P="data/users/"+uid+"/",prog=db.doc(P+"progress"),R={prog,fac:db.doc(P+"faculdade"),topics:prog.collection("topics"),settings:db.doc(P+"settings"),ui:db.doc(P+"prefs"),
       err:packStore(prog,"errors"),free:prog.collection("free"),trash:prog.collection("trash"),cards:packStore(prog,"cards"),sims:prog.collection("sims"),redo:packStore(prog,"redo"),
       exams:prog.collection("exams"),exprog:prog.collection("exprog"),focus:packStore(prog,"focus"),notes:prog.collection("notes")};
@@ -10273,7 +10307,7 @@ window.addEventListener("online",()=>liveRefresh(true));
       for(const k in notes)if(!remoteIds.has(k))await notesStore.doc(k).set({t:notes[k],updatedAt:noteAt[k]||new Date().toISOString()});
       if(changed){saveNotesLocal();render()}
     }catch(e){}
-    setSave("Progresso salvo na sua conta");errNoteMig();maybeOnb();liveStart();
-  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");errNoteMig();setTimeout(maybeOnb,0)}
+    setSave("Progresso salvo na sua conta");errNoteMig();cdFixCut();maybeOnb();liveStart();
+  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();setTimeout(maybeOnb,0)}
 })();
 </script>
