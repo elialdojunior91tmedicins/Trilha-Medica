@@ -79,7 +79,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  /* 8. PDF: capa, sumário com páginas, três níveis */
  const D=await p.evaluate(()=>{notes["CM-1"]="## HAS\nVer [[Anemias]].";notes["PED-1"]="Texto";commit();const d=notesPDF(["CM-34","CM-1","PED-1"],[],{raw:true,scope:"Todas as áreas"});const u=d.output();let s="";for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);
    return {pages:d.pages.length,pm:d.__pm,toc:d.__toc.map(r=>r.lv+":"+r.t),hasName:s.includes("Elialdo J"),hasSum:s.includes("(Sum"),link:/\(Anemias\) Tj[\s\S]{0,300}\(\\\(p\.\) Tj/.test(s)}});
- ok(D.pages>=4&&D.toc.join("|")==="1:Clínica Médica|2:Cardiologia|3:Hipertensão arterial sistêmica|2:Hematologia e oncologia|3:Anemias|1:Pediatria|2:Puericultura|3:Crescimento",name+": sumário em três níveis "+JSON.stringify(D.toc));
+ ok(D.pages>=4&&D.toc.join("|")==="1:Clínica Médica|2:Cardiologia|3:Hipertensão arterial sistêmica|4:HAS|2:Hematologia e oncologia|3:Anemias|4:Um|4:Dois|1:Pediatria|2:Puericultura|3:Crescimento",name+": sumário em três níveis (com poucos temas, desce para as seções; Lote 20C) "+JSON.stringify(D.toc));
  ok(D.pm["CM-1"]===3&&D.pm["PED-1"]>D.pm["CM-34"]&&D.hasName&&D.hasSum&&D.link,name+": capa com o nome, páginas certas e link com (p. N) "+JSON.stringify({pm:D.pm,n:D.hasName,s:D.hasSum,l:D.link}));
  /* 9. Anotações: Baixar PDF com escolha de área; sumário lateral só no computador com espaço */
  await p.evaluate(()=>{backStack=[];nSeg="todas";setView("notas")});await p.waitForTimeout(300);
