@@ -90,6 +90,8 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  ok(await p.evaluate(()=>typeof ankiSave==="undefined"),name+": sem exportação .txt para o Anki (só .apkg)");
  // ajuda "?"
  await p.evaluate(()=>{setView("erros")});await p.waitForTimeout(100);await p.evaluate(()=>document.querySelector('#viewErros .hlpb').click());await p.waitForTimeout(150);
+ ok(await p.evaluate(()=>{const x=document.querySelector('#viewErros .hx.hxshow:not(.hxmore)');return !!x&&x.offsetHeight>0&&view==="erros"}),name+": ? mostra a explicação no próprio cartão (Lote 19)");
+ await p.evaluate(()=>document.querySelector('#viewErros .hxmore.hxshow button').click());await p.waitForTimeout(150);
  ok(await p.evaluate(()=>{const d=[...document.querySelectorAll('#helpList details')].find(x=>x.open);return view==="help"&&d&&/Caderno de erros/.test(d.querySelector('summary').textContent)}),name+": ? abre a ajuda certa");
  // ⋯ ações do erro
  await p.evaluate(()=>{goBack&&goBack();backStack=[];setView("erros")});await p.waitForTimeout(100);
