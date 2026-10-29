@@ -27,12 +27,12 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["ipad578",578,820,true],["no
   ok(A.n&&A.c&&!A.cad,name+": questão certa tem Levar para a anotação e Criar cartão (sem caderno de erros) "+JSON.stringify(A));
   await p.evaluate(()=>document.querySelector('.exqc [id^="qan-"]').click());await p.waitForTimeout(120);
   const K=await p.evaluate(()=>[...document.querySelectorAll('.qpick .qpl input')].map(i=>i.id.split("-").pop()+":"+i.checked));
-  ok(K.join()==="pc:true,th:false,why:false,nA:false,nC:false,pi:false",name+": pontos para marcar, Ponto-chave marcado "+K.join());
+  ok(K.join()==="why:true,pc:true,th:false,nA:false,nC:false",name+": pontos para marcar, Ponto-chave marcado "+K.join());
   if(SHOT&&name==="fone"){await p.evaluate(()=>{const x=document.querySelector('.qpick');x.scrollIntoView({block:"center"})});await p.waitForTimeout(100);await (await p.$('.qacts')).screenshot({path:SHOT+'/l9-anotacao-fone.png'})}
   await p.evaluate(()=>{const i=[...document.querySelectorAll('.qpick .qpl input')].find(x=>/-th$/.test(x.id));i.click()});await p.waitForTimeout(80);
   await p.evaluate(()=>document.querySelector('[id^="qpgo-"]').click());await p.waitForTimeout(120);
   const N=await p.evaluate(()=>notes["CM-12"]);
-  ok(/## Conceitos das questões\n- \*\*Trombastenia de Glanzmann\*\* \{\{q:exg:0\}\}\n  - Ponto-chave: Agregação ausente.*\n  - Take home: Plaquetas normais/.test(N)&&/^## Resumo\nTexto\./.test(N),name+": vai para Conceitos das questões com o selo da questão "+JSON.stringify(N));
+  ok(/## Conceitos das questões\n- \*\*Da questão:\*\* .*\{\{q:exg:0\}\}\n  - \*\*Resposta:\*\* Trombastenia de Glanzmann\n  - \*\*Por quê:\*\* .*\n  - \*\*Ponto-chave:\*\* Agregação ausente.*\n  - \*\*Take home:\*\* Plaquetas normais/.test(N)&&/^## Resumo\nTexto\./.test(N),name+": vai para Conceitos das questões com o selo da questão "+JSON.stringify(N));
   ok(await p.evaluate(()=>/Na anotação ✓/.test(document.querySelector('.exqc [id^="qan-"]').textContent)),name+": botão vira Na anotação ✓");
   /* 3. Criar cartão */
   await p.evaluate(()=>document.querySelector('.exqc [id^="qac-"]').click());await p.waitForTimeout(120);
@@ -46,7 +46,7 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["ipad578",578,820,true],["no
   await p.evaluate(()=>{const P=exPg("exg");P.a={0:{l:"A",d:today(),s:40}};exams[0].qs[0].q=JSON.parse(JSON.stringify(exams[0].qs[0].q));render()});await p.waitForTimeout(120);
   await p.evaluate(()=>document.querySelector('.exqc [id^="qan-"]').click());await p.waitForTimeout(80);
   const K2=await p.evaluate(()=>[...document.querySelectorAll('.qpick .qpl input')].filter(i=>i.checked).map(i=>i.id.split("-").pop()).join());
-  ok(K2==="pc,nA",name+": errada marca também o porquê da sua "+K2);
+  ok(K2==="why,pc,nA",name+": errada marca também o porquê da sua "+K2);
   await p.evaluate(()=>document.querySelector('.exqc [id^="qac-"]').click());await p.waitForTimeout(80);
   ok(await p.evaluate(()=>document.querySelectorAll('.cderr .cdit').length===2&&/Por que não/.test(document.querySelectorAll('.cderr .osq')[1].textContent)),name+": errada tem também o cartão por que não a sua");
   /* 5. sem tema: botões desligados */

@@ -4,7 +4,7 @@ const {PDFDocument,StandardFonts}=require('pdf-lib');const sharp=require('sharp'
 const PDFJS_DIR=path.join(path.dirname(require.resolve('pdfjs-dist/package.json')),'legacy','build');
 const DEV={fone:[390,844,true],ipad578:[578,820,true],note:[1366,768,false]};
 const Q=(n,fonte)=>({enunciado:"Caso "+n,alternativas:"ABCD".split("").map(l=>({letra:l,texto:"Alt "+l,porque:l==="A"?"":"Errada."})),correta:"A",comentario:"Comentário "+n,conceito:"Conceito "+n,alerta:"",fonte});
-(async()=>{const pdf=path.join(__dirname,"t94-aula.pdf"),png=path.join(__dirname,"t94-slide.png"),txt=path.join(__dirname,"t94-nada.txt");
+(async()=>{const pdf=path.join(__dirname,"t94-aula.pdf"),png=path.join(__dirname,"t94-slide.png"),txt=path.join(__dirname,"t94-nada.bin");
   {const doc=await PDFDocument.create(),font=await doc.embedFont(StandardFonts.Helvetica);[["Aula de Anemias - Prof. Silva","Anemia ferropriva: ferritina baixa e RDW alto."],["Anemia megaloblástica","Deficiência de B12: VCM alto e neuropatia.","Folato baixo também causa VCM alto, sem neuropatia."]].forEach(L=>{const p=doc.addPage([595,842]);let y=780;L.forEach(l=>{p.drawText(l,{x:40,y,size:12,font});y-=18})});fs.writeFileSync(pdf,await doc.save())}
   fs.writeFileSync(png,await sharp({create:{width:400,height:300,channels:3,background:"#fff"}}).png().toBuffer());fs.writeFileSync(txt,"oi");
   const b=await chromium.launch();const errs=[];

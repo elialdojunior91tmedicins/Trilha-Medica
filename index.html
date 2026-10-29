@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=2b287098">
+<link rel="stylesheet" href="site.css?v=b20b8369">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=2b287098"></script>
-<script src="bridge.js?v=2b287098"></script>
+<script src="config.js?v=b20b8369"></script>
+<script src="bridge.js?v=b20b8369"></script>
 </head>
 <body>
 <script>
@@ -733,7 +733,17 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .rrhead{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}.rrhead .rrw{font-size:12px;color:var(--muted);flex:1}
 .rrhead .pchev{margin-left:auto}.reread .rrall{align-self:flex-start;font-size:13px}.reread .mdview{max-height:none}.nnoline{margin:4px 2px 0}.nwithout .link{font-size:.85rem}
 .ncover{margin:0}.ncover .link{font-size:.88rem}
-.pgsec{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}
+.pgsec{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
+details.pgsec>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:4px 0}details.pgsec>summary::-webkit-details-marker{display:none}
+details.pgsec>summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s}details.pgsec[open]>summary::after{transform:rotate(-135deg)}
+.pgn{font-size:.78rem;color:var(--muted2);background:var(--bg);border-radius:10px;padding:1px 8px}
+.pgfil{display:flex;flex-direction:column;gap:8px;align-items:flex-start}.pgacts{margin:2px 0 4px}
+.pglist .pgi{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:1px;line-height:1.45}.pglist .pgi:hover .pgx,.pglist .pgi:focus-visible .pgx{text-decoration:underline;text-decoration-color:var(--line)}
+.pgm{color:var(--muted);font-size:.78rem}.pgwhy{color:var(--muted2)}.pglist li{display:flex;align-items:flex-start;gap:8px;justify-content:space-between}.pgcd{flex:none}
+.pgrun{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}.pgrh{display:flex;justify-content:space-between;align-items:center}
+.pgq{font-size:1.05rem;line-height:1.5;border-left:3px solid var(--l1);padding-left:10px}.pgsrc{display:block;color:var(--muted);font-size:.78rem;margin-top:4px}.pgw{margin:0}
+.rrpeg{border-left:3px solid var(--l1);padding:4px 0 4px 10px;margin:4px 0 8px}.rrpeg ul{margin:4px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:3px;font-size:.92rem}
+.pflash{animation:pflash 1.8s ease}@keyframes pflash{0%,40%{background:color-mix(in srgb,var(--gold) 35%,transparent)}100%{background:transparent}}
 .pgtopic{display:flex;flex-direction:column;gap:3px}.pgtopic>.link{font-weight:600;color:var(--ink);font-size:.9rem;text-align:left}
 .pglist{margin:0;padding-left:1.1em;border:0;list-style:disc;display:flex;flex-direction:column;gap:3px;font-size:.9rem}
 .pglist li.peg{list-style:none;margin-left:-1.1em;border-left:3px solid var(--l1);padding:2px 0 2px 9px}
@@ -992,7 +1002,9 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .verdict.ok{color:var(--l3)}.verdict.no{color:var(--due)}
 .qexp{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .qexp b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.qacts{display:flex;flex-direction:column;gap:8px;margin-top:6px}.qpick{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.mdview li.daq{list-style:none;margin:10px 0 10px -14px;padding:8px 12px 8px 12px;background:var(--bg);border-left:3px solid var(--accent);border-radius:0 8px 8px 0}.mdview li.daq>.daqsub{margin:6px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}.mdview li.daq>.daqsub>li{margin:0;padding:0;list-style:disc}
+.qacts{display:flex;flex-direction:column;gap:8px;margin-top:6px}.qpcx{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-left:3px solid var(--accent);background:var(--bg);border-radius:0 8px 8px 0}.qpcx p{margin:0;line-height:1.45}
+.qpsec{max-width:520px}.qpai{display:flex;flex-direction:column;gap:6px}.qpai textarea{width:100%;box-sizing:border-box;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.qpick{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
 .qpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.qpl label{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;line-height:1.45;cursor:pointer}.qpl input{margin-top:4px}
 .qexp.qpc{background:color-mix(in srgb,var(--gold) 14%,transparent);border-left:3px solid var(--gold);padding:8px 10px;border-radius:0 8px 8px 0}
 .qfonte{margin:0;font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
@@ -1930,6 +1942,9 @@ html[data-layout="tablet"] .nmgrab{display:none}
 
 /* ===== Lote 3: anotações (links entre temas, tópicos que recolhem, selos, sumário) ===== */
 .npdfopt{display:flex;flex-direction:column;gap:8px;border:1px solid var(--accent);border-radius:12px;padding:12px 14px;background:var(--bg);max-width:520px}.npdfopt .how{margin:0}
+.npdfpick{display:flex;flex-direction:column;gap:10px}.npdfpick:empty{display:none}.npdfpick .tfgrp{display:flex;flex-direction:column;gap:6px}
+.npdft{list-style:none;margin:0;padding:0;max-height:260px;overflow:auto;border-top:1px solid var(--line)}.npdft li{border-bottom:1px solid var(--line)}
+.npdft label{display:flex;gap:8px;align-items:baseline;padding:7px 2px;font-size:.93em;cursor:pointer}.npdft small{color:var(--muted);font-size:.86em}.npdft .how{padding:6px 2px}
 #viewNotas.hastoc{max-width:1200px!important;padding-right:290px;box-sizing:border-box}
 .ntoc{position:fixed;top:24px;right:28px;width:250px;max-height:calc(100vh - 48px);overflow-y:auto;scrollbar-width:thin;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 12px;z-index:5}
 .ntoch{display:flex;flex-direction:column;gap:2px;padding:0 4px 8px;border-bottom:1px solid var(--line);margin-bottom:6px}.ntoch b{font:600 1.15rem var(--display)}.ntoch span{font-size:.75rem;color:var(--muted)}
@@ -2000,6 +2015,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .smh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.smlab{font-size:.9rem}.smpct{font:700 1rem var(--body)}.smpct[data-c=ok]{color:var(--good)}.smpct[data-c=mid]{color:var(--warn)}.smpct[data-c=bad]{color:var(--bad)}
 .smmeta{font-size:.78rem;color:var(--muted)}.smacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.smacts .smdel{margin-left:auto}.smrev{margin-top:6px}.smq{margin:6px 0 8px}
 .simeta{margin:-2px 0 0}.simgo{align-self:flex-start;min-height:44px;padding:10px 18px}
+.dflist li.err small{color:var(--bad)}
 .mslist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
 .mslist li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 6px 8px 12px}
 .msn{font-weight:600;font-size:.9rem;overflow-wrap:anywhere}.mss{grid-column:1;font-size:.78rem;color:var(--muted)}.mss.err{color:var(--danger)}.mss.gmok{color:var(--muted)}
@@ -3049,6 +3065,10 @@ function nbPickEl(ta,k,close,keys){const C=nbChoices(keys||k),w=el(`<div class="
 /* edição na textarea */
 function edit(ta,k,fn){const s=ta.selectionStart,e=ta.selectionEnd,v=ta.value;const r=fn(v,s,e);
   ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);if(typeof k==="function")k(ta.value);else saveNote(k,ta.value)}
+/* Lote 20C: pegadinha estruturada "> Pegadinha: … — Por quê: …" (a linha atual vira a pegadinha; o cursor fica no porquê) */
+function pegInsert(ta,k){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;const line=v.slice(ls,le);if(/^\s*>/.test(line))return {v,s,e};
+  const body=line.replace(/^\s*[-*•]\s+/,"").trim(),ph="o que costuma enganar";if(!body){const ins=`> Pegadinha: ${ph} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+13,e:ls+13+ph.length}}
+  const ins=`> Pegadinha: ${body} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+ins.length,e:ls+ins.length}})}
 function wrap(ta,k,a,b,ph){edit(ta,k,(v,s,e)=>{const sel=v.slice(s,e)||ph;return {v:v.slice(0,s)+a+sel+b+v.slice(e),s:s+a.length,e:s+a.length+sel.length}})}
 function prefix(ta,k,pre,numbered){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;
   let n=0;const block=v.slice(ls,le).split("\n").map(l=>(numbered?(++n)+". ":pre)+l.replace(/^(#{1,3}\s|>\s?|[-*]\s|\d+[.)]\s)/,"")).join("\n");
@@ -3094,7 +3114,7 @@ function npathEl(k){const it=BYKEY[k],s=get(k),L=facLinkMap()[k],sp=noteSP(k),w=
   w.querySelector(".ncrumb").textContent=["Caderno",it.sp||it.area.name,it.t].join(" › ");const S=w.querySelector(".nsels"),add=(t,c)=>{const x=el(`<span class="nsel"></span>`);x.textContent=t;if(c)x.classList.add(c);S.appendChild(x)};
   if(!it.own&&it.area!==FAC_AREA)add(`RES · peso ${wOf(it)}`,"res");if(sp)add(`FAC · ${spShort(sp.name)}`,"fac");else if(L)add(`FAC · ${L.d.name}`,"fac");else if(it.own)add("FAC","fac");if(s.nm&&NM_LAB[s.nm])add(`Modelo ${NM_LAB[s.nm]}`,"mod");return w}
 /* leitura: seções vazias somem, Pegadinhas em destaque, cada seção com "+ Criar cartão do trecho" */
-function noteDress(rv,k){rv.dataset.nk=k;
+function noteDress(rv,k){rv.dataset.nk=k;rv.querySelectorAll("li").forEach(li=>{const s=li.querySelector(":scope > strong, :scope > b");if(s&&/^Da questão:?$/.test(s.textContent.trim())){li.classList.add("daq");const ul=document.createElement("ul");ul.className="daqsub";let n=li.nextElementSibling;while(n&&n.tagName==="LI"&&/\bsub[23]\b/.test(n.className)){const nx=n.nextElementSibling;ul.appendChild(n);n=nx}if(ul.children.length){li.appendChild(ul);const fb=li.querySelector(":scope > .lfold");if(fb)fb.remove()}}});
   [...rv.querySelectorAll("details.mdsec")].reverse().forEach(d=>{const b=d.querySelector(":scope>.mdsb");if(!b||!b.textContent.replace(/\s|\[\[\s*\]\]/g,"").trim()&&!b.querySelector("img,table,.flow"))d.remove()});
   rv.querySelectorAll("details.mdsec").forEach(d=>{const sm=d.querySelector(":scope>summary"),t=sm?sm.textContent.trim():"";if(/^pegadinhas?\b/i.test(t))d.classList.add("peg");
     const b=d.querySelector(":scope>.mdsb");if(!b||d.querySelector(":scope>.mdsb>details.mdsec"))return;const x=el(`<button type="button" class="ntrecho">+ Criar cartão do trecho</button>`);
@@ -3198,7 +3218,7 @@ function renderNotes(it,full){
     const ta=el(`<textarea class="ntext" maxlength="${NOTE_MAX}" placeholder="Escreva seu resumo, macetes e pegadinhas. Use a barra acima para formatar ou um dos modelos."></textarea>`);
     ta.id=(full?"fnt-":"nt-")+k;ta.setAttribute("aria-label","Anotações de "+it.t);ta.value=notes[k]||"";
     const T=[["Título","H",()=>prefix(ta,k,"## ")],["Negrito","B",()=>wrap(ta,k,"**","**","texto")],["Destaque","==",()=>wrap(ta,k,"==","==","cai na prova")],
-      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>prefix(ta,k,"> ")],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)],["Link para outro tema ou página: digite [[ e escolha na lista","[[ ]]",()=>{edit(ta,k,(v,s0,e0)=>{const ins="[[";return {v:v.slice(0,s0)+ins+v.slice(e0),s:s0+2,e:s0+2}});wkPopUpdate(ta,k,pop)}],["Marcar uma questão ou um erro deste tema na linha","Selo",()=>{const o=box.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(ta,k,()=>{const x=box.querySelector(".nbpick");if(x)x.remove();ta.focus()}))}]];
+      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>pegInsert(ta,k)],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)],["Link para outro tema ou página: digite [[ e escolha na lista","[[ ]]",()=>{edit(ta,k,(v,s0,e0)=>{const ins="[[";return {v:v.slice(0,s0)+ins+v.slice(e0),s:s0+2,e:s0+2}});wkPopUpdate(ta,k,pop)}],["Marcar uma questão ou um erro deste tema na linha","Selo",()=>{const o=box.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(ta,k,()=>{const x=box.querySelector(".nbpick");if(x)x.remove();ta.focus()}))}]];
     const pop=el(`<div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div>`);
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
@@ -3333,19 +3353,7 @@ function renderNotasView(){
   if(vis.length>nShow.length){const m=el(`<li><button class="btn" type="button" id="nMore"></button></li>`);m.querySelector("button").textContent=`Mostrar mais ${Math.min(N_PAGE,vis.length-nShow.length)} (de ${vis.length-nShow.length} restantes)`;m.querySelector("button").onclick=()=>{nLimit+=N_PAGE;render()};list.appendChild(m)}
   $("#nPdf").hidden=!downloadsFn;$("#nPdf").disabled=!keys.length&&!freeN.length;$("#nPdf").setAttribute("aria-expanded",!!nPdfOpt);
   $("#nPdf").onclick=()=>{nPdfOpt=nPdfOpt?null:{scope:vis.length<keys.length?"screen":"all",free:true};render()};
-  {const bx=$("#nPdfBox");bx.innerHTML="";if(nPdfOpt&&downloadsFn){const O=nPdfOpt,w=el(`<div class="npdfopt"><span class="glabel">PDF das anotações</span><label class="qfsel"><span>O que entra</span><select id="nPdfScope"></select></label><label class="fcru"><input type="checkbox" id="nPdfFree"> <span></span></label><p class="how">Capa com o seu nome e a data, sumário com as páginas, área › especialidade › tema, destaques em cor e links entre temas com a página.</p><div class="btns"><button class="btn primary" type="button" id="nPdfGo">Gerar PDF</button><button class="link" type="button" id="nPdfX">Cancelar</button></div></div>`);
-    const sel=w.querySelector("select"),cnt=c=>keys.filter(k=>BYKEY[k].area.code===c).length,opts=[];
-    if(vis.length<keys.length)opts.push(["screen",`Como está na tela (${vis.length} ${vis.length===1?"tema":"temas"})`]);
-    opts.push(["all",`Caderno todo (${keys.length} ${keys.length===1?"tema":"temas"})`]);AREAS.forEach(a=>{const n=cnt(a.code);if(n)opts.push([a.code,`${a.name} (${n})`])});
-    opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o)});if(!opts.some(x=>x[0]===O.scope))O.scope=opts[0][0];sel.value=O.scope;sel.onchange=()=>{O.scope=sel.value;render()};
-    const fv=freeVisible(),cb=w.querySelector("#nPdfFree"),fl=w.querySelector(".fcru span");cb.checked=!!O.free&&O.scope==="all";cb.disabled=O.scope!=="all"||!fv.length;fl.textContent=fv.length?`Incluir o caderno livre (${fv.length} ${fv.length===1?"página":"páginas"})`:"Caderno livre vazio";cb.onchange=()=>{O.free=cb.checked};
-    w.querySelector("#nPdfX").onclick=()=>{nPdfOpt=null;render()};
-    w.querySelector("#nPdfGo").onclick=async()=>{const sc=O.scope,ks=sc==="screen"?vis:sc==="all"?keys:keys.filter(k=>BYKEY[k].area.code===sc),fr=sc==="all"&&cb.checked?fv:[],A=AREAS.find(a=>a.code===sc);
-      const scope=sc==="screen"?"Seleção da tela":A?A.name:"Todas as áreas";$("#nmsg").textContent="Gerando o PDF…";
-      try{const bytes=notesPDF(ks,fr,{scope});await downloadsFn.save({filename:`anotacoes-${A?A.code.toLowerCase()+"-":""}${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});
-        nPdfOpt=null;render();$("#nmsg").textContent=`PDF salvo com ${ks.length} ${ks.length===1?"tema":"temas"}${fr.length?` e ${fr.length} do caderno livre`:""}.`}
-      catch(e){$("#nmsg").textContent=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o PDF agora."}};
-    bx.appendChild(w)}}
+  {const bx=$("#nPdfBox");bx.innerHTML="";if(nPdfOpt&&downloadsFn)bx.appendChild(nPdfPanel(keys,vis))}
   nTocRender(nShow,vis.length>nShow.length);
   $("#nCopy").disabled=$("#nDown").disabled=!vis.length;
   $("#nDown").hidden=!downloadsFn;
@@ -3542,7 +3550,9 @@ Já foram feitas questões sobre os conceitos abaixo. Não repita esses conceito
 ${o.avoid.slice(-30).map(c=>"- "+c).join("\n")}`:"")+
   (past.length&&o.first&&!o.mat?`
 O estudante já errou questões sobre estes pontos deste tema. Inclua pelo menos uma questão que cobre um deles por outro ângulo:
-${past.join("\n")}`:"")+(o.mat?genMatPrompt(o.mat):"")+(fs?"\n\n"+fs:"")+`
+${past.join("\n")}`:"")+((()=>{const pg=o.first&&!o.mat&&!o.focus?pegOf(it.key).filter(x=>x.kind==="peg").slice(0,4):[];return pg.length?`
+O estudante anotou estas pegadinhas deste tema. Se couber no número de questões, faça 1 questão que teste uma delas (sem copiar o texto):
+${pg.map(x=>"- "+x.x.replace(/\*\*|==/g,"")+(x.why?" (por quê: "+x.why.replace(/\*\*|==/g,"")+")":"")).join("\n")}`:""})())+(o.mat?genMatPrompt(o.mat):"")+(fs?"\n\n"+fs:"")+`
 
 ${fixedFormat(nq)}`;
 }
@@ -3555,6 +3565,33 @@ let genMat={},simMat=null;const GM_MAX=30000,GM_IMG=4,GM_TOTAL=100000,FIG_MAX=30
    Páginas com figura (imagem grande que não se repete em todas as páginas) viram "Figura N" (m.figs=[{page,blob}]); a parte leva as figuras das suas páginas. */
 const msItemOk=i=>!i.busy&&!i.err&&!!(i.txt||(i.imgs&&i.imgs.length)||i.scan);
 const genMatOn=S=>!!(S&&!S.busy&&(S.attach||(S.items||[]).some(msItemOk)));
+/* ===== Lote 20C: leitor de arquivos no aparelho — Word (.docx), PowerPoint (.pptx) e texto (.txt/.md), além de PDF e foto =====
+   .docx/.pptx são zip: lidos com o DecompressionStream do navegador (sem biblioteca). Títulos, listas e tabelas viram Markdown; imagens internas viram figuras. */
+const DOC_ACCEPT="application/pdf,.pdf,image/*,.docx,.pptx,.txt,.md,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,.doc,.ppt";
+const docKind=f=>{const n=(f.name||"").toLowerCase(),t=f.type||"";return /\.pdf$/.test(n)||t==="application/pdf"?"pdf":/^image\//.test(t)?"img":/\.docx$/.test(n)||/wordprocessingml/.test(t)?"docx":/\.pptx$/.test(n)||/presentationml/.test(t)?"pptx":/\.(txt|md|markdown)$/.test(n)||/^text\//.test(t)?"txt":/\.(doc|ppt)$/.test(n)?"old":""};
+async function zipRead(buf){const u=new Uint8Array(buf),dv=new DataView(buf),out={};let e=u.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw new Error("zip");
+  let n=dv.getUint16(e+10,true),p=dv.getUint32(e+16,true);const dec=new TextDecoder();
+  for(let i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)break;const meth=dv.getUint16(p+10,true),csz=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=dec.decode(u.subarray(p+46,p+46+nl));
+    out[name]={meth,csz,lo};p+=46+nl+xl+cl}
+  const get=async name=>{const x=out[name];if(!x)return null;const ln=dv.getUint16(x.lo+26,true),lx=dv.getUint16(x.lo+28,true),s=x.lo+30+ln+lx,data=u.slice(s,s+x.csz);if(x.meth===0)return data;
+    if(x.meth!==8||typeof DecompressionStream==="undefined")throw new Error("deflate");const ds=new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));return new Uint8Array(await new Response(ds).arrayBuffer())};
+  return {names:Object.keys(out),get,text:async n=>{const b=await get(n);return b?new TextDecoder().decode(b):""}}}
+const xmlDoc=s=>new DOMParser().parseFromString(s,"application/xml");
+const xT=(node,tag)=>[...node.getElementsByTagName(tag)];
+async function docxRead(Z){const X=xmlDoc(await Z.text("word/document.xml")),body=X.getElementsByTagName("w:body")[0];if(!body)throw new Error("docx");const L=[];
+  const runTxt=p=>xT(p,"w:r").map(r=>{const t=xT(r,"w:t").map(x=>x.textContent).join("")+(xT(r,"w:tab").length?" ":"");if(!t.trim())return t;const b=xT(r,"w:b").some(x=>x.getAttribute("w:val")!=="0"&&x.getAttribute("w:val")!=="false");return b?`**${t.trim()}** `:t}).join("").replace(/\*\*\s*\*\*/g,"").replace(/\s+/g," ").trim();
+  const para=p=>{const st=(xT(p,"w:pStyle")[0]||{getAttribute:()=>""}).getAttribute("w:val")||"",t=runTxt(p);if(!t)return "";const h=st.match(/(?:Heading|T[íi]tulo|Ttulo)\s*(\d)/i)||(/^Title$/i.test(st)?[0,"1"]:null);
+    if(h)return "#".repeat(Math.min(3,+h[1]+1))+" "+t.replace(/\*\*/g,"");const np=xT(p,"w:numPr")[0];if(np){const lv=+((xT(np,"w:ilvl")[0]||{getAttribute:()=>0}).getAttribute("w:val")||0);return "  ".repeat(lv)+"- "+t}return t};
+  for(const n of [...body.childNodes]){if(n.nodeName==="w:p"){const t=para(n);L.push(t)}
+    else if(n.nodeName==="w:tbl"){const rows=[...n.childNodes].filter(r=>r.nodeName==="w:tr").map(r=>[...r.childNodes].filter(x=>x.nodeName==="w:tc").map(tc=>xT(tc,"w:p").map(runTxt).filter(Boolean).join(" ").replace(/\|/g,"/")));
+      if(rows.length){const nc=Math.max(...rows.map(r=>r.length));L.push("");rows.forEach((r,i)=>{while(r.length<nc)r.push("");L.push("| "+r.join(" | ")+" |");if(i===0)L.push("|"+" --- |".repeat(nc))});L.push("")}}}
+  return L.join("\n").replace(/\n{3,}/g,"\n\n").trim()}
+async function pptxRead(Z){const S=Z.names.filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>+a.match(/(\d+)\.xml/)[1]-+b.match(/(\d+)\.xml/)[1]),out=[];
+  for(let i=0;i<S.length;i++){const X=xmlDoc(await Z.text(S[i])),ps=xT(X,"a:p").map(p=>{const t=xT(p,"a:t").map(x=>x.textContent).join("").replace(/\s+/g," ").trim();if(!t)return "";const lv=+(p.getElementsByTagName("a:pPr")[0]?.getAttribute("lvl")||0);return {t,lv}}).filter(Boolean);
+    if(!ps.length)continue;const [h,...rest]=ps;out.push(`=== Slide ${i+1} ===\n## ${h.t}\n`+rest.map(x=>"  ".repeat(x.lv)+"- "+x.t).join("\n"))}
+  return {txt:out.join("\n\n"),n:S.length}}
+async function officeImgs(Z,dir,max){const out=[];for(const n of Z.names.filter(n=>n.startsWith(dir)&&/\.(png|jpe?g)$/i.test(n)).slice(0,max*3)){if(out.length>=max)break;const b=await Z.get(n);if(!b||b.length<12000)continue;/* ícones e logos pequenos ficam de fora */
+    out.push(await imgShrink(new Blob([b],{type:/\.png$/i.test(n)?"image/png":"image/jpeg"})))}return out}
 async function msReadOne(f,canImg,site){const isPdf=f.type==="application/pdf"||/\.pdf$/i.test(f.name),m={id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:f.name,txt:"",imgs:[],note:"",err:""};
   try{if(isPdf){const o=await pdfOpenTxt(f);let txt="",nt=0,sc=[];o.pages.forEach(p=>{if(p.img){sc.push(p.n);return}txt+=`=== Página ${p.n} ===\n${p.t}\n\n`;nt++});
       m.txt=txt.trim();m.pages=o.pages.length;m.ntext=nt;m.figs=[];
@@ -3565,6 +3602,10 @@ async function msReadOne(f,canImg,site){const isPdf=f.type==="application/pdf"||
       if(sc.length){if(!site&&canImg){for(const n of sc.slice(0,GM_IMG))m.imgs.push(await pdfPageImg(await o.doc.getPage(n)));if(sc.length>GM_IMG)m.note=`Só as ${GM_IMG} primeiras páginas sem texto vão como imagem.`}
         else if(site){m.scan=true;m.note=`${sc.length} ${sc.length===1?"página sem texto":"páginas sem texto"} (escaneadas): anexe o PDF na conversa do Claude quando colar o pedido.`}
         else m.note=`${sc.length} ${sc.length===1?"página sem texto ficou":"páginas sem texto ficaram"} de fora: esta visualização não envia imagens ao Claude.`}}
+    else if(["docx","pptx","txt","old"].includes(docKind(f))){const K=docKind(f);if(K==="old"){m.err="Arquivo .doc ou .ppt antigo: salve como .docx, .pptx ou PDF e escolha de novo.";return m}
+      if(K==="txt"){m.txt=(await f.text()).replace(/\r/g,"").trim();m.kind="txt"}
+      else{const Z=await zipRead(await f.arrayBuffer());if(K==="docx"){m.txt=await docxRead(Z);m.kind="docx";if(canImg&&!site)m.imgs=await officeImgs(Z,"word/media/",3)}
+        else{const P=await pptxRead(Z);m.txt=P.txt;m.pages=P.n;m.kind="pptx";if(canImg&&!site)m.imgs=await officeImgs(Z,"ppt/media/",3)}}}
     else if(/^image\//.test(f.type)){if(site){m.imgs=[true];m.note="No site, anexe esta imagem na conversa do Claude quando colar o pedido."}else if(canImg)m.imgs.push(await imgShrink(f));else m.err="Esta visualização não envia imagens ao Claude. Use um PDF com texto, ou o site."}
     else throw new Error("tipo");
     if(!m.txt&&!m.imgs.length&&!m.scan&&!m.err)m.err="Não achei texto neste arquivo. Ele fica de fora (as questões saem dos outros materiais ou sem material)."}
@@ -3638,7 +3679,7 @@ function msEl(S,o){const site=!!window.__site,on=genMatOn(S),ID=o.id,its=S?S.ite
     else{st.textContent=(m.txt?`${m.ntext} de ${m.pages} ${m.pages===1?"página lida":"páginas lidas"}${m.imgs.length&&!site?` · ${m.imgs.length} como imagem`:""}`:site?"imagem para anexar":"imagem");st.classList.add("gmok");if(m.note)st.title=m.note}
     const x=li.querySelector(".msx");x.id=ID("r",i);x.onclick=()=>{S.items.splice(i,1);S.busy=S.items.some(y=>y.busy);if(!S.items.length&&!S.attach)o.set(null);render()};ul.appendChild(li)});
   if(!its.length)ul.remove();
-  const bx=d.querySelector(".btns"),pk=el(`<label class="btn imgpick"><input type="file" accept="application/pdf,.pdf,image/*" multiple hidden><span></span></label>`),inp=pk.querySelector("input");
+  const bx=d.querySelector(".btns"),pk=el(`<label class="btn imgpick"><input type="file" accept="${DOC_ACCEPT}" multiple hidden><span></span></label>`),inp=pk.querySelector("input");
   inp.id=ID("f");pk.querySelector("span").textContent=its.length?"+ Adicionar outro arquivo":"Escolher PDFs ou fotos";inp.onchange=e=>{const f=e.target.files;msAdd(o.get,o.set,f);e.target.value=""};bx.appendChild(pk);
   if(S){const x=el(`<button class="link" type="button"></button>`);x.textContent=its.length>1?"Tirar todos":"Tirar o material";x.id=ID("x");x.onclick=()=>{o.set(null);render()};bx.appendChild(x)}
   const b=d.querySelector(".gmatb");
@@ -5005,15 +5046,18 @@ let objF={};
 function objFPrompt(){return `A imagem é a página de uma SP (sessão de tutoria) ou de uma disciplina de um curso de medicina.\nListe os objetivos de aprendizagem (ou, na tutoria, as questões de aprendizagem) exatamente como estão escritos, um por item, sem numeração e sem comentários. Ignore cabeçalho, datas, nomes de professores e bibliografia.\nResponda só com JSON: {"tipo":"objetivos" ou "questoes","itens":["...","..."]}`}
 function jsonFromText(tx){const s=String(tx||""),i=s.search(/[\[{]/);if(i<0)return null;for(let j=s.length;j>i;j--){const c=s[j-1];if(c!=="}"&&c!=="]")continue;try{return JSON.parse(s.slice(i,j))}catch(e){}}return null}
 async function objFRun(sid,file){const S=objF[sid]={st:"busy",list:[],msg:""};render();
-  try{const blob=await imgShrink(file),r=await sampleFn(objFPrompt(),{images:[blob],cache:false,title:"Objetivos da SP por foto",hint:"Anexe a foto na conversa do Claude e cole aqui a resposta (JSON com os itens)."});
+  try{let r;/* Lote 20C: foto, PDF, Word, PowerPoint ou texto */
+    if(docKind(file)==="img"){const blob=await imgShrink(file);r=await sampleFn(objFPrompt(),{images:[blob],cache:false,title:"Objetivos da SP por foto",hint:"Anexe a foto na conversa do Claude e cole aqui a resposta (JSON com os itens)."})}
+    else{const m=await msReadOne(file,!window.__site,!!window.__site);if(m.err&&!m.txt)throw Object.assign(new Error(m.err),{code:"read",msg:m.err});
+      r=await sampleFn(objFPrompt().replace(/^A imagem é/,"O texto abaixo é").replace(/na imagem|da imagem|na foto|da foto/gi,"no texto")+`\n\nTexto do arquivo "${file.name}":\n"""\n${m.txt.slice(0,GM_MAX)}\n"""`,{images:(m.imgs||[]).filter(x=>x instanceof Blob).slice(0,GM_IMG),cache:false,title:"Objetivos da SP por arquivo",hint:"Cole aqui a resposta (JSON com os itens)."})}
     if(objF[sid]!==S)return;const J=jsonFromText(r&&r.text),items=(J&&Array.isArray(J.itens)?J.itens:Array.isArray(J)?J:[]).map(x=>String(x||"").replace(/^\s*([-*•]|\d+[.)])\s*/,"").trim()).filter(Boolean).slice(0,40);
     if(!items.length){S.st="err";S.msg="Não achei objetivos na resposta. Tente uma foto mais nítida, só da parte dos objetivos.";render();return}
     S.tipo=J&&J.tipo==="questoes"?"questoes":"objetivos";S.list=items.map(t=>{const sc=impTemaScores(t,""),k=Object.keys(sc).sort((a,b)=>sc[b]-sc[a])[0];return {t:t.slice(0,200),on:true,k:k&&sc[k]>=3?k:null,lk:false}});S.st="rev";render()}
-  catch(e){if(objF[sid]!==S)return;S.st="err";S.msg=e&&e.code==="cancelled"?"":"Não foi possível ler a foto agora. Tente de novo.";render()}}
+  catch(e){if(objF[sid]!==S)return;S.st="err";S.msg=e&&e.code==="cancelled"?"":e&&e.code==="read"?e.msg:"Não foi possível ler o arquivo agora. Tente de novo.";render()}}
 function objFEl(d,sp,L){const S=objF[sp.id],w=el(`<div class="fobjf"></div>`);
-  if(!S||S.st==="err"){const lb=el(`<label class="btn fobjfb"><input type="file" accept="image/*" hidden>📷 Ler os objetivos de uma foto</label>`),fi=lb.querySelector("input");fi.id="fof-"+sp.id;
+  if(!S||S.st==="err"){const lb=el(`<label class="btn fobjfb"><input type="file" accept="${DOC_ACCEPT}" hidden>📄 Ler os objetivos de uma foto ou arquivo</label>`),fi=lb.querySelector("input");fi.id="fof-"+sp.id;
     fi.onchange=()=>{const f=fi.files&&fi.files[0];if(f)objFRun(sp.id,f)};w.appendChild(lb);if(S&&S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}return w}
-  if(S.st==="busy"){w.appendChild(el(`<p class="gstatus" role="status">Lendo a foto com o Claude…</p>`));return w}
+  if(S.st==="busy"){w.appendChild(el(`<p class="gstatus" role="status">Lendo com o Claude…</p>`));return w}
   const h=el(`<p class="how"></p>`);h.textContent=`O Claude achou ${S.list.length} ${S.tipo==="questoes"?"questões de aprendizagem":"objetivos"}. Desmarque o que não quiser; cada um vira um objetivo (subtópico) desta ${L.sp}. Onde houver um tema da residência parecido, você pode ligar a ${L.sp} a ele.`;w.appendChild(h);
   const ul=el(`<ul class="fobjl"></ul>`);S.list.forEach((x,i)=>{const li=el(`<li><label><input type="checkbox"><span></span></label></li>`),cb=li.querySelector("input");cb.id=`fofi-${sp.id}-${i}`;cb.checked=x.on;cb.onchange=()=>{x.on=cb.checked};li.querySelector("span").textContent=x.t;
     if(x.k&&BYKEY[x.k]&&!sp.items.includes("T:"+x.k)){const l=el(`<label class="fobjlk"><input type="checkbox"><span></span></label>`),c2=l.querySelector("input");c2.id=`fofk-${sp.id}-${i}`;c2.checked=x.lk;c2.onchange=()=>{x.lk=c2.checked};l.querySelector("span").textContent=`ligar à residência: ${BYKEY[x.k].t}`;li.appendChild(l)}ul.appendChild(li)});w.appendChild(ul);
@@ -5501,7 +5545,9 @@ function ecardEl(e,withTopic){
   db.onclick=()=>{if(delArm===e.id){delArm=null;delErr(e.id)}else{delArm=e.id;render()}};
   const ab=el(`<button class="mini" type="button"></button>`);ab.textContent=e.arch?"Desarquivar":"Resolvido";ab.title=e.arch?"Volta para as revisões":"Arquiva: sai das revisões e da lista (fica em Arquivados)";ab.onclick=()=>eArchive(e,!e.arch);
   const mb=el(`<button class="mini emenu" type="button" aria-expanded="${eMenu===e.id}"></button>`);mb.textContent=eMenu===e.id?"Fechar ações":"⋯ Ações";mb.onclick=()=>{eMenu=eMenu===e.id?null:e.id;render()};
-  if(eMenu===e.id)ft.append(rb,ab,db,mb);else ft.append(mb);if(cdErr[e.id])c.appendChild(cdErrEl(e));
+  const pb=el(`<button class="mini" type="button"></button>`);pb.id="epg-"+e.id;const pgD=ePegDraft(e),pgIn=pgD.x&&pegOf(e.k).some(o=>norm(o.x)===norm(pgD.x));pb.textContent=pgIn?"Na anotação ✓":"Virar pegadinha";pb.disabled=pgIn||!pgD.x;
+  pb.title="Escreve na seção Pegadinhas da anotação do tema (aparece em Caderno › Pegadinhas)";pb.onclick=()=>{pegAdd(e.k,pgD.x,pgD.why);render()};
+  if(eMenu===e.id){ft.append(rb);if(e.t==="interpretacao"||e.t==="confusao")ft.append(pb);ft.append(ab,db,mb)}else ft.append(mb);if(cdErr[e.id])c.appendChild(cdErrEl(e));
   return c;
 }
 function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();
@@ -5585,19 +5631,60 @@ function qLike(a,b){const A=clWords(a),B=clWords(b);if(!A.size||!B.size)return f
 /* ---- em toda questão respondida (certa ou errada): Levar para a anotação (você marca os pontos) e Criar cartão ---- */
 const qActS=new WeakMap();let qActN=0;
 const qSt=q=>{let s=qActS.get(q);if(!s){s={id:"qv"+(++qActN)};qActS.set(q,s)}return s};
-function qPoints(q,mine){const Q=qSplit(q),C=Q.correta,r=Q.alternativas.find(a=>a.letra===C),L=[];
-  if(Q.pc)L.push({id:"pc",lab:"Ponto-chave",t:cmTidy(Q.pc),on:true});
-  if(Q.conceito)L.push({id:"co",lab:"Conceito-chave",t:Q.conceito.trim(),on:!Q.pc});
-  if(Q.th)L.push({id:"th",lab:"Take home",t:cmTidy(Q.th),on:!Q.pc&&!Q.conceito});
-  const why=clSents(cmTidy(Q.comentario)).slice(0,2).join(" ");if(why)L.push({id:"why",lab:`Por que ${C} está certa`,t:why,on:!L.length});
-  Q.alternativas.filter(a=>a.letra!==C&&a.porque).forEach(a=>L.push({id:"n"+a.letra,lab:`Por que não ${clCut(a.texto,60)}`,t:cmTidy(a.porque),on:a.letra===mine}));
-  const cl=qClueRich(Q);if(cl)L.push({id:"pi",lab:"Pista",t:cl,on:false});
-  return {head:r?clCut(r.texto,110):"",L}}
-/* acrescenta na seção "## Conceitos das questões" da anotação do tema (cria no fim se não existir) */
-function conNote(k,head,lines,tok,src){const cur=notes[k]||"",item=`- **${head}**${tok?" "+tok:` _(${src} · ${br(today()).slice(0,5)})_`}`+lines.map(l=>`\n  - ${l}`).join(""),m=cur.match(/^#{1,3}\s*Conceitos das questões\s*$/mi);let v;
-  if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+item+(end<cur.length?"\n"+cur.slice(end):"")}
+/* Lote 20C: pontos com contexto, sem letras: Caso (a pista do enunciado) › Resposta (a certa inteira) › Por quê › Por que não <alternativa inteira>;
+   Ponto-chave, Conceito e Take home só quando não repetem o que já está marcado */
+const qSame=(a,b)=>{const A=clWords(a),B=clWords(b);if(!A.size||!B.size)return false;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/Math.min(A.size,B.size)>=.6};
+function qCase(Q){const cl=qClueRich(Q);if(cl)return cl;const ask=clSents(Q.enunciado).filter(x=>/\?$/.test(x)).pop();return ask?clCut(ask,220):""}
+function qPoints(q,mine){const Q=qSplit(q),C=Q.correta,r=Q.alternativas.find(a=>a.letra===C),L=[],keep=[];
+  const add=(id,lab,t,on)=>{t=String(t||"").trim();if(!t)return;if(keep.some(x=>qSame(x,t)))return;keep.push(t);L.push({id,lab,t,on})};
+  add("why","Por quê",clSents(cmTidy(Q.comentario)).slice(0,2).join(" "),true);
+  add("pc","Ponto-chave",cmTidy(Q.pc||""),true);add("co","Conceito-chave",(Q.conceito||"").trim(),!Q.pc);add("th","Take home",cmTidy(Q.th||""),false);
+  if(q.alerta)L.push({id:"pg",lab:"Pegadinha",t:cmTidy(String(q.alerta).replace(/^\s*(?:Aten[çc][ãa]o|Alerta):?\s*/i,"")),on:false});
+  Q.alternativas.filter(a=>a.letra!==C&&a.porque).forEach(a=>add("n"+a.letra,`Por que não ${a.texto.trim().replace(/[.;:]+$/,"")}`,cmTidy(a.porque),a.letra===mine));
+  return {head:qCase(Q),ans:r?r.texto.trim():"",L,ask:(clSents(Q.enunciado).filter(x=>/\?$/.test(x)).pop()||"")}}
+/* seções da anotação (##/###) e a mais parecida com os pontos marcados */
+function noteSecs(k){const out=[];let fen=false;String(notes[k]||"").split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const m=l.match(/^(#{2,3})\s+(.+?)\s*$/);if(m&&!/^conceitos das questões$/i.test(m[2]))out.push(m[2])});return out}
+function noteSecSuggest(k,P){const S=noteSecs(k);if(!S.length)return "";const W=clWords([P.ans,...P.L.filter(x=>x.on).map(x=>x.t)].join(" ").replace(/\*\*/g,""));
+  const it=BYKEY[k],SUBW=it?subList(it).map(x=>({t:x.t,w:clWords(x.t)})):[];let best="",bv=0;
+  S.forEach(s=>{const w=clWords(s);let v=0;w.forEach(x=>{if(W.has(x))v+=2});
+    if(/diagn[oó]st|exame|achado/i.test(s)&&[...W].some(x=>/diagn|exam|labor|tomogr|ecg|sorolog|bi[oó]ps/.test(x)))v+=1.5;
+    if(/tratament|conduta|manejo|terap/i.test(s)&&[...W].some(x=>/trat|condut|dose|terap|prescr|indic/.test(x)))v+=1.5;
+    if(/pegadinha|alerta|cuidado|armadilha/i.test(s)&&P.L.some(x=>x.on&&/^Por que não/.test(x.lab)))v+=1;
+    SUBW.forEach(sb=>{if(norm(sb.t)===norm(s)){let o=0;sb.w.forEach(x=>{if(W.has(x))o++});v+=o}});if(v>bv){bv=v;best=s}});return bv>=3.5?best:""}
+/* acrescenta o bloco "Da questão" na seção escolhida (padrão: "## Conceitos das questões", criada no fim se não existir) */
+function conItem(P,o){const sel=P.L.filter(x=>x.on),org=o.tok?" "+o.tok:` _(${o.src||"Questão"} · ${br(today()).slice(0,5)})_`;
+  const lines=[];if(P.ans)lines.push(`**Resposta:** ${P.ans}`);
+  if(o.ai)String(o.ai).trim().split(/\n+/).map(x=>x.replace(/^\s*[-*•]\s+/,"").trim()).filter(Boolean).forEach(x=>lines.push(x));
+  else sel.forEach(x=>lines.push(`**${x.lab}:** ${x.t}`));
+  return `- **Da questão:** ${P.head||P.ask||"questão"}${org}`+lines.map(l=>`\n  - ${l}`).join("")}
+function conNote(k,P,o){o=o||{};const cur=notes[k]||"",item=conItem(P,o),sec=o.sec||"";let v;
+  const find=name=>{const re=new RegExp("^(#{1,3})\\s*"+name.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\s*$","mi");return cur.match(re)};
+  const m=sec?find(sec):find("Conceitos das questões");
+  if(m){const at=m.index+m[0].length,lv=m[1].length,rest=cur.slice(at),nx=rest.search(new RegExp("\\n#{1,"+lv+"}\\s")),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+item+(end<cur.length?"\n"+cur.slice(end):"")}
   else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Conceitos das questões\n"+item;
   replaceNote(k,v)}
+/* ✦ Escrever com o Claude: os pontos marcados viram 2–4 frases didáticas, sem repetir */
+function conAIPrompt(k,P){const it=BYKEY[k];return `Você escreve anotações de estudo para residência médica, em português do Brasil.
+Tema: ${it?it.t:""}.
+A partir dos pontos abaixo, tirados de uma questão, escreva de 2 a 4 itens curtos (uma frase cada, começando com "- ") que expliquem a ideia de forma didática, no estilo de um resumo: sem repetir a mesma ideia, sem citar letras de alternativas (A, B, C…), sem "a questão", sem inventar nada que não esteja nos pontos. Use **negrito** só nos termos decisivos. Responda só com os itens.
+
+Caso: ${String(P.head||P.ask).replace(/\*\*/g,"")}
+Resposta: ${P.ans}
+${P.L.filter(x=>x.on).map(x=>`${x.lab}: ${x.t}`).join("\n")}`}
+async function conAIRun(st,k){const P=st.pick;if(!P||!sampleFn)return;P.busy=true;P.err="";render();
+  try{const r=await sampleFn(conAIPrompt(k,P),{cache:false,modelTier:"default",title:"Escrever a anotação com o Claude",hint:"Cole aqui os itens que o Claude escreveu."});
+    const t=String(r&&r.text||"").trim();if(!t)throw new Error("vazio");P.ai=t}catch(e){P.err=e&&(e.code==="declined"||e.code==="cancelled"||e.name==="AbortError")?"":"Não deu para escrever com o Claude agora. Tente de novo ou insira os pontos marcados."}
+  P.busy=false;render()}
+/* anotações antigas: troca os rótulos com a letra ("Por que C está certa") e, com selo de prova na íntegra, devolve as alternativas inteiras */
+function conFix(){let done=0;try{if(localStorage.getItem("resid-confix")==="1")return 0}catch(x){return 0}
+  Object.keys(notes).forEach(k=>{const t=notes[k];if(!t||!/Conceitos das questões/i.test(t))return;let v=t;
+    v=v.replace(/^(\s+-\s+)Por que [A-E] está certa:/gm,"$1**Por quê:**");
+    v=v.replace(/^-\s+\*\*(.+?)\*\*\s+\{\{q:([A-Za-z0-9_-]+):(\d+)\}\}((?:\n\s+-\s+.*)*)/gm,(all,head,xid,ix,subs)=>{const ex=exams.find(x=>x.id===xid),r=ex&&ex.qs[+ix];if(!r)return all;
+      const Q=qSplit(r.q),a=Q.alternativas.find(x=>x.letra===Q.correta);let s2=subs;
+      Q.alternativas.forEach(x=>{const cut=clCut(x.texto,60);if(cut!==x.texto&&cut.endsWith("…"))s2=s2.split("Por que não "+cut).join("Por que não "+x.texto.trim().replace(/[.;:]+$/,""))});
+      const full=a&&clCut(a.texto,110)===head?a.texto.trim():head;return `- **${full}** {{q:${xid}:${ix}}}${s2}`});
+    if(v!==t){notes[k]=v;saveNote(k,v);done++}});
+  try{localStorage.setItem("resid-confix","1")}catch(x){}return done}
 function qCardDrafts(q,mine,k){const Q=qSplit(q),it=BYKEY[k],L=esc(it?it.t:""),r=Q.alternativas.find(a=>a.letra===Q.correta),m=mine&&mine!==Q.correta?Q.alternativas.find(a=>a.letra===mine):null;
   const ask=(clSents(Q.enunciado).filter(x=>/\?$/.test(x)).pop()||"qual é a resposta?").replace(/^\s*/,""),clue=qData(Q)||qClue(Q),exp=cmTidy(Q.pc||Q.conceito||Q.th||clSents(cmTidy(Q.comentario)).slice(0,2).join(" "));
   const out=[{kind:"disc",q:`<b>${L}.</b> ${clue?esc(clue)+" &rarr; ":""}${esc(clCut(ask,160))}`,a:`<b>${esc(r?r.texto:"")}</b>${exp?`<br><br><i>${esc(exp)}</i>`:""}`,ref:"",keep:true}];
@@ -5605,17 +5692,25 @@ function qCardDrafts(q,mine,k){const Q=qSplit(q),it=BYKEY[k],L=esc(it?it.t:""),r
   return out}
 function qActsEl(q,mine,ctx){const st=qSt(q),k=ctx.k,ok=!!BYKEY[k],w=el(`<div class="qacts"><div class="btns"></div></div>`),B=w.querySelector(".btns");
   const nb=el(`<button class="btn" type="button"></button>`);nb.id="qan-"+st.id;nb.textContent=st.noted?"Na anotação ✓":st.pick?"Fechar":"Levar para a anotação";nb.disabled=!ok||!!st.noted;if(!ok)nb.title="Escolha o tema desta questão primeiro";
-  nb.onclick=()=>{if(st.pick)delete st.pick;else{const P=qPoints(q,mine);st.pick={head:P.head,L:P.L};delete cdErr[st.id]}render()};B.appendChild(nb);
+  nb.onclick=()=>{if(st.pick)delete st.pick;else{st.pick=qPoints(q,mine);delete cdErr[st.id]}render()};B.appendChild(nb);
   const cb=el(`<button class="btn" type="button"></button>`);cb.id="qac-"+st.id;cb.textContent=st.cards?`${st.cards} ${st.cards===1?"cartão":"cartões"} ✓`:cdErr[st.id]?"Fechar cartões":"Criar cartão";cb.disabled=!ok||!!st.cards;if(!ok)cb.title="Escolha o tema desta questão primeiro";
   const ve=()=>{const Q=qSplit(q),r=Q.alternativas.find(a=>a.letra===Q.correta),m=Q.alternativas.find(a=>a.letra===mine),D=qDraft(q,mine,ctx.src);
     return {id:st.id,virtual:true,okq:mine===Q.correta,k,w:mine===Q.correta?`Acertei: ${r?r.texto:""}`:D.w,p:D.p.replace(/\*\*/g,""),r:[cmTidy(Q.pc||""),D.r].filter(Boolean).join("\n"),t:D.t,c:"",s:ctx.src||"",onSaved:ids=>{st.cards=ids.length}}};
   cb.onclick=()=>{if(cdErr[st.id])delete cdErr[st.id];else{cdErr[st.id]={list:qCardDrafts(q,mine,k)};delete st.pick}render()};B.appendChild(cb);
-  if(st.pick){const P=st.pick,pv=el(`<div class="qpick"><span class="glabel">Marque o que vai para “Conceitos das questões”</span><ul class="qpl"></ul><div class="btns"></div></div>`),ul=pv.querySelector("ul");
+  if(st.pick){const P=st.pick,pv=el(`<div class="qpick"><span class="glabel">Levar para a anotação · marque o que vai junto</span><ul class="qpl"></ul><div class="btns"></div></div>`),ul=pv.querySelector("ul");
     P.L.forEach((x,i)=>{const li=el(`<li><label><input type="checkbox"> <span><b></b> <span class="qpt"></span></span></label></li>`),c=li.querySelector("input");c.id=`qp-${st.id}-${x.id}`;c.checked=x.on;c.onchange=()=>{x.on=c.checked;render()};
       li.querySelector("b").textContent=x.lab+":";boldFill(li.querySelector(".qpt"),x.t);ul.appendChild(li)});
     if(!P.L.length)ul.appendChild(el(`<li class="how">Esta questão não trouxe explicação para levar.</li>`));
-    const n=P.L.filter(x=>x.on).length,go=el(`<button class="btn primary" type="button"></button>`);go.id="qpgo-"+st.id;go.textContent=`Inserir na anotação de ${BYKEY[k]?BYKEY[k].t:""}`;go.disabled=!n;
-    go.onclick=()=>{conNote(k,P.head,P.L.filter(x=>x.on).map(x=>`${x.lab}: ${x.t}`),ctx.tok||"",ctx.src||"Questão");st.noted=1;delete st.pick;render()};
+    /* contexto fixo: o caso e a resposta vão sempre */
+    {const cx=el(`<div class="qpcx"><p><b>Caso:</b> <span class="qpcase"></span></p><p><b>Resposta:</b> <span class="qpans"></span></p></div>`);boldFill(cx.querySelector(".qpcase"),P.head||P.ask||"—");cx.querySelector(".qpans").textContent=P.ans||"—";ul.before(cx)}
+    /* onde entra: seção sugerida pelo conteúdo (ou Conceitos das questões) */
+    {const S=noteSecs(k);if(P.sec===undefined)P.sec=noteSecSuggest(k,P);if(S.length){const lb=el(`<label class="qfsel qpsec"><span>Onde entra na anotação</span><select></select></label>`),s=lb.querySelector("select");s.id="qps-"+st.id;
+      [["","Conceitos das questões (no fim)"],...S.map(x=>[x,x+(x===noteSecSuggest(k,P)?" · sugerida":"")])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=P.sec;s.onchange=()=>{P.sec=s.value};pv.querySelector(".btns").before(lb)}}
+    if(P.ai){const ai=el(`<div class="qpai"><span class="glabel">Escrito pelo Claude · confira</span><textarea rows="5"></textarea><button class="link" type="button">Voltar aos pontos marcados</button></div>`),ta=ai.querySelector("textarea");ta.id="qpa-"+st.id;ta.value=P.ai;ta.oninput=()=>{P.ai=ta.value};ai.querySelector("button").onclick=()=>{delete P.ai;render()};pv.querySelector(".btns").before(ai)}
+    if(P.err)pv.querySelector(".btns").before(el(`<p class="how">${esc(P.err)}</p>`));
+    const n=P.L.filter(x=>x.on).length,go=el(`<button class="btn primary" type="button"></button>`);go.id="qpgo-"+st.id;go.textContent=`Inserir na anotação de ${BYKEY[k]?BYKEY[k].t:""}`;go.disabled=!n&&!P.ai;
+    go.onclick=()=>{conNote(k,P,{tok:ctx.tok||"",src:ctx.src||"Questão",sec:P.sec||"",ai:P.ai||""});st.noted=1;delete st.pick;render()};
+    if(sampleFn&&!P.ai){const ab=el(`<button class="btn" type="button"></button>`);ab.id="qpai-"+st.id;ab.textContent=P.busy?"Escrevendo…":"✦ Escrever com o Claude";ab.disabled=!!P.busy||!n;ab.onclick=()=>conAIRun(st,k);pv.querySelector(".btns").appendChild(ab)}
     const x=el(`<button class="link" type="button">Cancelar</button>`);x.onclick=()=>{delete st.pick;render()};pv.querySelector(".btns").append(go,x);w.appendChild(pv)}
   if(st.noted){const v=el(`<button class="link" type="button">ver a anotação</button>`);v.onclick=()=>{detTab[k]="notas";noteMode[k]="ler";openTopic(k)};B.appendChild(v)}
   if(cdErr[st.id])w.appendChild(cdErrEl(ve()));
@@ -6385,6 +6480,7 @@ const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
 let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
 function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profile}},p=(x&&x.prefs)||{},f=(x&&x.profile)||{};
   if(["classic","compact","focus"].includes(p.layout))o.prefs.layout=p.layout;
+  if(p.pgm&&typeof p.pgm==="object"&&!Array.isArray(p.pgm)){const m={};Object.entries(p.pgm).slice(-400).forEach(([k,v])=>{if(/^p[a-z0-9]{1,12}$/.test(k)&&Number.isInteger(v)&&v>0&&v<1000)m[k]=v});if(Object.keys(m).length)o.prefs.pgm=m}// Lote 20C: pegadinhas "não sabia"
   if(["auto","light","dark"].includes(p.theme))o.prefs.theme=p.theme;
   if(["n","g"].includes(p.font))o.prefs.font=p.font;
   if([2,3,4,5].includes(p.planN))o.prefs.planN=p.planN;
@@ -8831,7 +8927,10 @@ let rrOpen=new Set();
 function rereadEl(k){const t=(notes[k]||"").trim(),it=BYKEY[k],w=el(`<div class="reread"></div>`),open=rrOpen.has(k);
   if(!t){const p=el(`<p class="how">Sem anotação neste tema. <button class="link" type="button">Escrever</button></p>`);p.querySelector("button").onclick=()=>{detTab[k]="notas";noteMode[k]="editar";openTopic(k)};w.appendChild(p);return w}
   const h=el(`<button class="rrhead" type="button" aria-expanded="${open}"><span class="glabel">Reler a anotação</span><span class="rrw"></span><span class="pchev" aria-hidden="true"></span></button>`);
-  h.querySelector(".rrw").textContent=`${wordCount(t)} palavras`;h.onclick=()=>{open?rrOpen.delete(k):rrOpen.add(k);render()};w.appendChild(h);
+  h.querySelector(".rrw").textContent=`${wordCount(t)} palavras`;h.onclick=()=>{open?rrOpen.delete(k):rrOpen.add(k);render()};
+  {const pg=pegOf(k).filter(o=>o.kind==="peg").sort((a,b)=>(pgMiss()[pgId(b.x)]||0)-(pgMiss()[pgId(a.x)]||0)).slice(0,3);if(pg.length){const d=el(`<div class="rrpeg"><span class="glabel">Pegadinhas deste tema</span><ul></ul></div>`);
+    pg.forEach(o=>{const li=el(`<li></li>`);li.innerHTML=inl(o.x)+(o.why?` <span class="pgwhy">— ${inl(o.why)}</span>`:"");d.querySelector("ul").appendChild(li)});w.appendChild(d)}}
+  w.appendChild(h);
   if(open){const v=el(`<div class="mdview"></div>`);v.innerHTML=md(notes[k],{fold:k});w.appendChild(v)}
   const n=(typeof freeN!=="undefined"?freeN:[]).filter(f=>(f.ks||[]).includes(k)).length,a=el(`<button class="link rrall" type="button"></button>`);
   a.textContent=n?`Ver todas as anotações do tema (+${n} ${n===1?"página ligada":"páginas ligadas"})`:"Ver todas as anotações do tema";a.onclick=()=>{detTab[k]="notas";openTopic(k)};w.appendChild(a);return w}
@@ -8848,25 +8947,89 @@ function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||""
   c.appendChild(ol);
   if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
   return c}
-/* pegadinhas e destaques: linhas com "> ", textos ==destacados== e itens da seção "Pegadinhas" */
-function pegOf(k){const t=(notes[k]||"").replace(/\r/g,""),out=[];let inPeg=false;
-  let fen=false;t.split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const h=l.match(/^#{1,3}\s+(.*)/);if(h){inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
-    if(/^\s*>/.test(l)){const x=l.replace(/^\s*>\s?/,"").trim();if(x)out.push({x,kind:"peg"});return}
-    if(inPeg&&/^\s*([-*•]|\d+[.)])\s+/.test(l)){out.push({x:l.replace(/^\s*([-*•]|\d+[.)])\s+/,"").trim(),kind:"peg"});return}
-    (l.match(/==([^=]+)==/g)||[]).forEach(m=>out.push({x:m.slice(2,-2).trim(),kind:"dest"}))});
+/* pegadinhas e destaques (Lote 20C): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
+   Pegadinhas/Alertas/Cuidado; vale para a página do tema e para as páginas livres. Cada item guarda a seção de onde veio. */
+function pegParse(txt){const t=String(txt||"").replace(/\r/g,""),out=[];let inPeg=false,sec="",fen=false;
+  const one=(raw,kind)=>{let x=raw.trim(),why="";const m=x.match(/^\*\*Pegadinha:?\*\*:?\s*(.*)$/i)||x.match(/^Pegadinha\s*:\s*(.*)$/i);if(m){x=m[1].trim();kind="peg"}const w=x.split(/\s+[—–-]\s+(?:\*\*)?Por qu[eê]:?(?:\*\*)?:?\s*/i);if(w.length>1){x=w[0].trim();why=w.slice(1).join(" ").trim()}if(x)out.push({x,why,kind,sec})};
+  t.split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const h=l.match(/^#{1,3}\s+(.*)/);if(h){sec=h[1].replace(/\*\*|==/g,"").trim();inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
+    if(/^\s*>/.test(l)){one(l.replace(/^\s*>\s?/,""),"peg");return}
+    const li=l.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)/);if(li&&/^\*\*Pegadinha:?\*\*/i.test(li[1])){one(li[1],"peg");return}
+    if(inPeg&&li){one(li[1],"peg");return}
+    (l.match(/==([^=]+)==/g)||[]).forEach(m=>out.push({x:m.slice(2,-2).trim(),why:"",kind:"dest",sec}))});
   const seen=new Set();return out.filter(o=>o.x&&!seen.has(o.x)&&seen.add(o.x))}
+const pegOf=k=>pegParse(notes[k]);
+const pgId=x=>{let h=0;for(const ch of norm(x))h=(h*31+ch.charCodeAt(0))|0;return "p"+(h>>>0).toString(36)};
+let pgF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-pgf")||"{}");return {t:["peg","dest"].includes(v.t)?v.t:"all",today:!!v.today,prova:!!v.prova,miss:!!v.miss}}catch(e){return {t:"all",today:false,prova:false,miss:false}}})();
+let pgRun=null,pgOpen=new Set();
+const pgSave=()=>lsSet("resid-pgf",JSON.stringify(pgF));
+const pgMiss=()=>{const m=ui.prefs.pgm;return m&&typeof m==="object"?m:{}};
+function pgMark(id,ok){const m={...pgMiss()};if(ok){if(m[id])m[id]=Math.max(0,m[id]-1);if(!m[id])delete m[id]}else m[id]=(m[id]||0)+1;
+  const ks=Object.keys(m);if(ks.length>400)ks.slice(0,ks.length-400).forEach(x=>delete m[x]);ui.prefs.pgm=m;saveUI()}
+function pgProvaKeys(){const up=upcomingProvas().find(p=>daysTo(p.date)<=21);return up?{lab:up.name,d:daysTo(up.date),keys:new Set(topicKeysOf(up.items))}:null}
+/* todos os itens (temas + páginas livres), cada um com a origem */
+function pgAll(vis){const L=[];vis.forEach(k=>pegOf(k).forEach(o=>L.push({...o,k,id:pgId(o.x)})));
+  (typeof freeN!=="undefined"?freeN:[]).forEach(f=>pegParse(f.b).forEach(o=>L.push({...o,f:f.id,k:(f.ks||[]).find(x=>BYKEY[x])||null,id:pgId(o.x)})));return L}
+/* abrir no ponto exato: abre a anotação e rola até a linha (pisca) */
+function pgGo(o){const find=root=>{if(!root)return null;const key=norm(o.x).slice(0,40);return [...root.querySelectorAll(".mdview blockquote, .mdview .callout, .mdview li, .mdview p, .mdview mark, .mdview td")].reverse().find(e=>norm(e.textContent).includes(key))};
+  const flash=x=>{if(!x)return;x.scrollIntoView({behavior:"smooth",block:"center"});x.classList.add("pflash");setTimeout(()=>x.classList.remove("pflash"),1800)};
+  if(o.f){const f=freeN.find(x=>x.id===o.f);if(!f)return;nType="all";frQ=frQRaw="";freeTag="all";setNSeg("livre");freeOpen.add(f.id);render();setTimeout(()=>flash(find(document.getElementById("fr-"+f.id))),120);return}
+  detTab[o.k]="notas";noteMode[o.k]="ler";openTopic(o.k);setTimeout(()=>flash(find(document.getElementById("t-"+o.k))),160)}
+/* folha de véspera: PDF só com as pegadinhas e destaques do recorte */
+async function pgSheet(L){if(!downloadsFn||!L.length)return;const by={},fr=[];L.forEach(o=>{const line=o.kind==="peg"?`> ${o.x}${o.why?" — Por quê: "+o.why:""}`:`- ==${o.x}==`;if(o.k&&!o.f)(by[o.k]=by[o.k]||[]).push(line);else fr.push(line)});
+  const ks=Object.keys(by),free=fr.length?[{id:"pgfree",t:"Das páginas livres",b:fr.join("\n"),tags:[],ks:[]}]:[];
+  const bytes=notesPDF(ks,free,{title:"Folha de véspera",scope:"Pegadinhas e destaques",kicker:"CADERNO  ·  PEGADINHAS",freeTitle:"Páginas livres",textOf:k=>by[k].join("\n")});
+  await downloadsFn.save({filename:`pegadinhas-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})})}
+/* revisão rápida: uma por vez, Sabia / Não sabia; as "não sabia" sobem para o topo e podem virar cartão */
+function pgRunEl(){const R=pgRun,o=R.list[R.i],c=el(`<div class="pgrun"><div class="pgrh"><span class="glabel"></span><button class="link" type="button">Encerrar</button></div><div class="pgq"></div><p class="pgw" hidden></p><div class="btns"></div></div>`);
+  c.querySelector(".glabel").textContent=`Revisar pegadinhas · ${R.i+1} de ${R.list.length}`;c.querySelector(".pgrh .link").onclick=()=>{pgRun=null;render()};
+  if(!o){c.querySelector(".pgq").textContent=`Fim: ${R.ok} sabia, ${R.no} não sabia.`;const b=el(`<button class="btn" type="button">Fechar</button>`);b.onclick=()=>{pgRun=null;render()};c.querySelector(".btns").appendChild(b);return c}
+  const q=c.querySelector(".pgq");q.innerHTML=inl(o.x);const src=el(`<small class="pgsrc"></small>`);src.textContent=(o.k&&BYKEY[o.k]?BYKEY[o.k].t:"Página livre")+(o.sec?" · "+o.sec:"");q.appendChild(src);
+  if(o.why&&R.show){const w=c.querySelector(".pgw");w.hidden=false;w.innerHTML="<b>Por quê:</b> "+inl(o.why)}
+  const B=c.querySelector(".btns");
+  if(o.why&&!R.show){const s=el(`<button class="btn" type="button" id="pgShow">Mostrar o porquê</button>`);s.onclick=()=>{R.show=true;render()};B.appendChild(s)}
+  const y=el(`<button class="btn primary" type="button" id="pgYes">Sabia</button>`),n=el(`<button class="btn" type="button" id="pgNo">Não sabia</button>`);
+  y.onclick=()=>{pgMark(o.id,true);R.ok++;R.i++;R.show=false;render()};n.onclick=()=>{pgMark(o.id,false);R.no++;R.i++;R.show=false;render()};B.append(n,y);return c}
 function nPegCard(vis){const c=el(`<section class="card npeg" aria-labelledby="nph"><div class="dhead"><h2 id="nph">Pegadinhas e destaques</h2><span class="todaydate"></span></div></section>`);
-  const all=vis.map(k=>({k,list:pegOf(k)})).filter(x=>x.list.length),n=all.reduce((a,x)=>a+x.list.length,0);c.querySelector(".todaydate").textContent=n?`${n} em ${all.length} ${all.length===1?"tema":"temas"}`:"";
-  if(!n){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (linha começando com &gt;), o <b>Destaque</b> (==texto==) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera.</p>`));return c}
-  c.appendChild(el(`<p class="how">Tudo o que você marcou como pegadinha ou destaque nas anotações${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque no tema para abrir.</p>`));
-  const groups={};all.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;(groups[g]=groups[g]||[]).push(x)});
-  let shown=0;const lim=nPegAll?1e9:30;
-  Object.keys(groups).sort().forEach(g=>{if(shown>=lim)return;const sec=el(`<div class="pgsec"><span class="glabel"></span></div>`);sec.querySelector(".glabel").textContent=g;
-    groups[g].forEach(x=>{if(shown>=lim)return;const it=BYKEY[x.k],b=el(`<div class="pgtopic"><button class="link" type="button"></button><ul class="pglist"></ul></div>`);b.querySelector(".link").textContent=it.t;b.querySelector(".link").onclick=()=>{detTab[x.k]="notas";openTopic(x.k)};
-      x.list.forEach(o=>{if(shown>=lim)return;shown++;const li=el(`<li class="${o.kind}"></li>`);li.innerHTML=inl(o.x);b.querySelector("ul").appendChild(li)});sec.appendChild(b)});
-    c.appendChild(sec)});
-  if(n>30){const m=el(`<button class="link" type="button">${nPegAll?"Mostrar menos":`Mostrar todas as ${n}`}</button>`);m.onclick=()=>{nPegAll=!nPegAll;render()};c.appendChild(m)}
+  const all=pgAll(vis),miss=pgMiss();
+  if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
+  const tk=new Set(notesTodayKeys().map(x=>x.k)),PV=pgProvaKeys();
+  const okT=o=>pgF.t==="all"||o.kind===pgF.t,okD=o=>!pgF.today||o.k&&tk.has(o.k),okP=o=>!pgF.prova||PV&&o.k&&PV.keys.has(o.k),okM=o=>!pgF.miss||miss[o.id];
+  const L=all.filter(o=>okT(o)&&okD(o)&&okP(o)&&okM(o)).sort((a,b)=>(miss[b.id]||0)-(miss[a.id]||0));
+  c.querySelector(".todaydate").textContent=`${L.length} de ${all.length}`;
+  /* filtros no padrão: tipo (um) + atalhos (combinam), com contagem */
+  const f=el(`<div class="pgfil"></div>`),base=all.filter(o=>okD(o)&&okP(o)&&okM(o)),pk=all.filter(o=>okT(o));
+  f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`]],"Tipo"));
+  const ch=[fcChip(`Dos temas de hoje · ${pk.filter(o=>o.k&&tk.has(o.k)&&okP(o)&&okM(o)).length}`,pgF.today,()=>{pgF.today=!pgF.today;pgSave()},"pgToday",null,"Temas em revisão hoje e do plano do dia")];
+  if(PV)ch.push(fcChip(`Da prova (${PV.lab}) · ${pk.filter(o=>o.k&&PV.keys.has(o.k)&&okD(o)&&okM(o)).length}`,pgF.prova,()=>{pgF.prova=!pgF.prova;pgSave()},"pgProva",null,`Conteúdos da prova da faculdade em ${PV.d} dias`));
+  ch.push(fcChip(`Não sabia · ${pk.filter(o=>miss[o.id]&&okD(o)&&okP(o)).length}`,pgF.miss,()=>{pgF.miss=!pgF.miss;pgSave()},"pgMiss",null,"As que você marcou como Não sabia na revisão"));
+  f.appendChild(fcChips(ch));c.appendChild(f);
+  c.appendChild(el(`<p class="how hx">Tudo o que você marcou como pegadinha ou destaque nas páginas dos temas e nas páginas livres${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque num item para abrir a anotação no ponto exato. As que você não sabia sobem para o topo.</p>`));
+  {const B=el(`<div class="btns pgacts"></div>`),go=el(`<button class="btn primary" type="button" id="pgGo"></button>`);go.textContent=`Revisar pegadinhas · ${Math.min(L.length,30)}`;go.disabled=!L.length;
+    go.onclick=()=>{pgRun={list:L.slice(0,30),i:0,ok:0,no:0,show:false};render()};B.appendChild(go);
+    if(downloadsFn){const s=el(`<button class="btn" type="button" id="pgPdf">Folha de véspera (PDF)</button>`);s.disabled=!L.length;s.onclick=async()=>{try{await pgSheet(L);$("#nmsg").textContent=`Folha de véspera salva com ${L.length} itens.`}catch(e){$("#nmsg").textContent="Não foi possível gerar o PDF agora."}};B.appendChild(s)}
+    c.appendChild(B)}
+  if(pgRun){c.appendChild(pgRunEl());return c}
+  if(!L.length){c.appendChild(el(`<p class="cempty">Nada com esses filtros.</p>`));return c}
+  /* grupos por especialidade, recolhíveis, com contagem; dentro, por tema */
+  const groups={};L.forEach(o=>{const it=o.k&&BYKEY[o.k],g=o.f&&!it?"Páginas livres":`${it.area.code} · ${it.sp||it.area.name}`;(groups[g]=groups[g]||[]).push(o)});
+  let shown=0;const lim=nPegAll?1e9:40,G=Object.keys(groups).sort((a,b)=>a==="Páginas livres"?1:b==="Páginas livres"?-1:a.localeCompare(b));
+  G.forEach((g,gi)=>{if(shown>=lim)return;const open=pgOpen.size?pgOpen.has(g):gi<3,d=el(`<details class="pgsec"${open?" open":""}><summary><span class="glabel"></span><span class="pgn"></span></summary></details>`);
+    d.querySelector(".glabel").textContent=g;d.querySelector(".pgn").textContent=groups[g].length;d.addEventListener("toggle",()=>{if(!pgOpen.size)G.forEach((x,i)=>{if(i<3)pgOpen.add(x)});d.open?pgOpen.add(g):pgOpen.delete(g)});
+    const byT={};groups[g].forEach(o=>{const t=o.f?"f:"+o.f:o.k;(byT[t]=byT[t]||[]).push(o)});
+    Object.entries(byT).forEach(([t,os])=>{if(shown>=lim)return;const b=el(`<div class="pgtopic"><button class="link" type="button"></button><ul class="pglist"></ul></div>`),o0=os[0];
+      b.querySelector(".link").textContent=o0.f?(freeN.find(x=>x.id===o0.f)||{}).t||"Página livre":BYKEY[o0.k].t;b.querySelector(".link").onclick=()=>pgGo({...o0,x:""});
+      os.forEach(o=>{if(shown>=lim)return;shown++;const li=el(`<li class="${o.kind}"><button type="button" class="pgi"><span class="pgx"></span><small class="pgm"></small></button></li>`);li.querySelector(".pgx").innerHTML=(o.kind==="dest"?`<mark>${inl(o.x)}</mark>`:inl(o.x))+(o.why?` <span class="pgwhy">— ${inl(o.why)}</span>`:"");
+        li.querySelector(".pgm").textContent=[o.sec,miss[o.id]?`não sabia ${miss[o.id]}×`:""].filter(Boolean).join(" · ");li.querySelector("button").title="Abrir na anotação";li.querySelector("button").onclick=()=>pgGo(o);
+        if(miss[o.id]&&o.k&&BYKEY[o.k]){const cb=el(`<button class="mini pgcd" type="button">+ Cartão</button>`);cb.onclick=()=>{trStart(o.k,o.x+(o.why?" — "+o.why:""));detTab[o.k]="notas";openTopic(o.k)};li.appendChild(cb)}
+        b.querySelector("ul").appendChild(li)});d.appendChild(b)});
+    c.appendChild(d)});
+  if(L.length>40){const m=el(`<button class="link" type="button">${nPegAll?"Mostrar menos":`Mostrar todas as ${L.length}`}</button>`);m.onclick=()=>{nPegAll=!nPegAll;render()};c.appendChild(m)}
   return c}
+/* erro "Li errado" ou "Confundi" → sugerir pegadinha na anotação do tema (seção Pegadinhas) */
+function pegAdd(k,x,why){const cur=notes[k]||"",line=`> Pegadinha: ${x.replace(/\s+/g," ").trim()}${why?" — Por quê: "+why.replace(/\s+/g," ").trim():""}`,m=cur.match(/^(#{1,3})\s*(Pegadinhas?[^\n]*|Alertas?[^\n]*|Cuidado[^\n]*)\s*$/mi);let v;
+  if(m){const at=m.index+m[0].length,lv=m[1].length,rest=cur.slice(at),nx=rest.search(new RegExp("\\n#{1,"+lv+"}\\s")),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
+  else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Pegadinhas\n"+line;replaceNote(k,v)}
+function ePegDraft(e){const P=cdErrParse(e),x=(eConcept(e)||P.concept||"").replace(/…$/,"").replace(/[.;]+$/,"").trim(),why=P.mine&&P.right?`não é ${P.mine.replace(/^[A-E]\)\s*/,"")}; é ${P.right.replace(/^[A-E]\)\s*/,"")}`:"";return {x,why}}
 /* ----- cartões de pergunta e resposta (repetição espaçada tipo Leitner) ----- */
 /* ===== Cartões (Lote 5): FSRS com 4 botões, limite de novos por dia, visual Osler, cartões dos erros e exportação .apkg ===== */
 const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64],CD_ANKI=40;
@@ -9211,9 +9374,55 @@ function eItemEl(e){const P=cdErrParse(e),li=el(`<li class="nei"></li>`),con=P.c
   if(ePista(e))sub.push(`<b>Pista:</b> ${mdBold(ePista(e))}`);if(e.dd)sub.push(`<b>Dados decisivos:</b> ${esc(e.dd)}`);if(e.pc)sub.push(`<b>Ponto-chave:</b> ${esc(cmTidy(e.pc))}`);if(P.why)sub.push(`<b>Por que não a sua:</b> ${esc(P.why)}`);
   if(sub.length){const ul=el(`<ul></ul>`);ul.innerHTML=sub.map(x=>`<li>${x}</li>`).join("");li.appendChild(ul)}
   return li}
+/* Lote 20C: PDF do Caderno por recorte — tela, caderno todo, uma área ou Escolher (área › especialidades › temas), com as páginas livres ligadas */
+function nPdfSel(keys,vis){const O=nPdfOpt,sc=O.scope;
+  if(sc==="screen")return {ks:vis,title:"Seleção da tela",scope:"Como está na tela",file:"selecao"};
+  if(sc==="all")return {ks:keys,title:"Minhas anotações",scope:"Todas as áreas",file:"todas",all:true};
+  if(sc!=="pick"){const A=AREAS.find(a=>a.code===sc);return {ks:keys.filter(k=>BYKEY[k].area.code===sc),title:A?A.name:sc,scope:"Grande área",file:sc.toLowerCase()}}
+  const inA=k=>O.area==="all"||BYKEY[k].area.code===O.area,inS=k=>!O.sps.size||O.sps.has(BYKEY[k].sp||""),base=keys.filter(k=>inA(k)&&inS(k)),ks=O.ks.size?base.filter(k=>O.ks.has(k)):base;
+  const A=AREAS.find(a=>a.code===O.area),sps=[...O.sps];let title,scope;
+  if(ks.length===1){const it=BYKEY[ks[0]];title=it.t;scope=[it.area.name,it.sp].filter(Boolean).join(" · ")}
+  else if(O.ks.size){title=sps.length===1?sps[0]:A?A.name:"Temas escolhidos";scope=`${ks.length} temas escolhidos`}
+  else if(sps.length===1){title=sps[0];scope=A?A.name:"Especialidade"}else if(sps.length>1){title=sps.join(", ");scope=A?A.name:"Especialidades"}else{title=A?A.name:"Minhas anotações";scope=A?"Grande área":"Todas as áreas"}
+  return {ks,title,scope,file:norm(title).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"selecao"}}
+function nPdfPanel(keys,vis){const O=nPdfOpt;O.sps=O.sps||new Set();O.ks=O.ks||new Set();O.area=O.area||"all";O.q=O.q||"";if(O.link===undefined)O.link=true;
+  const w=el(`<div class="npdfopt"><span class="glabel">PDF das anotações</span><label class="qfsel"><span>O que entra</span><select id="nPdfScope"></select></label><div class="npdfpick"></div><label class="fcru"><input type="checkbox" id="nPdfFree"> <span></span></label><p class="how npdfsum"></p><div class="btns"><button class="btn primary" type="button" id="nPdfGo">Gerar PDF</button><button class="link" type="button" id="nPdfX">Cancelar</button></div></div>`);
+  const sel=w.querySelector("select"),cnt=c=>keys.filter(k=>BYKEY[k].area.code===c).length,opts=[];
+  if(vis.length<keys.length)opts.push(["screen",`Como está na tela (${vis.length} ${vis.length===1?"tema":"temas"})`]);
+  opts.push(["all",`Caderno todo (${keys.length} ${keys.length===1?"tema":"temas"})`]);AREAS.forEach(a=>{const n=cnt(a.code);if(n)opts.push([a.code,`${a.name} (${n})`])});
+  if(keys.length)opts.push(["pick","Escolher especialidades ou temas…"]);
+  opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o)});if(!opts.some(x=>x[0]===O.scope))O.scope=opts[0][0];sel.value=O.scope;sel.onchange=()=>{O.scope=sel.value;render()};
+  const pk=w.querySelector(".npdfpick");
+  if(O.scope==="pick"){const aSel=el(`<label class="qfsel"><span>Grande área</span><select id="nPdfArea"></select></label>`),as=aSel.querySelector("select");
+    [["all",`Todas as áreas (${keys.length})`],...AREAS.filter(a=>cnt(a.code)).map(a=>[a.code,`${a.name} (${cnt(a.code)})`])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;as.appendChild(o)});
+    as.value=O.area;as.onchange=()=>{O.area=as.value;O.sps.clear();O.ks.clear();render()};pk.appendChild(aSel);
+    const inA=k=>O.area==="all"||BYKEY[k].area.code===O.area,SP={};keys.filter(inA).forEach(k=>{const s=BYKEY[k].sp||"";if(s)SP[s]=(SP[s]||0)+1});
+    if(Object.keys(SP).length){const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel">Especialidades</span><span class="tfhint">uma ou várias; nenhuma = todas</span></div></div>`);
+      g.appendChild(fcChips(Object.entries(SP).sort((a,b)=>a[0].localeCompare(b[0])).map(([s,n],i)=>fcChip(`${s} · ${n}`,O.sps.has(s),()=>{O.sps.has(s)?O.sps.delete(s):O.sps.add(s);O.ks.clear()},"nPdfSp-"+i))));pk.appendChild(g)}
+    const base=keys.filter(k=>inA(k)&&(!O.sps.size||O.sps.has(BYKEY[k].sp||""))),qq=norm(O.q.trim()),L=base.filter(k=>!qq||norm(BYKEY[k].t).includes(qq));
+    const tg=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel">Temas</span><span class="tfhint"></span></div><div class="tfsearch">${FC_ICO}<input class="search" id="nPdfQ" type="search" placeholder="Buscar tema" autocomplete="off"></div><ul class="npdft"></ul></div>`);
+    tg.querySelector(".tfhint").textContent=O.ks.size?`${[...O.ks].filter(k=>base.includes(k)).length} de ${base.length} marcados`:`nenhum marcado = os ${base.length}`;
+    const qi=tg.querySelector("input");qi.value=O.q;qi.oninput=debounced(()=>{O.q=qi.value;render();const x=$("#nPdfQ");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});
+    const ul=tg.querySelector("ul");L.slice(0,40).forEach(k=>{const li=el(`<li><label><input type="checkbox"> <span></span><small></small></label></li>`),cb=li.querySelector("input");cb.id="nPdfT-"+k;cb.checked=O.ks.has(k);cb.onchange=()=>{cb.checked?O.ks.add(k):O.ks.delete(k);render()};
+      li.querySelector("span").textContent=BYKEY[k].t;li.querySelector("small").textContent=" · "+(BYKEY[k].sp||BYKEY[k].area.code);ul.appendChild(li)});
+    if(L.length>40)ul.appendChild(el(`<li class="how">Mostrando 40 de ${L.length}: busque para achar outros.</li>`));if(!L.length)ul.appendChild(el(`<li class="how">Nenhum tema com anotação nessa escolha.</li>`));
+    if(O.ks.size){const cl=el(`<button class="link" type="button" id="nPdfTX">Desmarcar todos</button>`);cl.onclick=()=>{O.ks.clear();render()};tg.appendChild(cl)}
+    pk.appendChild(tg)}
+  const S=nPdfSel(keys,vis),fv=freeVisible(),ksS=new Set(S.ks),linked=freeN.filter(f=>f.ks.some(k=>ksS.has(k))),cb=w.querySelector("#nPdfFree"),fl=w.querySelector(".fcru span");
+  if(S.all){cb.checked=!!O.free;cb.disabled=!fv.length;fl.textContent=fv.length?`Incluir o caderno livre (${fv.length} ${fv.length===1?"página":"páginas"})`:"Caderno livre vazio";cb.onchange=()=>{O.free=cb.checked;render()}}
+  else{cb.checked=!!O.link&&!!linked.length;cb.disabled=!linked.length;fl.textContent=linked.length?`Levar as páginas livres ligadas a esses temas (${linked.length})`:"Nenhuma página livre ligada a esses temas";cb.onchange=()=>{O.link=cb.checked;render()}}
+  const fr=S.all?(cb.checked?fv:[]):(cb.checked?linked:[]);
+  w.querySelector(".npdfsum").textContent=`“${S.title}”: capa, sumário${S.ks.length+fr.length<=3?" com as seções de cada página":""}, ${S.ks.length} ${S.ks.length===1?"tema":"temas"}${fr.length?` e ${fr.length} ${fr.length===1?"página livre":"páginas livres"}`:""}. Texto justificado, tabelas com grade e links entre temas com a página.`;
+  w.querySelector("#nPdfGo").disabled=!S.ks.length&&!fr.length;
+  w.querySelector("#nPdfX").onclick=()=>{nPdfOpt=null;render()};
+  w.querySelector("#nPdfGo").onclick=async()=>{$("#nmsg").textContent="Gerando o PDF…";
+    try{const bytes=notesPDF(S.ks,fr,{scope:S.scope,title:S.title,kicker:S.all?"CADERNO  ·  REVISÃO GERAL":"CADERNO",freeTitle:S.all?"Caderno livre":"Páginas ligadas"});await downloadsFn.save({filename:`caderno-${S.file}-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})});
+      nPdfOpt=null;render();$("#nmsg").textContent=`PDF salvo com ${S.ks.length} ${S.ks.length===1?"tema":"temas"}${fr.length?` e ${fr.length} ${fr.length===1?"página livre":"páginas livres"}`:""}.`}
+    catch(e){$("#nmsg").textContent=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o PDF agora."}};
+  return w}
 /* ----- PDF das anotações (mesmo gerador do panorama) ----- */
 function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
-  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],gold:[184,145,74],goldInk:[138,106,43],l2:[44,88,150],line:[225,218,203],bg:[243,240,233],hl:[247,228,170],white:[247,243,234],soft:[214,206,190]};
+  const C={ink:[20,27,45],mut:[92,99,117],acc:[22,38,74],gold:[184,145,74],goldInk:[138,106,43],l2:[44,88,150],line:[225,218,203],bg:[243,240,233],hl:[247,228,170],white:[247,243,234],soft:[214,206,190],qbg:[236,241,248]};
   const M=50,AI=new Map(AREAS.map((a,i)=>[a.code,i])),SPO=new Map();ALL.forEach(it=>{const s=it.area.code+"|"+(it.sp||"");if(!SPO.has(s))SPO.set(s,SPO.size)});
   const K=[...keys].filter(k=>BYKEY[k]).sort((a,b)=>{const x=BYKEY[a],y=BYKEY[b];return (AI.get(x.area.code)??9)-(AI.get(y.area.code)??9)||(SPO.get(x.area.code+"|"+(x.sp||""))??999)-(SPO.get(y.area.code+"|"+(y.sp||""))??999)||(x.own?1:0)-(y.own?1:0)||x.num-y.num});
   const groups=[];K.forEach(k=>{const it=BYKEY[k];let A=groups[groups.length-1];if(!A||A.code!==it.area.code){A={code:it.area.code,name:it.area.name,sps:[]};groups.push(A)}let S=A.sps[A.sps.length-1];if(!S||S.name!==(it.sp||"")){S={name:it.sp||"",keys:[]};A.sps.push(S)}S.keys.push(k)});
@@ -9229,52 +9438,70 @@ function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
     if(last<t.length)R.push({t:plain(t.slice(last)),...base});return R};
   const content=pmap=>{const P=new MiniPDF("Anotações"),CW=P.W-2*M,starts={};let y=M,first=true;
     const need=h=>{if(y+h>P.H-M-18){P.add();y=M}};
-    const rich=(t,o={})=>{const s=o.size||9.6,lh=s*1.45,ind=(o.indent||0)+(o.box?10:0),W=CW-ind,R=runsOf(t,pmap,{b:!!o.bold,c:o.color}),toks=[];
+    /* Lote 20C: parágrafos e itens justificados (a última linha fica à esquerda); bloco "Da questão" em faixa azul-clara */
+    const rich=(t,o={})=>{const s=o.size||9.6,lh=s*1.45,ind=(o.indent||0)+(o.box?10:0),W=CW-ind,R=runsOf(t,pmap,{b:!!o.bold,c:o.color}),toks=[],just=o.just??!o.bold;
       R.forEach(r=>r.t.split(/(\s+)/).forEach(w=>{if(!w)return;const sp=/^\s+$/.test(w),sz=r.sm?s*.86:s;toks.push({w:sp?" ":w,sp,r,sz,wd:pdfW(sp?" ":w,sz,r.b||r.hl)})}));
       const lines=[];let cur=[],cw=0;toks.forEach(k=>{if(k.sp&&!cur.length)return;if(!k.sp&&cw+k.wd>W&&cur.length){while(cur.length&&cur[cur.length-1].sp)cur.pop();lines.push(cur);cur=[];cw=0}
         if(!k.sp&&k.wd>W){let piece="";[...k.w].forEach(ch=>{const t2=piece+ch;if(pdfW(t2,k.sz,k.r.b||k.r.hl)>W&&piece){lines.push([{...k,w:piece,wd:pdfW(piece,k.sz,k.r.b||k.r.hl)}]);piece=ch}else piece=t2});cur=[{...k,w:piece,wd:pdfW(piece,k.sz,k.r.b||k.r.hl)}];cw=cur[0].wd;return}
         cur.push(k);cw+=k.wd});while(cur.length&&cur[cur.length-1].sp)cur.pop();if(cur.length)lines.push(cur);
-      lines.forEach(L=>{need(lh);if(o.box)P.rect(M+(o.indent||0),y+1,2.4,lh,C.gold);let x=M+ind;
-        L.forEach((k,i)=>{const r=k.r;if(r.hl){const nx=L[i+1],w=k.wd+(nx&&nx.r.hl&&k.sp?0:0);P.rect(x-.6,y+1.2,w+1.2,lh-1.4,C.hl)}
-          if(!k.sp)P.text(x,y+s,k.w,{size:k.sz,bold:r.b||r.hl,color:r.lk?C.l2:r.mut?C.mut:r.c||C.ink});x+=k.wd});y+=lh});y+=o.after??2};
-    const body=txt=>{let fence=null;String(txt).replace(/\r/g,"").split("\n").forEach(l=>{
+      lines.forEach((L,li)=>{need(lh);if(o.qbox)P.rect(M+(o.qind||0),y,CW-(o.qind||0),lh+(li===lines.length-1?2:0),C.qbg);if(o.qbox)P.rect(M+(o.qind||0),y,2.2,lh+(li===lines.length-1?2:0),C.l2);if(o.box)P.rect(M+(o.indent||0),y+1,2.4,lh,C.gold);let x=M+ind;
+        const sps=L.filter((k,i)=>k.sp&&i>0&&i<L.length-1).length,used=L.reduce((a,k)=>a+k.wd,0),gap=W-used,ex=just&&li<lines.length-1&&sps&&gap>0&&gap<W*.35?gap/sps:0;
+        L.forEach((k,i)=>{const r=k.r,kw=k.sp&&i>0&&i<L.length-1?k.wd+ex:k.wd;if(r.hl)P.rect(x-.6,y+1.2,kw+1.2,lh-1.4,C.hl);
+          if(!k.sp)P.text(x,y+s,k.w,{size:k.sz,bold:r.b||r.hl,color:r.lk?C.l2:r.mut?C.mut:r.c||C.ink});x+=kw});y+=lh});y+=o.after??2};
+    /* tabela de verdade: grade, cabeçalho com fundo, largura por coluna e quebra de linha na célula (repete o cabeçalho na página nova) */
+    const cellTxt=x=>String(x).replace(/\*\*(.+?)\*\*/g,"$1").replace(/==(.+?)==/g,"$1").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(a,b,d)=>d||b).replace(/`/g,"").trim();
+    const table=(rows,head)=>{const n=Math.max(...rows.map(r=>r.length)),sz=8.4,lh=sz*1.32,pad=4,TW=CW-6,X0=M+3;rows=rows.map(r=>{const a=r.map(cellTxt);while(a.length<n)a.push("");return a});
+      const nat=[...Array(n)].map((_,j)=>Math.max(30,...rows.map((r,i)=>Math.min(pdfW(r[j],sz,head&&i===0)+2*pad,TW*.6)))),sum=nat.reduce((a,b)=>a+b,0),wd=nat.map(w=>Math.max(34,w/sum*TW));
+      const fix=TW/wd.reduce((a,b)=>a+b,0);for(let j=0;j<n;j++)wd[j]*=fix;
+      const draw=(r,isH)=>{const L=r.map((t,j)=>pdfWrap(t||" ",sz,isH,wd[j]-2*pad)),h=Math.max(...L.map(x=>x.length))*lh+2*pad;return {L,h}};
+      const H=head?draw(rows[0],true):null;y+=3;let firstRow=true;
+      const put=(D,isH)=>{if(isH)P.rect(X0,y,TW,D.h,C.bg);let x=X0;D.L.forEach((ls,j)=>{ls.forEach((l,q)=>P.text(x+pad,y+pad+sz+q*lh-1,l,{size:sz,bold:isH,color:isH?C.acc:C.ink}));x+=wd[j]});
+        P.line(X0,y,X0+TW,y,C.soft,.5);P.line(X0,y+D.h,X0+TW,y+D.h,C.soft,.5);x=X0;P.line(x,y,x,y+D.h,C.soft,.5);wd.forEach(w=>{x+=w;P.line(x,y,x,y+D.h,C.soft,.5)});y+=D.h};
+      rows.forEach((r,i)=>{if(head&&i===0){need(H.h+lh*2+2*pad);put(H,true);firstRow=false;return}const D=draw(r,false);if(y+D.h>P.H-M-18){P.add();y=M;if(H)put(H,true)}put(D,false)});y+=6};
+    const body=(txt,key)=>{let fence=null,tb=[],daq=false,hi=0;const flush=()=>{if(!tb.length)return;const sepAt=tb.findIndex(l=>/^\s*\|?\s*:?-{2,}/.test(l)),rows=tb.filter(l=>!/^\s*\|?\s*:?-{2,}[-:|\s]*$/.test(l)).map(l=>l.trim().replace(/^\||\|$/g,"").split("|").map(x=>x.trim()));tb=[];table(rows,sepAt===1)};
+      String(txt).replace(/\r/g,"").split("\n").concat([""]).forEach(l=>{if(/^\s*\|.*\|\s*$/.test(l)&&fence===null){tb.push(l);return}flush();
       if(/^\s*```/.test(l)){fence=fence===null?l.trim().slice(3).trim().toLowerCase():null;if(fence==="fluxo"){y+=2;rich("Fluxograma:",{size:9,bold:true,color:C.acc,after:1})}return}
       if(fence!==null){if(!l.trim())return;if(fence==="fluxo"){const ind=/^\s{2,}/.test(l)?26:10;rich((/^\s*\?/.test(l)?"? ":ind>10?"":"-> ")+l.trim().replace(/^\?\s*/,""),{indent:ind,size:9.2,bold:/^\s*\?/.test(l)})}else rich(l,{size:8.6,indent:8});return}
       if(!l.trim()){y+=3;return}let m;
-      if(m=l.match(/^(#{1,3})\s+(.*)/)){need(28);y+=5;rich(m[2],{size:m[1].length===1?11.2:10.4,bold:true,color:C.acc,after:1});return}
-      if(/^\s*\|.*\|\s*$/.test(l)){if(/^\s*\|?\s*:?-{2,}/.test(l))return;rich(l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()).join("  ·  "),{size:8.8,indent:6});return}
+      if(m=l.match(/^(#{1,3})\s+(.*)/)){daq=false;need(56);y+=5;if(key)starts["h:"+key+":"+(hi++)]=P.pages.length-1;rich(m[2],{size:m[1].length===1?11.2:10.4,bold:true,color:C.acc,after:1});return}
+      if(/^-\s+\*\*Da questão:\*\*/.test(l)){daq=true;need(40);y+=2;rich(l.replace(/^-\s+\*\*Da questão:\*\*\s*/,"**Da questão:** "),{qbox:true,qind:4,indent:10,size:9.4,after:0});return}
+      if(daq&&/^\s{2,}[-*•]\s+/.test(l)){rich("– "+l.replace(/^\s*[-*•]\s+/,""),{qbox:true,qind:4,indent:22,size:9.2,after:0});return}
+      if(daq){daq=false;y+=4}
       if(/^\s*>/.test(l)){rich(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
       if(m=l.match(/^(\s*)([-*•]|\d+[.)])\s+(.*)/)){const lv=m[1].replace(/\t/g,"  ").length,ind=lv>=4?34:lv>=2?22:10;rich((/\d/.test(m[2])?m[2]+" ":lv>=2?"– ":"• ")+m[3],{indent:ind});return}
-      rich(l)})};
+      rich(l)});if(daq)y+=4};
     groups.forEach(A=>{if(!first){P.add();y=M}first=false;starts["a:"+A.code]=P.pages.length-1;
       P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,A.name,{size:21,bold:true,color:C.acc});y+=30;
       const n=A.sps.reduce((s,S)=>s+S.keys.length,0);P.text(M,y+9,`${n} ${n===1?"tema":"temas"} · ${A.sps.filter(S=>S.name).length} ${A.sps.filter(S=>S.name).length===1?"especialidade":"especialidades"}`,{size:9,color:C.mut});y+=22;P.line(M,y,M+CW,y,C.line,.8);y+=12;
       A.sps.forEach(S=>{if(S.name){need(80);starts["s:"+A.code+"|"+S.name]=P.pages.length-1;y+=6;P.text(M,y+13,S.name,{size:14,bold:true,color:C.goldInk});y+=19;P.line(M,y,M+90,y,C.gold,1);y+=10}
         S.keys.forEach(k=>{const it=BYKEY[k];need(64);starts[k]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(it.t,{size:12.6,bold:true,color:C.l2,indent:8,after:0});
-          P.text(M+8,y+8,`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · Faculdade":" · "+String(it.num).padStart(3,"0")}`,{size:7.8,color:C.mut});y+=16;body(notes[k]);y+=10})})});
-    if(free.length){if(!first){P.add();y=M}starts["a:FREE"]=P.pages.length-1;P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,"Caderno livre",{size:21,bold:true,color:C.acc});y+=30;P.line(M,y,M+CW,y,C.line,.8);y+=12;
+          P.text(M+8,y+8,`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · Faculdade":""}`,{size:7.8,color:C.mut});y+=16;body(opt.textOf?opt.textOf(k):notes[k],k);y+=10})})});
+    if(free.length){if(!first){P.add();y=M}starts["a:FREE"]=P.pages.length-1;P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,opt.freeTitle||"Caderno livre",{size:21,bold:true,color:C.acc});y+=30;P.line(M,y,M+CW,y,C.line,.8);y+=12;
       free.forEach(f=>{need(60);starts["f:"+f.id]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(f.t||"Sem título",{size:12.6,bold:true,color:C.l2,indent:8,after:1});
-        if(f.tags.length||f.ks.length)rich([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,indent:8,after:3});body(f.b);y+=10})}
+        if(f.tags.length||f.ks.length)rich([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,indent:8,after:3,just:false});body(f.b,"f:"+f.id);y+=10})}
     return {P,starts}};
   /* sumário: área › especialidade › tema, com a página */
-  const tocRows=[];groups.forEach(A=>{tocRows.push({lv:1,t:A.name,id:"a:"+A.code});A.sps.forEach(S=>{if(S.name)tocRows.push({lv:2,t:S.name,id:"s:"+A.code+"|"+S.name});S.keys.forEach(k=>tocRows.push({lv:3,t:BYKEY[k].t,id:k}))})});
-  if(free.length){tocRows.push({lv:1,t:"Caderno livre",id:"a:FREE"});free.forEach(f=>tocRows.push({lv:3,t:f.t||"Sem título",id:"f:"+f.id}))}
-  const RH={1:24,2:18,3:15},tocPaged=()=>{const pg=[[]];let y=M+70;tocRows.forEach(r=>{const h=RH[r.lv]+(r.lv===1&&pg[pg.length-1].length?6:0);if(y+h>841.89-M-18){pg.push([]);y=M}pg[pg.length-1].push(r);y+=h});return pg};
+  /* Lote 20C: com poucos temas, o sumário desce um nível e lista as seções (##, ###) de cada página */
+  const deep=K.length+free.length<=3,heads=txt=>{const o=[];let fen=false;String(txt||"").replace(/\r/g,"").split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const m=l.match(/^(#{1,3})\s+(.*)/);if(m)o.push(m[2].replace(/\*\*|==/g,"").trim())});return o};
+  const tocRows=[],hRows=(txt,id)=>{if(deep)heads(txt).forEach((h,i)=>tocRows.push({lv:4,t:h,id:"h:"+id+":"+i}))};
+  groups.forEach(A=>{tocRows.push({lv:1,t:A.name,id:"a:"+A.code});A.sps.forEach(S=>{if(S.name)tocRows.push({lv:2,t:S.name,id:"s:"+A.code+"|"+S.name});S.keys.forEach(k=>{tocRows.push({lv:3,t:BYKEY[k].t,id:k});hRows(opt.textOf?opt.textOf(k):notes[k],k)})})});
+  if(free.length){tocRows.push({lv:1,t:opt.freeTitle||"Caderno livre",id:"a:FREE"});free.forEach(f=>{tocRows.push({lv:3,t:f.t||"Sem título",id:"f:"+f.id});hRows(f.b,"f:"+f.id)})}
+  const RH={1:24,2:18,3:15,4:13},tocPaged=()=>{const pg=[[]];let y=M+70;tocRows.forEach(r=>{const h=RH[r.lv]+(r.lv===1&&pg[pg.length-1].length?6:0);if(y+h>841.89-M-18){pg.push([]);y=M}pg[pg.length-1].push(r);y+=h});return pg};
   const TP=tocPaged(),off=1+TP.length;
   const mapOf=st=>{const m={};Object.keys(st).forEach(k=>m[k]=st[k]+off+1);return m};
   let pm={};tocRows.forEach(r=>pm[r.id]=99);let R=content(pm);for(let i=0;i<3;i++){const nm=mapOf(R.starts);if(JSON.stringify(nm)===JSON.stringify(pm))break;pm=nm;R=content(pm)}
   /* documento final: capa + sumário + conteúdo */
   const D=new MiniPDF(opt.title||"Anotações"),W=D.W,H=D.H,CW=W-2*M;
   D.rect(0,0,W,H,C.acc);D.rect(0,H-10,W,10,C.gold);
-  D.line(M,150,M+70,150,C.gold,1.4);D.text(M,178,"CADERNO  ·  REVISÃO GERAL",{size:10,bold:true,color:C.gold});
-  pdfWrap(opt.title||"Minhas anotações",34,true,CW).forEach((l,i)=>D.text(M,226+i*40,l,{size:34,bold:true,color:C.white}));
-  D.text(M,272,opt.scope||"Todas as áreas",{size:15,color:C.soft});
-  const nT=K.length;D.text(M,300,`${nT} ${nT===1?"tema":"temas"}${free.length?` · ${free.length} ${free.length===1?"página":"páginas"} do caderno livre`:""} · ${groups.length} ${groups.length===1?"área":"áreas"}`,{size:10.5,color:C.soft});
+  D.line(M,150,M+70,150,C.gold,1.4);D.text(M,178,opt.kicker||"CADERNO  ·  REVISÃO GERAL",{size:10,bold:true,color:C.gold});
+  const TL=pdfWrap(opt.title||"Minhas anotações",34,true,CW).slice(0,3),dy=(TL.length-1)*40;TL.forEach((l,i)=>D.text(M,226+i*40,l,{size:34,bold:true,color:C.white}));
+  D.text(M,272+dy,opt.scope||"Todas as áreas",{size:15,color:C.soft});
+  const nT=K.length;D.text(M,300+dy,`${nT} ${nT===1?"tema":"temas"}${free.length?` · ${free.length} ${free.length===1?"página":"páginas"} do caderno livre`:""} · ${groups.length} ${groups.length===1?"área":"áreas"}`,{size:10.5,color:C.soft});
   D.text(M,H-150,"DOCUMENTO PESSOAL",{size:8.5,bold:true,color:C.gold});D.text(M,H-128,(ui.profile.name||"").trim()||"Estudante",{size:15,bold:true,color:C.white});
   D.text(M,H-110,`Gerado em ${new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})}`,{size:9.5,color:C.soft});
   D.text(M,H-60,"NEXUS",{size:12,bold:true,color:C.gold});D.text(M+pdfW("NEXUS ",12,true)+4,H-60,"Trilha Médica",{size:10,color:C.soft});
   TP.forEach((rows,pi)=>{D.add();let y=M;if(pi===0){D.rect(M,y,36,3,C.gold);y+=14;D.text(M,y+22,"Sumário",{size:24,bold:true,color:C.acc});y+=56}
-    rows.forEach(r=>{if(r.lv===1&&y>M+70)y+=6;const sz=r.lv===1?12:r.lv===2?10.4:9.4,ind=r.lv===1?0:r.lv===2?12:24,b=r.lv<3,col=r.lv===1?C.acc:r.lv===2?C.goldInk:C.ink,pg=String(pm[r.id]||""),pw=pdfW(pg,sz,b);
+    rows.forEach(r=>{if(r.lv===1&&y>M+70)y+=6;const sz=r.lv===1?12:r.lv===2?10.4:r.lv===3?9.4:8.6,ind=r.lv===1?0:r.lv===2?12:r.lv===3?24:38,b=r.lv<3,col=r.lv===1?C.acc:r.lv===2?C.goldInk:r.lv===3?C.ink:C.mut,pg=String(pm[r.id]||""),pw=pdfW(pg,sz,b);
       let t=r.t;const maxW=CW-ind-pw-24;while(pdfW(t,sz,b)>maxW&&t.length>4)t=t.slice(0,-2);if(t!==r.t)t=t.replace(/\s*\S?$/,"")+"…";
       D.text(M+ind,y+sz,t,{size:sz,bold:b,color:col});const tw=pdfW(t,sz,b),x0=M+ind+tw+6,x1=M+CW-pw-6;if(x1>x0){let dots="";while(pdfW(dots+" .",sz*.8,false)<x1-x0)dots+=" .";D.text(x0,y+sz,dots,{size:sz*.8,color:C.soft})}
       D.text(M+CW-pw,y+sz,pg,{size:sz,bold:b,color:col});y+=RH[r.lv]})});
@@ -9293,7 +9520,7 @@ async function frDel(id){{const f=freeN.find(x=>x.id===id);if(f)toTrash("free",f
 let frQ="",frQRaw="",frMsg="";
 function freeVisible(){const Q=frQ||nQuery;return freeN.filter(f=>(freeTag==="all"||f.tags.includes(freeTag))&&(!Q||norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(Q))).sort((a,b)=>b.at.localeCompare(a.at))}
 let nType=(()=>{const v=lsGet("resid-ntype","all");return ["all","free","topic"].includes(v)?v:"all"})();
-function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nFind" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno</h2><span class="tfcount" id="nFCount"></span><span class="sp"></span><button class="btn" id="nImg" type="button">📷 Ler imagem</button><button class="btn primary" type="button" id="frNew">+ Nova página</button></div><div id="nImgBox"></div></section>`);
+function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nFind" aria-labelledby="nfh"><div class="dhead"><h2 id="nfh">Caderno</h2><span class="tfcount" id="nFCount"></span><span class="sp"></span><button class="btn" id="nImg" type="button">📄 Ler arquivo</button><button class="btn primary" type="button" id="frNew">+ Nova página</button></div><div id="nImgBox"></div></section>`);
   c.querySelector("#frNew").onclick=()=>{freeEdit={t:"",b:"",tags:"",ks:[],q:""};render();setTimeout(()=>{const t=$("#frT"),ae=document.activeElement;if(t&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)))t.focus()},40)};
   if(freeEdit)c.appendChild(freeEditor());
   if(frMsg){const m=el(`<p class="pnote" role="status" id="frMsg"></p>`);m.textContent=frMsg;c.appendChild(m);frMsg=""}
@@ -9321,7 +9548,7 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
   const t=w.querySelector("#frT"),b=w.querySelector("#frB"),tg=w.querySelector("#frTags"),q=w.querySelector("#frQ");t.value=E.t;b.value=E.b;tg.value=E.tags;q.value=E.q;
   t.oninput=()=>E.t=t.value;
   {const K=v=>{E.b=v},pop=w.querySelector(".wkpop"),tb=w.querySelector(".frtools");
-    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>prefix(b,K,"> ")],
+    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>pegInsert(b,K)],
      ["Link para um tema ou outra página: digite [[ e escolha na lista","[[ ]]",()=>{edit(b,K,(v,s0,e0)=>({v:v.slice(0,s0)+"[["+v.slice(e0),s:s0+2,e:s0+2}));wkPopUpdate(b,K,pop)}],
      ["Marcar uma questão ou um erro dos temas ligados","Selo",()=>{const o=w.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(b,K,()=>{const x=w.querySelector(".nbpick");if(x)x.remove();b.focus()},E.ks.filter(x=>BYKEY[x])))}]].forEach(([title,lab,fn])=>{
       const x=el(`<button type="button" class="tool"></button>`);x.textContent=lab;x.title=title;x.setAttribute("aria-label",title);x.onmousedown=e=>e.preventDefault();x.onclick=fn;tb.appendChild(x)});
@@ -9368,7 +9595,19 @@ function flowHTML(lines){const L=lines.map(l=>l.replace(/\t/g,"  ")).filter(l=>l
   return out+`</div>`}
 /* ----- ler imagem ----- */
 let imgR=null;// {from:k|null,dest:"tema"|"livre",k,kind,blob,url,status,text,msg,ctl,title,q}
-const IMG_KIND={slide:"Slide ou foto de livro",mao:"Anotação à mão",esquema:"Esquema ou algoritmo",clinica:"Imagem clínica (ECG, raio X, lâmina, pele)"};
+const IMG_KIND={slide:"Slide ou foto de livro",aula:"Aula ou apostila",artigo:"Artigo ou diretriz",mao:"Anotação à mão",esquema:"Esquema ou algoritmo",clinica:"Imagem clínica (ECG, raio X, lâmina, pele)"};
+/* Lote 20C: vários arquivos (foto, PDF, Word, PowerPoint, texto). Texto grande vai em partes de até GM_MAX caracteres; o resultado é uma anotação só, com uma seção por parte. */
+function docParts(files){const all=files.filter(f=>f.txt).map(f=>`##### Arquivo: ${f.name}\n${f.txt}`).join("\n\n"),out=[];if(!all)return out;let rest=all;
+  while(rest.length>GM_MAX){let cut=rest.lastIndexOf("\n=== ",GM_MAX);if(cut<GM_MAX*.5)cut=rest.lastIndexOf("\n\n",GM_MAX);if(cut<GM_MAX*.5)cut=rest.lastIndexOf("\n",GM_MAX);if(cut<GM_MAX*.3)cut=GM_MAX;out.push(rest.slice(0,cut).trim());rest=rest.slice(cut)}
+  if(rest.trim())out.push(rest.trim());return out}
+function docPrompt(kind,it,txt,i,n,hasImg){return imgPrompt(kind,it).replace(/^Você é um professor de medicina ajudando um estudante que se prepara para a prova de residência no Brasil\. Analise a imagem anexada \(tipo informado: [^)]*\)/,
+  `Você é um professor de medicina ajudando um estudante que se prepara para a prova de residência no Brasil. Analise o material abaixo${hasImg?" e as imagens anexadas":""} (tipo informado: ${IMG_KIND[kind]}${n>1?`; esta é a parte ${i+1} de ${n}, escreva só sobre ela`:""})`)
+  .replace("## O que a imagem mostra","## O que o material traz").replace("Não invente o que não está na imagem.","Não invente o que não está no material.")+`
+
+Material:
+"""
+${txt}
+"""`}
 function imgPrompt(kind,it){return `Você é um professor de medicina ajudando um estudante que se prepara para a prova de residência no Brasil. Analise a imagem anexada (tipo informado: ${IMG_KIND[kind]})${it?` sobre o tema "${it.t}" (${areaLabel(it)})`:""} e escreva uma anotação de estudo em Markdown, em português do Brasil, com estas seções:
 
 ## O que a imagem mostra
@@ -9396,26 +9635,47 @@ Use **negrito** só para termos-chave. Seja objetivo.`}
 async function imgShrink(file){// reduz para no máximo 1600 px (JPEG), para enviar mais leve
   try{const bmp=await createImageBitmap(file),sc=Math.min(1,1600/Math.max(bmp.width,bmp.height)),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*sc);cv.height=Math.round(bmp.height*sc);
     cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);return await new Promise(r=>cv.toBlob(b=>r(b||file),"image/jpeg",0.85))}catch(e){return file}}
-async function imgRun(){const R=imgR;if(!R||!R.blob||!sampleFn)return;R.status="loading";R.text="";R.msg="";R.ctl=new AbortController();render();
+async function imgRun(){const R=imgR;if(!R||!(R.blob||(R.files||[]).some(f=>f.txt))||!sampleFn)return;
+  if((R.files||[]).some(f=>f.txt))return docRun(R);R.status="loading";R.text="";R.msg="";R.ctl=new AbortController();render();
   try{const lim=sampleFn.limits?await sampleFn.limits():{images:false};const it=R.dest==="tema"&&R.k?BYKEY[R.k]:null;
-    const r=await sampleFn(imgPrompt(R.kind,it),{images:[R.blob],signal:R.ctl.signal,cache:false,modelTier:"default",onText:({text})=>{if(imgR===R){R.text=text;const v=$("#imgOut");if(v)v.innerHTML=md(text)}}});
+    const r=await sampleFn(imgPrompt(R.kind,it),{images:(R.files||[]).filter(f=>f.blob).map(f=>f.blob).slice(0,GM_IMG).concat(R.files&&R.files.some(f=>f.blob)?[]:[R.blob]),signal:R.ctl.signal,cache:false,modelTier:"default",onText:({text})=>{if(imgR===R){R.text=text;const v=$("#imgOut");if(v)v.innerHTML=md(text)}}});
     if(imgR!==R)return;R.text=(r&&r.text)||R.text;R.status=R.text.trim()?"done":"error";if(!R.text.trim())R.msg="O Claude não devolveu texto. Tente de novo.";if(!lim.images&&!window.__site)R.msg=""}
   catch(e){if(imgR!==R)return;const code=e&&e.code;if(code==="cancelled"){R.status="ready";render();return}R.status="error";
     R.msg=code==="not_granted"?"Você não permitiu o uso do Claude por este app.":GEN_OFF.includes(code)?"A leitura de imagem não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível ler a imagem agora. Tente de novo.")}
   render()}
-function imgSave(){const R=imgR;if(!R||!R.text.trim())return;const stamp=`\n\n_Gerado pelo Claude a partir de uma imagem em ${br(today())}/${today().slice(0,4)}. Confira com a fonte._`;
+async function docRun(R){const parts=docParts(R.files),imgs=[...R.files.filter(f=>f.blob).map(f=>f.blob),...R.files.flatMap(f=>(f.imgs||[]).filter(x=>x instanceof Blob))].slice(0,GM_IMG),it=R.dest==="tema"&&R.k?BYKEY[R.k]:null;
+  R.status="loading";R.text="";R.msg="";R.ctl=new AbortController();R.part=[0,parts.length];render();const done=[];
+  try{for(let i=0;i<parts.length;i++){R.part=[i,parts.length];render();
+      const r=await sampleFn(docPrompt(R.kind,it,parts[i],i,parts.length,i===0&&imgs.length>0),{images:i===0&&imgs.length?imgs:undefined,signal:R.ctl.signal,cache:false,modelTier:"default",title:parts.length>1?`Ler arquivo com o Claude · parte ${i+1} de ${parts.length}`:"Ler arquivo com o Claude",hint:"Cole aqui a anotação que o Claude escreveu.",
+        onText:({text})=>{if(imgR===R){R.text=[...done,(parts.length>1?`## Parte ${i+1} de ${parts.length}\n\n`:"")+text].join("\n\n");const v=$("#imgOut");if(v)v.innerHTML=md(R.text)}}});
+      if(imgR!==R)return;const t=String(r&&r.text||"").trim();if(!t)throw Object.assign(new Error("vazio"),{code:"empty"});
+      done.push((parts.length>1?`## Parte ${i+1} de ${parts.length}\n\n`:"")+t.replace(/^#\s/gm,"## ").replace(/^##\s/gm,parts.length>1?"### ":"## "));R.text=done.join("\n\n")}
+    R.status="done";R.part=null}
+  catch(e){if(imgR!==R)return;const code=e&&e.code;R.part=null;if(code==="cancelled"&&!done.length){R.status="ready";render();return}
+    R.text=done.join("\n\n");R.status=done.length?"done":"error";R.msg=done.length?`Parei na parte ${done.length+1}: salve o que veio ou leia de novo.`:code==="not_granted"?"Você não permitiu o uso do Claude por este app.":code==="empty"?"O Claude não devolveu texto. Tente de novo.":(GEN_ERR[code]||"Não foi possível ler o arquivo agora. Tente de novo.")}
+  render()}
+function imgSave(){const R=imgR;if(!R||!R.text.trim())return;const fromDoc=(R.files||[]).some(f=>f.txt),stamp=`\n\n_Gerado pelo Claude a partir de ${fromDoc?`${R.files.length===1?"um arquivo":R.files.length+" arquivos"} (${R.files.map(f=>f.name).join(", ").slice(0,160)})`:"uma imagem"} em ${br(today())}/${today().slice(0,4)}. Confira com a fonte._`;
   if(R.dest==="tema"){if(!R.k)return;const cur=(notes[R.k]||"").replace(/\s+$/,"");replaceNote(R.k,(cur?cur+"\n\n---\n\n":"")+R.text.trim()+stamp);const k=R.k;imgR=null;noteMode[k]="ler";detTab[k]="notas";openTopic(k);return}
-  const x=frClean({id:"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:R.title.trim()||"Imagem lida pelo Claude",b:R.text.trim()+stamp,tags:["imagem"],ks:R.k?[R.k]:[],at:new Date().toISOString()});
+  const x=frClean({id:"fr"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:R.title.trim()||(fromDoc?(R.files[0].name||"Arquivo").replace(/\.[a-z0-9]+$/i,""):"Imagem lida pelo Claude"),b:R.text.trim()+stamp,tags:[fromDoc?"arquivo":"imagem"],ks:R.k?[R.k]:[],at:new Date().toISOString()});
   freeN.push(x);frPut(x);imgR=null;nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const c=document.getElementById("fr-"+x.id);if(c)c.scrollIntoView({behavior:"smooth",block:"center"})},80)}
-function imgStart(k){imgR={from:k||null,dest:k?"tema":"livre",k:k||null,kind:"slide",blob:null,url:"",status:"pick",text:"",msg:"",title:"",q:""};render();setTimeout(()=>{const p=$("#imgPanel");if(p)p.scrollIntoView({behavior:"smooth",block:"center"})},60)}
-function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div class="dhead"><b>Ler imagem com o Claude</b><button class="link" type="button">Fechar</button></div></div>`);
+function imgStart(k){imgR={from:k||null,dest:k?"tema":"livre",k:k||null,kind:"slide",blob:null,url:"",files:[],status:"pick",text:"",msg:"",title:"",q:""};render();setTimeout(()=>{const p=$("#imgPanel");if(p)p.scrollIntoView({behavior:"smooth",block:"center"})},60)}
+function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div class="dhead"><b>Ler arquivo com o Claude</b><button class="link" type="button">Fechar</button></div></div>`);
   w.querySelector(".dhead .link").onclick=()=>{if(R.ctl)R.ctl.abort();if(R.url)URL.revokeObjectURL(R.url);imgR=null;render()};
   if(sampleOff){w.appendChild(el(`<p class="err">O Claude não está disponível nesta visualização.</p>`));return w}
   // 1. imagem
-  const pick=el(`<label class="btn imgpick"><input type="file" accept="image/*" hidden><span></span></label>`);pick.querySelector("span").textContent=R.blob?"Trocar imagem":"Escolher foto ou tirar foto";
-  pick.querySelector("input").onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(R.url)URL.revokeObjectURL(R.url);R.blob=await imgShrink(f);R.url=URL.createObjectURL(R.blob);R.status="ready";R.text="";render()};
-  const row=el(`<div class="imgrow"></div>`);row.appendChild(pick);if(R.url){const im=el(`<img class="imgprev" alt="Imagem escolhida">`);im.src=R.url;row.appendChild(im)}w.appendChild(row);
-  w.appendChild(el(`<p class="how">A imagem não fica salva: só o texto que o Claude escrever, depois que você conferir. Para guardar a foto, deixe um link do Drive ou do Google Fotos na anotação.</p>`));
+  R.files=R.files||[];const pick=el(`<label class="btn imgpick"><input type="file" accept="${DOC_ACCEPT}" multiple hidden><span></span></label>`);pick.querySelector("span").textContent=R.files.length?"+ Mais arquivos":"Escolher arquivos ou tirar foto";
+  pick.querySelector("input").onchange=async e=>{const fs=[...(e.target.files||[])];if(!fs.length)return;R.reading=true;render();
+    for(const f of fs){if(docKind(f)==="img"){const b=await imgShrink(f);R.files.push({name:f.name||"foto.jpg",kind:"img",blob:b});if(!R.blob){R.blob=b;R.url=URL.createObjectURL(b)}}
+      else{const m=await msReadOne(f,!window.__site,!!window.__site);R.files.push({name:f.name,kind:m.kind||docKind(f),txt:m.txt||"",imgs:m.imgs||[],err:m.err||"",note:m.note||"",scan:!!m.scan,pages:m.pages||0})}}
+    R.reading=false;if(R.files.some(f=>f.txt||f.blob))R.status="ready";R.text="";render()};
+  const row=el(`<div class="imgrow"></div>`);row.appendChild(pick);if(R.url&&!R.files.some(f=>f.txt)){const im=el(`<img class="imgprev" alt="Imagem escolhida">`);im.src=R.url;row.appendChild(im)}w.appendChild(row);
+  if(R.reading)w.appendChild(el(`<p class="how">Lendo os arquivos no aparelho…</p>`));
+  if(R.files.length){const ul=el(`<ul class="mslist dflist"></ul>`),KL={img:"foto",pdf:"PDF",docx:"Word",pptx:"PowerPoint",txt:"texto"};
+    R.files.forEach((f,i)=>{const li=el(`<li><span class="msn"></span><small></small><button class="msx" type="button" aria-label="Tirar">×</button></li>`);li.querySelector(".msn").textContent=f.name;
+      li.querySelector("small").textContent=f.err?f.err:[KL[f.kind]||f.kind,f.txt?`${Math.round(f.txt.length/1000)||1} mil caracteres`:"",f.pages?`${f.pages} ${f.kind==="pptx"?"slides":"págs."}`:"",f.note].filter(Boolean).join(" · ");if(f.err)li.classList.add("err");
+      const x=li.querySelector(".msx");x.id="dfx-"+i;x.onclick=()=>{R.files.splice(i,1);if(f.blob===R.blob){if(R.url)URL.revokeObjectURL(R.url);const nb=R.files.find(z=>z.blob);R.blob=nb?nb.blob:null;R.url=nb?URL.createObjectURL(nb.blob):""}if(!R.files.some(z=>z.txt||z.blob))R.status="pick";render()};ul.appendChild(li)});w.appendChild(ul);
+    const P=docParts(R.files);if(P.length>1)w.appendChild(el(`<p class="how">Arquivo grande: vai em ${P.length} partes (até ${Math.round(GM_MAX/1000)} mil caracteres cada); o resultado vira uma anotação só, com uma seção por parte.</p>`))}
+  w.appendChild(el(`<p class="how hx">Lê foto, PDF, Word (.docx), PowerPoint (.pptx) e texto (.txt, .md); .doc e .ppt antigos: salve como .docx, .pptx ou PDF. O arquivo não fica salvo: só o texto que o Claude escrever, depois que você conferir.</p>`));
   // 2. tipo e destino
   const kd=el(`<div class="chips" role="group" aria-label="Tipo de imagem"></div>`);Object.entries(IMG_KIND).forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${R.kind===v}"></button>`);b.textContent=l;b.onclick=()=>{R.kind=v;render()};kd.appendChild(b)});
   w.append(el(`<span class="glabel">Tipo</span>`),kd);
@@ -9429,10 +9689,12 @@ function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div 
     if(R.dest==="livre"){const t=el(`<label class="ffield"><span class="glabel">Título</span><input class="etext" id="imgT" maxlength="120" placeholder="Ex.: Slide da aula de IAM"></label>`);const ti=t.querySelector("input");ti.value=R.title;ti.oninput=()=>R.title=ti.value;w.appendChild(t)}}
   if(R.kind==="clinica")w.appendChild(el(`<p class="pnote">Imagens clínicas: a leitura serve para estudar o raciocínio, não é laudo. O Claude pode errar achados; confira com a fonte e com o professor.</p>`));
   // 3. ler
-  const go=el(`<button class="btn primary" type="button" id="imgGo"></button>`);go.textContent=R.status==="loading"?"Lendo a imagem…":R.text?"Ler de novo":"Ler com o Claude";go.disabled=!R.blob||R.status==="loading"||!sampleFn||(R.dest==="tema"&&!R.k);
+  const go=el(`<button class="btn primary" type="button" id="imgGo"></button>`);go.textContent=R.status==="loading"?(R.part&&R.part[1]>1?`Lendo a parte ${R.part[0]+1} de ${R.part[1]}…`:"Lendo…"):R.text?"Ler de novo":"Ler com o Claude";go.disabled=!(R.blob||R.files.some(f=>f.txt))||R.status==="loading"||R.reading||!sampleFn||(R.dest==="tema"&&!R.k);
   if(R.dest==="tema"&&!R.k&&R.blob)go.title="Escolha o tema primeiro";go.onclick=imgRun;const gb=el(`<div class="btns"></div>`);gb.appendChild(go);
   if(R.status==="loading"){const st=el(`<button class="btn" type="button">Parar</button>`);st.onclick=()=>R.ctl&&R.ctl.abort();gb.appendChild(st)}w.appendChild(gb);
-  if(window.__site&&R.blob&&R.status!=="done")w.appendChild(el(`<p class="how">No site, o Claude é usado por copiar e colar: na janela que abrir, copie o pedido, abra o Claude, <b>anexe esta mesma imagem</b> na conversa e cole o pedido. Depois cole a resposta de volta aqui.</p>`));
+  if(window.__site&&R.status!=="done"){const tx=R.files.some(f=>f.txt),im=R.files.some(f=>f.blob||f.scan);
+    if(im&&!tx)w.appendChild(el(`<p class="how">No site, o Claude é usado por copiar e colar: na janela que abrir, copie o pedido, abra o Claude, <b>anexe esta mesma imagem</b> na conversa e cole o pedido. Depois cole a resposta de volta aqui.</p>`));
+    else if(tx)w.appendChild(el(`<p class="how">No site, o Claude é usado por copiar e colar: o texto dos arquivos já vai junto no pedido${im?"; <b>anexe também as fotos e os PDFs escaneados</b> na conversa":""}. Depois cole a resposta de volta aqui${docParts(R.files).length>1?" (uma vez por parte)":""}.</p>`))}
   if(R.msg){const m=el(`<p class="err"></p>`);m.textContent=R.msg;w.appendChild(m)}
   if(R.text){const pv=el(`<div class="aiprev"><div class="aihead"><span class="glabel">Prévia${R.status==="loading"?" · escrevendo…":""}</span></div><div class="mdview" id="imgOut"></div></div>`);pv.querySelector(".mdview").innerHTML=md(R.text);w.appendChild(pv);
     if(R.status==="done"){const ed=el(`<details class="plain"><summary>Editar o texto antes de salvar</summary><textarea class="ntext" id="imgTxt"></textarea></details>`);const ta=ed.querySelector("textarea");ta.value=R.text;ta.oninput=()=>{R.text=ta.value;const v=$("#imgOut");if(v)v.innerHTML=md(R.text)};w.appendChild(ed);
@@ -9560,12 +9822,13 @@ const HELP=[
 - **Uma busca só:** procura nas páginas livres e nas dos temas (título, texto e etiquetas). Em **Filtros**, escolha o **Tipo** (Todas, Livres ou Dos temas) e as **Etiquetas** (#aula, #plantão…), que filtram os dois tipos.
 - **Página do tema e páginas ligadas:** cada tema tem **uma página principal** e quantas **páginas ligadas** você quiser. Uma página nova ligada a **um** tema que ainda não tem anotação **vira a página do tema** (com título e etiquetas); se o tema já tem, ela fica como página ligada e aparece no tema em **Outras páginas ligadas**. No tema, **+ Nova página ligada** abre o caderno já ligado a ele.
 - **Reler:** a anotação de cada tema aparece dentro da revisão dele (Residência › Revisões) e no plano quando você continua um tema. Em **Revisar**, a linha "N temas estudados sem anotação · ver" abre esses temas no Caderno.
-- **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
+- **Pegadinhas e destaques:** junta, por especialidade, as **pegadinhas** (linhas começando com >, a ferramenta Pegadinha escreve "> Pegadinha: … — Por quê: …"), os textos ==destacados== e os itens de seções "Pegadinhas", "Alertas" ou "Cuidado", das páginas dos temas **e das páginas livres**. Filtros: **Tipo** (Pegadinhas · Destaques), **Dos temas de hoje**, **Da prova** da faculdade e **Não sabia**. Cada item mostra a seção de onde veio e, ao tocar, abre a anotação **no ponto exato**. **Revisar pegadinhas** passa uma por uma (Sabia / Não sabia): as que você não sabia sobem para o topo e ganham **+ Cartão**. **Folha de véspera** baixa um PDF só com elas. Também: no erro "Li errado" ou "Confundi" (⋯ Ações), **Virar pegadinha** escreve na seção Pegadinhas do tema; as pegadinhas aparecem primeiro em **Reler a anotação** da revisão, e o gerador de questões pode fazer uma questão que teste uma delas.
+- **Levar para a anotação** (em toda questão respondida: gerador, simulado, Refazer e provas na íntegra): entra um bloco **Da questão** com o **caso** (a pista do enunciado) e a **resposta inteira**, mais o que você marcar: **Por quê**, **Ponto-chave**, **Take home**, **Pegadinha** e **Por que não <a alternativa inteira>** (sem letras A, B, C, que fora da questão não dizem nada; o que repete a mesma ideia já vem de fora). O app sugere a **seção** da anotação (ex.: Diagnóstico) ou, sem uma parecida, "Conceitos das questões" no fim; dá para trocar. **✦ Escrever com o Claude** transforma os pontos marcados em 2 a 4 frases didáticas para você conferir. Nas anotações antigas, os rótulos com letra ("Por que C está certa") viram "Por quê" e, com o selo da prova, as alternativas cortadas voltam inteiras.
 - **Cartões** (Caderno › Revisar): cada cartão volta no dia em que você estaria perto de esquecer (**FSRS**, o mesmo do Anki novo). Veja a pergunta, toque em **Mostrar resposta** e escolha **Errei** (volta nesta sessão), **Difícil**, **Bom** ou **Fácil**, com o intervalo de cada um em cima do botão. Entram por dia todas as revisões vencidas e até **14 cartões novos** (ajuste em **Ajustes dos cartões**: 7, 14, 20 ou 30). O painel mostra as revisões de hoje, os novos, os prontos para o Anki e as **revisões dos próximos 7 dias**. Teclado: espaço mostra a resposta; 1 a 4 escolhem. Dentro do tema (parte Anotações), **Criar cartões com o Claude** transforma o resumo em perguntas e respostas, ou crie à mão em **+ Cartão manual**.
 - **Temas estudados sem anotação:** em **Filtros › Mostrar só**, lista os temas que você já estudou e ainda não têm página, com atalho para escrever o resumo.
 - **Filtros** abre **Mostrar só** (**Editadas nesta semana**, **Com pegadinhas**, **Com tabela**, **Com cartões**, cada um com a contagem) e **Onde** (grande área e especialidade). Os ligados viram etiquetas com **×**; **Ordem**: por especialidade, mais recentes, maiores ou menores.
 - **Erros junto:** abaixo de cada anotação, uma linha diz quantos erros o tema tem no caderno e quantos ainda pedem atenção, com **ver no caderno**. Embaixo aparecem só os que pedem atenção agora (vencem hoje ou você errou de novo), no máximo 3, cada um inteiro: a certa em negrito com o conceito e, embaixo, **Errei**, **Pista**, **Dados decisivos**, **Ponto-chave** e **Por que não a sua** (nomes que batem com um tema viram link); o selo abre o erro no caderno. Erros arquivados não aparecem.
-- **Baixar PDF:** escolha **o caderno todo**, **uma área** ou **como está na tela** (com os filtros) e, no caderno todo, se entra o caderno livre. O PDF tem **capa** com o seu nome e a data, **sumário** com as páginas, área › especialidade › tema, destaques em cor, pegadinhas em caixa e links entre temas com a página (ex.: "Anemias (p. 12)").
+- **Baixar PDF:** escolha **como está na tela**, **o caderno todo** (com ou sem o caderno livre), **uma grande área** ou **Escolher especialidades ou temas** (área › uma ou várias especialidades › marque os temas, com busca; leva junto as **páginas livres ligadas** a esses temas). Capa e título mudam com o recorte. O PDF tem **sumário sempre** (com poucos temas, lista também as seções de cada página), texto **justificado**, **tabelas com grade**, destaques em cor, pegadinhas em caixa, o bloco **Da questão** em faixa azul e links entre temas com a página (ex.: "Anemias (p. 12)").
 - **Sumário lateral** (computador com tela larga): "Nesta página" lista área › especialidade › tema das anotações mostradas; toque para ir até o tema. O tema que você está lendo fica marcado.
 - **Páginas livres:** o que não é de um tema só (aula, plantão, dica de preceptor). Têm título, texto com a mesma formatação, **etiquetas** e podem ser **ligadas a temas**: aparecem também dentro deles, na parte Anotações.
 - Formatação: título, negrito, destaque, listas, pegadinha, tabela comparativa, **link** e **fluxograma**.
@@ -9574,7 +9837,7 @@ const HELP=[
 - **Tópicos que recolhem:** na leitura, cada título (##) abre e fecha pela seta, e o app lembra o que ficou fechado; **Abrir tudo/Fechar tudo** no topo. Item de lista com subitens tem seta para recolher. No editor, **Tab** e **Shift+Tab** aumentam e diminuem o recuo do item (ou das linhas selecionadas).
 - **Selo de questão ou erro na linha:** no editor, **Selo** lista os erros do tema e as questões das provas na íntegra ligadas a ele (no caderno livre, os dos temas ligados à página); escolha e o selo entra onde está o cursor (ex.: "ENARE · 2024 · Q12" ou "Erro · 15/10"). Na leitura, tocar no selo abre a questão ou o erro.
 - **Fluxograma:** o botão **Fluxo** insere um bloco que vira caixas com setas: uma etapa por linha; linha começando com **?** é decisão; os caminhos ficam recuados, com rótulo e dois-pontos (ex.: "  Sim: angioplastia → dupla antiagregação").
-- **📷 Ler imagem** (no tema, parte Anotações, ou no topo da aba Caderno, parte Livre): escolha ou tire uma foto (slide, livro, caderno, esquema, ECG…), diga o tipo e onde salvar (**na anotação de um tema** ou **no caderno livre**). O Claude escreve o que a imagem mostra, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. A foto não fica guardada, só o texto. Em imagens clínicas é material de estudo, não laudo. No site, o pedido é por copiar e colar: anexe a mesma imagem na conversa do Claude.
+- **📄 Ler arquivo** (no tema, parte Anotações, ou no topo da aba Caderno, parte Livre): escolha **um ou vários arquivos**: foto, **PDF**, **Word (.docx)**, **PowerPoint (.pptx)** ou texto (.txt, .md); .doc e .ppt antigos: salve como .docx, .pptx ou PDF. Os arquivos são lidos no aparelho (títulos, listas e tabelas); diga o tipo (Slide, Aula ou apostila, Artigo ou diretriz, Anotação à mão, Esquema, Imagem clínica) e onde salvar (**na anotação de um tema** ou **no caderno livre**). Arquivo grande vai em partes e o resultado vira uma anotação só, com uma seção por parte. O Claude escreve o conteúdo organizado, uma explicação, um **fluxograma** e pegadinhas; você confere, pode editar e salva. O arquivo não fica guardado, só o texto. O mesmo leitor vale no material do gerador e do simulado e em **Ler os objetivos** da SP.
 - Modelos: **Modelo de resumo** e **Seções dos subtópicos**.
 - **Tela cheia** para escrever; **Ler** mostra formatado.
 - **Gerar resumo com o Claude** e **Organizar minhas anotações**: você insere ou descarta a sugestão; **Desfazer última substituição** volta atrás.
@@ -9597,7 +9860,7 @@ const HELP=[
 - Os erros de um tema entram no pedido das próximas questões dele.`],
 ["Faculdade e provas",`A Faculdade funciona como pastas: **Semestre › (Unidade curricular) › Disciplina › conteúdos**. Toque numa pasta para abrir e fechar.
 - **Calendário do semestre** (dentro de cada semestre): as próximas semanas com provas, fechamentos de SP e entregas; semanas pesadas (prova + outra coisa, ou 3 itens) em dourado. Toque numa data para mudar ou marcar como **adiada** (sai do plano até ganhar data nova). **+ Entrega** cria trabalho com data (lembrado nos 3 dias antes); **+ Aula fixa** guarda a grade da semana (dia, horário, nome): nesses dias o tempo de estudo diminui, e **cancelar um dia** devolve o tempo se a aula não acontecer.
-- **Objetivos por foto:** na SP, **📷 Ler os objetivos de uma foto**: o Claude lista os objetivos (ou questões de aprendizagem), você desmarca o que não quiser, e cada um vira objetivo da SP; onde houver tema parecido da residência, dá para ligar.
+- **Objetivos por foto ou arquivo:** na SP, **📄 Ler os objetivos de uma foto ou arquivo** (foto, PDF, Word, PowerPoint ou texto): o Claude lista os objetivos (ou questões de aprendizagem), você desmarca o que não quiser, e cada um vira objetivo da SP; onde houver tema parecido da residência, dá para ligar.
 - **Vale para a residência:** conteúdo ligado a tema da residência mostra o peso dele lá (peso 3 = cai muito).
 - **Semestre:** **+ Semestre** cria a pasta. Dentro dela: **+ Disciplina**, **Colar ementa** (o Claude monta disciplinas, SPs, objetivos e ligações com a residência; você revisa antes de salvar) e **Provas do semestre**. Em **⚙ Ajustes**: renomear, **Unidades curriculares**, nomes dos níveis (o nome do nível, como SP ou Problema, sem número) e arquivar.
 - **Unidade curricular** (opcional): agrupa disciplinas, como NCS › Tutoria, TBL. Crie em **⚙ Ajustes › Unidades curriculares** só com o nome (NCS): o app mostra **NCS 6** pelo número do semestre. Em cada disciplina, escolha a UC em **Detalhes e ajustes**.
@@ -10284,7 +10547,7 @@ window.addEventListener("online",()=>liveRefresh(true));
   try{
     const [db,user]=await Promise.all([window.claude?.use?.("db"),window.claude?.use?.("user")]);
     const uid=user?await user.id():null;
-    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();setTimeout(maybeOnb,0);return}
+    if(!db||!uid){synced=true;facSyncAll();setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();conFix();setTimeout(maybeOnb,0);return}
     const P="data/users/"+uid+"/",prog=db.doc(P+"progress"),R={prog,fac:db.doc(P+"faculdade"),topics:prog.collection("topics"),settings:db.doc(P+"settings"),ui:db.doc(P+"prefs"),
       err:packStore(prog,"errors"),free:prog.collection("free"),trash:prog.collection("trash"),cards:packStore(prog,"cards"),sims:prog.collection("sims"),redo:packStore(prog,"redo"),
       exams:prog.collection("exams"),exprog:prog.collection("exprog"),focus:packStore(prog,"focus"),notes:prog.collection("notes")};
@@ -10354,8 +10617,8 @@ window.addEventListener("online",()=>liveRefresh(true));
       for(const k in notes)if(!remoteIds.has(k))await notesStore.doc(k).set({t:notes[k],updatedAt:noteAt[k]||new Date().toISOString()});
       if(changed){saveNotesLocal();render()}
     }catch(e){}
-    setSave("Progresso salvo na sua conta");errNoteMig();cdFixCut();maybeOnb();liveStart();
-  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();setTimeout(maybeOnb,0)}
+    setSave("Progresso salvo na sua conta");errNoteMig();cdFixCut();conFix();maybeOnb();liveStart();
+  }catch(e){store=null;synced=true;setSave("Progresso salvo neste navegador");errNoteMig();cdFixCut();conFix();setTimeout(maybeOnb,0)}
 })();
 </script>
 
