@@ -7,7 +7,10 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
  const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));await p.goto('http://localhost:8765/tests/preview.html');
  await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
- const click=async s=>{await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(200)};
+ const click=async s=>{/* Lote 20: no celular o painel aberto é uma folha por cima da tela; o botão Filtros fecha pelo × da folha e o resto da tela é tocado por trás */
+   const how=await p.evaluate(s=>{const sh=[...document.querySelectorAll('.tfsheet')].find(x=>x.checkVisibility()),x=document.querySelector(s);if(!sh||!x||sh.contains(x))return "";if(/^#(tfTog|[qen]FBtn)$/.test(s)){sh.querySelector('.tfsx').click();return "x"}x.click();return "js"},s);
+   if(how){await p.waitForTimeout(200);return}
+   await p.evaluate(s=>{const x=document.querySelector(s);if(x)x.scrollIntoView({block:"center"})},s);await (mob?p.tap(s):p.click(s));await p.waitForTimeout(200)};
  const vis=s=>p.evaluate(s=>[...document.querySelectorAll(s)].filter(x=>x.checkVisibility()).length,s);
  await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state["CM-1"]={l:1,last:D(-3),step:0,sd:[0],sv:2,qt:10,qc:4};commit();localStorage.setItem("resid-tseg","lista");tSeg="lista";backStack=[];setView("temas")});await p.waitForTimeout(250);
  /* 1. tudo recolhido */
@@ -29,7 +32,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  ok(await p.evaluate(()=>[...document.querySelectorAll('details.area[open]')].length===1&&[...document.querySelectorAll('#areas li.t')].filter(x=>x.checkVisibility()).every(x=>/^t-CM-/.test(x.id))),name+": ao limpar a busca, volta só o que você tinha aberto");
  /* 6. Filtros: painel fechado; abre, lembra; chips com contagem */
  ok(await p.evaluate(()=>!document.querySelector('#tfPanel')&&document.querySelector('#tfTog').getAttribute("aria-expanded")==="false"),name+": painel de filtros começa fechado");
- await click('#tfTog');ok(await p.evaluate(()=>!!document.querySelector('#tfPanel #tfl1')&&!!document.querySelector('#tfPanel #tfdue')&&!!document.querySelector('#tfPanel #tfArea')&&localStorage.getItem("resid-tfpanel")==="1"),name+": Filtros abre o painel (Situação, Mostrar só, Onde) e o app lembra");
+ await click('#tfTog');ok(await p.evaluate(()=>!!document.querySelector('#tfPanel #tfl1')&&!!document.querySelector('#tfPanel #tfdue')&&!!document.querySelector('#tfPanel #tfArea')&&(localStorage.getItem("resid-tfpanel")==="1")===(document.documentElement.dataset.layout!=="phone"||!!window.__noSheet)),name+": Filtros abre o painel (Situação, Mostrar só, Onde) e o app lembra");
  await click('#tfl1');await click('#tfweak');
  const r6=await p.evaluate(()=>({n:(document.querySelector('#tfTog .tfn')||{}).textContent,pills:[...document.querySelectorAll('.tfact .tfpill span')].map(x=>x.textContent),t:[...document.querySelectorAll('#areas li.t')].filter(x=>x.checkVisibility()).map(x=>x.id)}));
  ok(r6.n==="2"&&r6.pills.join()==="Estudados,Pontos fracos"&&r6.t.join()==="t-CM-1",name+": filtros ativos com número e pílulas; lista abre no resultado "+JSON.stringify(r6));

@@ -40,11 +40,11 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["tablet",820,1180,true],["no
   ok(L.n===1&&/Outras páginas ligadas · 1/.test(L.lab)&&/Editar no Caderno/.test(L.edit),name+": segunda página aparece em Outras páginas ligadas "+JSON.stringify(L));
   /* 5. caderno: busca única, tipo e filtro de cobertura */
   await p.evaluate(()=>{freeEdit=null;setView("notas")});await p.waitForTimeout(250);if(!(await p.$('#nNoNoteB'))){await p.click('#nFBtn');await p.waitForTimeout(200)}
-  const C=await p.evaluate(()=>({ty:[...document.querySelectorAll('.ntype button')].map(b=>b.id).join(),q:!!document.querySelector('#frq'),nonote:!!document.querySelector('#nNoNoteB'),dup:document.querySelectorAll('#nfh').length<=1}));
+  const C=await p.evaluate(()=>({ty:[...document.querySelectorAll('[id^="nTy-"]')].map(b=>b.id).join(),q:!!document.querySelector('#frq'),nonote:!!document.querySelector('#nNoNoteB'),dup:document.querySelectorAll('#nfh').length<=1}));
   ok(C.ty==="nTy-all,nTy-free,nTy-topic"&&C.q&&C.nonote&&C.dup,name+": busca única com Todas · Livre · Temas e filtro sem anotação "+JSON.stringify(C));
   await p.fill('#frq','caso clínico');await p.waitForTimeout(300);
   const S=await p.evaluate(()=>document.querySelector('#nFind').textContent.includes("Caso clínico"));ok(S,name+": a busca acha a página livre");
-  await p.fill('#frq','');await p.waitForTimeout(300);await p.evaluate(()=>{nType="all";render()});await p.click('.ntagbar [data-tag="cardio"]');await p.waitForTimeout(200);
+  await p.fill('#frq','');await p.waitForTimeout(300);await p.evaluate(()=>{nType="all";nFOpen=true;render()});await p.evaluate(()=>document.querySelector('#nFPanel [data-tag="cardio"]').click());await p.waitForTimeout(200);
   const TG=await p.evaluate(()=>({topics:[...document.querySelectorAll('#nlist .ncard')].map(c=>c.id).join(),free:document.querySelectorAll('#nFind li.ncard').length,loc:document.querySelector('#nc-CM-1 .nloc')?.textContent||""}));
   ok(TG.topics==="nc-CM-1"&&TG.free===0&&/#cardio/.test(TG.loc),name+": etiqueta filtra páginas dos temas e livres "+JSON.stringify(TG));
   await p.evaluate(()=>{freeTag="all";detTab["CM-1"]="notas";setView("temas");openTopic("CM-1")});await p.waitForTimeout(250);

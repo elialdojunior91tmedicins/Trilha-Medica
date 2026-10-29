@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=e0c34a82">
+<link rel="stylesheet" href="site.css?v=2b287098">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=e0c34a82"></script>
-<script src="bridge.js?v=e0c34a82"></script>
+<script src="config.js?v=2b287098"></script>
+<script src="bridge.js?v=2b287098"></script>
 </head>
 <body>
 <script>
@@ -477,7 +477,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .rdl{display:flex;flex-direction:column;min-width:0}.rdl b{font-size:.88rem;font-weight:600;overflow-wrap:anywhere}.rdl span{font-size:.76rem;color:var(--muted)}
 .rdlist .foxb.warn{color:var(--danger);font-size:.8rem;font-weight:600}
 .rdplay{display:flex;flex-direction:column;gap:10px}
-.rdfil{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.rdfil select{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.85rem}
+.rdfil{display:flex;flex-direction:column;gap:8px;align-items:flex-start}.rdfil select{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.85rem}
 .rdteim{font:700 .66rem var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--bad);border:1px solid var(--bad);border-radius:99px;padding:0 6px;vertical-align:1px}
 .rdbytema{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.88rem}.rdbytema li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
 .qflink{color:var(--accent);font-weight:600}
@@ -658,6 +658,16 @@ li.sphead{border-bottom:1px solid var(--line);background:var(--bg)}
 .tfind .tfres{border-top:1px dashed var(--line);padding-top:10px}
 .tfdone{display:none;align-self:stretch}
 html[data-layout="phone"] .tfdone{display:block}
+.gstypes{margin:0 0 10px;flex-wrap:wrap}
+.chip.z{opacity:.5}.chip.z:hover{opacity:.8}
+.fcper{flex-wrap:wrap}
+.tfback{position:fixed;inset:0;z-index:89;background:rgb(10 17 33 / .45)}
+.tfpanel.tfsheet{position:fixed;left:0;right:0;bottom:0;z-index:90;max-height:82vh;overflow:auto;overscroll-behavior:contain;border-radius:18px 18px 0 0;padding:0 16px calc(14px + env(safe-area-inset-bottom,0px));background:var(--surface);box-shadow:0 -10px 30px rgb(0 0 0 / .18);border:0}
+.tfsh{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:12px;padding:16px 0 10px;background:var(--surface);border-bottom:1px solid var(--line)}
+.tfsh b{font:600 1.15rem var(--display)}.tfsh .sp{flex:1}
+.tfsgrab{position:absolute;left:50%;top:6px;width:38px;height:4px;border-radius:9px;background:var(--line);transform:translateX(-50%)}
+.tfsx{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.2rem;line-height:1;cursor:pointer}
+.tfsheet .tfdone{position:sticky;bottom:0;margin-top:4px;box-shadow:0 -8px 14px var(--surface)}
 .tfhow{font-size:.84rem;color:var(--muted)}
 .tfhow summary{cursor:pointer;font-weight:600;width:fit-content;display:inline-flex;align-items:center;gap:7px;padding:0}
 .tfhow summary::before{content:"i";display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1.5px solid currentColor;font:700 .7rem var(--body)}
@@ -2135,7 +2145,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
   <div id="viewQuest" class="wrap" style="width:100%" data-qseg="resumo" hidden>
     <div class="tseg qseg" role="group" aria-label="Partes da aba Questões" id="qSegBar"><button type="button" data-q="resumo">Resumo</button><button type="button" data-q="praticar">Praticar</button><button type="button" data-q="temas">Temas</button></div>
     <div id="qRegBox"></div>
-    <p class="pnote qfnote" id="qFNote" hidden></p>
+    <section class="card tfind qfbar" id="qFBar" role="search" aria-label="Filtros das questões"></section>
     <section class="card dash qs-res" aria-labelledby="qh">
       <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
       <div class="kpis" id="qkpis"></div>
@@ -3877,7 +3887,7 @@ function renderDash(){
 
 /* aba Questões */
 const QCH_FEW=10;let qChSort=(()=>{try{return localStorage.getItem("resid-qchsort")==="gain"?"gain":"acc"}catch(e){return "acc"}})();
-let qWorse=false,qFOpen=(()=>{try{return localStorage.getItem("resid-qfpanel")==="1"}catch(e){return false}})(), qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
+let qWorse=false,qFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-qfpanel")==="1"}catch(e){return false}})(), qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
 function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
 const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
@@ -3898,28 +3908,30 @@ const accBand=(c,t)=>!t?null:c/t<WEAK_PCT?"bad":c/t<0.8?"mid":"good";
 function qClearAll(){qArea="all";qSpec="all";qDisc="all";qQuery="";qPer="all";qAcc="all";qWeak=false;qInc=false;qErrF=false;qDueF=false;qWorse=false}
 let qListKeep=null,qListAll=false;const QLIST_TOP=10;
 const qFiltOn=()=>!!(qArea!=="all"||qDisc!=="all"||qQuery||qPer!=="all"||qAcc!=="all"||qInc||qErrF||qDueF||qWorse||qOpenK&&false);
-function renderQFilters(){const box=$("#qFilters");qListKeep=qListKeep||$("#qlistT");if(qListKeep&&qListKeep.parentNode)qListKeep.remove();box.innerHTML="";
-  const c=el(`<div class="card tfind" id="qFind" role="search" aria-labelledby="qfh"><div class="tfhead"><h2 id="qfh">Seus temas nas questões</h2><span class="tfcount"></span></div><div class="tfsearch">${FC_ICO}<input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto" aria-label="Buscar tema ou assunto" autocomplete="off"></div><div class="tfilters"></div></div>`);
-  box.appendChild(c);const qi=c.querySelector("#qq");qi.value=qQuery;qi.oninput=debounced(()=>{qQuery=qi.value;render()});
+/* Lote 20: a barra de filtros fica no topo da aba (vale para resumo, gráficos, simulado, Refazer e lista); o cartão "Seus temas nas questões" fica só com a lista e a ordem */
+function renderQFilters(){const bar=$("#qFBar"),box=$("#qFilters");qListKeep=qListKeep||$("#qlistT");if(qListKeep&&qListKeep.parentNode)qListKeep.remove();box.innerHTML="";bar.innerHTML="";
+  bar.appendChild(el(`<div class="tfsearch">${FC_ICO}<input class="search" id="qq" type="search" placeholder="Buscar tema ou assunto nas questões" aria-label="Buscar tema ou assunto" autocomplete="off"></div>`));
+  bar.appendChild(el(`<div class="tfilters"></div>`));const qi=bar.querySelector("#qq");qi.value=qQuery;qi.oninput=debounced(()=>{qQuery=qi.value;render()});
   const pool=[...ALL,...FAC_ITEMS],withQ=it=>get(it.key).qt,U=qUniverse(),nU=U.filter(withQ).length,nAll=pool.filter(withQ).length;
-  c.querySelector(".tfcount").textContent=nU===nAll?`${nAll} ${nAll===1?"tema":"temas"} com questões`:`${nU} de ${nAll} temas`;
   const ds=fac.discs.filter(d=>{const x=semOf(d.semId);return x&&!x.archived});
   const A=[];if(qArea!=="all")A.push([fcAreaName(qArea),()=>{qArea="all";qSpec="all"}]);if(qArea!=="all"&&qSpec!=="all")A.push([qSpec,()=>{qSpec="all"}]);
   if(qDisc!=="all"){const d=discOf(qDisc);A.push([d?d.name:"Disciplina",()=>{qDisc="all"}])}if(qPer!=="all")A.push([`Últimos ${qPer} dias`,()=>{qPer="all"}]);
   if(qAcc!=="all")A.push([{bad:"Pontos fracos (<60%)",mid:"Acerto regular",good:"Acerto bom"}[qAcc],()=>{qAcc="all";qWeak=false}]);
   if(qInc)A.push(["Incidência muito alta",()=>{qInc=false}]);if(qErrF)A.push(["Com erros no caderno",()=>{qErrF=false}]);if(qDueF)A.push(["Revisão pendente",()=>{qDueF=false}]);if(qWorse)A.push(["Piorando",()=>{qWorse=false}]);
-  const G=[["Mostrar só","atalhos, combinam com o resto",fcChips([["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"},"Acerto abaixo de 60%"],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc},"Os que mais caem nas provas"],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF}],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF}],["qWorseB","Piorando",qWorse,()=>{qWorse=!qWorse},"Acerto dos últimos 30 dias abaixo dos 90 anteriores"]].map(([id,l,on,fn,tip])=>fcChip(l,on,fn,id,null,tip)))]];
-  {const row=el(`<div class="qfrow tfsels"></div>`);
-    row.appendChild(fcSel("qPer","Período",[["all","Tudo"],["7","7 dias"],["14","14 dias"],["21","21 dias"],["30","30 dias"],["60","60 dias"],["90","90 dias"]],qPer,v=>{qPer=v}));
-    row.appendChild(fcSel("qAccSel","Acerto",[["all","Qualquer"],["bad","Fraco (<60%)"],["mid","Regular (60–79%)"],["good","Bom (80%+)"]],qAcc,v=>{qAcc=v;qWeak=v==="bad"}));
-    if(ds.length)row.appendChild(fcSel("qDiscSel","Disciplina",[["all","Todas"],...ds.map(d=>[d.id,d.name])],ds.some(d=>d.id===qDisc)?qDisc:"all",v=>{qDisc=v}));
-    G.push(["Período e acerto","conta só as questões do período",row])}
+  /* contagem de cada atalho: temas com questões que passam nos outros filtros + este */
+  const errK=new Set(errors.filter(e=>!e.arch).map(e=>e.k)),base=pool.filter(withQ),cq=f=>base.filter(f).length,ac=i=>{const s=get(i.key);return s.qt?s.qc/s.qt:null};
+  const G=[["Mostrar só","atalhos, combinam com o resto",fcChips([["qWeak","Pontos fracos",qAcc==="bad",()=>{qAcc=qAcc==="bad"?"all":"bad";qWeak=qAcc==="bad"},"Acerto abaixo de 60%",i=>ac(i)<WEAK_PCT],["qIncB","Incidência muito alta",qInc,()=>{qInc=!qInc},"Os que mais caem nas provas",i=>!i.own&&wOf(i)===3],["qErrB","Com erros no caderno",qErrF,()=>{qErrF=!qErrF},"",i=>errK.has(i.key)],["qDueB","Revisão pendente",qDueF,()=>{qDueF=!qDueF},"",i=>isDue(get(i.key))],["qWorseB","Piorando",qWorse,()=>{qWorse=!qWorse},"Acerto dos últimos 30 dias abaixo dos 90 anteriores",i=>{const tr=qTrend(i.key);return tr&&tr.d<=-5}]].map(([id,l,on,fn,tip,f])=>fcChip(`${l} · ${cq(f)}`,on,fn,id,null,tip)))]];
+  G.push(["Período","conta só as questões do período",fcPer("qPer",qPer,v=>{qPer=v})]);
+  G.push(["Acerto","no período escolhido",fcChips([["bad","Fraco (<60%)"],["mid","Regular (60–79%)"],["good","Bom (80%+)"]].map(([v,l])=>{const fr=qFrom(),n=base.filter(i=>{const [cc,tt]=qOf(i.key,fr);return tt&&accBand(cc,tt)===v}).length;return fcChip(`${l} · ${n}`,qAcc===v,()=>{qAcc=qAcc===v?"all":v;qWeak=qAcc==="bad"},"qAcc-"+v)}))]);
+  if(ds.length)G.push(["Disciplina da faculdade","temas ligados a ela",fcSel("qDiscSel","Disciplina",[["all","Todas"],...ds.map(d=>[d.id,`${d.name} (${base.filter(i=>topicKeysOf(discRefs(d)).includes(i.key)).length})`])],ds.some(d=>d.id===qDisc)?qDisc:"all",v=>{qDisc=v})]);
   G.push(["Onde","grande área e especialidade",fcWhere("q",qArea,qSpec,(a,sp)=>pool.filter(i=>withQ(i)&&(a==="all"||i.area.code===a)&&(sp==="all"||i.sp===sp)).length,v=>{qArea=v;qSpec="all"},v=>{qSpec=v})]);
-  fcBody(c.querySelector(".tfilters"),{tog:"qFBtn",panelId:"qFPanel",open:qFOpen,onToggle:()=>{qFOpen=!qFOpen;lsSet("resid-qfpanel",qFOpen?"1":null)},
-    sort:["qSort",[["num","Por especialidade"],["low","Menor acerto primeiro"],["most","Mais questões primeiro"]],qSort,v=>{qSort=v}],
-    act:A,clearId:"qClear",onClear:qClearAll,groups:G,foot:A.length||qQuery?(nU?`${nU} ${nU===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com questões nesses filtros"):"",
-    onDone:()=>{qFOpen=false;lsSet("resid-qfpanel",null);render();const k=$("#qkpis");if(k)k.scrollIntoView({block:"start"})}});
-  c.appendChild(el(`<p class="how qfall hx">Os filtros valem para toda a aba (resumo, gráficos, simulado e Refazer). Toque num tema para ver os detalhes dele aqui.</p>`));
+  fcBody(bar.querySelector(".tfilters"),{tog:"qFBtn",panelId:"qFPanel",open:qFOpen,onToggle:()=>{qFOpen=!qFOpen;lsSet("resid-qfpanel",qFOpen?"1":null)},
+    act:A,clearId:"qClear",onClear:qClearAll,groups:G,foot:A.length||qQuery?(nU?`${nU} ${nU===1?"tema com questões":"temas com questões"} nesses filtros · vale para a aba toda`:"Nenhum tema com questões nesses filtros"):"",
+    onDone:()=>{qFOpen=false;lsSet("resid-qfpanel",null);render()}});
+  const c=el(`<div class="card tfind qlistc" id="qFind" aria-labelledby="qfh"><div class="tfhead"><h2 id="qfh">Seus temas nas questões</h2><span class="tfcount"></span></div><div class="tfbar qlbar"></div></div>`);box.appendChild(c);
+  c.querySelector(".tfcount").textContent=nU===nAll?`${nAll} ${nAll===1?"tema":"temas"} com questões`:`${nU} de ${nAll} temas`;
+  {const l=el(`<label class="tfsort"><span>Ordem</span><select id="qSort"></select></label>`),x=l.querySelector("select");[["num","Por especialidade"],["low","Menor acerto primeiro"],["most","Mais questões primeiro"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=qSort;x.onchange=()=>{qSort=x.value;render()};c.querySelector(".qlbar").appendChild(l)}
+  c.appendChild(el(`<p class="how qfall hx">Os filtros do topo da aba valem também para esta lista. Toque num tema para ver os detalhes dele aqui.</p>`));
   if(qListKeep)c.appendChild(qListKeep)}
 function renderQuest(){
   renderQFilters();
@@ -3931,9 +3943,7 @@ function renderQuest(){
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
    $("#qSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.q===qSeg);b.innerHTML={resumo:"Resumo",praticar:"Praticar"+(rdN?`<b>${rdN}</b>`:""),temas:"Temas"+(tN?`<b>${tN}</b>`:"")}[b.dataset.q];b.onclick=()=>setQSeg(b.dataset.q)});
-   const fl=[];if(qArea!=="all")fl.push(qSpec!=="all"?`${qArea} · ${qSpec}`:qArea);if(qDisc!=="all"){const d=discOf(qDisc);if(d)fl.push(d.name)}if(qQuery)fl.push(`“${qQuery}”`);if(qPer!=="all")fl.push(`${qPer} dias`);if(qAcc!=="all")fl.push({bad:"acerto fraco",mid:"acerto regular",good:"acerto bom"}[qAcc]);if(qInc)fl.push("incidência muito alta");if(qErrF)fl.push("com erros");if(qDueF)fl.push("revisão pendente");if(qWorse)fl.push("piorando");
-   const fn=$("#qFNote");fn.hidden=!fl.length;if(fl.length){fn.innerHTML="";fn.append("Filtros ligados: ");const bb=document.createElement("b");bb.textContent=fl.join(", ");fn.appendChild(bb);fn.append(". ");
-     const v=el(`<button class="link" type="button">Ver filtros</button>`);v.onclick=()=>{qFOpen=true;setQSeg("temas")};const l=el(`<button class="link" type="button">Limpar</button>`);l.onclick=()=>{qClearAll();render()};fn.append(v," ",l)}}
+   /* Lote 20: os filtros ligados aparecem na barra do topo da aba (etiquetas com ×) */}
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
   const withQ=st.filter(x=>x.t),vis=withQ.filter(x=>qAcc==="all"||accBand(x.c,x.t)===qAcc);
   let C=0,T=0;vis.forEach(x=>{C+=x.c;T+=x.t});const p=pct(C,T),[bk,bl]=band(p),weakN=withQ.filter(x=>x.t>=WEAK_MIN&&x.c/x.t<WEAK_PCT).length;
@@ -5832,7 +5842,7 @@ function eExtraOk(e,R){
   if(eSide==="fac"&&!eIsFac(e,R.FL))return false;if(eSide==="res"&&eIsFac(e,R.FL))return false;
   if(eSide==="pw"&&!(R.PW&&R.PW.has(e.k)))return false;return true}
 const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all"||eSide!=="all";
-let eFOpen=(()=>{try{return localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
+let eFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
 function eClearAll(){eFlags.clear();eSide="all";ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
 /* mostrar os erros de um tema: limpa os outros filtros (senão podia não sobrar nada) e, se o tema só tem arquivados, abre os arquivados */
 function eGoTopic(k){eClearAll();eTopicKey=k;eLimit=E_PAGE;if(!errors.some(e=>e.k===k&&!e.arch)&&errors.some(e=>e.k===k&&e.arch))eFlags.add("arch")}
@@ -5858,7 +5868,8 @@ function renderEMore(){const box=$("#eMore");if(!box)return;
     if(used.size){const row=el(`<div class="qfrow tfsels"></div>`);row.appendChild(fcSel("eCause","Causa",[["all","Todas"],...Object.values(ECAUSES).flat().filter(c=>used.has(c)).map(c=>[c,c])],used.has(eCause)?eCause:"all",set(v=>eCause=v)));w.appendChild(row)}else eCause="all";
     G.push(["Por que errou","tipo e causa marcados no registro",w])}
   G.push(["Onde","grande área e especialidade",fcWhere("e",eArea,eSp,(a,sp)=>EA.filter(e=>{const it=BYKEY[e.k];return (a==="all"||it.area.code===a)&&(sp==="all"||it.sp===sp)}).length,v=>{eArea=v;eSp="all";eLimit=E_PAGE},v=>{eSp=v;eLimit=E_PAGE})]);
-  {const row=el(`<div class="qfrow tfsels"></div>`);row.appendChild(fcSel("ePer","Registrados",[["all","Desde o início"],["7","Últimos 7 dias"],["30","Últimos 30 dias"],["90","Últimos 90 dias"]],ePer,set(v=>ePer=v)));G.push(["Quando","data do registro",row])}
+  {const t0=dnum(today()),pn=v=>v==="all"?EA.length:EA.filter(e=>t0-dnum(e.d)<=+v).length;
+    G.push(["Quando","data do registro",fcPer("ePer",ePer,v=>{ePer=v;eLimit=E_PAGE},FC_PER.map(([v,l])=>[v,`${l} · ${pn(v)}`]),"Registrados")])}
   const links=[];
   if(downloadsFn){const p=el(`<button class="link" type="button" id="ePdf">Exportar PDF destes erros</button>`);p.onclick=ePdfSave;links.push(p)}
   fcBody(box,{tog:"eFBtn",panelId:"eFPanel",open:eFOpen,onToggle:()=>{eFOpen=!eFOpen;lsSet("resid-efpanel",eFOpen?"1":null)},
@@ -6264,7 +6275,7 @@ function iCustomEl(){const w=el(`<div class="icustom"></div>`);
     up.onclick=()=>{const o=iOrder();[o[i-1],o[i]]=[o[i],o[i-1]];ui.prefs.iorder=o;save()};dn.onclick=()=>{const o=iOrder();[o[i+1],o[i]]=[o[i],o[i+1]];ui.prefs.iorder=o;save()};ul.appendChild(li)});
   c.querySelector(".icust>.link:last-child").onclick=()=>{delete ui.prefs.ihide;delete ui.prefs.iorder;save()};w.appendChild(c);return w}
 /* ----- 3. busca em tudo ----- */
-let gsQ="",gsOpen=false;
+let gsQ="",gsOpen=false,gsType="";
 function gsSnip(t,n){const T=String(t||"").replace(/^\s*(#{1,6}\s+|[-*>]\s+|\d+\.\s+)/gm,"").replace(/==|\*\*|`/g,"").replace(/\s+/g," "),N=norm(T),i=N.indexOf(n);if(i<0)return T.slice(0,110);const a=Math.max(0,i-40);return (a?"…":"")+T.slice(a,a+120)+(T.length>a+120?"…":"")}
 function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],add=(g,t,s,go)=>R.push({g,t,s,go});
   [...ALL,...FAC_ITEMS].forEach(it=>{const subs=subList(it).map(x=>x.t).join(" · ");if(norm(it.t).includes(n)||norm(subs).includes(n))add("Temas",it.t,norm(it.t).includes(n)?`${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`:gsSnip(subs,n),()=>openTopic(it.key))});
@@ -6285,9 +6296,14 @@ function fillGS(){const box=$("#gsres");if(!box)return;box.innerHTML="";const R=
   if(norm(gsQ.trim()).length<2){box.appendChild(el(`<p class="how">Digite pelo menos 2 letras. A busca olha temas e subtópicos, anotações, caderno livre, erros, cartões, disciplinas, SPs e materiais.</p>`));return}
   if(!R.length){box.appendChild(el(`<p class="cempty">Nada encontrado com “${esc(gsQ.trim())}”.</p>`));return}
   const groups={};R.forEach(r=>(groups[r.g]=groups[r.g]||[]).push(r));
-  Object.entries(groups).forEach(([g,L])=>{const s=el(`<div class="gsg"><span class="glabel"></span><ul></ul></div>`);s.querySelector(".glabel").textContent=`${g} · ${L.length}`;
-    L.slice(0,8).forEach(r=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`);li.querySelector("b").textContent=r.t;li.querySelector("span").textContent=r.s;li.querySelector("button").onclick=()=>{gsClose();r.go()};s.querySelector("ul").appendChild(li)});
-    if(L.length>8)s.appendChild(el(`<p class="how">+ ${L.length-8} resultados. Refine a busca.</p>`));box.appendChild(s)})}
+  /* Lote 20: etiquetas por tipo com a contagem; tocar de novo volta a mostrar tudo */
+  if(!groups[gsType])gsType="";const G=Object.keys(groups);
+  if(G.length>1){const ch=el(`<div class="chips gstypes" role="group" aria-label="Tipo de resultado"></div>`);
+    [["","Tudo",R.length],...G.map(g=>[g,g,groups[g].length])].forEach(([v,l,n],i)=>{const b=el(`<button class="chip" type="button"></button>`);b.id="gsT-"+i;b.textContent=`${l} · ${n}`;b.setAttribute("aria-pressed",gsType===v);
+      b.onclick=()=>{gsType=gsType===v?"":v;fillGS()};ch.appendChild(b)});box.appendChild(ch)}
+  Object.entries(groups).filter(([g])=>!gsType||g===gsType).forEach(([g,L])=>{const LIM=gsType?40:8;const s=el(`<div class="gsg"><span class="glabel"></span><ul></ul></div>`);s.querySelector(".glabel").textContent=`${g} · ${L.length}`;
+    L.slice(0,LIM).forEach(r=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`);li.querySelector("b").textContent=r.t;li.querySelector("span").textContent=r.s;li.querySelector("button").onclick=()=>{gsClose();r.go()};s.querySelector("ul").appendChild(li)});
+    if(L.length>LIM)s.appendChild(el(`<p class="how">+ ${L.length-LIM} resultados. ${gsType?"Refine a busca.":"Toque no tipo acima para ver todos."}</p>`));box.appendChild(s)})}
 function gsClose(){gsOpen=false;renderGSearch()}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&gsOpen){gsClose();return}
   if((e.key==="k"&&(e.ctrlKey||e.metaKey))||(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((e.target||{}).tagName||""))){e.preventDefault();gsOpen=true;renderGSearch()}});
@@ -6825,7 +6841,7 @@ function pdfPanel(){const o=pdfOpt,w=el(`<div class="pdfpan"><span class="glabel
   [["res","Residência","temas, áreas e progresso"],["fac","Faculdade","semestres, disciplinas e provas"],["err","Questões e erros","acerto, principais erros por tema e como melhorar"]].forEach(([k,t,d])=>{
     const l=el(`<label class="pdfopt"><input type="checkbox"><span><b></b><em></em></span></label>`),i=l.querySelector("input");i.id="pdf-"+k;i.checked=o[k];i.onchange=()=>{o[k]=i.checked;o.msg="";render()};
     l.querySelector("b").textContent=t;l.querySelector("em").textContent=d;ck.appendChild(l)});
-  const PER=["7","14","21","30","60","90"],pr=segRow("Período","",[...PER.map(v=>[v,v+" dias"]),["all","Tudo"]],PER.includes(o.period)||o.period==="all"?o.period:"",v=>{o.period=v;o.custom="";render()});
+  const PER=["7","15","30","60","90"],pr=segRow("Período","",[...PER.map(v=>[v,v+" dias"]),["all","Tudo"]],PER.includes(o.period)||o.period==="all"?o.period:"",v=>{o.period=v;o.custom="";render()});
   const cu=el(`<label class="pdfcus">Outro: <input class="etext" type="number" min="1" max="730" inputmode="numeric" id="pdf-dias" placeholder="ex.: 45"> dias</label>`),ci=cu.querySelector("input");ci.value=o.custom;
   ci.oninput=()=>{o.custom=ci.value;const n=Math.round(+ci.value);if(n>=1&&n<=730){o.period=String(n)}};ci.onchange=()=>render();pr.querySelector(".seg").appendChild(cu);w.appendChild(pr);
   // matérias
@@ -6983,7 +6999,7 @@ let excJust=null;
 function excPick(id,c){const y=exList().find(z=>z.id===id);if(!y)return;excJust=id;setTimeout(()=>{if(excJust===id)excJust=null},400);y.name=c.n;if(!y.date||y.est){const d=excDate(c.m);if(d){y.date=d;y.est=1}else{delete y.date;delete y.est}}excQ[id]="";saveUI();render()}
 function excAdd(c){const id="ex"+Date.now().toString(36),L2=exList(),d=excDate(c.m);ui.profile.exams=[...L2,{id,name:c.n,...(d?{date:d,est:1}:{})}];if(!L2.length)ui.profile.mainEx=id;saveUI();render()}
 function excPanelEl(){const w=el(`<div class="excat" id="excPanel"><div class="seg" role="group" aria-label="Região"></div><ul class="exclist"></ul><p class="how hx">Lista de 10/2026 (Medway, MedCof, BIP, Estratégia MED). Banca e mês podem mudar a cada edital: confira o edital. "Pelo ENARE" = a instituição seleciona pela prova nacional.</p></div>`),sg=w.querySelector(".seg");
-  EXC_REG.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="excR-"+v;b.textContent=l;b.setAttribute("aria-pressed",excReg===v);b.onclick=()=>{excReg=v;render()};sg.appendChild(b)});
+  EXC_REG.forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="excR-"+v;b.textContent=`${l} · ${EX_CAT.filter(c=>c.r===v).length}`;b.setAttribute("aria-pressed",excReg===v);b.onclick=()=>{excReg=v;render()};sg.appendChild(b)});
   const ul=w.querySelector("ul"),has=new Set(exList().map(x=>norm(x.name||"")));
   [["Principais",EX_CAT.filter(c=>c.r===excReg&&!c.o)],["Outras",EX_CAT.filter(c=>c.r===excReg&&c.o)]].forEach(([h,L])=>{if(!L.length)return;ul.appendChild(el(`<li class="exch2">${h}</li>`));
     L.forEach(c=>{const li=el(`<li class="excrow"><div><b></b><span class="how"></span></div><button class="mini" type="button"></button></li>`);li.querySelector("b").textContent=c.n;li.querySelector(".how").textContent=excLine(c);
@@ -7102,7 +7118,7 @@ function renderNavExtra(P,dueN){const box=$("#navExtra");box.innerHTML="";
 /* ---------- Foco: pomodoro e cronômetro que contam o tempo de estudo ---------- */
 /* sessões: {id, d:"AAAA-MM-DD", s:ISO do início, sec, m:"p"|"c"|"x" (pomodoro, cronômetro, manual), ref:"T:<tema>"|"D:<disciplina>"|"", lab} */
 const LSFO="resid-focus-v1",LSFR="resid-focus-run",LSFP="resid-focus-pick",FO_C=2*Math.PI*46;
-let foSess=[],focStore=null,foRun=null,foPick={ref:"",mode:"p"},foTimer=null,foWake=null,foWaking=false,foActx=null,foMsg="",foPer="week",foMore=false,foAdd=null,foDel=null,foCustom=null,foArm=false,foTitle0=null;
+let foSess=[],focStore=null,foRun=null,foPick={ref:"",mode:"p"},foTimer=null,foWake=null,foWaking=false,foActx=null,foMsg="",foPer=(()=>{const v=lsGet("resid-foper");return ["7","15","30","60","90","all"].includes(v)?v:"7"})(),foMore=false,foAdd=null,foDel=null,foCustom=null,foArm=false,foTitle0=null;
 function foOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.d==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x.d)&&typeof x.sec==="number"&&x.sec>0&&x.sec<86400&&(typeof x.ref==="string"||x.ref===undefined)}
 function foClean(x){return {id:x.id,d:x.d,s:typeof x.s==="string"?x.s:x.d+"T12:00:00.000Z",sec:Math.round(x.sec),m:["p","c","x"].includes(x.m)?x.m:"c",ref:typeof x.ref==="string"?x.ref:"",lab:typeof x.lab==="string"?x.lab.slice(0,120):"",...(Number.isInteger(x.dz)&&x.dz>0?{dz:Math.min(x.dz,99)}:{})}}
 try{const v=JSON.parse(localStorage.getItem(LSFO)||"[]");if(Array.isArray(v))foSess=v.filter(foOk).map(foClean)}catch(e){}
@@ -7250,11 +7266,11 @@ function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeek
   gt.textContent=g?`Meta do dia: ${fmtMin(g)} (a meta de ${fmtMin(P.hgoal*60)} por semana dividida pelos ${foStudyDays()} dias de estudo). `:"Sem meta semanal. ";gt.appendChild(foGoalLink());gl.appendChild(gt);
   gl.appendChild(el(`<span class="how hx">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
   c.appendChild(foWeekExtra());return c}
-function foMatCard(){const t=dnum(today()),from=foPer==="week"?foWeekStart():foPer==="30"?t-29:-Infinity;
+function foMatCard(){const t=dnum(today()),from=foPer==="all"?-Infinity:t-(+foPer||7)+1;
   const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),g={};list.forEach(x=>{const m=foMat(x);const r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
   const rows=Object.values(g).sort((a,b)=>b.sec-a.sec),mx=rows.length?rows[0].sec:1;
-  const c=el(`<section class="card" aria-labelledby="fomh"><div class="dhead"><h2 id="fomh">Tempo por matéria</h2></div><div class="seg foper" role="group" aria-label="Período"></div><div class="fomats"></div></section>`);
-  [["week","Esta semana"],["30","30 dias"],["all","Tudo"]].forEach(([v,lab])=>{const b=el(`<button type="button" aria-pressed="${foPer===v}"></button>`);b.textContent=lab;b.onclick=()=>{foPer=v;render()};c.querySelector(".foper").appendChild(b)});
+  const c=el(`<section class="card" aria-labelledby="fomh"><div class="dhead"><h2 id="fomh">Tempo por matéria</h2></div><div class="foper"></div><div class="fomats"></div></section>`);
+  c.querySelector(".foper").appendChild(fcPer("foPer",foPer,v=>{foPer=v;lsSet("resid-foper",v)}));
   const box=c.querySelector(".fomats");
   if(!rows.length)box.innerHTML=`<p class="cempty">${foSess.length?"Nenhuma sessão neste período.":"Vincule as sessões a um tema ou a uma disciplina para ver aqui quanto tempo foi para cada matéria."}</p>`;
   else box.innerHTML=rows.slice(0,15).map(r=>`<div class="vrow"><div class="vtop"><span class="vl">${esc(r.lab)}</span><span class="hv">${fmtMin(r.sec)}</span><span class="hn">${Math.round(r.sec/tot*100)}%</span></div><div class="hbar track1"><i style="width:${Math.max(r.sec/mx*100,1)}%;background:var(--accent)" data-tip="${esc(r.lab)}: ${fmtMin(r.sec)} em ${r.n} sess${r.n===1?"ão":"ões"}"></i></div></div>`).join("")+(rows.length>15?`<p class="how">+ ${rows.length-15} matérias com menos tempo.</p>`:"")+`<p class="how">Total: ${fmtMin(tot)} em ${list.length} sess${list.length===1?"ão":"ões"}. Temas contam na especialidade; disciplinas da faculdade, pelo nome.</p>`;
@@ -7484,10 +7500,11 @@ function qRedoCard(U){const ks=new Set(U.map(i=>i.key)),T=today(),base=redo.filt
   {const n=+lsGet("resid-rdexp","0")||0;if(n){const m=el(`<p class="pnote" id="rdExpNote"><span></span> <button class="link" type="button">Entendi</button></p>`);
     m.querySelector("span").textContent=`${n} ${n===1?"questão saiu":"questões saíram"} do Refazer por ficar${n===1?"":"em"} ${RD_EXP} dias vencida${n===1?"":"s"} sem ser feita${n===1?"":"s"} (o ponto, se importante, continua no caderno de erros ou volta quando você errar de novo).`;m.querySelector("button").onclick=()=>{lsSet("resid-rdexp",null);render()};c.appendChild(m)}}
   if(!redo.length){c.appendChild(el(`<p class="cempty">Toda questão gerada pelo Claude que você errar fica guardada aqui, com o comentário, para refazer depois. Acertou ao refazer, ela sai da lista.</p>`));return c}
-  {const f=el(`<div class="rdfil"><div class="seg" role="group" aria-label="Quais"></div></div>`),sg=f.querySelector(".seg");
-    [[true,`Para hoje (${dueN})`],[false,`Todas (${base.length})`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id=v?"rdFDue":"rdFAll";b.textContent=l;b.setAttribute("aria-pressed",rdF.due===v);b.onclick=()=>{rdF.due=v;render()};sg.appendChild(b)});
-    const so=el(`<select id="rdFSrc" aria-label="Origem"><option value="all">De onde: todas</option></select>`);Object.entries(RD_SRC).forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;so.appendChild(o)});so.value=rdF.src;so.onchange=()=>{rdF.src=so.value;render()};f.appendChild(so);
-    const rp=el(`<button type="button" class="chip" id="rdFRep">Erradas 2+ vezes</button>`);rp.setAttribute("aria-pressed",rdF.rep);rp.onclick=()=>{rdF.rep=!rdF.rep;render()};f.appendChild(rp);c.appendChild(f)}
+  /* Lote 20: filtros no padrão novo: Quais (segmento) e De onde / Erradas 2+ (etiquetas com contagem) */
+  {const f=el(`<div class="rdfil"></div>`),inQ=x=>!rdF.due||rdDue(x)<=T;
+    f.appendChild(fcPer("rdF",rdF.due?"due":"all",v=>{rdF.due=v==="due"},[["due",`Para hoje · ${dueN}`],["all",`Todas · ${base.length}`]],"Quais"));
+    const ch=fcChips([...Object.entries(RD_SRC).map(([v,l])=>fcChip(`${l} · ${base.filter(x=>inQ(x)&&x.src===v).length}`,rdF.src===v,()=>{rdF.src=rdF.src===v?"all":v},"rdFSrc-"+v)),
+      fcChip(`Erradas 2+ vezes · ${base.filter(x=>inQ(x)&&x.n>=2).length}`,rdF.rep,()=>{rdF.rep=!rdF.rep},"rdFRep")]);f.appendChild(ch);c.appendChild(f)}
   if(!list.length){c.appendChild(el(`<p class="cempty">${rdF.due&&base.length&&!(rdF.src!=="all"||rdF.rep)?"Nada para refazer hoje. As próximas voltam nos dias marcados (toque em Todas para ver).":"Nenhuma questão para refazer com esses filtros."}</p>`));return c}
   const by={};list.forEach(x=>{const it=BYKEY[x.k],g=`${it.area.code} · ${it.sp||it.area.name}`;by[g]=(by[g]||0)+1});
   const top=Object.entries(by).sort((a,b)=>b[1]-a[1]);
@@ -7853,9 +7870,13 @@ function simPickerEl(){const w=el(`<div class="simpick"></div>`),pool=[...ALL,..
   inp.oninput=debounced(()=>{simPF.q=inp.value;render();const x=$("#simPq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});w.appendChild(sr);
   const fl=el(`<div class="simpf"></div>`),sel=el(`<select id="simPa" aria-label="Grande área"><option value="all">Todas as áreas</option></select>`);
   AREAS.forEach(a=>{const o=document.createElement("option");o.value=a.code;o.textContent=a.name;sel.appendChild(o)});sel.value=simPF.area;sel.onchange=()=>{simPF.area=sel.value;render()};fl.appendChild(sel);
-  const chip=(id,lab,on,fn)=>{const b=el(`<button class="chip" type="button"></button>`);b.id=id;b.textContent=lab;b.setAttribute("aria-pressed",on);b.onclick=()=>{fn();render()};fl.appendChild(b)};
-  [["all","Todos"],["nao","Não estudados"],["ing","Estudando"],["est","Já estudados"],["weak","Pontos fracos"],["due","Revisão hoje"]].forEach(([v,l])=>chip("simPl-"+v,l,simPF.lv===v,()=>{simPF.lv=v}));
-  chip("simPi-3","Muito alta incidência",simPF.inc===3,()=>{simPF.inc=simPF.inc===3?0:3});chip("simPi-2","Alta ou mais",simPF.inc===2,()=>{simPF.inc=simPF.inc===2?0:2});
+  const chip=(id,lab,on,fn)=>{const b=el(`<button class="chip" type="button"></button>`);b.id=id;b.textContent=lab;b.setAttribute("aria-pressed",on);if(!on&&/·\s0$/.test(lab))b.classList.add("z");b.onclick=()=>{fn();render()};fl.appendChild(b)};
+  /* Lote 20: etiquetas com contagem (contam com a área e a busca escolhidas); tocar de novo desliga */
+  const qq=norm(simPF.q.trim()),pre=pool.filter(it=>(simPF.area==="all"||it.area.code===simPF.area)&&(!qq||norm(it.t+" "+(it.sp||"")+" "+subList(it).map(x=>x.t).join(" ")).includes(qq)));
+  const LV={nao:s=>!(s.last||isIng(s)),ing:s=>isIng(s),est:s=>!!s.last,weak:s=>s.qt>=WEAK_MIN&&s.qc/s.qt<WEAK_PCT,due:s=>isDue(s)};
+  const zc=(lab,n)=>`${lab} · ${n}`;
+  [["nao","Não estudados"],["ing","Estudando"],["est","Já estudados"],["weak","Pontos fracos"],["due","Revisão hoje"]].forEach(([v,l])=>{const n=pre.filter(it=>LV[v](get(it.key))&&(!simPF.inc||(!it.own&&wOf(it)>=simPF.inc))).length;chip("simPl-"+v,zc(l,n),simPF.lv===v,()=>{simPF.lv=simPF.lv===v?"all":v})});
+  [[3,"Muito alta incidência"],[2,"Alta ou mais"]].forEach(([w,l])=>{const n=pre.filter(it=>!it.own&&wOf(it)>=w&&(simPF.lv==="all"||LV[simPF.lv](get(it.key)))).length;chip("simPi-"+w,zc(l,n),simPF.inc===w,()=>{simPF.inc=simPF.inc===w?0:w})});
   w.appendChild(fl);
   const q=norm(simPF.q.trim()),ok=it=>{const s=get(it.key);if(simPF.area!=="all"&&it.area.code!==simPF.area)return false;
     if(simPF.lv==="nao"&&(s.last||isIng(s)))return false;if(simPF.lv==="ing"&&!isIng(s))return false;if(simPF.lv==="est"&&!s.last)return false;
@@ -8331,7 +8352,7 @@ function exRowEl(r,i,C){const li=el(`<li class="exq${r.x?" off":""}"><div class=
   return li}
 function exListEl(rows,S,C){const w=el(`<div class="exrev"></div>`),cnt=f=>rows.filter(r=>exFilterOk(r,f)).length;
   const ch=el(`<div class="chips" role="group" aria-label="Mostrar"></div>`);[["all","Todas"],["chk","Conferir"],["tema","Sem tema"],["kg","Tema sugerido"],["img","Com imagem"],...(C.toggleX?[["x","Descartadas"]]:[])].forEach(([v,l])=>{const n=cnt(v);if(v!=="all"&&!n&&S.flt!==v)return;
-    const b=el(`<button class="chip" type="button" aria-pressed="${S.flt===v}"></button>`);b.id=`exf-${C.pre}-${v}`;b.textContent=`${l} · ${n}`;b.onclick=()=>{S.flt=v;S.show=12;render()};ch.appendChild(b)});w.appendChild(ch);
+    const b=el(`<button class="chip" type="button" aria-pressed="${S.flt===v}"></button>`);b.id=`exf-${C.pre}-${v}`;b.textContent=`${l} · ${n}`;b.onclick=()=>{S.flt=S.flt===v&&v!=="all"?"all":v;S.show=12;render()};ch.appendChild(b)});w.appendChild(ch);
   const L=rows.map((r,i)=>[r,i]).filter(([r])=>exFilterOk(r,S.flt)),ol=el(`<ol class="exqs"></ol>`);L.slice(0,S.show).forEach(([r,i])=>ol.appendChild(exRowEl(r,i,C)));w.appendChild(ol);
   if(!L.length)w.appendChild(el(`<p class="cempty">Nada aqui com este filtro.</p>`));
   if(L.length>S.show){const m=el(`<button class="btn" type="button"></button>`);m.id=`exmore-${C.pre}`;m.textContent=`Mostrar mais ${Math.min(24,L.length-S.show)} de ${L.length-S.show}`;m.onclick=()=>{S.show+=24;render()};w.appendChild(m)}
@@ -8622,12 +8643,18 @@ function renderInicioBoard(){const box=$("#iBoard");if(!box)return;box.innerHTML
 /* ---------- Residência: filtros, agenda de revisões e "Já estudei antes" ---------- */
 /* busca e filtros da Residência: cartão "Encontrar temas" com o painel Filtros (aberto/fechado lembrado no aparelho),
    pílulas dos filtros ativos (× tira um) e a ordem; ids dos chips/seletores: #tfl<nível>, #tfdue/#tfweak/#tfnoq/#tfhigh/#tfpin, #tfArea, #tfSp, #sortSel */
-let tfPanel=lsGet("resid-tfpanel","")==="1";
+let tfPanel=(document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&lsGet("resid-tfpanel","")==="1";
 /* peças do cartão de busca e filtros (o mesmo visual em Residência, Questões, Erros e Anotações) */
 const FC_ICO=`<svg class="tfsico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
 function fcSel(id,lab,opts,val,on,dis){const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
   opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;if(dis)x.disabled=true;else x.onchange=()=>{on(x.value);render()};return l}
-function fcChip(t,on,fn,id,dot,tip,ds){const b=el(`<button class="chip tfchip" type="button" aria-pressed="${on}">${dot?`<i class="tfdot ${dot}" aria-hidden="true"></i>`:""}<span></span></button>`);b.querySelector("span").textContent=t;if(id)b.id=id;if(tip)b.title=tip;if(ds)Object.assign(b.dataset,ds);b.onclick=()=>{fn();render()};return b}
+function fcChip(t,on,fn,id,dot,tip,ds){const b=el(`<button class="chip tfchip" type="button" aria-pressed="${on}">${dot?`<i class="tfdot ${dot}" aria-hidden="true"></i>`:""}<span></span></button>`);b.querySelector("span").textContent=t;if(!on&&/·\s0$/.test(t))b.classList.add("z");if(id)b.id=id;if(tip)b.title=tip;if(ds)Object.assign(b.dataset,ds);b.onclick=()=>{fn();render()};return b}
+/* Lote 20: período no padrão (7 · 30 · 90 dias · Tudo) em todo lugar; ids <pre>-<valor> */
+const FC_PER=[["7","7 dias"],["15","15 dias"],["30","30 dias"],["60","60 dias"],["90","90 dias"],["all","Tudo"]];
+function fcPer(pre,val,on,opts,lab){const g=el(`<div class="seg fcper" role="group"></div>`);g.setAttribute("aria-label",lab||"Período");(opts||FC_PER).forEach(([v,t])=>{const b=el(`<button type="button"></button>`);b.id=pre+"-"+v;b.textContent=t;b.setAttribute("aria-pressed",String(val)===String(v));b.onclick=()=>{on(v);render()};g.appendChild(b)});return g}
+const FC_KEYS={tfPanel:"resid-tfpanel",qFPanel:"resid-qfpanel",eFPanel:"resid-efpanel",nFPanel:"resid-nfpanel"};
+const isPhoneL=()=>document.documentElement.dataset.layout==="phone";
+const fcSheet=()=>isPhoneL()&&!window.__noSheet;// testes antigos desligam a folha (window.__noSheet no mockdb.js)
 function fcChips(L){const c=el(`<div class="chips"></div>`);L.forEach(x=>c.appendChild(x));return c}
 /* Grande área e Especialidade com a contagem no nome; cnt(área,esp) */
 function fcWhere(pre,area,sp,cnt,setA,setS){const r=el(`<div class="qfrow tfsels"></div>`),A=[...AREAS,FAC_AREA].filter(a=>a!==FAC_AREA||cnt("FAC","all"));
@@ -8641,15 +8668,20 @@ const fcAreaName=c=>{const A=AREAS.find(a=>a.code===c);return A?A.name:"Faculdad
    o.foot = texto do rodapé; o.links = nós extras do rodapé; o.panelId; o.onDone = "Ver resultados" (só celular) */
 function fcBody(box,o){box.innerHTML="";
   const bar=el(`<div class="tfbar"><button class="tftog" type="button" aria-expanded="${!!o.open}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span></button></div>`),tg=bar.querySelector(".tftog");tg.id=o.tog;
-  if(o.panelId)tg.setAttribute("aria-controls",o.panelId);if(o.act.length)tg.appendChild(el(`<b class="tfn">${o.act.length}</b>`));tg.onclick=()=>{o.onToggle();render()};
+  if(o.panelId)tg.setAttribute("aria-controls",o.panelId);if(o.act.length)tg.appendChild(el(`<b class="tfn">${o.act.length}</b>`));tg.onclick=()=>{o.onToggle();/* Lote 20: no celular o painel é uma folha por cima da tela e não fica lembrado aberto */if(fcSheet()&&FC_KEYS[o.panelId])lsSet(FC_KEYS[o.panelId],null);render()};
   if(o.sort){const [id,opts,val,on]=o.sort,l=el(`<label class="tfsort"><span>Ordem</span><select></select></label>`),x=l.querySelector("select");x.id=id;
     opts.forEach(([v,t])=>{const op=document.createElement("option");op.value=v;op.textContent=t;x.appendChild(op)});x.value=val;x.onchange=()=>{on(x.value);render()};bar.appendChild(l)}
   box.appendChild(bar);
   if(o.act.length){const w=el(`<div class="tfact" aria-label="Filtros ativos"></div>`);o.act.forEach(([t,fn])=>{const b=el(`<button class="tfpill" type="button"><span></span><b aria-hidden="true">×</b></button>`);b.querySelector("span").textContent=t;b.setAttribute("aria-label","Tirar o filtro "+t);b.onclick=()=>{fn();render()};w.appendChild(b)});
-    const c=el(`<button class="link" type="button">Limpar tudo</button>`);c.id=o.clearId;c.onclick=()=>{o.onClear();render()};w.appendChild(c);box.appendChild(w)}
-  if(o.open){const pn=el(`<div class="tfpanel"></div>`);if(o.panelId)pn.id=o.panelId;
+    const c=el(`<button class="link" type="button">Limpar tudo</button>`);if(!(o.open&&fcSheet()))c.id=o.clearId;c.onclick=()=>{o.onClear();render()};w.appendChild(c);box.appendChild(w)}
+  /* Lote 20: no celular o painel abre por baixo (folha), com fundo escurecido; toque fora fecha */
+  if(o.open){const sh=fcSheet(),pn=el(`<div class="tfpanel${sh?" tfsheet":""}"></div>`);if(o.panelId)pn.id=o.panelId;
+    if(sh){const bk=el(`<div class="tfback" aria-hidden="true"></div>`);bk.onclick=()=>{o.onToggle();render()};box.appendChild(bk);
+      const hd=el(`<div class="tfsh"><span class="tfsgrab" aria-hidden="true"></span><b>Filtros</b><span class="sp"></span><button class="tfsx" type="button" aria-label="Fechar os filtros">×</button></div>`);
+      if(o.act.length){const cl=el(`<button class="link" type="button">Limpar tudo</button>`);cl.id=o.clearId;cl.onclick=()=>{o.onClear();render()};hd.insertBefore(cl,hd.querySelector(".tfsx"))}
+      hd.querySelector(".tfsx").onclick=()=>{o.onToggle();render()};pn.appendChild(hd)}
     o.groups.forEach(([lab,hint,body])=>{if(!body)return;const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel"></span><span class="tfhint"></span></div></div>`);g.querySelector(".glabel").textContent=lab;g.querySelector(".tfhint").textContent=hint||"";g.appendChild(body);pn.appendChild(g)});
-    if(o.onDone){const d=el(`<button class="btn primary tfdone" type="button">Ver resultados</button>`);d.onclick=o.onDone;pn.appendChild(d)}
+    if(o.onDone||sh){const d=el(`<button class="btn primary tfdone" type="button"></button>`);d.textContent=o.foot&&/\d/.test(o.foot)?`Ver ${o.foot.replace(/ encontrad[oa]s?$/,"")}`:"Ver resultados";d.onclick=o.onDone||(()=>{o.onToggle();render()});pn.appendChild(d)}
     box.appendChild(pn)}
   if(!o.foot&&!o.footId&&!(o.links||[]).some(Boolean))return;
   const ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=o.foot||"";if(o.footId)ft.querySelector("span").id=o.footId;(o.links||[]).forEach(x=>x&&ft.appendChild(x));box.appendChild(ft)}
@@ -8660,34 +8692,17 @@ function tfActive(){const L=[];TF_LV.forEach(([v,t])=>{if(tf.lv.has(v))L.push([t
 function renderTFilters(){const box=$("#tFilters");if(!box)return;box.innerHTML="";filter=tfOn()?"on":"all";
   const pool=[...ALL,...FAC_ITEMS],cnt=f=>pool.filter(f).length,act=tfActive(),n=pool.filter(matches).length;
   {const c=$("#tfCount");if(c)c.textContent=tfOn()||query?`${n} de ${pool.length} ${pool.length===1?"tema":"temas"}`:`${pool.length} temas`}
-  const chip=(t,on,fn,id,dot,tip)=>{const b=el(`<button class="chip tfchip" type="button" aria-pressed="${on}">${dot?`<i class="tfdot ${dot}" aria-hidden="true"></i>`:""}<span></span></button>`);b.querySelector("span").textContent=t;if(id)b.id=id;if(tip)b.title=tip;b.onclick=()=>{fn();render()};return b};
-  /* barra: Filtros (com o número de ativos) e Ordem */
-  const bar=el(`<div class="tfbar"><button class="tftog" type="button" id="tfTog" aria-expanded="${tfPanel}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filtros</span></button><label class="tfsort"><span>Ordem</span><select id="sortSel"><option value="num">Da lista</option><option value="inc">Mais cobrados primeiro</option></select></label></div>`);
-  if(act.length)bar.querySelector(".tftog").appendChild(el(`<b class="tfn">${act.length}</b>`));
-  bar.querySelector(".tftog").onclick=()=>{tfPanel=!tfPanel;lsSet("resid-tfpanel",tfPanel?"1":null);render()};
-  {const so=bar.querySelector("#sortSel");so.value=sortBy;so.onchange=()=>{sortBy=so.value;try{localStorage.setItem("resid-sort",sortBy)}catch(x){}render()}}
-  box.appendChild(bar);
-  /* filtros ativos (sempre à vista, mesmo com o painel fechado) */
-  if(act.length){const w=el(`<div class="tfact" aria-label="Filtros ativos"></div>`);act.forEach(([t,fn])=>{const b=el(`<button class="tfpill" type="button"><span></span><b aria-hidden="true">×</b></button>`);b.querySelector("span").textContent=t;b.setAttribute("aria-label","Tirar o filtro "+t);b.onclick=()=>{fn();render()};w.appendChild(b)});
-    const c=el(`<button class="link" type="button" id="tfClear">Limpar tudo</button>`);c.onclick=()=>{tfReset();render()};w.appendChild(c);box.appendChild(w)}
-  /* painel */
-  if(tfPanel){const pn=el(`<div class="tfpanel" id="tfPanel"></div>`);
-    const grp=(lab,hint,body)=>{const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel"></span><span class="tfhint"></span></div></div>`);g.querySelector(".glabel").textContent=lab;g.querySelector(".tfhint").textContent=hint;g.appendChild(body);pn.appendChild(g)};
-    const chips=L=>{const c=el(`<div class="chips"></div>`);L.forEach(x=>c.appendChild(x));return c};
-    grp("Situação","em que ponto o tema está",chips(TF_LV.map(([v,t,dc])=>chip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v,dc))));
-    grp("Mostrar só","atalhos, combinam com o resto",chips(TF_SHORT.map(([k,t,tip])=>{const c={due:i=>isDue(get(i.key)),weak:i=>isWeak(get(i.key)),pin:i=>get(i.key).pin}[k];return chip(c?`${t} · ${cnt(c)}`:t,tf[k],()=>{tf[k]=!tf[k]},"tf"+k,null,tip)})));
-    const sr=el(`<div class="qfrow tfsels"></div>`),sel=(id,lab,opts,val,on)=>{const l=el(`<label class="qfsel"><span></span><select></select></label>`);l.querySelector("span").textContent=lab;const x=l.querySelector("select");x.id=id;
-      opts.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;x.appendChild(o)});x.value=val;x.onchange=()=>{on(x.value);render()};sr.appendChild(l)};
-    sel("tfArea","Grande área",[["all","Todas as áreas"],...AREAS.map(a=>[a.code,a.name]),...(FAC_ITEMS.some(i=>i.area===FAC_AREA)?[["FAC","Faculdade (sem área)"]]:[])],tf.area,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)});
-    if(tf.area!=="all"){const A=AREAS.find(a=>a.code===tf.area)||FAC_AREA,names=[...new Set([...(A.specs||[]).map(x=>x.name),...FAC_ITEMS.filter(i=>i.area===A).map(i=>i.sp)])].filter(Boolean);
-      sel("tfSp","Especialidade",[["all","Todas"],...names.map(n=>[n,n])],tf.sp,v=>{tf.sp=v;if(v!=="all")openSpecs.add(tf.area+":"+v)})}
-    else{const l=el(`<label class="qfsel"><span>Especialidade</span><select disabled><option>Escolha a área antes</option></select></label>`);sr.appendChild(l)}
-    grp("Onde","grande área e especialidade",sr);
-    box.appendChild(pn)}
-  /* rodapé: resultado e marcação em lote */
-  const ft=el(`<p class="tfres"><span></span></p>`);ft.querySelector("span").textContent=tfOn()||query?(n?`${n} ${n===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com esses filtros"):"Toque numa grande área para ver as especialidades.";
-  const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null}render()};ft.appendChild(bk);
-  box.appendChild(ft);
+  /* Lote 20: o mesmo cartão das outras abas (fcBody), com contagem em todos os atalhos e o painel como folha no celular */
+  const SK=semKS||(semKS=semKeys()),SC={due:i=>isDue(get(i.key)),weak:i=>isWeak(get(i.key)),noq:i=>!get(i.key).qt,high:i=>!i.own&&wOf(i)===3,pin:i=>get(i.key).pin,sem:i=>SK.has(i.key)};
+  const G=[["Situação","em que ponto o tema está",fcChips(TF_LV.map(([v,t,dc])=>fcChip(`${t} · ${cnt(i=>tfLevel(get(i.key))===v)}`,tf.lv.has(v),()=>{tf.lv.has(v)?tf.lv.delete(v):tf.lv.add(v)},"tfl"+v,dc)))],
+    ["Mostrar só","atalhos, combinam com o resto",fcChips(TF_SHORT.map(([k,t,tip])=>fcChip(`${t} · ${cnt(SC[k])}`,tf[k],()=>{tf[k]=!tf[k]},"tf"+k,null,tip)))],
+    ["Onde","grande área e especialidade",fcWhere("tf",tf.area,tf.sp,(a,sp)=>pool.filter(i=>(a==="all"||i.area.code===a)&&(sp==="all"||i.sp===sp)).length,v=>{tf.area=v;tf.sp="all";if(v!=="all")openAreas.add(v)},v=>{tf.sp=v;if(v!=="all")openSpecs.add(tf.area+":"+v)})]];
+  const bk=el(`<button class="link" type="button" id="bulkB"></button>`);bk.textContent=bulk?"Sair da marcação":"Já estudei alguns temas antes do app";bk.onclick=()=>{if(bulk){bulk=null}else{bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null}render()};
+  fcBody(box,{tog:"tfTog",panelId:"tfPanel",open:tfPanel,onToggle:()=>{tfPanel=!tfPanel;lsSet("resid-tfpanel",tfPanel?"1":null)},
+    sort:["sortSel",[["num","Da lista"],["inc","Mais cobrados primeiro"]],sortBy,v=>{sortBy=v;try{localStorage.setItem("resid-sort",sortBy)}catch(x){}}],
+    act,clearId:"tfClear",onClear:()=>tfReset(),groups:G,
+    foot:tfOn()||query?(n?`${n} ${n===1?"tema encontrado":"temas encontrados"}`:"Nenhum tema com esses filtros"):"Toque numa grande área para ver as especialidades.",links:[bk],
+    onDone:()=>{tfPanel=false;lsSet("resid-tfpanel",null);render();const a=$("#areas");if(a)a.scrollIntoView({block:"start"})}});
   renderBulkBar()}
 /* ----- "Já estudei antes": marcar vários temas de uma vez, com a primeira revisão espalhada ----- */
 let bulk=null,bulkUndo=null;
@@ -9144,19 +9159,26 @@ function nSortKeys(keys){const w=k=>wordCount(notes[k]||"");
   if(nSort==="recent")return keys.sort((a,b)=>String(noteAt[b]||"").localeCompare(String(noteAt[a]||"")));
   if(nSort==="big")return keys.sort((a,b)=>w(b)-w(a));if(nSort==="small")return keys.sort((a,b)=>w(a)-w(b));
   return keys.sort((x,y)=>BYKEY[x].num-BYKEY[y].num)}
-let nFOpen=lsGet("resid-nfpanel","")==="1";
+let nFOpen=(document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&lsGet("resid-nfpanel","")==="1";
 function renderNFlags(keys,vis){const box=$("#nFBody");if(!box)return;keys=keys||[];vis=vis||keys;
   {const c=$("#nFCount")||null;if(c)c.textContent=nArea!=="all"||nQuery||nFlags.size?`${vis.length} de ${keys.length} ${keys.length===1?"anotação":"anotações"}`:(n=>`${n} ${n===1?"página":"páginas"}`)(keys.length+freeN.length)}
-  const A=[];Object.entries(NFLAG).forEach(([v,l])=>{if(nFlags.has(v))A.push([l,()=>nFlags.delete(v)])});
+  const A=[];if(nType!=="all")A.push([nType==="free"?"Só páginas livres":"Só páginas dos temas",()=>{nType="all";lsSet("resid-ntype","all")}]);if(freeTag!=="all")A.push(["#"+freeTag,()=>{freeTag="all"}]);
+  Object.entries(NFLAG).forEach(([v,l])=>{if(nFlags.has(v))A.push([l,()=>nFlags.delete(v)])});
   if(nArea!=="all")A.push([fcAreaName(nArea),()=>{nArea="all";nSp="all"}]);if(nArea!=="all"&&nSp!=="all")A.push([nSp,()=>{nSp="all"}]);
   const cntF={week:k=>nFlagOk1(k,"week"),peg:k=>nFlagOk1(k,"peg"),tab:k=>nFlagOk1(k,"tab"),cards:k=>nFlagOk1(k,"cards")};
   const nnN=noNoteKeys().length;if(nNoNote)A.push(["Estudados sem anotação",()=>{nNoNote=false}]);
-  const G=[["Mostrar só","combinam com o resto",fcChips([...Object.entries(NFLAG).map(([v,l])=>fcChip(`${l} · ${keys.filter(cntF[v]).length}`,nFlags.has(v),()=>{nFlags.has(v)?nFlags.delete(v):nFlags.add(v)},null,null,null,{nf:v})),
+  /* Lote 20: Tipo e Etiquetas moram no painel (antes eram duas linhas soltas no cartão) */
+  const nT=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).length,tags=[...new Set([...(nType==="topic"?[]:freeN.flatMap(f=>f.tags)),...(nType==="free"?[]:[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).flatMap(i=>tgOf(i.key)))])].sort();
+  if(freeTag!=="all"&&!tags.includes(freeTag))freeTag="all";
+  const tyG=fcPer("nTy",nType,v=>{nType=v;lsSet("resid-ntype",v);if(v==="free")nNoNote=false},[["all",`Todas · ${freeN.length+nT}`],["free",`Livres · ${freeN.length}`],["topic",`Dos temas · ${nT}`]],"Tipo de página");
+  const tgN=t=>freeN.filter(f=>f.tags.includes(t)).length+[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()&&tgOf(i.key).includes(t)).length;
+  const tgG=tags.length&&!nNoNote?fcChips(tags.map(t=>fcChip(`#${t} · ${tgN(t)}`,freeTag===t,()=>{freeTag=freeTag===t?"all":t},null,null,null,{tag:t}))):null;
+  const G=[["Tipo","páginas livres, dos temas ou todas",tyG],["Etiquetas","as que você deu às páginas",tgG],["Mostrar só","combinam com o resto",fcChips([...Object.entries(NFLAG).map(([v,l])=>fcChip(`${l} · ${keys.filter(cntF[v]).length}`,nFlags.has(v),()=>{nFlags.has(v)?nFlags.delete(v):nFlags.add(v)},null,null,null,{nf:v})),
       fcChip(`Temas estudados sem anotação · ${nnN}`,nNoNote,()=>{nNoNote=!nNoNote;if(nNoNote&&nType==="free"){nType="all";lsSet("resid-ntype","all")}},"nNoNoteB",null,"Temas que você já estudou e ainda não têm página no caderno",{nf:"nonote"})])],
     ["Onde","grande área e especialidade",fcWhere("n",nArea,nSp,(a,sp)=>keys.filter(k=>(a==="all"||BYKEY[k].area.code===a)&&(sp==="all"||BYKEY[k].sp===sp)).length,v=>{nArea=v;nSp="all"},v=>{nSp=v})]];
   fcBody(box,{tog:"nFBtn",panelId:"nFPanel",open:nFOpen,onToggle:()=>{nFOpen=!nFOpen;lsSet("resid-nfpanel",nFOpen?"1":null)},
     sort:["nSortSel",[["sp","Por especialidade"],["recent","Mais recentes primeiro"],["big","Maiores primeiro"],["small","Menores primeiro"]],nSort,v=>{nSort=v}],
-    act:A,clearId:"nClear",onClear:()=>{nFlags.clear();nArea="all";nSp="all";nQuery="";frQ="";frQRaw="";nNoNote=false},groups:G,
+    act:A,clearId:"nClear",onClear:()=>{nFlags.clear();nArea="all";nSp="all";nQuery="";frQ="";frQRaw="";nNoNote=false;nType="all";lsSet("resid-ntype","all");freeTag="all"},groups:G,
     foot:nQuery||A.length?(vis.length?`${vis.length} ${vis.length===1?"anotação encontrada":"anotações encontradas"}`:"Nenhuma anotação com esses filtros"):"",
     onDone:()=>{nFOpen=false;lsSet("resid-nfpanel",null);render();const l=$("#nlist");if(l)l.scrollIntoView({block:"start"})}})}
 /* erros do caderno junto da anotação */
@@ -9278,12 +9300,7 @@ function freeCard(){const c=el(`<section class="card nfree ns-free tfind" id="nF
   c.appendChild(el(`<p class="how ncadhow hx">Um caderno só: páginas livres (aula, plantão, dicas) e a página de cada tema, que é a mesma anotação da aba Residência. Página nova ligada a um tema que ainda não tem anotação vira a página dele.</p>`));
   {const sr=el(`<div class="tfsearch frsearch">${FC_ICO}<input class="search" id="frq" type="search" placeholder="Buscar no caderno (páginas livres e temas)" aria-label="Buscar no caderno" autocomplete="off"></div>`),i=sr.querySelector("input");i.value=frQRaw;
     i.oninput=debounced(()=>{frQRaw=i.value;frQ=norm(i.value.trim());nQuery=frQ;render();const x=$("#frq");if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}});c.appendChild(sr)}
-  {const nT=[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).length,g=el(`<div class="seg ntype" role="group" aria-label="Tipo de página"></div>`);
-    [["all",`Todas · ${freeN.length+nT}`],["free",`Livres · ${freeN.length}`],["topic",`Temas · ${nT}`]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="nTy-"+v;b.textContent=l;b.setAttribute("aria-pressed",nType===v);b.onclick=()=>{nType=v;lsSet("resid-ntype",v);if(v==="free")nNoNote=false;render()};g.appendChild(b)});c.appendChild(g)}
   c.appendChild(el(`<div class="tfilters" id="nFBody"></div>`));
-  {const tags=[...new Set([...(nType==="topic"?[]:freeN.flatMap(f=>f.tags)),...(nType==="free"?[]:[...ALL,...FAC_ITEMS].filter(i=>(notes[i.key]||"").trim()).flatMap(i=>tgOf(i.key)))])].sort();
-    if(freeTag!=="all"&&!tags.includes(freeTag))freeTag="all";
-    if(tags.length&&!nNoNote){const ch=el(`<div class="chips ntagbar"><span class="glabel">Etiquetas</span></div>`);[["all","Todas"],...tags.map(t=>[t,"#"+t])].forEach(([v,l])=>{const b=el(`<button class="chip" type="button" aria-pressed="${freeTag===v}"></button>`);b.textContent=l;b.dataset.tag=v;b.onclick=()=>{freeTag=v;render()};ch.appendChild(b)});c.appendChild(ch)}}
   if(nType==="topic"||nNoNote)return c;
   if(!freeN.length&&!freeEdit){c.appendChild(el(`<p class="cempty">Páginas livres são para o que não é de um tema só: aula, plantão, dica de preceptor, lista de doses. Dê etiquetas (ex.: aula, plantão) e, se quiser, ligue a temas: a página aparece também dentro deles.</p>`));return c}
   if(nType==="all"&&freeN.length)c.appendChild(el(`<h3 class="nlisth">Páginas livres · ${freeN.length}</h3>`));
@@ -9511,7 +9528,7 @@ const HELP=[
 - **Gerar:** abra o tema, escolha quantas (10 é a sugestão) e, se quiser, um subtópico de foco. Seus erros no tema entram no pedido.
 - **Ponto fraco:** menos de 60% de acerto nas questões dos últimos 30 dias (mínimo de 5; sem questões recentes, conta o acerto total). Quem melhora sai sozinho. Um por dia entra na **fila do dia** como 5 questões, escolhido pela conta "onde focar"; depois o tema descansa 7 dias.
 - **Aba Questões:** o gráfico mostra o acerto por **especialidade** (Hematologia, Cardiologia, Neurologia…), do menor acerto para o maior; toque em **Áreas** para ver por grande área. Abaixo, a lista por tema, agrupada por especialidade.
-- **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). Com filtros ligados, um aviso no topo mostra quais são. No computador, tudo aparece numa página só.
+- **Partes da aba** (celular e tablet em pé): **Resumo** (números, meta, ritmo, evolução, gráficos e bancas), **Praticar** (simulado, refazer e onde ganhar pontos) e **Temas** (filtros e lista). A **busca e os Filtros ficam no topo da aba** e valem para todas as partes; os filtros ligados aparecem como etiquetas com **×**. No computador, tudo aparece numa página só.
 - **Simulado misto** (em Praticar), em três passos. **1. De onde vêm as questões:** **Dos meus temas** — **Escolher temas** (busque qualquer tema ou subtópico, filtre por área, situação e incidência, marque os temas e, se quiser, só alguns subtópicos de cada um), **Pontos fracos**, **Onde ganhar pontos**, **Revisões de hoje**, **Plano de hoje**, **Meus erros**, **Questões para refazer** (casos novos sobre as que você errou), **Filtro atual** e, com prova da faculdade perto, a **Prova** — ou **De um material meu** (um ou mais arquivos, até **100 mil caracteres** no total; o material vai em partes, uma por pedido, revezando, e as páginas com figura viram **figuras numeradas**: o Claude pode fazer questões com elas e a figura, recortada, aparece junto da questão). **2. Como vai ser:** quantas questões (5, 10, 20 ou 30), **dificuldade** (Mista, Fácil, Média, Difícil) e **estilo** (Residência ou **ENAMED/INEP**: caso clínico contextualizado, comando direto e 4 alternativas). **3. Resumo:** confira questões, tempo estimado, dificuldade, estilo e temas antes de começar. Uma questão por vez, com o tempo medido; o tema aparece depois de responder. Cada resposta conta no acerto do tema e as erradas vão para Refazer (a figura só fica guardada, menor, nas erradas, até saírem do Refazer). **Encerrar** mostra o resultado das que você já respondeu.
 - **Meus simulados** (embaixo do Simulado misto): cada simulado terminado fica guardado com a nota (só o texto, sem figuras). **Rever** abre cada questão com a sua resposta e o comentário; **Refazer estas** repete as mesmas questões embaralhadas (conta na **meta semanal** de questões, mas não no acerto dos temas nem vai para o Refazer); **Mesmos temas, questões novas** repete as escolhas e os ajustes daquele simulado.
 - **Provas na íntegra** (em Praticar): **+ Importar prova** e escolha o PDF da prova (ou fotos das páginas, na ordem). O texto é lido no aparelho; o Claude transcreve as questões em partes, com tema, comentário e o porquê de cada alternativa. Se o gabarito estiver no PDF (ou em outro PDF, ou colado), vale o **gabarito da banca**. Também vale gabarito comentado ("RESPOSTA 1 · Correta: B" com as justificativas): as páginas dele não vão como questões e as justificativas viram a base do comentário; **Leitura no aparelho:** se o PDF tiver texto, questões numeradas, alternativas A) a E) e gabarito, o app lê tudo sozinho, sem o Claude (o comentário é o da prova e o tema é sugerido pelo nome, com o selo **Tema sugerido** para conferir); se faltar questão ou alternativa, a página for escaneada ou não houver gabarito, ele avisa e pede para **passar pelo Claude**; sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**. Antes de salvar, confira: troque a resposta, anule, escolha o tema ou descarte. Faça no **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar e continuar. Cada resposta conta no acerto do tema e da banca, e as erradas vão para Refazer. Saiu o gabarito oficial depois? **Colar gabarito** corrige tudo e recalcula o seu acerto. Se o comentário de uma questão disser que a certa é outra alternativa, ela ganha o selo **Comentário contradiz o gabarito · conferir** (entra no filtro Conferir) e um aviso na própria questão: troque a resposta em **Revisar questões**. Questões com imagem (ECG, raio X) avisam a página da prova: a imagem não é salva. Cada prova aparece num cartão: nome, banca, número de questões, de onde veio o gabarito e a situação (Não iniciada, Em andamento com a barra de progresso, ou Feita com a nota). Antes de começar, escolha **Modo prova** ou **Modo estudo** (a linha embaixo explica a diferença); Revisar questões, Colar gabarito, Refazer e Excluir ficam no rodapé do cartão.
@@ -9527,7 +9544,7 @@ const HELP=[
 - **Tendência (▲/▼):** em cada tema da lista, o acerto dos últimos 30 dias comparado com os 90 dias antes (aparece com 5+ questões em cada período e diferença de 5 pontos ou mais). O atalho **Piorando** mostra só os que caíram.
 - **Erros na lista:** cada tema mostra quantos erros tem no caderno e de que tipo (toque para abrir), com atalhos **+ erro** e **+ registrar**.
 - **Acerto por banca ou fonte:** informe a banca ao registrar questões (ENARE, USP, Medcel…; o app lembra a última). As geradas pelo Claude entram como "Claude"; o que foi registrado sem banca aparece como "Não informado". Segue o período e os filtros. Se a mesma fonte aparecer com dois nomes (ex.: "Questões no Claude" e "Claude"), o cartão sugere **Juntar**; em **Juntar ou renomear fontes** você escolhe a fonte e o novo nome (ou o nome de outra, para somar as duas), em todos os temas e nas provas importadas. Dá para **Desfazer** logo depois. "Claude" não muda de nome, porque é onde caem as geradas.
-- **Seus temas nas questões** (parte Temas no celular): filtros e a lista de temas num cartão só (os filtros valem para a aba inteira). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (marca o tema em **Escolher temas**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou. Sem filtro, a lista mostra os **10 temas que mais pedem atenção**; **Ver todos** mostra o resto. No computador, em duas colunas.
+- **Seus temas nas questões** (parte Temas no celular): a lista de temas e a ordem (os filtros ficam no topo da aba). **Toque num tema** para abrir ali mesmo o acerto por semana, por banca ou fonte, a tendência, os erros que ainda pedem atenção, as provas na íntegra do tema e as ações **Praticar este tema**, **Pôr no simulado misto** (marca o tema em **Escolher temas**), **Registrar questões**, **Ver erros** e **Abrir na Residência**. A **busca** procura tema ou assunto (também nos subtópicos). **Filtros** abre o painel: **Mostrar só** (**Pontos fracos**, **Incidência muito alta**, **Com erros no caderno**, **Revisão pendente**, **Piorando**), **Período e acerto** (7 a 90 dias, fraco/regular/bom, disciplina da faculdade) e **Onde** (grande área e especialidade, com a contagem de temas com questões). Os filtros ligados viram etiquetas com **×**; **Limpar tudo** volta a tudo; **Ordem** ao lado. O gráfico, os números e a lista seguem os filtros. No celular, **Ver resultados** fecha o painel. O painel fica aberto ou fechado como você deixou. Sem filtro, a lista mostra os **10 temas que mais pedem atenção**; **Ver todos** mostra o resto. No computador, em duas colunas.
 - **Questões antigas:** as registradas antes de 08/10/2026 ficaram com a data do último estudo do tema (estimada). Só as de temas nunca estudados ficam sem data e entram apenas em "Tudo".
 - **Instruções do gerador** (em ⚙ Configurações): ajuste o estilo das questões (banca, dificuldade, formato).
 - **Referências:** cada questão gerada traz a **referência específica** (diretriz ou consenso com sociedade, ano e seção; livro e capítulo; manual do Ministério da Saúde) e o comentário e o porquê de cada alternativa se apoiam nela; nada de "confira na diretriz". **No site**, o pedido manda o Claude **pesquisar e confirmar** a referência na internet e trazer o **link** (Abrir a referência). **No artefato**, sem internet, o Claude só usa o que conhece com segurança e troca a questão quando não há fonte segura (o app descarta questão sem referência). Com material seu, o material é a fonte (página ou slide).
@@ -9540,7 +9557,7 @@ const HELP=[
 - **Na leitura:** seções vazias não aparecem e a seção **Pegadinhas** fica em destaque. Cada seção tem **+ Criar cartão do trecho**; selecionar um texto mostra **+ Cartão com o trecho selecionado**. O app propõe o cartão e **✦ Melhorar com o Claude** reescreve no padrão Osler.
 - **Leitura da prova:** na semana de uma prova da faculdade, **Ler as anotações da prova** (no Estudar hoje) abre no Caderno as páginas de todos os conteúdos dela numa leitura só.
 - **Partes** (no celular e no tablet em pé): **Caderno** (abre primeiro), **Revisar** (Cartões) e **Pegadinhas**. No computador, tudo numa página só. Os erros ficam na aba **Erros**.
-- **Uma busca só:** procura nas páginas livres e nas dos temas (título, texto e etiquetas). Embaixo, escolha **Todas**, **Livres** ou **Temas**. **Etiquetas** (#aula, #plantão…) filtram os dois tipos.
+- **Uma busca só:** procura nas páginas livres e nas dos temas (título, texto e etiquetas). Em **Filtros**, escolha o **Tipo** (Todas, Livres ou Dos temas) e as **Etiquetas** (#aula, #plantão…), que filtram os dois tipos.
 - **Página do tema e páginas ligadas:** cada tema tem **uma página principal** e quantas **páginas ligadas** você quiser. Uma página nova ligada a **um** tema que ainda não tem anotação **vira a página do tema** (com título e etiquetas); se o tema já tem, ela fica como página ligada e aparece no tema em **Outras páginas ligadas**. No tema, **+ Nova página ligada** abre o caderno já ligado a ele.
 - **Reler:** a anotação de cada tema aparece dentro da revisão dele (Residência › Revisões) e no plano quando você continua um tema. Em **Revisar**, a linha "N temas estudados sem anotação · ver" abre esses temas no Caderno.
 - **Pegadinhas e destaques:** junta, por especialidade, as linhas de **pegadinha** (começando com >), os textos ==destacados== e os itens de seções chamadas "Pegadinhas", "Alertas" ou "Cuidado". Segue a busca e os filtros.
@@ -9703,7 +9720,14 @@ No seletor **Faculdade**: notas das provas, quanto de cada prova e fechamento do
 | Esqueci a senha | Na tela de entrar, digite o e-mail e toque em **Esqueci minha senha**. Confira o spam. |
 | A resposta colada não virou questões | Copie a resposta inteira, do primeiro [ ao último ]. |
 | O site não mostra a mudança nova | Feche e abra o app duas vezes. |
-| Importei o backup errado | **Desfazer a última importação** (até 7 dias). |`]
+| Importei o backup errado | **Desfazer a última importação** (até 7 dias). |`],
+["Filtros",`Todos os filtros do app seguem o mesmo jeito:
+- **Busca + Filtros:** a busca fica à vista; **Filtros** abre o painel com os grupos. No **celular**, o painel sobe de baixo (toque fora ou no × para fechar; **Ver resultados** mostra a lista).
+- **Escolher um** (período, tipo): botões lado a lado. **Ligar e combinar** (atalhos, situação, origem): etiquetas; toque de novo para desligar.
+- **Contagem em tudo:** cada etiqueta mostra quantos itens tem; com **0**, fica apagada.
+- **Filtros ligados** aparecem como etiquetas com **×** e o número no botão Filtros; **Limpar tudo** tira todos.
+- **Período padrão:** **7 · 15 · 30 · 60 · 90 dias · Tudo** (Questões, Erros, Foco e PDF). As Estatísticas comparam com o período anterior, por isso ficam em 7, 30 e 90 dias.
+- Cada aba lembra os seus filtros. A **busca geral** (lupa) separa os resultados por tipo.`]
 ];
 let helpQ="";
 function renderHelp(){const box=$("#helpList");const q=helpQ?norm(helpQ):"";const prev=new Set([...box.querySelectorAll("details[open]")].map(d=>d.dataset.i));box.innerHTML="";let n=0;
