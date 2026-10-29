@@ -117,7 +117,21 @@
     if (!starts.length) return undefined;
     const i = Math.min(...starts), j = Math.max(t.lastIndexOf("]"), t.lastIndexOf("}"));
     if (j > i) { try { return JSON.parse(t.slice(i, j + 1)); } catch (e) {} }
-    return undefined;
+    return salvage(t);
+  }
+  /* Lote 20D: resposta cortada no meio (a conversa parou): aproveita os objetos completos do array; o app pede o resto */
+  function salvage(t) {
+    const i = t.indexOf("["); if (i < 0) return undefined;
+    const out = []; let depth = 0, inStr = false, esc = false, st = -1;
+    for (let k = i + 1; k < t.length; k++) {
+      const ch = t[k];
+      if (inStr) { if (esc) esc = false; else if (ch === "\\") esc = true; else if (ch === '"') inStr = false; continue; }
+      if (ch === '"') { inStr = true; continue; }
+      if (ch === "{") { if (depth === 0) st = k; depth++; }
+      else if (ch === "}") { depth--; if (depth === 0 && st >= 0) { try { out.push(JSON.parse(t.slice(st, k + 1))); } catch (e) {} st = -1; } }
+      else if (ch === "]" && depth === 0) break;
+    }
+    return out.length ? out : undefined;
   }
   function manual(input, opts, asJson) {
     return new Promise((resolve, reject) => {
