@@ -459,9 +459,10 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
 - **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
 - **Filtro grande:** palavras-chave (no enunciado E no comentário, sem diferenciar acentos), grande área, especialidade, tema, subtópico,
   banca, ano, nível da prova (R1, R+, Revalida; é só mais um filtro), dificuldade, favoritas, com **presets** salvos
-  (ex.: "minhas teimosas" = as que erro várias vezes).
-- **Dificuldade:** da fonte (percentual de acerto, quando houver) e pessoal pelo histórico, só a partir de ~3 tentativas (com 1 é ruído;
-  a confirmar com o usuário).
+  (e o fixo "Teimosas", abaixo).
+- **Dificuldade:** da fonte (percentual de acerto, quando houver). Sem rótulo de dificuldade pessoal: no lugar dele, o preset fixo
+  **"Teimosas"**: entra com 3 erros no total; sai com 2 acertos seguidos em dias diferentes (igual ao `RD_NEED` do Refazer); errou
+  de novo depois de sair → volta na hora.
 - **Sorteio inteligente** (simulado do banco): sem repetir o já feito; inéditas dos pontos fracos e dos temas mais cobrados primeiro,
   além do eixo atual da faculdade. **Incidência por banca** calculada pelo próprio banco classificado (o que mais cai nas provas-alvo do Perfil).
 - **Modos:** estudo (gabarito na hora) e prova (cronômetro, resultado no fim).
@@ -471,8 +472,8 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
 - **Uma agenda só:** errou no banco → vai para o Refazer (sem sistema de revisão novo). Refazer no banco uma questão que está agendada
   no Refazer conta como a revisão dela (não estraga o espaçamento).
 - **Contagem:** só a 1ª tentativa conta no acerto do tema (como no Refazer e nos simulados refeitos); as refeitas ficam no histórico da
-  questão e contam na meta semanal de questões. **Histórico de antes do banco:** ao criar o banco, trazer as respostas já dadas
-  (`exProg`, Refazer, `sims`); senão uma questão já feita aparece como inédita e a "1ª tentativa" contaria duas vezes.
+  questão e contam na meta semanal de questões. **Histórico de antes do banco:** NÃO é trazido (decisão do usuário): o banco começa do
+  zero, e a 1ª tentativa no banco conta normalmente, mesmo que a questão já tenha sido feita antes em outro lugar do app.
 - **Histórico por questão:** só DEPOIS de responder aparece uma linha curta, ex.: "Você já fez esta questão 4 vezes: errou 1, acertou 3".
 - **Tempo por questão:** medir quanto leva em cada uma (ritmo de prova; mostra onde hesita).
 - **Questões irmãs:** ao errar, sugerir outra inédita do mesmo subtópico (aprendeu o conceito ou decorou a questão?).
