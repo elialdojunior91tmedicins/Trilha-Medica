@@ -435,6 +435,35 @@ consultado quando há dúvida. Responda em português.
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
   `tools/backup-drive-LEIA.md`. **Mudou o formato dos dados ou um campo novo no `buildBackup` → atualizar o script** (teste `tests/t87.js` compara os dois).
 
+## Ideia: Banco de questões
+
+Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo: registrar em `problemas-a-resolver.md` do projeto e planejar).
+
+- **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
+  importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida, e bancos de cursinho). Conteúdo de cursinho é só para uso
+  pessoal: não pode ser distribuído se o Nexus for comercializado.
+- **Tamanho:** meta de ~10 mil questões (~4,5 KB cada, ~45 MB). Na conta, em pacotes como os cartões (~50 pacotes, cabe no plano gratuito);
+  no aparelho, IndexedDB (o espaço atual é de ~5 MB).
+- **Importação:** o leitor do próprio aparelho lê PDF com texto e gabarito sem o Claude; o Claude só entra nas questões que o leitor não
+  conseguir ler (lotes de 20 pelo Claude dariam ~500 rodadas). Começar pequeno: uma banca, ~500 questões, validar leitura, classificação e
+  filtro antes de subir as dez mil.
+- **Sem duplicatas:** a mesma questão (ex.: ENARE oficial e no banco do cursinho) vira uma só.
+- **Classificação:** cada questão encaixada no tema certo da residência (HIV em HIV, anemia em Anemias…), com grande área, especialidade,
+  tema e subtópico. O app sugere sozinho; o usuário confere só as duvidosas.
+- **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
+- **Filtro grande:** palavras-chave, grande área, especialidade, tema, subtópico, banca, ano e dificuldade, com **presets** salvos
+  (ex.: "minhas teimosas" = as que erro várias vezes).
+- **Dificuldade:** do cursinho (percentual de acerto, quando houver) e pessoal (pelo histórico: errada várias vezes = "difícil para você").
+- **Sorteio inteligente** (simulado do banco): sem repetir o já feito; inéditas dos pontos fracos e dos temas mais cobrados primeiro,
+  além do eixo atual da faculdade.
+- **Questão desatualizada:** marcar as anuladas e as que dependem de diretriz que já mudou.
+- **Uma agenda só:** errou no banco → vai para o Refazer (sem sistema de revisão novo).
+- **Contagem:** só a 1ª tentativa conta no acerto do tema (como no Refazer e nos simulados refeitos); as refeitas ficam no histórico da
+  questão e contam na meta semanal de questões.
+- **Histórico por questão:** só DEPOIS de responder aparece uma linha curta, ex.: "Você já fez esta questão 4 vezes: errou 1, acertou 3".
+- **Tempo por questão:** medir quanto leva em cada uma (ritmo de prova; mostra onde hesita).
+- **Questões irmãs:** ao errar, sugerir outra inédita do mesmo subtópico (aprendeu o conceito ou decorou a questão?).
+
 ## Cuidados
 
 - Mudança no formato dos dados → migração automática (veja `migrate()` e `SUB_PERM`).
