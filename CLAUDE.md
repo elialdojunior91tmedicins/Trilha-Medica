@@ -460,7 +460,7 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
   mora dentro dele, como partes no topo: Simulado misto, Refazer, Provas na íntegra e Resumo (= estatísticas do banco, com acerto por banca).
   Gerador do Claude, simulados e provas importadas passam a alimentar o banco; Simulado misto e Refazer também puxam questões dele.
 - **Provas na íntegra já importadas entram no banco desde o 1º dia** (enunciado, alternativas, gabarito, comentário, tema), o que evita
-  a tela vazia no começo; o histórico de respostas delas recomeça do zero, como o resto. Banco vazio: atalho para importar a 1ª prova.
+  a tela vazia no começo, COM o histórico de respostas (ver "Histórico de antes do banco"). Banco vazio: atalho para importar a 1ª prova.
 - **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
 - **Layout APROVADO pelo usuário (prints em 30/10/2026, 15h20; esboço estático, ainda não programado):**
   - Computador: título "Banco de questões" + resumo (nº de questões, bancas, anos); faixa de partes no topo (Banco · Simulado misto ·
@@ -491,8 +491,13 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
 - **Uma agenda só:** errou no banco → vai para o Refazer (sem sistema de revisão novo). Refazer no banco uma questão que está agendada
   no Refazer conta como a revisão dela (não estraga o espaçamento).
 - **Contagem:** só a 1ª tentativa conta no acerto do tema (como no Refazer e nos simulados refeitos); as refeitas ficam no histórico da
-  questão e contam na meta semanal de questões. **Histórico de antes do banco:** NÃO é trazido (decisão do usuário): o banco começa do
-  zero, e a 1ª tentativa no banco conta normalmente, mesmo que a questão já tenha sido feita antes em outro lugar do app.
+  questão e contam na meta semanal de questões. **Histórico de antes do banco: É TRAZIDO** (o usuário mudou de ideia em 30/10/2026, 15h38,
+  revogando a decisão de recomeçar do zero). Na criação do banco, as questões já feitas entram com acertos e erros: provas na íntegra
+  (`exProg`: resposta e dia de cada questão, todas as tentativas), Meus simulados (`sims`) e Refazer (`redo`: erros, `ok`, `wr`).
+  Essas respostas antigas JÁ contam no acerto do tema (`qd`/`qb`/`hist`): a migração só grava o histórico da questão e NÃO soma de
+  novo; a 1ª tentativa é a antiga, e as feitas no banco depois são refeitas (contam só na meta semanal). Limite: questão gerada que foi
+  ACERTADA antes do banco nunca foi guardada, então não há o que trazer; a errada entra pelo Refazer (se ainda estiver lá) ou pelo erro
+  no caderno com `e.q`. Teimosas já nascem com os erros trazidos.
 - **Histórico por questão:** só DEPOIS de responder aparece uma linha curta, ex.: "Você já fez esta questão 4 vezes: errou 1, acertou 3".
 - **Tempo por questão:** medir quanto leva em cada uma (ritmo de prova; mostra onde hesita).
 - **Questões irmãs:** ao errar, sugerir outra inédita do mesmo subtópico (aprendeu o conceito ou decorou a questão?).
