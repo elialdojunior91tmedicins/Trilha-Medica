@@ -440,29 +440,48 @@ consultado quando há dúvida. Responda em português.
 Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo: registrar em `problemas-a-resolver.md` do projeto e planejar).
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
-  importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida, e bancos de cursinho). Conteúdo de cursinho é só para uso
-  pessoal: não pode ser distribuído se o Nexus for comercializado.
-- **Tamanho:** meta de ~10 mil questões (~4,5 KB cada, ~45 MB). Na conta, em pacotes como os cartões (~50 pacotes, cabe no plano gratuito);
-  no aparelho, IndexedDB (o espaço atual é de ~5 MB).
+  importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).
+- **Tamanho:** meta de ~10 mil questões (~4,5 KB de texto cada, ~45 MB). Na conta, em pacotes como os cartões (~50 pacotes, cabe no plano gratuito);
+  no aparelho, IndexedDB (o espaço atual é de ~5 MB). **Imagens** (ECG, raio-X, pele) fora dessa conta: comprimidas, guardadas à parte
+  (como `exFigs`) e baixadas só ao abrir a questão.
 - **Importação:** o leitor do próprio aparelho lê PDF com texto e gabarito sem o Claude; o Claude só entra nas questões que o leitor não
   conseguir ler (lotes de 20 pelo Claude dariam ~500 rodadas). Começar pequeno: uma banca, ~500 questões, validar leitura, classificação e
   filtro antes de subir as dez mil.
-- **Sem duplicatas:** a mesma questão (ex.: ENARE oficial e no banco do cursinho) vira uma só.
+- **Sem duplicatas:** a mesma questão (ex.: ENARE oficial e no banco do cursinho) vira uma só. Casos com várias perguntas ficam juntos
+  (no sorteio e na remoção de duplicatas).
+- **Comentário:** prova oficial não traz comentário. O Claude gera só quando a questão é aberta (porquê de cada alternativa, como os
+  cursinhos) e o app guarda para não gerar de novo.
+- **Gabarito:** separar preliminar e definitivo (muda após os recursos); marcar quando o gabarito de outra fonte diverge do oficial.
+- **"Assinale a incorreta":** SEM selo, de propósito (a prova real não perdoa desatenção).
 - **Classificação:** cada questão encaixada no tema certo da residência (HIV em HIV, anemia em Anemias…), com grande área, especialidade,
-  tema e subtópico. O app sugere sozinho; o usuário confere só as duvidosas.
+  tema e subtópico; uma questão pode ter mais de um tema (ex.: sepse na gestante), e as que não cabem em nenhum ficam em "Sem tema".
+  O app sugere sozinho; o usuário confere só as duvidosas.
 - **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
-- **Filtro grande:** palavras-chave, grande área, especialidade, tema, subtópico, banca, ano e dificuldade, com **presets** salvos
+- **Filtro grande:** palavras-chave (no enunciado E no comentário, sem diferenciar acentos), grande área, especialidade, tema, subtópico,
+  banca, ano, nível da prova (R1, R+, Revalida; é só mais um filtro), dificuldade, favoritas, com **presets** salvos
   (ex.: "minhas teimosas" = as que erro várias vezes).
-- **Dificuldade:** do cursinho (percentual de acerto, quando houver) e pessoal (pelo histórico: errada várias vezes = "difícil para você").
+- **Dificuldade:** da fonte (percentual de acerto, quando houver) e pessoal pelo histórico, só a partir de ~3 tentativas (com 1 é ruído;
+  a confirmar com o usuário).
 - **Sorteio inteligente** (simulado do banco): sem repetir o já feito; inéditas dos pontos fracos e dos temas mais cobrados primeiro,
-  além do eixo atual da faculdade.
+  além do eixo atual da faculdade. **Incidência por banca** calculada pelo próprio banco classificado (o que mais cai nas provas-alvo do Perfil).
+- **Modos:** estudo (gabarito na hora) e prova (cronômetro, resultado no fim).
+- **Quando usar:** sem cota diária na fila do dia. Entra ao concluir um tema ("Fixar com questões do banco") ou quando o usuário quiser
+  abrir e fazer questões.
 - **Questão desatualizada:** marcar as anuladas e as que dependem de diretriz que já mudou.
-- **Uma agenda só:** errou no banco → vai para o Refazer (sem sistema de revisão novo).
+- **Uma agenda só:** errou no banco → vai para o Refazer (sem sistema de revisão novo). Refazer no banco uma questão que está agendada
+  no Refazer conta como a revisão dela (não estraga o espaçamento).
 - **Contagem:** só a 1ª tentativa conta no acerto do tema (como no Refazer e nos simulados refeitos); as refeitas ficam no histórico da
-  questão e contam na meta semanal de questões.
+  questão e contam na meta semanal de questões. **Histórico de antes do banco:** ao criar o banco, trazer as respostas já dadas
+  (`exProg`, Refazer, `sims`); senão uma questão já feita aparece como inédita e a "1ª tentativa" contaria duas vezes.
 - **Histórico por questão:** só DEPOIS de responder aparece uma linha curta, ex.: "Você já fez esta questão 4 vezes: errou 1, acertou 3".
 - **Tempo por questão:** medir quanto leva em cada uma (ritmo de prova; mostra onde hesita).
 - **Questões irmãs:** ao errar, sugerir outra inédita do mesmo subtópico (aprendeu o conceito ou decorou a questão?).
+- **Da questão para o resto do app:** criar cartão (`cdErrEl`), favoritar e levar para a anotação (`qActsEl`), como nas outras questões.
+- **Backup (proposta):** o backup diário continua pequeno, com o histórico de respostas do banco. As questões vão para arquivos à parte
+  na mesma pasta do Drive, um por pacote, regravados só quando o pacote muda (as questões quase não mudam). Assim nenhum arquivo passa
+  do limite do Apps Script e o gatilho não estoura o tempo. "Exportar backup" no site pergunta se leva o banco. Atualizar
+  `tools/backup-drive.gs` e o teste t87.
+- **Cursinhos:** o usuário NÃO vai copiar banco de cursinho (os termos de uso costumam proibir). Fontes externas = provas oficiais.
 
 ## Cuidados
 
