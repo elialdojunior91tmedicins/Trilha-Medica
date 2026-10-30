@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=efb19a9f">
+<link rel="stylesheet" href="site.css?v=4976fdc0">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=efb19a9f"></script>
-<script src="bridge.js?v=efb19a9f"></script>
+<script src="config.js?v=4976fdc0"></script>
+<script src="bridge.js?v=4976fdc0"></script>
 </head>
 <body>
 <script>
@@ -2939,7 +2939,7 @@ function setLevel(it,v){const k=it.key,s=get(k);
   upd(k,x=>x.l=v);commit()}
 
 /* anotações */
-const NOTE_MAX=30000;
+const NOTE_MAX=60000;
 let noteAt={}, noteMode={}, noteAI={}, noteUndo={}, focusKey=null, nQuery="", nArea="all", nOpen=new Set(), downloadsFn=null;
 function wordCount(t){return (t.match(/\S+/g)||[]).length}
 function whenLabel(iso){if(!iso)return "";const d=new Date(iso);if(isNaN(d))return "";
