@@ -10,8 +10,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   const tap=async sel=>{await p.evaluate(s=>document.querySelector(s).scrollIntoView({block:"center"}),sel);await (mob?p.tap(sel):p.click(sel));await p.waitForTimeout(150)};
   await p.evaluate(()=>{const t=dnum(today());
-    fac={sems:[{id:"s",name:"6º período",archived:false}],discs:[{id:"d",semId:"s",name:"NCS – Tutoria",items:[],div:"sp",sps:[{id:"sp1",name:"SP 3.1 – HIV",items:["T:CM-30"],objs:["Descrever a transmissão do HIV"],fech:fromNum(t-1)},{id:"sp2",name:"SP 3.2 – Tuberculose",items:["T:PED-21"],objs:[],fech:fromNum(t+9)}]}],
-      provas:[{id:"p1",discId:"d",name:"Prova da UC",date:fromNum(t+10),items:["T:CM-30"],done:[]}],own:{}};facNormalize();saveFac();
+    fac={sems:[{id:"s",name:"6º período",archived:false}],discs:[{id:"d",semId:"s",name:"NCS – Tutoria",items:[],div:"sp",sps:[{id:"sp1",name:"SP 3.1 – HIV",items:["T:CM-30"],objs:["Descrever a transmissão do HIV"],fech:fromNum(t-1)},{id:"sp2",name:"SP 3.2 – Tuberculose",items:["T:PED-21"],objs:[],fech:fromNum(wpMon(t)+15)}]}],
+      provas:[{id:"p1",discId:"d",name:"Prova da UC",date:fromNum(wpMon(t)+16),items:["T:CM-30"],done:[]}],own:{}};facNormalize();saveFac();
     ui.prefs.wday=[180,180,180,180,180,180,180];ui.prefs.wplans={};saveUI();dayPlan=makeDayPlan();savePlan();backStack=[];setView("fac");facOpenSem.add("s");facCalOpen.add("s");render()});
   await p.waitForTimeout(150);
   /* 1. calendário dentro do semestre */
