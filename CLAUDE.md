@@ -456,7 +456,18 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
 - **Classificação:** cada questão encaixada no tema certo da residência (HIV em HIV, anemia em Anemias…), com grande área, especialidade,
   tema e subtópico; uma questão pode ter mais de um tema (ex.: sepse na gestante), e as que não cabem em nenhum ficam em "Sem tema".
   O app sugere sozinho; o usuário confere só as duvidosas.
+- **A aba Questões VIRA o Banco de questões** (decidido por voz em 30/10/2026, 15h): o banco é a tela principal da aba e o que existe hoje
+  mora dentro dele, como partes no topo: Simulado misto, Refazer, Provas na íntegra e Resumo (= estatísticas do banco, com acerto por banca).
+  Gerador do Claude, simulados e provas importadas passam a alimentar o banco; Simulado misto e Refazer também puxam questões dele.
+- **Provas na íntegra já importadas entram no banco desde o 1º dia** (enunciado, alternativas, gabarito, comentário, tema), o que evita
+  a tela vazia no começo; o histórico de respostas delas recomeça do zero, como o resto. Banco vazio: atalho para importar a 1ª prova.
 - **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
+- **Layout (esboço, prints AINDA não feitos; montar e pedir aprovação antes de programar):**
+  - Computador: no topo, busca por palavra-chave + linha de presets (Inéditas, Teimosas, Eixo atual…) e as partes da aba; coluna fixa
+    à esquerda com os filtros (área, especialidade, tema, banca, ano, nível…); no centro, 4 contadores (não resolvidas, resolvidas,
+    acertadas, erradas) e a lista; cada linha com banca, ano, tema e sinal de certa/errada; botão em destaque "Resolver estas" /
+    "Simulado com estas".
+  - Celular: busca e presets no topo, filtros numa folha de baixo (`fcSheet`), lista na tela toda.
 - **Filtro grande:** palavras-chave (no enunciado E no comentário, sem diferenciar acentos), grande área, especialidade, tema, subtópico,
   banca, ano, nível da prova (R1, R+, Revalida; é só mais um filtro), dificuldade, favoritas, com **presets** salvos
   (e o fixo "Teimosas", abaixo).
