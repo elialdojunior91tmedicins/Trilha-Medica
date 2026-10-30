@@ -462,12 +462,20 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
 - **Provas na íntegra já importadas entram no banco desde o 1º dia** (enunciado, alternativas, gabarito, comentário, tema), o que evita
   a tela vazia no começo; o histórico de respostas delas recomeça do zero, como o resto. Banco vazio: atalho para importar a 1ª prova.
 - **Tela do banco:** ver todas, separadas em não resolvidas, resolvidas, acertadas e erradas; refazer qualquer questão avulsa.
-- **Layout (esboço, prints AINDA não feitos; montar e pedir aprovação antes de programar):**
-  - Computador: no topo, busca por palavra-chave + linha de presets (Inéditas, Teimosas, Eixo atual…) e as partes da aba; coluna fixa
-    à esquerda com os filtros (área, especialidade, tema, banca, ano, nível…); no centro, 4 contadores (não resolvidas, resolvidas,
-    acertadas, erradas) e a lista; cada linha com banca, ano, tema e sinal de certa/errada; botão em destaque "Resolver estas" /
-    "Simulado com estas".
-  - Celular: busca e presets no topo, filtros numa folha de baixo (`fcSheet`), lista na tela toda.
+- **Layout APROVADO pelo usuário (prints em 30/10/2026, 15h20; esboço estático, ainda não programado):**
+  - Computador: título "Banco de questões" + resumo (nº de questões, bancas, anos); faixa de partes no topo (Banco · Simulado misto ·
+    Refazer com selo · Provas na íntegra · Resumo); busca (enunciado e comentário) + linha de presets (Inéditas, Teimosas, Eixo atual,
+    Prova da faculdade, Favoritas, "+ Salvar filtro"; presets aprovados); coluna fixa à esquerda com os filtros (Situação; Onde =
+    **Grande área › Especialidade › Tema**, três seletores com nome e contagem, cada um limitado pelo anterior; Banca; Ano; Nível da
+    prova; Mais = Favoritas, Com imagem, Esconder desatualizadas); no centro, 4 contadores que também filtram (Não resolvidas,
+    Resolvidas, Acertadas com %, Erradas), etiquetas dos filtros ativos com ×, "N questões com esses filtros", Ordem, botões
+    "Simulado com estas" e "Resolver estas"; lista em que cada linha tem ✓/✕ (tracejado = inédita), enunciado em 2 linhas, banca e ano,
+    tema, selos (Teimosa, Imagem, Diretriz mudou) e, à direita, o histórico ("errou 3 · acertou 1", "há 2 dias"; aprovado na lista,
+    a linha curta depois de responder continua).
+  - Celular: no lugar da faixa, seletor "Banco ▾" (com selo do Refazer) que abre uma folha de baixo com as 5 partes, cada uma com
+    ícone e uma linha de explicação (Refazer com "N hoje"); busca + botão "Filtros N"; presets em linha; contadores 2×2; etiquetas;
+    lista; "Resolver estas N questões" fixo acima da barra de baixo; filtros na folha de baixo (`fcSheet`) com "Ver N questões".
+  - Banco vazio: cartão "Seu banco começa aqui" com "Importar prova em PDF" e "Gerar questões de um tema".
 - **Filtro grande:** palavras-chave (no enunciado E no comentário, sem diferenciar acentos), grande área, especialidade, tema, subtópico,
   banca, ano, nível da prova (R1, R+, Revalida; é só mais um filtro), dificuldade, favoritas, com **presets** salvos
   (e o fixo "Teimosas", abaixo).
