@@ -508,6 +508,11 @@ Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo:
   do limite do Apps Script e o gatilho não estoura o tempo. "Exportar backup" no site pergunta se leva o banco. Atualizar
   `tools/backup-drive.gs` e o teste t87.
 - **Cursinhos:** o usuário NÃO vai copiar banco de cursinho (os termos de uso costumam proibir). Fontes externas = provas oficiais.
+- **High Yield com o banco (01/11/2026):** o selo HY do tema e o ★ HY dos subtópicos entram no Lote 21 (item 7; subtópicos com estimativa
+  do Claude `HY_DEF`, provisória). Com o banco: recalcular o HY de tema e subtópico pela contagem no banco (ENAMED/ENARE pesam mais, outras
+  provas também contam; as provas-alvo do Perfil definem o peso; o toque do usuário sempre vence); ★ de fato HY na anotação (linha que começa
+  com `★`, filtro "Só HY" em Pegadinhas e destaques, etiqueta `high-yield` no cartão do trecho); selo "conceito recorrente" na questão cobrada
+  em 2+ provas/bancas. HY (o que cai) e "Onde focar" (o que cai × onde erra) continuam separados. Detalhes em `banco-de-questoes.md` do projeto.
 
 ## Cuidados
 
