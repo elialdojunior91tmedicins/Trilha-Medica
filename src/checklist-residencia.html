@@ -5764,6 +5764,42 @@ function qData(q){const S=clSents(q.enunciado).filter(x=>!(/\?$/.test(x)||/\b(as
   const r=q.alternativas.find(a=>a.letra===q.correta),K=clWords([r&&r.texto,q.comentario,q.conceito,q.pc].join(" "));
   const C=[];S.forEach((x,i)=>x.split(/[;,]\s+|\.\s+|\s+e\s+(?=[a-zà-ú]+\s)/).forEach(c=>{c=c.trim().replace(/[.;:]+$/,"").replace(/^(?:e|mas|porém)\s+/i,"");if(c.length<6)return;const ws=clWords(c);let v=0;ws.forEach(w=>{if(K.has(w))v+=1.5});if(/\d/.test(c))v+=1.2;if(CL_EXAM.test(c))v+=1;if(i===0&&/\b(anos|homem|mulher|paciente|criança|lactente|gestante)\b/i.test(c)&&!/\d{2,}\s*(mg|g\/|mm|%)/.test(c))v-=.6;if(v>0)C.push({c,v,o:C.length})}));
   return C.sort((a,b)=>b.v-a.v||a.o-b.o).slice(0,3).sort((a,b)=>a.o-b.o).map(x=>clCut(x.c,80)).join(" · ")}
+/* ===== Lote 21 item 6 (Proposta B): o app organiza o erro sozinho — regra, dados decisivos, raciocínio e por que não a sua =====
+   Função pura a partir de e.q (questão inteira guardada). O Claude continua como melhoria opcional (src "claude"); o que o usuário corrige é src "eu". */
+const EO_AGE=/\b(\d{1,3})\s*(anos|meses|dias)\b(?!\s*(?:de\s+)?(?:evolu|hist|tratament|uso|diagn))/i,EO_VIT=/\b(PA|press[ãa]o arterial|FC|frequ[êe]ncia card[ií]aca|FR|frequ[êe]ncia respirat|temperatura|SatO2|satura[çc][ãa]o)\b/i;
+const EO_UNIT=/\d[\d.,]*\s*(?:mg|g\/d?l|mm³|mm3|c[ée]lulas|%|ng|mcg|µg|ui|u\/l|ml\/min|ml|mmhg|°c|cm|kg|mmol|meq|x\s*10|mil\b|cópias|log)/i;
+const EO_SYM=/\b(cefaleia|dor|febre|tosse|dispneia|sangramento|v[ôo]mito|diarreia|perda|altera[çc][ãa]o|les[ãa]o|les[õo]es|placas?|massa|n[óo]dulo|adenopatia|edema|icter[íi]cia|convuls|confus|sonol|fraqueza|emagrec|sudorese|aumento|redu[çc][ãa]o|piora|recrudesc)/i;
+const EO_NEG=/\b(sem|n[ãa]o|nega|aus[êe]ncia|negativ[oa]s?|normal|normais|indetect[áa]vel)\b/i;
+function eoClean(t){return cmTidy(String(t||"")).replace(/^(?:Gabarito:?\s*[A-E]\)?[^.]*?(?:Por que está correta:|$))/i,"").replace(/^\s*(?:Por que (?:est[áa] )?corret[ao]:?|Correta[.:]?)\s*/i,"").replace(/\s+/g," ").trim()}
+/* a justificativa da certa no comentário (sem os trechos das outras alternativas) */
+function eoJust(Q){const cm=String(Q.cm||"");if(!cm)return "";let t=cm;const m=/Por que (?:est[áa] )?corret[ao]:?\s*([\s\S]*?)(?=Alternativa\s+[A-E]\b|Letra\s+[A-E]\b|$)/i.exec(cm);if(m)t=m[1];else t=t.split(/Alternativa\s+[A-E]\b|Letra\s+[A-E]\b/)[0];
+  const S=clSents(eoClean(t)).filter(x=>!/^[A-E]\)/.test(x)&&x.length>12);return S.slice(0,2).join(" ")}
+function eoNot(Q){const mi=Q.a.find(a=>a.l===Q.m);if(!mi||Q.m===Q.c)return "";if(mi.p)return eoClean(mi.p);
+  const re=new RegExp(`(?:Alternativa|Letra)\\s+${Q.m}\\b[^:]*:\\s*([\\s\\S]*?)(?=(?:Alternativa|Letra)\\s+[A-E]\\b|$)`,"i"),m=re.exec(String(Q.cm||""));return m?eoClean(m[1]):""}
+/* dados decisivos: trechos curtos do caso; valoriza exames, valores com unidade e negações ligadas ao que decide; descarta idade e sinais vitais que o comentário não usa */
+function eoData(Q,ref){const S=clSents(Q.e).filter(x=>!(/\?$/.test(x)||/\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i.test(x)));if(!S.length)return [];
+  const r=Q.a.find(a=>a.l===Q.c),K=clWords([r&&r.t,ref,Q.cm,Q.co].join(" ")),Wrong=new Set();Q.a.filter(a=>a.l!==Q.c).forEach(a=>clWords(a.t).forEach(w=>Wrong.add(w)));
+  const usesAge=/\b(idade|idos[oa]|crian[çc]a|lactente|adolescente|jovem)\b/i.test([ref,Q.cm].join(" ")),usesVit=EO_VIT.test([ref,Q.cm].join(" "));
+  const score=c=>{const ws=clWords(c);let v=0,hit=0;ws.forEach(w=>{if(K.has(w)&&!Wrong.has(w)){v+=1.6;hit++}else if(K.has(w))v+=.6});
+    if(EO_UNIT.test(c))v+=1.3;else if(/\d/.test(c))v+=.5;if(CL_EXAM.test(c))v+=.9;if(EO_NEG.test(c)&&(hit||CL_EXAM.test(c)||EO_UNIT.test(c)))v+=.8;
+    if(EO_SYM.test(c))v+=.6;if(EO_AGE.test(c)&&!usesAge&&ws.size<=6)v-=1.8;if(EO_VIT.test(c)&&!usesVit&&!hit)v-=1.2;if(/\b(é atendid|comparece|procura|é levad|é admitid|chega|realiza acompanhamento|questiona)\b/i.test(c)&&!hit)v-=1;return v/Math.max(1,Math.sqrt(ws.size/4))};
+  /* corta o trecho em pedaços curtos (vírgula, ponto e vírgula, "com", "e", parênteses) e fica com o melhor de cada frase longa */
+  const tidy=c=>c.trim().replace(/[.;:]+$/,"").replace(/^(?:e|mas|porém|além disso|ao exame físico,?|seu exame de|seus exames de|cujo resultado|cujo exame d[oa] \w+ mostrou:?|que resulta|apresenta(?:-se)?(?: com)?|ele está|ela está|está|foi|com)\s+/i,"").replace(/^(?:a|o)\s+(?:médic[oa]|equipe|paciente|enfermeir[oa])\s+(?:nota que|opta pela indicação de|retorna referindo|realiza)\s+/i,"").replace(/(?:^|\s)(?:é|foi)\s+(?:levad[oa]|trazid[oa]|admitid[oa]|atendid[oa])\b.*?\s(?:devido ao aparecimento de|devido a|por|com)\s+/i," ").replace(/^vivendo com HIV\s*/i,"").trim().replace(/^(?:um|uma)\s+(?:homem|mulher|paciente|menino|menina)\s+de\s+\d+\s+anos,?\s*/i,"").replace(/^vivendo com HIV,?\s*/i,"").replace(/^(?:é|foi)\s+(?:levad[oa]|trazid[oa]|admitid[oa]|atendid[oa])\b.*?\s(?:com|por)\s+/i,"").trim();
+  const ONLY_T=/^(?:há|após|depois de|duas|três|quatro|\d+)\s+(?:semanas?|dias?|meses|anos|horas?)(?:\s+depois)?$/i;
+  const C=[];S.forEach((x,si)=>{let neg=false;x.replace(/\b[\wÀ-ú ]{0,40}\b(?:mostrou|revelou|evidenciou|demonstrou)\s*:\s*/gi,"").split(/;\s+|,\s+|\.\s+|:\s+/).forEach(c=>{const was=neg;if(/\b(nega|sem)\b/i.test(c))neg=true;else if(c.split(/\s+/).length>3)neg=false;c=tidy(c);if(c.length<4||ONLY_T.test(c))return;if(was&&c.split(/\s+/).length<=2&&!/\b(nega|sem|n[ãa]o)\b/i.test(c))c="sem "+c;
+    const parts=c.length>70?c.split(/\s+(?:com|e|mas|após|apesar de)\s+|\s*\(\s*|\s*\)\s*/).map(tidy).filter(z=>z.length>=4):[c];
+    parts.forEach(z=>{const v=score(z);if(v>=1)C.push({c:z.replace(/[()]/g,"").trim(),v,o:C.length,si})})})});
+  const seen=new Set(),pick=[];C.sort((a,b)=>b.v-a.v||a.o-b.o).forEach(x=>{const k=norm(x.c);if(pick.length>=6||[...seen].some(y=>y===k||y.includes(k)&&k.length>12||k.includes(y)&&y.length>12))return;seen.add(k);pick.push(x)});
+  /* junta trechos vizinhos da mesma frase ("Hb 7,1 g/dL, ferritina 4 ng/mL") */
+  pick.sort((a,b)=>a.o-b.o);const out=[];pick.forEach(x=>{const L=out[out.length-1];if(L&&L.si===x.si&&x.o-L.o<=2&&(L.c+", "+x.c).length<=90){L.c+=", "+(/^[A-ZÀ-Ú][a-zà-ú]/.test(x.c)?x.c.replace(/^\w/,c=>c.toLowerCase()):x.c);L.o=x.o;L.v+=x.v}else out.push({...x})});
+  return out.sort((a,b)=>b.v-a.v).slice(0,4).sort((a,b)=>a.o-b.o).map(x=>clCut(x.c.replace(/^\w/,ch=>ch.toUpperCase()),90))}
+function eOrg(e){const Q=e&&e.q&&Array.isArray(e.q.a)?e.q:null;if(!Q||!Q.c)return null;const right=Q.a.find(a=>a.l===Q.c);if(!right)return null;const P=cdErrParse(e);
+  const just=eoJust(Q),pc=eoClean(e.pc||""),co=eoClean(Q.co||"");let regra=pc||co||clSents(just)[0]||eoClean(P.concept||"");regra=clSents(regra).slice(0,2).join(" ");if(regra.length>260)regra=clCut(regra,250);regra=regra.replace(/^\w/,c=>c.toUpperCase());
+  const dados=eoData(Q,[regra,just].join(" ")),naoSua=eoNot(Q)||eoClean(P.why||""),passos=[];
+  if(dados.length)passos.push(`No caso: ${dados.map(d=>`**${d}**`).join(" · ")}.`);
+  const j=just&&!qSameTxt(clSents(just)[0],regra)?clSents(just)[0]:"";if(j)passos.push(j.replace(/\.?$/,"."));
+  passos.push(`Logo: **${clCut(right.t,160)}** ✓`);
+  return {regra,dados,passos,naoSua,src:"app",at:today()}}
 /* alternativa marcada parecida com a certa → sugere "Confundi" */
 function qLike(a,b){const A=clWords(a),B=clWords(b);if(!A.size||!B.size)return false;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/Math.min(A.size,B.size)>=.4||n>=2}
 /* ---- em toda questão respondida (certa ou errada): Levar para a anotação (você marca os pontos) e Criar cartão ---- */
