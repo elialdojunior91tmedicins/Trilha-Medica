@@ -394,6 +394,8 @@
     const ls = (k, v) => { try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); } catch (e) {} };
     ls(LS2, state); ls(LSH, hist); ls(LSDP, dayPlan); ls(LSN, notes); ls(LSN + "-at", noteAt); ls(LSE, errors); ls(LSF, fac); ls(LSP, promptText);
     if (d.sort === "inc" || d.sort === "num") ls("resid-sort", d.sort);
+    // banco de questões (B1): troca pelo do arquivo; as questões das provas na íntegra voltam pela própria prova
+    if (Array.isArray(d.bankh) && typeof bankRestore === "function") await bankRestore(d.bank || [], d.bankh);
     if (store) {
       if (typeof topicStore !== "undefined" && topicStore && typeof saveTopics === "function") { await saveTopics(); await store.set({ version: 3, split: true, hist, plan: dayPlan, updatedAt: now }); }
       else await store.set({ version: 2, topics: state, hist, plan: dayPlan, updatedAt: now });

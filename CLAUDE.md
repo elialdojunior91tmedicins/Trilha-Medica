@@ -436,6 +436,15 @@ consultado quando há dúvida. Responda em português.
   **Questões/Caderno no computador** — Provas na íntegra em `#qExamBox` (largura inteira, `.qexbox .excards` 300px), grupos recolhíveis `exGrpShut` (`#exG-<i>`, `resid-exgrp`); Pegadinhas: `nPegCard(vis,{side|full})`, resumo `pgSideEl` (`pgTopOpen`, `#pgt-<g>-<t>`, `.pgmore`, `#pgAll`), lista inteira `#nPegFull` (`pgFull`, `pgFullTo`, `#pgFullX`, `[data-pgt]`), `pgGroupsEl`, `pgItemEl`. Teste t143.
   **Revisar erros** (Proposta B) — `eOrg(e)` função pura a partir de `e.q` → `e.ra={regra,dados[],passos[],naoSua,contraste?{h,rows[{l,a,b}]},caso2?{e,ask,ans},src:"app"|"claude"|"eu",at}` (`eoJust`, `eoNot`, `eoData` com `EO_UNIT/EO_NEG/EO_SYM/EO_AGE/EO_VIT`); montado em `eNew` e uma vez em `eOrgAll()` (em `cdFixCut`); `eRaClean` em `errOk`; `eRaSet` (src "eu"). Tela `eRevCard0`: `.erv2` (`.erprog`, `.ertema`, `.ermeta`, `.erg` = `.erl` caso/Certa×Sua + `.erside` conclusão), frente `eAskSplit`, `#erShow`, `#erAlts` (`erRun.peek` → Acertei desligado), verso `.ercs .ercok/.ercno`, `.errg` (`.ersrc`), `.erps`, `.erct`, `.ernao`, `.erfullq`, `eCaseFill` (`mark.erdd`, toque tira; `#erMarkSel`), `#erEdB` → `erEdEl` (`#ere-regra|dados|passos|naoSua`, `#erEdOk`), `#erAI`/`#eLotGo` → `eLotRun`/`eLotEl` (6 por pedido, `#eAp-<i>`, `#eLotApply`); notas `#erBad/#erPart/#erGood` (`eAnswer(e,0|1|2)`, `eNext`: Em parte = metade do Acertei, mín. `E_PART_MIN`=2; `e.lp`), teclas 1/2/3, Esc; `eSister(e)` caso novo da questão irmã (rev ≥2), `#erTeim`, fim `#erToday` "As regras de hoje". Comparação app × Claude feita com o backup do usuário (dados decisivos: 58% → 70%). Teste t144.
   **High Yield** — selo `.hyb` em `incEl(w,txt,noHy)` (peso 3); `HY_DEF` = estimativa do Claude PROVISÓRIA até o Banco de questões (198 temas, teto 1 / 2 / 1/3); `subList` dá `hy`/`hyc`; `s.hy={i:"u"|"n"}`, `cs[j].hy`; `setHy`, `hyFirst` (`partSubs`), rodízio `pickSubs` (★ 14 dias "mais antigos"), gerador `hyMix` + linha HY no `buildPrompt`, simulado (60% ★), `notesPDF` ("HY" e "★ HY:"); `hyEdit`, `#hyEd-<k>`, `#hy-<k>-<n>`, `.hyst`, `.subtags`. Teste t145.
+- Banco de questões B1 (11/2026, fundação sem tela; módulo logo depois de `exFlush`): `bank` = [{id,h,o,ks,at,u,q,ban?,ano?,niv?,pv?,pn?,ex?,ei?,fg?,nf?,mat?,an?}] (`o` gerada|simulado|prova|oficial,
+  `BQ_RANK`; `q` no formato de sempre via `bqQ`; `id`="b"+`bqHash(q)` = enunciado + alternativas normalizados por `bqT`, em qualquer ordem: a mesma questão vira uma só, também entre aparelhos)
+  e `bankH` = [{id,a:[{d,l,ok,s,src,c?,m?}]}] (`BH_SRC` gen|sim|rerun|redo|exam|erro|bank; `l` na ordem guardada, `bqLetter`/`bhRemap`; `c` = contou no tema; `m` = trazida; chave `bhKey` d|src|l; até `BH_MAX`=60).
+  O banco só REGISTRA (o acerto dos temas segue pelos caminhos de sempre). `bankPut` junta (`bqFill`; prova na íntegra manda no texto dela e é achada por ex/ei), `bqFrom`, `bhAdd`.
+  Ganchos: `bankAdd` (questão gerada no gerador e no simulado, antes de responder), `bankAns` (`answer`, `simAnswer` com "rerun" sem `c`, `rdPlayer` "redo"); `bankFeedAll()` (idempotente:
+  provas + `exProg` a/h, `sims`, `redo` com `RD_O`, erros com `e.q`) no `bankBoot` e em `exSaveLocal` → `bankFeedSoon`. Aparelho: IndexedDB "nexus-bank" (lojas q/h; `bkDb`/`bkAll`/`bkPut`), carga `bankReady`
+  + fila `bankDo`. Conta: `packStore` "bank" (`PK_N` 100) e "bankh" (16), `bankBoot(prog)` no fim da carga → `bankSyncStart` (onSnapshot; `bankRemoteQ` u mais novo, `bankRemoteH` união, `bankPushDiff` na 1ª
+  resposta; `bankSynced`), `bankFlush`/`bankSend` (`saveFail` "bank:q|h"). Nada é apagado no B1. Backup: `bankBackup()` = `bank` sem as da prova guardada + `bankh` (ordem por id; Drive igual, t87);
+  `bankRestore(Q,H)` no `bridge.js` (regrava a conta, u = agora). Teste: `tests/t146.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
@@ -443,7 +452,7 @@ consultado quando há dúvida. Responda em português.
 
 ## Ideia: Banco de questões
 
-Combinado com o usuário em 30/10/2026; ainda NÃO implementado (próximo passo: registrar em `problemas-a-resolver.md` do projeto e planejar).
+Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela) feito em 11/2026; 1ª banca para importar no B4: ENARE.
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
   importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).

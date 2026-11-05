@@ -147,6 +147,11 @@ function buildBackup(uid) {
     focus: packed("focus"), redo: packed("redo"), cards: packed("cards"), free: arr("free"),
     exams: arr("exams"), examProg: arr("exprog"), sims: arr("sims"), exfigs: arr("exfig")
   };
+  /* banco de questões (B1, 11/2026): histórico inteiro + as questões que não voltam pela prova na íntegra guardada (como o bankBackup do app) */
+  var byId = function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; };
+  var exIds = {}; data.exams.forEach(function (x) { if (x && x.id) exIds[x.id] = 1; });
+  data.bank = packed("bank").filter(function (x) { return x && x.id && !(x.o === "prova" && x.ex && exIds[x.ex]); }).sort(byId);
+  data.bankh = packed("bankh").filter(function (x) { return x && x.id && Array.isArray(x.a) && x.a.length; }).sort(byId);
   if (prefs) { delete prefs.updatedAt; data.ui = prefs; } // a conta guarda a data da gravação junto; o backup do app não
   if (data.prompt === undefined) delete data.prompt;
   return { app: "checklist-residencia", format: 1, exportedAt: new Date().toISOString(), source: "drive-auto", data: data };
