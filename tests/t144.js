@@ -41,7 +41,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  ok(await p.evaluate(()=>errors[0].ra.regra==="VDRL no liquor = neurossífilis: cristalina IV."&&document.querySelector('.ersrc').textContent==="corrigido por você"),name+": Corrigir salva a regra como sua");
  /* 4. notas: Em parte */
  const b0=await p.evaluate(()=>eBox(errors[0]));await click('#erPart');
- ok(await p.evaluate(b0=>{const e=errors[0];return e.due===fromNum(dnum(today())+E_PART)&&eBox(e)===b0&&!e.miss},b0),name+": Em parte = mesmo degrau, volta em 3 dias, não conta erro");
+ ok(await p.evaluate(b0=>{const e=errors[0];return e.due===fromNum(dnum(today())+Math.max(2,Math.floor(E_INT[Math.min(b0+1,4)]/2)))&&eBox(e)===b0&&!e.miss},b0),name+": Em parte = mesmo degrau, volta na metade do Acertei, não conta erro");
+ ok(await p.evaluate(()=>{const P=b=>eNext({box:b},1),A=b=>eNext({box:b},2);return [0,1,2,3,4].map(P).join()==="2,3,7,15,15"&&[0,1,2,3,4].every(b=>P(b)<A(b))}),name+": Em parte sempre antes do Acertei (2, 3, 7, 15)");
  const T=await p.evaluate(()=>{const x=document.querySelector('#erToday');return x&&x.textContent});
  ok(/As regras de hoje/.test(T||"")&&/neurossífilis/.test(T||""),name+": fim da sessão com as regras de hoje");
  /* 5. teimoso, Errei e Acertei */

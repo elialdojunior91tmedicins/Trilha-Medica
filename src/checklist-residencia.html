@@ -5742,10 +5742,11 @@ const eByCard=e=>cards.some(x=>!x.dr&&(x.eid===e.id||(e.cd&&x.id===e.cd)));
 const eDueNow=e=>eDue(e)<=today()&&!eByCard(e)&&!e.fm;
 const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDueNow(e));
 /* auditoria 26/10: acertou no degrau de 30 dias → o erro se forma (e.fm = data): sai da revisão, continua no caderno; volta se você errar o tema de novo (eNew) */
-/* Lote 21: 3 notas — 0 Errei (volta amanhã, conta como erro) · 1 Em parte (mesmo degrau, volta em 3 dias) · 2 Acertei (próximo degrau). true/false antigos = 2/0 */
-const E_PART=3;
-function eNext(e,g){return g===0?1:g===1?E_PART:eBox(e)>=E_INT.length-1?E_INT[E_INT.length-1]:E_INT[Math.min(eBox(e)+1,E_INT.length-1)]}
-function eAnswer(e,good){if(good===1){e.rev=(e.rev||0)+1;e.lastRev=today();e.due=fromNum(dnum(today())+E_PART);e.lp=today();putErr(e);return}if(good===2)good=true;else if(good===0)good=false;e.rev=(e.rev||0)+1;e.lastRev=today();
+/* Lote 21: 3 notas — 0 Errei (volta amanhã, conta como erro) · 1 Em parte (mesmo degrau, volta na metade do que o Acertei daria, mín. 2 dias: 2, 3, 7, 15) · 2 Acertei (próximo degrau). true/false antigos = 2/0 */
+const E_PART_MIN=2;
+const eUp=e=>eBox(e)>=E_INT.length-1?E_INT[E_INT.length-1]:E_INT[Math.min(eBox(e)+1,E_INT.length-1)];
+function eNext(e,g){return g===0?1:g===1?Math.max(E_PART_MIN,Math.floor(eUp(e)/2)):eUp(e)}
+function eAnswer(e,good){if(good===1){e.rev=(e.rev||0)+1;e.lastRev=today();e.due=fromNum(dnum(today())+eNext(e,1));e.lp=today();putErr(e);return}if(good===2)good=true;else if(good===0)good=false;e.rev=(e.rev||0)+1;e.lastRev=today();
   if(good&&eBox(e)>=E_INT.length-1){e.fm=today();e.due=fromNum(dnum(today())+E_INT[E_INT.length-1])}
   else if(good){e.box=Math.min(eBox(e)+1,E_INT.length-1);e.due=fromNum(dnum(today())+E_INT[e.box])}
   else{e.box=0;e.due=fromNum(dnum(today())+1);e.miss=(e.miss||0)+1;e.lastMiss=today()}
@@ -6118,7 +6119,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
       c.appendChild(el(`<p class="verdict ok">Fim: ${R.res.filter(x=>x.g===2).length} de ${R.done} acertados${R.res.some(x=>x.g===1)?`, ${R.res.filter(x=>x.g===1).length} em parte`:""}.</p>`));
       const L=[...R.res].sort((a,b)=>a.g-b.g).map(x=>({e:errors.find(y=>y.id===x.id),g:x.g})).filter(x=>x.e);
       if(L.length){const w=el(`<div class="ertoday" id="erToday"><span class="glabel">As regras de hoje</span><ul></ul></div>`),ul=w.querySelector("ul");L.forEach(x=>{const li=el(`<li class="g${x.g}"><b></b><span></span></li>`);li.querySelector("b").textContent=topicName(x.e.k);li.querySelector("span").textContent=(x.e.ra&&x.e.ra.regra)||cdErrParse(x.e).concept||eOneLine(x.e.r);ul.appendChild(li)});c.appendChild(w)}
-      c.appendChild(el(`<p class="how">Errei volta amanhã; Em parte, em ${E_PART} dias; Acertei sobe para o próximo intervalo (3, 7, 15 e 30 dias).</p>`));
+      c.appendChild(el(`<p class="how">Errei volta amanhã; Em parte, na metade do prazo do Acertei (mín. 2 dias); Acertei sobe para o próximo intervalo (3, 7, 15 e 30 dias).</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{erRun=null;render()};c.appendChild(b);return c}
     const it=BYKEY[e.k],Q=e.q&&Array.isArray(e.q.a)?e.q:null,ra=e.ra||null,show=R.show,n=(e.rev||0)+1;
     const sis=Q&&(e.rev||0)>=2?(ra&&ra.caso2?{...ra.caso2,src:"Claude"}:eSister(e)):null;/* 6A.1: a partir da 3ª revisão, caso novo com a mesma regra */
@@ -6171,7 +6172,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
   // os mais atrasados primeiro; dentro do mesmo dia, embaralhados
   go.onclick=()=>{const K=pwKeys();erRun={ids:shuffle(due).sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(eDue(a)<eDue(b)?-1:eDue(a)>eDue(b)?1:0)).slice(0,15).map(e=>e.id),i:0,show:false,ok:0,done:0,res:[]};render();const h=$("#erh");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})};c.appendChild(go);
   c.appendChild(el(`<p class="how">Cada erro volta como pergunta: responda de cabeça e confira a regra. A questão em si fica no Refazer.</p>`));
-  c.appendChild(el(`<p class="how hx">Depois de abrir, dê a nota: Errei volta amanhã; Em parte, em ${E_PART} dias; Acertei sobe para 3, 7, 15 e 30 dias. Se você abrir as alternativas antes, vale no máximo Em parte. A partir da 3ª revisão, o erro pode voltar com um caso novo que pede a mesma regra.</p>`));
+  c.appendChild(el(`<p class="how hx">Depois de abrir, dê a nota: Errei volta amanhã; Em parte, na metade do prazo do Acertei (no mínimo 2 dias); Acertei sobe para 3, 7, 15 e 30 dias. Se você abrir as alternativas antes, vale no máximo Em parte. A partir da 3ª revisão, o erro pode voltar com um caso novo que pede a mesma regra.</p>`));
   {const L=errors.filter(e=>BYKEY[e.k]&&!e.arch&&e.q&&(!e.ra||e.ra.src==="app"));if(L.length&&!sampleOff&&!eLot){const b=el(`<button class="link" type="button" id="eLotGo"></button>`);b.textContent=`✦ Melhorar a organização dos ${L.length} com o Claude (opcional)`;b.disabled=!sampleFn;b.onclick=()=>eLotRun(L);c.appendChild(b)}}
   return c}
 /* ----- erros que se repetem (últimos 30 dias) ----- */
@@ -10418,7 +10419,7 @@ Um dia de estudo:
 - **Baixar PDF:** como está na tela, tudo, uma área ou os temas que você escolher. Tem capa, sumário, texto justificado, tabelas com grade, pegadinhas em caixa e links entre temas com a página.
 - **✦ Gerar resumo** e **Organizar minhas anotações** com o Claude: você insere ou descarta; **Desfazer última substituição** volta.`],
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte. Na questão errada, **Levar para o caderno de erros** já monta tudo: **O que eu errei**, a **Pista do caso** (com o que decide em negrito), **Dados decisivos**, **Ponto-chave**, **Conceito correto** e a questão inteira guardada. Ajuste com as suas palavras; **✦ Resumir com o Claude** encurta.
-- **Revisar:** a frente mostra o caso inteiro e a pergunta, sem a resposta: responda de cabeça e toque em **Mostrar a resposta** (**Ver alternativas** ajuda, mas aí vale no máximo Em parte). O verso traz **Certa × Você marcou**, **A regra**, **O raciocínio** e **Por que não a sua**, montados pelo app (✎ **Corrigir**, toque num dado marcado para tirar, ✦ **Melhorar com o Claude** opcional). Notas: **Errei** volta amanhã, **Em parte** em 3 dias, **Acertei** vai para 3, 7, 15 e 30 dias. A partir da 3ª revisão pode vir um caso novo com a mesma regra. Acertou no degrau de 30 dias: o erro fica **formado** (sai da revisão; volta se você errar de novo no tema).
+- **Revisar:** a frente mostra o caso inteiro e a pergunta, sem a resposta: responda de cabeça e toque em **Mostrar a resposta** (**Ver alternativas** ajuda, mas aí vale no máximo Em parte). O verso traz **Certa × Você marcou**, **A regra**, **O raciocínio** e **Por que não a sua**, montados pelo app (✎ **Corrigir**, toque num dado marcado para tirar, ✦ **Melhorar com o Claude** opcional). Notas: **Errei** volta amanhã, **Em parte** na metade do prazo do Acertei (2, 3, 7 ou 15 dias, conforme o degrau), **Acertei** vai para 3, 7, 15 e 30 dias. A partir da 3ª revisão pode vir um caso novo com a mesma regra. Acertou no degrau de 30 dias: o erro fica **formado** (sai da revisão; volta se você errar de novo no tema).
 - **Uma agenda por questão:** erro que virou cartão passa a ser revisado pelos cartões; questão levada do Refazer sai do Refazer.
 - **Criar cartões** (⋯ Ações): dois cartões no padrão Osler, o **discriminador** e **por que não a sua**; **✦ Melhorar com o Claude** oferece também lacuna e armadilha.
 - **Por que você erra · último mês:** erros novos × mês anterior, por tipo e as causas mais comuns, cada uma com uma dica; toque para filtrar. **Temas e especialidades com mais erros** contam só os ativos; o selo marca 2+ erros em 30 dias.
