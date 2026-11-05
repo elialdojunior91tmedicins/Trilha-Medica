@@ -19,7 +19,7 @@ if(big){await click('#cdFullB');await p.waitForTimeout(150);const st=await p.eva
 // simulado
 await p.evaluate(()=>{cdRun=null;setView("quest");if(typeof setQSeg==="function")setQSeg("praticar")});await p.waitForTimeout(150);
 ok(!(await visible('#simFullB')),name+": sem botão antes de começar");
-await click('#simGo');await p.waitForTimeout(500);ok(await visible('#simFullB')===big,name+": botão no simulado "+(big?"aparece":"não aparece"));
+await click('#simGo');await p.waitForTimeout(500);{const ph=await p.evaluate(()=>isPhoneL());ok(await visible('#simFullB')===(big||ph),name+": botão no simulado "+(big||ph?"aparece":"não aparece")+(ph?" (celular: tela inteira própria, B3)":""))}
 if(big){await click('#simFullB');await p.waitForTimeout(150);const st=await p.evaluate(()=>({others:[...document.querySelectorAll('#viewQuest section.card')].filter(c=>!c.classList.contains("qsim")&&c.offsetParent!==null).length,w:document.querySelector('.qsim').getBoundingClientRect().width}));
   ok(st.others===0&&st.w>500,name+": simulado em tela inteira "+JSON.stringify(st));await p.screenshot({path:`fullsim-${name}.png`});
   if(!mob){await p.keyboard.press('b');await p.waitForTimeout(80);ok(await p.evaluate(()=>sim.ans[0]==="B"),name+": tecla B responde");await p.keyboard.press(' ');await p.waitForTimeout(80);ok(await p.evaluate(()=>sim.i===1),name+": espaço vai para a próxima");}

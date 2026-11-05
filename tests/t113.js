@@ -47,7 +47,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(await p.isVisible('#rdTeim'),name+": errou de novo uma teimosa: sugere o caderno de erros");
   if(await p.evaluate(()=>twoCols())){await click('#rdFullB');const fv=await p.evaluate(()=>({v:document.querySelector('#viewQuest').classList.contains('vfull'),hid:document.querySelector('.qsim').closest('.fullhide')!==null||document.querySelector('.qsim').classList.contains('fullhide')}));
     ok(fv.v&&fv.hid,name+": Refazer em tela inteira esconde o resto da aba");await p.keyboard.press('Escape');await p.waitForTimeout(150);ok(await p.evaluate(()=>!fullOn.rd&&!document.querySelector('#viewQuest').classList.contains('vfull')),name+": Esc sai da tela inteira")}
-  else ok(!(await p.$('#rdFullB')),name+": sem tela inteira no celular e no iPad em pé (como no simulado)");
+  else{const ph=await p.evaluate(()=>isPhoneL());ok(ph?!!(await p.$('#rdFullB')):!(await p.$('#rdFullB')),name+(ph?": celular tem a tela inteira própria (B3, t148)":": sem tela inteira no iPad em pé (como no simulado)"))}
   await click('#rdNext');ok(await p.evaluate(()=>/Você acertou 0% ao refazer/.test(document.querySelector('#rdEnd').textContent)),name+": no fim, o % de acerto ao refazer");
   await p.evaluate(()=>{rdRun=null;render()});await p.waitForTimeout(100);
   const r5=await p.evaluate(()=>{const c=document.querySelector('.qredo');return {dd:c.querySelector('.todaydate').textContent,n:c.querySelectorAll('.rdlist li').length}});
