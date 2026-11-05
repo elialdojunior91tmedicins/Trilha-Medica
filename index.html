@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=41fdde83">
+<link rel="stylesheet" href="site.css?v=904629f8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=41fdde83"></script>
-<script src="bridge.js?v=41fdde83"></script>
+<script src="config.js?v=904629f8"></script>
+<script src="bridge.js?v=904629f8"></script>
 </head>
 <body>
 <script>
@@ -576,6 +576,9 @@ li.t.open{background:var(--bg)}
 .lvl[data-l="3"]{border-color:var(--l3);color:var(--surface);background:var(--l3)}
 .lvl[data-l="i"]{border-color:var(--li);color:var(--li);border-style:dashed}
 .r-cont{background:color-mix(in srgb,var(--mi) 20%,transparent);color:var(--li)}
+.hyb{display:inline-block;margin-left:6px;font:700 .62rem var(--body);letter-spacing:.06em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 4px;line-height:1.5;vertical-align:1px}
+.hyst{border:1px dashed var(--line);background:none;color:var(--muted);font:700 .68rem var(--body);padding:2px 7px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}.hyst[aria-pressed="true"]{border:1px solid var(--gold);color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.hyst+.dnb{margin-left:6px}.hyline{margin:6px 0 0}.hyline .how{font-size:.8rem}
 .dnb{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .7rem var(--body);padding:2px 8px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}
 .dnb[data-dn="u"],.dnb[data-dn="c"]{border-color:var(--li);color:var(--li);background:color-mix(in srgb,var(--mi) 14%,transparent)}.dnb[data-dn="c"]{border-style:dashed}
 .dnbox{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:6px;font-size:.85rem}.dnbox .how{margin:0;flex-basis:100%}
@@ -2850,7 +2853,8 @@ function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if(s.last&&s.i
   state[k]=s;if(!synced)touchedEarly.add(k)}
 let estChanged=false;
 const wOf=it=>get(it.key).w||it.w0;
-function incEl(w,withText){const e=el(`<span class="inc" data-w="${w}" title="Incidência ${INC[w].toLowerCase()}"><i></i><i></i><i></i>${withText?`<b>${INC[w]}</b>`:""}</span>`);e.setAttribute("aria-label","Incidência "+INC[w].toLowerCase());return e}
+function incEl(w,withText,noHy){const e=el(`<span class="inc" data-w="${w}" title="Incidência ${INC[w].toLowerCase()}"><i></i><i></i><i></i>${withText?`<b>${INC[w]}</b>`:""}</span>`);e.setAttribute("aria-label","Incidência "+INC[w].toLowerCase());
+  if(w!==3||noHy)return e;/* Lote 21: tema de peso 3 = High Yield */const f=document.createDocumentFragment(),h=el(`<span class="hyb" title="High Yield: dos temas que mais caem">HY</span>`);f.append(e,h);return f}
 /* intervalo da revisão: o da tabela, ajustado pelo acerto nas questões do tema (desligável em Configurações) */
 function adaptAcc(s){if(!s.qt)return null;const from=fromNum(dnum(today())-90);let q=0,c=0;const m=s.qd||{};for(const d in m)if(d>=from&&Array.isArray(m[d])){q+=m[d][0]||0;c+=m[d][1]||0}
   if(q<5){q=s.qt||0;c=s.qc||0}return q>=5?{a:c/q,q}:null}
@@ -2986,8 +2990,16 @@ function topicNext(it){const s=get(it.key),dd=dueIn(s),L=subList(it),pt=L.length
   if(!s.qt)return ["Faça questões do tema",""];if(lvMeets(s))return ["Pronto para Dominado","ok"];return null}
 let subQ=null;// tema com a lista rápida de subtópicos aberta na Residência
 /* subtópicos: padrão (índice em s.sd) + próprios (s.cs) */
-function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{},df=DN_DEF[it.key]||[];
-  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||(df.includes(i)?"c":"")})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||""}))]}
+/* Lote 21 item 7: ★ HY nos subtópicos. HY_DEF = ESTIMATIVA DO CLAUDE, PROVISÓRIA até o Banco de questões ter a contagem real por subtópico
+   (ENAMED/Revalida/ENARE primeiro, demais bancas como complemento; no máximo ~1/3 dos subtópicos de cada tema). s.hy={índice:"u"|"n"} e cs[j].hy = toque do usuário, que sempre vence. */
+const HY_DEF={"CM-1":[2,7,9,11,12,13],"CM-2":[0],"CM-5":[1,2],"CM-6":[2,5,9,11,14,15],"CM-7":[2,3,6,7,8,14],"CM-8":[1,5,6,9,13],"CM-10":[0,2],"CM-11":[0,1],"CM-12":[0,2],
+  "CM-13":[0,3,6,8,11],"CM-14":[1,3,10,14,15,16],"CM-15":[1,2,4,5,9,17],"CM-48":[1,2,3,9],"CM-46":[0,2,3,6,10],"CM-47":[0,2],"CM-55":[0,2,3],"CM-56":[0,1,4],"CM-51":[0,1,5,7],
+  "CM-34":[0,1,2,5,11],"CM-35":[0],"CM-36":[2],"CM-37":[0,1],"CM-53":[0,1]};
+function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{},df=DN_DEF[it.key]||[],hy=s.hy||{},hd=HY_DEF[it.key]||[];
+  return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||(df.includes(i)?"c":""),hy:hy[i]==="u"||hy[i]!=="n"&&hd.includes(i),hyc:!hy[i]&&hd.includes(i)})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||"",hy:c.hy==="u"}))]}
+function setHy(it,x,on){upd(it.key,s=>{if(x.i!==undefined){const h={...(s.hy||{})};const def=(HY_DEF[it.key]||[]).includes(x.i);if(on===def)delete h[x.i];else h[x.i]=on?"u":"n";if(Object.keys(h).length)s.hy=h;else delete s.hy}
+  else s.cs=(s.cs||[]).map((c,j)=>{if(j!==x.j)return c;const o={...c};if(on)o.hy="u";else delete o.hy;return o})});commit()}
+const hyFirst=L=>[...L.filter(x=>x.hy),...L.filter(x=>!x.hy)];
 /* subtópico denso: conta como dois no tamanho da parte do dia. dn: "u" = você marcou, "n" = você tirou, "c" = sugerido pelo Claude (vale até você mudar) */
 const dnHeavy=x=>x.dn==="u"||x.dn==="c";
 const subW=x=>dnHeavy(x)?2:1;
@@ -2999,7 +3011,7 @@ function subParts(L){const W=L.reduce((a,x)=>a+subW(x),0);if(!L.length)return []
   const n=Math.ceil(W/PART_CAP),tg=W/n,P=Array.from({length:n},()=>[]);let acc=0;
   L.forEach(x=>{const w=subW(x),i=Math.min(n-1,Math.floor((acc+w/2)/tg));P[i].push(x);acc+=w});return P.filter(p=>p.length)}
 /* subtópicos do dia para um tema novo ou em andamento: o tema inteiro (pequeno) ou a próxima parte (grande); pt = [parte, total] */
-function partSubs(it){const L=subList(it),P=subParts(L);if(!P.length)return {subs:[],pt:null};
+function partSubs(it){const L=hyFirst(subList(it)),P=subParts(L);if(!P.length)return {subs:[],pt:null};
   if(P.length===1){const open=L.filter(x=>!x.done);return {subs:(open.length?open:L).map(x=>x.t),pt:null}}
   const i=P.findIndex(p=>p.some(x=>!x.done));if(i<0)return {subs:[],pt:null};
   const pick=P[i].filter(x=>!x.done);let w=pick.reduce((a,x)=>a+subW(x),0);
@@ -3501,7 +3513,7 @@ function linkInfoEl(it){const ids=ownLinksTo(it.key);if(!ids.length)return null;
     if(facLinkSt&&facLinkSt.id===id)row.appendChild(linkPickEl(id));g.appendChild(row)});
   return g}
 /* subtópicos densos: marcar à mão ou pedir sugestão ao Claude (a sua escolha nunca é trocada pela sugestão) */
-let dnEdit=null,dnAsk={};
+let hyEdit=null,dnEdit=null,dnAsk={};
 function dnPrompt(items){return `Você ajuda um estudante de medicina a planejar os estudos para a prova de residência médica. Para cada tema abaixo, aponte os subtópicos DENSOS: os que sozinhos pedem um dia de estudo ou quase (muito conteúdo e muitos detalhes cobrados em prova). Seja seletivo: em geral 0 a 2 por tema.
 Responda só com JSON neste formato: {"densos":{"CHAVE":[números dos subtópicos densos]}}. Use as chaves e os números mostrados. Tema sem subtópico denso: lista vazia.
 
@@ -3550,7 +3562,7 @@ function renderDetail(it,o={}){
   // peso de incidência
   if(!it.own){
   const w=wOf(it),gw=el(`<div class="grp dblk dinc"><span class="glabel">Peso de incidência</span><div class="seg"></div><p class="gtext how"></p><details class="dhow"><summary>De onde vem este peso</summary><p></p></details></div>`);
-  [1,2,3].forEach(v=>{const b=el(`<button aria-pressed="${w===v}"></button>`);b.appendChild(incEl(v));b.appendChild(document.createTextNode(" "+INC[v]));
+  [1,2,3].forEach(v=>{const b=el(`<button aria-pressed="${w===v}"></button>`);b.appendChild(incEl(v,false,true));b.appendChild(document.createTextNode(" "+INC[v]));
     b.onclick=()=>{upd(it.key,x=>{if(v===it.w0)delete x.w;else x.w=v});commit()};gw.querySelector(".seg").appendChild(b)});
   const D=INC_DATA[it.key]||[0,0,0,0];
   gw.querySelector("p").textContent=(get(it.key).w?`Você ajustou este peso. O padrão é ${INC[it.w0].toLowerCase()}. `:"")+
@@ -3580,10 +3592,13 @@ function renderDetail(it,o={}){
       const rm=el(`<button class="link" type="button" aria-label="Remover subtópico">remover</button>`);
       rm.onclick=()=>{upd(it.key,s=>{s.cs=(s.cs||[]).filter((_,j)=>j!==x.j);if(!s.cs.length)delete s.cs});commit()};li.appendChild(rm)}
     li.querySelector("input").onchange=()=>toggleSub(it,x);
+    if(x.hy||hyEdit===it.key){const hb=el(`<button class="hyst" type="button"></button>`);hb.id=`hy-${it.key}-${n}`;hb.textContent=x.hy?"★ HY":"☆ HY";hb.setAttribute("aria-pressed",x.hy);hb.title=x.hy?"High Yield: cai muito em prova. Toque para tirar.":"Toque para marcar como High Yield";hb.onclick=()=>setHy(it,x,!x.hy);li.appendChild(hb)}
     if(dnEdit===it.key||dnHeavy(x)){const db=el(`<button class="dnb" type="button" data-dn="${x.dn}"></button>`);db.textContent=dnHeavy(x)?(x.dn==="c"?"denso · Claude":"denso"):"normal";
       db.title=dnHeavy(x)?"Subtópico denso: conta como dois no plano. Toque para tirar.":"Toque para marcar como denso";db.onclick=()=>setDn(it,x,dnHeavy(x)?"n":"u");li.appendChild(db)}
     gs.querySelector("ul").appendChild(li)});
   if(L.length>=2)gs.appendChild(dnBoxEl(it,L));
+  if(L.length){const hl=el(`<p class="hyline"><button class="link" type="button"></button></p>`),hb=hl.querySelector("button");hb.id="hyEd-"+it.key;hb.textContent=hyEdit===it.key?"Pronto":`${L.some(x=>x.hy)?"Mudar":"Marcar"} os subtópicos ★ HY`;hb.onclick=()=>{hyEdit=hyEdit===it.key?null:it.key;render()};
+    if(hyEdit===it.key)hl.appendChild(el(`<span class="how"> ★ = o que mais cai em prova (estimativa inicial; a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais no rodízio da revisão e puxam mais questões.</span>`));gs.appendChild(hl)}
   const af=el(`<form class="addsub"><input class="etext" id="as-${it.key}" maxlength="120" placeholder="Adicionar subtópico próprio" aria-label="Novo subtópico"><button class="btn" type="submit">Adicionar</button></form>`);
   const ai=af.querySelector("input");ai.value=subDraft[it.key]||"";ai.oninput=()=>subDraft[it.key]=ai.value;
   af.addEventListener("submit",ev=>{ev.preventDefault();const t=ai.value.trim();
@@ -3660,6 +3675,8 @@ Crie ${nq} ${nq===1?"questão inédita":"questões inéditas"} sobre o tema "${i
 Todas sobre o subtópico: "${o.focus}", explorando ângulos diferentes (diagnóstico, conduta, exames, complicações, exceções).`:
    o.subs&&o.subs.length?`
 Uma questão para cada um destes subtópicos, nesta ordem: ${o.subs.map(s=>`"${s}"`).join("; ")}.`:"")+
+  (()=>{const H=subList(it).filter(x=>x.hy).map(x=>x.t);return H.length&&!o.focus?`
+Subtópicos que mais caem em prova (High Yield) neste tema: ${H.map(x=>`"${x}"`).join("; ")}. Quando houver escolha, prefira-os.`:""})()+
   (o.avoid&&o.avoid.length?`
 Já foram feitas questões sobre os conceitos abaixo. Não repita esses conceitos nem casos parecidos:
 ${o.avoid.slice(-30).map(c=>"- "+c).join("\n")}`:"")+
@@ -3872,7 +3889,8 @@ async function generate(it){
   if(!sampleFn)return;
   let focus=genFocus[it.key]||"";
   // ordem dos subtópicos: primeiro os ainda não marcados, depois os demais, embaralhados
-  const L=subList(it);let order=[...shuffle(L.filter(x=>!x.done)),...shuffle(L.filter(x=>x.done))].map(x=>x.t);
+  const L=subList(it),hyMix=A=>{const H=shuffle(A.filter(x=>x.hy)),O=shuffle(A.filter(x=>!x.hy)),r=[];while(H.length||O.length){if(H.length)r.push(H.shift());if(H.length)r.push(H.shift());if(O.length)r.push(O.shift())}return r};
+  let order=[...hyMix(L.filter(x=>!x.done)),...hyMix(L.filter(x=>x.done))].map(x=>x.t);
   if(focus==="__hoje"){order=todaySubs(it);focus=""}
   const MP=genMatOn(genMat[it.key])?msPack(genMat[it.key]):null;
   const g=gen[it.key]={status:"loading",qs:[],ans:{},msg:"",ctl:new AbortController(),n:qCount,focus,order,pos:0,mat:!!MP,P:MP};render();
@@ -4165,7 +4183,8 @@ function pickSubs(it,kind){const L=subList(it),s=get(it.key);if(!L.length)return
   if(kind==="r-rev"&&done.length){const sv=s.sv||{};
     /* revisão: os subtópicos revisados há mais tempo primeiro (nunca revisado = mais antigo; empate pela ordem da lista);
        quantidade cresce com o tamanho do tema (≈ 1/4 dos estudados, no mínimo o "Subtópicos por tema") para cobrir o tema em 3–4 revisões */
-    pool=done.map((x,o)=>({x,o,d:sv[subKey(x)]||""})).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:a.o-b.o).map(y=>y.x);
+    const age=y=>(y.d?dnum(y.d):0)-(y.x.hy?14:0);/* Lote 21: ★ HY volta mais vezes no rodízio */
+    pool=done.map((x,o)=>({x,o,d:sv[subKey(x)]||""})).sort((a,b)=>age(a)-age(b)||a.o-b.o).map(y=>y.x);
     return pool.slice(0,revSubN(done.length)).map(x=>x.t)}
   else pool=open.length?open:L;
   return pool.slice(0,SUBS_PER_DAY).map(x=>x.t)}
@@ -8356,7 +8375,7 @@ async function simStartMat(){const P0=msPack(simMat),n=simCfg.n,items=Array.from
   if(sim!==S||S.stopped)return;items.length=S.qs.length;if(!S.qs.length){S.status="error"}else if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}S.gen=true;render()}
 async function simStart(U){if(!sampleFn)return;if(simCfg.mode==="mat"){if(genMatOn(simMat))simStartMat();return}const T=simTopics(simCfg.src,U);if(!T.length)return;
   const ts=shuffle(T),items=simCfg.src==="errs"?eSimItems(simCfg.n):simCfg.src==="redo"?rdSimItems(simCfg.n):[],used={};if(simCfg.src!=="errs"&&simCfg.src!=="redo")for(let i=0;i<simCfg.n;i++){const it=ts[i%ts.length],L=subList(it),ch=simCfg.src==="pick"&&simSubs[it.key]&&simSubs[it.key].length?simSubs[it.key].filter(t=>L.some(x=>x.t===t)):null;
-    let pick="";if(ch&&ch.length){const u=used[it.key]=(used[it.key]||0);pick=ch[u%ch.length];used[it.key]++}else pick=L.length?(L.filter(x=>x.done).length?shuffle(L.filter(x=>x.done)):shuffle(L))[0].t:"";items.push({k:it.key,sub:pick})}
+    let pick="";if(ch&&ch.length){const u=used[it.key]=(used[it.key]||0);pick=ch[u%ch.length];used[it.key]++}else {const P0=L.filter(x=>x.done).length?L.filter(x=>x.done):L,PH=P0.filter(x=>x.hy);pick=P0.length?(PH.length&&Math.random()<.6?shuffle(PH):shuffle(P0))[0].t:""}items.push({k:it.key,sub:pick})}
   if(simCfg.src==="prova"){const p=simProva(),d=p&&discOf(p.discId);if(p){simCfg.pid=p.id;items.forEach(x=>{x.ctx=`para a prova "${p.name}"${d?` da disciplina ${provaDiscName(p)}`:""} da faculdade`;
     const sr=p.items.find(r=>r.startsWith("S:")&&refTopic(r).k===x.k);if(sr)x.sub=refTopic(sr).sub})}}
   const S=sim={status:"loading",items,qs:[],i:0,ans:{},t:{},msg:"",ctl:new AbortController(),src:simCfg.src,shown:0,start:0,cfg:simCfgSnap()};render();
@@ -10115,7 +10134,9 @@ function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
       const n=A.sps.reduce((s,S)=>s+S.keys.length,0);P.text(M,y+9,`${n} ${n===1?"tema":"temas"} · ${A.sps.filter(S=>S.name).length} ${A.sps.filter(S=>S.name).length===1?"especialidade":"especialidades"}`,{size:9,color:C.mut});y+=22;P.line(M,y,M+CW,y,C.line,.8);y+=12;
       A.sps.forEach(S=>{if(S.name){need(80);starts["s:"+A.code+"|"+S.name]=P.pages.length-1;y+=6;P.text(M,y+13,S.name,{size:14,bold:true,color:C.goldInk});y+=19;P.line(M,y,M+90,y,C.gold,1);y+=10}
         S.keys.forEach(k=>{const it=BYKEY[k];need(64);starts[k]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(it.t,{size:12.6,bold:true,color:C.l2,indent:8,after:0});
-          P.text(M+8,y+8,`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · Faculdade":""}`,{size:7.8,color:C.mut});y+=16;body(opt.textOf?opt.textOf(k):notes[k],k);y+=10})})});
+          P.text(M+8,y+8,`${it.area.code}${it.sp?" · "+it.sp:""}${it.own?" · Faculdade":""}${!it.own&&wOf(it)===3?"  ·  HY":""}`,{size:7.8,color:C.mut});y+=16;
+          {const H=subList(it).filter(x=>x.hy).map(x=>x.t);if(H.length)rich(`**★ HY:** ${H.join(" · ")}`,{size:8.4,color:C.l2,indent:8,after:4,just:false})}/* Lote 21: os subtópicos que mais caem */
+          body(opt.textOf?opt.textOf(k):notes[k],k);y+=10})})});
     if(free.length){if(!first){P.add();y=M}starts["a:FREE"]=P.pages.length-1;P.rect(M,y,36,3,C.gold);y+=14;P.text(M,y+20,opt.freeTitle||"Caderno livre",{size:21,bold:true,color:C.acc});y+=30;P.line(M,y,M+CW,y,C.line,.8);y+=12;
       free.forEach(f=>{need(60);starts["f:"+f.id]=P.pages.length-1;P.rect(M,y+2,3,15,C.l2);rich(f.t||"Sem título",{size:12.6,bold:true,color:C.l2,indent:8,after:1});
         if(f.tags.length||f.ks.length)rich([f.tags.map(t=>"#"+t).join(" "),f.ks.filter(k=>BYKEY[k]).map(k=>BYKEY[k].t).join(", ")].filter(Boolean).join(" · "),{size:8,color:C.mut,indent:8,after:3,just:false});body(f.b,"f:"+f.id);y+=10})}
