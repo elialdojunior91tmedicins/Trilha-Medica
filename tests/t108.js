@@ -19,7 +19,7 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["note",1366,768,false]]){
   const L=await p.evaluate(()=>{const c=document.querySelector('.ecard[data-eid="eo"]');return {r:c.querySelector(".r").textContent,why:!!c.querySelector(".r b.ewhy"),pista:!c.querySelector(".epista").hidden}});
   ok(L.r==="DLBCL é agressivo.Por que não a suaÉ curável em muitos pacientes."&&L.why&&!L.pista,name+": cartão do erro limpo, \"Por que não a sua\" destacado, pista-pergunta escondida "+JSON.stringify(L));
   await p.evaluate(()=>document.getElementById("erGo").click());await p.waitForTimeout(150);await p.evaluate(()=>document.getElementById("erShow").click());await p.waitForTimeout(150);
-  const R=await p.evaluate(()=>{const c=document.querySelector('.erfc');return c&&{r:c.querySelector(".r").textContent,why:!!c.querySelector(".r b.ewhy")}});
+  const R=await p.evaluate(()=>{const c=document.querySelector('.erv2');return c&&{r:c.querySelector(".ercs .r").textContent,why:!!c.querySelector(".ercs .r b.ewhy")}});
   ok(R&&R.r===L.r&&R.why,name+": revisão mostra igual "+JSON.stringify(R));
   ok(await p.evaluate(()=>eOneLine(errors[0].r)==="DLBCL é agressivo. Por que não O DLBCL nunca é…: É curável em muitos pacientes."),name+": linha única (PDF, anotação) sem as marcas");
   await ctx.close()}

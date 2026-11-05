@@ -59,7 +59,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  await p.evaluate(()=>{eGoTopic("CM-34");backStack=[];setView("erros")});await p.waitForTimeout(250);
  ok(await p.evaluate(()=>{const c=[...document.querySelectorAll('#elist .ecard')].find(x=>x.querySelector('.epista')&&!x.querySelector('.epista').hidden);return c&&/Pista do caso/.test(c.textContent)}),name+": o cartão do erro mostra a Pista do caso");
  await p.evaluate(()=>{const e=errors[errors.length-1];erRun={ids:[e.id],i:0,show:false,ok:0,done:0};render()});await p.waitForTimeout(200);
- ok(await p.evaluate(()=>{const f=document.querySelector('.erfc .epista');return f&&!f.hidden&&/Massa mediastinal/.test(f.textContent)}),name+": na revisão, a pista aparece antes de abrir a resposta");
+ ok(await p.evaluate(()=>{const e=errors[errors.length-1],c=document.querySelector('.erv2 .ercaso');return c&&(e.q?c.querySelector('.ercx').textContent.length>20:/Massa mediastinal/.test(c.textContent))&&!document.querySelector('.erv2 .ercs')}),name+": na revisão, a frente mostra o caso (ou a pista) sem a resposta");
  ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
  await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join(" | "));await b.close()})();

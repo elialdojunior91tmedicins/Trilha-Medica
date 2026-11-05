@@ -41,11 +41,11 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["note",1366,900,false]]){
   ok(await p.evaluate(()=>{eMenu=errors[errors.length-1].id;render();return ![...document.querySelectorAll('.ecard .efoot button')].some(b=>/Levar para a anotação/.test(b.textContent))}),name+": sem \"Levar para a anotação\" no erro");
   /* revisão: dados antes, ponto-chave depois */
   await p.evaluate(()=>{eMenu=null;errors.forEach(e=>e.due=today());render();document.getElementById("erGo").click()});await p.waitForTimeout(150);
-  const R1=await p.evaluate(()=>{const c=document.querySelector('.erfc');return {dd:!!c.querySelector('.edd'),pc:!!c.querySelector('.epc')}});
+  const R1=await p.evaluate(()=>{const c=document.querySelector('.erv2');return {caso:!!c.querySelector('.ercaso .ercx'),regra:!!c.querySelector('.errg'),cs:!!c.querySelector('.ercs')}});
   await p.evaluate(()=>document.getElementById("erShow").click());await p.waitForTimeout(150);
-  const R2=await p.evaluate(()=>{const c=document.querySelector('.erfc');return {pc:!!c.querySelector('.epc'),q:!!c.querySelector('.eqfull button')}});
-  ok(R1.dd&&!R1.pc&&R2.pc&&R2.q,name+": revisão mostra dados decisivos antes e ponto-chave/questão depois "+JSON.stringify([R1,R2]));
-  if(SHOT&&name==="note"){await p.evaluate(()=>{eQOpen.add(errors[errors.length-1].id);render()});await p.waitForTimeout(120);const c=await p.$('.erfc');await c.screenshot({path:SHOT+'/l7-revisao.png'})}
+  const R2=await p.evaluate(()=>{const c=document.querySelector('.erv2');return {regra:!!c.querySelector('.errg'),cs:!!c.querySelector('.ercs'),q:!!c.querySelector('.erfullq')}});
+  ok(R1.caso&&!R1.regra&&!R1.cs&&R2.regra&&R2.cs&&R2.q,name+": revisão: o caso na frente, sem resposta; a regra, Certa × Sua e a questão completa depois "+JSON.stringify([R1,R2]));
+  if(SHOT&&name==="note"){await p.evaluate(()=>{eQOpen.add(errors[errors.length-1].id);render()});await p.waitForTimeout(120);const c=await p.$('.erv2');await c.screenshot({path:SHOT+'/l7-revisao.png'})}
   /* 5. migração: "Meus erros" sai da anotação */
   const M=await p.evaluate(()=>{const old=eNew("CM-12","Marquei X; a certa era Y","Conceito já no caderno","conhecimento","");old.nt=today();putErr(old);
     notes["CM-12"]=`## Resumo\nTexto meu.\n\n## Meus erros\n- Conceito já no caderno (errei: Marquei X) {{e:${old.id}}}\n- Trombastenia de Glanzmann: falta GP IIb/IIIa (errei: confundi com Bernard-Soulier)\n\n## Pegadinhas\n> cuidado`;saveNotesLocal();

@@ -13,15 +13,15 @@ if(big){await click('#erFullB');await p.waitForTimeout(150);
   const st=await p.evaluate(()=>({list:!!document.getElementById("elist").offsetParent,ins:!!document.getElementById("insight").offsetParent,rev:document.querySelector(".erev").getBoundingClientRect().width,txt:document.getElementById("erFullB").textContent}));
   ok(!st.list&&!st.ins&&st.rev>500&&/Sair/.test(st.txt),name+": tela inteira esconde lista e mostra só a revisão "+JSON.stringify(st));
   await p.screenshot({path:`full-${name}.png`});
-  if(!mob){await p.keyboard.press(' ');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.show),name+": espaço mostra o correto");await p.keyboard.press('1');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.i===1&&erRun.ok===1),name+": tecla 1 = Agora sei");
-    await p.keyboard.press(' ');await p.keyboard.press('2');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.i===2&&erRun.ok===1),name+": tecla 2 = Ainda erraria");}
+  if(!mob){await p.keyboard.press(' ');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.show),name+": espaço mostra o correto");await p.keyboard.press('3');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.i===1&&erRun.ok===1),name+": tecla 3 = Acertei");
+    await p.keyboard.press(' ');await p.keyboard.press('1');await p.waitForTimeout(80);ok(await p.evaluate(()=>erRun.i===2&&erRun.ok===1),name+": tecla 1 = Errei");}
   // escolha lembrada
   await p.evaluate(()=>{erRun=null;render()});ok(await p.evaluate(()=>!!document.getElementById("elist").offsetParent),name+": fechar a revisão volta às duas colunas");
   ok(await p.evaluate(()=>localStorage.getItem("resid-erfull")==="1"),name+": escolha salva no aparelho");await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);errors.push({id:"y",k:"CM-1",t:"conhecimento",w:"a",r:"b",s:"",d:D(-3),box:0,due:D(0)});commit();setView("erros")});
   await click('#erGo');await p.waitForTimeout(150);ok(await p.evaluate(()=>!document.getElementById("elist").offsetParent),name+": abre em tela inteira da próxima vez");
   if(!mob){await p.keyboard.press('Escape');await p.waitForTimeout(100);ok(await p.evaluate(()=>!!document.getElementById("elist").offsetParent&&!erFull),name+": Esc sai da tela inteira")}
   else{await click('#erFullB');await p.waitForTimeout(100);ok(await p.evaluate(()=>!erFull),name+": botão sai da tela inteira")}}
-else{ok(await p.evaluate(()=>!!document.querySelector('.erfc')),name+": revisão normal")}
+else{ok(await p.evaluate(()=>!!document.querySelector('.erv2')),name+": revisão normal")}
 ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+": sem rolagem lateral");
 await ctx.close()}
 ok(!errs.length,"sem erros JS "+errs.join("|"));await b.close()})();
