@@ -16,7 +16,7 @@ const r=await p.evaluate(U=>{const R=window.__reads,bad=Object.keys(R).filter(k=
   return {bad,n:Object.keys(R).length,live:window.__subs.length,st:!!state["CM-2"]&&state["CM-2"].l===2,er:errors.some(e=>e.id==="e1"),cd:cards.some(c=>c.id==="c1"),fo:foSess.some(f=>f.id==="f1"),
     nt:notes["CM-1"]==="Anotação do tema",nm:ui.profile.name==="Ana",pr:promptText==="Meu prompt"}},U);
 ok(r.bad.length===0&&r.n>=14,name+": cada caminho lido uma vez só na abertura ("+r.n+" caminhos"+(r.bad.length?"; repetidos: "+r.bad.join(", "):"")+")");
-ok(r.live>=14&&r.live<=16,name+": uma assinatura ao vivo por caminho ("+r.live+")");
+ok(r.live>=16&&r.live<=18,name+": uma assinatura ao vivo por caminho, + as 2 do banco de questões ("+r.live+")");
 ok(r.st&&r.er&&r.cd&&r.fo&&r.nt&&r.nm&&r.pr,name+": a carga trouxe temas, erros, cartões, foco, anotações, perfil e instruções");
 /* a assinatura da carga continua viva: mudança de outro aparelho chega */
 await p.evaluate(U=>{window.__remote(U+"progress/topics/CM-3",{l:3,last:today(),step:2});window.__remote(U+"progress/errors/e2",{id:"e2",k:"CM-2",w:"Outro",r:"Certo",t:"conhecimento",s:"",d:today()});liveAct=0},U);
