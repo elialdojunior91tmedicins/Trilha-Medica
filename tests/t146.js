@@ -68,9 +68,9 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
  ok(OD.has&&OD.h===1&&OD.idb,"questão e resposta gravadas em outro aparelho chegam aqui e vão para o IndexedDB "+JSON.stringify(OD));
  /* 5. backup */
  const BK=await p.evaluate(async()=>{const B=buildBackup().data;const pv=B.bank.filter(x=>x.o==="prova").length,gen=B.bank.filter(x=>x.o==="gerada").length;
-   const bq=JSON.parse(JSON.stringify(B.bank)),bh=JSON.parse(JSON.stringify(B.bankh)),before=stab({bank:[...bank].sort(bankById2).map(x=>({...x,u:0})),bankH:[...bankH].sort(bankById2)});
+   const bq=JSON.parse(JSON.stringify(B.bank)),bh=JSON.parse(JSON.stringify(B.bankh)),before=stab({bank:[...bank].sort(bankById2).map(x=>({...x,u:0,at:0})),bankH:[...bankH].sort(bankById2)});
    await bankRestore([],[]);const empty=bank.filter(x=>x.o!=="prova").length;await bankRestore(bq,bh);
-   const after=stab({bank:[...bank].sort(bankById2).map(x=>({...x,u:0})),bankH:[...bankH].sort(bankById2)});let dif="";for(let i=0;i<before.length;i++)if(before[i]!==after[i]){dif=before.slice(i-80,i+80)+" ### "+after.slice(i-80,i+80);break}return {pv,gen,nh:B.bankh.length,empty,eq:before===after,dif,
+   const after=stab({bank:[...bank].sort(bankById2).map(x=>({...x,u:0,at:0})),bankH:[...bankH].sort(bankById2)});let dif="";for(let i=0;i<before.length;i++)if(before[i]!==after[i]){dif=before.slice(i-80,i+80)+" ### "+after.slice(i-80,i+80);break}return {pv,gen,nh:B.bankh.length,empty,eq:before===after,dif,
      noArr:!JSON.stringify(B.bank).includes("[[")}});
  ok(BK.pv===0&&BK.gen>=4&&BK.nh>=5,"backup leva o histórico e as questões que não voltam pela prova "+JSON.stringify(BK));
  ok(BK.empty===2,"restaurar um backup sem banco deixa só o que volta pelas provas, simulados, Refazer e erros guardados");

@@ -114,7 +114,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await ctx.route(/cdn\.jsdelivr\.net\/npm\/pdfjs-dist@4\.10\.38\/legacy\/build\/(.+)$/,r=>{const f=r.request().url().split("/").pop();r.fulfill({contentType:"text/javascript",headers:{"Access-Control-Allow-Origin":"*"},body:fs.readFileSync(path.join(PDFJS_DIR,f))})});
   const p=await ctx.newPage();p.on('pageerror',e=>errs.push("site:"+e.message));await p.goto('http://localhost:8765/');
   await p.waitForFunction(()=>typeof saveFac==='function'&&window.__site&&synced&&sampleFn,null,{polling:100,timeout:15000});
-  await p.evaluate(()=>{backStack=[];setView("quest");setQSeg("praticar")});await p.waitForTimeout(150);await p.tap('#impNew');
+  await p.evaluate(()=>{backStack=[];setView("quest");setQSeg("praticar","provas")});await p.waitForTimeout(150);await p.tap('#impNew');// B2: o site abre a aba em partes
   await p.setInputFiles('#impFile',pdf);await p.waitForFunction(()=>imp&&imp.st==="ready",null,{polling:100,timeout:20000});
   ok(await p.evaluate(()=>/em \d+ partes?: em cada uma, você copia o pedido/.test(document.querySelector('#impPanel').textContent)),"site: avisa que cada parte é um copiar e colar");
   await p.tap('#impGo');await p.waitForSelector('.smodal',{timeout:5000});

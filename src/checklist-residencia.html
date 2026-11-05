@@ -413,6 +413,77 @@ html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{d
 .qextra .qsim{grid-column:1/-1}
 .qextra .qexam{grid-column:1/-1}
 .exrows,.exqs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+
+/* Banco de questões, B2 (11/2026): partes no topo da aba e a tela do banco */
+#viewQuest:not([data-qpart="all"])>#qSegBar{display:none!important}
+#viewQuest[data-qpart="all"]>#qPartBar{display:none!important}
+#viewQuest[data-qpart="banco"]>[data-qp]:not([data-qp~="banco"]),#viewQuest[data-qpart="sim"]>[data-qp]:not([data-qp~="sim"]),#viewQuest[data-qpart="redo"]>[data-qp]:not([data-qp~="redo"]),
+#viewQuest[data-qpart="provas"]>[data-qp]:not([data-qp~="provas"]),#viewQuest[data-qpart="resumo"]>[data-qp]:not([data-qp~="resumo"]){display:none!important}
+#viewQuest[data-qpart="sim"] .qextra>.qredo,#viewQuest[data-qpart="redo"] .qextra>.qsim{display:none!important}
+#viewQuest:is([data-qpart="sim"],[data-qpart="redo"]) .qextra{display:flex!important;flex-direction:column}
+#viewQuest:is([data-qpart="sim"],[data-qpart="redo"]) .qextra>section{width:100%;max-width:980px;margin-inline:auto}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQuest:is([data-qpart="banco"],[data-qpart="sim"],[data-qpart="redo"],[data-qpart="provas"]):not(.vfull)>*{grid-column:1/-1!important;grid-row:auto!important}
+.qpnav{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow-x:auto;scrollbar-width:none}
+.qpnav button{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;border:0;border-radius:9px;background:none;color:var(--muted2);font:600 .92rem var(--body);padding:9px 14px;cursor:pointer}
+.qpnav button:hover{color:var(--ink);background:var(--bg)}
+.qpnav button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.qpn{font:700 .7rem var(--body);min-width:1.3rem;padding:1px 6px;border-radius:99px;background:var(--due-soft);color:var(--due)}
+.qpnav button[aria-pressed="true"] .qpn{background:var(--on-accent);color:var(--accent)}
+.qpbtn{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:700 1.05rem var(--body);padding:11px 14px;cursor:pointer;text-align:left}
+.qpbtn .qpl{flex:1}.qpbtn .pchev{border-color:var(--muted)}
+.qpi{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-size:1rem;flex:none}
+.qpsheet{position:fixed;left:0;right:0;bottom:0;z-index:90;max-height:82vh;overflow:auto;border-radius:18px 18px 0 0;padding:0 16px calc(14px + env(safe-area-inset-bottom,0px));background:var(--surface);box-shadow:0 -10px 30px rgb(0 0 0 / .18);display:flex;flex-direction:column;gap:4px}
+.qpopt{display:flex;align-items:center;gap:12px;width:100%;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;text-align:left;padding:10px 6px;cursor:pointer}
+.qpopt[aria-current="true"]{background:var(--accent-soft)}
+.qpt{display:flex;flex-direction:column;flex:1;min-width:0}.qpt b{font-size:.98rem}.qpt span{font-size:.8rem;color:var(--muted)}
+.bkcard{gap:14px}
+.bksum{font-size:.85rem;color:var(--muted)}
+.bkgrid{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bkgrid.bk2{display:grid;grid-template-columns:270px minmax(0,1fr);gap:22px;align-items:start}
+.bkside{position:sticky;top:14px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 28px);overflow:auto;padding-right:6px;border-right:1px solid var(--line)}
+.bkside .tfgh{display:flex;flex-direction:column;gap:2px}.bkside .chips{gap:6px}.bkside .qfrow{grid-template-columns:1fr}
+.bkmain{display:flex;flex-direction:column;gap:12px;min-width:0}
+.bksearch{display:flex;flex-direction:column;gap:8px}.bkfc>.tfres{display:none}.bksearch .tfsearch{width:100%}
+.bkpre{display:flex;flex-wrap:wrap;gap:6px}.bkpw{display:inline-flex;align-items:center}.bkpx{border:0;background:none;color:var(--muted);font-size:1.05rem;cursor:pointer;padding:0 6px}
+.bksave{border-style:dashed}
+.bksaverow{display:flex;flex-wrap:wrap;gap:8px}.bksaverow input{flex:1 1 200px}
+.bkcnt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+html[data-layout="phone"] .bkcnt{grid-template-columns:repeat(2,minmax(0,1fr))}
+.bkc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:9px 12px;cursor:pointer;text-align:left;font:inherit}
+.bkc b{font:600 1.2rem var(--mono);font-variant-numeric:tabular-nums}.bkc span{font-size:.78rem;color:var(--muted)}
+.bkc[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.bkc-ok b{color:var(--good)}.bkc-no b{color:var(--bad)}
+.bkbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.9rem}.bkn{font-weight:600}
+.bkacts{gap:8px}.bknote{margin:-4px 0 0;font-size:.8rem}
+.bksim{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.bksim .how{flex-basis:100%;margin:0}
+html[data-layout="phone"] .bkacts{position:sticky;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:5;background:var(--surface);padding:8px 0;box-shadow:0 -8px 12px var(--surface)}
+html[data-layout="phone"] .bkacts .bkgo{flex:1}
+.bklist{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.bkrow{border-bottom:1px solid var(--line)}.bkrow:last-child{border-bottom:0}.bkrow.open{background:var(--bg)}
+.bkr{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:4px 12px;align-items:start;width:100%;border:0;background:none;color:var(--ink);font:inherit;text-align:left;padding:11px 12px;cursor:pointer}
+.bkr:hover{background:var(--bg)}
+.bkst{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font:700 .72rem var(--body);margin-top:2px}
+.bkst.st-nr{border:1.5px dashed var(--muted)}.bkst.st-ok{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}.bkst.st-no{background:var(--due-soft);color:var(--bad)}
+.bkm{display:flex;flex-direction:column;gap:3px;min-width:0}
+.bkstem{font-size:.92rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bkmeta{font-size:.76rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bkbadges{display:flex;flex-wrap:wrap;gap:4px}
+.bkb{font:700 .66rem var(--body);letter-spacing:.03em;border-radius:99px;padding:1px 7px;background:color-mix(in srgb,var(--muted) 14%,transparent);color:var(--muted2)}
+.bkb.teim{background:var(--due-soft);color:var(--due)}.bkb.fav{background:color-mix(in srgb,var(--gold) 22%,transparent);color:var(--gold-ink)}.bkb.img{background:color-mix(in srgb,var(--l2) 14%,transparent);color:var(--l2)}.bkb.nf{background:var(--late-soft);color:var(--late)}
+.bkhist{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:.76rem;color:var(--muted);white-space:nowrap}.bkhist b{font-weight:600;color:var(--ink)}
+html[data-layout="phone"] .bkr{grid-template-columns:22px minmax(0,1fr)}html[data-layout="phone"] .bkhist{grid-column:2;flex-direction:row;gap:8px;align-items:baseline}
+.bkopen{display:flex;flex-direction:column;gap:10px;padding:0 12px 14px 46px}
+html[data-layout="phone"] .bkopen{padding-left:12px}
+.bkopen .qstem{margin:0;white-space:pre-wrap}
+.bkalts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:.9rem}
+.bkhl ol{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:var(--muted2)}.bkhl li{display:flex;gap:8px;align-items:center}
+.bkdel{margin-left:auto}.bkdel.warn{color:var(--bad);border-color:var(--bad)}
+.bkempty{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:18px}
+.bkempty b{font:700 1.2rem var(--display)}
+.bkmore{align-self:center}
+.bkplay{display:flex;flex-direction:column;gap:12px}
+.bkhline{margin:0;font-size:.86rem;color:var(--muted2)}
+.bkcard.bkrun{max-width:1100px;width:100%;margin-inline:auto}
 /* Lote 20D: provas na íntegra */
 .impsteps{list-style:none;margin:2px 0 6px;padding:0;display:flex;gap:4px;flex-wrap:wrap}.impsteps li{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted);padding:4px 10px 4px 4px;border-radius:20px;background:var(--bg)}
 .impsteps .isn{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-weight:700;font-size:.72rem}.impsteps li.cur{color:var(--ink);font-weight:700;background:var(--accent-soft)}.impsteps li.cur .isn{background:var(--accent);border-color:var(--accent);color:var(--surface)}
@@ -2246,10 +2317,12 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
   </div>
 
   <div id="viewQuest" class="wrap" style="width:100%" data-qseg="resumo" hidden>
+    <div id="qPartBar"></div>
+    <div id="bkBox" data-qp="banco"></div>
     <div class="tseg qseg" role="group" aria-label="Partes da aba Questões" id="qSegBar"><button type="button" data-q="resumo">Resumo</button><button type="button" data-q="praticar">Praticar</button><button type="button" data-q="temas">Temas</button></div>
-    <div id="qRegBox"></div>
-    <section class="card tfind qfbar" id="qFBar" role="search" aria-label="Filtros das questões"></section>
-    <section class="card dash qs-res" aria-labelledby="qh">
+    <div id="qRegBox" data-qp="resumo"></div>
+    <section class="card tfind qfbar" id="qFBar" data-qp="resumo" role="search" aria-label="Filtros das questões"></section>
+    <section class="card dash qs-res" aria-labelledby="qh" data-qp="resumo">
       <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
       <div class="kpis" id="qkpis"></div>
       <div id="qGoal"></div>
@@ -2257,11 +2330,11 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
       <figure class="chart"><figcaption>Evolução: últimas 12 semanas</figcaption><div id="qEvo"></div></figure>
       <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
     </section>
-    <div id="qSrcBox" class="qs-res"></div>
-    <div id="qExtra" class="qextra qs-prac"></div>
-    <div id="qExamBox" class="qexbox qs-prac"></div>
-    <section class="controls qfilters qs-tem" id="qFilters" aria-label="Filtros das questões"></section>
-    <ol class="elist qlistT qs-tem" id="qlistT"></ol>
+    <div id="qSrcBox" class="qs-res" data-qp="resumo"></div>
+    <div id="qExtra" class="qextra qs-prac" data-qp="sim redo"></div>
+    <div id="qExamBox" class="qexbox qs-prac" data-qp="provas"></div>
+    <section class="controls qfilters qs-tem" id="qFilters" aria-label="Filtros das questões" data-qp="resumo"></section>
+    <ol class="elist qlistT qs-tem" id="qlistT" data-qp="resumo"></ol>
   </div>
 
   <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
@@ -3126,7 +3199,7 @@ function nbInfo(t,id){if(t==="e"){const e=errors.find(x=>x.id===id);return e?{la
   const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid),r=ex&&ex.qs[+ix];return r?{lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||+ix+1}`,tip:r.q.enunciado.replace(/\s+/g," ").slice(0,120),ok:true}:{lab:"Questão apagada",ok:false}}
 function nbHTML(t,id){const I=nbInfo(t,id);return `<button type="button" class="nbadge n${t}${I.ok?"":" gone"}" data-nb="${esc(t+":"+id)}"${I.tip?` title="${esc(I.tip)}"`:""}${I.ok?"":" disabled"}>${t==="e"?"⚠":"?"} ${esc(I.lab)}</button>`}
 function nbGo(ref){const t=ref[0],id=ref.slice(2);if(t==="e"){const e=errors.find(x=>x.id===id);if(e)eOpenOne(e);return}
-  const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid);if(!ex||!ex.qs[+ix])return;exRun={id:xid,view:"rev",i:+ix,cad:{}};exEdit=null;backStack=[];qSeg="praticar";setView("quest");setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},60)}
+  const [xid,ix]=id.split(":"),ex=exams.find(x=>x.id===xid);if(!ex||!ex.qs[+ix])return;exRun={id:xid,view:"rev",i:+ix,cad:{}};exEdit=null;backStack=[];qSeg="praticar";qPart="provas";setView("quest");setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},60)}
 /* o que pode virar selo num tema: erros ativos e questões de provas na íntegra desse tema */
 function nbChoices(k){const KS=new Set(Array.isArray(k)?k:[k]),many=KS.size>1,E=errors.filter(e=>KS.has(e.k)&&!e.arch).sort(byNewest).slice(0,20).map(e=>({tok:`{{e:${e.id}}}`,lab:`Erro · ${br(e.d).slice(0,5)}${many&&BYKEY[e.k]?" · "+BYKEY[e.k].t:""}`,sub:eOneLine(e.w||e.r).slice(0,90)}));
   const Q=[];exams.forEach(ex=>ex.qs.forEach((r,i)=>{if(KS.has(r.k)&&Q.length<30){const a=exPg(ex.id).a[i];Q.push({tok:`{{q:${ex.id}:${i}}}`,lab:`${ex.banca||ex.name}${ex.ano?" · "+ex.ano:""} · Q${r.n||i+1}`,sub:(a?(a.l===r.q.correta?"✓ acertou · ":"✗ errou · "):"")+r.q.enunciado.replace(/\s+/g," ").slice(0,80),w:a&&a.l!==r.q.correta})}}));
@@ -3880,7 +3953,7 @@ async function generate(it){
       if(gen[it.key]!==g)return;
       const qs=validQs(data).slice(0,k);qs.forEach(q=>{if(M){q.mat=true;figBind(q,M)}else delete q.figura});
       if(!qs.length){if(++fails>=2){g.msg=GEN_ERR.invalid_json;break}continue}
-      fails=0;g.pos+=k;bi++;g.qs.push(...qs);qs.forEach(q=>bankAdd(q,"gerada",it.key));render();
+      fails=0;g.pos+=k;bi++;g.qs.push(...qs);qs.forEach(q=>bankAdd(q,"gerada",it.key,M?MP:null));render();
     }catch(e){
       if(gen[it.key]!==g)return;
       const code=e&&e.code;
@@ -4099,7 +4172,8 @@ function renderQuest(){
    const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
-   const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
+   const vq=$("#viewQuest");vq.dataset.qseg=qLegacy()?qSeg:"";vq.dataset.qpart=qLegacy()?"all":qPart;
+   {const pb=$("#qPartBar");pb.innerHTML="";if(!qLegacy())pb.appendChild(qPartBarEl());const bb=$("#bkBox");bb.innerHTML="";if(qLegacy()||qPart==="banco")bb.appendChild(bkCard())}const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
    $("#qSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.q===qSeg);b.innerHTML={resumo:"Resumo",praticar:"Praticar"+(rdN?`<b>${rdN}</b>`:""),temas:"Temas"+(tN?`<b>${tN}</b>`:"")}[b.dataset.q];b.onclick=()=>setQSeg(b.dataset.q)});
    /* Lote 20: os filtros ligados aparecem na barra do topo da aba (etiquetas com ×) */}
   const from=qFrom(),U=qUniverse(),st=U.map(it=>{const [c,t]=qOf(it.key,from);return {it,c,t}});
@@ -6542,7 +6616,7 @@ function dayQSave(){lsSet("resid-dayq",dayQ?JSON.stringify(dayQ):null)}
 function qGoStep(id){backStack=[];
   if(id==="errs"){setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60)}
   else if(id==="weak"){const W=weakToday();if(W){detTab[W.k]="questoes";openTopic(W.k);setTimeout(()=>{const g=detGet("qf-",W.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}}
-  else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");const K=pwKeys(),ids=rdDueList().sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
+  else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar","redo");const K=pwKeys(),ids=rdDueList().sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
   else if(id==="plan"){const P=ensurePlan(),x=P.items.find(p=>BYKEY[p.k]&&!itemDone(p));setView("inicio");if(x)startStep({k:x.k,kind:"plan"});else setTimeout(()=>{const c=$("#viewInicio .card.today");if(c)c.scrollIntoView({behavior:"smooth",block:"start"})},60)}
   else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
@@ -6832,6 +6906,7 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* Lote 20E: plano alinhado ao eixo */if(typeof p.align==="boolean")o.prefs.align=p.align;if(["111","021","120"].includes(p.amix))o.prefs.amix=p.amix;if(typeof p.anear==="boolean")o.prefs.anear=p.anear;
   if(p.eixo&&typeof p.eixo==="object"&&typeof p.eixo.a==="string"&&typeof p.eixo.sp==="string")o.prefs.eixo={a:p.eixo.a.slice(0,6),sp:p.eixo.sp.slice(0,80),...(typeof p.eixo.until==="string"&&/^\d{4}-\d\d-\d\d$/.test(p.eixo.until)?{until:p.eixo.until}:{})};
   if(p.pgm&&typeof p.pgm==="object"&&!Array.isArray(p.pgm)){const m={};Object.entries(p.pgm).slice(-400).forEach(([k,v])=>{if(/^p[a-z0-9]{1,12}$/.test(k)&&Number.isInteger(v)&&v>0&&v<1000)m[k]=v});if(Object.keys(m).length)o.prefs.pgm=m}// Lote 20C: pegadinhas "não sabia"
+  if(Array.isArray(p.bkps)){const L=p.bkps.filter(x=>x&&/^u[a-z0-9]{1,14}$/.test(x.id)&&typeof x.n==="string"&&x.n.trim()).slice(-12).map(x=>({id:x.id,n:x.n.trim().slice(0,40),f:bkFClean(x.f)}));if(L.length)o.prefs.bkps=L}// B2: filtros salvos do banco
   if(["auto","light","dark"].includes(p.theme))o.prefs.theme=p.theme;
   if(["n","g"].includes(p.font))o.prefs.font=p.font;
   if([2,3,4,5].includes(p.planN))o.prefs.planN=p.planN;
@@ -8256,7 +8331,7 @@ function qSrcFixEl(){const T=qSrcTotals(),w=el(`<div class="qsrcfix"></div>`);
   return w}
 /* ---------- Questões: partes (Resumo, Praticar, Temas), simulado misto e ritmo por questão ---------- */
 let qSeg="resumo";try{const v=localStorage.getItem("resid-qseg");if(["resumo","praticar","temas"].includes(v))qSeg=v}catch(e){}
-function setQSeg(v){qSeg=v;try{localStorage.setItem("resid-qseg",v)}catch(e){}render();window.scrollTo({top:0})}
+function setQSeg(v,p){qSeg=v;try{localStorage.setItem("resid-qseg",v)}catch(e){}const P=p||{praticar:"sim",resumo:"resumo",temas:"resumo"}[v];if(P){qPart=P;lsSet("resid-qpart",P)}render();window.scrollTo({top:0})}
 /* ritmo: segundos e questões cronometradas por dia, no histórico (hist[d].ts / hist[d].tq) */
 function logPace(d,n,sec){const h=hist[d]||(hist[d]={});h.tq=Math.max(0,(h.tq||0)+n);h.ts=Math.max(0,(h.ts||0)+Math.round(sec));try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
 const fmtPace=s=>{s=Math.round(s);return s<60?`${s}s`:`${Math.floor(s/60)}min${s%60?String(s%60).padStart(2,"0")+"s":""}`};
@@ -8343,7 +8418,7 @@ async function simStartMat(){const P0=msPack(simMat),n=simCfg.n,items=Array.from
     try{const data=await sampleFn.json(simMatPrompt(k,P,S.qs.map(q=>q.conceito||q.enunciado.slice(0,120))),{...mo,signal:S.ctl.signal,cache:false,onText:()=>{const s=$("#simSt");if(s)s.textContent=`Escrevendo as questões ${S.qs.length+1} a ${S.qs.length+k} de ${items.length}…`}});
       if(sim!==S||S.stopped)return;const raw=Array.isArray(data)?data:(data&&Array.isArray(data.questoes)?data.questoes:[]),qs=validQs(raw).slice(0,k);
       if(!qs.length){if(++fails>=2){S.msg=GEN_ERR.invalid_json;break}continue}fails=0;bi++;
-      qs.forEach(q=>{const t=String(q.tema||"").trim().toUpperCase(),kk=BYKEY[t]&&!BYKEY[t].own?t:simGuessK(q,S.qs);delete q.tema;figBind(q,P);S.qs.push({...q,k:kk,mat:true});bankAdd({...q,mat:true},"simulado",kk)});
+      qs.forEach(q=>{const t=String(q.tema||"").trim().toUpperCase(),kk=BYKEY[t]&&!BYKEY[t].own?t:simGuessK(q,S.qs);delete q.tema;figBind(q,P);S.qs.push({...q,k:kk,mat:true});bankAdd({...q,mat:true},"simulado",kk,P)});
       if(S.status==="loading"){S.status="run";S.start=Date.now();S.shown=Date.now()}render()}
     catch(e){if(sim!==S||S.stopped)return;const code=e&&e.code;if(code==="cancelled"){if(!S.qs.length){sim=null;render();return}break}
       S.msg=GEN_OFF.includes(code)?"A geração de questões não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível gerar o simulado agora. Tente novamente.");break}}
@@ -8590,7 +8665,7 @@ function bqClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",now=new D
   const o={id:x.id,h:s(x.h,20),o:BQ_O.includes(x.o)?x.o:"gerada",ks,at:s(x.at,40)||now,u:s(x.u,40)||s(x.at,40)||now,q:bqQ(x.q)};
   for(const f of ["ban","niv","pv"])if(s(x[f],140).trim())o[f]=s(x[f],140);if(/^\d{4}$/.test(String(x.ano||"")))o.ano=String(x.ano);
   if(Number.isInteger(x.pn)&&x.pn>0)o.pn=x.pn;if(typeof x.ex==="string"&&x.ex)o.ex=x.ex.slice(0,60);if(Number.isInteger(x.ei)&&x.ei>=0)o.ei=x.ei;
-  for(const f of ["fg","nf","mat","an"])if(x[f])o[f]=1;return o}
+  for(const f of ["fg","nf","mat","an","fm","fav","del"])if(x[f])o[f]=1;return o}
 function bhClean(x){const D=/^\d{4}-\d{2}-\d{2}$/;
   const L=(Array.isArray(x.a)?x.a:[]).filter(y=>y&&D.test(y.d)).map(y=>{const o={d:y.d,l:typeof y.l==="string"?y.l.slice(0,3):"",ok:y.ok?1:0,s:Math.max(0,Math.min(1800,Math.round(+y.s||0))),src:BH_SRC.includes(y.src)?y.src:"gen"};if(y.c)o.c=1;if(y.m)o.m=1;return o});
   L.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);return {id:x.id,a:L.slice(-BH_MAX)}}
@@ -8628,7 +8703,7 @@ function bankPut(n){let cur=bankById.get(n.id);
     const old=cur.q;cur.q=n.q;bqFill(cur.q,old);bhRemap(cur.id,old,cur.q);cur.h=n.h;cur.o="prova";cur.ks=n.ks.length?n.ks:cur.ks;
     for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f]}
   else{bqFill(cur.q,n.q);if(BQ_RANK[n.o]>BQ_RANK[cur.o]){cur.o=n.o;for(const f of ["ban","ano","niv","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];if(n.fg)cur.fg=1}
-    cur.ks=[...new Set([...cur.ks,...n.ks])].slice(0,3);for(const f of ["nf","mat"])if(n[f])cur[f]=1;if(n.at<cur.at)cur.at=n.at}
+    cur.ks=[...new Set([...cur.ks,...n.ks])].slice(0,3);if(n.mat)cur.mat=1;if(n.nf&&!cur.fm)cur.nf=1;if(n.at<cur.at)cur.at=n.at}
   if(stab(cur)!==before){cur.u=new Date().toISOString();bankDirty.add(cur.id);bankSoon()}return cur}
 /* a ordem das alternativas mudou (a prova passou a mandar no texto): as letras do histórico acompanham, pelo texto */
 function bhRemap(id,oq,nq){const H=bankHById.get(id);if(!H)return;let ch=false;
@@ -8645,7 +8720,7 @@ function bhAdd(id,y){const y2=bhClean({id,a:[y]}).a[0];if(!y2)return false;let H
   bankHDirty.add(id);bankSoon();return true}
 const bqExtra=(q,o)=>({...(q&&q.mat?{mat:1}:{}),...(q&&q.fg&&o!=="prova"?{nf:1}:{})});
 /* ganchos: questão gerada (gerador do tema, simulado) e cada resposta */
-function bankAdd(q,o,k){if(!q)return;const c=JSON.parse(JSON.stringify(q));bankDo(()=>{const n=bqFrom(c,o,[k],bqExtra(c,o));if(n)bankPut(n)})}
+function bankAdd(q,o,k,P){if(!q)return;const c=JSON.parse(JSON.stringify(q));bankDo(()=>{const n=bqFrom(c,o,[k],bqExtra(c,o));if(n)bkFigFrom(bankPut(n),c,P)})}
 function bankAns(q,o,k,l,sec,src,counted){if(!q||!l)return;const c=JSON.parse(JSON.stringify(q)),d=today();
   bankDo(()=>{const n=bqFrom(c,o,[k],bqExtra(c,o));if(!n)return;const bq=bankPut(n);bhAdd(bq.id,{d,l:bqLetter(bq,c,l),ok:l===c.correta?1:0,s:sec,src,...(counted?{c:1}:{})})})}
 const RD_O={gen:"gerada",sim:"simulado",exam:"prova"};
@@ -8660,7 +8735,7 @@ function bankFeedAll(){bankDo(()=>{
     L.forEach(y=>{if(y.l)bhAdd(bq.id,{d:y.d,l:y.l,ok:y.l===bq.q.correta?1:0,s:y===cur?y.s||0:0,src:"exam",...(y===cur?{c:1}:{}),m:1})})})});
   sims.forEach(x=>x.qs.forEach(r=>{if(!BYKEY[r.k])return;const b=bqFrom(r.q,"simulado",[r.k],{...bqExtra(r.q,"simulado"),at:x.at||x.d+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b);
     if(r.a)bhAdd(bq.id,{d:x.d,l:bqLetter(bq,r.q,r.a),ok:r.a===r.q.correta?1:0,s:r.t||0,src:"sim",c:1,m:1})}));
-  redo.forEach(x=>{if(!BYKEY[x.k])return;const o=RD_O[x.src]||"gerada",b=bqFrom(x.q,o,[x.k],{...bqExtra(x.q,o),at:(x.fd||x.d)+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b),f=x.fd||x.d;
+  redo.forEach(x=>{if(!BYKEY[x.k])return;const o=RD_O[x.src]||"gerada",b=bqFrom(x.q,o,[x.k],{...bqExtra(x.q,o),at:(x.fd||x.d)+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b),f=x.fd||x.d;if(x.img&&bq.nf)bkFigSet(bq,x.img);
     if(!wrongBy(bq.id,f))bhAdd(bq.id,{d:f,l:"",ok:0,s:0,src:x.src==="sim"?"sim":x.src==="exam"?"exam":"gen",c:1,m:1});
     if(x.wr&&x.d!==f&&!wrongOn(bq.id,x.d))bhAdd(bq.id,{d:x.d,l:"",ok:0,s:0,src:"redo",m:1});
     if(x.ok&&x.okd)bhAdd(bq.id,{d:x.okd,l:bq.q.correta,ok:1,s:0,src:"redo",m:1})});
@@ -8688,7 +8763,7 @@ function bankBoot(prog){if(bankBootP)return bankBootP;bankBootP=(async()=>{await
   if(prog){bankStore=packStore(prog,"bank");bankHStore=packStore(prog,"bankh");await bankSyncStart()}bankFeedAll()})();return bankBootP}
 /* backup: histórico inteiro; questões que não voltam pela prova na íntegra guardada */
 const bankById2=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
-function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>!(x.o==="prova"&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
+function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||!(x.o==="prova"&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
 /* importar backup: troca o banco pelo do arquivo (as questões das provas voltam pela própria prova) e regrava na conta */
 async function bankRestore(Q,H){await bankReady;if(bankBootP)await bankBootP;
   bank=(Array.isArray(Q)?Q:[]).filter(bqOk).map(bqClean);bankH=(Array.isArray(H)?H:[]).filter(x=>x&&typeof x.id==="string").map(bhClean);bqIdx();
@@ -8699,6 +8774,250 @@ async function bankRestore(Q,H){await bankReady;if(bankBootP)await bankBootP;
       await del(bankStore,a.docs.map(d=>d.id).filter(id=>!qi.has(id)));await del(bankHStore,b.docs.map(d=>d.id).filter(id=>!hi.has(id)))}catch(e){}
     bank.forEach(x=>bankDirty.add(x.id));bankH.forEach(x=>bankHDirty.add(x.id));bankSynced=true}
   await bankFlush()}
+/* ---------- Banco de questões, B2 (11/2026): a tela ----------
+   A aba Questões vira o Banco: partes no topo (qPart = banco|sim|redo|provas|resumo; no celular, seletor "Banco ▾" que abre uma folha de baixo).
+   Banco = filtros bkF (situação, Onde = Grande área › Especialidade › Tema, origem, banca, ano, nível, mais), presets (fixos BK_PRE + os salvos em
+   ui.prefs.bkps), 4 contadores que também filtram, lista com o histórico (bkRowEl) e o jogador bkRun: "Resolver estas" (modo estudo, gabarito na hora)
+   e "Simulado com estas" (modo prova: relógio, mapa, resultado no fim). Tempo de cada questão vai para o histórico (s).
+   Na questão do banco: fav = favorita; del = tirada do banco (fica marcada, some nos outros aparelhos e não volta pela carga); fm = figura do material
+   guardada (exFigs, id "bk_<id>", ex "bank"; nf = tinha figura e ela não foi guardada).
+   Teimosa (bkTeim): 3 erros no total; sai com 2 acertos seguidos em dias diferentes; errou de novo, volta.
+   Contagem: só a 1ª resposta (questão sem histórico) conta no acerto do tema (e, errada, vai para o Refazer); questão de prova na íntegra guardada conta
+   na própria prova; as outras respostas contam só na meta semanal (hist.rq), como o Refazer. */
+const QPARTS=[["banco","Banco","Todas as questões guardadas, com filtros","▤"],["sim","Simulado misto","Questões novas do Claude sobre os seus temas","✦"],["redo","Refazer","As que você errou, de volta no dia certo","↻"],["provas","Provas na íntegra","Importar e fazer provas inteiras","▣"],["resumo","Resumo","Gráficos, meta da semana e os seus temas","▦"]];
+let qPart=(()=>{const v=lsGet("resid-qpart","banco");return QPARTS.some(p=>p[0]===v)?v:"banco"})(),qpSheet=false;
+const qLegacy=()=>!!window.__qLegacy;// testes antigos: a aba como era (tudo junto), sem as partes do banco
+function qGo(p){qPart=p;lsSet("resid-qpart",p);qpSheet=false;render();window.scrollTo({top:0})}
+function qPartBarEl(){const w=el(`<div class="qparts"></div>`),rd=rdDueList().length,cur=QPARTS.find(p=>p[0]===qPart)||QPARTS[0];
+  const badge=v=>v==="redo"&&rd?`<b class="qpn">${rd}</b>`:"";
+  if(isPhoneL()){const b=el(`<button class="qpbtn" type="button" id="qpBtn" aria-haspopup="true" aria-expanded="${qpSheet}"><span class="qpi" aria-hidden="true"></span><span class="qpl"></span>${qPart!=="redo"?badge("redo"):""}<span class="pchev" aria-hidden="true"></span></button>`);
+    b.querySelector(".qpi").textContent=cur[3];b.querySelector(".qpl").textContent=cur[1];b.onclick=()=>{qpSheet=!qpSheet;render()};w.appendChild(b);
+    if(qpSheet){const bk=el(`<div class="tfback" aria-hidden="true"></div>`);bk.onclick=()=>{qpSheet=false;render()};w.appendChild(bk);
+      const sh=el(`<div class="qpsheet" role="menu" aria-label="Partes do banco"><div class="tfsh"><span class="tfsgrab" aria-hidden="true"></span><b>Banco de questões</b><span class="sp"></span><button class="tfsx" type="button" aria-label="Fechar">×</button></div></div>`);
+      sh.querySelector(".tfsx").onclick=()=>{qpSheet=false;render()};
+      QPARTS.forEach(([v,l,h,ic])=>{const o=el(`<button class="qpopt" type="button" role="menuitem"><span class="qpi" aria-hidden="true"></span><span class="qpt"><b></b><span></span></span>${badge(v)}</button>`);o.id="qpo-"+v;o.setAttribute("aria-current",v===qPart);
+        o.querySelector(".qpi").textContent=ic;o.querySelector("b").textContent=l;o.querySelector(".qpt>span").textContent=v==="redo"&&rd?`${rd} para hoje · `+h.toLowerCase():h;o.onclick=()=>qGo(v);sh.appendChild(o)});w.appendChild(sh)}
+    return w}
+  const nav=el(`<nav class="qpnav" aria-label="Partes do banco de questões"></nav>`);
+  QPARTS.forEach(([v,l,h])=>{const b=el(`<button type="button"><span></span>${badge(v)}</button>`);b.id="qp-"+v;b.title=h;b.querySelector("span").textContent=l;b.setAttribute("aria-pressed",v===qPart);b.onclick=()=>qGo(v);nav.appendChild(b)});
+  w.appendChild(nav);return w}
+/* ---- dados do banco para a tela ---- */
+const BK_O=[["prova","Provas na íntegra"],["oficial","Provas oficiais"],["simulado","Simulados"],["gerada","Geradas pelo Claude"],["mat","Do seu material"]];
+const BK_ST=[["nr","Não resolvidas"],["r","Resolvidas"],["ok","Acertadas"],["no","Erradas"]];
+const BK_SORT=[["new","Mais recentes"],["err","Mais erradas"],["old","Feitas há mais tempo"],["ban","Banca e ano"]];
+const BK_PAGE=40,BK_RUN_MAX=100;
+function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,dyn:"",pre:""}}
+function bkFClean(f){const o=bkFDef();if(!f||typeof f!=="object")return o;const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
+  o.q=s(f.q,80);if(["all","nr","r","ok","no"].includes(f.st))o.st=f.st;for(const k of ["area","sp","k"])if(s(f[k],80))o[k]=s(f[k],80);
+  for(const k of ["ban","ano","niv","o"])if(Array.isArray(f[k]))o[k]=f[k].filter(v=>typeof v==="string").map(v=>v.slice(0,140)).slice(0,20);
+  for(const k of ["fav","img","old","nf","teim"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
+let bkF=bkFDef(),bkSort=(()=>{const v=lsGet("resid-bksort","new");return BK_SORT.some(x=>x[0]===v)?v:"new"})(),bkOpen=null,bkShown=BK_PAGE,bkRun=null,bkFPanel=false,bkSimOpen=false,bkSimN=10,bkSaveOn=false,bkArm=null,bkQT=null;
+const bkStxt=new Map();
+const bkLive=()=>bank.filter(x=>!x.del);
+const bkH=x=>{const H=bankHById.get(x.id);return H?H.a:[]};
+function bkTeim(A){let e=0,inT=false,st=0,ld="";for(const y of A){if(!y.ok){e++;if(e>=3)inT=true;st=0;ld=""}else if(inT&&y.d!==ld){st++;ld=y.d;if(st>=2){inT=false;st=0}}}return inT}
+function bkInfo(x){const A=bkH(x),last=A.length?A[A.length-1]:null,no=A.filter(y=>!y.ok).length;return {A,n:A.length,ok:A.length-no,no,last,st:!last?"nr":last.ok?"ok":"no",teim:bkTeim(A)}}
+function bkTxt(x){let c=bkStxt.get(x.id);if(!c||c.u!==x.u){c={u:x.u,t:" "+bqT([x.q.enunciado,x.q.comentario||"",...x.q.alternativas.map(a=>a.texto)].join(" "))+" "};bkStxt.set(x.id,c)}return c.t}
+function bkAxKeys(){const AX=axNow(),S=new Set();AX.list.forEach(e=>{ALL.forEach(it=>{if(it.area.code===e.area&&(!e.spec||it.sp===e.spec))S.add(it.key)});(e.sps||[]).forEach(f=>topicKeysOf(spAsProva(f.d,f.s).items).forEach(k=>S.add(k)))});
+  AX.noArea.forEach(f=>topicKeysOf(spAsProva(f.d,f.s).items).forEach(k=>S.add(k)));return {lab:AX.list.map(e=>e.lab).join(", "),keys:S}}
+function bkProvaKeys(){const up=upcomingProvas()[0];return up?{lab:up.name,keys:new Set(topicKeysOf(up.items))}:null}
+const bkOrig=x=>x.mat?"mat":x.o;
+const bkIts=x=>x.ks.map(k=>BYKEY[k]).filter(Boolean);
+/* filtro; skip = dimensões ignoradas (para as contagens de cada grupo) */
+function bkMatch(R,F,K,skip){const x=R.x,I=R.I;skip=skip||"";
+  if(F.q){const W=bqT(F.q).split(" ").filter(Boolean),t=bkTxt(x);if(!W.every(w=>t.includes(w)))return false}
+  if(!skip.includes("st")&&F.st!=="all"&&(F.st==="r"?I.st==="nr":I.st!==F.st))return false;
+  if(!skip.includes("w")){if(F.k!=="all"){if(!x.ks.includes(F.k))return false}
+    else if(F.area!=="all"&&!bkIts(x).some(it=>it.area.code===F.area&&(F.sp==="all"||it.sp===F.sp)))return false}
+  if(!skip.includes("o")&&F.o.length&&!F.o.includes(bkOrig(x)))return false;
+  if(!skip.includes("ban")&&F.ban.length&&!F.ban.includes(x.ban||""))return false;
+  if(!skip.includes("ano")&&F.ano.length&&!F.ano.includes(x.ano||""))return false;
+  if(!skip.includes("niv")&&F.niv.length&&!F.niv.includes(x.niv||""))return false;
+  if(!skip.includes("m")){if(F.fav&&!x.fav)return false;if(F.img&&!(x.fg||x.fm))return false;if(F.old&&x.an)return false;if(F.nf&&!(x.nf&&!x.fm))return false;if(F.teim&&!I.teim)return false}
+  if(F.dyn&&!skip.includes("dyn")&&!(K&&x.ks.some(k=>K.has(k))))return false;
+  return true}
+function bkSorted(L){const t=x=>x.I.last?x.I.last.d:"";const S={new:(a,b)=>a.x.at<b.x.at?1:a.x.at>b.x.at?-1:0,
+    err:(a,b)=>b.I.no-a.I.no||(t(a)<t(b)?1:-1),old:(a,b)=>(!a.I.last)-(!b.I.last)||(t(a)<t(b)?-1:t(a)>t(b)?1:0),
+    ban:(a,b)=>(a.x.ban||"~").localeCompare(b.x.ban||"~")||(b.x.ano||"").localeCompare(a.x.ano||"")||(a.x.pv||"").localeCompare(b.x.pv||"")||(a.x.pn||0)-(b.x.pn||0)};
+  return [...L].sort(S[bkSort]||S.new)}
+function bkDyn(F){return F.dyn==="eixo"?bkAxKeys():F.dyn==="prova"?bkProvaKeys():null}
+function bkCompute(){const F=bkF,D=bkDyn(F),K=D?D.keys:null,R=bkLive().map(x=>({x,I:bkInfo(x)}));return {F,D,K,R,vis:bkSorted(R.filter(r=>bkMatch(r,F,K)))}}
+const bkAgo=d=>{const n=-daysTo(d);return n<=0?"hoje":n===1?"ontem":`há ${n} dias`};
+const bkHistTxt=I=>!I.n?"inédita":[I.no?`errou ${I.no}`:"",I.ok?`acertou ${I.ok}`:""].filter(Boolean).join(" · ");
+/* ---- mudanças na questão ---- */
+function bkTouch(x){x.u=new Date().toISOString();bankDirty.add(x.id);bankSoon()}
+function bkFav(x){if(x.fav)delete x.fav;else x.fav=1;bkTouch(x)}
+function bkDel(x){x.del=1;delete x.fav;bkTouch(x);if(bkOpen===x.id)bkOpen=null;exfDel("bk_"+x.id);
+  infoToast("Questão tirada do banco.","Desfazer",()=>{delete x.del;bkTouch(x);render()})}
+/* figura do material: guardada como as das provas (comprimida, à parte, baixada só ao abrir a questão) */
+function bkFigSet(bq,img){if(!img||bq.fm)return;exfPut({id:"bk_"+bq.id,ex:"bank",i:0,img});bq.fm=1;delete bq.nf;bkTouch(bq)}
+function bkFigFrom(bq,q,P){if(!bq||bq.fm||!q.fg||!P||!P.figs)return;const f=P.figs.find(y=>y.no===q.fg.no);if(f&&f.blob)exfData(f.blob).then(img=>{if(img&&bankById.get(bq.id)===bq){bkFigSet(bq,img);render()}})}
+function bkFigImg(x){return x.fm?exFig({id:"bk"},x.id):x.fg&&x.ex?exFig({id:x.ex},x.ei):""}
+function bkFigEl(x){if(!(x.fm||x.fg||x.nf))return null;const img=bkFigImg(x);if(x.q.fg)return figEl(x.q,null,img);
+  const w=el(`<figure class="qfig"></figure>`);if(img){const i=el(`<img alt="Figura da questão">`);i.src=img;i.onclick=()=>{try{window.open(img,"_blank")}catch(e){}};w.appendChild(i)}
+  else w.appendChild(el(`<figcaption>${x.nf&&!x.fm?"Esta questão tinha uma figura que não foi guardada.":"Carregando a figura…"}</figcaption>`));return w}
+/* ---- uma resposta no banco ---- */
+function bkCounts(x){const k=x.ks[0];return !!(k&&BYKEY[k]&&!bkH(x).length&&!(x.o==="prova"&&x.ex&&exams.some(e=>e.id===x.ex)))}
+function bkAnswer(x,l,sec){const ok=l===x.q.correta,cnt=bkCounts(x),k=x.ks[0],d=today();sec=Math.min(1800,Math.max(1,sec||1));
+  bhAdd(x.id,{d,l,ok:ok?1:0,s:Math.round(sec),src:"bank",...(cnt?{c:1}:{})});
+  if(cnt){upd(k,y=>addQ(y,1,ok?1:0,null,x.ban||"Claude"));logAct("q",1,ok?1:0);logPace(d,1,sec);if(!ok)rdAdd(k,JSON.parse(JSON.stringify(x.q)),x.o==="simulado"?"sim":"gen")}
+  else{const h=hist[d]||(hist[d]={});h.rq=(h.rq||0)+1}
+  commit();return cnt}
+/* ---- o jogador: estudo (gabarito na hora) ou prova (relógio, resultado no fim) ---- */
+function bkStart(ids,mode){const L=ids.map(id=>bankById.get(id)).filter(x=>x&&!x.del).slice(0,BK_RUN_MAX);if(!L.length)return;
+  bkRun={ids:L.map(x=>x.id),i:0,mode,ans:{},t:{},cnt:{},shown:Date.now(),start:Date.now(),done:false,cad:{},rev:null};bkOpen=null;render();bkTop()}
+function bkTop(){setTimeout(()=>{const h=$("#bkh");if(h)h.scrollIntoView({block:"start"})},30)}
+function bkStay(){const R=bkRun;if(R&&R.mode==="p"&&!R.done){R.t[R.i]=(R.t[R.i]||0)+(Date.now()-R.shown)/1000;R.shown=Date.now()}}
+function bkGoQ(j){const R=bkRun;if(!R||j<0||j>=R.ids.length)return;bkStay();R.i=j;R.shown=Date.now();render();bkTop()}
+function bkPick(l){const R=bkRun;if(!R||R.done)return;const x=bankById.get(R.ids[R.i]);if(!x)return;
+  if(R.mode==="p"){R.ans[R.i]=R.ans[R.i]===l?"":l;render();return}
+  if(R.ans[R.i])return;const sec=(Date.now()-R.shown)/1000;R.ans[R.i]=l;R.t[R.i]=sec;R.cnt[R.i]=bkAnswer(x,l,sec);render()}
+function bkNext(){const R=bkRun;if(R.i+1>=R.ids.length){R.done=true;R.rev=null;render();bkTop();return}R.i++;R.shown=Date.now();render();bkTop()}
+function bkFinish(){const R=bkRun;bkStay();R.ids.forEach((id,i)=>{const x=bankById.get(id),l=R.ans[i];if(x&&l)R.cnt[i]=bkAnswer(x,l,R.t[i]||1)});R.done=true;R.rev=null;render();bkTop()}
+function bkTick(){const c=$("#bkClock");if(!c||!bkRun||bkRun.done)return;const R=bkRun;c.textContent=R.mode==="p"?`⏱ ${fmtClock((Date.now()-R.start)/1000)}`:R.ans[R.i]?"":`${fmtPace(Math.floor((Date.now()-R.shown)/1000))} nesta questão`}
+setInterval(bkTick,1000);
+function bkQEl(x,mine,onPick,reveal){const card=el(`<div class="qcard bkq"><span class="qn"></span><p class="qstem"></p></div>`),its=bkIts(x);
+  card.querySelector(".qstem").textContent=x.q.enunciado;{const f=bkFigEl(x);if(f)card.appendChild(f)}
+  if(reveal){card.appendChild(altsEl(qSplit(x.q),mine||"_",mine?()=>{}:onPick))}
+  else{const box=el(`<div class="alts"></div>`);x.q.alternativas.forEach(a=>{const b=el(`<button class="alt" type="button"><b>${esc(a.letra)})</b><span></span></button>`);b.id="bka-"+a.letra;b.querySelector("span").textContent=a.texto;if(mine===a.letra)b.classList.add("pick");b.onclick=()=>onPick(a.letra);box.appendChild(b)});card.appendChild(box)}
+  return {card,its}}
+function bkPlayEl(){const R=bkRun,w=el(`<div class="bkplay"></div>`),N=R.ids.length;
+  const head=el(`<div class="dhead"><h2 id="bkh"></h2><span class="todaydate" id="bkClock"></span></div>`);head.querySelector("h2").textContent=R.mode==="p"?"Simulado do banco":"Resolvendo do banco";w.appendChild(head);
+  if(R.done){const ix=R.ids.map((id,i)=>i),ans=ix.filter(i=>R.ans[i]),hit=ans.filter(i=>{const x=bankById.get(R.ids[i]);return x&&R.ans[i]===x.q.correta}).length,tt=ans.reduce((s,i)=>s+(R.t[i]||0),0);
+    w.appendChild(el(`<div class="kpis simres"><div class="kpi"><span class="kl">Acerto</span><b>${pct(hit,ans.length)}%</b><span class="ks">${hit} de ${ans.length}${ans.length<N?` · ${N-ans.length} em branco`:""}</span></div><div class="kpi"><span class="kl">Tempo total</span><b>${fmtPace(tt)}</b><span class="ks">${N} questões</span></div><div class="kpi${ans.length&&tt/ans.length>ui.prefs.qpace?" alert":""}"><span class="kl">Por questão</span><b>${ans.length?fmtPace(tt/ans.length):"–"}</b><span class="ks">prova: ${fmtPace(ui.prefs.qpace)}</span></div></div>`));
+    const ol=el(`<ol class="simlist bkres"></ol>`);R.ids.forEach((id,i)=>{const x=bankById.get(id);if(!x)return;const it=bkIts(x)[0],l=R.ans[i],ok=l===x.q.correta,li=el(`<li><span class="simok ${l?ok?"ok":"no":""}">${l?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${R.t[i]?fmtPace(R.t[i]):""}</span></li>`),b=li.querySelector("button");
+      b.id="bkrv-"+i;b.textContent=`${i+1}. ${it?it.t:"Sem tema"}`;b.onclick=()=>{R.rev=R.rev===i?null:i;render()};ol.appendChild(li);
+      if(R.rev===i){const {card}=bkQEl(x,l,null,true);card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${!l?"Em branco. A resposta é "+esc(x.q.correta)+".":ok?"Você acertou.":"Você marcou "+esc(l)+"; a resposta é "+esc(x.q.correta)+"."}</p>`));
+        card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}if(l&&!ok&&it)card.appendChild(eCadEl(R.cad,i,it.key,x.q,l,"Banco de questões"));if(l&&it)card.appendChild(qActsEl(x.q,l,{k:it.key,src:"Banco de questões"}));li.appendChild(card)}});
+    w.appendChild(ol);const nc=Object.values(R.cnt).filter(Boolean).length;
+    w.appendChild(el(`<p class="how">${nc?`${nc} ${nc===1?"questão inédita contou":"questões inéditas contaram"} no acerto dos temas (as erradas foram para o Refazer). `:""}${ans.length-nc>0?`${ans.length-nc} já ${ans.length-nc===1?"feita antes conta":"feitas antes contam"} só na meta semanal de questões. `:""}Tudo ficou no histórico de cada questão.</p>`));
+    const bt=el(`<div class="btns"></div>`),wr=R.ids.filter((id,i)=>{const x=bankById.get(id);return x&&R.ans[i]&&R.ans[i]!==x.q.correta});
+    const b1=el(`<button class="btn primary" type="button" id="bkBack">Voltar ao banco</button>`);b1.onclick=()=>{bkRun=null;render();bkTop()};bt.appendChild(b1);
+    if(wr.length){const b2=el(`<button class="btn" type="button" id="bkAgainWr"></button>`);b2.textContent=`Refazer as ${wr.length} erradas`;b2.onclick=()=>bkStart(wr,"e");bt.appendChild(b2)}
+    w.appendChild(bt);return w}
+  const x=bankById.get(R.ids[R.i]);if(!x){bkRun=null;return w}
+  const mine=R.ans[R.i]||"",reveal=R.mode==="e"&&!!mine,{card,its}=bkQEl(x,mine,l=>bkPick(l),reveal),it=its[0];
+  card.querySelector(".qn").textContent=`QUESTÃO ${R.i+1} DE ${N}${x.ban?` · ${x.ban}${x.ano?" "+x.ano:""}`:""}`;
+  if(R.mode==="p"){const sp=el(`<div class="explay exside bkside2"><div class="expmain"></div><aside class="exaside"><div class="exmap" role="group" aria-label="Mapa das questões"></div><p class="exmapl"><span class="done">respondida</span><span class="an">em branco</span></p></aside></div>`);
+    sp.querySelector(".expmain").appendChild(card);const mp=sp.querySelector(".exmap");R.ids.forEach((id,i)=>{const b=el(`<button type="button">${i+1}</button>`);b.id="bkm-"+i;if(R.ans[i])b.classList.add("done");if(i===R.i)b.setAttribute("aria-current","true");b.onclick=()=>bkGoQ(i);mp.appendChild(b)});
+    if(!twoCols())sp.classList.add("exnarrow");w.appendChild(sp);
+    const acts=el(`<div class="btns"></div>`),pv=el(`<button class="btn" type="button" id="bkPrev">Anterior</button>`),nx=el(`<button class="btn" type="button" id="bkNextP">Próxima</button>`),fin=el(`<button class="btn primary" type="button" id="bkFinish">Entregar</button>`);
+    pv.disabled=R.i===0;pv.onclick=()=>bkGoQ(R.i-1);nx.disabled=R.i+1>=N;nx.onclick=()=>bkGoQ(R.i+1);fin.onclick=bkFinish;acts.append(pv,nx,fin);w.appendChild(acts);
+    w.appendChild(el(`<p class="how">Modo prova: o gabarito aparece só no fim. Toque de novo numa alternativa para deixar em branco. ${Object.values(R.ans).filter(Boolean).length} de ${N} respondidas.</p>`));return w}
+  /* estudo */
+  if(mine){const ok=mine===x.q.correta,I=bkInfo(x);card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(x.q.correta)+"."} <span class="simt">${fmtPace(R.t[R.i]||0)}</span></p>`));
+    if(I.n>1){const p=el(`<p class="bkhline"></p>`);p.textContent=`Você já fez esta questão ${I.n} vezes: ${[I.no?`errou ${I.no}`:"",I.ok?`acertou ${I.ok}`:""].filter(Boolean).join(", ")}.${R.cnt[R.i]?"":" Esta vez conta só na meta semanal."}`;card.appendChild(p)}
+    if(it){const t=el(`<p class="simtopic"></p>`);t.textContent=`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`;card.appendChild(t)}
+    card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}if(x.q.alerta&&x.q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+x.q.alerta;card.appendChild(p)}
+    if(!ok&&it)card.appendChild(eCadEl(R.cad,R.i,it.key,x.q,mine,"Banco de questões"));if(it)card.appendChild(qActsEl(x.q,mine,{k:it.key,src:"Banco de questões"}))}
+  else card.appendChild(el(`<p class="simtopic">Tema revelado depois de responder</p>`));
+  w.appendChild(card);const acts=el(`<div class="btns"></div>`);
+  if(mine){const nx=el(`<button class="btn primary" type="button" id="bkNext"></button>`);nx.textContent=R.i+1>=N?"Ver resultado":"Próxima";nx.onclick=bkNext;acts.appendChild(nx)}
+  const st=el(`<button class="btn" type="button" id="bkEnd">Encerrar</button>`);st.onclick=()=>{if(!Object.keys(R.ans).length){bkRun=null;render();return}R.ids=R.ids.slice(0,Object.keys(R.ans).length);R.done=true;render();bkTop()};acts.appendChild(st);
+  w.appendChild(acts);w.appendChild(el(`<p class="how erkeys">Teclado: A a E escolhem a alternativa · espaço vai para a próxima</p>`));return w}
+document.addEventListener("keydown",ev=>{if(view!=="quest"||!bkRun||bkRun.done||qPart!=="banco")return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
+  const R=bkRun,x=bankById.get(R.ids[R.i]);if(!x)return;const k=ev.key.toUpperCase();
+  if(/^[A-H]$/.test(k)&&x.q.alternativas.some(a=>a.letra===k)){ev.preventDefault();bkPick(k);return}
+  if(ev.key===" "){if(R.mode==="e"&&R.ans[R.i]){ev.preventDefault();bkNext()}else if(R.mode==="p"&&R.i+1<R.ids.length){ev.preventDefault();bkGoQ(R.i+1)}}});
+/* ---- filtros ---- */
+const BK_PRE=[["ined","Inéditas",F=>{F.st="nr"},"Nunca respondidas"],["teim","Teimosas",F=>{F.teim=true},"Erradas 3 vezes ou mais; saem com 2 acertos seguidos em dias diferentes"],["eixo","Eixo atual",F=>{F.dyn="eixo"},"Temas da área e das SPs que a faculdade está vendo agora"],["prova","Prova da faculdade",F=>{F.dyn="prova"},"Temas da sua próxima prova da faculdade"],["fav","Favoritas",F=>{F.fav=true},"As que você marcou com ☆"]];
+function bkSet(fn){fn(bkF);bkF.pre="";bkShown=BK_PAGE;bkOpen=null}
+function bkPreset(id){if(bkF.pre===id)bkF=bkFDef();else{const p=BK_PRE.find(x=>x[0]===id),c=(ui.prefs.bkps||[]).find(x=>x.id===id);bkF=bkFDef();if(p)p[2](bkF);else if(c)bkF=bkFClean(c.f);bkF.pre=id}bkShown=BK_PAGE;bkOpen=null}
+const bkActive=F=>!!(F.q||F.st!=="all"||F.area!=="all"||F.k!=="all"||F.ban.length||F.ano.length||F.niv.length||F.o.length||F.fav||F.img||F.old||F.nf||F.teim||F.dyn);
+function bkActs(F,D){const A=[],tog=(arr,v)=>()=>bkSet(f=>{f[arr]=f[arr].filter(y=>y!==v)});
+  if(F.q)A.push([`“${F.q}”`,()=>bkSet(f=>{f.q=""})]);if(F.st!=="all")A.push([(BK_ST.find(s=>s[0]===F.st)||["",""])[1],()=>bkSet(f=>{f.st="all"})]);
+  if(F.k!=="all")A.push([BYKEY[F.k]?BYKEY[F.k].t:"Tema",()=>bkSet(f=>{f.k="all"})]);else if(F.area!=="all")A.push([F.sp!=="all"?F.sp:fcAreaName(F.area),()=>bkSet(f=>{if(f.sp!=="all")f.sp="all";else f.area="all"})]);
+  F.o.forEach(v=>A.push([(BK_O.find(o=>o[0]===v)||["",v])[1],tog("o",v)]));F.ban.forEach(v=>A.push([v||"Sem banca",tog("ban",v)]));F.ano.forEach(v=>A.push([v||"Sem ano",tog("ano",v)]));F.niv.forEach(v=>A.push([v||"Sem nível",tog("niv",v)]));
+  if(F.fav)A.push(["Favoritas",()=>bkSet(f=>{f.fav=false})]);if(F.img)A.push(["Com imagem",()=>bkSet(f=>{f.img=false})]);if(F.old)A.push(["Sem anuladas",()=>bkSet(f=>{f.old=false})]);
+  if(F.nf)A.push(["Figura não guardada",()=>bkSet(f=>{f.nf=false})]);if(F.teim)A.push(["Teimosas",()=>bkSet(f=>{f.teim=false})]);
+  if(F.dyn)A.push([F.dyn==="eixo"?`Eixo atual${D&&D.lab?": "+D.lab:""}`:D?`Prova: ${D.lab}`:"Prova da faculdade (nenhuma marcada)",()=>bkSet(f=>{f.dyn=""})]);return A}
+function bkGroups(C){const {F,R,K}=C,n=(r,skip)=>R.filter(x=>bkMatch(x,F,K,skip)),G=[];
+  {const L=n(null,"st");G.push(["Situação","",fcChips(BK_ST.map(([v,l])=>fcChip(`${l} · ${L.filter(r=>v==="r"?r.I.st!=="nr":r.I.st===v).length}`,F.st===v,()=>bkSet(f=>{f.st=f.st===v?"all":v}),"bkS-"+v)))])}
+  {const L=n(null,"w"),cnt=(a,sp,k)=>L.filter(r=>k?r.x.ks.includes(k):bkIts(r.x).some(it=>(a==="all"||it.area.code===a)&&(sp==="all"||it.sp===sp))).length;
+    const row=el(`<div class="qfrow tfsels bkwhere"></div>`);
+    row.appendChild(fcSel("bkArea","Grande área",[["all",`Todas (${L.length})`],...AREAS.map(a=>[a.code,`${a.name} (${cnt(a.code,"all")})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.area)],F.area,v=>bkSet(f=>{f.area=v;f.sp="all";f.k="all"})));
+    if(F.area!=="all"){const A=AREAS.find(a=>a.code===F.area),names=A?(A.specs||[]).map(s=>s.name):[];row.appendChild(fcSel("bkSp","Especialidade",[["all","Todas"],...names.map(s=>[s,`${s} (${cnt(F.area,s)})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.sp)],F.sp,v=>bkSet(f=>{f.sp=v;f.k="all"})))}
+    else row.appendChild(fcSel("bkSp","Especialidade",[["all","Escolha a área antes"]],"all",null,true));
+    if(F.area!=="all"){const T=ALL.filter(it=>it.area.code===F.area&&(F.sp==="all"||it.sp===F.sp)).map(it=>[it.key,`${it.t} (${cnt(null,null,it.key)})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.k);
+      row.appendChild(fcSel("bkTema","Tema",[["all","Todos"],...T],F.k,v=>bkSet(f=>{f.k=v})))}
+    else row.appendChild(fcSel("bkTema","Tema",[["all","Escolha a área antes"]],"all",null,true));
+    G.push(["Onde","grande área › especialidade › tema",row])}
+  {const L=n(null,"o"),c=v=>L.filter(r=>bkOrig(r.x)===v).length,O=BK_O.filter(([v])=>c(v)||F.o.includes(v));
+    if(O.length)G.push(["Origem","",fcChips(O.map(([v,l])=>fcChip(`${l} · ${c(v)}`,F.o.includes(v),()=>bkSet(f=>{f.o=f.o.includes(v)?f.o.filter(y=>y!==v):[...f.o,v]}),"bkO-"+v)))])}
+  for(const [key,lab,emp] of [["ban","Banca","Sem banca"],["ano","Ano","Sem ano"],["niv","Nível da prova","Sem nível"]]){const L=n(null,key),vals=[...new Set(L.map(r=>r.x[key]||""))].filter(Boolean).sort((a,b)=>key==="ano"?b.localeCompare(a):a.localeCompare(b));
+    if(!vals.length&&!F[key].length)continue;const V=[...vals,...(L.some(r=>!r.x[key])?[""]:[])];
+    G.push([lab,"",fcChips(V.map((v,i)=>fcChip(`${v||emp} · ${L.filter(r=>(r.x[key]||"")===v).length}`,F[key].includes(v),()=>bkSet(f=>{f[key]=f[key].includes(v)?f[key].filter(y=>y!==v):[...f[key],v]}),`bk${key}-${i}`)))])}
+  {const L=n(null,"m"),M=[["fav","☆ Favoritas",r=>r.x.fav],["teim","Teimosas",r=>r.I.teim],["img","Com imagem",r=>r.x.fg||r.x.fm],["old","Esconder anuladas",r=>!r.x.an],["nf","Figura não guardada",r=>r.x.nf&&!r.x.fm]].filter(([v,,f])=>v==="old"?L.some(r=>r.x.an)||F.old:v==="nf"?L.some(f)||F.nf:true);
+    G.push(["Mais","",fcChips(M.map(([v,l,f])=>fcChip(`${l} · ${L.filter(f).length}`,F[v],()=>bkSet(g=>{g[v]=!g[v]}),"bkM-"+v)))])}
+  return G}
+/* ---- a parte Banco ---- */
+function bkCard(){const c=el(`<section class="card bkcard" aria-labelledby="bkh"></section>`);
+  if(bkRun){c.classList.add("bkrun");c.appendChild(bkPlayEl());return c}
+  const C=bkCompute(),{F,D,R,vis}=C,live=R.length;
+  const head=el(`<div class="dhead"><h2 id="bkh">Banco de questões</h2><span class="bksum"></span></div>`);
+  {const B=new Set(R.map(r=>r.x.ban).filter(Boolean)),Y=R.map(r=>r.x.ano).filter(Boolean).sort();head.querySelector(".bksum").textContent=live?`${live} ${live===1?"questão":"questões"}${B.size?` · ${B.size} ${B.size===1?"banca":"bancas"}`:""}${Y.length?` · ${Y[0]===Y[Y.length-1]?Y[0]:Y[0]+"–"+Y[Y.length-1]}`:""}`:""}
+  c.appendChild(head);
+  if(!live){const e=el(`<div class="bkempty"><b>Seu banco começa aqui</b><p class="how">Toda questão que passa pelo app fica guardada: as das provas que você importa, as dos simulados e as que o Claude gera nos temas, também as que você acerta.</p><div class="btns"><button class="btn primary" type="button" id="bkImp">Importar prova em PDF</button><button class="btn" type="button" id="bkGen">Gerar questões de um tema</button></div></div>`);
+    e.querySelector("#bkImp").onclick=()=>{impNew();qGo("provas")};e.querySelector("#bkGen").onclick=()=>{qGo("resumo");setTimeout(()=>{const f=$("#qFind");if(f)f.scrollIntoView({block:"start"})},60)};c.appendChild(e);return c}
+  const G=bkGroups(C),act=bkActs(F,D),side=twoCols(),grid=el(`<div class="bkgrid${side?" bk2":""}"></div>`),main=el(`<div class="bkmain"></div>`);
+  if(side){const as=el(`<aside class="bkside" aria-label="Filtros do banco"></aside>`);G.forEach(([lab,hint,body])=>{const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel"></span><span class="tfhint"></span></div></div>`);g.querySelector(".glabel").textContent=lab;g.querySelector(".tfhint").textContent=hint||"";g.appendChild(body);as.appendChild(g)});grid.appendChild(as)}
+  /* busca + filtros (celular) */
+  {const s=el(`<div class="bksearch"><label class="tfsearch">${FC_ICO}<input type="search" class="search" id="bkQ" placeholder="Buscar nas questões e comentários" autocomplete="off"></label></div>`),inp=s.querySelector("input");inp.value=F.q;
+    inp.oninput=()=>{bkF.q=inp.value;bkF.pre="";bkShown=BK_PAGE;clearTimeout(bkQT);bkQT=setTimeout(()=>{render();const n=$("#bkQ");if(n){n.focus();try{n.setSelectionRange(n.value.length,n.value.length)}catch(e){}}},280)};
+    main.appendChild(s);
+    if(!side){const fb=el(`<div class="bkfc"></div>`);fcBody(fb,{tog:"bkFBtn",panelId:"bkFPanel",open:bkFPanel,onToggle:()=>{bkFPanel=!bkFPanel},act:[],onClear:()=>{bkF=bkFDef()},clearId:"bkClear2",groups:G,foot:`${vis.length} ${vis.length===1?"questão":"questões"}`});s.appendChild(fb)}}
+  /* presets */
+  {const P=el(`<div class="chips bkpre" role="group" aria-label="Atalhos de filtro"></div>`),cnt={teim:R.filter(r=>r.I.teim).length,fav:R.filter(r=>r.x.fav).length,ined:R.filter(r=>r.I.st==="nr").length};
+    BK_PRE.forEach(([id,l,,tip])=>{const b=fcChip(cnt[id]!=null?`${l} · ${cnt[id]}`:l,bkF.pre===id,()=>bkPreset(id),"bkP-"+id,null,tip);P.appendChild(b)});
+    (ui.prefs.bkps||[]).forEach(p=>{const b=fcChip(p.n,bkF.pre===p.id,()=>bkPreset(p.id),"bkP-"+p.id,null,"Filtro salvo");const x=el(`<button class="bkpx" type="button" aria-label="Apagar o filtro salvo">×</button>`);x.id="bkPx-"+p.id;
+      x.onclick=()=>{ui.prefs.bkps=(ui.prefs.bkps||[]).filter(y=>y.id!==p.id);if(bkF.pre===p.id)bkF.pre="";saveUI();render()};const w=el(`<span class="bkpw"></span>`);w.append(b,x);P.appendChild(w)});
+    if(bkActive(F)&&!bkF.pre){const sv=el(`<button class="chip bksave" type="button" id="bkSave">+ Salvar filtro</button>`);sv.onclick=()=>{bkSaveOn=!bkSaveOn;render();setTimeout(()=>{const n=$("#bkSaveN");if(n)n.focus()},30)};P.appendChild(sv)}
+    main.appendChild(P);
+    if(bkSaveOn&&bkActive(F)&&!bkF.pre){const f=el(`<div class="bksaverow"><input type="text" id="bkSaveN" maxlength="40" placeholder="Nome do filtro (ex.: Cardio ENARE)"><button class="btn primary" type="button" id="bkSaveOk">Salvar</button><button class="btn" type="button" id="bkSaveX">Cancelar</button></div>`),n=f.querySelector("input");
+      const go=()=>{const t=n.value.trim();if(!t){n.focus();return}const id="u"+Date.now().toString(36);ui.prefs.bkps=[...(ui.prefs.bkps||[]),{id,n:t.slice(0,40),f:bkFClean(bkF)}].slice(-12);bkF.pre=id;bkSaveOn=false;saveUI();render()};
+      f.querySelector("#bkSaveOk").onclick=go;n.onkeydown=e=>{if(e.key==="Enter")go()};f.querySelector("#bkSaveX").onclick=()=>{bkSaveOn=false;render()};main.appendChild(f)}}
+  /* contadores */
+  {const L=R.filter(r=>bkMatch(r,F,C.K,"st")),k={nr:0,r:0,ok:0,no:0};L.forEach(r=>{if(r.I.st==="nr")k.nr++;else{k.r++;k[r.I.st]++}});
+    const w=el(`<div class="bkcnt" role="group" aria-label="Situação"></div>`);BK_ST.forEach(([v,l])=>{const b=el(`<button type="button" class="bkc bkc-${v}"><b></b><span></span></button>`);b.id="bkC-"+v;b.setAttribute("aria-pressed",F.st===v);
+      b.querySelector("b").textContent=k[v]+(v==="ok"&&k.r?` · ${pct(k.ok,k.r)}%`:"");b.querySelector("span").textContent=l;b.onclick=()=>{bkSet(f=>{f.st=f.st===v?"all":v});render()};w.appendChild(b)});main.appendChild(w)}
+  /* etiquetas dos filtros ligados */
+  if(act.length){const w=el(`<div class="tfact" aria-label="Filtros ativos"></div>`);act.forEach(([t,fn])=>{const b=el(`<button class="tfpill" type="button"><span></span><b aria-hidden="true">×</b></button>`);b.querySelector("span").textContent=t;b.setAttribute("aria-label","Tirar o filtro "+t);b.onclick=()=>{fn();render()};w.appendChild(b)});
+    const cl=el(`<button class="link" type="button" id="bkClear">Limpar tudo</button>`);cl.onclick=()=>{bkF=bkFDef();bkShown=BK_PAGE;render()};w.appendChild(cl);main.appendChild(w)}
+  /* número, ordem e ações */
+  {const r=el(`<div class="bkbar"><span class="bkn" id="bkN"></span><label class="tfsort"><span>Ordem</span><select id="bkSort"></select></label></div>`);r.querySelector(".bkn").textContent=`${vis.length} ${vis.length===1?"questão":"questões"}${bkActive(F)?" com esses filtros":""}`;
+    const s=r.querySelector("select");BK_SORT.forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=bkSort;s.onchange=()=>{bkSort=s.value;lsSet("resid-bksort",bkSort);bkShown=BK_PAGE;render()};main.appendChild(r);
+    if(vis.length){const a=el(`<div class="btns bkacts"></div>`),n=Math.min(vis.length,BK_RUN_MAX),go=el(`<button class="btn primary bkgo" type="button" id="bkGo"></button>`);go.textContent=`Resolver ${n===1?"esta questão":`estas ${n} questões`}`;
+      go.onclick=()=>bkStart(vis.slice(0,n).map(r=>r.x.id),"e");const sm=el(`<button class="btn" type="button" id="bkSimB">Simulado com estas</button>`);sm.setAttribute("aria-expanded",bkSimOpen);sm.onclick=()=>{bkSimOpen=!bkSimOpen;render()};a.append(go,sm);main.appendChild(a);
+      if(vis.length>BK_RUN_MAX)main.appendChild(el(`<p class="how bknote">Resolver leva as ${BK_RUN_MAX} primeiras, na ordem da lista.</p>`));
+      if(bkSimOpen){const o=el(`<div class="bksim"><span class="simol">Questões</span><div class="seg" role="group" aria-label="Quantas questões"></div><button class="btn primary" type="button" id="bkSimGo"></button><p class="how">Sorteadas entre as ${vis.length} da lista, inéditas primeiro. Modo prova: relógio correndo, gabarito só no fim.</p></div>`),sg=o.querySelector(".seg");
+        const opts=[10,20,30,60].filter(v=>v<vis.length);if(!opts.includes(Math.min(vis.length,BK_RUN_MAX)))opts.push(Math.min(vis.length,BK_RUN_MAX));if(!opts.includes(bkSimN))bkSimN=opts.find(v=>v>=10)||opts[opts.length-1];
+        opts.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="bkSimN-"+v;b.textContent=v===Math.min(vis.length,BK_RUN_MAX)&&v===vis.length?`Todas (${v})`:String(v);b.setAttribute("aria-pressed",bkSimN===v);b.onclick=()=>{bkSimN=v;render()};sg.appendChild(b)});
+        const g=o.querySelector("#bkSimGo");g.textContent=`Começar · ${bkSimN} questões · ≈ ${Math.max(1,Math.round(bkSimN*ui.prefs.qpace/60))} min`;
+        g.onclick=()=>{const ined=shuffle(vis.filter(r=>r.I.st==="nr")),rest=shuffle(vis.filter(r=>r.I.st!=="nr"));bkSimOpen=false;bkStart([...ined,...rest].slice(0,bkSimN).map(r=>r.x.id),"p")};main.appendChild(o)}}}
+  /* lista */
+  if(!vis.length){const e=el(`<div class="cempty bknone"><span>Nenhuma questão com esses filtros.</span> </div>`);const b=el(`<button class="link" type="button" id="bkNoneClear">Limpar os filtros</button>`);b.onclick=()=>{bkF=bkFDef();render()};e.appendChild(b);main.appendChild(e)}
+  else{const ol=el(`<ol class="bklist"></ol>`);vis.slice(0,bkShown).forEach(r=>ol.appendChild(bkRowEl(r)));main.appendChild(ol);
+    if(vis.length>bkShown){const m=el(`<button class="btn bkmore" type="button" id="bkMore"></button>`);m.textContent=`Ver mais ${Math.min(BK_PAGE,vis.length-bkShown)} (de ${vis.length-bkShown})`;m.onclick=()=>{bkShown+=BK_PAGE;render()};main.appendChild(m)}}
+  grid.appendChild(main);c.appendChild(grid);return c}
+function bkRowEl(r){const {x,I}=r,its=bkIts(x),open=bkOpen===x.id,li=el(`<li class="bkrow${open?" open":""}"></li>`);li.dataset.id=x.id;
+  const b=el(`<button class="bkr" type="button" aria-expanded="${open}"><span class="bkst" aria-hidden="true"></span><span class="bkm"><span class="bkstem"></span><span class="bkmeta"></span><span class="bkbadges"></span></span><span class="bkhist"><b></b><span></span></span></button>`);b.id="bkr-"+x.id;
+  const st=b.querySelector(".bkst");st.classList.add("st-"+I.st);st.textContent=I.st==="ok"?"✓":I.st==="no"?"✕":"";b.setAttribute("aria-label",`${I.st==="nr"?"Inédita":I.st==="ok"?"Acertou da última vez":"Errou da última vez"}: ${x.q.enunciado.slice(0,80)}`);
+  b.querySelector(".bkstem").textContent=x.q.enunciado;
+  b.querySelector(".bkmeta").textContent=[x.ban?`${x.ban}${x.ano?" "+x.ano:""}`:x.mat?"Do seu material":x.o==="simulado"?"Simulado":x.o==="gerada"?"Gerada pelo Claude":x.pv||"",its.map(it=>it.t).join(" · ")].filter(Boolean).join(" · ");
+  const bd=b.querySelector(".bkbadges"),badge=(t,c)=>{const s=el(`<span class="bkb ${c}"></span>`);s.textContent=t;bd.appendChild(s)};
+  if(x.fav)badge("☆ Favorita","fav");if(I.teim)badge("Teimosa","teim");if(x.fg||x.fm)badge("Imagem","img");if(x.nf&&!x.fm)badge("Figura não guardada","nf");if(x.an)badge("Anulada","an");if(!bd.children.length)bd.remove();
+  b.querySelector(".bkhist b").textContent=bkHistTxt(I);b.querySelector(".bkhist span").textContent=I.last?bkAgo(I.last.d):"";
+  b.onclick=()=>{bkOpen=open?null:x.id;render()};li.appendChild(b);
+  if(open){const p=el(`<div class="bkopen"><p class="qstem"></p></div>`);p.querySelector(".qstem").textContent=x.q.enunciado;{const f=bkFigEl(x);if(f)p.appendChild(f)}
+    const ul=el(`<ol class="bkalts"></ol>`);x.q.alternativas.forEach(a=>{const l=el(`<li><b></b> <span></span></li>`);l.querySelector("b").textContent=a.letra+")";l.querySelector("span").textContent=a.texto;ul.appendChild(l)});p.appendChild(ul);
+    if(I.n){const h=el(`<div class="bkhl"><span class="glabel">Suas respostas</span><ol></ol></div>`),o=h.querySelector("ol"),SRC={gen:"gerador",sim:"simulado",rerun:"simulado refeito",redo:"Refazer",exam:"prova",erro:"caderno de erros",bank:"banco"};
+      I.A.slice(-6).reverse().forEach(y=>{const l=el(`<li><span class="simok ${y.ok?"ok":"no"}">${y.ok?"✓":"✗"}</span><span></span></li>`);l.lastChild.textContent=`${br(y.d)} · ${SRC[y.src]||y.src}${y.l?" · marcou "+y.l:""}${y.s?" · "+fmtPace(y.s):""}`;o.appendChild(l)});p.appendChild(h)}
+    const a=el(`<div class="btns bkoacts"></div>`),go=el(`<button class="btn primary" type="button">Resolver esta</button>`);go.id="bkGo1-"+x.id;go.onclick=()=>bkStart([x.id],"e");
+    const fv=el(`<button class="btn" type="button"></button>`);fv.id="bkFav-"+x.id;fv.textContent=x.fav?"★ Favorita":"☆ Favoritar";fv.setAttribute("aria-pressed",!!x.fav);fv.onclick=()=>{bkFav(x);render()};a.append(go,fv);
+    if(its[0]){const t=el(`<button class="btn" type="button">Ir para o tema</button>`);t.id="bkTp-"+x.id;t.onclick=()=>openTopic(its[0].key);a.appendChild(t)}
+    const armed=bkArm===x.id,d=el(`<button class="btn bkdel" type="button"></button>`);d.id="bkDel-"+x.id;d.textContent=armed?"Toque de novo para tirar":"Tirar do banco";if(armed)d.classList.add("warn");d.onclick=()=>{if(armed){bkArm=null;bkDel(x)}else bkArm=x.id;render()};a.appendChild(d);
+    p.appendChild(a);li.appendChild(p)}
+  return li}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")exFlush()});
 /* ---------- figuras das provas (Lote 15): uma imagem por questão, recortada do PDF ----------
    exFigs = {"<prova>_<índice>": {id,ex,i,img}} (img = JPEG em data URL). Guardadas no aparelho (IndexedDB "nexus-figs") e na conta (progress/exfig/{id}),
@@ -8716,7 +9035,7 @@ function exFig(ex,i){const id=ex.id+"_"+i;if(exFigs[id])return exFigs[id].img;if
     if(!exfOk(x)&&exFigStore)try{const d=await exFigStore.doc(id).get();const v=d&&(typeof d.data==="function"?d.data():d.data);if(exfOk(v)){x=exfClean(v);idbDo("readwrite",st=>st.put(x))}}catch(e){}
     if(exfOk(x)){exFigs[id]=exfClean(x);render()}else exFigWait[id]=2})()}return ""}
 /* figuras órfãs (prova apagada e fora da lixeira) saem */
-function exfPurge(){const keep=new Set([...exams.map(e=>e.id),...trash.filter(t=>t.kind==="exam").map(t=>{try{return JSON.parse(t.j).ex.id}catch(e){return ""}})]);Object.values(exFigs).forEach(x=>{if(!keep.has(x.ex))exfDel(x.id)})}
+function exfPurge(){const keep=new Set([...exams.map(e=>e.id),...trash.filter(t=>t.kind==="exam").map(t=>{try{return JSON.parse(t.j).ex.id}catch(e){return ""}})]);Object.values(exFigs).forEach(x=>{if(x.ex!=="bank"&&!keep.has(x.ex))exfDel(x.id)})}
 /* na importação: em que questão fica cada figura. Página com uma questão só: nela. Com várias: a questão cujo título está logo acima da imagem
    (posição do texto "Questão N" na página); imagem no alto da página, antes de qualquer título: a questão que vinha da página anterior. */
 async function pdfQHeads(doc,n){try{const pg=await doc.getPage(n),tc=await pg.getTextContent(),out=[];tc.items.forEach(it=>{const m=String(it.str||"").match(/^\s*(?:quest[aã]o\s*(?:n[ºo°.]\s*)?)?(\d{1,3})\s*(?:[—–\-:.)]|$)/i);if(m&&(/quest/i.test(it.str)||/^\s*\d{1,3}\s*[.)]/.test(it.str)))out.push({n:+m[1],y:it.transform[5]})});return out}catch(e){return []}}
@@ -8768,7 +9087,7 @@ function exTopicEl(it){const L=exForTopic(it.key);if(!L.length)return null;const
   L.forEach(({ex,qi,linked})=>{const P=exPg(ex.id);let a=0,c=0;qi.forEach(i=>{const x=P.a[i];if(x&&!ex.qs[i].an&&ex.qs[i].q.correta){a++;if(x.l===ex.qs[i].q.correta)c++}});
     const li=el(`<li><div class="extn"><b></b><span class="ks"></span></div><button class="mini" type="button">Ver a prova</button></li>`);li.querySelector("b").textContent=ex.name;
     li.querySelector(".ks").textContent=[ex.banca&&ex.ano?ex.banca+" "+ex.ano:ex.banca||ex.ano,qi.length?`${qi.length} ${qi.length===1?"questão deste tema":"questões deste tema"}`:"",a?`acerto ${pct(c,a)}% (${c} de ${a})`:"",linked?"ligada":""].filter(Boolean).join(" · ");
-    li.querySelector("button").onclick=()=>{backStack=[];exLinkEd=null;setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x){x.scrollIntoView({block:"center"});x.classList.add("eflash");setTimeout(()=>x.classList.remove("eflash"),1600)}},80)};ul.appendChild(li)});
+    li.querySelector("button").onclick=()=>{backStack=[];exLinkEd=null;setView("quest");if(typeof setQSeg==="function")setQSeg("praticar","provas");setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x){x.scrollIntoView({block:"center"});x.classList.add("eflash");setTimeout(()=>x.classList.remove("eflash"),1600)}},80)};ul.appendChild(li)});
   return w}
 
 /* depois da prova: especialidades em queda (3+ questões, acerto abaixo de 60%), com os temas e as questões erradas */
@@ -9343,9 +9662,9 @@ function nextSteps(){const out=[],P=ensurePlan(),CR=examCrunch();if(isOffDay())r
   const g=ui.prefs.qgoal,W=qWeekQ(dnum(today())-(new Date().getDay()+6)%7).g;if(g&&W<g&&!isSimDay())out.push({kind:"sim",t:"Simulado misto de 10 questões",why:`Faltam ${g-W} questões para a meta da semana`});
   return out}
 function startStep(s){
-  if(s.kind==="redo"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const b=$("#rdGo");if(b)b.click()},60);return}
+  if(s.kind==="redo"){backStack=[];setView("quest");setQSeg("praticar","redo");setTimeout(()=>{const b=$("#rdGo");if(b)b.click()},60);return}
   if(s.kind==="errs"){backStack=[];setView("erros");setTimeout(()=>{const b=$("#erGo");if(b)b.click()},60);return}
-  if(s.kind==="exam"){backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const x=document.getElementById("exr-"+s.id);if(x)x.scrollIntoView({block:"center"})},60);return}
+  if(s.kind==="exam"){backStack=[];setView("quest");setQSeg("praticar","provas");setTimeout(()=>{const x=document.getElementById("exr-"+s.id);if(x)x.scrollIntoView({block:"center"})},60);return}
   if(s.kind==="sim"){simCfg={src:"gain",n:s.n||10};backStack=[];setView("quest");setQSeg("praticar");setTimeout(()=>{const h=$("#simh");if(h)h.scrollIntoView({block:"start"})},60);return}
   // tema: liga o Foco no tema e abre o cartão no Início
   foPick.ref="T:"+s.k;foSavePick();if(foRun){foRun.ref=foPick.ref;foSaveRun()}else{foPick.mode="p";foStart()}
@@ -10541,22 +10860,28 @@ Um dia de estudo:
 - **Mapa da residência** (parte Progresso): os 198 temas em quadradinhos na cor do nível. **Progresso por área:** a barra grossa conta temas; a fina, subtópicos.
 - **Já estudei alguns temas antes do app:** marque vários, escolha Estudados ou Já revisados e confirme; a 1ª revisão se espalha pelos próximos dias. **Desfazer** volta.
 - **Subtópicos próprios:** adicione no fim da lista do tema.`],
-["Questões",`Cada questão respondida conta no acerto do tema. As erradas vão para **Refazer as que errei**.
+["Questões",`A aba é o seu **Banco de questões**: toda questão que passa pelo app fica guardada (das provas importadas, dos simulados e as geradas, também as que você acerta). Cada questão respondida conta no acerto do tema. As erradas vão para **Refazer as que errei**.
+- **Partes da aba**, no topo: **Banco**, **Simulado misto**, **Refazer**, **Provas na íntegra** e **Resumo**. No celular, toque em **Banco ▾** para trocar.
+- **Banco:** busca no enunciado e no comentário, **Filtros** (Situação, Onde = área › especialidade › tema, Origem, Banca, Ano e Mais) e os atalhos **Inéditas**, **Teimosas**, **Eixo atual**, **Prova da faculdade** e **Favoritas**. **+ Salvar filtro** guarda o que está ligado como um atalho seu (× apaga). Os 4 números (não resolvidas, resolvidas, acertadas, erradas) também filtram. Cada linha mostra se você acertou (✓) ou errou (✕) da última vez, com o tracejado nas inéditas, e quantas vezes errou e acertou.
+- **Resolver estas** (até 100, na ordem da lista) mostra o gabarito a cada questão. **Simulado com estas** sorteia, inéditas primeiro, no modo prova: relógio, mapa das questões e resultado só no fim (**Entregar**). O tempo de cada questão fica guardado.
+- **Conta no acerto do tema** só a primeira vez que você faz a questão (a errada vai para o Refazer). Refeita conta na meta semanal. Questão de prova na íntegra conta quando feita na própria prova.
+- **Teimosa:** errada 3 vezes; sai com 2 acertos seguidos em dias diferentes e volta se errar de novo.
+- **Toque numa linha** para ver a questão, suas respostas, **☆ Favoritar** e **Tirar do banco** (dois toques; dá para desfazer). Questão do seu material guarda a figura junto.
 - **Gerar** (no tema): escolha quantas (10 é a sugestão) e, se quiser, um subtópico e o estilo (Residência ou **Prova da faculdade**, depois de marcar uma prova importada como **modelo da faculdade**). Seus erros no tema entram no pedido. Até 20 por pedido.
 - **Referências:** cada questão traz a fonte específica (diretriz com ano e seção, livro e capítulo, manual do Ministério). No site, o Claude pesquisa e traz o **link**; no artefato, questão sem fonte segura é descartada.
 - **Material seu** (gerador e simulado): um ou mais arquivos (PDF, slides, Word, fotos). As questões saem do material e citam a página. No simulado vão até 100 mil caracteres em partes, e páginas com figura viram **figuras** que aparecem junto da questão.
 - **Depois de responder:** **Gabarito**, **Por que está certa**, Ponto-chave, Conceito-chave e Fonte; o porquê de cada errada fica embaixo dela. As alternativas vêm embaralhadas. **Levar para a anotação**, **Criar cartão** e **Levar para o caderno de erros** ficam ali.
-- **Simulado misto** (parte Praticar), em três passos: **de onde** (Escolher temas, Onde focar, Revisões ou Plano de hoje, Estudados nesta semana, Meus erros, Para refazer, a prova da faculdade, ou **um material seu**), **como** (5 a 30 questões, dificuldade, estilo Residência ou **ENAMED/INEP**) e o resumo. **⚡ Bloco rápido** faz 5 dos temas da semana. **Encerrar** mostra o resultado das respondidas.
+- **Simulado misto**, em três passos: **de onde** (Escolher temas, Onde focar, Revisões ou Plano de hoje, Estudados nesta semana, Meus erros, Para refazer, a prova da faculdade, ou **um material seu**), **como** (5 a 30 questões, dificuldade, estilo Residência ou **ENAMED/INEP**) e o resumo. **⚡ Bloco rápido** faz 5 dos temas da semana. **Encerrar** mostra o resultado das respondidas.
 - **Meus simulados:** cada simulado terminado fica guardado. **Rever**, **Refazer estas** (conta na meta semanal, não no acerto) e **Mesmos temas, questões novas**.
 - **Refazer as que errei:** a questão volta amanhã; acertou, em 3 dias; **sai depois de 2 acertos em dias diferentes**. As de hoje entram na fila do dia. Errou 2 vezes (selo **teimosa**)? Leve ao caderno de erros. **O gabarito está errado?** corrige (e, se for de prova importada, a prova junto). Vencida há 21 dias sem fazer, sai sozinha.
 - **Ponto fraco:** menos de 60% nos últimos 30 dias (mín. 5 questões). Um por dia entra na fila como 5 questões; depois descansa 7 dias.
 - **Onde focar:** uma conta só (peso do tema × distância de 80% de acerto), usada no simulado, no gráfico, na lista de temas e nas Estatísticas.
-- **Partes da aba** (celular e tablet em pé): **Resumo** (meta, ritmo, evolução, gráficos e bancas), **Praticar** e **Temas**. Busca e Filtros ficam no topo e valem para todas.
+- **Resumo:** meta, ritmo, evolução, gráficos e bancas, **+ Registrar questões** e a lista dos seus temas, com Busca e Filtros próprios.
 - **Seus temas nas questões:** sem filtro, os 10 que mais pedem atenção (**Ver todos**). Toque num tema para ver acerto por semana e por banca, tendência, erros e as ações **Praticar**, **Pôr no simulado**, **Registrar**.
 - **+ Registrar questões:** para as feitas fora (bancos, provas). Informe a **banca** e, se quiser, o **tempo** (entra no Ritmo). **Juntar ou renomear fontes** une nomes repetidos.
 - **Meta semanal, Ritmo e Evolução:** questões de segunda a domingo, tempo médio por questão × o tempo da prova, e as últimas 12 semanas. Tendência ▲/▼ compara 30 dias com os 90 antes.
 - **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
-["Provas na íntegra",`Em Questões › Praticar. **+ Importar prova** e escolha o PDF (ou fotos das páginas, na ordem). Os passos aparecem no topo: **Arquivo › Gabarito › Leitura › Conferir › Salvar**.
+["Provas na íntegra",`Em Questões › Provas na íntegra. **+ Importar prova** e escolha o PDF (ou fotos das páginas, na ordem). Os passos aparecem no topo: **Arquivo › Gabarito › Leitura › Conferir › Salvar**.
 - **Gabarito:** no próprio PDF, em outro PDF ou colado. Gabarito comentado ("RESPOSTA 1 · Correta: B") também serve: as justificativas viram o comentário. Sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**; quando sair o oficial, **Colar gabarito** corrige tudo.
 - **Leitura:** PDF com texto e questões numeradas é lido no aparelho, sem o Claude (o tema vem como **Tema sugerido**). Página escaneada, questão faltando ou sem gabarito: o app pede para **passar pelo Claude**, em partes de até 20 questões; resposta cortada pede só as que faltaram.
 - **Conferir:** cada questão com problema mostra **Conferir:** no topo. Troque a resposta, anule, escolha o tema (até 3; **+ outro tema**) ou descarte. Comentário que contradiz o gabarito ganha um selo.
@@ -10809,7 +11134,7 @@ function stResBlocks(R){const out=[],per=`${R.D} dias`;
     c.appendChild(el(`<p class="how stnote hx">"Errei" = erros do caderno que você errou de novo na revisão no período. Menos é melhor.</p>`));
     const ser={};exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);if(!P)return;(P.tries||[]).forEach(tr=>{if(!tr.n)return;const b=ex.banca||"Outras";(ser[b]=ser[b]||[]).push({n:dnum(tr.d),v:tr.hit/tr.n,t:ex.name})})});
     const S=Object.keys(ser).map(name=>({name,pts:ser[name]}));c.appendChild(stRow("Nota nas provas na íntegra","cada ponto é uma prova terminada"));
-    if(S.reduce((s,x)=>s+x.pts.length,0)>=2)c.appendChild(stExamLine(S));else c.appendChild(el(`<p class="how stempty">Termine pelo menos duas provas na íntegra (Questões › Praticar) para ver a nota ao longo do tempo.</p>`));
+    if(S.reduce((s,x)=>s+x.pts.length,0)>=2)c.appendChild(stExamLine(S));else c.appendChild(el(`<p class="how stempty">Termine pelo menos duas provas na íntegra (Questões › Provas na íntegra) para ver a nota ao longo do tempo.</p>`));
     out.push(c)}
   /* 2. vou chegar a tempo */
   {const c=stCard(2,"Vou chegar a tempo?","stB2"),M=R.M,seen=TOTAL-M.left,fmt=x=>x.toLocaleString("pt-BR",{maximumFractionDigits:1});

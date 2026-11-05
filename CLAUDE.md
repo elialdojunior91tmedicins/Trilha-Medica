@@ -9,7 +9,7 @@ faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view 
 Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Estatísticas (view `stats`), Foco, Erros; no celular Caderno, Estatísticas e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
-- **Artefato no Claude**: https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
+- **Artefato no Claude** (congelado na versão de 30/10/2026 por decisão do usuário em 05/11/2026: "Ficar só com o site"; não republicar): https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
 - **Manual (Claude Docs)**: https://claude.ai/code/artifact/fcdd47d2-4612-4cba-a14c-bba04148ecc8
 
 O usuário fala português (Brasil), é estudante de medicina, gosta de crítica sincera e de ser
@@ -25,8 +25,8 @@ consultado quando há dúvida. Responda em português.
    iPad dentro do app do Claude) e computador (1366, 1920). Modos de layout ficam em
    `html[data-layout=phone|tablet|desktop|compact][data-cols]`, decididos pelo tamanho da TELA.
 4. Commit e push na `main` (o GitHub Pages publica a raiz).
-5. Republique o artefato: Artifact tool com `url` = link do artefato acima e `file_path` =
-   `src/checklist-residencia.html` (leia o artefato antes, como o tool exige).
+5. ~~Republique o artefato~~: desde 05/11/2026 o artefato do Claude fica congelado (a ferramenta exige ler a cópia publicada inteira,
+   1,4 MB, o que não cabe numa conversa). Publicar = site + manual.
 6. Se a mudança afetar o uso, atualize a aba Ajuda (constante `HELP` no fonte) e o manual.
 
 ## Arquitetura
@@ -445,6 +445,18 @@ consultado quando há dúvida. Responda em português.
   + fila `bankDo`. Conta: `packStore` "bank" (`PK_N` 100) e "bankh" (16), `bankBoot(prog)` no fim da carga → `bankSyncStart` (onSnapshot; `bankRemoteQ` u mais novo, `bankRemoteH` união, `bankPushDiff` na 1ª
   resposta; `bankSynced`), `bankFlush`/`bankSend` (`saveFail` "bank:q|h"). Nada é apagado no B1. Backup: `bankBackup()` = `bank` sem as da prova guardada + `bankh` (ordem por id; Drive igual, t87);
   `bankRestore(Q,H)` no `bridge.js` (regrava a conta, u = agora). Teste: `tests/t146.js`.
+- Banco de questões B2 (11/2026, a tela; módulo logo depois de `bankRestore`): a aba Questões vira o banco. Partes `QPARTS` = banco|sim|redo|provas|resumo em `qPart` (`resid-qpart`, `qGo(p)`);
+  barra `#qPartBar` (`qPartBarEl`: `.qpnav` com `#qp-<parte>` e selo do Refazer `.qpn`; no celular `#qpBtn` "Banco ▾" → folha `.qpsheet` com `#qpo-<parte>`, `qpSheet`). Os filhos de `#viewQuest` têm `data-qp`
+  (resumo = registro, `#qFBar`, `.dash`, `#qSrcBox`, `#qFilters`, `#qlistT`; `#qExtra` = "sim redo"; `#qExamBox` = provas; `#bkBox` = banco) e o CSS esconde pelo `data-qpart`. `setQSeg(v,p)` aceita os nomes antigos
+  (praticar → sim, resumo/temas → resumo) ou a parte. **Testes antigos:** `window.__qLegacy` (ligado no `mockdb.js`/`fakefb.js`) = `data-qpart="all"`, a aba como era (tudo junto, `#qSegBar`); testes novos e o `monkey8.js` desligam.
+  Banco (`bkCard`): filtros `bkF` (`bkFDef`/`bkFClean`; q, st nr|r|ok|no, area/sp/k, o (BK_O, "mat" = do material), ban, ano, niv, fav, img, old = esconder anuladas, nf, teim, dyn eixo|prova = `bkAxKeys`/`bkProvaKeys`, pre),
+  `bkMatch(r,F,K,skip)`, `bkCompute`, `bkGroups` (no computador `.bkside` fixa à esquerda; no celular `fcBody` `#bkFBtn`/`#bkFPanel`), presets `BK_PRE` (`#bkP-ined|teim|eixo|prova|fav`) + salvos `ui.prefs.bkps=[{id:"u…",n,f}]`
+  (`#bkSave`, `#bkSaveN`, `#bkSaveOk`, `#bkPx-<id>`; `uiSanitize`), contadores `#bkC-<st>`, busca `#bkQ` (`bkTxt` = enunciado + comentário + alternativas sem acento), ordem `#bkSort` (`BK_SORT`, `resid-bksort`), lista `.bklist` (`bkRowEl`, `#bkr-<id>`, `BK_PAGE`=40, `#bkMore`;
+  aberta: `#bkGo1-`, `#bkFav-`, `#bkTp-`, `#bkDel-` com dois toques). `bkInfo(x)` = histórico, situação e `bkTeim` (3 erros; sai com 2 acertos seguidos em dias diferentes). Questão: `fav`, `del` (tirada: fica na lista do banco
+  marcada, sincroniza e não volta pela carga; `infoToast` Desfazer), `fm` = figura do material guardada (`bkFigFrom` no `bankAdd(q,o,k,P)` → `exfData` → `exfPut` id "bk_<id>", ex "bank"; `bkFigSet` também a partir de `x.img` do Refazer;
+  `exfPurge` não apaga ex "bank"). Jogador `bkRun={ids,i,mode:"e"|"p",ans,t,cnt,…}` (`bkStart(ids,mode)`, até `BK_RUN_MAX`=100; `#bkGo`, `#bkSimB` → `#bkSimN-<n>`/`#bkSimGo` sorteia inéditas primeiro): estudo = `altsEl` e correção na hora (`#bkNext`, `#bkEnd`);
+  prova = `#bka-<letra>` marca/desmarca, mapa `#bkm-<i>`, `#bkPrev/#bkNextP/#bkFinish`, relógio `#bkClock` (`bkTick`); resultado `#bkrv-<i>`, `#bkBack`, `#bkAgainWr`. `bkAnswer`: `bhAdd` src "bank" com o tempo; conta no tema (`bkCounts`) só sem histórico e se
+  não for de prova na íntegra guardada (errada → `rdAdd`); senão `hist.rq` (meta semanal). Backup: questões das provas vão também quando `fav`/`del` (igual no Apps Script, t87). Capturas: `tests/shotsB2.js`. Teste: `tests/t147.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
@@ -452,7 +464,7 @@ consultado quando há dúvida. Responda em português.
 
 ## Ideia: Banco de questões
 
-Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela) feito em 11/2026; 1ª banca para importar no B4: ENARE.
+Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela) e B2 (a tela) feitos em 11/2026; 1ª banca para importar no B4: ENARE.
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
   importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).

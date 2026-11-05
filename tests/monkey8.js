@@ -6,7 +6,7 @@ const DEV={fone:[390,844,true,"dark"],ipad578:[578,820,true,"light"],tabEmPe:[82
 for(const [name,[w,h,mob,theme]] of Object.entries(DEV)){if(only&&only!==name)continue;
  const ipad=name==="ipad578"||name.startsWith("tab");
  const ctx=await b.newContext({viewport:{width:w,height:h},hasTouch:mob,isMobile:mob,colorScheme:theme,screen:name==="ipad578"?{width:1180,height:820}:undefined,userAgent:ipad?"Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X)":undefined});
- await ctx.route(/googleapis|gstatic/,x=>x.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
+ await ctx.route(/googleapis|gstatic/,x=>x.abort());await ctx.addInitScript(mock+`;window.__qLegacy=false;window.__mock({},2);`);// B2: a aba Questões como o usuário vê (partes do banco)
  const p=await ctx.newPage();p.on('pageerror',e=>errs.add(name+": "+e.message.slice(0,160)));p.on('console',m=>{if(m.type()==="error"&&!/net::|Failed to load|ERR_/.test(m.text()))errs.add(name+" console: "+m.text().slice(0,160))});
  await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof saveFac==='function'&&synced&&sampleFn,null,{polling:100});
  await p.evaluate(()=>{let c=0;sampleFn.json=async(input)=>{await new Promise(r=>setTimeout(r,30));const m=input.match(/simulado com (\d+)|Crie (\d+)/);const n=m?+(m[1]||m[2]):3;
