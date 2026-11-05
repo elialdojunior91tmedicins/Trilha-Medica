@@ -13,7 +13,7 @@ await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,las
 ok(await p.evaluate(()=>!document.querySelector('.ntoday')&&/Reler a anotação/.test(rereadEl("CM-1").textContent)&&/Sem anotação neste tema/.test(rereadEl("CM-9x"in BYKEY?"CM-9x":"CM-2").textContent)),tag+": reler dentro da revisão; tema sem anotação oferece escrever");
 
 // 2. pegadinhas
-await seg("pegadinhas");const pg=await p.$$eval('.npeg .pglist li',a=>a.map(x=>x.className+":"+x.textContent));
+await seg("pegadinhas");await p.evaluate(()=>{if(twoCols()){pgFull=true;render()}});await p.waitForTimeout(150);const pg=await p.$$eval('.npeg:not(.npegside) .pglist li',a=>a.map(x=>x.className+":"+x.textContent));
 ok(pg.length===3&&pg.some(x=>/peg:MAPA/.test(x))&&pg.some(x=>/dest:< 130\/80/.test(x))&&pg.some(x=>/peg:Não usar IECA/.test(x)),tag+": pegadinhas e destaques: "+pg.join(" | "));
 // 4. cobertura
 await seg("todas");if(!(await p.$('#nNoNoteB'))){await click('#nFBtn');await p.waitForTimeout(150)}ok(/sem anotação · 2/.test(await p.$eval('#nNoNoteB',x=>x.textContent)),tag+": cobertura (agora filtro do caderno)");
