@@ -143,6 +143,33 @@ const SEED=`(async()=>{await bankBootP;const Q=(e,a,c,extra)=>({enunciado:e,alte
  ok(ST.pos==="sticky"&&ST.go==="Resolver estas 7 questões","\"Resolver estas N questões\" fica preso acima da barra de baixo "+JSON.stringify(ST));
  await p2.evaluate(()=>{window.scrollTo(0,0)});
  ok(await p2.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),"sem rolagem para o lado no celular");
+ /* filtros em grupos recolhíveis */
+ await p2.tap("#bkFBtn");await p2.waitForTimeout(60);
+ const FGR=await p2.evaluate(()=>({g:[...document.querySelectorAll("#bkFPanel .bkfg .bkfgt")].map(x=>x.textContent),sw:document.querySelectorAll("#bkFPanel .bkfs[role=switch]").length,radio:document.querySelectorAll("#bkFPanel .bkfo[role=radio]").length}));
+ ok(FGR.g.slice(0,3).join()==="Situação,Onde,Origem"&&FGR.sw>=2&&FGR.radio===5,"filtros em grupos: Situação em linhas, Onde, Origem, etiquetas e chaves em Mais "+JSON.stringify(FGR));
+ await p2.tap("#bkFg-st");await p2.waitForTimeout(60);
+ ok(await p2.evaluate(()=>$("#bkFg-st").getAttribute("aria-expanded")==="false"&&!$("#bkS-nr")&&localStorage.getItem("resid-bkfg")==="st"),"recolher um grupo (fica lembrado)");
+ await p2.tap("#bkFg-st");await p2.tap("#bkS-no");await p2.waitForTimeout(60);
+ ok(await p2.evaluate(()=>bkF.st==="no"&&$("#bkFg-st .bkfgs").textContent==="Erradas"&&$("#bkFg-st .bkfgs").classList.contains("on")),"o título do grupo resume o que está ligado");
+ await p2.tap("#bkM-teim");await p2.waitForTimeout(60);ok(await p2.evaluate(()=>bkF.teim&&$("#bkM-teim").getAttribute("aria-checked")==="true"),"chave liga/desliga em Mais");
+ await p2.evaluate(()=>{bkF=bkFDef();bkFPanel=false;render()});
+ /* tela inteira no celular, em pé */
+ await p2.tap("#bkGo");await p2.waitForTimeout(80);await p2.tap("#bkFullB");await p2.waitForTimeout(120);
+ const FS=await p2.evaluate(()=>{const c=document.querySelector(".bkcard.bkrun").getBoundingClientRect(),nav=document.querySelector(".appnav");return {on:document.documentElement.dataset.bkfull,top:Math.round(c.top),h:Math.round(c.height),vh:innerHeight,nav:getComputedStyle(nav).visibility,menu:!!$("#bkFMenu"),exit:!!$("#bkFExit"),p:$(".bkfp").textContent}});
+ ok(FS.on==="1"&&FS.top===0&&FS.h===FS.vh&&FS.nav==="hidden"&&FS.menu&&FS.exit&&FS.p==="Questão 1 de 7","tela inteira em pé: ocupa a tela, esconde a barra de baixo, com ≡ Menu e Sair "+JSON.stringify(FS));
+ await p2.tap("#bka-A");await p2.waitForTimeout(60);
+ ok(await p2.evaluate(()=>{const b=document.querySelector(".bkplay>.btns").getBoundingClientRect();return getComputedStyle(document.querySelector(".bkplay>.btns")).position==="sticky"&&b.bottom<=innerHeight+1}),"Próxima fica sempre ao alcance, embaixo");
+ await p2.tap("#bkFMenu");await p2.waitForTimeout(350);
+ ok(await p2.evaluate(()=>!$("#navMenu").hidden&&+getComputedStyle($("#navMenu")).zIndex>+getComputedStyle(document.querySelector(".bkcard.bkrun")).zIndex),"≡ Menu abre o menu do app por cima da tela inteira");
+ await p2.evaluate(()=>navMenuClose());await p2.waitForTimeout(350);
+ await p2.evaluate(()=>{setView("temas")});await p2.waitForTimeout(80);ok(await p2.evaluate(()=>!document.documentElement.dataset.bkfull&&$("#viewTemas").offsetParent!==null),"ir para outra aba pelo menu sai da tela inteira");
+ await p2.evaluate(()=>{setView("quest")});await p2.waitForTimeout(80);ok(await p2.evaluate(()=>document.documentElement.dataset.bkfull==="1"&&bkRun&&bkRun.ans[0]),"voltar ao banco continua de onde parou, em tela inteira");
+ /* deitado */
+ await p2.setViewportSize({width:844,height:390});await p2.waitForTimeout(250);
+ const LS=await p2.evaluate(()=>{const l=document.querySelector(".bkq .bkql").getBoundingClientRect(),a=document.querySelector(".bkq .alts").getBoundingClientRect();return {lay:document.documentElement.dataset.layout,full:document.documentElement.dataset.bkfull,side:a.left>l.right-2,lw:Math.round(l.width),sw:document.documentElement.scrollWidth<=innerWidth+1}});
+ ok(LS.lay==="phone"&&LS.full==="1"&&LS.side&&LS.sw,"tela inteira deitado: enunciado à esquerda e alternativas à direita "+JSON.stringify(LS));
+ await p2.tap("#bkFExit");await p2.waitForTimeout(80);ok(await p2.evaluate(()=>!document.documentElement.dataset.bkfull&&!!$("#bkFullB")&&localStorage.getItem("resid-bkfull")===null),"Sair volta para a tela normal (e lembra a escolha)");
+ await p2.setViewportSize({width:390,height:844});await p2.evaluate(()=>{bkRun=null;render()});
  await c2.close();
  /* testes antigos: a aba como era */
  const c3=await b.newContext({viewport:{width:1366,height:900}});await c3.route(/googleapis|gstatic/,r=>r.abort());await c3.addInitScript(mock+`;window.__mock({},2);`);

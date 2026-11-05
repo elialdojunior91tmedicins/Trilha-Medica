@@ -25,4 +25,7 @@ const SEED=`(async()=>{await bankBootP;const Q=(e,a,c)=>({enunciado:e,alternativ
  await shot('5-celular-banco',{width:390,height:844},{mob:true});
  await shot('6-celular-partes',{width:390,height:844},{mob:true},async p=>{await p.tap("#qpBtn")});
  await shot('7-celular-filtros-escuro',{width:390,height:844},{mob:true,dark:true},async p=>{await p.tap("#bkFBtn")});
+ await shot('8-celular-tela-inteira',{width:390,height:844},{mob:true},async p=>{await p.tap("#bkGo");await p.tap("#bkFullB");await p.tap("#bka-A")});
+ await shot('9-celular-deitado',{width:844,height:390},{mob:true},async p=>{await p.evaluate(()=>{lsSet("resid-bkfull","1");bkFull=true});await p.tap("#bkGo");await p.waitForTimeout(150)});
+ await shot('10-celular-menu-na-tela-inteira',{width:390,height:844},{mob:true,dark:true},async p=>{await p.evaluate(()=>{lsSet("resid-bkfull","1");bkFull=true});await p.tap("#bkSimB");await p.tap("#bkSimGo");await p.tap("#bkFMenu");await p.waitForTimeout(400)});
  await b.close();console.log("ok",out)})();
