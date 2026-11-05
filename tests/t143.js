@@ -31,6 +31,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name],two=!mob;
    const tid=await p.evaluate(()=>[...document.querySelectorAll('#nSide .pgtb')].find(b=>/HIV/.test(b.textContent)).id);await click('#'+tid);
    ok(await p.evaluate(()=>{const c=document.querySelector('#nSide .npeg');return c.querySelectorAll('.pgi').length===5&&/ver mais 4/.test(c.querySelector('.pgmore').textContent)}),name+": abrir o tema mostra 5 itens e 'ver mais 4'");
    await click('#nSide .pgmore');
+   ok(await p.evaluate(()=>document.querySelectorAll('#nSide .npeg .pgi').length===0&&!pgTopOpen.size),name+": ao abrir a lista inteira, o tema da direita fecha sozinho");
    ok(await p.evaluate(()=>{const f=$("#nPegFull");return !f.hidden&&f.querySelectorAll('.pgi').length===11&&!!f.querySelector(`[data-pgt="${window.__k}"]`)&&!f.querySelector('#pgGo')}),name+": 'ver mais' abre a lista inteira na coluna principal");
    ok(await p.evaluate(()=>{const f=$("#nPegFull").getBoundingClientRect(),s=$("#nSide").getBoundingClientRect();return f.right<=s.left+2&&f.width>s.width}),name+": a lista inteira fica na coluna principal, mais larga");
    await click('#pgFullX');ok(await p.evaluate(()=>$("#nPegFull").hidden&&!pgFull),name+": Fechar esconde a lista inteira");

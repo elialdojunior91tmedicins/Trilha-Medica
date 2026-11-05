@@ -9331,9 +9331,9 @@ function pgSideEl(c,L,miss){const groups={};L.forEach(o=>{(groups[pgGroupOf(o)]=
     Object.entries(byT).sort((a,b)=>b[1].length-a[1].length).forEach(([t,os],ti)=>{const on=pgTopOpen.has(t),w=el(`<div class="pgtrow"><button class="pgtb" type="button"><span class="pgtar" aria-hidden="true"></span><span class="pgtn"></span><span class="pgn"></span></button></div>`),bt=w.querySelector("button");
       bt.id=`pgt-${gi}-${ti}`;bt.setAttribute("aria-expanded",on);w.querySelector(".pgtar").textContent=on?"▾":"▸";w.querySelector(".pgtn").textContent=pgTopName(os[0]);w.querySelector(".pgn").textContent=os.length;bt.onclick=()=>{on?pgTopOpen.delete(t):pgTopOpen.add(t);render()};
       if(on){const ul=el(`<ul class="pglist"></ul>`);os.slice(0,5).forEach(o=>ul.appendChild(pgItemEl(o,miss)));w.appendChild(ul);
-        if(os.length>5){const m=el(`<button class="link pgmore" type="button"></button>`);m.textContent=`ver mais ${os.length-5}`;m.onclick=()=>{pgFull=true;pgFullTo=t;render()};w.appendChild(m)}}
+        if(os.length>5){const m=el(`<button class="link pgmore" type="button"></button>`);m.textContent=`ver mais ${os.length-5}`;m.onclick=()=>{pgFull=true;pgFullTo=t;pgTopOpen.delete(t);render()};w.appendChild(m)}}
       d.appendChild(w)});box.appendChild(d)});
-  c.appendChild(box);const all=el(`<button class="btn pgall" type="button" id="pgAll"></button>`);all.textContent=pgFull?"Fechar a lista inteira":`Ver todas · ${L.length}`;all.onclick=()=>{pgFull=!pgFull;render();if(pgFull)setTimeout(()=>{const x=$("#nPegFull");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};c.appendChild(all);return c}
+  c.appendChild(box);const all=el(`<button class="btn pgall" type="button" id="pgAll"></button>`);all.textContent=pgFull?"Fechar a lista inteira":`Ver todas · ${L.length}`;all.onclick=()=>{pgFull=!pgFull;if(pgFull)pgTopOpen.clear();render();if(pgFull)setTimeout(()=>{const x=$("#nPegFull");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};c.appendChild(all);return c}
 function pgGroupsEl(c,L,miss,full){
   /* grupos por especialidade, recolhíveis, com contagem; dentro, por tema */
   const groups={};L.forEach(o=>{const it=o.k&&BYKEY[o.k],g=o.f&&!it?"Páginas livres":`${it.area.code} · ${it.sp||it.area.name}`;(groups[g]=groups[g]||[]).push(o)});
