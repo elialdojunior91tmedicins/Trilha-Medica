@@ -524,7 +524,7 @@ html[data-bkfull] .bkcard.bkrun,.pfullc{position:fixed!important;inset:0;z-index
 html:is([data-bkfull],[data-pfull]) :is(.appnav,.dqbar,.fopill){visibility:hidden}
 .pfullc{max-width:none!important;margin:0!important;border:0!important;border-radius:0!important;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px))!important;overflow-y:auto;overscroll-behavior:contain;background:var(--surface)}
 html[data-layout="phone"] :is(.qsim,.qredo,.qexam) .dhead .erfullb{display:inline-block;margin-left:auto}
-.pfullc>.dhead{margin-top:10px}html[data-layout="phone"] .pfullc>.dhead .erfullb{display:none}
+.pfullc>.dhead{margin-top:10px}.pfullc>.dhead>h2{display:none}.pfullc>.dhead:not(:has(.todaydate:not(:empty))){display:none}html[data-layout="phone"] .pfullc>.dhead .erfullb{display:none}
 .bkfbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;margin:0 -16px;padding:calc(8px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:var(--surface);border-bottom:1px solid var(--line)}
 .bkft{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15}.bkft h2{font-size:1rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bkfp{font-size:.76rem;color:var(--muted)}
 .bkfb{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:700 .86rem var(--body);padding:8px 11px;cursor:pointer;white-space:nowrap}.bkfb span{font-size:1.05rem;line-height:1}
