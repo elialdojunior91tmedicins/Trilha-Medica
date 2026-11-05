@@ -8962,7 +8962,7 @@ function bkCard(){const c=el(`<section class="card bkcard" aria-labelledby="bkh"
   const G=bkGroups(C),act=bkActs(F,D),side=twoCols(),grid=el(`<div class="bkgrid${side?" bk2":""}"></div>`),main=el(`<div class="bkmain"></div>`);
   if(side){const as=el(`<aside class="bkside" aria-label="Filtros do banco"></aside>`);G.forEach(([lab,hint,body])=>{const g=el(`<div class="tfgrp"><div class="tfgh"><span class="glabel"></span><span class="tfhint"></span></div></div>`);g.querySelector(".glabel").textContent=lab;g.querySelector(".tfhint").textContent=hint||"";g.appendChild(body);as.appendChild(g)});grid.appendChild(as)}
   /* busca + filtros (celular) */
-  {const s=el(`<div class="bksearch"><label class="tfsearch">${FC_ICO}<input type="search" class="search" id="bkQ" placeholder="Buscar nas questões e comentários" autocomplete="off"></label></div>`),inp=s.querySelector("input");inp.value=F.q;
+  {const s=el(`<div class="bksearch"><label class="tfsearch">${FC_ICO}<input type="search" class="search" id="bkQ" placeholder="Buscar no banco" autocomplete="off"></label></div>`),inp=s.querySelector("input");inp.value=F.q;
     inp.oninput=()=>{bkF.q=inp.value;bkF.pre="";bkShown=BK_PAGE;clearTimeout(bkQT);bkQT=setTimeout(()=>{render();const n=$("#bkQ");if(n){n.focus();try{n.setSelectionRange(n.value.length,n.value.length)}catch(e){}}},280)};
     main.appendChild(s);
     if(!side){const fb=el(`<div class="bkfc"></div>`);fcBody(fb,{tog:"bkFBtn",panelId:"bkFPanel",open:bkFPanel,onToggle:()=>{bkFPanel=!bkFPanel},act:[],onClear:()=>{bkF=bkFDef()},clearId:"bkClear2",groups:G,foot:`${vis.length} ${vis.length===1?"questão":"questões"}`});s.appendChild(fb)}}
