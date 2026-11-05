@@ -418,7 +418,16 @@ html:is([data-layout="desktop"],[data-layout="tablet"])[data-cols="2"] .qextra{d
 .impsteps .isn{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-weight:700;font-size:.72rem}.impsteps li.cur{color:var(--ink);font-weight:700;background:var(--accent-soft)}.impsteps li.cur .isn{background:var(--accent);border-color:var(--accent);color:var(--surface)}
 .impsteps li.done .isn{background:var(--good);border-color:var(--good);color:#fff}
 .exfind{display:flex;flex-direction:column;gap:8px;margin:4px 0 12px;align-items:flex-start}.exfind .tfsearch{width:100%}
-.exgrp{display:flex;align-items:baseline;gap:8px;margin:14px 0 8px;font:700 .95rem var(--body);color:var(--ink)}.exgrp small{font-weight:500;color:var(--muted);font-size:.8rem}
+.exgrp{margin:14px 0 8px;font:700 .95rem var(--body);color:var(--ink)}.exgrp small{font-weight:500;color:var(--muted);font-size:.8rem}
+.exgrpb{display:flex;align-items:baseline;gap:8px;width:100%;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;color:inherit;text-align:left;padding:4px 0 8px;cursor:pointer}.exgar{width:1em;color:var(--muted);font-size:.8rem}
+/* Lote 21: Pegadinhas — resumo na coluna da direita, lista inteira na principal */
+.npegside{max-height:calc(100vh - 120px);overflow:auto;overscroll-behavior:contain}.npegside .pgsec>summary{cursor:pointer}
+.pgside{display:flex;flex-direction:column;gap:2px}.pgtrow{border-bottom:1px solid var(--line)}.pgtrow:last-child{border-bottom:0}
+.pgtb{display:grid;grid-template-columns:1em minmax(0,1fr) auto;gap:6px;align-items:baseline;width:100%;border:0;background:none;font:inherit;color:var(--ink);text-align:left;padding:8px 0;cursor:pointer;font-size:.9rem}
+.pgtar{color:var(--muted);font-size:.75rem}.pgtrow .pglist{margin:0 0 8px}.pgmore{margin:0 0 8px 1.4em;font-size:.85rem}.pgall{align-self:flex-start;margin-top:6px}
+.npegfull .npegall .pgsec{border-top:1px solid var(--line)}
+/* Lote 21: Provas na íntegra em largura inteira no computador, 3–4 provas por linha */
+.qexbox .excards{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
 .exmini{display:flex;flex-wrap:wrap;gap:6px 12px;margin:2px 0 4px}.exmi{display:flex;align-items:center;gap:5px;font-size:.76rem;color:var(--muted2)}.exmk{font-weight:700}.exmb{width:44px;height:4px;border-radius:3px;background:var(--line);overflow:hidden;display:inline-block}.exmb i{display:block;height:100%;background:var(--muted)}
 li.exq.chk{border-left:3px solid var(--late);padding-left:10px}.exprob{margin:4px 0 6px;font-size:.86rem;color:var(--ink);background:var(--late-soft);border-radius:8px;padding:6px 10px}
 .exlostbox{border:1px solid var(--late);background:var(--late-soft);border-radius:12px;padding:10px 12px;margin:8px 0}
@@ -2215,12 +2224,14 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
     </section>
     <div id="qSrcBox" class="qs-res"></div>
     <div id="qExtra" class="qextra qs-prac"></div>
+    <div id="qExamBox" class="qexbox qs-prac"></div>
     <section class="controls qfilters qs-tem" id="qFilters" aria-label="Filtros das questões"></section>
     <ol class="elist qlistT qs-tem" id="qlistT"></ol>
   </div>
 
   <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
     <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Caderno</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
+    <div id="nPegFull" class="npegfull" hidden></div>
     <div id="nRevBox" class="ns-rev nrevbox"></div>
     <div id="nFreeBox" class="ns-free"></div>
     <h3 class="nlisth ns-all" id="nTopicH" hidden></h3>
@@ -3376,7 +3387,9 @@ function renderNotasView(){
   {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=0;
    $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
    const rb=$("#nRevBox");rb.innerHTML="";rb.append(nCardsCard());{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
-     l.querySelector("span").textContent=`${nn} ${nn===1?"tema estudado sem anotação":"temas estudados sem anotação"}.`;l.querySelector("button").onclick=()=>{nNoNote=true;if(nType==="free"){nType="all";lsSet("resid-ntype","all")}setNSeg("livre");render();setTimeout(()=>{const x=$("#nTopicH");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};rb.appendChild(l)}}const pb=$("#nPegBox");pb.innerHTML="";pb.appendChild(nPegCard(vis));
+     l.querySelector("span").textContent=`${nn} ${nn===1?"tema estudado sem anotação":"temas estudados sem anotação"}.`;l.querySelector("button").onclick=()=>{nNoNote=true;if(nType==="free"){nType="all";lsSet("resid-ntype","all")}setNSeg("livre");render();setTimeout(()=>{const x=$("#nTopicH");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};rb.appendChild(l)}}const pb=$("#nPegBox");pb.innerHTML="";const two=twoCols();pb.appendChild(nPegCard(vis,two?{side:true}:{}));
+     /* Lote 21: no computador, a lista inteira abre na coluna principal ("Ver todas") */
+     const pf=$("#nPegFull");pf.innerHTML="";pf.hidden=!(two&&pgFull);if(two&&pgFull){pf.appendChild(nPegCard(vis,{full:true}));if(pgFullTo){const t=pgFullTo;pgFullTo=null;setTimeout(()=>{const x=document.querySelector(`#nPegFull [data-pgt="${CSS.escape(t)}"]`)||pf;x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
    }
   if(nNoNote){const list=$("#nlist");list.innerHTML="";const nn=noNoteKeys().filter(k=>(nArea==="all"||BYKEY[k].area.code===nArea)&&(nArea==="all"||nSp==="all"||BYKEY[k].sp===nSp)&&(!nQuery||norm(BYKEY[k].t).includes(nQuery)));
     if(!nn.length)list.appendChild(el(`<li class="empty" style="padding:0">Nenhum tema estudado sem anotação com esses filtros.</li>`));
@@ -4035,7 +4048,7 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qExamCard(),qRedoCard(U0));const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qSeg;const rdN=redo.filter(x=>BYKEY[x.k]&&U0.some(i=>i.key===x.k)).length,tN=U0.filter(i=>get(i.key).qt).length;
@@ -8965,8 +8978,12 @@ function qExamCard(){const c=el(`<section class="card qexam" aria-labelledby="ex
     if(ch.length)bar.appendChild(fcChips(ch));c.appendChild(bar)}
   if(!L.length){c.appendChild(el(`<p class="cempty">Nenhuma prova com esses filtros.</p>`));return c}
   const G={};L.forEach(ex=>{const g=bk(ex);(G[g]=G[g]||[]).push(ex)});const gs=Object.keys(G).sort((a,b)=>a==="Sem banca"?1:b==="Sem banca"?-1:a.localeCompare(b));
-  gs.forEach(g=>{if(gs.length>1||exams.length>2){const h=el(`<h3 class="exgrp"><span></span><small></small></h3>`);h.querySelector("span").textContent=g;h.querySelector("small").textContent=`${G[g].length} ${G[g].length===1?"prova":"provas"}`;c.appendChild(h)}
-    const ol=el(`<ol class="excards"></ol>`);G[g].sort((a,b)=>String(b.ano||"").localeCompare(String(a.ano||""))||a.name.localeCompare(b.name)).forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol)});return c}
+  gs.forEach((g,gi)=>{const shut=exGrpShut.has(g)&&!exF.b;if(gs.length>1||exams.length>2){/* Lote 21: grupo por banca recolhível */
+      const h=el(`<h3 class="exgrp"><button type="button" class="exgrpb"><span class="exgar" aria-hidden="true"></span><span class="exgn"></span><small></small></button></h3>`),bt=h.querySelector("button");bt.id="exG-"+gi;bt.setAttribute("aria-expanded",!shut);
+      h.querySelector(".exgar").textContent=shut?"▸":"▾";h.querySelector(".exgn").textContent=g;h.querySelector("small").textContent=`${G[g].length} ${G[g].length===1?"prova":"provas"}`;
+      bt.onclick=()=>{shut?exGrpShut.delete(g):exGrpShut.add(g);lsSet("resid-exgrp",JSON.stringify([...exGrpShut]));render()};c.appendChild(h)}
+    if(shut)return;const ol=el(`<ol class="excards"></ol>`);G[g].sort((a,b)=>String(b.ano||"").localeCompare(String(a.ano||""))||a.name.localeCompare(b.name)).forEach(ex=>ol.appendChild(exRowCard(ex)));c.appendChild(ol)});return c}
+let exGrpShut=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-exgrp")||"[]");return new Set(Array.isArray(v)?v.filter(x=>typeof x==="string"):[])}catch(e){return new Set()}})();
 let exF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-exf")||"{}");return {q:"",st:["new","run","fin"].includes(v.st)?v.st:"all",b:typeof v.b==="string"?v.b:"",fac:!!v.fac}}catch(e){return {q:"",st:"all",b:"",fac:false}}})();
 const exFSave=()=>lsSet("resid-exf",JSON.stringify({st:exF.st,b:exF.b,fac:exF.fac}));
 document.addEventListener("keydown",ev=>{if(view!=="quest"||!exRun)return;const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
@@ -9274,13 +9291,16 @@ function pgRunEl(){const R=pgRun,o=R.list[R.i],c=el(`<div class="pgrun"><div cla
   if(o.why&&!R.show){const s=el(`<button class="btn" type="button" id="pgShow">Mostrar o porquê</button>`);s.onclick=()=>{R.show=true;render()};B.appendChild(s)}
   const y=el(`<button class="btn primary" type="button" id="pgYes">Sabia</button>`),n=el(`<button class="btn" type="button" id="pgNo">Não sabia</button>`);
   y.onclick=()=>{pgMark(o.id,true);R.ok++;R.i++;R.show=false;render()};n.onclick=()=>{pgMark(o.id,false);R.no++;R.i++;R.show=false;render()};B.append(n,y);return c}
-function nPegCard(vis){const c=el(`<section class="card npeg" aria-labelledby="nph"><div class="dhead"><h2 id="nph">Pegadinhas e destaques</h2><span class="todaydate"></span></div></section>`);
+let pgFull=false,pgFullTo=null,pgTopOpen=new Set();
+function nPegCard(vis,o={}){const c=el(`<section class="card npeg${o.side?" npegside":""}${o.full?" npegall":""}" aria-labelledby="${o.full?"nphf":"nph"}"><div class="dhead"><h2 id="${o.full?"nphf":"nph"}">${o.full?"Todas as pegadinhas e destaques":"Pegadinhas e destaques"}</h2><span class="todaydate"></span></div></section>`);
+  if(o.full){const x=el(`<button class="link" type="button" id="pgFullX">Fechar</button>`);x.onclick=()=>{pgFull=false;render()};c.querySelector(".dhead").appendChild(x)}
   const all=pgAll(vis),miss=pgMiss();
   if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
   const tk=new Set(notesTodayKeys().map(x=>x.k)),PV=pgProvaKeys();
   const okT=o=>pgF.t==="all"||o.kind===pgF.t,okD=o=>!pgF.today||o.k&&tk.has(o.k),okP=o=>!pgF.prova||PV&&o.k&&PV.keys.has(o.k),okM=o=>!pgF.miss||miss[o.id];
   const L=all.filter(o=>okT(o)&&okD(o)&&okP(o)&&okM(o)).sort((a,b)=>(miss[b.id]||0)-(miss[a.id]||0));
   c.querySelector(".todaydate").textContent=`${L.length} de ${all.length}`;
+  if(o.full){c.appendChild(el(`<p class="how">Filtros, revisão e folha de véspera ficam no cartão ao lado.</p>`));if(!L.length){c.appendChild(el(`<p class="cempty">Nada com esses filtros.</p>`));return c}return pgGroupsEl(c,L,miss,true)}
   /* filtros no padrão: tipo (um) + atalhos (combinam), com contagem */
   const f=el(`<div class="pgfil"></div>`),base=all.filter(o=>okD(o)&&okP(o)&&okM(o)),pk=all.filter(o=>okT(o));
   f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`]],"Tipo"));
@@ -9295,20 +9315,40 @@ function nPegCard(vis){const c=el(`<section class="card npeg" aria-labelledby="n
     c.appendChild(B)}
   if(pgRun){c.appendChild(pgRunEl());return c}
   if(!L.length){c.appendChild(el(`<p class="cempty">Nada com esses filtros.</p>`));return c}
+  if(o.side)return pgSideEl(c,L,miss);
+  return pgGroupsEl(c,L,miss,false)}
+/* Lote 21: coluna da direita = resumo. Especialidades recolhidas; temas com contagem; tema aberto mostra até 5 itens + "ver mais"; a lista inteira vai para a coluna principal */
+const pgTopKey=o=>o.f?"f:"+o.f:o.k;
+const pgTopName=o=>o.f?(freeN.find(x=>x.id===o.f)||{}).t||"Página livre":BYKEY[o.k].t;
+const pgGroupOf=o=>{const it=o.k&&BYKEY[o.k];return o.f&&!it?"Páginas livres":`${it.area.code} · ${it.sp||it.area.name}`};
+function pgItemEl(o,miss){const li=el(`<li class="${o.kind}"><button type="button" class="pgi"><span class="pgx"></span><small class="pgm"></small></button></li>`);li.querySelector(".pgx").innerHTML=(o.kind==="dest"?`<mark>${inl(o.x)}</mark>`:inl(o.x))+(o.why?` <span class="pgwhy">— ${inl(o.why)}</span>`:"");
+  li.querySelector(".pgm").textContent=[o.sec,miss[o.id]?`não sabia ${miss[o.id]}×`:""].filter(Boolean).join(" · ");li.querySelector("button").title="Abrir na anotação";li.querySelector("button").onclick=()=>pgGo(o);
+  if(miss[o.id]&&o.k&&BYKEY[o.k]){const cb=el(`<button class="mini pgcd" type="button">+ Cartão</button>`);cb.onclick=()=>{trStart(o.k,o.x+(o.why?" — "+o.why:""));detTab[o.k]="notas";openTopic(o.k)};li.appendChild(cb)}return li}
+function pgSideEl(c,L,miss){const groups={};L.forEach(o=>{(groups[pgGroupOf(o)]=groups[pgGroupOf(o)]||[]).push(o)});
+  const G=Object.keys(groups).sort((a,b)=>a==="Páginas livres"?1:b==="Páginas livres"?-1:groups[b].length-groups[a].length||a.localeCompare(b)),box=el(`<div class="pgside"></div>`);
+  G.forEach((g,gi)=>{const d=el(`<details class="pgsec"${pgOpen.has(g)?" open":""}><summary><span class="glabel"></span><span class="pgn"></span></summary></details>`);d.querySelector(".glabel").textContent=g;d.querySelector(".pgn").textContent=groups[g].length;
+    d.addEventListener("toggle",()=>{d.open?pgOpen.add(g):pgOpen.delete(g)});const byT={};groups[g].forEach(o=>{(byT[pgTopKey(o)]=byT[pgTopKey(o)]||[]).push(o)});
+    Object.entries(byT).sort((a,b)=>b[1].length-a[1].length).forEach(([t,os],ti)=>{const on=pgTopOpen.has(t),w=el(`<div class="pgtrow"><button class="pgtb" type="button"><span class="pgtar" aria-hidden="true"></span><span class="pgtn"></span><span class="pgn"></span></button></div>`),bt=w.querySelector("button");
+      bt.id=`pgt-${gi}-${ti}`;bt.setAttribute("aria-expanded",on);w.querySelector(".pgtar").textContent=on?"▾":"▸";w.querySelector(".pgtn").textContent=pgTopName(os[0]);w.querySelector(".pgn").textContent=os.length;bt.onclick=()=>{on?pgTopOpen.delete(t):pgTopOpen.add(t);render()};
+      if(on){const ul=el(`<ul class="pglist"></ul>`);os.slice(0,5).forEach(o=>ul.appendChild(pgItemEl(o,miss)));w.appendChild(ul);
+        if(os.length>5){const m=el(`<button class="link pgmore" type="button"></button>`);m.textContent=`ver mais ${os.length-5}`;m.onclick=()=>{pgFull=true;pgFullTo=t;render()};w.appendChild(m)}}
+      d.appendChild(w)});box.appendChild(d)});
+  c.appendChild(box);const all=el(`<button class="btn pgall" type="button" id="pgAll"></button>`);all.textContent=pgFull?"Fechar a lista inteira":`Ver todas · ${L.length}`;all.onclick=()=>{pgFull=!pgFull;render();if(pgFull)setTimeout(()=>{const x=$("#nPegFull");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};c.appendChild(all);return c}
+function pgGroupsEl(c,L,miss,full){
   /* grupos por especialidade, recolhíveis, com contagem; dentro, por tema */
   const groups={};L.forEach(o=>{const it=o.k&&BYKEY[o.k],g=o.f&&!it?"Páginas livres":`${it.area.code} · ${it.sp||it.area.name}`;(groups[g]=groups[g]||[]).push(o)});
-  let shown=0;const lim=nPegAll?1e9:40,G=Object.keys(groups).sort((a,b)=>a==="Páginas livres"?1:b==="Páginas livres"?-1:a.localeCompare(b));
-  G.forEach((g,gi)=>{if(shown>=lim)return;const open=pgOpen.size?pgOpen.has(g):gi<3,d=el(`<details class="pgsec"${open?" open":""}><summary><span class="glabel"></span><span class="pgn"></span></summary></details>`);
+  let shown=0;const lim=nPegAll||full?1e9:40,G=Object.keys(groups).sort((a,b)=>a==="Páginas livres"?1:b==="Páginas livres"?-1:a.localeCompare(b));
+  G.forEach((g,gi)=>{if(shown>=lim)return;const open=full?true:pgOpen.size?pgOpen.has(g):gi<3,d=el(`<details class="pgsec"${open?" open":""}><summary><span class="glabel"></span><span class="pgn"></span></summary></details>`);
     d.querySelector(".glabel").textContent=g;d.querySelector(".pgn").textContent=groups[g].length;d.addEventListener("toggle",()=>{if(!pgOpen.size)G.forEach((x,i)=>{if(i<3)pgOpen.add(x)});d.open?pgOpen.add(g):pgOpen.delete(g)});
     const byT={};groups[g].forEach(o=>{const t=o.f?"f:"+o.f:o.k;(byT[t]=byT[t]||[]).push(o)});
     Object.entries(byT).forEach(([t,os])=>{if(shown>=lim)return;const b=el(`<div class="pgtopic"><button class="link" type="button"></button><ul class="pglist"></ul></div>`),o0=os[0];
-      b.querySelector(".link").textContent=o0.f?(freeN.find(x=>x.id===o0.f)||{}).t||"Página livre":BYKEY[o0.k].t;b.querySelector(".link").onclick=()=>pgGo({...o0,x:""});
+      b.dataset.pgt=t;b.querySelector(".link").textContent=o0.f?(freeN.find(x=>x.id===o0.f)||{}).t||"Página livre":BYKEY[o0.k].t;b.querySelector(".link").onclick=()=>pgGo({...o0,x:""});
       os.forEach(o=>{if(shown>=lim)return;shown++;const li=el(`<li class="${o.kind}"><button type="button" class="pgi"><span class="pgx"></span><small class="pgm"></small></button></li>`);li.querySelector(".pgx").innerHTML=(o.kind==="dest"?`<mark>${inl(o.x)}</mark>`:inl(o.x))+(o.why?` <span class="pgwhy">— ${inl(o.why)}</span>`:"");
         li.querySelector(".pgm").textContent=[o.sec,miss[o.id]?`não sabia ${miss[o.id]}×`:""].filter(Boolean).join(" · ");li.querySelector("button").title="Abrir na anotação";li.querySelector("button").onclick=()=>pgGo(o);
         if(miss[o.id]&&o.k&&BYKEY[o.k]){const cb=el(`<button class="mini pgcd" type="button">+ Cartão</button>`);cb.onclick=()=>{trStart(o.k,o.x+(o.why?" — "+o.why:""));detTab[o.k]="notas";openTopic(o.k)};li.appendChild(cb)}
         b.querySelector("ul").appendChild(li)});d.appendChild(b)});
     c.appendChild(d)});
-  if(L.length>40){const m=el(`<button class="link" type="button">${nPegAll?"Mostrar menos":`Mostrar todas as ${L.length}`}</button>`);m.onclick=()=>{nPegAll=!nPegAll;render()};c.appendChild(m)}
+  if(L.length>40&&!full){const m=el(`<button class="link" type="button">${nPegAll?"Mostrar menos":`Mostrar todas as ${L.length}`}</button>`);m.onclick=()=>{nPegAll=!nPegAll;render()};c.appendChild(m)}
   return c}
 /* erro "Li errado" ou "Confundi" → sugerir pegadinha na anotação do tema (seção Pegadinhas) */
 function pegAdd(k,x,why){const cur=notes[k]||"",line=`> Pegadinha: ${x.replace(/\s+/g," ").trim()}${why?" — Por quê: "+why.replace(/\s+/g," ").trim():""}`,m=cur.match(/^(#{1,3})\s*(Pegadinhas?[^\n]*|Alertas?[^\n]*|Cuidado[^\n]*)\s*$/mi);let v;

@@ -1,0 +1,20 @@
+// capturas do Lote 21, itens 4 e 5: node tests/shots21c.js <pasta>
+const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync(__dirname+'/mockdb.js','utf8');const OUT=process.argv[2]||'.';
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1366,height:900},deviceScaleFactor:1.5});
+ await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},2);`);
+ const p=await ctx.newPage();await p.goto('http://localhost:8765/tests/preview.html');
+ await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
+ await p.evaluate(()=>{const B=["ENARE","USP","SUS-SP","Revalida"],mk=(id,name,banca,ano)=>exClean({id,name,banca,ano,qs:Array.from({length:100},(_,i)=>({n:i+1,k:ALL[i%40].key,g:"b",q:{enunciado:"x",alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"A",comentario:""}}))});
+   for(let i=0;i<12;i++)exams.push(mk("ex"+i,`${B[i%4]} ${2019+Math.floor(i/4)+(i%2)}`,B[i%4],String(2019+Math.floor(i/4)+(i%2))));
+   [0,1,5].forEach(j=>{const P=exPg("ex"+j);exams.find(e=>e.id==="ex"+j).qs.forEach((r,i)=>{if(j===5&&i>40)return;P.a[i]={l:i%3?"A":"B",d:today(),s:60}});if(j!==5){P.fin=today();P.tries=[{d:today(),hit:66,n:100}]}});exSaveLocal();
+   backStack=[];setView("quest");render()});await p.waitForTimeout(400);
+ await p.evaluate(()=>{const r=$("#qExtra").getBoundingClientRect();window.scrollTo(0,r.top+scrollY-20)});await p.waitForTimeout(150);
+ await p.screenshot({path:`${OUT}/10-provas-note.png`,fullPage:false});
+ await p.evaluate(()=>{const r=$("#qExamBox").getBoundingClientRect();window.scrollTo(0,r.top+scrollY-20)});await p.waitForTimeout(150);
+ await p.screenshot({path:`${OUT}/11-provas-grade-note.png`});
+ await p.evaluate(()=>{const H=ALL.filter(i=>/HIV|Anemia|Sepse|Asma|Diabetes/.test(i.t)).slice(0,5);H.forEach((it,j)=>{let t="## Pegadinhas\n";for(let i=0;i<(j?4:14);i++)t+=`> Pegadinha: ${it.t.split(" ")[0]} — ponto de prova número ${i+1}, que costuma derrubar — Por quê: explicação curta ${i+1}\n`;notes[it.key]=t+"\nTexto com ==destaque importante== no meio.";});
+   window.__hk=H[0].key;pgOpen=new Set([`${H[0].area.code} · ${H[0].sp||H[0].area.name}`]);pgTopOpen=new Set([H[0].key]);backStack=[];setView("notas");setNSeg("pegadinhas");render()});await p.waitForTimeout(300);
+ await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`${OUT}/12-pegadinhas-note.png`});
+ await p.evaluate(()=>{pgFull=true;pgFullTo=window.__hk;render()});await p.waitForTimeout(500);
+ await p.screenshot({path:`${OUT}/13-pegadinhas-todas-note.png`});
+ await b.close()})();

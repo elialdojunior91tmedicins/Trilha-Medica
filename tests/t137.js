@@ -81,8 +81,8 @@ for(const [name,[w,h,mob]] of Object.entries(DEV)){
  await jsc('#nPdfGo');await p.waitForTimeout(200);
  ok(await p.evaluate(()=>__saved.length&&/caderno-hiv/.test(__saved.slice(-1)[0].filename)),name+": gera o PDF com o nome do recorte");
  /* 5. pegadinhas */
- await p.evaluate(()=>{nPdfOpt=null;setNSeg("pegadinhas");render()});await p.waitForTimeout(200);
- const R8=await p.evaluate(()=>{const c=document.querySelector(".npeg");return {t:[...c.querySelectorAll('[id^="pgT-"]')].map(b=>b.textContent).join("|"),items:[...c.querySelectorAll(".pgx")].map(x=>x.textContent),sec:[...c.querySelectorAll(".pgm")].map(x=>x.textContent)}});
+ await p.evaluate(()=>{nPdfOpt=null;pgFull=true;setNSeg("pegadinhas");render()});await p.waitForTimeout(200);
+ const R8=await p.evaluate(()=>{const c=document;return {t:[...c.querySelectorAll('[id^="pgT-"]')].map(b=>b.textContent).join("|"),items:[...c.querySelectorAll(".npeg .pgx")].map(x=>x.textContent),sec:[...c.querySelectorAll(".npeg .pgm")].map(x=>x.textContent)}});
  ok(/Pegadinhas · \d/.test(R8.t)&&/Destaques · \d/.test(R8.t),name+": tipo Pegadinhas · Destaques com contagem");
  ok(R8.items.some(x=>/dolutegravir/.test(x))&&R8.items.some(x=>/CD4 baixo não adia a TARV — iniciar logo/.test(x)),name+": lê páginas livres e a pegadinha estruturada com o porquê");
  ok(R8.sec.some(x=>/Pegadinhas/.test(x)),name+": cada item mostra a seção de onde veio");
