@@ -19,7 +19,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  const hi=await p.evaluate(()=>[...document.querySelectorAll('.focont .chip')].findIndex(b=>/Hidratação/.test(b.textContent)));
  await click(`#foc-${hi-1}`);
  ok(await p.evaluate(()=>foPick.dc==="d1"&&foPick.cr==="O:o1"&&foPick.ref==="T:CM-1"),name+": tocar no conteúdo ligado vincula ao conteúdo e ao tema da residência");
- ok(await p.evaluate(()=>/conta também em/.test((document.querySelector('.foclk2')||{}).textContent||"")),name+": aviso de que conta também no tema (uma vez só)");
+ ok(await p.evaluate(()=>/Conta também em/.test((document.querySelector(".foclk2")||{}).textContent||"")),name+": aviso de que conta também no tema (uma vez só)");
  await p.evaluate(()=>{foStart();foRun.s=Date.now()-30*60000;foRun.t0=Date.now()-30*60000;foFinish()});await p.waitForTimeout(150);
  ok(await p.evaluate(()=>{const x=foSess[0];return x&&x.dc==="d1"&&x.cr==="O:o1"&&x.ref==="T:CM-1"&&x.lab==="Hidratação na criança"}),name+": a sessão do cronômetro guarda disciplina e conteúdo");
  ok(await p.evaluate(()=>discFocusSec(discOf("d1"),foWeekStart())>=1790&&foMat(foSess[0]).lab==="Habilidades Médicas 6"&&foSess.filter(x=>x.ref==="T:CM-1").length===1),name+": conta na disciplina e no tema, uma vez só");
@@ -36,12 +36,13 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
  ok(await p.evaluate(y=>heroActive(y)&&foDayTotals()[y]===1800,y),name+": o registro conta para a sequência e no total do dia");
  /* tipo próprio fica guardado */
  await click('#foRegB');await click('#foAm-15');await click('#foAtO');await p.fill('#foAtIn','Aula gravada');
- await p.evaluate(()=>{const x=document.querySelector('#foaKind');x.scrollIntoView({block:"center"})});await p.selectOption('#foaKind','D');await p.waitForTimeout(150);
+ await click('#foaKind-D');
  const di=await p.evaluate(()=>[...document.querySelectorAll('#foAddBox .focont .chip')].findIndex(b=>/dermatológica/.test(b.textContent)));
  await click(`#fac-${di-1}`);await click('#foAddOk');
  ok(await p.evaluate(()=>{const x=foSess.find(x=>x.tp==="Aula gravada");return x&&x.sec===900&&x.dc==="d1"&&x.cr==="O:o2"&&ui.prefs.fotps.includes("Aula gravada")}),name+": tipo escrito à mão guardado e registro ligado ao conteúdo da disciplina");
  await click('#foRegB');
  ok(await p.evaluate(()=>[...document.querySelectorAll('#foAddTs .chip')].some(b=>b.textContent==="Aula gravada")),name+": o tipo novo é oferecido da próxima vez");
+ ok(await p.evaluate(()=>{foAdd.min="30";foAdd.tp="Anki";render();return document.querySelector('#foAddOk').textContent==="Registrar 30 min de Anki"}),name+": o botão resume o que vai ser registrado");
  await click('#foAddX');
  /* editar */
  const id=await p.evaluate(()=>foSess.find(x=>x.tp==="Anki").id);await click('#foed-'+id);

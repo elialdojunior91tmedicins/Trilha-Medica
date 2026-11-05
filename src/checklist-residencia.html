@@ -1853,12 +1853,29 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .f
 .foadd .focus-form{justify-content:flex-start}
 .foadd .how{margin:0;font-size:.82rem}
 /* Lote 21: Registrar tempo e conteúdos da disciplina */
-.foadd{gap:12px;padding:14px 14px 12px}.foaddh{margin:0;font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink)}
-.fofld{display:flex;flex-direction:column;gap:6px}.fofld .chips{display:flex;flex-wrap:wrap;gap:6px}.fofld .qfsel{max-width:200px}.fofld .glabel small{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
-.foatin{max-width:320px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
-.foadd .btns{margin-top:2px}.foadd .folink{max-width:none}
-.focont{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;margin-bottom:6px}.focont .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.focg{flex-basis:100%;font-size:.72rem;font-weight:600;color:var(--muted2);margin-top:4px}.focont .how{margin:0;font-size:.8rem}
+.foadd{gap:0;padding:4px 16px 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 0 var(--line)}
+.foaddtop{display:flex;align-items:center;justify-content:space-between;padding:12px 0 6px}.foaddh{margin:0;font-family:var(--display);font-size:1.35rem;font-weight:600;color:var(--ink)}
+.foaddx{border:0;background:none;color:var(--muted);font-size:1.4rem;line-height:1;padding:4px 8px;border-radius:8px;cursor:pointer}.foaddx:hover{background:var(--bg);color:var(--ink)}
+.foadd>.how{margin:0 0 6px}
+.fofld{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+.fofl{font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2)}.fofl small{font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted);margin-left:4px}
+.fofld .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.foinchip{display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 12px;border:1px dashed var(--line2,var(--line));border-radius:999px;background:var(--bg);color:var(--muted);font-size:.9rem;cursor:text}
+.foinchip.on{border-style:solid;border-color:var(--accent);color:var(--ink);background:var(--card)}
+.foinchip input{width:3.6em;border:0;background:none;font:inherit;color:var(--ink);padding:0;text-align:right;outline:none}.foinchip input::placeholder{color:var(--muted)}
+.fotpin input{width:11em;text-align:left}.foinx{border:0;background:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:0 0 0 4px}
+.fodate{position:relative;cursor:pointer}.fodate input{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer}
+.foadd1{border-style:dashed}
+.fonote{margin:-2px 0 0;font-size:.78rem;color:var(--muted)}
+.foadd .folink{max-width:none;display:flex;flex-direction:column;gap:10px}.foadd .folink .qfsel{max-width:none}
+.foseg{align-self:flex-start;max-width:100%}.foseg button{padding:6px 14px}
+.foadd .err{margin:6px 0 0}.foaddgo{padding-top:14px;border-top:1px solid var(--line)}.foaddgo .btn{width:100%;justify-content:center;padding:12px 16px;font-size:1rem}
+@media (min-width:700px){.foaddgo .btn{width:auto;min-width:240px}}
+.focont{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;margin-bottom:6px}.focont .chips{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.focont>.glabel{margin-top:2px}
+.focg{flex-basis:100%;font-size:.8rem;font-weight:600;color:var(--ink);margin-top:6px;padding-left:10px;border-left:3px solid var(--gold)}
+.focont .chip.foself{font-style:italic}.focont .chip.folk::after{content:" ↔";color:var(--gold);font-weight:700}
+.foclk2{display:flex;gap:8px;align-items:flex-start;margin:6px 0 0;padding:8px 10px;border-radius:10px;background:var(--bg);font-size:.82rem;color:var(--ink)}.foclk2>span:first-child{color:var(--gold);font-weight:700}
 .fosubs{display:flex;flex-wrap:wrap;gap:2px 12px;margin:4px 0 0;font-size:.78rem;color:var(--muted)}.fosubs b{color:var(--ink);font-weight:600}
 .foitem:has(.foeb){grid-template-columns:auto minmax(0,1fr) auto auto auto}
 .foeb{border:0;background:none;color:var(--muted);font-size:1rem;line-height:1;padding:6px 8px;border-radius:8px;cursor:pointer}.foeb:hover{color:var(--accent);background:var(--bg)}
@@ -7418,9 +7435,10 @@ let foContAll={};
 function foRefPick(o){const ref=o.ref||"",kind=o.dc?"D":ref[0]||"",ds=foActiveDiscs(),pre=o.pre;
   const w=el(`<div class="folink"><label class="qfsel"><span>${o.kindLab||"Vincular a"}</span><select></select></label><label class="qfsel"><span></span><select></select></label></div>`);
   const [kl,rl]=w.querySelectorAll("label"),ks=kl.querySelector("select"),rs=rl.querySelector("select");ks.id=o.kindId;rs.id=o.refId;rl.id=o.labId;
-  [["","Sem vínculo"],["T","Tema"],...(ds.length?[["D","Disciplina da faculdade"]]:[])].forEach(([v,t])=>{const x=document.createElement("option");x.value=v;x.textContent=t;ks.appendChild(x)});
-  ks.value=kind==="D"&&!ds.length?"":kind;
-  ks.onchange=()=>{const v=ks.value;v==="T"?o.set("T:"+(((ensurePlan().items[0]||{}).k)||ALL[0].key)):v==="D"?o.set("D:"+ds[0].id):o.set("")};
+  const KS=[["","Sem vínculo"],["T","Tema"],...(ds.length?[["D",o.seg?"Disciplina":"Disciplina da faculdade"]]:[])],kv=kind==="D"&&!ds.length?"":kind;
+  const kgo=v=>{v==="T"?o.set("T:"+(((ensurePlan().items[0]||{}).k)||ALL[0].key)):v==="D"?o.set("D:"+ds[0].id):o.set("")};
+  KS.forEach(([v,t])=>{const x=document.createElement("option");x.value=v;x.textContent=t;ks.appendChild(x)});ks.value=kv;ks.onchange=()=>kgo(ks.value);
+  if(o.seg){const g=el(`<div class="seg foseg" role="group"></div>`);g.setAttribute("aria-label",o.kindLab||"Vincular a");KS.forEach(([v,t])=>{const b=el(`<button type="button"></button>`);b.id=`${o.kindId}-${v||"0"}`;b.textContent=t;b.setAttribute("aria-pressed",kv===v);b.onclick=()=>{if(kv!==v)kgo(v)};g.appendChild(b)});kl.replaceWith(g);w.classList.add("folinkseg")}
   const opt=(p,v,t)=>{const x=document.createElement("option");x.value=v;x.textContent=t;p.appendChild(x)};
   if(kind==="T"){rl.querySelector("span").textContent="Tema";
     const grp=(lab,items)=>{if(!items.length)return;const g=document.createElement("optgroup");g.label=lab;items.forEach(it=>opt(g,"T:"+it.key,it.t));rs.appendChild(g)};
@@ -7438,9 +7456,9 @@ function foRefPick(o){const ref=o.ref||"",kind=o.dc?"D":ref[0]||"",ds=foActiveDi
       chip(`${pre}c-g`,"Disciplina em geral",!o.cr,()=>o.set("D:"+did),"O tempo conta só para a disciplina");
       const full=foContAll[pre+did],cur=C.findIndex(x=>x.ref===o.cr),show=full||C.length<=10?C:C.slice(0,8).concat(cur>=8?[C[cur]]:[]);let g0=null;
       show.forEach(x=>{const i=C.indexOf(x);if(C.some(y=>y.g!==C[0].g)&&x.g!==g0){g0=x.g;const h=el(`<span class="focg"></span>`);h.textContent=x.g;ch.appendChild(h)}
-        const lk=BYKEY[x.k]&&!BYKEY[x.k].own;chip(`${pre}c-${i}`,x.lab,o.cr===x.ref,()=>o.set("T:"+x.k,did,x.ref),lk?`${x.lab}: conta também no tema da residência`:x.lab)});
+        const lk=BYKEY[x.k]&&!BYKEY[x.k].own,self=x.lab===x.g,b=chip(`${pre}c-${i}`,self?"SP inteira":x.lab,o.cr===x.ref,()=>o.set("T:"+x.k,did,x.ref),lk?`${x.lab}: conta também no tema da residência`:x.lab);if(lk)b.classList.add("folk");if(self)b.classList.add("foself")});
       if(C.length>show.length||full){const m=el(`<button class="link" type="button"></button>`);m.id=pre+"cMore";m.textContent=full?"Mostrar menos":`Ver todos os ${C.length} conteúdos`;m.onclick=()=>{foContAll[pre+did]=!full;render()};ch.appendChild(m)}
-      if(o.cr&&BYKEY[ref.slice(2)]&&!BYKEY[ref.slice(2)].own){const n=el(`<p class="how foclk2"></p>`);n.textContent=`Ligado à residência: o tempo conta também em ${BYKEY[ref.slice(2)].t} (uma vez só).`;cw.appendChild(n)}
+      if(o.cr&&BYKEY[ref.slice(2)]&&!BYKEY[ref.slice(2)].own){const n=el(`<p class="foclk2"><span aria-hidden="true">↔</span><span></span></p>`);n.lastChild.textContent=`Conta também em ${BYKEY[ref.slice(2)].t}, da residência (uma vez só).`;cw.appendChild(n)}
       w.appendChild(cw)}}
   else rl.hidden=true;
   return w}
@@ -7524,25 +7542,33 @@ function foAddSave(){const A=foAdd,mn=Math.round(+A.min),d=A.d,tp=(A.other!==und
   if(tp){x.tp=tp;foKeepType(tp)}
   if(old)foSess=foSess.filter(y=>y!==old);foSess.push(x);foSess.sort((a,b)=>a.s<b.s?1:-1);foPut(x);foAdd=null;
   foMsg=`${old?"Registro atualizado":fmtMin(x.sec)+" registrados"} em ${br(d)}${tp?" · "+tp:""}${x.dc||x.ref?" · "+foSessName(x):""}.`;render()}
-function foAddEl(){const A=foAdd,t=today(),y=fromNum(dnum(t)-1);
-  const f=el(`<div class="foadd" id="foAddBox"><h3 class="foaddh">${A.id?"Editar registro":"Registrar tempo"}</h3><p class="how hx">Para o que você estudou sem o cronômetro: Anki no celular, livro, aula, questões em outro site. Conta na meta da semana, nas Estatísticas e na sequência de dias.</p>
-    <div class="fofld"><span class="glabel">Quanto tempo</span><div class="chips" id="foAddMs"></div><label class="qfsel foaddm"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label></div>
-    <div class="fofld"><span class="glabel">Quando</span><div class="chips" id="foAddDs"></div><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label></div>
-    <div class="fofld"><span class="glabel">O que você fez</span><div class="chips" id="foAddTs"></div></div>
-    <div class="fofld" id="foAddLk"><span class="glabel">Ligar a um tema ou disciplina <small>(opcional)</small></span></div>
-    <div class="btns"><button class="btn primary" type="button" id="foAddOk">${A.id?"Salvar alteração":"Registrar"}</button><button class="btn" type="button" id="foAddX">Cancelar</button></div><p class="err" role="alert"></p></div>`);
-  const im=f.querySelector("#foAddM"),id=f.querySelector("#foAddD");im.value=A.min;im.oninput=()=>{A.min=im.value;f.querySelectorAll("#foAddMs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===im.value))};
-  id.value=A.d;id.max=t;id.onchange=()=>{A.d=id.value;render()};
-  const ms=f.querySelector("#foAddMs");[15,30,45,60,90].forEach(v=>{const b=el(`<button class="chip" type="button" id="foAm-${v}">${v} min</button>`);b.dataset.v=v;b.setAttribute("aria-pressed",String(v)===String(A.min));b.onclick=()=>{A.min=String(v);render()};ms.appendChild(b)});
+function foAddEl(){const A=foAdd,t=today(),y=fromNum(dnum(t)-1),mn=Math.round(+A.min)||0,tp=A.other!==undefined?A.other.trim():A.tp;
+  const f=el(`<div class="foadd" id="foAddBox"><div class="foaddtop"><h3 class="foaddh">${A.id?"Editar registro":"Registrar tempo"}</h3><button class="foaddx" type="button" id="foAddX" aria-label="Fechar">×</button></div>
+    <p class="how hx">Para o que você estudou sem o cronômetro: Anki no celular, livro, aula, questões em outro site. Conta na meta da semana, nas Estatísticas e na sequência de dias.</p>
+    <div class="fofld"><span class="fofl">Quanto tempo</span><div class="chips" id="foAddMs"></div></div>
+    <div class="fofld"><span class="fofl">Quando</span><div class="chips" id="foAddDs"></div></div>
+    <div class="fofld"><span class="fofl">O que você fez</span><div class="chips" id="foAddTs"></div></div>
+    <div class="fofld" id="foAddLk"><span class="fofl">Ligar a <small>opcional</small></span></div>
+    <p class="err" role="alert"></p>
+    <div class="foaddgo"><button class="btn primary" type="button" id="foAddOk"></button></div></div>`);
+  const ok=f.querySelector("#foAddOk");ok.textContent=A.id?"Salvar alteração":mn>=1?`Registrar ${fmtMin(mn*60)}${tp?" de "+tp:""}`:"Registrar";
+  /* minutos: botões prontos + campo no mesmo grupo */
+  const ms=f.querySelector("#foAddMs"),pre=[15,30,45,60,90];pre.forEach(v=>{const b=el(`<button class="chip" type="button" id="foAm-${v}">${v} min</button>`);b.setAttribute("aria-pressed",mn===v);b.onclick=()=>{A.min=String(v);render()};ms.appendChild(b)});
+  const mw=el(`<label class="foinchip${mn&&!pre.includes(mn)?" on":""}"><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="outro" aria-label="Minutos"><span>min</span></label>`),im=mw.querySelector("input");im.value=mn&&!pre.includes(mn)?A.min:"";
+  im.oninput=()=>{A.min=im.value;const v=Math.round(+im.value)||0;ms.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",false));mw.classList.toggle("on",v>0);ok.textContent=A.id?"Salvar alteração":v>=1?`Registrar ${fmtMin(v*60)}${tp?" de "+tp:""}`:"Registrar"};ms.appendChild(mw);
+  /* dia: Hoje, Ontem ou outro */
   const dsx=f.querySelector("#foAddDs");[[t,"Hoje"],[y,"Ontem"]].forEach(([v,l],i)=>{const b=el(`<button class="chip" type="button" id="foAd-${i}">${l}</button>`);b.setAttribute("aria-pressed",A.d===v);b.onclick=()=>{A.d=v;render()};dsx.appendChild(b)});
+  const dw=el(`<label class="foinchip fodate${A.d!==t&&A.d!==y?" on":""}"><span>${A.d!==t&&A.d!==y?br(A.d):"Outro dia"}</span><input type="date" id="foAddD" aria-label="Outro dia"></label>`),id=dw.querySelector("input");id.value=A.d;id.max=t;id.onchange=()=>{if(id.value){A.d=id.value;render()}};id.onclick=()=>{try{id.showPicker()}catch(e){}};dsx.appendChild(dw);
+  /* tipo */
   const ts=f.querySelector("#foAddTs"),T=foTypes();if(A.tp&&!T.includes(A.tp))T.push(A.tp);
   T.forEach((v,i)=>{const b=el(`<button class="chip" type="button"></button>`);b.id="foAt-"+i;b.textContent=v;b.setAttribute("aria-pressed",A.other===undefined&&A.tp===v);b.onclick=()=>{A.tp=A.tp===v&&A.other===undefined?"":v;delete A.other;render()};ts.appendChild(b)});
-  const ob=el(`<button class="chip" type="button" id="foAtO">+ Outro</button>`);ob.setAttribute("aria-pressed",A.other!==undefined);ob.onclick=()=>{if(A.other===undefined)A.other="";else delete A.other;render();setTimeout(()=>{const x=$("#foAtIn");if(x)x.focus()},40)};ts.appendChild(ob);
-  if(A.other!==undefined){const inp=el(`<input type="text" id="foAtIn" maxlength="40" placeholder="ex.: Aula gravada, Ambulatório" class="foatin">`);inp.value=A.other;inp.oninput=()=>{A.other=inp.value};f.querySelector("#foAddTs").after(inp);
-    f.querySelector("#foAddTs").parentNode.appendChild(el(`<p class="how foathow">O que você escrever fica guardado e aparece nas próximas vezes.</p>`))}
-  f.querySelector("#foAddLk").appendChild(foRefPick({ref:A.ref,dc:A.dc,cr:A.cr,pre:"fa",kindId:"foaKind",refId:"foaRef",labId:"foaRefL",kindLab:"Ligar a",set:(r,dc,cr)=>{A.ref=r;A.dc=dc;A.cr=dc?cr||"":"";render()}}));
-  f.querySelector("#foAddOk").onclick=foAddSave;f.querySelector("#foAddX").onclick=()=>{foAdd=null;render()};
-  f.querySelector(".err").textContent=A.msg||"";return f}
+  if(A.other===undefined){const ob=el(`<button class="chip foadd1" type="button" id="foAtO">+ Outro</button>`);ob.onclick=()=>{A.other="";render();setTimeout(()=>{const x=$("#foAtIn"),b=$("#foAddBox");if(x)x.focus()},40)};ts.appendChild(ob)}
+  else{const iw=el(`<label class="foinchip on fotpin"><input type="text" id="foAtIn" maxlength="40" placeholder="ex.: Aula gravada"><button type="button" class="foinx" aria-label="Cancelar">×</button></label>`),inp=iw.querySelector("input");inp.value=A.other;
+    inp.oninput=()=>{A.other=inp.value;const v=Math.round(+A.min)||0;ok.textContent=A.id?"Salvar alteração":v>=1?`Registrar ${fmtMin(v*60)}${inp.value.trim()?" de "+inp.value.trim():""}`:"Registrar"};iw.querySelector("button").onclick=()=>{delete A.other;render()};ts.appendChild(iw);
+    f.querySelector("#foAddTs").after(el(`<p class="fonote">Fica guardado e aparece nas próximas vezes.</p>`))}
+  f.querySelector("#foAddLk").appendChild(foRefPick({ref:A.ref,dc:A.dc,cr:A.cr,pre:"fa",seg:true,kindId:"foaKind",refId:"foaRef",labId:"foaRefL",kindLab:"Ligar a",set:(r,dc,cr)=>{A.ref=r;A.dc=dc;A.cr=dc?cr||"":"";render()}}));
+  ok.onclick=foAddSave;f.querySelector("#foAddX").onclick=()=>{foAdd=null;render()};
+  const er=f.querySelector(".err");er.textContent=A.msg||"";er.hidden=!A.msg;return f}
 function foListCard(){const c=el(`<section class="card" aria-labelledby="folh"><div class="dhead"><h2 id="folh">Sessões recentes</h2><button class="link" type="button" id="foAddB"></button></div><div class="foaddbox"></div><ol class="folist"></ol></section>`);
   const ab=c.querySelector("#foAddB");ab.textContent=foAdd?"Fechar":"+ Registrar tempo";ab.onclick=()=>{if(foAdd){foAdd=null;render()}else foAddOpen()};
   if(foAdd)c.querySelector(".foaddbox").appendChild(foAddEl());
