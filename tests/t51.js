@@ -29,7 +29,7 @@ await p.tap('#foStart');await p.evaluate(()=>{foRun.t0-=3*60000;foSaveRun();loca
 await p.waitForFunction(()=>foRun&&foEl()>=180000,null,{polling:100,timeout:5000}).catch(()=>{});ok(await p.evaluate(()=>foRun&&foEl()>=180000),"recarregar mantém a sessão em andamento");
 await p.evaluate(()=>setView("foco"));await p.waitForTimeout(200);await p.tap('#foDisc');await p.tap('#foDisc');await p.waitForTimeout(200);ok(await p.evaluate(()=>foRun===null&&foSess.length===2),"descartar em dois toques");
 // manual
-await p.tap('#foAddB');await p.fill('#foAddM','45');await p.tap('.foadd .btn');await p.waitForTimeout(200);ok(await p.evaluate(()=>foSess.length===3&&foSess.some(x=>x.m==="x"&&x.sec===2700)),"tempo manual");
+await p.tap('#foAddB');await p.fill('#foAddM','45');await p.tap('#foAddOk');await p.waitForTimeout(200);ok(await p.evaluate(()=>foSess.length===3&&foSess.some(x=>x.m==="x"&&x.sec===2700)),"tempo manual");
 // estatísticas
 const k=await p.$$eval('#foBody .kpi b',a=>a.map(x=>x.textContent));ok(k[0]==="1h20"&&k[2]==="3","hoje e sessões: "+k.join("|"));
 const mats=await p.$$eval('.fomats .vl',a=>a.map(x=>x.textContent));ok(mats.some(x=>/Hematologia/.test(x)),"tempo por matéria: "+mats.join("|"));

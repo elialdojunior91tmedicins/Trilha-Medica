@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=4976fdc0">
+<link rel="stylesheet" href="site.css?v=c7d8e589">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=4976fdc0"></script>
-<script src="bridge.js?v=4976fdc0"></script>
+<script src="config.js?v=c7d8e589"></script>
+<script src="bridge.js?v=c7d8e589"></script>
 </head>
 <body>
 <script>
@@ -1875,6 +1875,18 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .f
 .foadd{display:flex;flex-direction:column;gap:6px;background:var(--bg);border-radius:10px;padding:10px 12px}
 .foadd .focus-form{justify-content:flex-start}
 .foadd .how{margin:0;font-size:.82rem}
+/* Lote 21: Registrar tempo e conteúdos da disciplina */
+.foadd{gap:12px;padding:14px 14px 12px}.foaddh{margin:0;font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink)}
+.fofld{display:flex;flex-direction:column;gap:6px}.fofld .chips{display:flex;flex-wrap:wrap;gap:6px}.fofld .qfsel{max-width:200px}.fofld .glabel small{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.foatin{max-width:320px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+.foadd .btns{margin-top:2px}.foadd .folink{max-width:none}
+.focont{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;margin-bottom:6px}.focont .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.focg{flex-basis:100%;font-size:.72rem;font-weight:600;color:var(--muted2);margin-top:4px}.focont .how{margin:0;font-size:.8rem}
+.fosubs{display:flex;flex-wrap:wrap;gap:2px 12px;margin:4px 0 0;font-size:.78rem;color:var(--muted)}.fosubs b{color:var(--ink);font-weight:600}
+.foitem:has(.foeb){grid-template-columns:auto minmax(0,1fr) auto auto auto}
+.foeb{border:0;background:none;color:var(--muted);font-size:1rem;line-height:1;padding:6px 8px;border-radius:8px;cursor:pointer}.foeb:hover{color:var(--accent);background:var(--bg)}
+.foreg{margin:2px 0 0;text-align:center}.fomby{margin-left:auto}.fomby button{padding:4px 10px;font-size:.8rem}
+.sttp{display:flex;flex-direction:column;gap:6px;margin:4px 0 10px}
 .fopill{position:fixed;z-index:30;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--on-accent);border:0;border-radius:999px;padding:9px 16px;font:600 .9rem var(--body);box-shadow:0 6px 18px rgb(0 0 0 / .2);cursor:pointer}
 .fopill b{font:500 1rem var(--mono);font-variant-numeric:tabular-nums}
 html[data-layout="phone"] .fopill{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
@@ -6594,6 +6606,7 @@ let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=fals
 function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profile}},p=(x&&x.prefs)||{},f=(x&&x.profile)||{};
   if(["classic","compact","focus"].includes(p.layout))o.prefs.layout=p.layout;
   if(p.hnd&&typeof p.hnd==="object"&&!Array.isArray(p.hnd)){const H={};Object.entries(p.hnd).forEach(([k,v])=>{if(/^\d{4}-\d\d-\d\d$/.test(k)&&v&&typeof v.d==="string")H[k]={d:v.d,prev:Number.isInteger(v.prev)?v.prev:60}});if(Object.keys(H).length)o.prefs.hnd=H}
+  if(Array.isArray(p.fotps)){const T=p.fotps.filter(t=>typeof t==="string"&&t.trim()).map(t=>t.trim().slice(0,40)).slice(-12);if(T.length)o.prefs.fotps=T}// Lote 21: tipos do Registrar tempo
   /* Lote 20E: plano alinhado ao eixo */if(typeof p.align==="boolean")o.prefs.align=p.align;if(["111","021","120"].includes(p.amix))o.prefs.amix=p.amix;if(typeof p.anear==="boolean")o.prefs.anear=p.anear;
   if(p.eixo&&typeof p.eixo==="object"&&typeof p.eixo.a==="string"&&typeof p.eixo.sp==="string")o.prefs.eixo={a:p.eixo.a.slice(0,6),sp:p.eixo.sp.slice(0,80),...(typeof p.eixo.until==="string"&&/^\d{4}-\d\d-\d\d$/.test(p.eixo.until)?{until:p.eixo.until}:{})};
   if(p.pgm&&typeof p.pgm==="object"&&!Array.isArray(p.pgm)){const m={};Object.entries(p.pgm).slice(-400).forEach(([k,v])=>{if(/^p[a-z0-9]{1,12}$/.test(k)&&Number.isInteger(v)&&v>0&&v<1000)m[k]=v});if(Object.keys(m).length)o.prefs.pgm=m}// Lote 20C: pegadinhas "não sabia"
@@ -7332,10 +7345,20 @@ function renderNavExtra(P,dueN){const box=$("#navExtra");box.innerHTML="";
 const LSFO="resid-focus-v1",LSFR="resid-focus-run",LSFP="resid-focus-pick",FO_C=2*Math.PI*46;
 let foSess=[],focStore=null,foRun=null,foPick={ref:"",mode:"p"},foTimer=null,foWake=null,foWaking=false,foActx=null,foMsg="",foPer=(()=>{const v=lsGet("resid-foper");return ["7","15","30","60","90","all"].includes(v)?v:"7"})(),foMore=false,foAdd=null,foDel=null,foCustom=null,foArm=false,foTitle0=null;
 function foOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.d==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x.d)&&typeof x.sec==="number"&&x.sec>0&&x.sec<86400&&(typeof x.ref==="string"||x.ref===undefined)}
-function foClean(x){return {id:x.id,d:x.d,s:typeof x.s==="string"?x.s:x.d+"T12:00:00.000Z",sec:Math.round(x.sec),m:["p","c","x"].includes(x.m)?x.m:"c",ref:typeof x.ref==="string"?x.ref:"",lab:typeof x.lab==="string"?x.lab.slice(0,120):"",...(Number.isInteger(x.dz)&&x.dz>0?{dz:Math.min(x.dz,99)}:{})}}
+function foClean(x){return {id:x.id,d:x.d,s:typeof x.s==="string"?x.s:x.d+"T12:00:00.000Z",sec:Math.round(x.sec),m:["p","c","x"].includes(x.m)?x.m:"c",ref:typeof x.ref==="string"?x.ref:"",lab:typeof x.lab==="string"?x.lab.slice(0,120):"",...(Number.isInteger(x.dz)&&x.dz>0?{dz:Math.min(x.dz,99)}:{}),
+  ...(typeof x.tp==="string"&&x.tp.trim()?{tp:x.tp.trim().slice(0,40)}:{}),...(typeof x.dc==="string"&&x.dc?{dc:x.dc.slice(0,40)}:{}),...(typeof x.cr==="string"&&x.cr?{cr:x.cr.slice(0,160)}:{})}}
+/* Lote 21: tipo da atividade (registro manual) e conteúdo da disciplina */
+const FO_TYPES=["Anki","Questões","Leitura","Resumo"];
+function foTypes(){return [...FO_TYPES,...(ui.prefs.fotps||[]).filter(t=>!FO_TYPES.includes(t))]}
+function foType(x){return x.tp||(x.m==="x"?"Registro sem tipo":"Cronômetro do Foco")}
+function foKeepType(t){t=(t||"").trim().slice(0,40);if(!t||foTypes().some(x=>x.toLowerCase()===t.toLowerCase()))return;ui.prefs.fotps=[...(ui.prefs.fotps||[]),t].slice(-12);saveUI()}
+/* conteúdos de uma disciplina para o Foco: SPs (com o que há dentro) e os conteúdos diretos */
+function foDiscContents(d){const out=[],seen=new Set(),add=(r,g)=>{if(seen.has(r)||!refOk(r))return;const x=refTopic(r);if(!x||!BYKEY[x.k])return;const lab=refLabel(r);if(!lab)return;seen.add(r);out.push({ref:r,k:x.k,lab,g})};
+  (d.sps||[]).forEach(s=>s.items.forEach(r=>add(r,s.name)));(d.items||[]).forEach(r=>add(r,"Outros conteúdos"));return out}
+function foSessName(x){if(x.cr){const l=refLabel(x.cr);if(l)return l}return foRefLabel(x.ref)||x.lab||(x.ref?"Excluído":"Sem vínculo")}
 try{const v=JSON.parse(localStorage.getItem(LSFO)||"[]");if(Array.isArray(v))foSess=v.filter(foOk).map(foClean)}catch(e){}
 try{const r=JSON.parse(localStorage.getItem(LSFR)||"null");if(r&&typeof r==="object"&&(r.mode==="p"||r.mode==="c")&&typeof r.acc==="number")foRun=r}catch(e){}
-try{const p=JSON.parse(localStorage.getItem(LSFP)||"null");if(p&&typeof p.ref==="string")foPick={ref:p.ref,mode:p.mode==="c"?"c":"p"}}catch(e){}
+try{const p=JSON.parse(localStorage.getItem(LSFP)||"null");if(p&&typeof p.ref==="string")foPick={ref:p.ref,mode:p.mode==="c"?"c":"p",...(typeof p.dc==="string"&&p.dc?{dc:p.dc,cr:typeof p.cr==="string"?p.cr:""}:{})}}catch(e){}
 const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const fmtMin=sec=>{const m=Math.round(sec/60);return m<60?`${m} min`:`${Math.floor(m/60)}h${String(m%60).padStart(2,"0")}`};
 const foSum=list=>list.reduce((a,x)=>a+x.sec,0);
@@ -7350,6 +7373,7 @@ function foRefLabel(ref){const t=(ref||"")[0],id=(ref||"").slice(2);
   if(t==="D"){const d=discOf(id);return d?d.name:""}return ""}
 /* matéria da sessão: especialidade do tema ou disciplina da faculdade */
 function foMat(x){const t=(x.ref||"")[0],id=(x.ref||"").slice(2);
+  if(x.dc){const d=discOf(x.dc);if(d)return {id:"d:"+x.dc,lab:d.name}}
   if(t==="T"&&BYKEY[id]){const it=BYKEY[id];return {id:specId(it),lab:`${it.area.code} · ${it.sp||it.area.name}`}}
   if(t==="D"){const d=discOf(id);return {id:"d:"+id,lab:d?d.name:(x.lab||"Disciplina excluída")}}
   if(t==="T")return {id:"x:"+id,lab:x.lab||"Tema excluído"};
@@ -7360,15 +7384,16 @@ function foClockText(ms){const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3
 function foShown(){if(!foRun)return {txt:foPick.mode==="c"?"00:00":foClockText(ui.prefs.fw*60000),frac:0};const el=foEl();
   if(foRun.mode==="c")return {txt:foClockText(Math.floor(el/1000)*1000),frac:(el%3600000)/3600000};
   return {txt:foClockText(foRun.plan-el),frac:Math.min(1,el/foRun.plan)}}
-function foStart(){foUnlock();const P=ui.prefs,mode=foPick.mode;foRun={mode,ph:"w",t0:Date.now(),acc:0,plan:mode==="p"?P.fw*60000:0,s:Date.now(),ref:foPick.ref||"",dist:0};foMsg="";foArm=false;foSaveRun();foEnsureTick();render()}
+function foStart(){foUnlock();const P=ui.prefs,mode=foPick.mode;foRun={mode,ph:"w",t0:Date.now(),acc:0,plan:mode==="p"?P.fw*60000:0,s:Date.now(),ref:foPick.ref||"",...(foPick.dc?{dc:foPick.dc,cr:foPick.cr||""}:{}),dist:0};foMsg="";foArm=false;foSaveRun();foEnsureTick();render()}
 function foPause(){if(!foRun||!foRun.t0)return;foRun.acc=foEl();foRun.t0=null;foSaveRun();render()}
 function foResume(){if(!foRun||foRun.t0)return;foUnlock();foRun.t0=Date.now();foSaveRun();render()}
-function foRecord(startMs,sec,mode,ref,dz){if(sec<60)return null;
+function foRecord(startMs,sec,mode,ref,dz,dc,cr){if(sec<60)return null;
   const x={id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d:ymd(startMs),s:new Date(startMs).toISOString(),sec:Math.round(sec),m:mode,ref:ref||"",lab:foRefLabel(ref)};if(Number.isInteger(dz)&&dz>0)x.dz=Math.min(dz,99);
+  if(dc&&discOf(dc)){x.dc=dc;if(cr){x.cr=cr;x.lab=refLabel(cr)||x.lab}}
   foSess.unshift(x);if(foSess.length>5000)foSess.length=5000;foPut(x);return x}
 function foFinish(){if(!foRun)return;
   if(foRun.ph==="b"){foRun=null;foMsg="Pausa encerrada. Pronto para o próximo ciclo."}
-  else{const x=foRecord(foRun.s,foEl()/1000,foRun.mode,foRun.ref,foRun.dist);foMsg=x?`Sessão salva: ${fmtMin(x.sec)}${x.lab?" · "+x.lab:""}${x.dz?` · ${x.dz} ${x.dz===1?"distração":"distrações"}`:""}.`:"Sessão com menos de 1 minuto: não foi salva.";foRun=null;foAfterSet(x)}
+  else{const x=foRecord(foRun.s,foEl()/1000,foRun.mode,foRun.ref,foRun.dist,foRun.dc,foRun.cr);foMsg=x?`Sessão salva: ${fmtMin(x.sec)}${x.lab?" · "+x.lab:""}${x.dz?` · ${x.dz} ${x.dz===1?"distração":"distrações"}`:""}.`:"Sessão com menos de 1 minuto: não foi salva.";foRun=null;foAfterSet(x)}
   foArm=false;foSaveRun();foWakeSync();render()}
 function foDiscard(){foRun=null;foArm=false;foSaveRun();foMsg="Sessão descartada: nada foi salvo.";foWakeSync();render()}
 function foEnsureTick(){if(foRun&&!foTimer)foTimer=setInterval(foTick,500);if(!foRun&&foTimer){clearInterval(foTimer);foTimer=null}}
@@ -7376,8 +7401,8 @@ function foEnsureTick(){if(foRun&&!foTimer)foTimer=setInterval(foTick,500);if(!f
 function foTick(){if(!foRun){foEnsureTick();foPaint();return}
   if(foRun.mode==="p"&&foRun.t0){const el=foEl();
     if(el>=foRun.plan){const endAt=foRun.t0+(foRun.plan-foRun.acc),late=Date.now()-endAt;
-      if(foRun.ph==="w"){const x=foRecord(foRun.s,foRun.plan/1000,"p",foRun.ref,foRun.dist),P=ui.prefs,n=foSeriesAdd(),lb=P.flong>0&&n%P.fevery===0,bl=lb?P.flong:P.fb;
-        foRun=bl>0?{mode:"p",ph:"b",t0:endAt,acc:0,plan:bl*60000,s:endAt,ref:foRun.ref,lb}:null;foAfterSet(x);
+      if(foRun.ph==="w"){const x=foRecord(foRun.s,foRun.plan/1000,"p",foRun.ref,foRun.dist,foRun.dc,foRun.cr),P=ui.prefs,n=foSeriesAdd(),lb=P.flong>0&&n%P.fevery===0,bl=lb?P.flong:P.fb;
+        foRun=bl>0?{mode:"p",ph:"b",t0:endAt,acc:0,plan:bl*60000,s:endAt,ref:foRun.ref,dc:foRun.dc,cr:foRun.cr,lb}:null;foAfterSet(x);
         foMsg=x?`Ciclo concluído: ${fmtMin(x.sec)} salvos${x.lab?" · "+x.lab:""}${x.dz?` · ${x.dz} ${x.dz===1?"distração":"distrações"}`:""}.${foRun?(lb?` Pausa longa de ${bl} min: você fez ${P.fevery} ciclos.`:" Hora da pausa."):""}`:""}
       else{foRun=null;foMsg="Pausa terminada. Pronto para o próximo ciclo."}
       if(late<90000)foAlarm();foSaveRun();foWakeSync();render();foTick();return}}
@@ -7398,7 +7423,8 @@ async function foWakeSync(){const want=!!(foRun&&foRun.t0&&ui.prefs.fwake&&docum
   if(want&&!foWake&&!foWaking&&navigator.wakeLock){foWaking=true;try{foWake=await navigator.wakeLock.request("screen");foWake.addEventListener("release",()=>{foWake=null})}catch(e){foWake=null}foWaking=false}
   else if(!want&&foWake){const w=foWake;foWake=null;try{await w.release()}catch(e){}}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"){foTick();foWakeSync()}});
-function foSetRef(r){foPick.ref=r;foSavePick();if(foRun){foRun.ref=r;foSaveRun()}render()}
+function foSetRef(r,dc,cr){foPick.ref=r;if(dc){foPick.dc=dc;foPick.cr=cr||""}else{delete foPick.dc;delete foPick.cr}foSavePick();
+  if(foRun){foRun.ref=r;if(dc){foRun.dc=dc;foRun.cr=cr||""}else{delete foRun.dc;delete foRun.cr}foSaveRun()}render()}
 function foGo(key){foSetRef("T:"+key);backStack=[];setView("foco")}
 /* ----- estatísticas ----- */
 function foDayTotals(){const m={};foSess.forEach(x=>{m[x.d]=(m[x.d]||0)+x.sec});return m}
@@ -7410,22 +7436,38 @@ function foGoalStreak(m){const g=foDG()*60;if(!g)return 0;return runStreak(d=>(m
 const foWeekStart=()=>dnum(today())-(new Date().getDay()+6)%7;// segunda-feira
 function foActiveDiscs(){return fac.discs.filter(d=>{const s=semOf(d.semId);return s&&!s.archived})}
 /* ----- tela ----- */
-function foLinkEl(){const ref=(foRun?foRun.ref:foPick.ref)||"",kind=ref[0]||"",ds=foActiveDiscs();
-  const w=el(`<div class="folink"><label class="qfsel"><span>Vincular a</span><select id="foKind"></select></label><label class="qfsel" id="foRefL"><span></span><select id="foRef"></select></label></div>`);
-  const ks=w.querySelector("#foKind");[["","Sem vínculo"],["T","Tema"],...(ds.length?[["D","Disciplina da faculdade"]]:[])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;ks.appendChild(o)});
+/* Lote 21: o mesmo seletor no relógio ("Vincular a") e no Registrar tempo. o = {ref,dc,cr,set(ref,dc,cr),pre,kindId,refId,labId} */
+let foContAll={};
+function foRefPick(o){const ref=o.ref||"",kind=o.dc?"D":ref[0]||"",ds=foActiveDiscs(),pre=o.pre;
+  const w=el(`<div class="folink"><label class="qfsel"><span>${o.kindLab||"Vincular a"}</span><select></select></label><label class="qfsel"><span></span><select></select></label></div>`);
+  const [kl,rl]=w.querySelectorAll("label"),ks=kl.querySelector("select"),rs=rl.querySelector("select");ks.id=o.kindId;rs.id=o.refId;rl.id=o.labId;
+  [["","Sem vínculo"],["T","Tema"],...(ds.length?[["D","Disciplina da faculdade"]]:[])].forEach(([v,t])=>{const x=document.createElement("option");x.value=v;x.textContent=t;ks.appendChild(x)});
   ks.value=kind==="D"&&!ds.length?"":kind;
-  ks.onchange=()=>{const v=ks.value;foSetRef(v==="T"?"T:"+(((ensurePlan().items[0]||{}).k)||ALL[0].key):v==="D"?"D:"+ds[0].id:"")};
-  const rl=w.querySelector("#foRefL"),rs=w.querySelector("#foRef"),opt=(p,v,t)=>{const o=document.createElement("option");o.value=v;o.textContent=t;p.appendChild(o)};
+  ks.onchange=()=>{const v=ks.value;v==="T"?o.set("T:"+(((ensurePlan().items[0]||{}).k)||ALL[0].key)):v==="D"?o.set("D:"+ds[0].id):o.set("")};
+  const opt=(p,v,t)=>{const x=document.createElement("option");x.value=v;x.textContent=t;p.appendChild(x)};
   if(kind==="T"){rl.querySelector("span").textContent="Tema";
     const grp=(lab,items)=>{if(!items.length)return;const g=document.createElement("optgroup");g.label=lab;items.forEach(it=>opt(g,"T:"+it.key,it.t));rs.appendChild(g)};
     grp("Plano de hoje",ensurePlan().items.map(p=>BYKEY[p.k]).filter(Boolean));
     const due=[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key)));grp("Revisões de hoje",due.slice(0,15));
     const by={};[...ALL,...FAC_ITEMS].forEach(it=>{const k=`${it.area.code} · ${it.sp||it.area.name}`;(by[k]=by[k]||[]).push(it)});Object.keys(by).forEach(k=>grp(k,by[k]));
-    if(!BYKEY[ref.slice(2)])opt(rs,ref,foRefLabel(ref)||"Tema excluído");rs.value=ref}
-  else if(kind==="D"&&ds.length){rl.querySelector("span").textContent="Disciplina";const many=new Set(ds.map(d=>d.semId)).size>1;
-    ds.forEach(d=>opt(rs,"D:"+d.id,d.name+(many?" · "+(semOf(d.semId)||{}).name:"")+(discRefs(d).some(refOk)?"":" (sem conteúdo)")));if(!discOf(ref.slice(2)))opt(rs,ref,"Disciplina excluída");rs.value=ref}
+    if(!BYKEY[ref.slice(2)])opt(rs,ref,foRefLabel(ref)||"Tema excluído");rs.value=ref;rs.onchange=()=>o.set(rs.value)}
+  else if(kind==="D"&&ds.length){rl.querySelector("span").textContent="Disciplina";const many=new Set(ds.map(d=>d.semId)).size>1,did=o.dc||ref.slice(2);
+    ds.forEach(d=>opt(rs,"D:"+d.id,d.name+(many?" · "+(semOf(d.semId)||{}).name:"")+(discRefs(d).some(refOk)?"":" (sem conteúdo)")));if(!discOf(did))opt(rs,"D:"+did,"Disciplina excluída");rs.value="D:"+did;
+    rs.onchange=()=>o.set(rs.value);
+    /* item 2: os conteúdos da disciplina para tocar, mais "disciplina em geral" */
+    const d=discOf(did),C=d?foDiscContents(d):[];
+    if(C.length){const cw=el(`<div class="focont"><span class="glabel">O que você está estudando nela</span><div class="chips"></div></div>`),ch=cw.querySelector(".chips");
+      const chip=(id,lab,on,fn,title)=>{const b=el(`<button class="chip" type="button"></button>`);b.id=id;b.textContent=lab.length>40?lab.slice(0,38)+"…":lab;b.title=title||lab;b.setAttribute("aria-pressed",on);b.onclick=fn;ch.appendChild(b);return b};
+      chip(`${pre}c-g`,"Disciplina em geral",!o.cr,()=>o.set("D:"+did),"O tempo conta só para a disciplina");
+      const full=foContAll[pre+did],cur=C.findIndex(x=>x.ref===o.cr),show=full||C.length<=10?C:C.slice(0,8).concat(cur>=8?[C[cur]]:[]);let g0=null;
+      show.forEach(x=>{const i=C.indexOf(x);if(C.some(y=>y.g!==C[0].g)&&x.g!==g0){g0=x.g;const h=el(`<span class="focg"></span>`);h.textContent=x.g;ch.appendChild(h)}
+        const lk=BYKEY[x.k]&&!BYKEY[x.k].own;chip(`${pre}c-${i}`,x.lab,o.cr===x.ref,()=>o.set("T:"+x.k,did,x.ref),lk?`${x.lab}: conta também no tema da residência`:x.lab)});
+      if(C.length>show.length||full){const m=el(`<button class="link" type="button"></button>`);m.id=pre+"cMore";m.textContent=full?"Mostrar menos":`Ver todos os ${C.length} conteúdos`;m.onclick=()=>{foContAll[pre+did]=!full;render()};ch.appendChild(m)}
+      if(o.cr&&BYKEY[ref.slice(2)]&&!BYKEY[ref.slice(2)].own){const n=el(`<p class="how foclk2"></p>`);n.textContent=`Ligado à residência: o tempo conta também em ${BYKEY[ref.slice(2)].t} (uma vez só).`;cw.appendChild(n)}
+      w.appendChild(cw)}}
   else rl.hidden=true;
-  rs.onchange=()=>foSetRef(rs.value);return w}
+  return w}
+function foLinkEl(){const R=foRun||foPick;return foRefPick({ref:R.ref||"",dc:R.dc,cr:R.cr,pre:"fo",kindId:"foKind",refId:"foRef",labId:"foRefL",set:(r,dc,cr)=>foSetRef(r,dc,cr)})}
 function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foShown();
   const c=el(`<section class="card fotimer" aria-labelledby="foh"><div class="seg fomode" role="group" aria-label="Tipo de contagem"></div><p class="fophase" id="foh"></p>
     <div class="foring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="fotrk"/><circle cx="50" cy="50" r="46" class="foarc" id="foArc" style="stroke-dasharray:${FO_C};stroke-dashoffset:${FO_C*(1-S.frac)}"/></svg>
@@ -7460,8 +7502,9 @@ function foTimerCard(){const P=ui.prefs,R=foRun,mode=R?R.mode:foPick.mode,S=foSh
         ui.prefs.fw=w;ui.prefs.fb=b;ui.prefs.flong=lo;ui.prefs.fevery=ev;foCustom=null;foMsg=`Pomodoro: ${w} min de foco, ${b?b+" min de pausa":"sem pausa"}${lo?` e pausa longa de ${lo} min a cada ${ev} ciclos`:" e sem pausa longa"}.${foRun?" Vale a partir do próximo ciclo.":""}`;saveUI();render()};c.appendChild(f)}}
   {const q=foQuickEl();if(q)c.appendChild(q)}
   {const mo=el(`<details class="fomore"><summary></summary></details>`),P2=ui.prefs,rf=(foRun?foRun.ref:foPick.ref)||"";if(foMoreOpts)mo.open=true;mo.addEventListener("toggle",()=>{foMoreOpts=mo.open});
-    mo.querySelector("summary").textContent=`Mais opções${rf?" · "+(foRefLabel(rf)||"vínculo"):""}${P2.fnoise?" · som de fundo":""}`;
+    const RR=foRun||foPick;mo.querySelector("summary").textContent=`Mais opções${rf?" · "+(RR.cr&&refLabel(RR.cr)||foRefLabel(rf)||"vínculo"):""}${P2.fnoise?" · som de fundo":""}`;
     mo.append(foLinkEl(),foNoiseEl(),c.querySelector(".foopts"));c.appendChild(mo)}
+  if(!R&&!foAdd){const rg=el(`<p class="foreg"><button class="link" type="button" id="foRegB">Estudou sem o cronômetro? Registrar tempo</button></p>`);rg.querySelector("button").onclick=()=>foAddOpen();c.appendChild(rg)}
   c.appendChild(el(`<p class="how fohow hx">${mode==="p"?"Ao terminar um ciclo, o app salva o tempo e começa a pausa sozinho.":"Conta o tempo até você encerrar. Sessões com menos de 1 minuto não são salvas."} A contagem continua certa com a tela bloqueada; o alarme toca quando você volta ao app, se ele estiver em segundo plano.</p>`));
   const m=c.querySelector(".fomsg");m.textContent=foMsg;m.hidden=!foMsg;return c}
 function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeekStart(),g=foDG()*60;
@@ -7478,29 +7521,61 @@ function foWeekCard(){const P=ui.prefs,m=foDayTotals(),t=dnum(today()),ws=foWeek
   gt.textContent=g?`Meta do dia: ${fmtMin(g)} (a meta de ${fmtMin(P.hgoal*60)} por semana dividida pelos ${foStudyDays()} dias de estudo). `:"Sem meta semanal. ";gt.appendChild(foGoalLink());gl.appendChild(gt);
   gl.appendChild(el(`<span class="how hx">${g?"A linha tracejada marca a meta; barras verdes bateram a meta. ":""}O contorno claro atrás de cada barra é o mesmo dia da semana passada.</span>`));
   c.appendChild(foWeekExtra());return c}
+/* agrupa as sessões por matéria (com os conteúdos da disciplina) ou pelo tipo da atividade (Lote 21) */
+let foMatBy=lsGet("resid-fomatby")==="tp"?"tp":"mat";
+function foGroups(list,by){const g={};list.forEach(x=>{const m=by==="tp"?{id:"t:"+foType(x),lab:foType(x)}:foMat(x),r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0,sub:{}});r.sec+=x.sec;r.n++;
+    if(by!=="tp"&&m.id.startsWith("d:")){const sl=x.cr?(refLabel(x.cr)||x.lab||"Conteúdo excluído"):x.dc||x.ref.startsWith("D:")?"Disciplina em geral":foRefLabel(x.ref)||x.lab||"";if(sl)r.sub[sl]=(r.sub[sl]||0)+x.sec}});
+  return Object.values(g).sort((a,b)=>b.sec-a.sec)}
 function foMatCard(){const t=dnum(today()),from=foPer==="all"?-Infinity:t-(+foPer||7)+1;
-  const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),g={};list.forEach(x=>{const m=foMat(x);const r=g[m.id]||(g[m.id]={lab:m.lab,sec:0,n:0});r.sec+=x.sec;r.n++});
-  const rows=Object.values(g).sort((a,b)=>b.sec-a.sec),mx=rows.length?rows[0].sec:1;
-  const c=el(`<section class="card" aria-labelledby="fomh"><div class="dhead"><h2 id="fomh">Tempo por matéria</h2></div><div class="foper"></div><div class="fomats"></div></section>`);
+  const list=foSess.filter(x=>dnum(x.d)>=from),tot=foSum(list),rows=foGroups(list,foMatBy),mx=rows.length?rows[0].sec:1;
+  const c=el(`<section class="card" aria-labelledby="fomh"><div class="dhead"><h2 id="fomh">Tempo por ${foMatBy==="tp"?"tipo":"matéria"}</h2><div class="seg fomby" role="group" aria-label="Agrupar por"></div></div><div class="foper"></div><div class="fomats"></div></section>`);
+  const sg=c.querySelector(".fomby");[["mat","Matéria"],["tp","Tipo"]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="foBy-"+v;b.textContent=l;b.setAttribute("aria-pressed",foMatBy===v);b.onclick=()=>{foMatBy=v;lsSet("resid-fomatby",v);render()};sg.appendChild(b)});
   c.querySelector(".foper").appendChild(fcPer("foPer",foPer,v=>{foPer=v;lsSet("resid-foper",v)}));
   const box=c.querySelector(".fomats");
   if(!rows.length)box.innerHTML=`<p class="cempty">${foSess.length?"Nenhuma sessão neste período.":"Vincule as sessões a um tema ou a uma disciplina para ver aqui quanto tempo foi para cada matéria."}</p>`;
-  else box.innerHTML=rows.slice(0,15).map(r=>`<div class="vrow"><div class="vtop"><span class="vl">${esc(r.lab)}</span><span class="hv">${fmtMin(r.sec)}</span><span class="hn">${Math.round(r.sec/tot*100)}%</span></div><div class="hbar track1"><i style="width:${Math.max(r.sec/mx*100,1)}%;background:var(--accent)" data-tip="${esc(r.lab)}: ${fmtMin(r.sec)} em ${r.n} sess${r.n===1?"ão":"ões"}"></i></div></div>`).join("")+(rows.length>15?`<p class="how">+ ${rows.length-15} matérias com menos tempo.</p>`:"")+`<p class="how">Total: ${fmtMin(tot)} em ${list.length} sess${list.length===1?"ão":"ões"}. Temas contam na especialidade; disciplinas da faculdade, pelo nome.</p>`;
+  else{box.innerHTML=rows.slice(0,15).map(r=>{const sub=Object.entries(r.sub||{}).sort((a,b)=>b[1]-a[1]),sh=sub.length>1||sub.length===1&&sub[0][0]!=="Disciplina em geral";
+      return `<div class="vrow"><div class="vtop"><span class="vl">${esc(r.lab)}</span><span class="hv">${fmtMin(r.sec)}</span><span class="hn">${Math.round(r.sec/tot*100)}%</span></div><div class="hbar track1"><i style="width:${Math.max(r.sec/mx*100,1)}%;background:var(--accent)" data-tip="${esc(r.lab)}: ${fmtMin(r.sec)} em ${r.n} sess${r.n===1?"ão":"ões"}"></i></div>${sh?`<p class="fosubs">${sub.slice(0,6).map(([l,v])=>`<span>${esc(l)} <b>${fmtMin(v)}</b></span>`).join("")}${sub.length>6?`<span>+ ${sub.length-6}</span>`:""}</p>`:""}</div>`}).join("")+(rows.length>15?`<p class="how">+ ${rows.length-15} ${foMatBy==="tp"?"tipos":"matérias"} com menos tempo.</p>`:"")+`<p class="how">Total: ${fmtMin(tot)} em ${list.length} sess${list.length===1?"ão":"ões"}. ${foMatBy==="tp"?"O tipo vem do Registrar tempo; o resto é o cronômetro do Foco.":"Temas contam na especialidade; disciplinas da faculdade, pelo nome, com os conteúdos embaixo."}</p>`}
   return c}
+/* Lote 21 item 1: Registrar tempo (estudo fora do cronômetro): minutos, dia, tipo e vínculo opcional; editável depois */
+function foAddOpen(x){const R=foRun||foPick;foAdd=x?{id:x.id,d:x.d,min:String(Math.round(x.sec/60)),tp:x.tp||"",ref:x.ref||"",dc:x.dc,cr:x.cr,msg:""}:{d:today(),min:"",tp:"",ref:R.ref||"",dc:R.dc,cr:R.cr,msg:""};render();
+  setTimeout(()=>{const b=$("#foAddBox");if(b)b.scrollIntoView({block:"nearest",behavior:"smooth"})},60)}
+function foAddSave(){const A=foAdd,mn=Math.round(+A.min),d=A.d,tp=(A.other!==undefined?A.other:A.tp||"").trim().slice(0,40);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){A.msg="Escolha um dia até hoje.";render();return}
+  if(!(mn>=1&&mn<=720)){A.msg="Digite de 1 a 720 minutos.";render();return}
+  const ref=A.ref||"",old=A.id&&foSess.find(x=>x.id===A.id),x={id:old?old.id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d,s:old&&old.d===d?old.s:d+"T12:00:00.000Z",sec:mn*60,m:"x",ref,lab:foRefLabel(ref)};
+  if(A.dc&&discOf(A.dc)){x.dc=A.dc;if(A.cr){x.cr=A.cr;x.lab=refLabel(A.cr)||x.lab}}
+  if(tp){x.tp=tp;foKeepType(tp)}
+  if(old)foSess=foSess.filter(y=>y!==old);foSess.push(x);foSess.sort((a,b)=>a.s<b.s?1:-1);foPut(x);foAdd=null;
+  foMsg=`${old?"Registro atualizado":fmtMin(x.sec)+" registrados"} em ${br(d)}${tp?" · "+tp:""}${x.dc||x.ref?" · "+foSessName(x):""}.`;render()}
+function foAddEl(){const A=foAdd,t=today(),y=fromNum(dnum(t)-1);
+  const f=el(`<div class="foadd" id="foAddBox"><h3 class="foaddh">${A.id?"Editar registro":"Registrar tempo"}</h3><p class="how hx">Para o que você estudou sem o cronômetro: Anki no celular, livro, aula, questões em outro site. Conta na meta da semana, nas Estatísticas e na sequência de dias.</p>
+    <div class="fofld"><span class="glabel">Quanto tempo</span><div class="chips" id="foAddMs"></div><label class="qfsel foaddm"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label></div>
+    <div class="fofld"><span class="glabel">Quando</span><div class="chips" id="foAddDs"></div><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label></div>
+    <div class="fofld"><span class="glabel">O que você fez</span><div class="chips" id="foAddTs"></div></div>
+    <div class="fofld" id="foAddLk"><span class="glabel">Ligar a um tema ou disciplina <small>(opcional)</small></span></div>
+    <div class="btns"><button class="btn primary" type="button" id="foAddOk">${A.id?"Salvar alteração":"Registrar"}</button><button class="btn" type="button" id="foAddX">Cancelar</button></div><p class="err" role="alert"></p></div>`);
+  const im=f.querySelector("#foAddM"),id=f.querySelector("#foAddD");im.value=A.min;im.oninput=()=>{A.min=im.value;f.querySelectorAll("#foAddMs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===im.value))};
+  id.value=A.d;id.max=t;id.onchange=()=>{A.d=id.value;render()};
+  const ms=f.querySelector("#foAddMs");[15,30,45,60,90].forEach(v=>{const b=el(`<button class="chip" type="button" id="foAm-${v}">${v} min</button>`);b.dataset.v=v;b.setAttribute("aria-pressed",String(v)===String(A.min));b.onclick=()=>{A.min=String(v);render()};ms.appendChild(b)});
+  const dsx=f.querySelector("#foAddDs");[[t,"Hoje"],[y,"Ontem"]].forEach(([v,l],i)=>{const b=el(`<button class="chip" type="button" id="foAd-${i}">${l}</button>`);b.setAttribute("aria-pressed",A.d===v);b.onclick=()=>{A.d=v;render()};dsx.appendChild(b)});
+  const ts=f.querySelector("#foAddTs"),T=foTypes();if(A.tp&&!T.includes(A.tp))T.push(A.tp);
+  T.forEach((v,i)=>{const b=el(`<button class="chip" type="button"></button>`);b.id="foAt-"+i;b.textContent=v;b.setAttribute("aria-pressed",A.other===undefined&&A.tp===v);b.onclick=()=>{A.tp=A.tp===v&&A.other===undefined?"":v;delete A.other;render()};ts.appendChild(b)});
+  const ob=el(`<button class="chip" type="button" id="foAtO">+ Outro</button>`);ob.setAttribute("aria-pressed",A.other!==undefined);ob.onclick=()=>{if(A.other===undefined)A.other="";else delete A.other;render();setTimeout(()=>{const x=$("#foAtIn");if(x)x.focus()},40)};ts.appendChild(ob);
+  if(A.other!==undefined){const inp=el(`<input type="text" id="foAtIn" maxlength="40" placeholder="ex.: Aula gravada, Ambulatório" class="foatin">`);inp.value=A.other;inp.oninput=()=>{A.other=inp.value};f.querySelector("#foAddTs").after(inp);
+    f.querySelector("#foAddTs").parentNode.appendChild(el(`<p class="how foathow">O que você escrever fica guardado e aparece nas próximas vezes.</p>`))}
+  f.querySelector("#foAddLk").appendChild(foRefPick({ref:A.ref,dc:A.dc,cr:A.cr,pre:"fa",kindId:"foaKind",refId:"foaRef",labId:"foaRefL",kindLab:"Ligar a",set:(r,dc,cr)=>{A.ref=r;A.dc=dc;A.cr=dc?cr||"":"";render()}}));
+  f.querySelector("#foAddOk").onclick=foAddSave;f.querySelector("#foAddX").onclick=()=>{foAdd=null;render()};
+  f.querySelector(".err").textContent=A.msg||"";return f}
 function foListCard(){const c=el(`<section class="card" aria-labelledby="folh"><div class="dhead"><h2 id="folh">Sessões recentes</h2><button class="link" type="button" id="foAddB"></button></div><div class="foaddbox"></div><ol class="folist"></ol></section>`);
-  const ab=c.querySelector("#foAddB");ab.textContent=foAdd?"Fechar":"+ Adicionar tempo";ab.onclick=()=>{foAdd=foAdd?null:{d:today(),min:"",msg:""};render()};
-  if(foAdd){const f=el(`<div class="foadd"><p class="how hx">Para estudo feito sem o cronômetro (aula, ambulatório, leitura). Fica vinculado ao que estiver escolhido em <b>Vincular a</b>, acima.</p><div class="focus-form"><label class="qfsel"><span>Dia</span><input type="date" id="foAddD"></label><label class="qfsel"><span>Minutos</span><input type="number" id="foAddM" min="1" max="720" inputmode="numeric" placeholder="ex.: 45"></label><button class="btn primary" type="button">Salvar</button></div><p class="err" role="alert"></p></div>`);
-    const id=f.querySelector("#foAddD"),im=f.querySelector("#foAddM");id.value=foAdd.d;id.max=today();im.value=foAdd.min;id.oninput=()=>{foAdd.d=id.value};im.oninput=()=>{foAdd.min=im.value};f.querySelector(".err").textContent=foAdd.msg;
-    f.querySelector("button").onclick=()=>{const mn=Math.round(+im.value),d=id.value;if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>today()){foAdd.msg="Escolha um dia até hoje.";render();return}if(!(mn>=1&&mn<=720)){foAdd.msg="Digite de 1 a 720 minutos.";render();return}
-      const ref=foPick.ref||"",x={id:"fo"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),d,s:d+"T12:00:00.000Z",sec:mn*60,m:"x",ref,lab:foRefLabel(ref)};
-      foSess.push(x);foSess.sort((a,b)=>a.s<b.s?1:-1);foPut(x);foAdd=null;foMsg=`${fmtMin(x.sec)} adicionados em ${br(d)}${x.lab?" · "+x.lab:""}.`;render()};
-    c.querySelector(".foaddbox").appendChild(f)}
+  const ab=c.querySelector("#foAddB");ab.textContent=foAdd?"Fechar":"+ Registrar tempo";ab.onclick=()=>{if(foAdd){foAdd=null;render()}else foAddOpen()};
+  if(foAdd)c.querySelector(".foaddbox").appendChild(foAddEl());
   const ol=c.querySelector(".folist"),all=[...foSess].sort((a,b)=>a.d===b.d?(a.s<b.s?1:-1):(a.d<b.d?1:-1)),sh=foMore?all.slice(0,60):all.slice(0,8);
-  if(!all.length)ol.appendChild(el(`<li class="cempty">Nenhuma sessão ainda. Inicie um pomodoro ou o cronômetro acima: o tempo é salvo aqui.</li>`));
+  if(!all.length)ol.appendChild(el(`<li class="cempty">Nenhuma sessão ainda. Inicie um pomodoro ou o cronômetro acima, ou registre o tempo que estudou fora daqui.</li>`));
   sh.forEach(x=>{const li=el(`<li class="foitem"><span class="foic" aria-hidden="true">${x.m==="p"?"◎":x.m==="c"?"◷":"✎"}</span><span class="fon"><b></b><span></span></span><span class="fod2"></span><button class="foxb" type="button" aria-label="Excluir sessão">×</button></li>`);
-    li.querySelector(".fon b").textContent=x.ref?(foRefLabel(x.ref)||x.lab||"Excluído"):"Sem vínculo";
-    li.querySelector(".fon span").textContent=`${br(x.d)}/${x.d.slice(0,4)} · ${FO_MODE[x.m]||""}${x.ref&&x.ref[0]==="D"?" · faculdade":""}`;
+    li.querySelector(".fon b").textContent=x.ref||x.dc?foSessName(x):(x.tp||"Sem vínculo");
+    li.querySelector(".fon span").textContent=`${br(x.d)}/${x.d.slice(0,4)} · ${x.m==="x"?(x.tp&&(x.ref||x.dc)?x.tp:"Registrado à mão"):FO_MODE[x.m]||""}${x.dc||x.ref&&x.ref[0]==="D"?" · faculdade":""}`;
     li.querySelector(".fod2").textContent=fmtMin(x.sec);
+    if(x.m==="x"&&foDel!==x.id){const eb=el(`<button class="foeb" type="button" aria-label="Editar registro">✎</button>`);eb.id="foed-"+x.id;eb.title="Editar o registro";eb.onclick=()=>foAddOpen(x);li.querySelector(".fod2").after(eb)}
     const xb=li.querySelector(".foxb");if(foDel===x.id){xb.remove();const cf=el(`<span class="foconf"><button class="mini warn" type="button">Excluir</button><button class="mini" type="button">Manter</button></span>`);const [y,n]=cf.querySelectorAll("button");y.onclick=()=>foDelete(x.id);n.onclick=()=>{foDel=null;render()};li.appendChild(cf)}
     else xb.onclick=()=>{foDel=x.id;render()};
     ol.appendChild(li)});
@@ -10017,12 +10092,13 @@ Um dia de estudo:
 - Temas FAC não entram no "% dominado", que mede só os 198 temas da residência.`],
 ["Foco: tempo de estudo",`A aba **Foco** conta os minutos que você estuda (no celular, em ≡ Menu).
 - **Pomodoro** (25+5, 50+10 ou Personalizar, com pausa longa a cada 4 ciclos) ou **Cronômetro** (até **Encerrar e salvar**; menos de 1 minuto não salva).
-- **Vincular** a sessão a um tema ou a uma disciplina (os do plano e das revisões de hoje aparecem primeiro; dá para mudar com o relógio correndo). O botão **Foco** dos cartões já abre o relógio no tema.
+- **Vincular** a sessão a um tema ou a uma disciplina (os do plano e das revisões de hoje aparecem primeiro; dá para mudar com o relógio correndo). Na disciplina, toque no **conteúdo** que está estudando ou em **Disciplina em geral**; conteúdo ligado à residência conta também no tema, uma vez só. O botão **Foco** dos cartões já abre o relógio no tema.
 - **O que você estudou?** Ao terminar, marque os subtópicos, **Estudei hoje** ou a revisão (Esqueci, Difícil, Lembrei) e registre questões, sem sair do Foco.
 - **Me distraí** (tecla D) conta distrações. **Som de fundo:** chuva, riacho, lareira, ruído branco ou marrom, só durante o foco.
 - **Esta semana:** total, sessões e gráfico, com a **meta por semana** (Configurações › Plano) dividida pelos dias de estudo; embaixo, o recorde.
 - **Nas últimas 12 semanas:** um quadradinho por dia (❄ = folga), total por semana, média, melhor semana e o seu melhor horário.
-- **Tempo por matéria:** 7 a 90 dias ou tudo. **+ Adicionar tempo** registra estudo sem o relógio.
+- **Registrar tempo:** para o que você estudou sem o cronômetro (Anki no celular, livro, aula). Minutos, dia (hoje, ontem ou outro), o que fez (Anki, Questões, Leitura, Resumo ou um tipo seu, que fica guardado) e, se quiser, o tema ou a disciplina. Conta na meta da semana, nas Estatísticas e na sequência de dias; ✎ na lista edita.
+- **Tempo por matéria ou por tipo:** 7 a 90 dias ou tudo; nas disciplinas, os conteúdos aparecem embaixo.
 - A contagem usa a hora de início: continua certa com a tela bloqueada. O alarme só toca com o app aberto. **Tela inteira** esconde o resto (espaço pausa, Esc sai).`],
 ["Estatísticas",`A página **Estatísticas** (≡ Menu ou barra lateral) responde quatro perguntas, cada uma com um selo verde, amarelo ou vermelho:
 - **Como estou indo:** 7, 30 ou 90 dias × o período anterior (acerto, questões, temas, revisões, erros) e a nota nas provas na íntegra.
@@ -10234,6 +10310,8 @@ function stResBlocks(R){const out=[],per=`${R.D} dias`;
     c.appendChild(stBars(R.wk.map(w=>({v:w.T.tot/3600,v2:w.T.f/3600,lab:br(fromNum(w.s)),cur:w.cur,tip:`Semana de ${br(fromNum(w.s))}: ${stH(w.T.tot)} (planejado ${stH(w.plan)})`})),{goal:R.goal/3600,goalLab:`meta ${stH(R.goal)}`,fmt:v=>Math.round(v)+"h",split:true,aria:"Horas de estudo por semana",min:2}));
     const qg=ui.prefs.qgoal||0,days=R.H.days;
     c.appendChild(stKpis([["Horas nesta semana",stH(cw.T.tot),`de ${stH(planSoFar)} planejadas até hoje`],["Questões na semana",String(cw.H.q),qg?`meta ${qg}`:"sem meta"],["Dias estudados",`${days} de ${R.D}`,`sequência: ${streak()}`]]));
+    {const a0=t-R.D+1,L=foSess.filter(x=>dnum(x.d)>=a0&&dnum(x.d)<=t);if(L.some(x=>x.m==="x")){const G=foGroups(L,"tp"),T=foSum(L);/* Lote 21: para onde foi o tempo, pelo tipo */
+      c.appendChild(stRow("Tempo por tipo",`últimos ${R.D} dias`));const w=el(`<div class="sttp" id="stTp"></div>`);w.innerHTML=G.slice(0,8).map(g=>`<div class="vrow"><div class="vtop"><span class="vl">${esc(g.lab)}</span><span class="hv">${stH(g.sec)}</span><span class="hn">${Math.round(g.sec/T*100)}%</span></div><div class="hbar track1"><i style="width:${Math.max(g.sec/G[0].sec*100,1)}%;background:var(--accent)"></i></div></div>`).join("");c.appendChild(w)}}
     const adj=el(`<div class="btns"><button class="btn" type="button" id="stAdj">Ajustar a semana</button></div>`);adj.querySelector("button").onclick=stAdjWeek;c.appendChild(adj);
     out.push(c)}
   /* 4. tenho direção */
