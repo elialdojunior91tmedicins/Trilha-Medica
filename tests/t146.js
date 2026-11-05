@@ -19,7 +19,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
    const sh={...q1,alternativas:[q1.alternativas[3],q1.alternativas[1],q1.alternativas[0],q1.alternativas[2]].map((a,i)=>({...a,letra:"ABCD"[i]})),correta:"B"};
    redo=[rdClean({id:"rdA",k:"CM-1",d:"2026-10-10",fd:"2026-10-10",n:1,q:sh,src:"exam"})];
    /* erro do caderno com a questão inteira = a mesma q3 do simulado */
-   errors=[{id:"erA",k:"CM-1",w:"Marquei DA",r:"CD",t:"conhecimento",s:"Simulado",d:"2026-10-25",rev:0,box:0,due:"2026-10-26",q:{e:q3.enunciado,a:q3.alternativas.map(a=>({l:a.letra,t:a.texto})),c:"B",m:"A"}}];
+   errors=[{id:"erB",k:"CM-1",w:"Marquei A",r:"B",t:"conhecimento",s:"ENARE 2024",d:"2026-10-21",rev:0,box:0,due:"2026-10-22",q:{e:q1.enunciado,a:q1.alternativas.map(a=>({l:a.letra,t:a.texto})),c:"B",m:"A"}},{id:"erA",k:"CM-1",w:"Marquei DA",r:"CD",t:"conhecimento",s:"Simulado",d:"2026-10-25",rev:0,box:0,due:"2026-10-26",q:{e:q3.enunciado,a:q3.alternativas.map(a=>({l:a.letra,t:a.texto})),c:"B",m:"A"}}];
    window.__st=JSON.stringify({s:state,h:hist});bankFeedAll();await bankFlush();
    const by=e=>bank.find(x=>x.q.enunciado.startsWith(e)),h=x=>(bankHById.get(x.id)||{a:[]}).a;
    const b1=by("Mulher"),b2=by("Criança"),b3=by("Homem");
@@ -27,7 +27,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
      same:window.__st===JSON.stringify({s:state,h:hist}),m:[...h(b1),...h(b2),...h(b3)].every(y=>y.m)}});
  ok(R1.n===3,"provas, simulados, Refazer e erros entram no banco, a mesma questão uma vez só ("+R1.n+")");
  ok(R1.o.join()==="prova,prova,simulado"&&R1.b1.ban==="ENARE"&&R1.b1.ano==="2024"&&R1.b1.pv==="ENARE 2024"&&R1.b1.pn===1&&R1.b1.ex==="exA"&&R1.b1.ei===0&&R1.fg===1,"origem, banca, ano, prova, número e figura "+JSON.stringify(R1));
- ok(R1.h1.join()==="2026-10-10A00,2026-10-20B11","histórico da prova: a tentativa antiga e a atual (só a atual contou); o Refazer do mesmo dia não duplica "+R1.h1);
+ ok(R1.h1.join()==="2026-10-10A00,2026-10-20B11","histórico da prova: a tentativa antiga e a atual (só a atual contou); o Refazer e o erro guardado no caderno depois não duplicam "+R1.h1);
  ok(R1.h2.join()==="C0","resposta errada da 2ª questão");
  ok(R1.h3.join()==="simA0","simulado e erro do caderno no mesmo dia viram uma resposta só "+R1.h3);
  ok(R1.same,"nada é somado de novo no acerto dos temas nem no histórico do dia");

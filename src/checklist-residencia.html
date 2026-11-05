@@ -8652,6 +8652,8 @@ const RD_O={gen:"gerada",sim:"simulado",exam:"prova"};
 /* o que já existe no app entra no banco com o histórico (idempotente: roda a cada abertura e quando uma prova muda; só grava o que mudou) */
 function bankFeedAll(){bankDo(()=>{
   const wrongOn=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d===d&&!y.ok)};
+  /* erro do caderno ou 1º erro do Refazer: é o registro de uma resposta errada que já pode estar no histórico (prova, simulado), muitas vezes salva no dia seguinte */
+  const wrongBy=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d<=d&&!y.ok)};
   exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);ex.qs.forEach((r,i)=>{if(!r||!r.q)return;
     const b=bqFrom(r.q,"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{})});if(!b)return;const bq=bankPut(b);
     if(!P)return;const cur=P.a&&P.a[i],L=[...((P.h&&P.h[i])||[]),...(cur?[cur]:[])];
@@ -8659,13 +8661,13 @@ function bankFeedAll(){bankDo(()=>{
   sims.forEach(x=>x.qs.forEach(r=>{if(!BYKEY[r.k])return;const b=bqFrom(r.q,"simulado",[r.k],{...bqExtra(r.q,"simulado"),at:x.at||x.d+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b);
     if(r.a)bhAdd(bq.id,{d:x.d,l:bqLetter(bq,r.q,r.a),ok:r.a===r.q.correta?1:0,s:r.t||0,src:"sim",c:1,m:1})}));
   redo.forEach(x=>{if(!BYKEY[x.k])return;const o=RD_O[x.src]||"gerada",b=bqFrom(x.q,o,[x.k],{...bqExtra(x.q,o),at:(x.fd||x.d)+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b),f=x.fd||x.d;
-    if(!wrongOn(bq.id,f))bhAdd(bq.id,{d:f,l:"",ok:0,s:0,src:x.src==="sim"?"sim":x.src==="exam"?"exam":"gen",c:1,m:1});
+    if(!wrongBy(bq.id,f))bhAdd(bq.id,{d:f,l:"",ok:0,s:0,src:x.src==="sim"?"sim":x.src==="exam"?"exam":"gen",c:1,m:1});
     if(x.wr&&x.d!==f&&!wrongOn(bq.id,x.d))bhAdd(bq.id,{d:x.d,l:"",ok:0,s:0,src:"redo",m:1});
     if(x.ok&&x.okd)bhAdd(bq.id,{d:x.okd,l:bq.q.correta,ok:1,s:0,src:"redo",m:1})});
   errors.forEach(e=>{const Q=e.q;if(!Q||!Array.isArray(Q.a)||!BYKEY[e.k])return;const o=/simulado/i.test(e.s||"")?"simulado":"gerada";
     const q={enunciado:Q.e,alternativas:Q.a.map(a=>({letra:a.l,texto:a.t,...(a.p?{porque:a.p}:{})})),correta:Q.c,...(Q.cm?{comentario:Q.cm}:{}),...(Q.co?{conceito:Q.co}:{})};
     const b=bqFrom(q,o,[e.k],{at:(e.d||today())+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b),d=e.d||today();
-    if(!wrongOn(bq.id,d))bhAdd(bq.id,{d,l:bqLetter(bq,q,Q.m||""),ok:0,s:0,src:"erro",c:1,m:1})})})}
+    if(!wrongBy(bq.id,d))bhAdd(bq.id,{d,l:bqLetter(bq,q,Q.m||""),ok:0,s:0,src:"erro",c:1,m:1})})})}
 function bankFeedSoon(){clearTimeout(bankFeedT);bankFeedT=setTimeout(bankFeedAll,1500)}
 /* conta: assina as duas listas; a 1ª resposta do servidor decide o que enviar (o que só existe aqui ou está mais novo aqui) */
 function bankRemoteQ(s){const add=[];for(const d of s.docs){if(pend(d))continue;const v=d.data();if(!bqOk(v))continue;const n=bqClean(v),cur=bankById.get(n.id);
