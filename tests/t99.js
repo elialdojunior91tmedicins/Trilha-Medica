@@ -12,7 +12,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
    const ex=exClean({id:"exF",name:"Distúrbios da Hemostasia",banca:"ENARE",ano:"2024",at:new Date().toISOString(),qs:[1,2,3].map(n=>Q(n,"CM-34"))});exams.unshift(ex);exPut(ex);
    exPg("exF").mode="p";exRun={id:"exF",view:"q",i:0,cad:{}};backStack=[];qSeg="praticar";setView("quest")});await p.waitForTimeout(250);
  const btn=await p.$('#exFullB');
- if(!two){ok(!btn,name+": sem botão de tela inteira (só no computador e no iPad deitado)");await ctx.close();continue}
+ if(!two){const ph=await p.evaluate(()=>isPhoneL());ok(ph?!!btn:!btn,name+(ph?": celular tem a tela inteira própria (B3, testada no t148)":": sem botão de tela inteira (iPad em pé)"));await ctx.close();continue}
  ok(!!btn&&/Tela inteira/.test(await btn.textContent()),name+": Modo prova tem o botão ⛶ Tela inteira");
  await click('#exFullB');
  const r1=await p.evaluate(()=>{const v=document.querySelector('#viewQuest'),c=v.querySelector('.qexam');return {vfull:v.classList.contains("vfull"),card:!!c.offsetParent,sim:!!(document.querySelector('.qsim')||{}).offsetParent,

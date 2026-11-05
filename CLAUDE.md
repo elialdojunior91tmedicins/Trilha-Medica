@@ -459,6 +459,12 @@ consultado quando há dúvida. Responda em português.
   não for de prova na íntegra guardada (errada → `rdAdd`); senão `hist.rq` (meta semanal). Backup: questões das provas vão também quando `fav`/`del` (igual no Apps Script, t87). Filtros (pedido de 05/11, 14h05): `bkGroups` monta grupos `bkFg(key,…)` recolhíveis (`#bkFg-<key>`, `bkFgShut` em `resid-bkfg`, resumo `.bkfgs`) com linhas `bkFo` (`.bkfo`, bolinha `.bkdot d-…`, radio em Situação `#bkS-all|nr|r|ok|no`), etiquetas `bkFc` (`.bkfc2`) e chaves `bkFs` (`.bkfs` role=switch, `#bkM-<v>`); cabeçalho `.bksideh` com `#bkClearS`.
   Tela inteira do jogador (celular em pé e deitado e computador): `bkFull` (`resid-bkfull`, `#bkFullB`, `bkFullSet`), `bkFullApply()` no fim de `render()` marca `html[data-bkfull]` só com `bkRun` na parte Banco da aba (outra aba = sai; volta = continua); barra `.bkfbar` com `#bkFMenu` (abre o ≡ menu por cima, z 95 > 80) e `#bkFExit`; no celular pede o modo tela cheia do navegador (`bkNative`; o iPhone ignora); deitado: `.bkql` (enunciado e figura) à esquerda, alternativas à direita; Esc sai.
   Capturas: `tests/shotsB2.js`. Teste: `tests/t147.js`.
+- Banco de questões B3 (11/2026, ligações; módulo logo antes do jogador do banco): uma agenda só `bkRdLink(x,ok)` no `bkAnswer` (`bkRdOf(id)` acha o item do Refazer pela impressão digital, `bkIdOfQ`; vencido → `rdHit`/`rdMiss`;
+  antes de vencer só `rdMiss`; fora do Refazer e errada → `rdAdd`, de prova/oficial só com `rdStudied`). Sorteio `bkSmart(L,n)` (`bkScore`: inédita 100, errada 40, + peso `wOf`×7, `focusRank` até 30, eixo `bkAxKeys` 25, prova da faculdade em até 21 dias 25 (`bkProvaKeys().d`), sorte 12;
+  até max(2,⌈n/4⌉) por tema; fora `an`/`dz`) no `#bkSimGo` e no Simulado misto modo "banco" (`#simM-banco`, `.simbank`, `simStartBank`; questão com `bk`; `simAnswer` com `q.bk` chama `bkAnswer`; `sims` mode "banco", rótulo "Do banco de questões").
+  Fixar: `bkFixEl(it)` (`#bkFix-<k>`, no topo do `renderGen`), `bkFixNote(k)` ao concluir (toggleSub/setLevel, `infoToast` "Fixar agora"), `bkFixGo`/`bkFixIds` (inéditas, erradas, acertadas mais antigas; até 10). Irmã: `bkSister(x,used)` (inédita do mesmo tema, mais palavras em comum
+  do conceito/comentário, `bkWords`) → `#bkSis` (insere depois da atual; `R.sis`). `dz` = Diretriz mudou (`#bkDz-<id>`, `bkDz`, selo `.bkb.dz`; `F.old` esconde `an`+`dz`; backup e Apps Script levam `dz` das provas).
+  Tela inteira do celular no Simulado, Refazer e Provas (e cartões/Foco, se ligados): `applyFull()` no celular põe `.pfullc` no cartão, `html[data-pfull=<k>]` e a barra `.pfbar` (`#pfMenu`, `#pfExit` → `fullSet(k,false)`); deitado, `.qcard` em 2 colunas; `fullBtn` aparece no celular. Teste: `tests/t148.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
@@ -466,7 +472,7 @@ consultado quando há dúvida. Responda em português.
 
 ## Ideia: Banco de questões
 
-Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela) e B2 (a tela) feitos em 11/2026; 1ª banca para importar no B4: ENARE.
+Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela), B2 (a tela) e B3 (ligações) feitos em 11/2026; 1ª banca para importar no B4: ENARE.
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
   importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).
