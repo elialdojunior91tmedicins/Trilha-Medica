@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=89c23a18">
+<link rel="stylesheet" href="site.css?v=d0ed9902">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=89c23a18"></script>
-<script src="bridge.js?v=89c23a18"></script>
+<script src="config.js?v=d0ed9902"></script>
+<script src="bridge.js?v=d0ed9902"></script>
 </head>
 <body>
 <script>
@@ -9066,7 +9066,7 @@ function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,
 function cjPick(ex){const inp=document.createElement("input");inp.type="file";inp.accept="application/json,.json";
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;let o=null;try{o=JSON.parse(await f.text())}catch(e){o=null}
     const R=o&&cjApply(ex,o);cjMsg={id:ex.id,t:!R?"Este arquivo não é de gabarito e comentários do Nexus.":
-      `${R.ok} ${R.ok===1?"comentário juntado":"comentários juntados"}${R.key?` · ${R.key} ${R.key===1?"resposta":"respostas"} do gabarito ${o.gab==="oficial"?"oficial":"do Claude (conferir)"}`:""}${R.an?` · ${R.an} ${R.an===1?"anulada":"anuladas"}`:""}${R.skip.length?` · ${R.skip.length} não ${R.skip.length===1?"bateu":"bateram"} com a prova (nº ${R.skip.slice(0,8).join(", ")}${R.skip.length>8?"…":""}) e ${R.skip.length===1?"ficou":"ficaram"} de fora`:""}${R.kept?` · ${R.kept} com gabarito da banca mantido`:""}.`};commit()};
+      `${R.ok} ${R.ok===1?"comentário juntado":"comentários juntados"}${R.key?` · ${R.key} ${R.key===1?"resposta":"respostas"} do gabarito ${o.gab==="oficial"?"oficial":"do Claude (conferir)"}`:""}${(()=>{const t=ex.qs.filter(r=>r.an).length;return t?` · ${t} ${t===1?"anulada":"anuladas"}`:""})()}${R.skip.length?` · ${R.skip.length} não ${R.skip.length===1?"bateu":"bateram"} com a prova (nº ${R.skip.slice(0,8).join(", ")}${R.skip.length>8?"…":""}) e ${R.skip.length===1?"ficou":"ficaram"} de fora`:""}${R.kept?` · ${R.kept} com gabarito da banca mantido`:""}.`};commit()};
   inp.click()}
 function bkCmBtn(x,id){if(!x||!x.ex||x.ei==null)return null;const ex=exams.find(e=>e.id===x.ex);return ex?cmBtn(ex,x.ei,id):null}
 function cmBtn(ex,i,id){if(!sampleFn||!ex)return null;const r=ex.qs[i];if(!r||!r.q.correta||r.an||(r.q.comentario||"").trim())return null;const b=el(`<button class="btn cmbtn" type="button">✦ Comentar com o Claude</button>`);b.id=id;
