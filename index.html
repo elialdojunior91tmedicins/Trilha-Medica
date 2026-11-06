@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=8288664d">
+<link rel="stylesheet" href="site.css?v=c5e4252f">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=8288664d"></script>
-<script src="bridge.js?v=8288664d"></script>
+<script src="config.js?v=c5e4252f"></script>
+<script src="bridge.js?v=c5e4252f"></script>
 </head>
 <body>
 <script>
@@ -608,7 +608,13 @@ li.exq.chk{border-left:3px solid var(--late);padding-left:10px}.exprob{margin:4p
 .excard>.exkey,.excard>.exedit{border-top:1px dashed var(--line);padding-top:10px}
 .exfields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,9rem) 5.5rem;gap:8px}
 html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}html[data-layout="phone"] .exfields .exname{grid-column:1/-1}
-.exkey{display:flex;flex-direction:column;gap:6px}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
+.exkey{display:flex;flex-direction:column;gap:6px}.exkty{align-self:flex-start}.exkd{margin:6px 0 0;font-size:.88rem;color:var(--late)}
+.ofpre{margin:6px 0;font-weight:600;color:var(--accent)}.ofrow{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:flex-end;margin:8px 0}.ofchk{display:flex;gap:6px;align-items:baseline;font-weight:600}.ofchk .how{font-weight:400;margin:0}.ofrow select{min-width:9rem}
+.ofcat{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}.ofcat>summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.ofcat>summary span{color:var(--muted2);font-size:.88rem}
+.ofg{margin-top:12px}.ofl{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.ofi{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.ofi.got{border-color:var(--accent)}
+.ofn{display:flex;flex-direction:column;min-width:0}.ofn span{font-size:.82rem;color:var(--muted2)}.ofi.got .ofn span{color:var(--accent)}.ofi .btn{flex:none}
+.sbed .sbl{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}.cmline{color:var(--accent)}.cmbtn{margin-top:8px;align-self:flex-start}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
 .exsum{margin:0;font-size:.92rem}.exsum .w{color:var(--warn);font-weight:600}
 .exrev{display:flex;flex-direction:column;gap:10px}
 .exq{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-top:1px solid var(--line)}.exq.off{opacity:.55}
@@ -8702,12 +8708,12 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
   const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
   return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
     q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:"",...(s(q.pc,1200)?{pc:s(q.pc,1200)}:{}),...(s(q.th,800)?{th:s(q.th,800)}:{}),...(s(q.fonte,400)?{fonte:s(q.fonte,400)}:{})},
-    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{})}}
+    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{}),...(r.kd?{kd:1}:{}),...(s(r.sb,80)?{sb:s(r.sb,80)}:{}),...(r.sbd?{sbd:1}:{}),...(r.sbg?{sbg:1}:{}),...(r.cm?{cm:1}:{})}}
 /* temas extras da questão (até 2 além do principal); contam inteiros em cada tema, mas uma vez só no dia/semana */
 function exKs(r){const k=typeof r.k==="string"?r.k:"";return Array.isArray(r.ks)?[...new Set(r.ks.filter(x=>typeof x==="string"&&BYKEY[x]&&!BYKEY[x].own&&x!==k))].slice(0,2):[]}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
 function exClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
-  return {id:x.id,...(x.mod?{mod:1}:{}),name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),links:Array.isArray(x.links)?[...new Set(x.links.filter(r=>typeof r==="string"&&/^(T|O):[A-Za-z0-9_-]{1,60}$/.test(r)))].slice(0,12):[],qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
+  return {id:x.id,...(x.mod?{mod:1}:{}),...(x.of?{of:1}:{}),...(s(x.niv,20).trim()?{niv:s(x.niv,20)}:{}),...(x.kst==="p"||x.kst==="d"?{kst:x.kst}:{}),name:s(x.name,140)||"Prova",banca:s(x.banca,40),ano:s(String(x.ano||""),4),at:s(x.at,40)||new Date().toISOString(),links:Array.isArray(x.links)?[...new Set(x.links.filter(r=>typeof r==="string"&&/^(T|O):[A-Za-z0-9_-]{1,60}$/.test(r)))].slice(0,12):[],qs:x.qs.filter(exQOk).map(r=>{const c=exQClean(r);delete c.x;return c})}}
 function exPOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"}
 function exPClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,a={},h={},A=x.a&&typeof x.a==="object"?x.a:{},H=x.h&&typeof x.h==="object"?x.h:{};
   for(const i in A){const v=A[i];if(v&&typeof v.l==="string"&&D.test(v.d))a[i]={l:v.l.slice(0,3),d:v.d,s:Math.max(0,Math.min(1800,Math.round(+v.s||0)))}}
@@ -8754,7 +8760,7 @@ function bqClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",now=new D
   const ks=[...new Set((Array.isArray(x.ks)?x.ks:[]).filter(k=>typeof k==="string"&&/^[A-Za-z0-9_-]{1,40}$/.test(k)))].slice(0,3);
   const o={id:x.id,h:s(x.h,20),o:BQ_O.includes(x.o)?x.o:"gerada",ks,at:s(x.at,40)||now,u:s(x.u,40)||s(x.at,40)||now,q:bqQ(x.q)};
   for(const f of ["ban","niv","pv"])if(s(x[f],140).trim())o[f]=s(x[f],140);if(/^\d{4}$/.test(String(x.ano||"")))o.ano=String(x.ano);
-  if(Number.isInteger(x.pn)&&x.pn>0)o.pn=x.pn;if(typeof x.ex==="string"&&x.ex)o.ex=x.ex.slice(0,60);if(Number.isInteger(x.ei)&&x.ei>=0)o.ei=x.ei;
+  if(Number.isInteger(x.pn)&&x.pn>0)o.pn=x.pn;if(s(x.sb,80))o.sb=s(x.sb,80);if(typeof x.ex==="string"&&x.ex)o.ex=x.ex.slice(0,60);if(Number.isInteger(x.ei)&&x.ei>=0)o.ei=x.ei;
   for(const f of ["fg","nf","mat","an","fm","fav","del","dz"])if(x[f])o[f]=1;return o}
 function bhClean(x){const D=/^\d{4}-\d{2}-\d{2}$/;
   const L=(Array.isArray(x.a)?x.a:[]).filter(y=>y&&D.test(y.d)).map(y=>{const o={d:y.d,l:typeof y.l==="string"?y.l.slice(0,3):"",ok:y.ok?1:0,s:Math.max(0,Math.min(1800,Math.round(+y.s||0))),src:BH_SRC.includes(y.src)?y.src:"gen"};if(y.c)o.c=1;if(y.m)o.m=1;return o});
@@ -8789,9 +8795,9 @@ function bankPut(n){let cur=bankById.get(n.id);
   if(!cur&&n.ex&&n.ei!=null)cur=bank.find(x=>x.ex===n.ex&&x.ei===n.ei);// questão da prova corrigida no Conferir: continua a mesma
   if(!cur){bank.push(n);bankById.set(n.id,n);bankDirty.add(n.id);bankSoon();return n}
   const before=stab(cur);
-  if(n.o==="prova"&&n.ex&&cur.o!=="oficial"&&(!cur.ex||cur.ex===n.ex)){// a prova na íntegra manda no texto dela (gabarito colado, tema trocado…)
-    const old=cur.q;cur.q=n.q;bqFill(cur.q,old);bhRemap(cur.id,old,cur.q);cur.h=n.h;cur.o="prova";cur.ks=n.ks.length?n.ks:cur.ks;
-    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f]}
+  if((n.o==="prova"||n.o==="oficial")&&n.ex&&(cur.o!=="oficial"||cur.ex===n.ex)&&(!cur.ex||cur.ex===n.ex)){// a prova na íntegra manda no texto dela (gabarito colado, tema trocado…)
+    const old=cur.q;cur.q=n.q;bqFill(cur.q,old);bhRemap(cur.id,old,cur.q);cur.h=n.h;cur.o=n.o;cur.ks=n.ks.length?n.ks:cur.ks;
+    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["niv","sb"])if(n[f])cur[f]=n[f];else delete cur[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f]}
   else{bqFill(cur.q,n.q);if(BQ_RANK[n.o]>BQ_RANK[cur.o]){cur.o=n.o;for(const f of ["ban","ano","niv","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];if(n.fg)cur.fg=1}
     cur.ks=[...new Set([...cur.ks,...n.ks])].slice(0,3);if(n.mat)cur.mat=1;if(n.nf&&!cur.fm)cur.nf=1;if(n.at<cur.at)cur.at=n.at}
   if(stab(cur)!==before){cur.u=new Date().toISOString();bankDirty.add(cur.id);bankSoon()}return cur}
@@ -8819,8 +8825,8 @@ function bankFeedAll(){bankDo(()=>{
   const wrongOn=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d===d&&!y.ok)};
   /* erro do caderno ou 1º erro do Refazer: é o registro de uma resposta errada que já pode estar no histórico (prova, simulado), muitas vezes salva no dia seguinte */
   const wrongBy=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d<=d&&!y.ok)};
-  exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);ex.qs.forEach((r,i)=>{if(!r||!r.q)return;
-    const b=bqFrom(r.q,"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{})});if(!b)return;const bq=bankPut(b);
+  exams.forEach(ex=>{if(sbFill(ex))setTimeout(()=>exPut(ex),0);const P=exProg.find(x=>x.id===ex.id);ex.qs.forEach((r,i)=>{if(!r||!r.q)return;
+    const b=bqFrom(r.q,ex.of?"oficial":"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{}),...(ex.niv?{niv:ex.niv}:{}),...(r.sb?{sb:r.sb}:{})});if(!b)return;const bq=bankPut(b);
     if(!P)return;const cur=P.a&&P.a[i],L=[...((P.h&&P.h[i])||[]),...(cur?[cur]:[])];
     L.forEach(y=>{if(y.l)bhAdd(bq.id,{d:y.d,l:y.l,ok:y.l===bq.q.correta?1:0,s:y===cur?y.s||0:0,src:"exam",...(y===cur?{c:1}:{}),m:1})})})});
   sims.forEach(x=>x.qs.forEach(r=>{if(!BYKEY[r.k])return;const b=bqFrom(r.q,"simulado",[r.k],{...bqExtra(r.q,"simulado"),at:x.at||x.d+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b);
@@ -8853,7 +8859,7 @@ function bankBoot(prog){if(bankBootP)return bankBootP;bankBootP=(async()=>{await
   if(prog){bankStore=packStore(prog,"bank");bankHStore=packStore(prog,"bankh");await bankSyncStart()}bankFeedAll()})();return bankBootP}
 /* backup: histórico inteiro; questões que não voltam pela prova na íntegra guardada */
 const bankById2=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
-function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||!(x.o==="prova"&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
+function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||!((x.o==="prova"||x.o==="oficial")&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
 /* importar backup: troca o banco pelo do arquivo (as questões das provas voltam pela própria prova) e regrava na conta */
 async function bankRestore(Q,H){await bankReady;if(bankBootP)await bankBootP;
   bank=(Array.isArray(Q)?Q:[]).filter(bqOk).map(bqClean);bankH=(Array.isArray(H)?H:[]).filter(x=>x&&typeof x.id==="string").map(bhClean);bqIdx();
@@ -8896,9 +8902,9 @@ const BK_O=[["prova","Provas na íntegra"],["oficial","Provas oficiais"],["simul
 const BK_ST=[["nr","Não resolvidas"],["r","Resolvidas"],["ok","Acertadas"],["no","Erradas"]];
 const BK_SORT=[["new","Mais recentes"],["err","Mais erradas"],["old","Feitas há mais tempo"],["ban","Banca e ano"]];
 const BK_PAGE=40,BK_RUN_MAX=100;
-function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,dyn:"",pre:""}}
+function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",sb:"",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,dyn:"",pre:""}}
 function bkFClean(f){const o=bkFDef();if(!f||typeof f!=="object")return o;const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
-  o.q=s(f.q,80);if(["all","nr","r","ok","no"].includes(f.st))o.st=f.st;for(const k of ["area","sp","k"])if(s(f[k],80))o[k]=s(f[k],80);
+  o.q=s(f.q,80);if(["all","nr","r","ok","no"].includes(f.st))o.st=f.st;for(const k of ["area","sp","k"])if(s(f[k],80))o[k]=s(f[k],80);if(o.k!=="all"&&s(f.sb,70))o.sb=s(f.sb,70);
   for(const k of ["ban","ano","niv","o"])if(Array.isArray(f[k]))o[k]=f[k].filter(v=>typeof v==="string").map(v=>v.slice(0,140)).slice(0,20);
   for(const k of ["fav","img","old","nf","teim"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
 let bkF=bkFDef(),bkSort=(()=>{const v=lsGet("resid-bksort","new");return BK_SORT.some(x=>x[0]===v)?v:"new"})(),bkOpen=null,bkShown=BK_PAGE,bkRun=null,bkFPanel=false,bkSimOpen=false,bkSimN=10,bkSaveOn=false,bkArm=null,bkQT=null;
@@ -8917,7 +8923,7 @@ const bkIts=x=>x.ks.map(k=>BYKEY[k]).filter(Boolean);
 function bkMatch(R,F,K,skip){const x=R.x,I=R.I;skip=skip||"";
   if(F.q){const W=bqT(F.q).split(" ").filter(Boolean),t=bkTxt(x);if(!W.every(w=>t.includes(w)))return false}
   if(!skip.includes("st")&&F.st!=="all"&&(F.st==="r"?I.st==="nr":I.st!==F.st))return false;
-  if(!skip.includes("w")){if(F.k!=="all"){if(!x.ks.includes(F.k))return false}
+  if(!skip.includes("w")){if(F.k!=="all"){if(!x.ks.includes(F.k))return false;if(F.sb&&!skip.includes("sb")&&(F.sb==="-"?x.ks[0]===F.k&&x.sb:x.ks[0]!==F.k||x.sb!==F.sb))return false}
     else if(F.area!=="all"&&!bkIts(x).some(it=>it.area.code===F.area&&(F.sp==="all"||it.sp===F.sp)))return false}
   if(!skip.includes("o")&&F.o.length&&!F.o.includes(bkOrig(x)))return false;
   if(!skip.includes("ban")&&F.ban.length&&!F.ban.includes(x.ban||""))return false;
@@ -8947,12 +8953,124 @@ function bkFigEl(x){if(!(x.fm||x.fg||x.nf))return null;const img=bkFigImg(x);if(
   const w=el(`<figure class="qfig"></figure>`);if(img){const i=el(`<img alt="Figura da questão">`);i.src=img;i.onclick=()=>{try{window.open(img,"_blank")}catch(e){}};w.appendChild(i)}
   else w.appendChild(el(`<figcaption>${x.nf&&!x.fm?"Esta questão tinha uma figura que não foi guardada.":"Carregando a figura…"}</figcaption>`));return w}
 /* ---- uma resposta no banco ---- */
-function bkCounts(x){const k=x.ks[0];return !!(k&&BYKEY[k]&&!bkH(x).length&&!(x.o==="prova"&&x.ex&&exams.some(e=>e.id===x.ex)))}
+function bkCounts(x){const k=x.ks[0];return !!(k&&BYKEY[k]&&!bkH(x).length&&!((x.o==="prova"||x.o==="oficial")&&x.ex&&exams.some(e=>e.id===x.ex)))}
 function bkAnswer(x,l,sec){const ok=l===x.q.correta,cnt=bkCounts(x),k=x.ks[0],d=today();sec=Math.min(1800,Math.max(1,sec||1));
   bhAdd(x.id,{d,l,ok:ok?1:0,s:Math.round(sec),src:"bank",...(cnt?{c:1}:{})});
   if(cnt){upd(k,y=>addQ(y,1,ok?1:0,null,x.ban||"Claude"));logAct("q",1,ok?1:0);logPace(d,1,sec)}
   else{const h=hist[d]||(hist[d]={});h.rq=(h.rq||0)+1}
   bkRdLink(x,ok);commit();return cnt}
+/* ---------- Banco de questões, B4 (11/2026): provas oficiais ----------
+   Leitor das reimpressões da Medway (impMwPages, usado no impLocal): texto desenhado em dobro (mwUndouble, também no pdfPageText), letras A–E em
+   bolinhas à parte e, em cada página, os enunciados primeiro e as alternativas depois, em ordem (impMedway; mwSplit corta as alternativas pelo ";",
+   ponto final e linha curta; sobra de uma página passa para a próxima). A prova importada pode ser marcada como oficial (ex.of, ex.niv) e o gabarito como
+   preliminar ou definitivo (ex.kst p|d; o definitivo marca r.kd nas que mudaram). Comentário do Claude (cmGo: partes de CM_PART por copiar e colar, guardado
+   na prova e no banco, r.cm). Subtópico sugerido pelo app (sbGuess → r.sb, r.sbd = conferir; Conferir subtópicos no cartão da prova; filtro no banco).
+   Lista OF_CAT "Provas oficiais: lidas e faltando" (ofCardEl) em Provas na íntegra. */
+function mwUndouble(line){let t=String(line).trim();if(!t)return t;const n=t.length;
+  if(n%2===1){const h=(n-1)/2;if(t[h]===" "&&t.slice(0,h)===t.slice(h+1))return t.slice(0,h)}
+  if(n%2===0&&n>=2){const h=n/2;if(t.slice(0,h)===t.slice(h))return t.slice(0,h)}
+  const w=t.split(" ");if(w.length>=6){let d=0;for(let i=0;i+1<w.length;i+=2)if(w[i]===w[i+1])d++;if(d>=Math.floor(w.length/2)*0.8){const o=[];for(let i=0;i<w.length;i++){if(i+1<w.length&&w[i]===w[i+1])i++;o.push(w[i])}t=o.join(" ")}}
+  return t.replace(/^[Ѐ-ӿ](\s[Ѐ-ӿ])*\s+/,"")}
+const MW_ABBR=/(?:\b[A-Z]|\bet al|\bvs|\bDr|\bDra|\bSr|\bn|\bp|\bart|\bobs|\bex|\bmín|\bmáx|\bmg|\bml)\.$/i;
+function mwSplit(L,want){if(want<=1||L.length<2)return [L.join(" ")];const sc=[],SL=L.map(x=>x.length).sort((a,b)=>a-b),W=SL[Math.floor(SL.length*0.85)]||1;
+  for(let i=0;i<L.length-1;i++){const a=L[i],b=L[i+1],up=/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9"“(]/.test(b),sh=a.length<0.72*W;let r=0;
+    if(/;$/.test(a))r=3;else if(/[.?!]$/.test(a))r=MW_ABBR.test(a)?0.4:2+(up?0.3:0)+(sh?0.2:0);else if(/[)”"]$/.test(a))r=1.2+(sh?0.5:0);
+    else if(/[,:\-–]$/.test(a))r=0;else r=sh?1.4+0.5*(1-a.length/W):(up?0.3:0);sc.push({i,r})}
+  const pick=sc.filter(x=>x.r>=1).sort((x,y)=>y.r-x.r||x.i-y.i).slice(0,want-1).map(x=>x.i).sort((x,y)=>x-y),out=[];let s=0;
+  for(const i of pick){out.push(L.slice(s,i+1).join(" "));s=i+1}out.push(L.slice(s).join(" "));return out}
+function impMedway(txt,nAlt){nAlt=nAlt||5;const L=String(txt).replace(/\r/g,"").split("\n").map(mwUndouble).filter(x=>x!=="");
+  const isQ=s=>/^QUEST[ÃA]O\s+(\d{1,3})\b/i.exec(s),isLet=s=>/^[A-E]$/.test(s),junk=s=>/^(ENARE|Medway|RESPOSTAS|Anulada)\b/i.test(s)||/^\d{2,6}$/.test(s);
+  const out=[],pend=[];let i=0,cur=null,zone=null,carry=[];
+  const close=()=>{if(!zone)return;const Z=zone;zone=null;if(!pend.length||!Z.length)return;const want=Math.max(1,nAlt*pend.length-carry.length),all=[...carry,...mwSplit(Z,want)];carry=[];
+    while(pend.length&&all.length>=nAlt){const q=pend.shift();q.alts=all.splice(0,nAlt).map(x=>x.replace(/\s+/g," ").replace(/[;.]\s*$/,"").trim());out.push(q)}carry=all};
+  while(i<L.length){const s=L[i],m=isQ(s);
+    if(m){close();cur={n:+m[1],stem:[]};pend.push(cur);const rest=s.slice(m[0].length).trim();if(rest)cur.stem.push(rest);i++;continue}
+    if(isLet(s)){let j=i,c=0;while(j<L.length&&isLet(L[j])){j++;c++}if(c>=3){close();cur=null;zone=[]}i=j;continue}
+    if(junk(s)){i++;continue}
+    if(zone){zone.push(s);i++;continue}
+    if(cur)cur.stem.push(s);i++}
+  close();const fin=q=>({n:q.n,enunciado:q.stem.join(" ").replace(/\s+/g," ").trim(),alts:q.alts||null});
+  return {qs:out.map(fin).sort((a,b)=>a.n-b.n),left:pend.map(fin)}}
+/* páginas no jeito da Medway viram páginas no formato que o leitor conhece ("Questão N", "A) …") */
+function impMwPages(pages){const flat=pages.map(p=>p.t).join("\n"),qm=(flat.match(/^\s*QUEST[ÃA]O\s+\d{1,3}\b/gim)||[]).length,lets=(flat.match(/^\s*[A-E]\s*$/gm)||[]).length,ab=(flat.match(/^\s*\(?[A-E]\s*[).]\s+\S/gm)||[]).length;
+  if(qm<3||lets<qm*3||ab>=qm)return null;
+  const R=impMedway(flat),all=[...R.qs,...R.left],at=n=>{const re=new RegExp("^\\s*QUEST[ÃA]O\\s+0*"+n+"\\b","im"),p=pages.find(x=>re.test(x.t));return p?p.n:pages[0].n},by={};
+  all.forEach(q=>{const p=at(q.n);(by[p]=by[p]||[]).push(q)});
+  return {pages:pages.map(p=>({n:p.n,t:(by[p.n]||[]).sort((a,b)=>a.n-b.n).map(q=>`Questão ${q.n}\n${q.enunciado}${q.alts?"\n"+q.alts.map((a,i)=>EX_AB[i]+") "+a).join("\n"):""}`).join("\n")})).filter(p=>p.t),
+    note:R.left.length?`no jeito das provas da Medway (letras separadas das alternativas), ${R.left.length===1?"a questão":"as questões"} ${R.left.slice(0,10).map(q=>q.n).join(", ")}${R.left.length>10?"…":""} ${R.left.length===1?"ficou":"ficaram"} sem alternativas: confira ou passe pelo Claude`:""}}
+/* ---- subtópico sugerido pelo app ---- */
+const SB_STOP=new Set("para como qual mais pelo pela pelos pelas entre sobre paciente pacientes anos quadro clinico clinica exame exames conduta diagnostico tratamento seguinte alternativa correta incorreta assinale sendo apresenta apresentou ainda caso dias".split(" "));
+const sbStem=w=>w.length>6?w.slice(0,6):w;
+function sbWords(t){return new Set(bqT(t).split(" ").filter(w=>w.length>3&&!SB_STOP.has(w)).map(sbStem))}
+const sbKey=x=>x.i!==undefined?"i"+x.i:"c:"+String(x.t).slice(0,60);
+function sbGuess(k,txt){const it=BYKEY[k];if(!it)return null;const L=subList(it);if(!L.length)return null;const W=sbWords(txt),S=L.map(x=>sbWords(x.t)),df={};
+  S.forEach(s=>s.forEach(w=>{df[w]=(df[w]||0)+1}));const sc=S.map(s=>{let v=0;s.forEach(w=>{if(W.has(w))v+=1/df[w]});return v}),o=sc.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]);
+  if(!o[0][0])return {sb:"",dub:true};return {sb:sbKey(L[o[0][1]]),dub:o[0][0]<1||(o.length>1&&o[1][0]>=o[0][0]*0.75)}}
+function sbLabel(k,sb){const it=BYKEY[k];if(!it||!sb)return "";const x=subList(it).find(y=>sbKey(y)===sb);return x?x.t:""}
+function sbFill(ex){let ch=false;ex.qs.forEach(r=>{if(!r.k||r.sbg||!BYKEY[r.k])return;const g=sbGuess(r.k,[r.q.enunciado,...r.q.alternativas.map(a=>a.texto),r.q.comentario||""].join(" "));r.sbg=1;ch=true;
+  if(g){if(g.sb)r.sb=g.sb;if(g.dub)r.sbd=1}});return ch}
+let sbEd=null;
+function sbEditEl(ex){const L=ex.qs.map((r,i)=>i).filter(i=>ex.qs[i].sbd&&ex.qs[i].k&&BYKEY[ex.qs[i].k]),w=el(`<div class="exedit sbed"><p class="how">O app sugeriu o subtópico pelas palavras da questão. Estas ficaram em dúvida: escolha o certo (ou deixe "Sem subtópico").</p><ol class="sbl"></ol></div>`),ol=w.querySelector("ol");
+  if(!L.length){w.querySelector(".how").textContent="Nenhum subtópico em dúvida nesta prova.";return w}
+  L.slice(0,sbEd.show||10).forEach(i=>{const r=ex.qs[i],it=BYKEY[r.k],li=el(`<li class="sbi"><b></b><span class="sbs"></span><label class="qfsel"><span></span><select></select></label><button class="btn" type="button">Confirmar</button></li>`);
+    li.querySelector("b").textContent=`Questão ${r.n||i+1} · ${it.t}`;li.querySelector(".sbs").textContent=r.q.enunciado.slice(0,180)+(r.q.enunciado.length>180?"…":"");li.querySelector("label span").textContent="Subtópico";
+    const s=li.querySelector("select");s.id=`sbs-${ex.id}-${i}`;[["","Sem subtópico"],...subList(it).map(x=>[sbKey(x),x.t])].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=r.sb||"";
+    const b=li.querySelector("button");b.id=`sbok-${ex.id}-${i}`;b.onclick=()=>{if(s.value)r.sb=s.value;else delete r.sb;delete r.sbd;exPut(ex);render()};ol.appendChild(li)});
+  if(L.length>(sbEd.show||10)){const m=el(`<button class="link" type="button">Ver mais</button>`);m.onclick=()=>{sbEd.show=(sbEd.show||10)+10;render()};w.appendChild(m)}
+  return w}
+/* ---- comentário do Claude nas questões sem comentário (provas oficiais vêm sem) ---- */
+const CM_PART=10;let cmRun=null;
+const cmNeed=ex=>ex.qs.map((r,i)=>i).filter(i=>{const r=ex.qs[i];return !!r.q.correta&&!r.an&&!(r.q.comentario||"").trim()});
+function cmPrompt(ex,idx){return `Você é professor de residência médica. Comente as questões abaixo da prova ${ex.name}${ex.banca?` (${ex.banca}${ex.ano?" "+ex.ano:""})`:""}, como nos comentários dos cursinhos, com base nas diretrizes brasileiras atuais e em fontes confiáveis. O gabarito oficial já está indicado: não discuta se ele está certo, explique por que está. Não cite letras no comentário; o porquê de cada alternativa errada vai no campo "porque".
+
+Devolva SOMENTE um JSON: uma lista com um objeto por questão, na mesma ordem:
+[{"n":número da questão,"comentario":"por que a resposta certa está certa (2 a 5 frases)","porque":{"A":"por que esta alternativa está errada (vazio na correta)","B":"…"},"pontoChave":"a ideia que decide a questão (1 frase)","takeHome":"o que levar para a prova (1 frase)","conceito":"o conceito em poucas palavras","fonte":"diretriz ou referência usada"}]
+
+${idx.map(i=>{const r=ex.qs[i],q=r.q;return `### Questão ${r.n||i+1}\n${q.enunciado}\n${q.alternativas.map(a=>a.letra+") "+a.texto).join("\n")}\nGabarito oficial: ${q.correta}`}).join("\n\n")}`}
+function cmApply(ex,arr,idx){let n=0;const t=v=>typeof v==="string"?v.trim():"",by={};(Array.isArray(arr)?arr:[]).forEach(o=>{if(o&&typeof o==="object"&&+o.n)by[+o.n]=o});
+  idx.forEach((i,j)=>{const r=ex.qs[i],o=by[r.n||i+1]||(Array.isArray(arr)&&!Object.keys(by).length?arr[j]:null);if(!o||!t(o.comentario))return;const q=r.q;
+    q.comentario=t(o.comentario).slice(0,4000);const P=o.porque&&typeof o.porque==="object"?o.porque:{};q.alternativas.forEach(a=>{if(a.letra!==q.correta&&t(P[a.letra]))a.porque=t(P[a.letra]).slice(0,1200)});
+    if(t(o.pontoChave))q.pc=t(o.pontoChave).slice(0,1200);if(t(o.takeHome))q.th=t(o.takeHome).slice(0,800);if(t(o.conceito))q.conceito=t(o.conceito).slice(0,600);if(t(o.fonte))q.fonte=t(o.fonte).slice(0,400);
+    if(!r.ck)r.ck=q.correta;r.cm=1;n++});
+  if(n){exPut(ex);if(typeof bankFeedSoon==="function")bankFeedSoon()}return n}
+async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")return;const parts=[];for(let i=0;i<idx.length;i+=CM_PART)parts.push(idx.slice(i,i+CM_PART));
+  const C=cmRun={id:ex.id,i:0,m:parts.length,done:0,st:"run",msg:"",ctl:new AbortController()};render();
+  for(let p=0;p<parts.length;p++){if(cmRun!==C)return;C.i=p;render();
+    try{const r=await sampleFn.json(cmPrompt(ex,parts[p]),{signal:C.ctl.signal,cache:false,title:parts.length>1?`Comentar questões (parte ${p+1} de ${parts.length})`:"Comentar questão",hint:"Cole aqui a resposta do Claude (a lista em JSON)."});
+      const arr=Array.isArray(r)?r:r&&Array.isArray(r.questoes)?r.questoes:r&&typeof r==="object"?[r]:[];C.done+=cmApply(ex,arr,parts[p])}
+    catch(e){if(cmRun!==C)return;C.st="error";C.msg=e&&e.name==="AbortError"?`Parado. ${C.done} ${C.done===1?"comentada":"comentadas"} até aqui ficaram guardadas.`:"Não deu para comentar esta parte. Tente de novo.";render();return}}
+  C.st="done";C.msg=`${C.done} ${C.done===1?"questão comentada":"questões comentadas"}. Os comentários ficaram guardados na prova e no banco.`;render()}
+function cmLineEl(ex){if(!cmRun||cmRun.id!==ex.id)return null;const C=cmRun,p=el(`<p class="exline cmline"></p>`);
+  p.textContent=C.st==="run"?`✦ Comentando com o Claude${C.m>1?`: parte ${C.i+1} de ${C.m}`:""}…`:C.msg;if(C.st==="run"){const b=el(`<button class="link" type="button" id="cmStop">Parar</button>`);b.onclick=()=>{C.ctl.abort()};p.append(" ",b)}return p}
+function bkCmBtn(x,id){if(!x||!x.ex||x.ei==null)return null;const ex=exams.find(e=>e.id===x.ex);return ex?cmBtn(ex,x.ei,id):null}
+function cmBtn(ex,i,id){if(!sampleFn||!ex)return null;const r=ex.qs[i];if(!r||!r.q.correta||r.an||(r.q.comentario||"").trim())return null;const b=el(`<button class="btn cmbtn" type="button">✦ Comentar com o Claude</button>`);b.id=id;
+  b.disabled=!!(cmRun&&cmRun.st==="run");b.onclick=()=>cmGo(ex,[i]);return b}
+/* ---- provas oficiais: lidas e faltando ---- */
+const OF_NIV=["R1","R+","Revalida","ENADE","Outra"];
+const OF_CAT=[["ENARE e ENAMED",[["ENARE","2025","ENARE 2025 (prova própria, R1)","R1",1],["ENARE","2024","ENARE 2024 (objetiva)","R1",1],["ENAMED","2025","ENAMED 2025 (acesso direto do ENARE 2025/2026)","R1",0],["ENAMED","2026","ENAMED 2026","R1",0],["ENARE","2023","ENARE 2023","R1",0],["ENARE","2022","ENARE 2022","R1",0],["ENARE","2021","ENARE 2021","R1",0]]],
+  ["Revalida (Inep), objetivas",[["REVALIDA","2023","Revalida 2023.1","Revalida",1,"2023.1"],["REVALIDA","2024","Revalida 2024.1","Revalida",1,"2024.1"],["REVALIDA","2024","Revalida 2024.2","Revalida",1,"2024.2"],["REVALIDA","2025","Revalida 2025.1","Revalida",1,"2025.1"],["REVALIDA","2026","Revalida 2026.1","Revalida",1,"2026.1"]]],
+  ["ENADE Medicina (Inep)",[["ENADE","2016","ENADE Medicina 2016","ENADE",1],["ENADE","2019","ENADE Medicina 2019","ENADE",1],["ENADE","2023","ENADE Medicina 2023","ENADE",1]]],
+  ["Rio Grande do Norte",[["SESAP-RN","2024","SESAP-RN 2024","R1",1]]],
+  ["São Paulo",[["USP-SP","2023","USP-SP 2023","R1",1],["USP-SP","2025","USP-SP 2025","R1",1],["USP-RP","2025","USP-RP 2025","R1",1],["USP-RP","2026","USP-RP 2026","R1",1],["EINSTEIN","2024","Einstein 2024","R1",1],["EINSTEIN","2025","Einstein 2025","R1",1],["EINSTEIN","2026","Einstein 2026","R1",1],
+    ["SÍRIO-LIBANÊS","2025","Sírio-Libanês 2025","R1",1],["SÍRIO-LIBANÊS","2026","Sírio-Libanês 2026","R1",1],["IAMSPE","2024","IAMSPE 2024","R1",1],["IAMSPE","2026","IAMSPE 2026","R1",1],["ISCMSP","2026","Santa Casa de SP (ISCMSP) 2026","R1",1],["FMJ","2026","FMJ 2026","R1",1],["PUC-SP","2022","PUC-SP Especialização 2022","R1",1],["PUC-SP","2023","PUC-SP Especialização 2023","R1",1]]],
+  ["Outros estados",[["SES-PE","2026","SES-PE 2026","R1",1],["UEPA","2026","UEPA 2026","R1",1],["IFF","2020","IFF/Fiocruz-RJ 2020","R1",1]]]];
+const ofNorm=s=>bqT(s).replace(/\s+/g,"");
+function ofFind(c){const [b,a,n,,,sub]=c,B=ofNorm(b),S=sub?ofNorm(sub):"";return exams.filter(e=>{const t=ofNorm([e.banca,e.name].join(" "));return t.includes(B)&&(e.ano===a||t.includes(a))&&(!S||t.includes(S)||t.includes(S.replace(/(\d{4})(\d)$/,"$1$2")))})}
+function ofState(e){const N=e.qs.length,nb=e.qs.filter(r=>r.g==="b"||r.an).length,nc=cmNeed(e).length,sd=e.qs.filter(r=>r.sbd).length;
+  return [`${N} ${N===1?"questão":"questões"} no banco`,!nb?"sem gabarito":e.kst==="p"?"gabarito preliminar":"gabarito definitivo",nc?`${nc} sem comentário`:"",sd?`${sd} subtópicos a conferir`:""].filter(Boolean).join(" · ")}
+let ofOpen=lsGet("resid-ofopen","")==="1";
+function ofImport(c){impNew();Object.assign(imp,{name:c[2],banca:c[0],ano:c[1],of:true,niv:c[3],ofPre:{name:c[2],banca:c[0],ano:c[1]}});render();setTimeout(()=>{const h=$("#exh");if(h)h.scrollIntoView({block:"start"})},40)}
+function ofCardEl(){const flat=OF_CAT.flatMap(g=>g[1]),got=flat.filter(c=>ofFind(c).length).length,d=el(`<details class="ofcat"><summary><b>Provas oficiais: lidas e faltando</b><span></span></summary></details>`);
+  d.open=ofOpen;d.querySelector("summary span").textContent=`${got} de ${flat.length} no app`;d.addEventListener("toggle",()=>{ofOpen=d.open;lsSet("resid-ofopen",ofOpen?"1":null)});
+  d.appendChild(el(`<p class="how">As que estão na pasta PROVAS do seu Drive aparecem com "no Drive". Importe o PDF como sempre: a prova entra no banco como oficial. A Medway não põe o gabarito no PDF: cole o oficial depois em "Colar gabarito".</p>`));
+  OF_CAT.forEach(([g,L])=>{const s=el(`<div class="ofg"><span class="glabel"></span><ul class="ofl"></ul></div>`);s.querySelector(".glabel").textContent=g;const ul=s.querySelector("ul");
+    L.forEach((c,j)=>{const E=ofFind(c),li=el(`<li class="ofi"><span class="ofn"><b></b><span></span></span></li>`);li.querySelector("b").textContent=c[2];
+      li.querySelector(".ofn span").textContent=E.length?ofState(E[0]):c[4]?"Falta · no Drive":"Falta · PDF ainda não conseguido";if(E.length)li.classList.add("got");
+      const b=el(`<button class="btn" type="button"></button>`);b.id=`of-${ofNorm(c[2]).slice(0,30)}`;
+      if(E.length){b.textContent="Abrir";b.onclick=()=>{const x=$("#exr-"+E[0].id);if(x){x.scrollIntoView({block:"center"});x.classList.add("pflash");setTimeout(()=>x.classList.remove("pflash"),1600)}}}
+      else{b.textContent="Importar";b.onclick=()=>ofImport(c)}li.appendChild(b);ul.appendChild(li)});d.appendChild(s)});
+  return d}
+const ofGuess=R=>/\b(enare|enamed|revalida|enade|inep|usp|unifesp|unicamp|sus[- ]?sp|ses[- ]|amrigs|psu|einstein|s[ií]rio|iamspe|iscmsp|santa casa|fmj|puc|sesap|uepa|iff|fiocruz|ebserh|hcpa|ufrn|ufpe|ufmg|ufrj)\b/i.test([R.banca,R.name].join(" "));
 /* ---------- Banco de questões, B3 (11/2026): ligações com o resto do app ----------
    Uma agenda só (bkAnswer → bkRdOf): questão do banco que está no Refazer conta como a revisão dela quando venceu (rdHit/rdMiss); antes de vencer, só o
    erro conta (rdMiss); errada fora do Refazer entra nele (de prova/oficial, só tema já estudado, como no Refazer). Sorteio inteligente bkSmart(L,n):
@@ -9025,7 +9143,7 @@ function bkPlayEl(){const R=bkRun,w=el(`<div class="bkplay"></div>`),N=R.ids.len
     const ol=el(`<ol class="simlist bkres"></ol>`);R.ids.forEach((id,i)=>{const x=bankById.get(id);if(!x)return;const it=bkIts(x)[0],l=R.ans[i],ok=l===x.q.correta,li=el(`<li><span class="simok ${l?ok?"ok":"no":""}">${l?ok?"✓":"✗":"–"}</span><button class="link" type="button"></button><span class="simt">${R.t[i]?fmtPace(R.t[i]):""}</span></li>`),b=li.querySelector("button");
       b.id="bkrv-"+i;b.textContent=`${i+1}. ${it?it.t:"Sem tema"}`;b.onclick=()=>{R.rev=R.rev===i?null:i;render()};ol.appendChild(li);
       if(R.rev===i){const {card}=bkQEl(x,l,null,true);card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${!l?"Em branco. A resposta é "+esc(x.q.correta)+".":ok?"Você acertou.":"Você marcou "+esc(l)+"; a resposta é "+esc(x.q.correta)+"."}</p>`));
-        card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}if(l&&!ok&&it)card.appendChild(eCadEl(R.cad,i,it.key,x.q,l,"Banco de questões"));if(l&&it)card.appendChild(qActsEl(x.q,l,{k:it.key,src:"Banco de questões"}));li.appendChild(card)}});
+        card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}{const b=bkCmBtn(x,"bkcm-"+i);if(b)card.appendChild(b)}if(l&&!ok&&it)card.appendChild(eCadEl(R.cad,i,it.key,x.q,l,"Banco de questões"));if(l&&it)card.appendChild(qActsEl(x.q,l,{k:it.key,src:"Banco de questões"}));li.appendChild(card)}});
     w.appendChild(ol);const nc=Object.values(R.cnt).filter(Boolean).length;
     w.appendChild(el(`<p class="how">${nc?`${nc} ${nc===1?"questão inédita contou":"questões inéditas contaram"} no acerto dos temas (as erradas foram para o Refazer). `:""}${ans.length-nc>0?`${ans.length-nc} já ${ans.length-nc===1?"feita antes conta":"feitas antes contam"} só na meta semanal de questões. `:""}Tudo ficou no histórico de cada questão.</p>`));
     const bt=el(`<div class="btns"></div>`),wr=R.ids.filter((id,i)=>{const x=bankById.get(id);return x&&R.ans[i]&&R.ans[i]!==x.q.correta});
@@ -9045,7 +9163,7 @@ function bkPlayEl(){const R=bkRun,w=el(`<div class="bkplay"></div>`),N=R.ids.len
   if(mine){const ok=mine===x.q.correta,I=bkInfo(x);card.appendChild(el(`<p class="verdict ${ok?"ok":"no"}">${ok?"Correta.":"Incorreta. A resposta é "+esc(x.q.correta)+"."} <span class="simt">${fmtPace(R.t[R.i]||0)}</span></p>`));
     if(I.n>1){const p=el(`<p class="bkhline"></p>`);p.textContent=`Você já fez esta questão ${I.n} vezes: ${[I.no?`errou ${I.no}`:"",I.ok?`acertou ${I.ok}`:""].filter(Boolean).join(", ")}.${R.cnt[R.i]?"":" Esta vez conta só na meta semanal."}`;card.appendChild(p)}
     if(it){const t=el(`<p class="simtopic"></p>`);t.textContent=`${it.t} · ${it.area.code}${it.sp?" · "+it.sp:""}`;card.appendChild(t)}
-    card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}if(x.q.alerta&&x.q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+x.q.alerta;card.appendChild(p)}
+    card.appendChild(qExplEl(qSplit(x.q)));{const f=qFonteEl(x.q);if(f)card.appendChild(f)}{const b=bkCmBtn(x,"bkcm-"+R.i);if(b)card.appendChild(b)}if(x.q.alerta&&x.q.alerta.trim()){const p=el(`<p class="alerta"></p>`);p.textContent="Atenção: "+x.q.alerta;card.appendChild(p)}
     if(!ok&&!(R.sis||{})[R.i]){const y=bkSister(x,new Set(R.ids));if(y){const sb=el(`<div class="bksis"><button class="btn" type="button" id="bkSis">Fazer uma questão irmã</button><span class="how">Outra inédita do mesmo tema, parecida no conceito: mostra se você aprendeu ou só decorou esta.</span></div>`);
       sb.querySelector("button").onclick=()=>{R.sis=R.sis||{};R.sis[R.i]=1;R.ids.splice(R.i+1,0,y.id);bkNext()};card.appendChild(sb)}}
     if(!ok&&it)card.appendChild(eCadEl(R.cad,R.i,it.key,x.q,mine,"Banco de questões"));if(it)card.appendChild(qActsEl(x.q,mine,{k:it.key,src:"Banco de questões"}))}
@@ -9065,7 +9183,7 @@ function bkPreset(id){if(bkF.pre===id)bkF=bkFDef();else{const p=BK_PRE.find(x=>x
 const bkActive=F=>!!(F.q||F.st!=="all"||F.area!=="all"||F.k!=="all"||F.ban.length||F.ano.length||F.niv.length||F.o.length||F.fav||F.img||F.old||F.nf||F.teim||F.dyn);
 function bkActs(F,D){const A=[],tog=(arr,v)=>()=>bkSet(f=>{f[arr]=f[arr].filter(y=>y!==v)});
   if(F.q)A.push([`“${F.q}”`,()=>bkSet(f=>{f.q=""})]);if(F.st!=="all")A.push([(BK_ST.find(s=>s[0]===F.st)||["",""])[1],()=>bkSet(f=>{f.st="all"})]);
-  if(F.k!=="all")A.push([BYKEY[F.k]?BYKEY[F.k].t:"Tema",()=>bkSet(f=>{f.k="all"})]);else if(F.area!=="all")A.push([F.sp!=="all"?F.sp:fcAreaName(F.area),()=>bkSet(f=>{if(f.sp!=="all")f.sp="all";else f.area="all"})]);
+  if(F.k!=="all")A.push([BYKEY[F.k]?BYKEY[F.k].t:"Tema",()=>bkSet(f=>{f.k="all";f.sb=""})]);if(F.k!=="all"&&F.sb)A.push([F.sb==="-"?"Sem subtópico":sbLabel(F.k,F.sb)||"Subtópico",()=>bkSet(f=>{f.sb=""})]);else if(F.area!=="all")A.push([F.sp!=="all"?F.sp:fcAreaName(F.area),()=>bkSet(f=>{if(f.sp!=="all")f.sp="all";else f.area="all"})]);
   F.o.forEach(v=>A.push([(BK_O.find(o=>o[0]===v)||["",v])[1],tog("o",v)]));F.ban.forEach(v=>A.push([v||"Sem banca",tog("ban",v)]));F.ano.forEach(v=>A.push([v||"Sem ano",tog("ano",v)]));F.niv.forEach(v=>A.push([v||"Sem nível",tog("niv",v)]));
   if(F.fav)A.push(["Favoritas",()=>bkSet(f=>{f.fav=false})]);if(F.img)A.push(["Com imagem",()=>bkSet(f=>{f.img=false})]);if(F.old)A.push(["Sem anuladas e desatualizadas",()=>bkSet(f=>{f.old=false})]);
   if(F.nf)A.push(["Figura não guardada",()=>bkSet(f=>{f.nf=false})]);if(F.teim)A.push(["Teimosas",()=>bkSet(f=>{f.teim=false})]);
@@ -9089,7 +9207,9 @@ function bkGroups(C){const {F,R,K}=C,n=skip=>R.filter(x=>bkMatch(x,F,K,skip)),G=
     w.appendChild(fcSel("bkArea","Grande área",[["all",`Todas as áreas (${L.length})`],...AREAS.map(a=>[a.code,`${a.name} (${cnt(a.code,"all")})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.area)],F.area,v=>bkSet(f=>{f.area=v;f.sp="all";f.k="all"})));
     if(F.area!=="all"){const A=AREAS.find(a=>a.code===F.area),names=A?(A.specs||[]).map(s=>s.name):[];w.appendChild(fcSel("bkSp","Especialidade",[["all","Todas"],...names.map(s=>[s,`${s} (${cnt(F.area,s)})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.sp)],F.sp,v=>bkSet(f=>{f.sp=v;f.k="all"})));
       const T=ALL.filter(it=>it.area.code===F.area&&(F.sp==="all"||it.sp===F.sp)).map(it=>[it.key,`${it.t} (${cnt(null,null,it.key)})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.k);
-      w.appendChild(fcSel("bkTema","Tema",[["all","Todos"],...T],F.k,v=>bkSet(f=>{f.k=v})))}
+      w.appendChild(fcSel("bkTema","Tema",[["all","Todos"],...T],F.k,v=>bkSet(f=>{f.k=v;f.sb=""})));
+      if(F.k!=="all"&&BYKEY[F.k]){const LS=n("sb").filter(r=>r.x.ks.includes(F.k)),cs=v=>LS.filter(r=>v==="-"?!(r.x.ks[0]===F.k&&r.x.sb):r.x.ks[0]===F.k&&r.x.sb===v).length,SB=subList(BYKEY[F.k]).map(y=>[sbKey(y),`${y.t} (${cs(sbKey(y))})`]).filter(o=>!/\(0\)$/.test(o[1])||o[0]===F.sb);
+        if(SB.length)w.appendChild(fcSel("bkSub","Subtópico",[["",`Todos (${LS.length})`],...SB,["-",`Sem subtópico (${cs("-")})`]],F.sb,v=>bkSet(f=>{f.sb=v})))}}
     else{w.appendChild(fcSel("bkSp","Especialidade",[["all","Escolha a área antes"]],"all",null,true));w.appendChild(fcSel("bkTema","Tema",[["all","Escolha a área antes"]],"all",null,true))}
     const sum=F.k!=="all"&&BYKEY[F.k]?BYKEY[F.k].t:F.area!=="all"?(F.sp!=="all"?F.sp:fcAreaName(F.area)):"Todo o banco";G.push(bkFg("w","Onde",sum,w,F.area!=="all"||F.k!=="all"))}
   {const L=n("o"),c=v=>L.filter(r=>bkOrig(r.x)===v).length,O=BK_O.filter(([v])=>c(v)||F.o.includes(v));
@@ -9308,7 +9428,7 @@ async function pdfPageText(pg){const tc=await pg.getTextContent();let s="",y0=nu
     if(y0!==null&&Math.abs(y-y0)>Math.max(2,(it.height||0)*0.5)){if(!s.endsWith("\n"))s+="\n"}
     else if(x1!==null&&x-x1>1.5&&s&&!/\s$/.test(s)&&!/^\s/.test(it.str))s+=" ";
     s+=it.str;if(it.hasEOL)s+="\n";if(it.str)y0=y;x1=x+(it.width||0)}
-  return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()}
+  return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim().split("\n").map(mwUndouble).join("\n")}// B4: texto desenhado em dobro (Medway) vira uma vez só
 /* páginas com figura: imagem de pelo menos 150×150 px que não aparece em boa parte das páginas (logo/fundo do slide ficam de fora) */
 async function pdfFigPages(doc,ns){const lib=await pdfLib(),O=lib.OPS,ops=[O.paintImageXObject,O.paintInlineImageXObject,O.paintImageXObjectRepeat].filter(x=>x!==undefined),per={},cnt={};
   const mul=(m,n)=>[m[0]*n[0]+m[2]*n[1],m[1]*n[0]+m[3]*n[1],m[0]*n[2]+m[2]*n[3],m[1]*n[2]+m[3]*n[3],m[0]*n[4]+m[2]*n[5]+m[4],m[1]*n[4]+m[3]*n[5]+m[5]];
@@ -9484,7 +9604,7 @@ const pgList=L=>{const out=[];L.forEach(n=>{const l=out[out.length-1];if(l&&n===
 async function impSave(){const R=imp;if(!R||R.saving)return;const qs=R.qs.filter(r=>!r.x);if(!qs.length)return;
   const id="ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);let FA=[];
   if(R.doc&&R.figs&&R.figs.length){R.saving=true;R.msg="Recortando as figuras das questões…";render();try{FA=await impFigAssign(R,qs);for(const a of FA){const b=await pdfFigImg(await R.doc.getPage(a.f.n),a.f.rs),u=await exfData(b);if(u){qs[a.j].fg=1;await exfPut({id:id+"_"+a.j,ex:id,i:a.j,img:u})}}}catch(e){}R.saving=false;if(imp!==R)return}
-  const ex=exClean({id,name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs});
+  const ex=exClean({id,name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs,...(R.of?{of:1,...(R.niv?{niv:R.niv}:{})}:{}),...(qs.some(r=>r.g==="b")?{kst:"d"}:{})});
   exams.unshift(ex);exPut(ex);imp=null;exArm=null;render();setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 /* uma questão para conferir (na importação e depois de salva) */
 /* o comentário contradiz o gabarito: outra alternativa diz "Correta" ou o comentário da certa começa com "Incorreta" (gabarito lido errado) */
@@ -9534,6 +9654,7 @@ function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><
   if(R.st==="pick"||R.st==="scan"){
     w.appendChild(el(`<p class="how">Escolha o PDF da prova (ou fotos das páginas, na ordem). O app tenta ler as questões aqui mesmo, sem o Claude; se a prova for difícil de ler (duas colunas, páginas escaneadas, sem gabarito), ele avisa para passar pelo Claude, que transcreve com gabarito, tema e comentário. Depois você confere tudo antes de salvar. O arquivo não fica salvo, só as questões.</p>`));
     const pk=el(`<label class="btn primary imgpick"><input type="file" id="impFile" accept="application/pdf,.pdf,image/*" multiple hidden><span>Escolher o PDF ou as fotos</span></label>`);
+    if(R.ofPre){const o=el(`<p class="ofpre" id="impOfPre"></p>`);o.textContent=`Prova oficial: ${R.ofPre.name}${R.niv?" · "+R.niv:""}. Nome, banca e ano já vêm preenchidos.`;w.appendChild(o)}
     pk.querySelector("input").onchange=e=>impPick(e.target.files);if(R.st==="scan")pk.classList.add("dis");w.appendChild(pk);
     if(R.st==="scan"){const s=el(`<p class="gstatus" id="impSt" aria-live="polite"></p>`);s.textContent=R.msg;w.appendChild(s)}
     err();return w}
@@ -9543,6 +9664,8 @@ function impPanel(){const R=imp,w=el(`<div class="imgpanel exiP" id="impPanel"><
   if(R.keyPg.length&&R.st==="ready"){const nb=el(`<button class="link" type="button" id="impNoKey">Não é o gabarito</button>`);nb.onclick=()=>{R.keyPg=[];render()};info.append(" ",nb)}w.appendChild(info);
   const f=el(`<div class="exfields"><label class="ffield exname"><span class="glabel">Nome da prova</span><input class="etext" id="impName" maxlength="140"></label><label class="ffield"><span class="glabel">Banca</span><input class="etext" id="impBanca" maxlength="40" placeholder="ENARE, USP…"></label><label class="ffield exano"><span class="glabel">Ano</span><input class="etext" id="impAno" maxlength="4" inputmode="numeric"></label></div>`);
   [["#impName","name"],["#impBanca","banca"],["#impAno","ano"]].forEach(([s,k])=>{const i=f.querySelector(s);i.value=R[k];i.oninput=()=>{R[k]=i.value}});w.appendChild(f);
+  {if(R.of==null)R.of=ofGuess(R);const o=el(`<div class="ofrow"><label class="ofchk"><input type="checkbox" id="impOf"> Prova oficial <span class="how">(de banca de residência, Revalida ou ENADE; não lista de cursinho)</span></label><label class="ffield"><span class="glabel">Nível</span><select id="impNiv"><option value="">—</option></select></label></div>`),cb=o.querySelector("#impOf"),sl=o.querySelector("#impNiv");
+    OF_NIV.forEach(v=>{const x=document.createElement("option");x.value=v;x.textContent=v;sl.appendChild(x)});cb.checked=!!R.of;sl.value=R.niv||"";sl.disabled=!R.of;cb.onchange=()=>{R.of=cb.checked;render()};sl.onchange=()=>{R.niv=sl.value};w.appendChild(o)}
   // gabarito
   const g=el(`<div class="exkey"><span class="glabel">Gabarito</span><p class="exkst"></p></div>`);g.querySelector(".exkst").textContent=kn?`${kn} ${kn===1?"resposta encontrada":"respostas encontradas"}${kx?` (${kx} ${kx===1?"anulada":"anuladas"})`:""}: as questões usam o gabarito da banca.`
     :R.keyTxt.trim()?"O gabarito do arquivo vai como texto para o Claude, que confere número por número.":"Sem gabarito: o Claude resolve as questões e elas ficam marcadas para você conferir. Dá para colar o gabarito agora ou depois.";
@@ -9614,7 +9737,8 @@ function impKCParse(seg,cor){const o={porq:{},com:"",con:""};if(!seg)return o;co
 function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
   const QP=R.pages.filter(p=>!R.keyPg.includes(p.n)),scanned=QP.filter(p=>p.img).map(p=>p.n);
   if(scanned.length)probs.push(`${scanned.length===1?"a página":"as páginas"} ${pgList(scanned)} não ${scanned.length===1?"tem":"têm"} texto (${R.doc?"escaneadas":"fotos"}): só o Claude lê imagem`);
-  const pages=QP.filter(p=>!p.img&&p.t);if(!pages.length)return {qs,probs:probs.length?probs:["não achei texto nas páginas"]};
+  let pages=QP.filter(p=>!p.img&&p.t);if(!pages.length)return {qs,probs:probs.length?probs:["não achei texto nas páginas"]};
+  {const mw=impMwPages(pages);if(mw){pages=mw.pages;if(mw.note)probs.push(mw.note)}}// B4: reimpressões da Medway
   /* cabeçalhos e rodapés repetidos saem */
   const PAG=/\s*\b(?:p[aá]g(?:ina)?\.?)\s*\d+\s*(?:(?:de|\/)\s*\d+)?\s*$/i,cl=x=>x.replace(/\s+/g," ").trim().replace(PAG,"").trim();
   const AP=R.pages.filter(p=>p.t),cnt={};AP.forEach(p=>new Set(p.t.split("\n").map(cl).filter(Boolean)).forEach(x=>{cnt[x]=(cnt[x]||0)+1}));
@@ -9677,6 +9801,7 @@ function exQuestionEl(ex,i,review){const R=exRun,P=exPg(ex.id),r=ex.qs[i],q=r.q,
     else card.appendChild(el(`<p class="pnote">Sem resposta definida: escolha a resposta em Revisar questões.</p>`));
     card.appendChild(qExplEl(qSplit(q),{note:r.ck&&q.correta&&r.ck!==q.correta?`O comentário foi escrito considerando a alternativa ${esc(r.ck)}; o gabarito oficial é ${esc(q.correta)}.`:""}));
     {const f=qFonteEl(q);if(f)card.appendChild(f)}
+    if(r.kd)card.appendChild(el(`<p class="exkd">Gabarito mudou do preliminar para o definitivo nesta questão.</p>`));{const b=cmBtn(ex,i,"excq-"+i);if(b)card.appendChild(b)}
     if(mine&&q.correta&&mine!==q.correta&&r.k&&!r.an)card.appendChild(eCadEl(R.cad,i,r.k,q,mine,ex.name));
     if(mine&&q.correta&&!r.an)card.appendChild(qActsEl(q,mine,{k:r.k,src:ex.name,tok:`{{q:${ex.id}:${i}}}`}))}
   return card}
@@ -9729,19 +9854,21 @@ function exEditEl(ex){const S=exEdit,w=el(`<div class="exedit"></div>`);
   const b=el(`<button class="btn" type="button">Fechar</button>`);b.onclick=()=>{exEdit=null;render()};w.appendChild(b);return w}
 function exKeyEl(ex){const K=exKey,w=el(`<div class="exkey"></div>`),pk=parseKey(K.t),n=Object.keys(pk).length;
   const ta=el(`<textarea class="ntext exkta" id="exKeyTa" placeholder="Cole o gabarito oficial. Ex.: 1-A 2-C 3-D 4-ANULADA…"></textarea>`);ta.value=K.t;ta.oninput=debounced(()=>{K.t=ta.value;K.msg="";render()},300);
-  w.append(el(`<span class="glabel">Colar o gabarito oficial</span>`),ta);
+  if(!K.kst)K.kst=ex.kst==="p"?"d":ex.of&&!ex.qs.some(r=>r.g==="b")?"p":"d";{const g=el(`<div class="seg exkty" role="group" aria-label="Que gabarito é este"></div>`);[["p","Preliminar"],["d","Definitivo"]].forEach(([v,l])=>{const b=el(`<button type="button"></button>`);b.id="exKs-"+v;b.textContent=l;b.setAttribute("aria-pressed",K.kst===v);b.onclick=()=>{K.kst=v;render()};g.appendChild(b)});
+    w.append(el(`<span class="glabel">Colar o gabarito oficial</span>`),g);if(ex.kst==="p")w.appendChild(el(`<p class="how">O gabarito desta prova é o <b>preliminar</b>. Quando sair o definitivo (depois dos recursos), cole aqui e escolha Definitivo: as questões que mudarem ganham o aviso "Gabarito mudou" e o seu acerto é recalculado.</p>`))}
+  w.appendChild(ta);
   const st=el(`<p class="how"></p>`);st.textContent=K.msg||(n?`${n} ${n===1?"resposta reconhecida":"respostas reconhecidas"}.`:"Aceita “1-A”, “01. B”, “3 D”, “4 ANULADA” ou uma tabela com os números numa linha e as letras na de baixo.");w.appendChild(st);
   const b=el(`<div class="btns"></div>`),ap=el(`<button class="btn primary" type="button" id="exKeyGo">Aplicar gabarito</button>`);ap.disabled=!n;
-  ap.onclick=()=>{let m=0,ch=0;ex.qs.forEach((r,i)=>{const v=pk[r.n];if(!v)return;m++;const was=r.an+"|"+r.q.correta;
-      exChange(ex,i,r=>{if(v==="X"){r.an=true;r.g="b"}else if(r.q.alternativas.some(a=>a.letra===v)){if(!r.ck)r.ck=r.q.correta;r.an=false;r.q.correta=v;r.g="b"}});if(was!==r.an+"|"+r.q.correta)ch++});
+  ap.onclick=()=>{let m=0,ch=0;const toD=ex.kst==="p"&&K.kst==="d";ex.qs.forEach((r,i)=>{const v=pk[r.n];if(!v)return;m++;const was=r.an+"|"+r.q.correta;
+      exChange(ex,i,r=>{if(v==="X"){r.an=true;r.g="b"}else if(r.q.alternativas.some(a=>a.letra===v)){if(!r.ck)r.ck=r.q.correta;r.an=false;r.q.correta=v;r.g="b"}});if(was!==r.an+"|"+r.q.correta){ch++;if(toD)ex.qs[i].kd=1}});if(m)ex.kst=K.kst;
     const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),t=P.tries[P.tries.length-1];t.hit=S.hit;t.n=S.ans}
-    exPut(ex);exPSave(ex.id);K.t="";K.msg=`Gabarito aplicado a ${m} ${m===1?"questão":"questões"}. ${ch?`${ch} ${ch===1?"mudou":"mudaram"} (resposta ou anulação) e o seu acerto foi recalculado.`:"Nenhuma resposta mudou."}`;commit()};
+    exPut(ex);exPSave(ex.id);K.t="";K.msg=`Gabarito aplicado a ${m} ${m===1?"questão":"questões"}. ${ch?`${ch} ${ch===1?"mudou":"mudaram"} (resposta ou anulação) e o seu acerto foi recalculado.`:"Nenhuma resposta mudou."}${ex.kst==="p"?" Marcado como gabarito preliminar.":""}`;bankFeedSoon();commit()};
   const cl=el(`<button class="btn" type="button">Fechar</button>`);cl.onclick=()=>{exKey=null;render()};b.append(ap,cl);w.appendChild(b);return w}
 function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).length,nb=ex.qs.filter(r=>r.g==="b"||r.an).length,run=exRun&&exRun.id===ex.id,N=ex.qs.length;
   const stt=P.fin?"fin":nAns?"run":"new";
   const li=el(`<li class="excard" data-st="${stt}" id="exr-${ex.id}"><div class="exch"><b class="exname"></b><span class="exstat"></span></div><p class="exmeta"></p><div class="exmain2"></div><div class="exsec"></div></li>`);
   li.querySelector(".exname").textContent=ex.name;
-  li.querySelector(".exmeta").textContent=[[ex.banca,ex.ano].filter(Boolean).join(" "),`${N} ${N===1?"questão":"questões"}`,nb===N?"gabarito da banca":nb?`gabarito da banca em ${nb}`:"gabarito do Claude"].filter(Boolean).join(" · ");
+  li.querySelector(".exmeta").textContent=[[ex.banca,ex.ano].filter(Boolean).join(" "),`${N} ${N===1?"questão":"questões"}`,ex.of?`prova oficial${ex.niv?" "+ex.niv:""}`:"",nb===N?(ex.kst==="p"?"gabarito preliminar":"gabarito da banca"):nb?`gabarito da banca em ${nb}`:ex.of?"sem gabarito: cole o oficial":"gabarito do Claude"].filter(Boolean).join(" · ");
   const st=li.querySelector(".exstat"),last=P.tries[P.tries.length-1];
   st.textContent=P.fin?`Feita · ${pct(S.hit,S.ans)}%`:nAns?"Em andamento":"Não iniciada";
   const M=li.querySelector(".exmain2"),B=li.querySelector(".exsec");
@@ -9762,18 +9889,22 @@ function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).l
   const ed=sb(`exed-${ex.id}`,"Revisar questões",()=>{exEdit=exEdit&&exEdit.id===ex.id?null:{id:ex.id,flt:ex.qs.some(r=>exFilterOk(r,"chk"))?"chk":"all",show:12,T:null};exKey=null;render()});ed.setAttribute("aria-expanded",!!(exEdit&&exEdit.id===ex.id));
   const lk=sb(`exlk-${ex.id}`,(ex.links||[]).length?"Ligações":"Ligar a temas",()=>{exLinkEd=exLinkEd&&exLinkEd.id===ex.id?null:{id:ex.id,q:""};exEdit=null;exKey=null;render()});lk.setAttribute("aria-expanded",!!(exLinkEd&&exLinkEd.id===ex.id));
   const kb=sb(`exkb-${ex.id}`,"Colar gabarito",()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)});kb.setAttribute("aria-expanded",!!(exKey&&exKey.id===ex.id));
+  {const c=cmLineEl(ex);if(c)li.querySelector(".exmeta").after(c)}
+  {const nc=cmNeed(ex).length;if(nc&&sampleFn&&!(cmRun&&cmRun.st==="run"))sb(`excm-${ex.id}`,`✦ Comentar ${nc} sem comentário`,()=>cmGo(ex,cmNeed(ex))).title="O Claude escreve o comentário (por que a certa está certa e por que cada errada não serve), em partes de 10; fica guardado"}
+  {const nd=ex.qs.filter(r=>r.sbd&&r.k).length;if(nd){const b=sb(`exsbd-${ex.id}`,`Conferir subtópicos (${nd})`,()=>{sbEd=sbEd&&sbEd.id===ex.id?null:{id:ex.id,show:10};exEdit=null;exKey=null;render()});b.setAttribute("aria-expanded",!!(sbEd&&sbEd.id===ex.id))}}
   {const mb=sb(`exmod-${ex.id}`,ex.mod?"✓ Modelo da faculdade":"Usar como modelo da faculdade",()=>{if(ex.mod)delete ex.mod;else ex.mod=1;exPut(ex);render()});mb.setAttribute("aria-pressed",!!ex.mod);mb.title="Prova da sua faculdade: o gerador e o simulado imitam o jeito dela de cobrar (tamanho do caso, nº de alternativas, forma de perguntar)"}
   sb(`exdel-${ex.id}`,exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir",()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}},exArm==="del"+ex.id).classList.add("exdelb");
   if(exKey&&exKey.id===ex.id)li.appendChild(exKeyEl(ex));
   if(exLinkEd&&exLinkEd.id===ex.id)li.appendChild(exLinksEl(ex));
   if(exEdit&&exEdit.id===ex.id)li.appendChild(exEditEl(ex));
+  if(sbEd&&sbEd.id===ex.id)li.appendChild(sbEditEl(ex));
   return li}
 let exNarrow=false;
 function qExamCard(){const c=el(`<section class="card qexam" aria-labelledby="exh"><div class="dhead"><h2 id="exh">Provas na íntegra</h2></div></section>`);
   const run=exRun&&exams.find(x=>x.id===exRun.id);if(exRun&&!run)exRun=null;
   if(run){const h=c.querySelector(".dhead"),s=el(`<span class="todaydate"></span>`);s.textContent=run.name;h.appendChild(s);if(twoCols()||isPhoneL())h.appendChild(fullBtn("ex"));c.appendChild(exPlayEl(run));return c}
   if(!imp){const b=el(`<button class="btn primary" type="button" id="impNew">+ Importar prova</button>`);b.disabled=!sampleFn;if(sampleOff)b.title="O Claude não está disponível nesta visualização";b.onclick=impNew;c.querySelector(".dhead").appendChild(b)}
-  if(imp)c.appendChild(impPanel());
+  if(imp)c.appendChild(impPanel());else if(!qLegacy())c.appendChild(ofCardEl());
   if(!exams.length){if(!imp)c.appendChild(el(`<p class="cempty">Importe o PDF de uma prova antiga (com ou sem gabarito) e faça a prova aqui, no modo prova ou no modo estudo. Cada questão entra no acerto do tema e da banca, e as erradas vão para Refazer.</p>`));return c}
   /* Lote 20D: busca e filtros no padrão (situação, banca, faculdade) e grupos por banca · ano */
   const stOf=ex=>{const P=exPg(ex.id);return P.fin?"fin":Object.keys(P.a).length?"run":"new"},bk=ex=>(ex.banca||"").trim()||"Sem banca";
@@ -11047,6 +11178,10 @@ Um dia de estudo:
 - **Leitura:** PDF com texto e questões numeradas é lido no aparelho, sem o Claude (o tema vem como **Tema sugerido**). Página escaneada, questão faltando ou sem gabarito: o app pede para **passar pelo Claude**, em partes de até 20 questões; resposta cortada pede só as que faltaram.
 - **Conferir:** cada questão com problema mostra **Conferir:** no topo. Troque a resposta, anule, escolha o tema (até 3; **+ outro tema**) ou descarte. Comentário que contradiz o gabarito ganha um selo.
 - **Figuras:** as páginas com figura (exame, ECG) são recortadas ao salvar e a figura aparece na questão certa.
+- **Provas oficiais:** a lista **Provas oficiais: lidas e faltando** mostra quais já estão no app e quais faltam; **Importar** já preenche nome, banca, ano e nível. Marque **Prova oficial** ao importar: as questões entram no banco como oficiais. As reimpressões da Medway (texto em dobro, alternativas depois dos enunciados) são lidas no aparelho.
+- **Gabarito preliminar × definitivo:** ao colar, diga qual é. Quando sair o definitivo, cole de novo: as questões que mudaram ganham **Gabarito mudou** e o acerto é recalculado.
+- **Comentário do Claude:** prova oficial vem sem comentário. **✦ Comentar N sem comentário** (no cartão da prova, em partes de 10) ou **✦ Comentar com o Claude** na questão aberta; fica guardado na prova e no banco.
+- **Subtópico:** o app sugere pelo texto da questão; as duvidosas aparecem em **Conferir subtópicos**. No banco, escolha um tema para filtrar por subtópico.
 - **Jogar:** **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar. No computador, o mapa das questões e o relógio ficam ao lado; **⛶ Tela inteira** deixa só a prova (A a E respondem, → próxima, ← anterior).
 - **Resultado:** **Onde você perdeu pontos** primeiro (especialidades com 3+ questões e acerto abaixo de 60%, com os temas e as questões para levar ao caderno de erros) e depois o acerto por área. É só sugestão: o plano não muda.
 - **Lista:** busca, situação, banca e **Da faculdade**, agrupada por banca. Prova feita mostra o acerto por área.
