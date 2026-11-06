@@ -24,7 +24,8 @@ consultado quando há dúvida. Responda em português.
    Nas seções abaixo, "módulo antes de X" quer dizer a posição no código juntado (a ordem dos trechos é a ordem de sempre).
 2. Gere o site: `python3 src/build_site.py` (junta `src/app/` em `src/checklist-residencia.html`, monta `index.html` e muda a versão do `sw.js`).
    `python3 src/build_site.py --check` só confere se o gerado bate com `src/app/`.
-3. Rode os testes: `tests/run.sh` (todos; veja `tests/README.md`) e escreva um teste novo `tests/tNN.js` para cada recurso novo
+3. Rode os testes: `tests/run.sh --rapido` a cada mudança (unitários no Node + t151, a abertura nos 6 aparelhos; ~30 s) e
+   `tests/run.sh` (todos; veja `tests/README.md`) antes de publicar. Lógica nova sem tela (cálculo, datas, limpeza de dados) ganha teste em `tests/unit/` e escreva um teste novo `tests/tNN.js` para cada recurso novo
    (inclua-o em `tests/list.txt`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
    iPad dentro do app do Claude) e computador (1366, 1920). Modos de layout ficam em
    `html[data-layout=phone|tablet|desktop|compact][data-cols]`, decididos pelo tamanho da TELA.
@@ -37,7 +38,9 @@ consultado quando há dúvida. Responda em português.
 
 - `src/app/`: o código do app em trechos (HTML/CSS/JS); `src/checklist-residencia.html` = os trechos juntados (gerado; o preview
   `tests/mkprev.py` e vários testes leem esse arquivo). No Claude usa `window.claude.use(...)` (db, user, sample, downloads).
-  Divisão em módulos em andamento: fase 1 (cortar, sem mudar código) feita em 06/11/2026; próximas em `docs/adr/001-divisao-em-modulos.md`.
+  Divisão em módulos em andamento: fase 1 (cortar, sem mudar código) e 1.5 (testes de proteção: `tests/unit/`, `tests/t151.js`)
+  feitas em 06/11/2026; próximas em `docs/adr/001-divisao-em-modulos.md`. Tempo de abertura: Configurações › Tempo de abertura
+  (`perfCardEl`; o script do `topo.html` grava as últimas 12 em `resid-perf`; teste t150).
 - `bridge.js`: no site, implementa o mesmo `window.claude.use` com Firebase (Auth e-mail/senha +
   Firestore, persistência offline), download/compartilhamento de arquivos e IA por **copiar e colar**
   (janela com o pedido; o usuário cola a resposta). Também: importar/desfazer backup, conta, avisos.

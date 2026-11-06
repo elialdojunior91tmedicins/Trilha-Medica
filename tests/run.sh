@@ -2,7 +2,11 @@
 # Roda os testes do app. Uso: tests/run.sh            (todos, 3 em paralelo)
 #                             tests/run.sh t74 t75    (só estes)
 #                             tests/run.sh --monkey   (teste aleatório nos 6 aparelhos)
+#                             tests/run.sh --unit     (testes da lógica no Node, sem navegador: ~2 s)
+#                             tests/run.sh --rapido   (unitários + t151, a abertura nos 6 aparelhos: ~30 s)
 cd "$(dirname "$0")"
+if [ "$1" = "--unit" ]; then node --test unit/*.test.js 2>&1 | grep -E "^# (pass|fail)|^not ok"; exit "${PIPESTATUS[0]}"; fi
+if [ "$1" = "--rapido" ]; then ./run.sh --unit || exit 1; set -- t151; fi
 python3 mkprev.py
 # os testes do site abrem http://localhost:8765/ (a raiz do repositório, com index.html gerado)
 if ! curl -s -o /dev/null http://localhost:8765/; then (cd .. && setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &); sleep 1; fi
