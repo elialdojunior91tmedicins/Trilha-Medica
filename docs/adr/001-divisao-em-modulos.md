@@ -34,7 +34,10 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
 
 Antes da fase 2: medir a abertura no celular (pode pedir carga sob demanda de PDF, Anki e importação, o que muda
 as fronteiras dos módulos). Simulação de 06/11 (CPU 4× mais lenta): ~0,8 s com o app guardado no aparelho, ~1,5 s
-estimado na 1ª visita. Medida real no celular do usuário: Configurações › Tempo de abertura (em andamento).
+estimado na 1ª visita. Medida real (06/11/2026, iPhone do usuário, Configurações › Tempo de abertura): app instalado com
+os arquivos do aparelho 116–125 ms (4 aberturas); 1ª abertura depois de uma versão nova 652 ms (510 KB); aba anônima, sem nada
+guardado, 991 ms. **Decisão: sem carga sob demanda.** As fronteiras da fase 2 seguem só o assunto. Rever se a 1ª abertura passar
+de 2 s ou se o app instalado passar de 1 s.
 
 ## Consequências
 
