@@ -67,7 +67,7 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
  const R6=await p.evaluate(()=>{bkRun=null;const ex=exams.find(e=>e.id==="exof1");bkF=bkFClean({k:"CM-1",area:"CM",sb:ex.qs[0].sb});render();const n1=document.querySelectorAll(".bklist .bkrow").length;
    const sel=!!document.querySelector("#bkSub");bkF=bkFClean({k:"CM-1",area:"CM",sb:"-"});render();const n2=document.querySelectorAll(".bklist .bkrow").length;
    const pill=[...document.querySelectorAll(".tfpills button, .fcpills button, .tfpill")].map(b=>b.textContent).join("|");bkF=bkFDef();render();return {n1,n2,sel,pill}});
- ok(R6.sel&&R6.n1===1&&R6.n2===1,"filtro Subtópico no banco (com o tema escolhido) "+JSON.stringify(R6));
+ ok(R6.sel&&R6.n1===1&&R6.n2===1&&!/Clínica/.test(R6.pill)&&/Hipertensão[^|]*\|[^|]*/.test(R6.pill),"filtro Subtópico no banco (com o tema escolhido) "+JSON.stringify(R6));
  /* 7. lista das provas oficiais */
  await p.evaluate(()=>{qPart="provas";ofOpen=true;render()});await p.waitForTimeout(150);
  const R7=await p.evaluate(()=>{const d=document.querySelector(".ofcat");const it=[...document.querySelectorAll(".ofi")];const e25=it.find(l=>/ENARE 2025/.test(l.textContent));

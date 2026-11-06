@@ -591,7 +591,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .ofg{margin-top:12px}.ofl{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .ofi{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.ofi.got{border-color:var(--accent)}
 .ofn{display:flex;flex-direction:column;min-width:0}.ofn span{font-size:.82rem;color:var(--muted2)}.ofi.got .ofn span{color:var(--accent)}.ofi .btn{flex:none}
-.sbed .sbl{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}.cmline{color:var(--accent)}.cmbtn{margin-top:8px;align-self:flex-start}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
+.sbi>b,.sbi>.sbs{display:block}.sbi>.sbs{margin:2px 0 6px;font-size:.92rem}.sbed .sbl{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}.cmline{color:var(--accent)}.cmbtn{margin-top:8px;align-self:flex-start}.exkst{margin:0;font-size:.88rem}.exkta{min-height:5rem}
 .exsum{margin:0;font-size:.92rem}.exsum .w{color:var(--warn);font-weight:600}
 .exrev{display:flex;flex-direction:column;gap:10px}
 .exq{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-top:1px solid var(--line)}.exq.off{opacity:.55}
@@ -9160,7 +9160,7 @@ function bkPreset(id){if(bkF.pre===id)bkF=bkFDef();else{const p=BK_PRE.find(x=>x
 const bkActive=F=>!!(F.q||F.st!=="all"||F.area!=="all"||F.k!=="all"||F.ban.length||F.ano.length||F.niv.length||F.o.length||F.fav||F.img||F.old||F.nf||F.teim||F.dyn);
 function bkActs(F,D){const A=[],tog=(arr,v)=>()=>bkSet(f=>{f[arr]=f[arr].filter(y=>y!==v)});
   if(F.q)A.push([`“${F.q}”`,()=>bkSet(f=>{f.q=""})]);if(F.st!=="all")A.push([(BK_ST.find(s=>s[0]===F.st)||["",""])[1],()=>bkSet(f=>{f.st="all"})]);
-  if(F.k!=="all")A.push([BYKEY[F.k]?BYKEY[F.k].t:"Tema",()=>bkSet(f=>{f.k="all";f.sb=""})]);if(F.k!=="all"&&F.sb)A.push([F.sb==="-"?"Sem subtópico":sbLabel(F.k,F.sb)||"Subtópico",()=>bkSet(f=>{f.sb=""})]);else if(F.area!=="all")A.push([F.sp!=="all"?F.sp:fcAreaName(F.area),()=>bkSet(f=>{if(f.sp!=="all")f.sp="all";else f.area="all"})]);
+  if(F.k!=="all")A.push([BYKEY[F.k]?BYKEY[F.k].t:"Tema",()=>bkSet(f=>{f.k="all";f.sb=""})]);else if(F.area!=="all")A.push([F.sp!=="all"?F.sp:fcAreaName(F.area),()=>bkSet(f=>{if(f.sp!=="all")f.sp="all";else f.area="all"})]);if(F.k!=="all"&&F.sb)A.push([F.sb==="-"?"Sem subtópico":sbLabel(F.k,F.sb)||"Subtópico",()=>bkSet(f=>{f.sb=""})]);
   F.o.forEach(v=>A.push([(BK_O.find(o=>o[0]===v)||["",v])[1],tog("o",v)]));F.ban.forEach(v=>A.push([v||"Sem banca",tog("ban",v)]));F.ano.forEach(v=>A.push([v||"Sem ano",tog("ano",v)]));F.niv.forEach(v=>A.push([v||"Sem nível",tog("niv",v)]));
   if(F.fav)A.push(["Favoritas",()=>bkSet(f=>{f.fav=false})]);if(F.img)A.push(["Com imagem",()=>bkSet(f=>{f.img=false})]);if(F.old)A.push(["Sem anuladas e desatualizadas",()=>bkSet(f=>{f.old=false})]);
   if(F.nf)A.push(["Figura não guardada",()=>bkSet(f=>{f.nf=false})]);if(F.teim)A.push(["Teimosas",()=>bkSet(f=>{f.teim=false})]);
