@@ -1,0 +1,210 @@
+</style>
+
+<div class="wrap">
+  <header>
+    <button class="hbtn hmenu" id="navMenuBtn" type="button" aria-label="Abrir o menu" title="Menu" aria-expanded="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="hacts" id="hacts"><button class="hbtn" id="srchBtn" type="button" aria-label="Buscar em tudo" title="Buscar em tudo (Ctrl+K)"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button><button class="hbtn hprof" id="profBtn" type="button" aria-label="Perfil" title="Perfil" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.6 7.2-5.6s6.3 2 7.2 5.6"/></svg><span id="profIni"></span></button><button class="hbtn" id="cfgBtn" type="button" aria-label="Configurações" title="Configurações" aria-pressed="false"><svg class="hico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 13.4a7.7 7.7 0 0 0 0-2.8l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2.4-1.4L14.2 2.6h-4l-.4 2.6a7.4 7.4 0 0 0-2.4 1.4l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2.4 1.4l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2.4-1.4l2.4 1 2-3.4z"/></svg></button></div>
+    <h1 class="brand"><svg class="blogo" viewBox="0 0 120 80" aria-hidden="true" focusable="false"><defs><linearGradient id="nxg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--lg1,#F1DDB0)"/><stop offset=".45" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></linearGradient><linearGradient id="nxg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--lg1,#E9D19C)"/><stop offset=".5" style="stop-color:var(--lg2,#B68D45)"/><stop offset="1" style="stop-color:var(--lg3,#6E4F1E)"/></linearGradient><radialGradient id="nxg3" cx=".35" cy=".3" r=".75"><stop offset="0" style="stop-color:var(--lg1,#F6E7C4)"/><stop offset=".6" style="stop-color:var(--lg2,#C9A25A)"/><stop offset="1" style="stop-color:var(--lg3,#8A6528)"/></radialGradient></defs><path d="M63 49 C70 40 77 32 89 30 C104 28 114 40 110 52 C106 64 90 68 79 62 C72 58 67 53 62 49" fill="none" stroke="url(#nxg2)" stroke-width="6.5" stroke-linecap="butt"/><path d="M8 70 C18 50 34 38 50 40 C64 42 72 54 86 62 C76 60 66 52 56 50 C42 47 28 54 8 70 Z" fill="url(#nxg1)"/><circle cx="68" cy="17" r="7.5" fill="url(#nxg3)"/></svg><span class="bname"><span class="bn1">Nexus</span><span class="vh"> - </span><span class="bn2">Trilha Médica</span></span></h1>
+    <p class="lede">198 temas de alta recorrência nas 5 grandes áreas. Estude no seu ritmo: o app agenda as revisões e mostra onde você mais erra.</p>
+  </header>
+
+  <nav class="appnav" aria-label="Navegação">
+  <button class="sbb" id="sbMenu" type="button" aria-label="Abrir o menu" title="Abrir o menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div class="sbrand" id="sBrand"></div><div class="ssearch" id="sSearch"></div>
+  <div class="tabs" role="tablist" aria-label="Seções">
+    <button class="tab" role="tab" id="tabI" data-v="inicio" aria-selected="true"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2L12 4.2l8.5 7"/><path d="M5.8 9.6V20h12.4V9.6M10 20v-5.6h4V20"/></svg><span class="tl">Início</span><span class="ecount" id="rcount"></span></button>
+    <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Residência</span></button>
+    <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
+    <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
+    <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Caderno</span><span class="ecount" id="ncount"></span></button>
+    <button class="tab" role="tab" id="tabS" data-v="stats" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M6.5 16.5l4-5 3.5 3 5-7"/><path d="M15.5 7.5H19V11"/></svg><span class="tl">Estatísticas</span></button>
+    <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
+    <button class="tab" role="tab" id="tabE" data-v="erros" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8L21.2 20H2.8z"/><path d="M12 10v4.4M12 17.2v.1"/></svg><span class="tl">Erros</span><span class="ecount" id="ecount"></span></button>
+    <button class="tab" role="tab" id="tabM" data-v="mais" aria-selected="false" aria-haspopup="dialog"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="tl">Menu</span><span class="ecount" id="mcount"></span></button>
+  </div>
+  <div class="navextra" id="navExtra"></div>
+  <div class="sbpins" id="sbPins"><button class="sbb" id="sbPinOpen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 5 3 3H7l3-3z"/><path d="M12 12v8"/></svg><span>Fixar aberta</span></button><button class="sbb" id="sbPinRail" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"/></svg><span>Recolher</span></button></div>
+  <div class="sfoot" id="sFoot"><div class="sfslot" id="sfProf"></div><button class="sfwho" id="sfWho" type="button"><b id="sfName"></b><span>Perfil e conta</span></button><div class="sfslot" id="sfCfg"></div></div>
+  </nav>
+  <div class="sbback" id="sbBack" hidden></div>
+  <div class="navmenu" id="navMenu" hidden><div class="nmpanel" role="dialog" aria-modal="true" aria-label="Menu" id="nmPanel"></div></div>
+  <button class="fopill" id="foPill" type="button" hidden aria-label="Voltar ao Foco"><span class="fpl">Foco</span><b>00:00</b></button>
+
+  <div id="viewFac" class="wrap" style="width:100%" hidden>
+    <section class="card fhead" id="facHead" aria-labelledby="fh"></section>
+    <div id="facSems" class="fsems"></div>
+    <div class="side fside">
+      <section class="card fprovdash" id="facProvas" aria-labelledby="fph" hidden></section>
+      <section class="card fweek" id="facWeek" aria-label="Foco nesta semana" hidden></section>
+      <section class="card fcrunch" id="facCrunch" aria-label="Modo provas"></section>
+    </div>
+  </div>
+
+  <div id="viewQuest" class="wrap" style="width:100%" data-qseg="resumo" hidden>
+    <div id="qPartBar"></div>
+    <div id="bkBox" data-qp="banco"></div>
+    <div class="tseg qseg" role="group" aria-label="Partes da aba Questões" id="qSegBar"><button type="button" data-q="resumo">Resumo</button><button type="button" data-q="praticar">Praticar</button><button type="button" data-q="temas">Temas</button></div>
+    <div id="qRegBox" data-qp="resumo"></div>
+    <section class="card tfind qfbar" id="qFBar" data-qp="resumo" role="search" aria-label="Filtros das questões"></section>
+    <section class="card dash qs-res" aria-labelledby="qh" data-qp="resumo">
+      <div class="dhead"><h2 id="qh">Desempenho em questões</h2><button class="btn primary qregb" id="qRegB" type="button">+ Registrar questões</button></div>
+      <div class="kpis" id="qkpis"></div>
+      <div id="qGoal"></div>
+      <div id="qPace"></div>
+      <figure class="chart"><figcaption>Evolução: últimas 12 semanas</figcaption><div id="qEvo"></div></figure>
+      <figure class="chart"><figcaption id="qChartTitle">Acerto por área</figcaption><div id="qChart"></div></figure>
+    </section>
+    <div id="qSrcBox" class="qs-res" data-qp="resumo"></div>
+    <div id="qExtra" class="qextra qs-prac" data-qp="sim redo"></div>
+    <div id="qExamBox" class="qexbox qs-prac" data-qp="provas"></div>
+    <section class="controls qfilters qs-tem" id="qFilters" aria-label="Filtros das questões" data-qp="resumo"></section>
+    <ol class="elist qlistT qs-tem" id="qlistT" data-qp="resumo"></ol>
+  </div>
+
+  <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
+    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Caderno</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
+    <div id="nPegFull" class="npegfull" hidden></div>
+    <div id="nRevBox" class="ns-rev nrevbox"></div>
+    <div id="nFreeBox" class="ns-free"></div>
+    <h3 class="nlisth ns-all" id="nTopicH" hidden></h3>
+    <ol class="elist ns-all" id="nlist"></ol>
+    <section class="card ns-all nexport" aria-labelledby="nh">
+      <h2 id="nh">Exportar o caderno</h2>
+      <p class="gtext" id="nsum"></p>
+      <div class="btns"><button class="btn primary" id="nCopy" type="button">Copiar em Markdown</button><button class="btn" id="nDown" type="button" hidden>Baixar arquivo .md</button><button class="btn" id="nPdf" type="button" hidden>Baixar PDF</button></div>
+      <div id="nPdfBox"></div>
+      <p class="gstatus" id="nmsg" aria-live="polite"></p>
+      <textarea id="nFallback" class="ntext" hidden readonly aria-label="Anotações em Markdown"></textarea>
+    </section>
+    <div id="nPegBox" class="ns-peg"></div>
+    <aside class="ntoc" id="nToc" aria-label="Sumário das anotações" hidden></aside>
+  </div>
+
+  <div id="viewStats" class="wrap" style="width:100%" hidden><div id="stBody" class="stbody"></div></div>
+  <div id="viewFoco" class="wrap" style="width:100%" hidden><div id="foBody" class="fobody"></div></div>
+  <div id="viewMais" class="wrap" style="width:100%" hidden><div id="maisBody" class="cfbody"></div></div>
+
+  <div id="viewInstr" class="wrap" style="width:100%" hidden>
+    <button class="link fback" id="backQuest" type="button">← Voltar</button>
+    <section class="card" aria-labelledby="ih">
+      <h2 id="ih">Instruções para as questões</h2>
+      <p class="gtext">Este texto é enviado ao Claude toda vez que você gera questões em um tema. Ajuste o estilo da banca, número de alternativas, dificuldade, foco e formato do comentário. O app acrescenta sozinho o tema, seus erros anteriores nele e o formato técnico da resposta.</p>
+      <textarea class="ptext" id="promptBox" aria-label="Instruções para as questões" maxlength="8000"></textarea>
+      <div class="btns">
+        <button class="btn primary" id="promptSave" type="button">Salvar instruções</button>
+        <span id="promptResetBox"><button class="btn" id="promptReset" type="button">Restaurar padrão</button></span>
+      </div>
+      <p class="gstatus" id="promptStatus"></p>
+      <details class="plain"><summary>Ver o que o app acrescenta ao seu texto</summary><p class="fixed" id="fixedFmt"></p></details>
+    </section>
+    <section class="card" aria-labelledby="bkh">
+      <h2 id="bkh">Backup</h2>
+      <p class="gtext">Salva todo o seu progresso num arquivo: temas, revisões, subtópicos, questões, anotações, caderno de erros, faculdade, histórico e estas instruções. Use para guardar uma cópia de segurança ou para levar seus dados para o site do checklist.</p>
+      <p class="gtext" id="bkSummary"></p>
+      <div class="btns"><button class="btn primary" id="bkSave" type="button">Exportar backup</button><button class="btn" id="bkCopy" type="button">Copiar backup</button></div>
+      <p class="gstatus" id="bkMsg" role="status"></p>
+      <p class="gtext how">O arquivo tem suas anotações e seu progresso em texto legível: guarde como um arquivo pessoal. O que você estudar depois de exportar não entra nele; exporte de novo quando for migrar.</p>
+    </section>
+  </div>
+
+  <div id="viewErros" class="wrap" style="width:100%" hidden>
+    <div class="side eside">
+    <div id="eTop" class="etop"></div>
+    <section class="card" aria-labelledby="mh">
+      <h2 id="mh">Onde melhorar</h2>
+      <div id="insight"></div>
+    </section>
+    </div>
+    <section class="controls">
+      <div class="card tfind" id="eFind" role="search" aria-labelledby="efh">
+        <div class="tfhead"><h2 id="efh">Encontrar erros</h2><span class="tfcount" id="eFCount"></span></div>
+        <div class="tfsearch"><svg class="tfsico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="search" id="eq" type="search" placeholder="Buscar nos erros (tema, conceito, fonte)" aria-label="Buscar nos erros" autocomplete="off"></div>
+        <div class="tfilters" id="eMore"></div>
+      </div>
+    </section>
+    <ol class="elist" id="elist"></ol>
+  </div>
+
+  <div id="viewPerfil" class="wrap" style="width:100%" hidden><div id="pfBody" class="pfbody"></div><div id="acctSlot" class="acctslot" hidden></div></div>
+  <div id="viewConfig" class="wrap" style="width:100%" hidden><div id="cfBody" class="cfbody"></div></div>
+  <div id="viewHelp" class="wrap" style="width:100%" hidden>
+    <button class="link fback" id="backHelp" type="button">← Voltar</button>
+    <section class="card" aria-labelledby="hh">
+      <h2 id="hh">Ajuda</h2>
+      <p class="gtext">Toque num assunto para abrir. A busca procura em todos os textos.</p>
+      <input class="etext" id="hq" type="search" placeholder="Buscar na ajuda (ex.: revisão, prova, backup, senha)" aria-label="Buscar na ajuda">
+      <div class="hlist" id="helpList"></div>
+      <p class="gtext how" id="helpMore">O manual completo, com o passo a passo do site e como pedir mudanças, está no documento <a href="https://claude.ai/code/artifact/fcdd47d2-4612-4cba-a14c-bba04148ecc8" target="_blank" rel="noopener">Manual do Checklist Residência</a>.</p>
+    </section>
+  </div>
+
+  <div id="viewInicio" class="wrap ihome" style="width:100%">
+    <div class="islot inoticebox" id="iNotice"></div>
+    <section class="card ihero" id="iHero" aria-label="Saudação do dia"></section>
+    <div class="icol icol1"><div class="islot" id="iQueue"></div><div class="islot" id="iToday"></div></div>
+    <div class="icol icol2"><section class="card iboard" id="iBoard" aria-label="Seu dia"></section><div class="islot" id="iWeek"></div><section class="card iprova" id="iProva" aria-label="Próxima prova"></section><section class="card istats" id="iStats" aria-label="Seu progresso"></section></div>
+    <div class="islot icustbox" id="iCust"></div>
+  </div>
+
+  <div id="viewTemas" class="wrap" style="width:100%" data-seg="hoje" hidden>
+  <div class="tseg" role="group" aria-label="Partes da aba Residência" id="tSeg">
+    <button type="button" data-s="hoje" aria-pressed="true">Hoje</button><button type="button" data-s="rev" aria-pressed="false">Revisões</button><button type="button" data-s="lista" aria-pressed="false">Lista</button><button type="button" data-s="prog" aria-pressed="false">Progresso</button>
+  </div>
+  <span id="todaySlot" hidden></span>
+  <section class="card today" aria-labelledby="th">
+    <div class="todayhead"><h2 id="th">Estudar hoje</h2><span class="todaydate" id="tdate"></span></div>
+    <p class="crunch" id="crunchBar" hidden></p>
+    <p class="pnote" id="planNote" role="status" hidden></p>
+    <div class="planhead"><span id="planmeta"></span><button class="link" id="planRedo" type="button">Refazer plano</button></div>
+    <div id="planDay"></div>
+    <div class="meter" id="planbar" hidden><i></i></div>
+    <ol class="plan" id="plan"></ol>
+    <div id="weekBox"></div>
+    <p class="how hx">O plano é montado uma vez por dia com os temas e subtópicos definidos em ⚙ Configurações (padrão: 3 temas, 3 subtópicos cada). Sem provas próximas, são temas da residência (um ponto fraco, se houver, e temas novos de maior incidência). Com prova da faculdade em até 21 dias, ela ganha 1, 2 ou 3 vagas conforme a data se aproxima; na semana da prova, o que você já estudou volta para revisão e não entram temas novos da residência; com 3 provas num intervalo de 7 dias, o plano fica só com a faculdade. Se você começar outro tema, ele entra no lugar de um proposto ainda não iniciado. Prova cadastrada para os próximos 7 dias entra no plano na hora, mantendo o que você já começou.</p>
+  </section>
+
+  <div class="side">
+  <section class="card agenda" id="revAgenda" aria-label="Próximos dias"></section>
+  <section class="card revs" aria-labelledby="rh">
+    <div class="todayhead"><h2 id="rh">Revisões</h2><span class="revmeta" id="revmeta"></span></div>
+    <div id="revVesp"></div>
+    <ol class="plan" id="revlist"></ol>
+    <div class="revdone" id="revdone" hidden></div>
+    <div id="revup"></div>
+    <p class="how hx">Todo tema que você estuda entra aqui no dia da revisão (1, 3, 7, 15, 30, 60 e 90 dias), com os subtópicos a revisar e a anotação para reler. As mais importantes (peso × atraso) vêm primeiro. <b>Lembrei</b> sobe um degrau (e, se passou mais tempo que o previsto, o próximo intervalo leva isso em conta), <b>Difícil</b> repete o intervalo e <b>Esqueci</b> volta dois degraus. Com 5 ou mais questões do tema no dia, a revisão é marcada sozinha pelo acerto.</p>
+  </section>
+
+  <section class="imeta rmeta" id="iMeta" aria-label="Meta e projeção até a prova" hidden></section>
+
+  <section class="card dash" aria-labelledby="ph">
+    <div class="dhead"><h2 id="ph">Seu progresso</h2><span class="save" id="save">Carregando progresso…</span></div>
+    <div class="dtop"><div class="ring" id="ring"></div><ul class="glegend" id="glegend"></ul></div>
+    <div class="kpis" id="stats"></div>
+    <div class="dcharts">
+      <figure class="chart"><figcaption>Progresso por área</figcaption><div id="areaChart"></div></figure>
+    </div>
+  </section>
+  <section class="card resmap" id="resMap" aria-label="Mapa da residência"></section>
+  </div>
+
+  <section class="controls">
+    <div class="card tfind" id="tFind" role="search" aria-labelledby="tfh">
+      <div class="tfhead"><h2 id="tfh">Encontrar temas</h2><span class="tfcount" id="tfCount"></span></div>
+      <div class="tfsearch"><svg class="tfsico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="search" id="q" type="search" placeholder="Buscar tema, subtópico ou anotação" aria-label="Buscar tema, subtópico ou anotação" autocomplete="off"></div>
+      <div id="tFilters" class="tfilters"></div>
+      <details class="tfhow"><summary>Como ler a lista</summary>
+        <p>As barrinhas ao lado de cada tema mostram o peso de incidência, calculado a partir de 1.182 questões do ENARE (2020–2024), do Enamed 2025 e do Revalida (2021–2026): <span class="inc" data-w="3"><i></i><i></i><i></i></span> muito alta, <span class="inc" data-w="2"><i></i><i></i><i></i></span> alta, <span class="inc" data-w="1"><i></i><i></i><i></i></span> moderada. O plano diário começa pelos de maior peso.</p>
+        <p>Toque em um tema para registrar estudo, revisão e questões. As revisões seguem intervalos de 1, 3, 7, 15, 30, 60 e 90 dias.</p>
+      </details>
+    </div>
+    <section class="card lvsug" id="lvSug" aria-label="Sugestões de nível" hidden></section>
+    <section class="card pinbox" id="pinBox" aria-label="Temas fixados" hidden></section>
+  </section>
+
+  <div id="areas" class="wrap" style="gap:14px;width:100%"></div>
+
+  <div id="resetBox"><button class="reset" id="resetBtn">Zerar todo o progresso</button></div>
+  </div>
+</div>
+
+<script>

@@ -1,8 +1,36 @@
-# Gera ../index.html (o site) a partir de src/checklist-residencia.html (o mesmo código do checklist no Claude).
+# Gera ../index.html (o site).
+# Desde a fase 1 da divisão (11/2026, docs/adr/001-divisao-em-modulos.md) o código-fonte vive em src/app/:
+#   topo.html + css/app.css + corpo.html + js/*.js (em ordem de nome) + fim.html
+# O build junta esses arquivos, sem mudar nenhum byte, em src/checklist-residencia.html (GERADO: não editar à mão;
+# o preview e testes leem esse arquivo) e depois monta o index.html como antes.
 # Uso, na raiz do repositório: python3 src/build_site.py
-import re, pathlib, hashlib
+#   --check : só confere se src/checklist-residencia.html está igual ao que os trechos geram (não grava nada)
+import re, sys, pathlib, hashlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-src = (ROOT / "src/checklist-residencia.html").read_text(encoding="utf-8")
+APP = ROOT / "src/app"
+GEN = ROOT / "src/checklist-residencia.html"
+STAMP = APP / ".gerado.sha1"  # impressão do último arquivo gerado: se o gerado mudar à mão, o build para
+
+
+def assemble():
+    pieces = [APP / "topo.html", APP / "css/app.css", APP / "corpo.html", *sorted((APP / "js").glob("*.js")), APP / "fim.html"]
+    return b"".join(p.read_bytes() for p in pieces)
+
+
+if APP.is_dir():
+    out = assemble()
+    cur = GEN.read_bytes() if GEN.exists() else b""
+    if "--check" in sys.argv:
+        if cur != out:
+            sys.exit("src/checklist-residencia.html está diferente do que src/app/ gera. Edite os arquivos em src/app/ e rode o build.")
+        print("ok: src/checklist-residencia.html confere com src/app/")
+        sys.exit(0)
+    if cur and cur != out and STAMP.exists() and hashlib.sha1(cur).hexdigest() != STAMP.read_text().strip():
+        sys.exit("src/checklist-residencia.html foi editado à mão (é gerado). Passe a mudança para os arquivos em src/app/ "
+                 "e rode o build de novo; nada foi gravado.")
+    GEN.write_bytes(out)
+    STAMP.write_text(hashlib.sha1(out).hexdigest() + "\n")
+src = GEN.read_text(encoding="utf-8")
 FB = "10.12.2"
 ver = hashlib.sha1((src + "".join((ROOT / f).read_text(encoding="utf-8") for f in ("bridge.js", "config.js", "site.css"))).encode()).hexdigest()[:8]
 head = f"""<!doctype html>
