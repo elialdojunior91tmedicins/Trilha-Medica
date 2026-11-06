@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=00e4d0c5">
+<link rel="stylesheet" href="site.css?v=b9d6af69">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=00e4d0c5"></script>
-<script src="bridge.js?v=00e4d0c5"></script>
+<script src="config.js?v=b9d6af69"></script>
+<script src="bridge.js?v=b9d6af69"></script>
 </head>
 <body>
 <script>
@@ -8966,6 +8966,8 @@ function bkAnswer(x,l,sec){const ok=l===x.q.correta,cnt=bkCounts(x),k=x.ks[0],d=
    preliminar ou definitivo (ex.kst p|d; o definitivo marca r.kd nas que mudaram). Comentário do Claude (cmGo: partes de CM_PART por copiar e colar, guardado
    na prova e no banco, r.cm). Subtópico sugerido pelo app (sbGuess → r.sb, r.sbd = conferir; Conferir subtópicos no cartão da prova; filtro no banco).
    Lista OF_CAT "Provas oficiais: lidas e faltando" (ofCardEl) em Provas na íntegra. */
+/* linha do PDF da Medway: "AA texto;texto;" (letra e 1ª linha da alternativa desenhadas em dobro) vira "A) texto;" */
+function mwLine(l){const m=/^([A-E])\1\s+(.+)$/.exec(String(l).trim());if(m){const u=mwUndouble(m[2]);if(u!==m[2].trim())return m[1]+") "+u}return mwUndouble(l)}
 function mwUndouble(line){let t=String(line).trim();if(!t)return t;const n=t.length;
   if(n%2===1){const h=(n-1)/2;if(t[h]===" "&&t.slice(0,h)===t.slice(h+1))return t.slice(0,h)}
   if(n%2===0&&n>=2){const h=n/2;if(t.slice(0,h)===t.slice(h))return t.slice(0,h)}
@@ -9400,7 +9402,7 @@ function exRestart(ex){const P=exPg(ex.id);for(const i in P.a){P.h[i]=[...(P.h[i
 /* gabarito: "1-A 2-C", "01. B", "Questão 3: D", "4 ANULADA" ou tabela (linha de números + linha de letras) → {número: letra | "X" (anulada)} */
 /* gabarito comentado: "RESPOSTA 1 … Correta: B", "Questão 2 – Gabarito: C", "Q3 Resposta correta: letra D" */
 function parseKeyStrong(t){const k={};if(!t)return k;const s=String(t).replace(/\r/g,"");let m;
-  const r=/(?:resposta|quest[aã]o|q\.?)\s*(\d{1,3})\b((?:(?!resposta\s*\d|quest[aã]o\s*\d)[\s\S]){0,140}?)(?<![A-Za-zÀ-ÿ])(?:alternativa\s+correta|resposta\s+correta|gabarito|correta)\s*[:=\-–—]\s*(?:letra\s+|alternativa\s+)?\(?([A-Ea-e]|anulad[ao])\b(?![ \t]+[a-zà-ÿ])/gi;
+  const r=/(?:resposta|quest[aã]o|q\.?)\s*(\d{1,3})\b((?:(?!resposta\s*\d|quest[aã]o\s*\d)[\s\S]){0,140}?)(?<![A-Za-zÀ-ÿ])(?:alternativa\s+correta|resposta\s+correta|gabarito|correta)\s*[:=\-–—][ \t]*(?:letra\s+|alternativa\s+)?\(?([A-Ea-e]|anulad[ao])\b(?![ \t]+[a-zà-ÿ])/gi;
   while((m=r.exec(s))){const n=+m[1];if(n<1||n>300||k[n])continue;const v=m[3].toUpperCase();k[n]=/^[A-E]$/.test(v)?v:"X";r.lastIndex=m.index+m[0].length}
   /* sem "Correta: X": a justificativa marcada "(correta)" diz a letra ("Justificativa D (correta): …") */
   const r2=/(?:resposta|quest[aã]o)\s*(\d{1,3})\b(?:(?!resposta\s*\d|quest[aã]o\s*\d)[\s\S]){0,1500}?(?:justificativa|alternativa|letra)\s+([A-E])\s*[(\[]\s*correta\s*[)\]]/gi;
@@ -9428,7 +9430,7 @@ async function pdfPageText(pg){const tc=await pg.getTextContent();let s="",y0=nu
     if(y0!==null&&Math.abs(y-y0)>Math.max(2,(it.height||0)*0.5)){if(!s.endsWith("\n"))s+="\n"}
     else if(x1!==null&&x-x1>1.5&&s&&!/\s$/.test(s)&&!/^\s/.test(it.str))s+=" ";
     s+=it.str;if(it.hasEOL)s+="\n";if(it.str)y0=y;x1=x+(it.width||0)}
-  return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim().split("\n").map(mwUndouble).join("\n")}// B4: texto desenhado em dobro (Medway) vira uma vez só
+  return s.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim().split("\n").map(mwLine).join("\n")}// B4: texto desenhado em dobro (Medway) vira uma vez só
 /* páginas com figura: imagem de pelo menos 150×150 px que não aparece em boa parte das páginas (logo/fundo do slide ficam de fora) */
 async function pdfFigPages(doc,ns){const lib=await pdfLib(),O=lib.OPS,ops=[O.paintImageXObject,O.paintInlineImageXObject,O.paintImageXObjectRepeat].filter(x=>x!==undefined),per={},cnt={};
   const mul=(m,n)=>[m[0]*n[0]+m[2]*n[1],m[1]*n[0]+m[3]*n[1],m[0]*n[2]+m[2]*n[3],m[1]*n[2]+m[3]*n[3],m[0]*n[4]+m[2]*n[5]+m[4],m[1]*n[4]+m[3]*n[5]+m[5]];
@@ -9466,7 +9468,8 @@ function impNew(){imp={st:"pick",name:"",banca:"",ano:"",pages:[],doc:null,blobs
 async function impPick(files){const R=imp;files=[...(files||[])];if(!R||!files.length)return;const f0=files[0],isPdf=f0.type==="application/pdf"||/\.pdf$/i.test(f0.name);
   R.st="scan";R.err="";R.msg="Abrindo o arquivo…";R.qs=[];R.done=new Set();R.fail=[];R.keyPg=[];render();
   try{if(isPdf){let lib=null;try{lib=await pdfLib()}catch(e){throw {code:"lib"}}
-      const o=await pdfOpenTxt(f0,(n,t)=>{R.msg=`Lendo o PDF aqui no aparelho: página ${n} de ${t}…`;const s=$("#impSt");if(s)s.textContent=R.msg});R.doc=o.doc;R.pages=o.pages}
+      const o=await pdfOpenTxt(f0,(n,t)=>{R.msg=`Lendo o PDF aqui no aparelho: página ${n} de ${t}…`;const s=$("#impSt");if(s)s.textContent=R.msg});R.doc=o.doc;R.pages=o.pages;
+      {const sh=mwSheet(R.pages);if(sh){R.pages=R.pages.filter(p=>!sh.pg.includes(p.n));R.mwAn=sh.an}}}
     else{R.doc=null;R.pages=[];R.blobs={};let n=0;for(const f of files){if(!/^image\//.test(f.type))continue;n++;R.blobs[n]=await imgShrink(f);R.pages.push({n,t:"",img:true})}}
     if(imp!==R)return;if(!R.pages.length)throw {code:"empty"};
     if(!R.name)R.name=f0.name.replace(/\.[a-z0-9]+$/i,"").replace(/[_]+/g," ").replace(/\s+/g," ").trim().slice(0,100);
@@ -9481,7 +9484,11 @@ async function impKeyFile(f){const R=imp;if(!R||!f)return;R.err="";
   try{const o=await pdfOpenTxt(f);R.keyTxt=o.pages.map(p=>p.t).join("\n");R.keyFile=f.name;if(!Object.keys(parseKey(R.keyTxt)).length)R.err="Não reconheci respostas neste PDF (ele pode ser uma imagem). Digite o gabarito em Colar o gabarito."}
   catch(e){R.err="Não consegui ler o PDF do gabarito."}
   if(R.st==="review")impApplyKey(R,impKey(R));render()}
-function impKey(R){const k={};R.pages.forEach(p=>{if(p.t&&!R.keyPg.includes(p.n))Object.assign(k,parseKeyStrong(p.t))});/* página mista: questões no começo, gabarito comentado no fim */
+/* folha de rascunho do fim (Medway): "RESPOSTAS" e as linhas 01 A B C D E; as anuladas vêm escritas ("53 Anulada"). Sai das páginas e vira anulada no gabarito */
+function mwSheet(pages){const pg=[],an=new Set();pages.forEach(p=>{const t=p.t||"",rows=(t.match(/\b(\d{2})\1?\s+(?:A{1,2}\s+B{1,2}\s+C{1,2}|(?:Anulada){1,2})/g)||[]).length;
+    if(rows>=40||rows>=20&&/RESPOSTAS|GABARITO|RASCUNHO/i.test(t)){pg.push(p.n);let m;const re=/\b(\d{2})\1?\s+(?:Anulada){1,2}/g;while((m=re.exec(t)))an.add(+m[1])}});
+  return pg.length?{pg,an:[...an].filter(n=>n>=1&&n<=300).sort((a,b)=>a-b)}:null}
+function impKey(R){const k={};(R.mwAn||[]).forEach(n=>{k[n]="X"});R.pages.forEach(p=>{if(p.t&&!R.keyPg.includes(p.n))Object.assign(k,parseKeyStrong(p.t))});/* página mista: questões no começo, gabarito comentado no fim */
   /* gabarito comentado em várias páginas ("RESPOSTA N — Correta: X"): junta as páginas e usa só esse formato, que não confunde números do texto (t(15;17)…) com respostas */
   const kp=R.keyPg.map(n=>(R.pages.find(p=>p.n===n)||{}).t||"").join("\n");if(Object.keys(parseKeyStrong(kp)).length>=3)Object.assign(k,parseKeyStrong(kp));else Object.assign(k,parseKey(kp));
   [R.keyTxt,R.paste].forEach(t=>Object.assign(k,parseKey(t)));return k}
@@ -9604,7 +9611,7 @@ const pgList=L=>{const out=[];L.forEach(n=>{const l=out[out.length-1];if(l&&n===
 async function impSave(){const R=imp;if(!R||R.saving)return;const qs=R.qs.filter(r=>!r.x);if(!qs.length)return;
   const id="ex"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);let FA=[];
   if(R.doc&&R.figs&&R.figs.length){R.saving=true;R.msg="Recortando as figuras das questões…";render();try{FA=await impFigAssign(R,qs);for(const a of FA){const b=await pdfFigImg(await R.doc.getPage(a.f.n),a.f.rs),u=await exfData(b);if(u){qs[a.j].fg=1;await exfPut({id:id+"_"+a.j,ex:id,i:a.j,img:u})}}}catch(e){}R.saving=false;if(imp!==R)return}
-  const ex=exClean({id,name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs,...(R.of?{of:1,...(R.niv?{niv:R.niv}:{})}:{}),...(qs.some(r=>r.g==="b")?{kst:"d"}:{})});
+  const ex=exClean({id,name:R.name.trim()||"Prova",banca:R.banca.trim(),ano:R.ano.trim(),at:new Date().toISOString(),qs,...(R.of?{of:1,...(R.niv?{niv:R.niv}:{})}:{}),...(qs.some(r=>r.g==="b"&&!r.an)?{kst:"d"}:{})});
   exams.unshift(ex);exPut(ex);imp=null;exArm=null;render();setTimeout(()=>{const x=document.getElementById("exr-"+ex.id);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 /* uma questão para conferir (na importação e depois de salva) */
 /* o comentário contradiz o gabarito: outra alternativa diz "Correta" ou o comentário da certa começa com "Incorreta" (gabarito lido errado) */
@@ -9772,7 +9779,7 @@ function impLocal(R){const key=impKey(R),KC=keyComments(R),probs=[],qs=[];
   if(few.length)probs.push(`${few.length===1?"a questão":"as questões"} ${lst(few)} ${few.length===1?"saiu":"saíram"} com menos de 4 alternativas ou sem enunciado (PDF em duas colunas costuma embaralhar)`);
   if(bad.length)probs.push(`${bad.length===1?"a questão":"as questões"} ${lst(bad)} ${bad.length===1?"parece":"parecem"} misturada${bad.length===1?"":"s"} com outro texto ou com o gabarito fora das alternativas`);
   if(dup.size)probs.push(`número de questão repetido: ${lst([...dup])}`);
-  if(noKey.length)probs.push(noKey.length===qs.length?"a prova veio sem gabarito: sem ele, só o Claude resolve as questões (ou cole o gabarito acima)":`sem resposta no gabarito para ${noKey.length===1?"a questão":"as questões"} ${lst(noKey)}`);
+  if(noKey.length)probs.push(noKey.length>=qs.filter(r=>!r.an).length?(R.mwAn&&R.mwAn.length?`o PDF não traz o gabarito (só a folha de rascunho, com ${R.mwAn.length===1?"a anulada":"as anuladas"} ${R.mwAn.join(", ")}, já marcada${R.mwAn.length===1?"":"s"}). Cole o gabarito oficial, ou o Claude resolve e você confere`:"a prova veio sem gabarito: sem ele, só o Claude resolve as questões (ou cole o gabarito acima)"):`sem resposta no gabarito para ${noKey.length===1?"a questão":"as questões"} ${lst(noKey)}`);
   return {qs,probs}}
 function impLocalGet(R){const sig=[R.keyPg.join(),keyText(impKey(R)),R.pages.length,R.keyTxt.length].join("|");if(!R.loc||R.loc.sig!==sig){R.loc=impLocal(R);R.loc.sig=sig}return R.loc}
 function impUseLocal(R){const L=impLocalGet(R);R.qs=L.qs.map(r=>({...r}));R.done=new Set(impQPages(R));R.fail=[];R.src="local";R.st="review";R.show=12;R.flt="all";render();
@@ -9868,7 +9875,7 @@ function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).l
   const stt=P.fin?"fin":nAns?"run":"new";
   const li=el(`<li class="excard" data-st="${stt}" id="exr-${ex.id}"><div class="exch"><b class="exname"></b><span class="exstat"></span></div><p class="exmeta"></p><div class="exmain2"></div><div class="exsec"></div></li>`);
   li.querySelector(".exname").textContent=ex.name;
-  li.querySelector(".exmeta").textContent=[[ex.banca,ex.ano].filter(Boolean).join(" "),`${N} ${N===1?"questão":"questões"}`,ex.of?`prova oficial${ex.niv?" "+ex.niv:""}`:"",nb===N?(ex.kst==="p"?"gabarito preliminar":"gabarito da banca"):nb?`gabarito da banca em ${nb}`:ex.of?"sem gabarito: cole o oficial":"gabarito do Claude"].filter(Boolean).join(" · ");
+  li.querySelector(".exmeta").textContent=[[ex.banca,ex.ano].filter(Boolean).join(" "),`${N} ${N===1?"questão":"questões"}`,ex.of?`prova oficial${ex.niv?" "+ex.niv:""}`:"",ex.of&&!ex.qs.some(r=>r.g==="b"&&!r.an)?"sem gabarito: cole o oficial":nb===N?(ex.kst==="p"?"gabarito preliminar":"gabarito da banca"):nb?`gabarito da banca em ${nb}`:"gabarito do Claude"].filter(Boolean).join(" · ");
   const st=li.querySelector(".exstat"),last=P.tries[P.tries.length-1];
   st.textContent=P.fin?`Feita · ${pct(S.hit,S.ans)}%`:nAns?"Em andamento":"Não iniciada";
   const M=li.querySelector(".exmain2"),B=li.querySelector(".exsec");

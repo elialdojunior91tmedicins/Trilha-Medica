@@ -22,7 +22,14 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
      plain:impMwPages([{n:1,t:"Questão 1\nEnunciado\nA) um\nB) dois\nQuestão 2\nE\nA) a\nB) b\nQuestão 3\nE\nA) a\nB) b"}])===null}});
  ok(R1.und==="abc def"&&R1.und2==="texto normal","texto desenhado em dobro vira uma vez só "+JSON.stringify([R1.und,R1.und2]));
  ok(R1.pages===2&&R1.q3&&R1.a===15&&R1.alt,"Medway: alternativas depois dos enunciados voltam para a questão certa, 3 questões × 5 alternativas "+JSON.stringify(R1));
- ok(R1.stem,"enunciado em dobro lido uma vez");ok(R1.plain,"prova no formato comum (A) …) não passa pelo leitor da Medway");
+ ok(R1.stem,"enunciado em dobro lido uma vez");
+ const R1b=await p.evaluate(()=>{const sheet=["ENARE - 2025","","RESPOSTAS",...Array.from({length:25},(_,i)=>{const r=n=>{const d=String(n).padStart(2,"0");return [17,53,55].includes(n)?d+d+" AnuladaAnulada":d+d+" AA BB CC DD EE"};return [i+1,i+26,i+51,i+76].map(r).join(" ")})].join("\n");
+   const S=mwSheet([{n:1,t:"QUESTÃO 01\nTexto"},{n:2,t:sheet}]);
+   return {l1:mwLine("AA rivaroxabana de 15 mg, uma vez ao dia;rivaroxabana de 15 mg, uma vez ao dia;"),l2:mwLine("BB de cianocobalamina parenteral (1000 microgramasde cianocobalamina parenteral (1000 microgramas"),l3:mwLine("AA BB CC"),
+     sh:S&&S.pg.join(),an:S&&S.an.join(),pk:parseKeyStrong("Questão 75\nEm relação aos cistos, assinale a alternativa correta:\nA) É uma formação cística")[75]||""}});
+ ok(R1b.l1==="A) rivaroxabana de 15 mg, uma vez ao dia;"&&R1b.l2==="B) de cianocobalamina parenteral (1000 microgramas"&&R1b.l3==="AA BB CC","PDF da Medway: 'AA texto;texto;' vira 'A) texto;' "+JSON.stringify(R1b));
+ ok(R1b.sh==="2"&&R1b.an==="17,53,55","folha de rascunho sai da leitura e as anuladas escritas nela viram anuladas");
+ ok(R1b.pk==="","'assinale a alternativa correta:' seguido da lista de alternativas não é lido como gabarito");ok(R1.plain,"prova no formato comum (A) …) não passa pelo leitor da Medway");
  /* 2. prova oficial, banco, subtópico */
  const R2=await p.evaluate(async()=>{const Q=(e,a,c)=>({enunciado:e,alternativas:a.map((t,i)=>({letra:"ABCDE"[i],texto:t})),correta:c,comentario:""});
    const it=BYKEY["CM-1"],S=subList(it),s0=S[0].t;
