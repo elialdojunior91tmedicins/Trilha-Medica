@@ -479,7 +479,7 @@ consultado quando há dúvida. Responda em português.
 
 ## Ideia: Banco de questões
 
-Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela), B2 (a tela) e B3 (ligações) feitos em 11/2026; 1ª banca para importar no B4: ENARE.
+Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela), B2 (a tela), B3 (ligações) e B4 (provas oficiais: leitor da Medway, gabarito preliminar/definitivo, comentários, subtópico) feitos em 11/2026; ENARE 2025 e 2024 lidos, arquivos de gabarito e comentários com o usuário (não vão para o repositório). Próximo: B5.
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
   importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).
