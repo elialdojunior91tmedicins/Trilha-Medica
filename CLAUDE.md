@@ -17,9 +17,13 @@ consultado quando há dúvida. Responda em português.
 
 ## Como atualizar
 
-1. Edite **`src/checklist-residencia.html`** (fonte única do app; é o arquivo publicado como artefato).
-   Não edite `index.html` à mão: ele é gerado.
-2. Gere o site: `python3 src/build_site.py` (monta `index.html` e muda a versão do `sw.js`).
+1. Edite os arquivos em **`src/app/`** (fonte do app desde 11/2026; `docs/adr/001-divisao-em-modulos.md`):
+   `topo.html`, `css/app.css`, `corpo.html`, `js/NNN-nome.js` (juntados em ordem de nome; numerados de 10 em 10) e `fim.html`.
+   Para achar uma função: `grep -n "function nome" src/app/js/*.js`. Recurso novo vai no trecho do assunto dele, nunca no fim.
+   **Não edite `src/checklist-residencia.html` nem `index.html` à mão: os dois são gerados** (o build para se o primeiro foi mudado à mão).
+   Nas seções abaixo, "módulo antes de X" quer dizer a posição no código juntado (a ordem dos trechos é a ordem de sempre).
+2. Gere o site: `python3 src/build_site.py` (junta `src/app/` em `src/checklist-residencia.html`, monta `index.html` e muda a versão do `sw.js`).
+   `python3 src/build_site.py --check` só confere se o gerado bate com `src/app/`.
 3. Rode os testes: `tests/run.sh` (todos; veja `tests/README.md`) e escreva um teste novo `tests/tNN.js` para cada recurso novo
    (inclua-o em `tests/list.txt`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
    iPad dentro do app do Claude) e computador (1366, 1920). Modos de layout ficam em
@@ -31,8 +35,9 @@ consultado quando há dúvida. Responda em português.
 
 ## Arquitetura
 
-- `src/checklist-residencia.html`: app inteiro (HTML/CSS/JS). No Claude usa `window.claude.use(...)`
-  (db, user, sample, downloads).
+- `src/app/`: o código do app em trechos (HTML/CSS/JS); `src/checklist-residencia.html` = os trechos juntados (gerado; o preview
+  `tests/mkprev.py` e vários testes leem esse arquivo). No Claude usa `window.claude.use(...)` (db, user, sample, downloads).
+  Divisão em módulos em andamento: fase 1 (cortar, sem mudar código) feita em 06/11/2026; próximas em `docs/adr/001-divisao-em-modulos.md`.
 - `bridge.js`: no site, implementa o mesmo `window.claude.use` com Firebase (Auth e-mail/senha +
   Firestore, persistência offline), download/compartilhamento de arquivos e IA por **copiar e colar**
   (janela com o pedido; o usuário cola a resposta). Também: importar/desfazer backup, conta, avisos.

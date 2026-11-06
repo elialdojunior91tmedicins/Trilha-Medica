@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<script>
+if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifenização do texto justificado
+/* reconhece o aparelho pelo tamanho da tela física e decide o layout (antes de desenhar a página) */
+(function(){const R=document.documentElement;
+  function decide(){const w=innerWidth,coarse=matchMedia("(pointer:coarse)").matches,
+      ipad=/iPad|Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1,
+      big=Math.min(screen.width,screen.height)>=700;let L,c="1";
+    if(coarse||ipad)L=big&&w>=480?"tablet":"phone";else L=w<700?"phone":w>=1024?"desktop":"compact";
+    if((L==="tablet"&&w>=1000)||(L==="desktop"&&w>=1200))c="2";
+    if(R.dataset.layout!==L)R.dataset.layout=L;if(R.dataset.cols!==c)R.dataset.cols=c}
+  decide();addEventListener("resize",decide);addEventListener("orientationchange",()=>setTimeout(decide,120));window.__decideLayout=decide})();
+</script>
+<title>Nexus - Trilha Médica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
