@@ -87,6 +87,18 @@ function phaseEl(){const ph=ui.profile.phase,sg=phaseSuggest(),c=el(`<section cl
   c.querySelector("p.how").textContent=ph?(ph!==sg?`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`:"Você pode trocar quando quiser."):`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`;
   Object.entries(PHASES).forEach(([v,x])=>{const b=el(`<button type="button"></button>`);b.id="ph-"+v;b.textContent=x.lab+(v===sg&&v!==ph?" · sugerida":"");b.setAttribute("aria-pressed",ph===v);b.onclick=()=>setPhase(v);c.querySelector(".seg").appendChild(b)});
   c.querySelector(".phhow").textContent=ph?PHASES[ph].how:"";if(!ph)c.querySelector(".phhow").remove();return c}
+/* Tempo de abertura (11/2026): as últimas 12 aberturas deste aparelho, gravadas pelo script do topo (resid-perf) */
+function perfCardEl(){let L=[];try{L=JSON.parse(localStorage.getItem("resid-perf")||"[]")}catch(e){}
+  const c=el(`<details class="card perfcard" id="perfCard"><summary><b>Tempo de abertura</b> <span class="muted">· ${L.length} medida${L.length===1?"":"s"} neste aparelho</span></summary></details>`);
+  const s=x=>(x/1000).toFixed(1).replace(".",",")+" s",lab=r=>(r.app?"App instalado":"Navegador")+(r.sw?" · do aparelho":" · da internet");
+  if(!L.length){c.appendChild(el(`<p class="muted">Ainda sem medidas. Feche e abra o app algumas vezes.</p>`));return c}
+  c.appendChild(el(`<p class="muted hx">“Pronto” = a saudação do Início na tela. “Do aparelho” = o modo offline entregou os arquivos; “da internet” = primeira abertura ou versão nova.</p>`));
+  const ol=el(`<ol class="perflist"></ol>`);L.forEach(r=>{const li=el(`<li></li>`);const d=new Date(r.at);
+    li.textContent=`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} · ${lab(r)} · pronto em ${s(r.ok)} (1ª pintura ${s(r.fcp)})${r.kb?` · ${r.kb} KB baixados`:""}`;ol.appendChild(li)});c.appendChild(ol);
+  const row=el(`<div class="row"></div>`),cp=el(`<button class="btn" type="button" id="perfCopy">Copiar as medidas</button>`),cl=el(`<button class="link" type="button" id="perfClear">Apagar</button>`);
+  cp.onclick=()=>{const txt=L.map(r=>[new Date(r.at).toISOString(),lab(r),"pronto "+r.ok+" ms","1ª pintura "+r.fcp+" ms","html "+r.dcl+" ms",r.kb+" KB",navigator.userAgent].join(" | ")).join("\n");
+    try{navigator.clipboard.writeText(txt).then(()=>infoToast("Medidas copiadas."),()=>infoToast("Não deu para copiar."))}catch(e){infoToast("Não deu para copiar.")}};
+  cl.onclick=()=>{try{localStorage.removeItem("resid-perf")}catch(e){}render()};row.appendChild(cp);row.appendChild(cl);c.appendChild(row);return c}
 function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs;
   const back=el(`<button class="link fback" type="button">← Voltar</button>`);back.onclick=goBack;box.appendChild(back);
   box.appendChild(el(`<h2 class="cftitle">Configurações</h2>`));
@@ -133,7 +145,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
     const b=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);b.querySelector("b").textContent=t;b.querySelector("span").textContent=d;b.onclick=fn;ql.appendChild(b)});
-  box.appendChild(qb);box.appendChild(trashCardEl());
+  box.appendChild(qb);box.appendChild(trashCardEl());box.appendChild(perfCardEl());
   /* Lote 18: configurações em camadas — o que se usa sempre fica à vista; o resto em "Mais opções" de cada cartão */
   cfLayer(ap,"ap",["Barra lateral"],[ap.querySelector(":scope>.glabel"),ap.querySelector(".lays")]);
   cfLayer(pl,"pl",["Subtópicos por tema","Intervalos das revisões","Ajustar pelo acerto","Marcar atraso"],[pl.querySelector("#dnAllBox")]);

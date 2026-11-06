@@ -2321,3 +2321,5 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
 /* Lote 19 — saudação visível no modo escuro: tom um pouco mais claro e contorno dourado fino */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}}
 :root[data-theme="dark"] #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}
+/* Configurações › Tempo de abertura */
+#perfCard summary{cursor:pointer}#perfCard .perflist{margin:10px 0;padding-left:20px;font-size:.88em;line-height:1.6}#perfCard .row{display:flex;gap:12px;align-items:center}
