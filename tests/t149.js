@@ -62,6 +62,20 @@ const {chromium}=require('playwright');const fs=require('fs');const mock=fs.read
  ok(R4.c1==="Comentário da questão 1."&&R4.pq==="Não serve aqui."&&R4.pc==="PC 1"&&R4.cm===1&&R4.c2==="Comentário da questão 2.","comentário, porquês e ponto-chave guardados na prova "+JSON.stringify(R4));
  ok(R4.bank==="Comentário da questão 1.","comentário chega ao banco");ok(R4.pr,"o pedido leva o gabarito oficial de cada questão");ok(/2 questões comentadas/.test(R4.line),"aviso do fim: "+R4.line);
  ok(!(await p.$("#excm-exof1")),"sem pendentes, o botão some");
+ /* 4b. juntar gabarito e comentários de um arquivo */
+ const R4b=await p.evaluate(async()=>{const Q=(e,a,c)=>({enunciado:e,alternativas:a.map((t,i)=>({letra:"ABCDE"[i],texto:t})),correta:c||"",comentario:""});
+   const ex=exClean({id:"exj",name:"Prova teste juntar",banca:"Teste",ano:"2020",at:"2024-01-01T10:00:00.000Z",of:1,niv:"R1",
+     qs:[1,2,3,4].map(n=>({n,k:"CM-1",g:"c",q:Q("Enunciado número "+n+" de uma questão de hipertensão arterial sistêmica.",["a","b","c","d","e"],"")}))});exams.push(ex);exPut(ex);
+   const it=(n,c,x)=>Object.assign({n,ini:"Enunciado número "+n+" de uma questão",correta:c,comentario:"Comentário "+n,porque:{A:"pq A",B:"pq B",C:"pq C"},pontoChave:"PC "+n,fonte:"Diretriz"},x||{});
+   const R1=cjApply(ex,{app:"nexus-comentarios",v:1,gab:"claude",qs:[it(1,"B"),it(2,"C"),it(3,"A",{ini:"Outro enunciado que não bate com nada"}),it(9,"A")]});
+   const s1={r:R1,c1:ex.qs[0].q.correta,g1:ex.qs[0].g,pq:ex.qs[0].q.alternativas.map(a=>a.porque).join("|"),cm:ex.qs[0].q.comentario,c3:ex.qs[2].q.correta,kst:ex.kst||""};
+   const R2=cjApply(ex,{app:"nexus-comentarios",v:1,gab:"oficial",qs:[it(1,"C"),it(4,"",{anulada:true})]});
+   const s2={r:R2,c1:ex.qs[0].q.correta,g1:ex.qs[0].g,an4:!!ex.qs[3].an,kst:ex.kst,pq:ex.qs[0].q.alternativas.map(a=>a.porque).join("|")};
+   const R3=cjApply(ex,{app:"nexus-comentarios",v:1,gab:"claude",qs:[it(1,"A")]});
+   return {s1,s2,s3:{r:R3,c1:ex.qs[0].q.correta},bad:cjApply(ex,{app:"x"})}});
+ ok(R4b.s1.r.ok===2&&R4b.s1.r.key===2&&R4b.s1.c1==="B"&&R4b.s1.g1==="c"&&R4b.s1.pq==="pq A||pq C||"&&R4b.s1.cm==="Comentário 1"&&R4b.s1.c3===""&&R4b.s1.r.skip.join()==="3,9"&&!R4b.s1.kst,"arquivo com gabarito do Claude: resposta marcada 'conferir', porquês, e quem não bate fica de fora "+JSON.stringify(R4b.s1));
+ ok(R4b.s2.c1==="C"&&R4b.s2.g1==="b"&&R4b.s2.an4&&R4b.s2.kst==="d"&&R4b.s2.pq==="pq A|pq B|||","arquivo oficial troca a resposta, anula e marca definitivo "+JSON.stringify(R4b.s2));
+ ok(R4b.s3.r.kept===1&&R4b.s3.c1==="C"&&R4b.s3.r.ok===0&&R4b.bad===null,"gabarito do Claude não passa por cima do oficial (nem o comentário escrito para outra letra) "+JSON.stringify(R4b.s3));
  /* 5. na questão aberta (banco, modo estudo) */
  const R5=await p.evaluate(async()=>{const Q=(e,a,c)=>({enunciado:e,alternativas:a.map((t,i)=>({letra:"ABCD"[i],texto:t})),correta:c,comentario:""});
    const ex=exClean({id:"exof2",name:"Revalida 2024.1",banca:"REVALIDA",ano:"2024",at:"2024-10-01T10:00:00.000Z",of:1,niv:"Revalida",kst:"d",qs:[{n:7,k:"GO-1",g:"b",q:Q("Gestante com PA 164x112 mmHg e cefaleia. Conduta imediata?",["Sulfato de magnésio","Observação","Corticoide e alta","Furosemida"],"A")}]});

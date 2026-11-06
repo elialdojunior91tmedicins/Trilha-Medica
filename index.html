@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=b9d6af69">
+<link rel="stylesheet" href="site.css?v=89c23a18">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=b9d6af69"></script>
-<script src="bridge.js?v=b9d6af69"></script>
+<script src="config.js?v=89c23a18"></script>
+<script src="bridge.js?v=89c23a18"></script>
 </head>
 <body>
 <script>
@@ -9044,6 +9044,30 @@ async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")r
   C.st="done";C.msg=`${C.done} ${C.done===1?"questão comentada":"questões comentadas"}. Os comentários ficaram guardados na prova e no banco.`;render()}
 function cmLineEl(ex){if(!cmRun||cmRun.id!==ex.id)return null;const C=cmRun,p=el(`<p class="exline cmline"></p>`);
   p.textContent=C.st==="run"?`✦ Comentando com o Claude${C.m>1?`: parte ${C.i+1} de ${C.m}`:""}…`:C.msg;if(C.st==="run"){const b=el(`<button class="link" type="button" id="cmStop">Parar</button>`);b.onclick=()=>{C.ctl.abort()};p.append(" ",b)}return p}
+/* "Juntar gabarito e comentários" (arquivo .json preparado pelo Claude numa conversa): {app:"nexus-comentarios",v:1,prova,gab:"oficial"|"claude",kst?:"p"|"d",
+   qs:[{n,ini,correta?,anulada?,comentario,porque:{A:…},pontoChave,takeHome,conceito,fonte}]}. Cada item só entra se o número existe e o começo do enunciado (ini) bate. */
+const CJ_APP="nexus-comentarios";let cjMsg=null;
+function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,an:0,skip:[],kept:0};if(!o||o.app!==CJ_APP||!Array.isArray(o.qs))return null;
+  const off=o.gab==="oficial";
+  o.qs.forEach(it=>{if(!it||typeof it!=="object")return;const i=ex.qs.findIndex(r=>r.n===+it.n);if(i<0){R.skip.push(it.n);return}const r=ex.qs[i];
+    const a=bqT(t(it.ini)).slice(0,40),b=bqT(r.q.enunciado).slice(0,a.length);if(a.length<12||a!==b){R.skip.push(it.n);return}
+    const v=t(it.correta).toUpperCase();
+    if(it.anulada&&off){if(!r.an){exChange(ex,i,y=>{y.an=true;y.g="b"});R.an++}}
+    else if(/^[A-E]$/.test(v)&&r.q.alternativas.some(x=>x.letra===v)){
+      if(off){if(r.q.correta!==v||r.g!=="b"||r.an){exChange(ex,i,y=>{if(!y.ck&&y.q.correta)y.ck=y.q.correta;y.an=false;y.q.correta=v;y.g="b"});R.key++}}
+      else if(r.g!=="b"&&!r.an){if(r.q.correta!==v){exChange(ex,i,y=>{y.q.correta=v;y.g="c"});R.key++}}else if(r.q.correta!==v)R.kept++}
+    if(t(it.comentario)&&(!r.an||it.anulada)){const q=r.q;if(r.q.correta&&v&&r.q.correta!==v&&!off&&r.g==="b"){/* o comentário foi escrito para outra letra: não junta */}
+      else{q.comentario=t(it.comentario).slice(0,4000);const P=it.porque&&typeof it.porque==="object"?it.porque:{};q.alternativas.forEach(x=>{if(x.letra!==q.correta&&t(P[x.letra]))x.porque=t(P[x.letra]).slice(0,1200);else if(x.letra===q.correta)x.porque=""});
+        if(t(it.pontoChave))q.pc=t(it.pontoChave).slice(0,1200);if(t(it.takeHome))q.th=t(it.takeHome).slice(0,800);if(t(it.conceito))q.conceito=t(it.conceito).slice(0,600);if(t(it.fonte))q.fonte=t(it.fonte).slice(0,400);
+        r.ck=q.correta;r.cm=1;R.ok++}}});
+  if(off&&(R.key||R.an))ex.kst=o.kst==="p"?"p":"d";
+  const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),tt=P.tries[P.tries.length-1];tt.hit=S.hit;tt.n=S.ans}
+  exPut(ex);exPSave(ex.id);if(typeof bankFeedSoon==="function")bankFeedSoon();return R}
+function cjPick(ex){const inp=document.createElement("input");inp.type="file";inp.accept="application/json,.json";
+  inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;let o=null;try{o=JSON.parse(await f.text())}catch(e){o=null}
+    const R=o&&cjApply(ex,o);cjMsg={id:ex.id,t:!R?"Este arquivo não é de gabarito e comentários do Nexus.":
+      `${R.ok} ${R.ok===1?"comentário juntado":"comentários juntados"}${R.key?` · ${R.key} ${R.key===1?"resposta":"respostas"} do gabarito ${o.gab==="oficial"?"oficial":"do Claude (conferir)"}`:""}${R.an?` · ${R.an} ${R.an===1?"anulada":"anuladas"}`:""}${R.skip.length?` · ${R.skip.length} não ${R.skip.length===1?"bateu":"bateram"} com a prova (nº ${R.skip.slice(0,8).join(", ")}${R.skip.length>8?"…":""}) e ${R.skip.length===1?"ficou":"ficaram"} de fora`:""}${R.kept?` · ${R.kept} com gabarito da banca mantido`:""}.`};commit()};
+  inp.click()}
 function bkCmBtn(x,id){if(!x||!x.ex||x.ei==null)return null;const ex=exams.find(e=>e.id===x.ex);return ex?cmBtn(ex,x.ei,id):null}
 function cmBtn(ex,i,id){if(!sampleFn||!ex)return null;const r=ex.qs[i];if(!r||!r.q.correta||r.an||(r.q.comentario||"").trim())return null;const b=el(`<button class="btn cmbtn" type="button">✦ Comentar com o Claude</button>`);b.id=id;
   b.disabled=!!(cmRun&&cmRun.st==="run");b.onclick=()=>cmGo(ex,[i]);return b}
@@ -9898,6 +9922,8 @@ function exRowCard(ex){const P=exPg(ex.id),S=exScore(ex),nAns=Object.keys(P.a).l
   const kb=sb(`exkb-${ex.id}`,"Colar gabarito",()=>{exKey=exKey&&exKey.id===ex.id?null:{id:ex.id,t:"",msg:""};exEdit=null;render();setTimeout(()=>{const t=$("#exKeyTa");if(t)t.focus()},40)});kb.setAttribute("aria-expanded",!!(exKey&&exKey.id===ex.id));
   {const c=cmLineEl(ex);if(c)li.querySelector(".exmeta").after(c)}
   {const nc=cmNeed(ex).length;if(nc&&sampleFn&&!(cmRun&&cmRun.st==="run"))sb(`excm-${ex.id}`,`✦ Comentar ${nc} sem comentário`,()=>cmGo(ex,cmNeed(ex))).title="O Claude escreve o comentário (por que a certa está certa e por que cada errada não serve), em partes de 10; fica guardado"}
+  sb(`exjc-${ex.id}`,"Juntar gabarito e comentários",()=>cjPick(ex)).title="Arquivo .json preparado pelo Claude com o gabarito e o comentário de cada questão desta prova";
+  if(cjMsg&&cjMsg.id===ex.id){const m=el(`<p class="exline cmline" role="status"></p>`);m.textContent=cjMsg.t;li.querySelector(".exmeta").after(m)}
   {const nd=ex.qs.filter(r=>r.sbd&&r.k).length;if(nd){const b=sb(`exsbd-${ex.id}`,`Conferir subtópicos (${nd})`,()=>{sbEd=sbEd&&sbEd.id===ex.id?null:{id:ex.id,show:10};exEdit=null;exKey=null;render()});b.setAttribute("aria-expanded",!!(sbEd&&sbEd.id===ex.id))}}
   {const mb=sb(`exmod-${ex.id}`,ex.mod?"✓ Modelo da faculdade":"Usar como modelo da faculdade",()=>{if(ex.mod)delete ex.mod;else ex.mod=1;exPut(ex);render()});mb.setAttribute("aria-pressed",!!ex.mod);mb.title="Prova da sua faculdade: o gerador e o simulado imitam o jeito dela de cobrar (tamanho do caso, nº de alternativas, forma de perguntar)"}
   sb(`exdel-${ex.id}`,exArm==="del"+ex.id?"Toque de novo para excluir (vai para a lixeira)":"Excluir",()=>{if(exArm==="del"+ex.id){exArm=null;exDel(ex.id)}else{exArm="del"+ex.id;render()}},exArm==="del"+ex.id).classList.add("exdelb");
@@ -11187,6 +11213,7 @@ Um dia de estudo:
 - **Figuras:** as páginas com figura (exame, ECG) são recortadas ao salvar e a figura aparece na questão certa.
 - **Provas oficiais:** a lista **Provas oficiais: lidas e faltando** mostra quais já estão no app e quais faltam; **Importar** já preenche nome, banca, ano e nível. Marque **Prova oficial** ao importar: as questões entram no banco como oficiais. As reimpressões da Medway (texto em dobro, alternativas depois dos enunciados) são lidas no aparelho.
 - **Gabarito preliminar × definitivo:** ao colar, diga qual é. Quando sair o definitivo, cole de novo: as questões que mudaram ganham **Gabarito mudou** e o acerto é recalculado.
+- **Juntar gabarito e comentários:** se o Claude preparou numa conversa um arquivo com o gabarito e o comentário de cada questão, toque em **Juntar gabarito e comentários** no cartão da prova e escolha o arquivo. Cada questão é conferida pelo número e pelo começo do enunciado; gabarito do Claude não passa por cima do oficial.
 - **Comentário do Claude:** prova oficial vem sem comentário. **✦ Comentar N sem comentário** (no cartão da prova, em partes de 10) ou **✦ Comentar com o Claude** na questão aberta; fica guardado na prova e no banco.
 - **Subtópico:** o app sugere pelo texto da questão; as duvidosas aparecem em **Conferir subtópicos**. No banco, escolha um tema para filtrar por subtópico.
 - **Jogar:** **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar. No computador, o mapa das questões e o relógio ficam ao lado; **⛶ Tela inteira** deixa só a prova (A a E respondem, → próxima, ← anterior).
