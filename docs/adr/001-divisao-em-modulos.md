@@ -23,7 +23,8 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
    sozinho (acorn). Prova: `index.html`, `sw.js` e o gerado idênticos (mesmo SHA-1; versão `d0ed9902`).
 2. **1.5 — Testes de proteção** em `tests/unit/` (Node, segundos): FSRS (`fsNext`, `cdDue`), revisões (`dueIn`,
    `s.adj`), markdown (`md`, `inl`: escape de HTML), importação e migração de backup. Mais um teste de abertura
-   (Playwright: erro de página ao abrir e passar pelas abas).
+   (Playwright: erro de página ao abrir e passar pelas abas). Feito em 06/11/2026: `tests/unit/` (27 testes, ~2 s,
+   `tests/run.sh --unit`) e `tests/t151.js` (6 aparelhos × conta vazia e com dados; ~25 s); `tests/run.sh --rapido` roda os dois.
 3. **Juntar** os trechos de cada módulo, das folhas ao núcleo. Antes de cada troca de ordem, uma análise automática
    (acorn) lista o que cada trecho declara com `const`/`let` e executa no topo; só se move o que for seguro.
    Unitários e abertura a cada movimento; 134 testes a cada módulo. No fim, os 21 testes leem o `index.html` e o
@@ -32,7 +33,8 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
    ampliar `tests/unit/`.
 
 Antes da fase 2: medir a abertura no celular (pode pedir carga sob demanda de PDF, Anki e importação, o que muda
-as fronteiras dos módulos).
+as fronteiras dos módulos). Simulação de 06/11 (CPU 4× mais lenta): ~0,8 s com o app guardado no aparelho, ~1,5 s
+estimado na 1ª visita. Medida real no celular do usuário: Configurações › Tempo de abertura (em andamento).
 
 ## Consequências
 

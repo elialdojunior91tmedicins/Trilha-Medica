@@ -13,7 +13,25 @@ python3 src/build_site.py   # o site precisa do index.html atualizado
 tests/run.sh                # todos (uns 10 minutos), 3 em paralelo
 tests/run.sh t74 t76        # só alguns
 tests/run.sh --monkey       # toques aleatórios nos 6 aparelhos, procura erros de JavaScript
+tests/run.sh --unit         # lógica no Node, sem navegador (~2 s)
+tests/run.sh --rapido       # unitários + t151 (abertura nos 6 aparelhos, todas as abas; ~30 s)
 ```
+
+## Testes unitários (`tests/unit/`, desde 11/2026)
+
+`tests/unit/load.js` carrega a lógica do app no Node, sem navegador: lê `src/app/js/` na ordem, declara todas as
+funções e roda cada instrução de topo protegida (as que mexem na tela falham sem efeito; a carga da conta não roda;
+temporizadores desligados). `load({now:"2026-11-06T12:00:00"})` fixa o relógio. Objetos criados lá dentro vêm de
+outro "mundo" do JavaScript: para comparar com `deepEqual`, copie antes (`[...v]` ou `JSON.parse(JSON.stringify(v))`).
+Usa só o `node:test` do próprio Node e o acorn guardado em `tests/unit/vendor/` (licença MIT ao lado).
+
+- `fsrs.test.js`: FSRS dos cartões (`fsNext`, `fsPreview`) e a fila `cdDue`.
+- `revisoes.test.js`: `INT`, `interval` com o acerto, `dueIn`, ajuste `s.adj`, botões `revNext`, folga.
+- `markdown.test.js`: `md`/`inl`/`flowHTML`; 24 textos de ataque não podem virar HTML ativo.
+- `backup.test.js`: `backup-sample.json` passa pela carga (`registerOwn` → `migrate`, `errOk`, `facNormalize`) e volta igual.
+
+Vários testes são "fotos" do comportamento atual (ex.: a sequência Bom, Bom, Bom do FSRS = 4, 23, 109, 437 dias): se uma
+mudança alterar o número de propósito, atualize o teste junto e diga no commit.
 
 Precisa de Node com o pacote `playwright` (1.56) e do Chromium (`PLAYWRIGHT_BROWSERS_PATH`). Em outro
 ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
