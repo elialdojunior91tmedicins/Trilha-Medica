@@ -10,6 +10,14 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
     if((L==="tablet"&&w>=1000)||(L==="desktop"&&w>=1200))c="2";
     if(R.dataset.layout!==L)R.dataset.layout=L;if(R.dataset.cols!==c)R.dataset.cols=c}
   decide();addEventListener("resize",decide);addEventListener("orientationchange",()=>setTimeout(decide,120));window.__decideLayout=decide})();
+/* medição da abertura (11/2026): guarda as últimas 12 aberturas em resid-perf (Configurações › Tempo de abertura).
+   ok = a saudação do Início com conteúdo; sw = arquivos vindos do modo offline; app = aberto pelo ícone (instalado) */
+(function(){if(!window.performance||!performance.now)return;const sw=!!(navigator.serviceWorker&&navigator.serviceWorker.controller),
+    app=!!(navigator.standalone||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)),t0=Date.now();
+  function done(ok){try{const n=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],f=performance.getEntriesByName&&performance.getEntriesByName("first-contentful-paint")[0],
+      r={at:t0,ok:Math.round(ok),fcp:f?Math.round(f.startTime):0,dcl:n?Math.round(n.domContentLoadedEventEnd):0,sw:sw?1:0,app:app?1:0,kb:n&&n.transferSize?Math.round(n.transferSize/1024):0};
+    const L=JSON.parse(localStorage.getItem("resid-perf")||"[]");L.unshift(r);localStorage.setItem("resid-perf",JSON.stringify(L.slice(0,12)))}catch(e){}}
+  (function tick(){const h=document.getElementById("iHero");if(h&&h.firstChild)return done(performance.now());if(performance.now()<30000)requestAnimationFrame(tick)})()})();
 </script>
 <title>Nexus - Trilha Médica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">

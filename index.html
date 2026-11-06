@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=d0ed9902">
+<link rel="stylesheet" href="site.css?v=8d3f200d">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=d0ed9902"></script>
-<script src="bridge.js?v=d0ed9902"></script>
+<script src="config.js?v=8d3f200d"></script>
+<script src="bridge.js?v=8d3f200d"></script>
 </head>
 <body>
 <script>
@@ -34,6 +34,14 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
     if((L==="tablet"&&w>=1000)||(L==="desktop"&&w>=1200))c="2";
     if(R.dataset.layout!==L)R.dataset.layout=L;if(R.dataset.cols!==c)R.dataset.cols=c}
   decide();addEventListener("resize",decide);addEventListener("orientationchange",()=>setTimeout(decide,120));window.__decideLayout=decide})();
+/* medição da abertura (11/2026): guarda as últimas 12 aberturas em resid-perf (Configurações › Tempo de abertura).
+   ok = a saudação do Início com conteúdo; sw = arquivos vindos do modo offline; app = aberto pelo ícone (instalado) */
+(function(){if(!window.performance||!performance.now)return;const sw=!!(navigator.serviceWorker&&navigator.serviceWorker.controller),
+    app=!!(navigator.standalone||(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)),t0=Date.now();
+  function done(ok){try{const n=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],f=performance.getEntriesByName&&performance.getEntriesByName("first-contentful-paint")[0],
+      r={at:t0,ok:Math.round(ok),fcp:f?Math.round(f.startTime):0,dcl:n?Math.round(n.domContentLoadedEventEnd):0,sw:sw?1:0,app:app?1:0,kb:n&&n.transferSize?Math.round(n.transferSize/1024):0};
+    const L=JSON.parse(localStorage.getItem("resid-perf")||"[]");L.unshift(r);localStorage.setItem("resid-perf",JSON.stringify(L.slice(0,12)))}catch(e){}}
+  (function tick(){const h=document.getElementById("iHero");if(h&&h.firstChild)return done(performance.now());if(performance.now()<30000)requestAnimationFrame(tick)})()})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
@@ -2361,6 +2369,8 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
 /* Lote 19 — saudação visível no modo escuro: tom um pouco mais claro e contorno dourado fino */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}}
 :root[data-theme="dark"] #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}
+/* Configurações › Tempo de abertura */
+#perfCard summary{cursor:pointer}#perfCard .perflist{margin:10px 0;padding-left:20px;font-size:.88em;line-height:1.6}#perfCard .row{display:flex;gap:12px;align-items:center}
 </style>
 
 <div class="wrap">
@@ -7246,6 +7256,18 @@ function phaseEl(){const ph=ui.profile.phase,sg=phaseSuggest(),c=el(`<section cl
   c.querySelector("p.how").textContent=ph?(ph!==sg?`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`:"Você pode trocar quando quiser."):`Pelo seu semestre${exMain()&&exMain().date?" e a data da prova":""}, o app sugere ${PHASES[sg].lab}.`;
   Object.entries(PHASES).forEach(([v,x])=>{const b=el(`<button type="button"></button>`);b.id="ph-"+v;b.textContent=x.lab+(v===sg&&v!==ph?" · sugerida":"");b.setAttribute("aria-pressed",ph===v);b.onclick=()=>setPhase(v);c.querySelector(".seg").appendChild(b)});
   c.querySelector(".phhow").textContent=ph?PHASES[ph].how:"";if(!ph)c.querySelector(".phhow").remove();return c}
+/* Tempo de abertura (11/2026): as últimas 12 aberturas deste aparelho, gravadas pelo script do topo (resid-perf) */
+function perfCardEl(){let L=[];try{L=JSON.parse(localStorage.getItem("resid-perf")||"[]")}catch(e){}
+  const c=el(`<details class="card perfcard" id="perfCard"><summary><b>Tempo de abertura</b> <span class="muted">· ${L.length} medida${L.length===1?"":"s"} neste aparelho</span></summary></details>`);
+  const s=x=>(x/1000).toFixed(1).replace(".",",")+" s",lab=r=>(r.app?"App instalado":"Navegador")+(r.sw?" · do aparelho":" · da internet");
+  if(!L.length){c.appendChild(el(`<p class="muted">Ainda sem medidas. Feche e abra o app algumas vezes.</p>`));return c}
+  c.appendChild(el(`<p class="muted hx">“Pronto” = a saudação do Início na tela. “Do aparelho” = o modo offline entregou os arquivos; “da internet” = primeira abertura ou versão nova.</p>`));
+  const ol=el(`<ol class="perflist"></ol>`);L.forEach(r=>{const li=el(`<li></li>`);const d=new Date(r.at);
+    li.textContent=`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} · ${lab(r)} · pronto em ${s(r.ok)} (1ª pintura ${s(r.fcp)})${r.kb?` · ${r.kb} KB baixados`:""}`;ol.appendChild(li)});c.appendChild(ol);
+  const row=el(`<div class="row"></div>`),cp=el(`<button class="btn" type="button" id="perfCopy">Copiar as medidas</button>`),cl=el(`<button class="link" type="button" id="perfClear">Apagar</button>`);
+  cp.onclick=()=>{const txt=L.map(r=>[new Date(r.at).toISOString(),lab(r),"pronto "+r.ok+" ms","1ª pintura "+r.fcp+" ms","html "+r.dcl+" ms",r.kb+" KB",navigator.userAgent].join(" | ")).join("\n");
+    try{navigator.clipboard.writeText(txt).then(()=>infoToast("Medidas copiadas."),()=>infoToast("Não deu para copiar."))}catch(e){infoToast("Não deu para copiar.")}};
+  cl.onclick=()=>{try{localStorage.removeItem("resid-perf")}catch(e){}render()};row.appendChild(cp);row.appendChild(cl);c.appendChild(row);return c}
 function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs;
   const back=el(`<button class="link fback" type="button">← Voltar</button>`);back.onclick=goBack;box.appendChild(back);
   box.appendChild(el(`<h2 class="cftitle">Configurações</h2>`));
@@ -7292,7 +7314,7 @@ function renderConfig(){const box=$("#cfBody");box.innerHTML="";const P=ui.prefs
   const qb=el(`<section class="card"><div class="dhead"><h2>Questões, backup e ajuda</h2></div><div class="cflinks"></div></section>`),ql=qb.querySelector(".cflinks");
   [["Instruções do gerador de questões","Estilo da banca, alternativas, dificuldade e comentário.",()=>goSub("instr")],["Backup","Exportar ou importar tudo num arquivo.",()=>{goSub("instr");setTimeout(()=>{const x=document.getElementById("bkh");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}],["Ajuda","Como usar cada parte do app.",()=>goSub("help")]].forEach(([t,d,fn])=>{
     const b=el(`<button class="cflink" type="button"><b></b><span></span><i aria-hidden="true">›</i></button>`);b.querySelector("b").textContent=t;b.querySelector("span").textContent=d;b.onclick=fn;ql.appendChild(b)});
-  box.appendChild(qb);box.appendChild(trashCardEl());
+  box.appendChild(qb);box.appendChild(trashCardEl());box.appendChild(perfCardEl());
   /* Lote 18: configurações em camadas — o que se usa sempre fica à vista; o resto em "Mais opções" de cada cartão */
   cfLayer(ap,"ap",["Barra lateral"],[ap.querySelector(":scope>.glabel"),ap.querySelector(".lays")]);
   cfLayer(pl,"pl",["Subtópicos por tema","Intervalos das revisões","Ajustar pelo acerto","Marcar atraso"],[pl.querySelector("#dnAllBox")]);
