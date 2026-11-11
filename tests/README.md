@@ -19,7 +19,7 @@ tests/run.sh --rapido       # unitários + t151 (abertura nos 6 aparelhos, todas
 
 ## Testes unitários (`tests/unit/`, desde 11/2026)
 
-`tests/unit/load.js` carrega a lógica do app no Node, sem navegador: lê `src/app/js/` na ordem, declara todas as
+`tests/unit/load.js` carrega a lógica do app no Node, sem navegador: lê `src/app/js/` (e as pastas de módulo) na ordem, declara todas as
 funções e roda cada instrução de topo protegida (as que mexem na tela falham sem efeito; a carga da conta não roda;
 temporizadores desligados). `load({now:"2026-11-06T12:00:00"})` fixa o relógio. Objetos criados lá dentro vêm de
 outro "mundo" do JavaScript: para comparar com `deepEqual`, copie antes (`[...v]` ou `JSON.parse(JSON.stringify(v))`).
