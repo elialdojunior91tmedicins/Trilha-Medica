@@ -1,6 +1,6 @@
 # Gera ../index.html (o site).
 # Desde a fase 1 da divisão (11/2026, docs/adr/001-divisao-em-modulos.md) o código-fonte vive em src/app/:
-#   topo.html + css/app.css + corpo.html + js/*.js (em ordem de nome) + fim.html
+#   topo.html + css/app.css + corpo.html + js/**/*.js (em ordem de caminho) + fim.html
 # O build junta esses arquivos, sem mudar nenhum byte, em src/checklist-residencia.html (GERADO: não editar à mão;
 # o preview e testes leem esse arquivo) e depois monta o index.html como antes.
 # Uso, na raiz do repositório: python3 src/build_site.py
@@ -13,7 +13,9 @@ STAMP = APP / ".gerado.sha1"  # impressão do último arquivo gerado: se o gerad
 
 
 def assemble():
-    pieces = [APP / "topo.html", APP / "css/app.css", APP / "corpo.html", *sorted((APP / "js").glob("*.js")), APP / "fim.html"]
+    # js/: arquivos soltos e pastas de módulo (js/060-faculdade/010-estrutura.js), em ordem de caminho
+    js = sorted((APP / "js").rglob("*.js"), key=lambda p: p.relative_to(APP / "js").as_posix())
+    pieces = [APP / "topo.html", APP / "css/app.css", APP / "corpo.html", *js, APP / "fim.html"]
     return b"".join(p.read_bytes() for p in pieces)
 
 

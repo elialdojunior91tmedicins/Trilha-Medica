@@ -1,5 +1,5 @@
 // Carrega a lógica do app no Node, sem navegador (fase 1.5, docs/adr/001-divisao-em-modulos.md).
-// Lê os trechos de src/app/js/ na ordem: declara todas as funções primeiro (como o navegador) e depois roda
+// Lê os trechos de src/app/js/ (e das pastas de módulo) na ordem: declara todas as funções primeiro (como o navegador) e depois roda
 // cada instrução de topo sozinha, protegida (constantes viram "var"). As que dependem da tela (desenhar,
 // ouvir eventos) falham sem efeito e ficam listadas em __failed; dados montados no topo (ALL, BYKEY…) ficam prontos.
 // Uso: const A = require("./load")();  A.fsNext(...), A.md("..."), A.state = {...}
@@ -44,7 +44,8 @@ module.exports = function load(opts = {}) {
     const NOW = new Date(opts.now).getTime();
     ctx.Date = class extends Date { constructor(...a) { if (a.length) super(...a); else super(NOW); } static now() { return NOW; } };
   }
-  const files = fs.readdirSync(JS).filter(f => f.endsWith(".js")).sort();
+  const ls = (rel = "") => fs.readdirSync(path.join(JS, rel), { withFileTypes: true }).flatMap(e => e.isDirectory() ? ls(rel + e.name + "/") : e.name.endsWith(".js") ? [rel + e.name] : []);
+  const files = ls().sort(); // na ordem do build: arquivos soltos e pastas de módulo, por caminho
   const decls = [], steps = [];
   for (const f of files) {
     const src = fs.readFileSync(path.join(JS, f), "utf8");

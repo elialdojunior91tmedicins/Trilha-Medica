@@ -1,0 +1,9 @@
+/* ---------- backup ---------- */
+const BACKUP_APP="checklist-residencia", BACKUP_FORMAT=1;
+function backupCounts(){return {temas:Object.keys(state).filter(k=>BYKEY[k]&&(state[k].last||state[k].l||(state[k].sd||[]).length||state[k].qt)).length,
+  anotacoes:Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,erros:errors.length,disciplinas:fac.discs.length,provas:fac.provas.length,temasProprios:Object.keys(fac.own).length,diasHistorico:Object.keys(hist).length,foco:foSess.length,refazer:redo.length,cartoes:cards.length,livres:freeN.length,provasImportadas:exams.length}}
+function buildBackup(){return {app:BACKUP_APP,format:BACKUP_FORMAT,exportedAt:new Date().toISOString(),counts:backupCounts(),
+  data:{topics:state,hist,plan:dayPlan,notes,noteAt,errors,fac,prompt:promptText,sort:sortBy,ui,focus:foSess,redo,cards,free:freeN,exams,examProg:exProg,sims,exfigs:Object.values(exFigs),...bankBackup()}}}
+function backupSummaryText(c){return `${c.temas} ${c.temas===1?"tema":"temas"} com progresso · ${c.anotacoes} ${c.anotacoes===1?"anotação":"anotações"} · ${c.erros} ${c.erros===1?"erro":"erros"} no caderno · ${c.disciplinas} ${c.disciplinas===1?"disciplina":"disciplinas"} · ${c.provas} ${c.provas===1?"prova":"provas"} · ${c.diasHistorico} dias de histórico${c.foco?` · ${c.foco} ${c.foco===1?"sessão":"sessões"} de foco`:""}${c.refazer?` · ${c.refazer} ${c.refazer===1?"questão":"questões"} para refazer`:""}${c.cartoes?` · ${c.cartoes} ${c.cartoes===1?"cartão":"cartões"}`:""}${c.livres?` · ${c.livres} ${c.livres===1?"anotação livre":"anotações livres"}`:""}${c.provasImportadas?` · ${c.provasImportadas} ${c.provasImportadas===1?"prova importada":"provas importadas"}`:""}`}
+function renderBackup(){const b=$("#bkSummary");if(!b)return;b.textContent="Vai no arquivo: "+backupSummaryText(backupCounts())+".";$("#bkSave").hidden=!downloadsFn}
+

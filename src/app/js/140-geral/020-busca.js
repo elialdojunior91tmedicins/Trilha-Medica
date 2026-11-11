@@ -1,0 +1,287 @@
+/* ----- 3. busca em tudo ----- */
+let gsQ="",gsOpen=false,gsType="";
+function gsSnip(t,n){const T=String(t||"").replace(/^\s*(#{1,6}\s+|[-*>]\s+|\d+\.\s+)/gm,"").replace(/==|\*\*|`/g,"").replace(/\s+/g," "),N=norm(T),i=N.indexOf(n);if(i<0)return T.slice(0,110);const a=Math.max(0,i-40);return (a?"…":"")+T.slice(a,a+120)+(T.length>a+120?"…":"")}
+function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],add=(g,t,s,go)=>R.push({g,t,s,go});
+  [...ALL,...FAC_ITEMS].forEach(it=>{const subs=subList(it).map(x=>x.t).join(" · ");if(norm(it.t).includes(n)||norm(subs).includes(n))add("Temas",it.t,norm(it.t).includes(n)?`${it.own?"FAC":it.area.code} · ${it.sp||it.area.name}`:gsSnip(subs,n),()=>openTopic(it.key))});
+  Object.keys(notes).forEach(k=>{if(BYKEY[k]&&norm(notes[k]).includes(n))add("Anotações",BYKEY[k].t,gsSnip(notes[k],n),()=>{detTab[k]="notas";openTopic(k)})});
+  freeN.forEach(f=>{if(norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(n))add("Caderno livre",f.t||"Sem título",gsSnip(f.b,n),()=>{freeOpen.add(f.id);backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("todas");setTimeout(()=>{const x=document.getElementById("fr-"+f.id);if(x)x.scrollIntoView({block:"center"})},80)})});
+  errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros")})});
+  cards.forEach(x=>{if(BYKEY[x.k]&&norm(x.q+" "+x.a).includes(n))add("Cartões",x.q.slice(0,90),BYKEY[x.k].t,()=>{detTab[x.k]="notas";openTopic(x.k)})});
+  fac.discs.forEach(d=>{if(norm(d.name).includes(n))add("Faculdade",d.name,"disciplina",()=>goDisc(d));
+    (d.sps||[]).forEach(s=>{if(norm(s.name+" "+s.objs.join(" ")).includes(n))add("Faculdade",s.name,d.name,()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(s.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+s.id),60)})});
+    [d,...(d.sps||[])].forEach(o=>(o.links||[]).forEach(l=>{if(norm((l.t||"")+" "+l.u).includes(n))add("Materiais",l.t||hostOf(l.u),`${d.name} · ${hostOf(l.u)}`,()=>window.open(l.u,"_blank","noopener"))}))});
+  return R}
+function renderGSearch(){let ov=$("#gsearch");if(!gsOpen){if(ov)ov.remove();return}
+  if(!ov){ov=el(`<div class="gsearch" id="gsearch" role="dialog" aria-modal="true" aria-label="Buscar em tudo"><div class="gsbox"><div class="gshead"><input class="search" id="gsq" type="search" placeholder="Buscar em temas, anotações, erros, cartões, faculdade…" autocomplete="off"><button class="link" type="button">Fechar</button></div><div class="gsres" id="gsres"></div></div></div>`);
+    document.body.appendChild(ov);const i=ov.querySelector("#gsq");i.value=gsQ;i.oninput=debounced(()=>{gsQ=i.value;fillGS()},120);ov.querySelector(".gshead .link").onclick=gsClose;
+    ov.addEventListener("click",e=>{if(e.target===ov)gsClose()});setTimeout(()=>i.focus(),30)}
+  fillGS()}
+function fillGS(){const box=$("#gsres");if(!box)return;box.innerHTML="";const R=gsResults(gsQ);
+  if(norm(gsQ.trim()).length<2){box.appendChild(el(`<p class="how">Digite pelo menos 2 letras. A busca olha temas e subtópicos, anotações, caderno livre, erros, cartões, disciplinas, SPs e materiais.</p>`));return}
+  if(!R.length){box.appendChild(el(`<p class="cempty">Nada encontrado com “${esc(gsQ.trim())}”.</p>`));return}
+  const groups={};R.forEach(r=>(groups[r.g]=groups[r.g]||[]).push(r));
+  /* Lote 20: etiquetas por tipo com a contagem; tocar de novo volta a mostrar tudo */
+  if(!groups[gsType])gsType="";const G=Object.keys(groups);
+  if(G.length>1){const ch=el(`<div class="chips gstypes" role="group" aria-label="Tipo de resultado"></div>`);
+    [["","Tudo",R.length],...G.map(g=>[g,g,groups[g].length])].forEach(([v,l,n],i)=>{const b=el(`<button class="chip" type="button"></button>`);b.id="gsT-"+i;b.textContent=`${l} · ${n}`;b.setAttribute("aria-pressed",gsType===v);
+      b.onclick=()=>{gsType=gsType===v?"":v;fillGS()};ch.appendChild(b)});box.appendChild(ch)}
+  Object.entries(groups).filter(([g])=>!gsType||g===gsType).forEach(([g,L])=>{const LIM=gsType?40:8;const s=el(`<div class="gsg"><span class="glabel"></span><ul></ul></div>`);s.querySelector(".glabel").textContent=`${g} · ${L.length}`;
+    L.slice(0,LIM).forEach(r=>{const li=el(`<li><button type="button"><b></b><span></span></button></li>`);li.querySelector("b").textContent=r.t;li.querySelector("span").textContent=r.s;li.querySelector("button").onclick=()=>{gsClose();r.go()};s.querySelector("ul").appendChild(li)});
+    if(L.length>LIM)s.appendChild(el(`<p class="how">+ ${L.length-LIM} resultados. ${gsType?"Refine a busca.":"Toque no tipo acima para ver todos."}</p>`));box.appendChild(s)})}
+function gsClose(){gsOpen=false;renderGSearch()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&gsOpen){gsClose();return}
+  if((e.key==="k"&&(e.ctrlKey||e.metaKey))||(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((e.target||{}).tagName||""))){e.preventDefault();gsOpen=true;renderGSearch()}});
+/* ----- 2. primeiros passos ----- */
+let onb=null;
+function needOnb(){return !!window.claude&&synced&&!ui.prefs.onb&&!hasData()&&!fac.sems.length&&!foSess.length}
+function renderOnb(){let ov=$("#onb");if(!onb){if(ov)ov.remove();return}
+  if(!ov){ov=el(`<div class="gsearch onbov" id="onb" role="dialog" aria-modal="true" aria-labelledby="onbh"><div class="gsbox onbbox"></div></div>`);document.body.appendChild(ov)}
+  const b=ov.querySelector(".onbbox");b.innerHTML="";const O=onb,dots=el(`<p class="onbdots"></p>`);for(let i=0;i<3;i++)dots.appendChild(el(`<i class="${i<=O.step?"on":""}"></i>`));b.appendChild(dots);
+  const fin=(go)=>{ui.prefs.onb=1;if(O.date){ui.profile.exams=[{id:"ex"+Date.now().toString(36),name:"Prova de residência",date:O.date}];ui.profile.mainEx=ui.profile.exams[0].id}ui.prefs.hgoal=O.fgoal;ui.prefs.planN=O.planN;saveUI();applyUI();onb=null;renderOnb();
+    if(go==="bulk"){backStack=[];setView("temas");setTSeg("lista");bulk={sel:new Set(),lv:1};bulkUndo=null;tf.lv=new Set([0,"i"]);openKey=null;render()}else{redoPlan();render()}};
+  const skip=el(`<button class="link onbskip" type="button">Pular</button>`);skip.onclick=()=>{ui.prefs.onb=1;saveUI();onb=null;renderOnb()};
+  if(O.step===0){b.append(el(`<h2 id="onbh">Bem-vindo ao Nexus</h2>`),el(`<p class="gtext">Três perguntas rápidas para o app montar o seu plano. Dá para mudar tudo depois em Perfil e Configurações.</p>`),
+      el(`<label class="qfsel onbf"><span>Quando é a sua prova de residência?</span><input type="date" class="etext" id="onbDate"></label>`));
+    const i=b.querySelector("#onbDate");i.value=O.date||"";i.min=today();i.oninput=()=>O.date=i.value;
+    const a=el(`<div class="btns"><button class="btn primary" type="button">Continuar</button><button class="btn" type="button">Ainda não sei</button></div>`),[c1,c2]=a.querySelectorAll("button");
+    c1.onclick=()=>{if(O.date&&!/^\d{4}-\d{2}-\d{2}$/.test(O.date))return;O.step=1;renderOnb()};c2.onclick=()=>{O.date="";O.step=1;renderOnb()};b.append(a,skip)}
+  else if(O.step===1){b.append(el(`<h2 id="onbh">Você já estudou para a residência?</h2>`),el(`<p class="gtext">Se já estudou alguns temas, marque quais: eles entram nas revisões em vez de aparecerem como novos.</p>`));
+    const a=el(`<div class="onbopts"><button class="btn" type="button">Estou começando agora</button><button class="btn" type="button">Já estudei alguns temas</button></div>`),[x,y]=a.querySelectorAll("button");
+    x.onclick=()=>{O.prev=false;O.step=2;renderOnb()};y.onclick=()=>{O.prev=true;O.step=2;renderOnb()};b.append(a,skip)}
+  else{b.append(el(`<h2 id="onbh">Quanto tempo por semana?</h2>`),el(`<p class="gtext">A meta da semana aparece no Início, no Foco e nas Estatísticas (a do dia é ela dividida pelos dias de estudo). Os temas por dia definem o tamanho do plano.</p>`));
+    const g=el(`<div class="onbgrid"><label class="qfsel"><span>Meta por semana</span><select id="onbF"></select></label><label class="qfsel"><span>Temas novos por dia</span><select id="onbN"></select></label></div>`);
+    const sf=g.querySelector("#onbF"),sn=g.querySelector("#onbN");[[300,"5 h"],[420,"7 h"],[600,"10 h"],[720,"12 h"],[900,"15 h"],[1200,"20 h"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sf.appendChild(o)});
+    [2,3,4,5].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=`${v} temas${v===3?" (sugerido)":""}`;sn.appendChild(o)});sf.value=String(O.fgoal);sn.value=String(O.planN);sf.onchange=()=>O.fgoal=+sf.value;sn.onchange=()=>O.planN=+sn.value;b.appendChild(g);
+    const a=el(`<div class="btns"><button class="btn primary" type="button" id="onbFin"></button><button class="btn" type="button">Voltar</button></div>`),[f,bk]=a.querySelectorAll("button");f.textContent=O.prev?"Concluir e marcar o que já estudei":"Concluir";f.onclick=()=>fin(O.prev?"bulk":"");bk.onclick=()=>{O.step=1;renderOnb()};b.append(a,skip)}}
+let onbTried=false;const ONB_SEEN0=lsGet("resid-onb-seen","")==="1";
+function maybeOnb(){if(onbTried||onb||!synced)return;onbTried=true;if(needOnb()&&!ONB_SEEN0){lsSet("resid-onb-seen","1");onb={step:0,date:"",prev:false,fgoal:ui.prefs.hgoal||600,planN:ui.prefs.planN||3};renderOnb()}}
+/* ----- 5. calendário (.ics) ----- */
+function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
+function icsBuild(){const ev=[],stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
+  upcomingProvas().forEach(p=>{const d=discOf(p.discId);ev.push({uid:"prova-"+p.id,date:p.date,t:`Prova: ${p.name}`,desc:`${d?provaDiscName(p)+". ":""}Nexus - Trilha Médica`})});
+  spFechas(365).forEach(f=>ev.push({uid:"sp-"+f.s.id,date:f.s.fech,t:`Fechamento: ${f.s.name}`,desc:`${f.d.name}. Nexus - Trilha Médica`}));
+  exList().forEach(x=>{if(x.date&&x.date>=today())ev.push({uid:"residencia-"+x.id,date:x.date,t:`Prova de residência: ${x.name||"sem nome"}`,desc:"Nexus - Trilha Médica"})});
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Nexus Trilha Medica//PT-BR","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:Nexus - Trilha Médica"];
+  ev.forEach(e=>{const d=e.date.replace(/-/g,""),d2=fromNum(dnum(e.date)+1).replace(/-/g,"");L.push("BEGIN:VEVENT",`UID:${e.uid}@trilha-medica`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${d}`,`DTEND;VALUE=DATE:${d2}`,`SUMMARY:${icsEsc(e.t)}`,`DESCRIPTION:${icsEsc(e.desc)}`,
+    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsEsc(e.t)}`,"TRIGGER:-P1D","END:VALARM","END:VEVENT")});L.push("END:VCALENDAR");return {text:L.join("\r\n"),n:ev.length}}
+let icsMsg="";
+async function icsSave(){if(!downloadsFn)return;const r=icsBuild();if(!r.n){icsMsg="Nenhuma prova ou fechamento futuro para exportar.";render();return}
+  try{await downloadsFn.save({filename:"trilha-medica-provas.ics",data:new Blob([r.text],{type:"text/calendar"})});icsMsg=`Arquivo com ${r.n} ${r.n===1?"data":"datas"} salvo. Abra-o para adicionar ao Google Agenda ou ao Calendário (lembrete 1 dia antes).`}
+  catch(e){icsMsg=e&&(e.code==="declined"||e.code==="cancelled")?"Download cancelado.":"Não foi possível gerar o arquivo agora."}render()}
+/* ----- 14. ajuda: abrir uma seção ----- */
+function goHelp(title){helpQ="";const i=$("#hq");if(i)i.value="";goSub("help");setTimeout(()=>{const idx=HELP.findIndex(h=>h[0]===title);const d=document.querySelector(`#helpList details[data-i="${idx}"]`);if(d){d.open=true;d.scrollIntoView({block:"start"})}},40)}
+function helpBtn(title){const b=el(`<button class="hlpb" type="button" aria-label="Ajuda">?</button>`);b.title="Como funciona";b.dataset.help=title;b.onclick=e=>{e.stopPropagation();goHelp(title)};return b}
+
+const HELP=[
+["Comece aqui",`O Nexus organiza o estudo para a residência (**198 temas** das 5 grandes áreas) junto com a faculdade. Todo dia ele monta um plano, agenda as revisões do que você já estudou e mostra onde você mais erra.
+Um dia de estudo:
+1. **Início › Fila do dia:** toque em **Começar**. O app passa pelos erros, as revisões dos temas, o ponto fraco, as questões para refazer, os cartões e os temas do plano, um depois do outro; a barra de baixo leva ao próximo. O cartão mostra o tempo previsto e se cabe no seu dia; depois das 19 h, ele fecha o dia.
+2. **Estudar hoje:** estude os temas do plano. **Começar com o Foco** conta o tempo; ao terminar, marque os subtópicos que viu.
+3. **Questões:** gere dentro do tema ou registre as de bancos em **+ Registrar questões**.
+4. **Errou?** **Levar para o caderno de erros**: o erro volta para você revisar.
+5. **Faculdade:** com prova ou fechamento de SP perto, **Próximas provas** mostra o que falta e o ritmo.
+- **Primeira vez:** o app pergunta a data da prova, se você já estudou e quanto tempo tem por dia. Já estudou temas antes do app? Na Residência, **Já estudei alguns temas antes do app** marca vários de uma vez.
+- **Navegar:** no celular, a barra de baixo traz as abas principais e **≡ Menu** abre todas as seções, a busca, Perfil, Configurações e Ajuda (no iPad em pé, o ≡ fica no alto). No computador e no iPad deitado, a **barra lateral** fica aberta no Início e vira um trilho de ícones nas outras abas; **Fixar** e **Recolher** mudam isso (toque de novo para o automático).
+- **Buscar em tudo:** a lupa (no computador, **Ctrl+K** ou **/**) procura em temas, anotações, erros, cartões e faculdade.
+- **O botão ?** de cada cartão mostra ali mesmo como ele funciona; **Mais na Ajuda →** abre o assunto aqui.
+- **Início do seu jeito:** no fim do Início, **Personalizar o Início** esconde ou reordena os cartões.
+- **Saudação:** a data, o que espera por você hoje, os dias até a prova principal e uma frase do dia, trocada por um feito real quando há (dias seguidos, questões de ontem, acerto que subiu, horas de foco).
+- **Site e artefato:** use o **site** como principal; o artefato no Claude guarda os dados à parte (para levar o progresso, use o backup).`],
+["Estudar hoje",`O plano do dia fica fixo até o dia virar. Ele traz primeiro o que é da faculdade com prova ou fechamento perto, depois os temas que você está **Estudando** (para terminar antes de abrir outro) e temas novos de maior incidência.
+- **Concluir:** marque os subtópicos do dia; tema sem subtópicos, **Estudei hoje**. Os cartões ficam recolhidos e o que você começou fica aberto.
+- **Temas grandes em partes:** até 6 subtópicos vem inteiro; maior que isso, em **partes de 3 a 4** ("Parte 1 de 4") e no dia seguinte vem a próxima. O tema fica **Estudando** até a última parte e só então entra nas revisões. Subtópico **denso** conta como dois (o Claude já marcou os dos 198 temas; corrija no tema em **Marcar subtópicos densos**).
+- **High Yield:** o selo **HY** marca os temas que mais caem (peso 3). Dentro do tema, **★ HY** marca os subtópicos que mais caem: começam com uma estimativa e você muda em **Marcar os subtópicos ★ HY** (a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais vezes no rodízio da revisão, puxam mais questões no gerador e no simulado e aparecem no PDF do caderno e na folha de véspera.
+- **Trocar:** **Trocar subtópicos** (até 6), **Refazer plano** (mantém o que você começou) e, no cartão do tema do eixo, **Outro do eixo**. Estudou outro tema? Ele entra no lugar de um não iniciado (**Desfazer troca** volta).
+- **Planejar a semana** (⚙ Configurações › Plano): para cada dia, **Folga, 30 min, 1 h, 2 h ou 3 h+**. A **Semana padrão** vale sempre; **Esta semana** e **Próxima semana** mudam só aquela (contorno dourado = diferente da padrão). No domingo e na segunda, o Início mostra como foi a semana e leva a planejar a próxima. **30 min** = só o leve (fila do dia, um ponto fraco e uma revisão geral com até 20 cartões); **1 h** ≈ 1 tema; **2 h** ≈ 2; **3 h+** = o plano inteiro. **Tenho mais ou menos tempo hoje** muda só hoje.
+- **Dia com aula fixa** (Faculdade › Calendário): cada 2 h de aula tiram um degrau do tempo do dia, nunca abaixo de 30 min (o que você escolheu à mão vale).
+- **Plano alinhado ao eixo** (padrão no Ciclo clínico; Configurações › Plano): as vagas ficam **1 da faculdade** (o próximo conteúdo da SP) · **1 da residência do eixo** (a área das SPs desta semana e da próxima) · **1 livre**. Dá para mudar a composição, usar áreas vizinhas ou fixar o eixo até uma data.
+- **Freio de revisões:** com mais de 20 revisões atrasadas, o plano traz só 1 tema novo; com mais de 40, nenhum. O cartão mostra o tempo estimado do dia.
+- **Folga e sequência:** folga planejada sem estudo **congela** a sequência (❄ no mapa do Foco); estudar na folga soma. Na folga, o Início sugere coisas leves e opcionais; **Hoje é só descanso** esconde.
+- **Hoje não deu** (1 por semana, dois toques): hoje vira folga, o plano zera, as revisões passam para o próximo dia de estudo e a sequência congela. **Desfazer** no mesmo dia.
+- **Faculdade no plano:** com aula fixa amanhã, lembra os objetivos da SP aberta; entregas dos próximos 3 dias aparecem com **Já entreguei**; na semana da prova, **Ler as anotações da prova** junta as páginas dela.
+- **Meta e projeção** (Residência; no celular, parte Progresso): temas que faltam, quantos por semana até a prova principal e o seu ritmo das últimas 4 semanas. **Ver semanas** mostra semana a semana (temas novos, revisões, cartões); semanas de prova da faculdade recebem menos temas.
+- **Próximos 6 dias:** prévia do que o plano deve propor, supondo que você cumpra o plano. Prova nova nos próximos 7 dias refaz o plano sozinho.`],
+["Revisões",`Todo tema estudado volta em **1, 3, 7, 15, 30, 60 e 90 dias** (Configurações › Plano tem também Intensivo e Espaçado). As revisões ficam na aba **Residência**, numa lista só com as da faculdade (selo **FAC**), por importância: peso do tema × dias de atraso.
+- **Lembrei** sobe um degrau (se passou mais tempo que o previsto, o próximo intervalo é pelo menos esse tempo). **Difícil** repete o intervalo. **Esqueci** volta dois degraus. Cada botão mostra em quantos dias volta.
+- **Questões contam:** com 5 ou mais questões do tema no dia em que ele vence, a revisão é marcada sozinha pelo acerto (75%+ Lembrei; 50–74% Difícil; menos, Esqueci).
+- **Acerto alto alonga:** a partir da 2ª revisão, 85%+ nos últimos 90 dias (mín. 8 questões) deixa o intervalo 40% maior; 75%+, 20%. Acerto baixo não encurta: o tema vira **ponto fraco** e entra na fila como questões.
+- **Reler faz parte:** a anotação do tema aparece dentro da revisão, com as pegadinhas primeiro.
+- **Subtópicos em rodízio:** cada revisão sugere os que você revisou há mais tempo, para o tema inteiro passar em 3 ou 4 revisões.
+- **Quando começa:** ao tema ficar **Estudado** (último subtópico, Estudei hoje ou o nível). Enquanto está Estudando, não há revisão. Desmarcou logo depois, no mesmo dia? Volta para Estudando.
+- **Na fila do dia** entram as revisões que cabem no tempo do seu dia; as outras esperam.
+- **Próximos dias:** quantas revisões caem em cada um dos próximos 14 dias. **Equilibrar** adianta revisões para dias mais leves (ou adia até 3 dias).
+- **Não estudei este tema** tira das revisões e volta para Não iniciado (questões, anotações e erros ficam).
+- **Véspera de prova:** nos 3 dias antes, aparece só o que você já estudou para ela. **Modo provas** ligado pausa as revisões da residência.`],
+["Residência: temas, níveis e incidência",`A lista começa recolhida: toque na área, na especialidade e no tema. Cada linha diz o **próximo passo** (Começar · parte 1 de 3, Revisar hoje, Acerto caiu…), o acerto colorido, o foco e os subtópicos; **☑ N/M** marca subtópicos sem abrir.
+- **Tema aberto:** **Estudo** (revisão, subtópicos, nível e peso), **Questões** (seu desempenho, registrar, gerar com o Claude e as provas na íntegra do tema), **Anotações** (a página do tema, a mesma do Caderno) e **Erros**, além de **⏱ Foco** e **☆ Fixar**.
+| Nível | Quando |
+|---|---|
+| Estudando | Começou e não terminou (sozinho no 1º subtópico, ou à mão). Sem revisão |
+| Estudado | Viu o conteúdo inteiro |
+| Revisado | Lembrou bem numa revisão |
+| Dominado | 80%+ em 10 ou mais questões e duas revisões seguidas sem dificuldade |
+- **Sugestões de nível:** o app propõe **Marcar como Dominado** quando o tema bate os critérios e **Voltar para Revisado** se o acerto cair abaixo de 70% em 30 dias. **Agora não** esconde por 14 dias.
+- **Incidência:** as barrinhas vêm de 1.182 questões (ENARE 2020–2024, Enamed 2025, Revalida 2021–2026), conferidas com as estatísticas do INEP em 10/2026. **De onde vem este peso** explica cada tema; dá para ajustar.
+- **Encontrar temas:** a busca procura no nome, nos subtópicos e nas anotações. **Filtros**: Situação, Mostrar só (Revisão pendente, Pontos fracos, Sem questões, Incidência muito alta, ★ Fixados, **Neste semestre** = ligados aos seus semestres ativos) e Onde. Ordem: da lista ou mais cobrados primeiro.
+- **Mapa da residência** (parte Progresso): os 198 temas em quadradinhos na cor do nível. **Progresso por área:** a barra grossa conta temas; a fina, subtópicos.
+- **Já estudei alguns temas antes do app:** marque vários, escolha Estudados ou Já revisados e confirme; a 1ª revisão se espalha pelos próximos dias. **Desfazer** volta.
+- **Subtópicos próprios:** adicione no fim da lista do tema.`],
+["Questões",`A aba é o seu **Banco de questões**: toda questão que passa pelo app fica guardada (das provas importadas, dos simulados e as geradas, também as que você acerta). Cada questão respondida conta no acerto do tema. As erradas vão para **Refazer as que errei**.
+- **Partes da aba**, no topo: **Banco**, **Simulado misto**, **Refazer**, **Provas na íntegra** e **Resumo**. No celular, toque em **Banco ▾** para trocar.
+- **Banco:** busca no enunciado e no comentário, **Filtros** (Situação, Onde = área › especialidade › tema, Origem, Banca, Ano e Mais) e os atalhos **Inéditas**, **Teimosas**, **Eixo atual**, **Prova da faculdade** e **Favoritas**. **+ Salvar filtro** guarda o que está ligado como um atalho seu (× apaga). Os 4 números (não resolvidas, resolvidas, acertadas, erradas) também filtram. Cada linha mostra se você acertou (✓) ou errou (✕) da última vez, com o tracejado nas inéditas, e quantas vezes errou e acertou.
+- **Resolver estas** (até 100, na ordem da lista) mostra o gabarito a cada questão. **Simulado com estas** sorteia, inéditas primeiro, no modo prova: relógio, mapa das questões e resultado só no fim (**Entregar**). O tempo de cada questão fica guardado. **⛶ Tela inteira** funciona também no celular, em pé ou deitado (deitado, o enunciado fica à esquerda e as alternativas à direita), com **≡ Menu** e **Sair** no topo. No celular, Simulado misto, Refazer e Provas na íntegra também têm **⛶ Tela inteira**.
+- **Conta no acerto do tema** só a primeira vez que você faz a questão. Refeita conta na meta semanal. Questão de prova na íntegra conta quando feita na própria prova.
+- **Uma agenda só com o Refazer:** errou no banco, a questão vai para o Refazer. Se ela já está lá e venceu, fazer no banco conta como a revisão dela; antes de vencer, só o erro conta.
+- **Sorteio inteligente** (Simulado com estas e Simulado misto › **Do banco**): inéditas primeiro, depois os seus pontos fracos, os temas que mais caem, o eixo da faculdade e a próxima prova; no máximo um quarto do mesmo tema.
+- **Fixar com questões do banco:** no tema (parte Questões) e no aviso ao concluir um tema, resolve as questões dele que estão no banco, inéditas primeiro.
+- **Questão irmã:** errou? **Fazer uma questão irmã** traz outra inédita do mesmo tema, parecida no conceito, para ver se você aprendeu ou só decorou.
+- **Diretriz mudou:** marque na questão aberta. Ela sai dos sorteios e some com **Esconder anuladas e desatualizadas**.
+- **Teimosa:** errada 3 vezes; sai com 2 acertos seguidos em dias diferentes e volta se errar de novo.
+- **Toque numa linha** para ver a questão, suas respostas, **☆ Favoritar** e **Tirar do banco** (dois toques; dá para desfazer). Questão do seu material guarda a figura junto.
+- **Gerar** (no tema): escolha quantas (10 é a sugestão) e, se quiser, um subtópico e o estilo (Residência ou **Prova da faculdade**, depois de marcar uma prova importada como **modelo da faculdade**). Seus erros no tema entram no pedido. Até 20 por pedido.
+- **Referências:** cada questão traz a fonte específica (diretriz com ano e seção, livro e capítulo, manual do Ministério). No site, o Claude pesquisa e traz o **link**; no artefato, questão sem fonte segura é descartada.
+- **Material seu** (gerador e simulado): um ou mais arquivos (PDF, slides, Word, fotos). As questões saem do material e citam a página. No simulado vão até 100 mil caracteres em partes, e páginas com figura viram **figuras** que aparecem junto da questão.
+- **Depois de responder:** **Gabarito**, **Por que está certa**, Ponto-chave, Conceito-chave e Fonte; o porquê de cada errada fica embaixo dela. As alternativas vêm embaralhadas. **Levar para a anotação**, **Criar cartão** e **Levar para o caderno de erros** ficam ali.
+- **Simulado misto**, em três passos: **de onde** (Escolher temas, Onde focar, Revisões ou Plano de hoje, Estudados nesta semana, Meus erros, Para refazer, a prova da faculdade, ou **um material seu**), **como** (5 a 30 questões, dificuldade, estilo Residência ou **ENAMED/INEP**) e o resumo. **⚡ Bloco rápido** faz 5 dos temas da semana. **Encerrar** mostra o resultado das respondidas.
+- **Meus simulados:** cada simulado terminado fica guardado. **Rever**, **Refazer estas** (conta na meta semanal, não no acerto) e **Mesmos temas, questões novas**.
+- **Refazer as que errei:** a questão volta amanhã; acertou, em 3 dias; **sai depois de 2 acertos em dias diferentes**. As de hoje entram na fila do dia. Errou 2 vezes (selo **teimosa**)? Leve ao caderno de erros. **O gabarito está errado?** corrige (e, se for de prova importada, a prova junto). Vencida há 21 dias sem fazer, sai sozinha.
+- **Ponto fraco:** menos de 60% nos últimos 30 dias (mín. 5 questões). Um por dia entra na fila como 5 questões; depois descansa 7 dias.
+- **Onde focar:** uma conta só (peso do tema × distância de 80% de acerto), usada no simulado, no gráfico, na lista de temas e nas Estatísticas.
+- **Resumo:** meta, ritmo, evolução, gráficos e bancas, **+ Registrar questões** e a lista dos seus temas, com Busca e Filtros próprios.
+- **Seus temas nas questões:** sem filtro, os 10 que mais pedem atenção (**Ver todos**). Toque num tema para ver acerto por semana e por banca, tendência, erros e as ações **Praticar**, **Pôr no simulado**, **Registrar**.
+- **+ Registrar questões:** para as feitas fora (bancos, provas). Informe a **banca** e, se quiser, o **tempo** (entra no Ritmo). **Juntar ou renomear fontes** une nomes repetidos.
+- **Meta semanal, Ritmo e Evolução:** questões de segunda a domingo, tempo médio por questão × o tempo da prova, e as últimas 12 semanas. Tendência ▲/▼ compara 30 dias com os 90 antes.
+- **No site:** a geração é por copiar e colar (veja "Site: gerar questões e resumos").`],
+["Provas na íntegra",`Em Questões › Provas na íntegra. **+ Importar prova** e escolha o PDF (ou fotos das páginas, na ordem). Os passos aparecem no topo: **Arquivo › Gabarito › Leitura › Conferir › Salvar**.
+- **Gabarito:** no próprio PDF, em outro PDF ou colado. Gabarito comentado ("RESPOSTA 1 · Correta: B") também serve: as justificativas viram o comentário. Sem gabarito, o Claude resolve e a questão fica marcada **Gabarito do Claude · conferir**; quando sair o oficial, **Colar gabarito** corrige tudo.
+- **Leitura:** PDF com texto e questões numeradas é lido no aparelho, sem o Claude (o tema vem como **Tema sugerido**). Página escaneada, questão faltando ou sem gabarito: o app pede para **passar pelo Claude**, em partes de até 20 questões; resposta cortada pede só as que faltaram.
+- **Conferir:** cada questão com problema mostra **Conferir:** no topo. Troque a resposta, anule, escolha o tema (até 3; **+ outro tema**) ou descarte. Comentário que contradiz o gabarito ganha um selo.
+- **Figuras:** as páginas com figura (exame, ECG) são recortadas ao salvar e a figura aparece na questão certa.
+- **Provas oficiais:** a lista **Provas oficiais: lidas e faltando** mostra quais já estão no app e quais faltam; **Importar** já preenche nome, banca, ano e nível. Marque **Prova oficial** ao importar: as questões entram no banco como oficiais. As reimpressões da Medway (texto em dobro, alternativas depois dos enunciados) são lidas no aparelho.
+- **Gabarito preliminar × definitivo:** ao colar, diga qual é. Quando sair o definitivo, cole de novo: as questões que mudaram ganham **Gabarito mudou** e o acerto é recalculado.
+- **Juntar gabarito e comentários:** se o Claude preparou numa conversa um arquivo com o gabarito e o comentário de cada questão, toque em **Juntar gabarito e comentários** no cartão da prova e escolha o arquivo. Cada questão é conferida pelo número e pelo começo do enunciado; gabarito do Claude não passa por cima do oficial.
+- **Comentário do Claude:** prova oficial vem sem comentário. **✦ Comentar N sem comentário** (no cartão da prova, em partes de 10) ou **✦ Comentar com o Claude** na questão aberta; fica guardado na prova e no banco.
+- **Subtópico:** o app sugere pelo texto da questão; as duvidosas aparecem em **Conferir subtópicos**. No banco, escolha um tema para filtrar por subtópico.
+- **Jogar:** **Modo prova** (resultado no fim) ou **Modo estudo** (correção a cada questão); dá para pausar. No computador, o mapa das questões e o relógio ficam ao lado; **⛶ Tela inteira** deixa só a prova (A a E respondem, → próxima, ← anterior).
+- **Resultado:** **Onde você perdeu pontos** primeiro (especialidades com 3+ questões e acerto abaixo de 60%, com os temas e as questões para levar ao caderno de erros) e depois o acerto por área. É só sugestão: o plano não muda.
+- **Lista:** busca, situação, banca e **Da faculdade**, agrupada por banca. Prova feita mostra o acerto por área.
+- **Ligar a temas:** liga a prova a temas da residência e conteúdos da faculdade; ela aparece dentro do tema e o acerto conta também no conteúdo da faculdade.
+- Cada resposta conta no acerto do tema e da banca, e as erradas de temas já estudados vão para Refazer.`],
+["Caderno",`A aba **Caderno** junta as **páginas livres** (aula, plantão, dicas) e a **página de cada tema**, que é a mesma anotação da Residência. Tudo é salvo enquanto você escreve.
+- **Partes** (celular e tablet em pé): **Caderno**, **Revisar** (cartões) e **Pegadinhas**. No computador, tudo numa página, com o sumário ao lado.
+- **Uma busca só** para páginas livres e dos temas; em **Filtros**, Tipo, Etiquetas, Mostrar só (editadas na semana, com pegadinhas, com tabela, com cartões, **temas estudados sem anotação**) e Onde.
+- **Página do tema e páginas ligadas:** cada tema tem uma página principal e quantas ligadas quiser (**+ Nova página ligada**). Página nova ligada a um tema sem anotação vira a página dele.
+- **Escrever:** título, negrito, ==destaque==, listas (Tab recua), pegadinha, tabela, link, **fluxograma** e **[[ ]]** para ligar a outro tema ou página (**Mencionado em** mostra quem liga para ela). **Selo** põe na linha um erro ou uma questão de prova. Modelos: **Doença** e, para tema de SP, **Resumo de SP**.
+- **Ler:** cada título abre e fecha; seções vazias somem e as **Pegadinhas** ficam em destaque. **+ Criar cartão do trecho** em cada seção (ou selecione um texto).
+- **Levar para a anotação** (em toda questão respondida): entra um bloco **Da questão** com o caso e a resposta inteira, mais o que você marcar (Por quê, Ponto-chave, Pegadinha, Por que não…). O app sugere a seção; **✦ Escrever com o Claude** transforma em 2 a 4 frases.
+- **Pegadinhas e destaques:** junta as linhas "> Pegadinha:", os ==destaques== e as seções Pegadinhas/Alertas, dos temas e das páginas livres. Filtre por tipo, temas de hoje, prova da faculdade ou **Não sabia**. **Revisar pegadinhas** passa uma a uma; **Folha de véspera** baixa um PDF. No erro "Li errado" ou "Confundi", **Virar pegadinha** escreve na anotação.
+- **Cartões** (Revisar): cada cartão volta quando você estaria perto de esquecer (**FSRS**, o do Anki). **Mostrar resposta** e escolha **Errei**, **Difícil**, **Bom** ou **Fácil** (teclas espaço e 1–4). Até 14 novos por dia (**Ajustes dos cartões**). Crie no tema com **Criar cartões com o Claude** ou **+ Cartão manual**, ou a partir de um erro.
+- **Anki:** cartões a 40+ dias da próxima revisão aparecem em **Prontos para o Anki**. **Exportar (.apkg)** e, no Anki, Arquivo › Importar com **importar o progresso**; depois **Já importei no Anki** tira eles daqui (ficam 30 dias na lixeira).
+- **📄 Ler arquivo:** foto, PDF, Word, PowerPoint ou texto, um ou vários. Diga o tipo e onde salvar (tema ou caderno livre); o Claude organiza com explicação, fluxograma e pegadinhas, e você confere antes de salvar. O arquivo não fica guardado, só o texto.
+- **Erros junto:** abaixo da página do tema, os erros que ainda pedem atenção (até 3), com o selo que abre o caderno de erros.
+- **Baixar PDF:** como está na tela, tudo, uma área ou os temas que você escolher. Tem capa, sumário, texto justificado, tabelas com grade, pegadinhas em caixa e links entre temas com a página.
+- **✦ Gerar resumo** e **Organizar minhas anotações** com o Claude: você insere ou descarta; **Desfazer última substituição** volta.`],
+["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte. Na questão errada, **Levar para o caderno de erros** já monta tudo: **O que eu errei**, a **Pista do caso** (com o que decide em negrito), **Dados decisivos**, **Ponto-chave**, **Conceito correto** e a questão inteira guardada. Ajuste com as suas palavras; **✦ Resumir com o Claude** encurta.
+- **Revisar:** a frente mostra o caso inteiro e a pergunta, sem a resposta: responda de cabeça e toque em **Mostrar a resposta** (**Ver alternativas** ajuda, mas aí vale no máximo Em parte). O verso traz **Certa × Você marcou**, **A regra**, **O raciocínio** e **Por que não a sua**, montados pelo app (✎ **Corrigir**, toque num dado marcado para tirar, ✦ **Melhorar com o Claude** opcional). Notas: **Errei** volta amanhã, **Em parte** na metade do prazo do Acertei (2, 3, 7 ou 15 dias, conforme o degrau), **Acertei** vai para 3, 7, 15 e 30 dias. A partir da 3ª revisão pode vir um caso novo com a mesma regra. Acertou no degrau de 30 dias: o erro fica **formado** (sai da revisão; volta se você errar de novo no tema).
+- **Uma agenda por questão:** erro que virou cartão passa a ser revisado pelos cartões; questão levada do Refazer sai do Refazer.
+- **Criar cartões** (⋯ Ações): dois cartões no padrão Osler, o **discriminador** e **por que não a sua**; **✦ Melhorar com o Claude** oferece também lacuna e armadilha.
+- **Por que você erra · último mês:** erros novos × mês anterior, por tipo e as causas mais comuns, cada uma com uma dica; toque para filtrar. **Temas e especialidades com mais erros** contam só os ativos; o selo marca 2+ erros em 30 dias.
+- **Tipos:** **Não sabia o conteúdo**, **Li errado / desatenção**, **Confundi ou esqueci**. **Por que errei** (opcional) dá uma causa mais precisa, como "Não vi o EXCETO".
+- **Filtros:** Situação, Origem (residência, faculdade, semana da prova, fonte), Por que errou, Onde e Quando. **Exportar PDF destes erros** usa os filtros.
+- **Simulado dos meus erros:** questões novas sobre os pontos que você errou; acertar um erro que vencia hoje conta como Acertei.
+- **Resolvido** arquiva (sai das revisões; dá para desarquivar). Um erro acertado várias vezes ganha **Já domino: arquivar**.
+- **Tela inteira** (tablet deitado e computador): só o erro na tela; espaço mostra a resposta, 1 Errei, 2 Em parte, 3 Acertei, Esc sai. O mesmo botão existe nos cartões, no simulado, no Refazer e nas provas.`],
+["Faculdade e provas",`A Faculdade funciona como pastas: **Semestre › (Unidade curricular) › Disciplina › conteúdos**.
+- **Semestre:** **+ Semestre** cria a pasta. Dentro: **+ Disciplina**, **Colar ementa** (o Claude monta disciplinas, SPs e objetivos; você revisa antes de salvar), **Provas do semestre** e o **Calendário**. Em **⚙ Ajustes**: renomear, unidades curriculares, nomes dos níveis e arquivar.
+- **Conteúdos:** **+ Conteúdo** e digite o assunto. Se já existe na residência, **Usar este** (o progresso é o mesmo); senão **Criar** faz um conteúdo da faculdade (selo **FAC** na Residência). Os chips **Ligar à residência** já ligam a temas parecidos.
+- **SP:** **+ SP** cria a situação-problema: um conteúdo de estudo com **objetivos** (viram subtópicos; dá para ler de uma **foto ou arquivo**), **fechamento**, materiais e prova. **+ Outro conteúdo** guarda o que for só da SP. **Mover para…** e **Transformar em SP** reorganizam.
+- **Ligar a um tema da residência:** o conteúdo continua com o seu nome na Faculdade, mas o progresso passa a ser o do tema: estudar em qualquer um avança os dois. Escolha o tema inteiro ou só alguns subtópicos; um conteúdo pode ligar a vários temas (conta como estudado quando todos estiverem). **Trocar ligação** e **Desligar** ficam no tema.
+- **Provas:** **+ Nova prova**: escolha o semestre, a(s) disciplina(s), nome e data. A prova começa com o que ainda não está em outra prova; abra para marcar o que cai. Na SP, **Cai na prova** liga a SP inteira. Conta como estudado o que você estudou ou revisou nas 3 semanas antes.
+- **Próximas provas:** quanto está pronto, o que falta e o ritmo. **Estudar o próximo** abre o conteúdo e liga o Foco; **Simulado da prova** monta questões só com ela; **Adicionar ao calendário** gera um .ics.
+| Dias até a prova | Vagas no plano |
+|---|---|
+| 15 a 21 | 1 |
+| 8 a 14 | 2 |
+| 0 a 7 | 3 |
+- **Semana da prova:** o que você já estudou volta como **Revisar para a prova** (até 2 vezes, menor acerto primeiro) e não entram temas novos da residência. **+1 vaga** se o conteúdo também cai muito na residência; **residência protegida** em 2 dias por semana, exceto nos 7 dias finais.
+- **Fechamento da SP:** preencha a data e com quantos dias de antecedência começar (7). Nesse período, os objetivos e conteúdos dela entram no plano e ela aparece em **Próximas provas › Fechamentos**.
+- **Calendário do semestre:** provas, fechamentos e entregas das próximas semanas (semanas pesadas em dourado). Toque numa data para mudar ou marcar **adiada**. **+ Entrega** lembra nos 3 dias antes; **+ Aula fixa** reduz o tempo de estudo do dia (cancelar um dia devolve).
+- **Depois da prova:** por até 30 dias, registre a nota e toque no que caiu e você não sabia (vira erro no caderno).
+- **Modo provas:** 3+ provas em 7 dias liga sozinho (pausa as revisões da residência); controle em Faculdade › Modo provas.
+- **Materiais** (+ Material na disciplina e na SP) guardam links. O cabeçalho da disciplina mostra o foco na semana.
+- Temas FAC não entram no "% dominado", que mede só os 198 temas da residência.`],
+["Foco: tempo de estudo",`A aba **Foco** conta os minutos que você estuda (no celular, em ≡ Menu).
+- **Pomodoro** (25+5, 50+10 ou Personalizar, com pausa longa a cada 4 ciclos) ou **Cronômetro** (até **Encerrar e salvar**; menos de 1 minuto não salva).
+- **Vincular** a sessão a um tema ou a uma disciplina (os do plano e das revisões de hoje aparecem primeiro; dá para mudar com o relógio correndo). Na disciplina, toque no **conteúdo** que está estudando ou em **Disciplina em geral**; conteúdo ligado à residência conta também no tema, uma vez só. O botão **Foco** dos cartões já abre o relógio no tema.
+- **O que você estudou?** Ao terminar, marque os subtópicos, **Estudei hoje** ou a revisão (Esqueci, Difícil, Lembrei) e registre questões, sem sair do Foco.
+- **Me distraí** (tecla D) conta distrações. **Som de fundo:** chuva, riacho, lareira, ruído branco ou marrom, só durante o foco.
+- **Esta semana:** total, sessões e gráfico, com a **meta por semana** (Configurações › Plano) dividida pelos dias de estudo; embaixo, o recorde.
+- **Nas últimas 12 semanas:** um quadradinho por dia (❄ = folga), total por semana, média, melhor semana e o seu melhor horário.
+- **Registrar tempo:** para o que você estudou sem o cronômetro (Anki no celular, livro, aula). Minutos, dia (hoje, ontem ou outro), o que fez (Anki, Questões, Leitura, Resumo ou um tipo seu, que fica guardado) e, se quiser, o tema ou a disciplina. Conta na meta da semana, nas Estatísticas e na sequência de dias; ✎ na lista edita.
+- **Tempo por matéria ou por tipo:** 7 a 90 dias ou tudo; nas disciplinas, os conteúdos aparecem embaixo.
+- A contagem usa a hora de início: continua certa com a tela bloqueada. O alarme só toca com o app aberto. **Tela inteira** esconde o resto (espaço pausa, Esc sai).`],
+["Estatísticas",`A página **Estatísticas** (≡ Menu ou barra lateral) responde quatro perguntas, cada uma com um selo verde, amarelo ou vermelho:
+- **Como estou indo:** 7, 30 ou 90 dias × o período anterior (acerto, questões, temas, revisões, erros) e a nota nas provas na íntegra.
+- **Vou chegar a tempo:** seu ritmo × o necessário até a prova principal e quantos temas ficariam de fora.
+- **Estou estudando o suficiente:** horas por semana (do Foco) com a meta e quanto tempo um tema leva para você. **Ajustar a semana** leva ao planejamento.
+- **Tenho direção:** quanto do tempo foi para temas que mais caem, o quadro **tempo × acerto** por especialidade e 3 focos sugeridos.
+- **Lado Faculdade:** notas das provas, o que está pronto, foco por disciplina, **resumo do semestre** (horas × nota) e a divisão do tempo entre residência, faculdade e as duas (sem somar em dobro).
+- As horas vêm só do Foco. Com menos de 3 semanas de uso, a página avisa que há poucos dados.`],
+["Perfil e Configurações",`**Perfil** (suas iniciais; no computador, no pé da barra lateral):
+- **Nome** e **Fase do curso** (Ciclo clínico, Internato ou Reta final): a fase ajusta de uma vez antecedência das provas, meta de questões, eixo e dia de simulado.
+- **Provas de residência:** cadastre as que vai prestar e marque a principal (ela guia a projeção). Ao digitar, o app sugere do **catálogo** (nacionais e por região, com banca e mês habitual); a data vem **estimada** até você pôr a do edital. **Ver provas por região** mostra a lista.
+- **Conta** (no site): entrar, sair e criar senha para o app instalado.
+- **Exportar PDF** (Panorama de estudos): residência, faculdade e/ou questões e erros, no período e nas matérias que você escolher. Funciona sem internet.
+**⚙ Configurações:** cada cartão mostra o básico e guarda o resto em **Mais opções**.
+- **Aparência:** layout (**Clássico**, **Compacto**, **Essencial**), tema (automático, claro, escuro), tamanho da letra e barra lateral.
+- **Plano:** Planejar a semana, meta por semana, temas por dia, subtópicos por revisão, intervalos (Padrão, Intensivo, Espaçado), eixo da faculdade e subtópicos densos.
+- **Questões:** meta semanal e tempo da prova por questão; **Instruções do gerador**.
+- **Faculdade:** antecedência das provas, residência garantida na semana e modo provas.
+- **Marcar atraso:** desligado, o atraso aparece em âmbar como "pendente há N dias".
+- **Backup**, **Lixeira** e esta **Ajuda**. Tudo vale em todos os aparelhos.`],
+["Filtros",`Todos os filtros do app seguem o mesmo jeito:
+- A **busca** fica à vista; **Filtros** abre o painel com os grupos. No celular, o painel sobe de baixo (**Ver resultados** fecha).
+- **Escolher um** (período, tipo): botões lado a lado. **Ligar e combinar** (situação, atalhos, origem): etiquetas; toque de novo para desligar. Cada etiqueta mostra quantos itens tem (com 0, fica apagada).
+- Os ligados aparecem como etiquetas com **×**; **Limpar tudo** tira todos.
+- **Período:** 7 · 15 · 30 · 60 · 90 dias · Tudo (as Estatísticas usam 7, 30 e 90, para comparar com o anterior).
+- Cada aba lembra os seus filtros.`],
+["Backup",`Em **⚙ Configurações › Backup**.
+- **Exportar backup:** um arquivo com tudo. No iPad/iPhone, **Salvar em Arquivos**. **Copiar backup** dá o mesmo como texto.
+- **Importar backup** (site): mostra um resumo e guarda uma cópia do que existia; **Desfazer a última importação** até 7 dias.
+- Ao migrar, exporte por último. Sem conta no site, o Início lembra quando o último backup passou de 30 dias.
+- **Gravação recusada pela conta** (item grande demais, espaço cheio): um aviso diz o quê e por quê; o item fica no aparelho e **Tentar de novo** envia.
+- **Lixeira** (⚙ Configurações): erros, cartões, anotações apagadas, páginas, provas, SPs e disciplinas ficam 30 dias. Logo depois de apagar, **Desfazer** embaixo da tela.`],
+["Site: instalar, conta e sem internet",`Endereço: **elialdojunior91tmedicins.github.io/Trilha-Medica**
+- **Instalar (iPad/iPhone):** no Safari, **Compartilhar › Adicionar à Tela de Início**. No computador, o Chrome oferece **Instalar**.
+- **Conta:** entre com **Google** ou **e-mail e senha**. Nos outros aparelhos, do mesmo jeito: tudo sincroniza, em segundos, mesmo com o app aberto em vários (o aparelho em uso só se atualiza depois de uns segundos sem toque).
+- **App instalado no iPhone/iPad:** o botão do Google não funciona. Crie uma senha pelo Safari em **Conta › Criar senha** e entre com e-mail e senha.
+- **Esqueci minha senha:** digite o e-mail e toque no link; confira o spam.
+- **Sair** apaga os dados daquele aparelho (continuam na conta). **Sem internet**, o app salva no aparelho e sincroniza depois. Atualizações chegam ao abrir, às vezes na segunda vez.`],
+["Site: gerar questões e resumos",`No site, a IA funciona por copiar e colar no Claude:
+1. Toque em **Gerar questões** (ou resumo). Abre uma janela com o pedido pronto.
+2. **Copiar pedido** e cole numa conversa do Claude (**Abrir o Claude** leva até lá).
+3. Copie a resposta inteira, volte, cole e toque em **Usar estas questões**.
+- Resposta sem as questões? O site avisa e deixa colar de novo.
+- **Importar prova** vai em partes (um copiar e colar por parte). Páginas escaneadas pedem para anexar o PDF; se fechar uma parte, o que já veio fica guardado.`],
+["Pedir mudanças ao Claude",`Mudanças de layout, opções novas e correções são feitas pedindo ao Claude. O mesmo código gera o site e o checklist do Claude.
+- **Numa conversa nova,** diga onde está o código: o repositório **elialdojunior91tmedicins/Trilha-Medica** e o link do checklist no Claude.
+- Para um erro: o que você fez, o que esperava, o que aconteceu e uma captura de tela. Seus dados não mudam com o código.`],
+["Problemas comuns",`| Problema | O que fazer |
+|---|---|
+| Prova cadastrada não entrou no plano | Mais de 7 dias: entra a partir de amanhã. Para hoje, **Refazer plano**. |
+| Tema estudado não aparece como concluído | Marque todos os subtópicos de hoje, ou **Estudei hoje**. |
+| As revisões sumiram | O **modo provas** pode estar ligado (revisões pausadas). |
+| Um aparelho não mostra o que marquei no outro | Mesmo e-mail nos dois? Há internet? Feche e abra o app. |
+| O Claude e o site têm dados diferentes | São separados: exporte no Claude e importe no site. |
+| "Sem conexão" ao entrar | O login precisa de internet; o app segue salvando no aparelho. |
+| Esqueci a senha | Na tela de entrar, digite o e-mail e toque em **Esqueci minha senha**. Confira o spam. |
+| A resposta colada não virou questões | Copie a resposta inteira, do primeiro [ ao último ]. |
+| O site não mostra a mudança nova | Feche e abra o app duas vezes. |
+| Importei o backup errado | **Desfazer a última importação** (até 7 dias). |`]
+];
+let helpQ="";
+function renderHelp(){const box=$("#helpList");const q=helpQ?norm(helpQ):"";const prev=new Set([...box.querySelectorAll("details[open]")].map(d=>d.dataset.i));box.innerHTML="";let n=0;
+  HELP.forEach(([t,body],i)=>{if(q&&!norm(t+" "+body).includes(q))return;n++;
+    const d=el(`<details class="hsec" data-i="${i}"${q||prev.has(String(i))?" open":""}><summary></summary><div class="mdview"></div></details>`);
+    d.querySelector("summary").textContent=t;d.querySelector(".mdview").innerHTML=md(body);box.appendChild(d)});
+  if(!n)box.appendChild(el(`<p class="hempty">Nada encontrado. Tente outra palavra, como "prova", "revisão" ou "senha".</p>`))}
