@@ -10,7 +10,7 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
   const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
   return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
     q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:"",...(s(q.pc,1200)?{pc:s(q.pc,1200)}:{}),...(s(q.th,800)?{th:s(q.th,800)}:{}),...(s(q.fonte,400)?{fonte:s(q.fonte,400)}:{})},
-    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{}),...(r.kd?{kd:1}:{}),...(s(r.sb,80)?{sb:s(r.sb,80)}:{}),...(r.sbd?{sbd:1}:{}),...(r.sbg?{sbg:1}:{}),...(r.cm?{cm:1}:{})}}
+    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{}),...(r.kd?{kd:1}:{}),...(s(r.sb,80)?{sb:s(r.sb,80)}:{}),...(r.sbd?{sbd:1}:{}),...(r.sbg?{sbg:1}:{}),...(r.cm?{cm:1}:{}),...(s(r.cr,80)?{cr:s(r.cr,80)}:{})}}
 /* temas extras da questão (até 2 além do principal); contam inteiros em cada tema, mas uma vez só no dia/semana */
 function exKs(r){const k=typeof r.k==="string"?r.k:"";return Array.isArray(r.ks)?[...new Set(r.ks.filter(x=>typeof x==="string"&&BYKEY[x]&&!BYKEY[x].own&&x!==k))].slice(0,2):[]}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}

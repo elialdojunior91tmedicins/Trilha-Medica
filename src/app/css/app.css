@@ -500,7 +500,7 @@ html[data-layout="phone"] .bkopen{padding-left:12px}
 .bkfc .tfgrp>.tfgh{display:none}.bkfc .tfpanel .tfgrp{padding:0}
 .bkfix{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--accent-soft);border-radius:10px;padding:9px 12px;margin-bottom:6px;font-size:.88rem}.bkfix span{flex:1 1 200px}
 .bksis{display:flex;flex-direction:column;align-items:flex-start;gap:4px;border-left:3px solid var(--l2);padding:4px 0 4px 12px}.bksis .how{margin:0;font-size:.82rem}
-.bkb.dz{background:var(--late-soft);color:var(--late)}
+.bkb.dz{background:var(--late-soft);color:var(--late)}.bkb.rc{background:color-mix(in srgb,var(--gold) 14%,transparent);color:var(--goldInk,var(--ink))}
 /* B2: tela inteira do banco */
 html:is([data-bkfull],[data-pfull]) body{overflow:hidden}
 html[data-bkfull] .bkcard.bkrun,.pfullc{position:fixed!important;inset:0;z-index:80;max-width:none;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px)) ;background:var(--surface)}
@@ -673,7 +673,8 @@ li.t.open{background:var(--bg)}
 .r-cont{background:color-mix(in srgb,var(--mi) 20%,transparent);color:var(--li)}
 .hyb{display:inline-block;margin-left:6px;font:700 .62rem var(--body);letter-spacing:.06em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 4px;line-height:1.5;vertical-align:1px}
 .hyst{border:1px dashed var(--line);background:none;color:var(--muted);font:700 .68rem var(--body);padding:2px 7px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}.hyst[aria-pressed="true"]{border:1px solid var(--gold);color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent)}
-.subtags{margin-left:auto;display:inline-flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;flex:none;max-width:50%}.subtags .hyst,.subtags .dnb{margin-left:0}.hyline{margin:6px 0 0}.hyline .how{font-size:.8rem}
+.subtags{margin-left:auto;display:inline-flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;flex:none;max-width:50%}.subtags .hyst,.subtags .dnb{margin-left:0}.hyline{margin:6px 0 0}.hybank{margin:6px 0 0}.hybank .how{margin:0 0 4px}.hysug{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;padding:7px 10px;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--gold) 7%,transparent);font-size:.86rem}.hysug span{flex:1 1 220px}.crlist{margin:6px 0 10px;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:.9rem}.crh2{margin:14px 0 6px}.crpairs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}.crpair{border:1px solid var(--line);border-radius:10px;padding:10px 12px}.crpair .crt{margin:0 0 6px}.crab{display:grid;grid-template-columns:1fr 1fr;gap:10px}.crab p{margin:2px 0 0;font-size:.88rem}.crsrc{color:var(--muted);font-weight:600}html[data-layout="phone"] .crab{grid-template-columns:1fr}.crpair .btns{margin-top:8px}
+.hylist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}.hylist>li>.link{font-weight:600}.hyline .how{font-size:.8rem}
 .dnb{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .7rem var(--body);padding:2px 8px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}
 .dnb[data-dn="u"],.dnb[data-dn="c"]{border-color:var(--li);color:var(--li);background:color-mix(in srgb,var(--mi) 14%,transparent)}.dnb[data-dn="c"]{border-style:dashed}
 .dnbox{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:6px;font-size:.85rem}.dnbox .how{margin:0;flex-basis:100%}
@@ -1208,6 +1209,7 @@ details.plain summary{display:block;padding:0;font-size:.88rem;color:var(--muted
 .mdview mark{background:color-mix(in srgb,var(--l1) 28%,transparent);color:inherit;padding:0 .15em;border-radius:3px}
 .mdview strong{font-weight:700}
 .mdview hr{border:0;border-top:1px dashed var(--line);margin:1em 0}
+.hyl .hys,p.hyl>.hys{color:var(--gold);font-weight:700}.mdview li.hyl,.mdview p.hyl{background:color-mix(in srgb,var(--gold) 9%,transparent);border-radius:6px;padding:1px 6px}
 .callout{border-left:3px solid var(--l1);background:var(--bg);padding:7px 11px;border-radius:0 7px 7px 0;margin:0 0 .6em;font-size:.92rem}
 .mdtable{overflow-x:auto;margin:0 0 .7em}
 .mdtable table{border-collapse:collapse;font-size:.88rem;min-width:100%}

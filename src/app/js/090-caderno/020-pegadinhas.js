@@ -33,19 +33,20 @@ function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||""
   c.appendChild(ol);
   if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
   return c}
-/* pegadinhas e destaques (Lote 20C): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
+/* pegadinhas e destaques (Lote 20C; B5: linhas ★ = HY, tipo "hy"): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
    Pegadinhas/Alertas/Cuidado; vale para a página do tema e para as páginas livres. Cada item guarda a seção de onde veio. */
 function pegParse(txt){const t=String(txt||"").replace(/\r/g,""),out=[];let inPeg=false,sec="",fen=false;
   const one=(raw,kind)=>{let x=raw.trim(),why="";const m=x.match(/^\*\*Pegadinha:?\*\*:?\s*(.*)$/i)||x.match(/^Pegadinha\s*:\s*(.*)$/i);if(m){x=m[1].trim();kind="peg"}const w=x.split(/\s+[—–-]\s+(?:\*\*)?Por qu[eê]:?(?:\*\*)?:?\s*/i);if(w.length>1){x=w[0].trim();why=w.slice(1).join(" ").trim()}if(x)out.push({x,why,kind,sec})};
   t.split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const h=l.match(/^#{1,3}\s+(.*)/);if(h){sec=h[1].replace(/\*\*|==/g,"").trim();inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
     if(/^\s*>/.test(l)){one(l.replace(/^\s*>\s?/,""),"peg");return}
+    {const r=l.replace(/^\s*(?:[-*\u2022]|\d+[.)])\s+/,"");if(HY_LINE.test(r)){one(r.replace(HY_LINE,"").replace(/==/g,""),"hy");return}}
     const li=l.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)/);if(li&&/^\*\*Pegadinha:?\*\*/i.test(li[1])){one(li[1],"peg");return}
     if(inPeg&&li){one(li[1],"peg");return}
     (l.match(/==([^=]+)==/g)||[]).forEach(m=>out.push({x:m.slice(2,-2).trim(),why:"",kind:"dest",sec}))});
   const seen=new Set();return out.filter(o=>o.x&&!seen.has(o.x)&&seen.add(o.x))}
 const pegOf=k=>pegParse(notes[k]);
 const pgId=x=>{let h=0;for(const ch of norm(x))h=(h*31+ch.charCodeAt(0))|0;return "p"+(h>>>0).toString(36)};
-let pgF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-pgf")||"{}");return {t:["peg","dest"].includes(v.t)?v.t:"all",today:!!v.today,prova:!!v.prova,miss:!!v.miss}}catch(e){return {t:"all",today:false,prova:false,miss:false}}})();
+let pgF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-pgf")||"{}");return {t:["peg","dest","hy"].includes(v.t)?v.t:"all",today:!!v.today,prova:!!v.prova,miss:!!v.miss}}catch(e){return {t:"all",today:false,prova:false,miss:false}}})();
 let pgRun=null,pgOpen=new Set();
 const pgSave=()=>lsSet("resid-pgf",JSON.stringify(pgF));
 const pgMiss=()=>{const m=ui.prefs.pgm;return m&&typeof m==="object"?m:{}};
@@ -61,7 +62,7 @@ function pgGo(o){const find=root=>{if(!root)return null;const key=norm(o.x).slic
   if(o.f){const f=freeN.find(x=>x.id===o.f);if(!f)return;nType="all";frQ=frQRaw="";freeTag="all";setNSeg("livre");freeOpen.add(f.id);render();setTimeout(()=>flash(find(document.getElementById("fr-"+f.id))),120);return}
   detTab[o.k]="notas";noteMode[o.k]="ler";openTopic(o.k);setTimeout(()=>flash(find(document.getElementById("t-"+o.k))),160)}
 /* folha de véspera: PDF só com as pegadinhas e destaques do recorte */
-async function pgSheet(L){if(!downloadsFn||!L.length)return;const by={},fr=[];L.forEach(o=>{const line=o.kind==="peg"?`> ${o.x}${o.why?" — Por quê: "+o.why:""}`:`- ==${o.x}==`;if(o.k&&!o.f)(by[o.k]=by[o.k]||[]).push(line);else fr.push(line)});
+async function pgSheet(L){if(!downloadsFn||!L.length)return;const by={},fr=[];L.forEach(o=>{const line=o.kind==="peg"?`> ${o.x}${o.why?" — Por quê: "+o.why:""}`:o.kind==="hy"?`- ★ ${o.x}${o.why?" — Por quê: "+o.why:""}`:`- ==${o.x}==`;if(o.k&&!o.f)(by[o.k]=by[o.k]||[]).push(line);else fr.push(line)});
   const ks=Object.keys(by),free=fr.length?[{id:"pgfree",t:"Das páginas livres",b:fr.join("\n"),tags:[],ks:[]}]:[];
   const bytes=notesPDF(ks,free,{title:"Folha de véspera",scope:"Pegadinhas e destaques",kicker:"CADERNO  ·  PEGADINHAS",freeTitle:"Páginas livres",textOf:k=>by[k].join("\n")});
   await downloadsFn.save({filename:`pegadinhas-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})})}
@@ -79,7 +80,7 @@ let pgFull=false,pgFullTo=null,pgTopOpen=new Set();
 function nPegCard(vis,o={}){const c=el(`<section class="card npeg${o.side?" npegside":""}${o.full?" npegall":""}" aria-labelledby="${o.full?"nphf":"nph"}"><div class="dhead"><h2 id="${o.full?"nphf":"nph"}">${o.full?"Todas as pegadinhas e destaques":"Pegadinhas e destaques"}</h2><span class="todaydate"></span></div></section>`);
   if(o.full){const x=el(`<button class="link" type="button" id="pgFullX">Fechar</button>`);x.onclick=()=>{pgFull=false;render()};c.querySelector(".dhead").appendChild(x)}
   const all=pgAll(vis),miss=pgMiss();
-  if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
+  if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==), a <b>★</b> (linha que cai muito em prova) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
   const tk=new Set(notesTodayKeys().map(x=>x.k)),PV=pgProvaKeys();
   const okT=o=>pgF.t==="all"||o.kind===pgF.t,okD=o=>!pgF.today||o.k&&tk.has(o.k),okP=o=>!pgF.prova||PV&&o.k&&PV.keys.has(o.k),okM=o=>!pgF.miss||miss[o.id];
   const L=all.filter(o=>okT(o)&&okD(o)&&okP(o)&&okM(o)).sort((a,b)=>(miss[b.id]||0)-(miss[a.id]||0));
@@ -87,12 +88,12 @@ function nPegCard(vis,o={}){const c=el(`<section class="card npeg${o.side?" npeg
   if(o.full){c.appendChild(el(`<p class="how">Filtros, revisão e folha de véspera ficam no cartão ao lado.</p>`));if(!L.length){c.appendChild(el(`<p class="cempty">Nada com esses filtros.</p>`));return c}return pgGroupsEl(c,L,miss,true)}
   /* filtros no padrão: tipo (um) + atalhos (combinam), com contagem */
   const f=el(`<div class="pgfil"></div>`),base=all.filter(o=>okD(o)&&okP(o)&&okM(o)),pk=all.filter(o=>okT(o));
-  f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`]],"Tipo"));
+  f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`],["hy",`Só HY · ${base.filter(o=>o.kind==="hy").length}`]],"Tipo"));
   const ch=[fcChip(`Dos temas de hoje · ${pk.filter(o=>o.k&&tk.has(o.k)&&okP(o)&&okM(o)).length}`,pgF.today,()=>{pgF.today=!pgF.today;pgSave()},"pgToday",null,"Temas em revisão hoje e do plano do dia")];
   if(PV)ch.push(fcChip(`Da prova (${PV.lab}) · ${pk.filter(o=>o.k&&PV.keys.has(o.k)&&okD(o)&&okM(o)).length}`,pgF.prova,()=>{pgF.prova=!pgF.prova;pgSave()},"pgProva",null,`Conteúdos da prova da faculdade em ${PV.d} dias`));
   ch.push(fcChip(`Não sabia · ${pk.filter(o=>miss[o.id]&&okD(o)&&okP(o)).length}`,pgF.miss,()=>{pgF.miss=!pgF.miss;pgSave()},"pgMiss",null,"As que você marcou como Não sabia na revisão"));
   f.appendChild(fcChips(ch));c.appendChild(f);
-  c.appendChild(el(`<p class="how hx">Tudo o que você marcou como pegadinha ou destaque nas páginas dos temas e nas páginas livres${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque num item para abrir a anotação no ponto exato. As que você não sabia sobem para o topo.</p>`));
+  c.appendChild(el(`<p class="how hx">Tudo o que você marcou como pegadinha, destaque ou ★ HY nas páginas dos temas e nas páginas livres${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque num item para abrir a anotação no ponto exato. As que você não sabia sobem para o topo.</p>`));
   {const B=el(`<div class="btns pgacts"></div>`),go=el(`<button class="btn primary" type="button" id="pgGo"></button>`);go.textContent=`Revisar pegadinhas · ${Math.min(L.length,30)}`;go.disabled=!L.length;
     go.onclick=()=>{pgRun={list:L.slice(0,30),i:0,ok:0,no:0,show:false};render()};B.appendChild(go);
     if(downloadsFn){const s=el(`<button class="btn" type="button" id="pgPdf">Folha de véspera (PDF)</button>`);s.disabled=!L.length;s.onclick=async()=>{try{await pgSheet(L);$("#nmsg").textContent=`Folha de véspera salva com ${L.length} itens.`}catch(e){$("#nmsg").textContent="Não foi possível gerar o PDF agora."}};B.appendChild(s)}

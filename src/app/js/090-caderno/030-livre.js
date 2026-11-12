@@ -159,6 +159,7 @@ function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
       if(daq&&/^\s{2,}[-*•]\s+/.test(l)){rich("– "+l.replace(/^\s*[-*•]\s+/,""),{qbox:true,qind:4,indent:22,size:9.2,after:0});return}
       if(daq){daq=false;y+=4}
       if(/^\s*>/.test(l)){rich(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
+      {const r=l.replace(/^\s*(?:[-*•]|\d+[.)])\s+/,"");if(HY_LINE.test(r)){const lv=(l.match(/^\s*/)[0].replace(/\t/g,"  ").length),ind=lv>=4?34:lv>=2?22:10;rich("**HY ·** "+r.replace(HY_LINE,""),{indent:ind});return}}
       if(m=l.match(/^(\s*)([-*•]|\d+[.)])\s+(.*)/)){const lv=m[1].replace(/\t/g,"  ").length,ind=lv>=4?34:lv>=2?22:10;rich((/\d/.test(m[2])?m[2]+" ":lv>=2?"– ":"• ")+m[3],{indent:ind});return}
       rich(l)});if(daq)y+=4};
     groups.forEach(A=>{if(!first){P.add();y=M}first=false;starts["a:"+A.code]=P.pages.length-1;
@@ -241,7 +242,7 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
   const t=w.querySelector("#frT"),b=w.querySelector("#frB"),tg=w.querySelector("#frTags"),q=w.querySelector("#frQ");t.value=E.t;b.value=E.b;tg.value=E.tags;q.value=E.q;
   t.oninput=()=>E.t=t.value;
   {const K=v=>{E.b=v},pop=w.querySelector(".wkpop"),tb=w.querySelector(".frtools");
-    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>pegInsert(b,K)],
+    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>pegInsert(b,K)],["Cai muito em prova (HY): marca a linha com ★","★",()=>hyInsert(b,K)],
      ["Link para um tema ou outra página: digite [[ e escolha na lista","[[ ]]",()=>{edit(b,K,(v,s0,e0)=>({v:v.slice(0,s0)+"[["+v.slice(e0),s:s0+2,e:s0+2}));wkPopUpdate(b,K,pop)}],
      ["Marcar uma questão ou um erro dos temas ligados","Selo",()=>{const o=w.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(b,K,()=>{const x=w.querySelector(".nbpick");if(x)x.remove();b.focus()},E.ks.filter(x=>BYKEY[x])))}]].forEach(([title,lab,fn])=>{
       const x=el(`<button type="button" class="tool"></button>`);x.textContent=lab;x.title=title;x.setAttribute("aria-label",title);x.onmousedown=e=>e.preventDefault();x.onclick=fn;tb.appendChild(x)});

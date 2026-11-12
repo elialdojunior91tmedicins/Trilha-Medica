@@ -11,6 +11,8 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* Lote 20E: plano alinhado ao eixo */if(typeof p.align==="boolean")o.prefs.align=p.align;if(["111","021","120"].includes(p.amix))o.prefs.amix=p.amix;if(typeof p.anear==="boolean")o.prefs.anear=p.anear;
   if(p.eixo&&typeof p.eixo==="object"&&typeof p.eixo.a==="string"&&typeof p.eixo.sp==="string")o.prefs.eixo={a:p.eixo.a.slice(0,6),sp:p.eixo.sp.slice(0,80),...(typeof p.eixo.until==="string"&&/^\d{4}-\d\d-\d\d$/.test(p.eixo.until)?{until:p.eixo.until}:{})};
   if(p.pgm&&typeof p.pgm==="object"&&!Array.isArray(p.pgm)){const m={};Object.entries(p.pgm).slice(-400).forEach(([k,v])=>{if(/^p[a-z0-9]{1,12}$/.test(k)&&Number.isInteger(v)&&v>0&&v<1000)m[k]=v});if(Object.keys(m).length)o.prefs.pgm=m}// Lote 20C: pegadinhas "não sabia"
+  if(Array.isArray(p.hyno)){const L=p.hyno.filter(x=>typeof x==="string"&&/^[ws]:[A-Z]+-\d+:[^\s]{1,70}$/.test(x)).slice(-300);if(L.length)o.prefs.hyno=L}// B5: sugestões de HY dispensadas
+  if(Array.isArray(p.crno)){const L=p.crno.filter(x=>typeof x==="string"&&/^b[a-z0-9]{1,30}\|b[a-z0-9]{1,30}$/.test(x)).slice(-500);if(L.length)o.prefs.crno=L}// B5: pares que não são o mesmo conceito
   if(Array.isArray(p.bkps)){const L=p.bkps.filter(x=>x&&/^u[a-z0-9]{1,14}$/.test(x.id)&&typeof x.n==="string"&&x.n.trim()).slice(-12).map(x=>({id:x.id,n:x.n.trim().slice(0,40),f:bkFClean(x.f)}));if(L.length)o.prefs.bkps=L}// B2: filtros salvos do banco
   if(["auto","light","dark"].includes(p.theme))o.prefs.theme=p.theme;
   if(["n","g"].includes(p.font))o.prefs.font=p.font;

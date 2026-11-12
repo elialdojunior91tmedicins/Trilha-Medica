@@ -85,6 +85,7 @@ function renderDetail(it,o={}){
   gw.querySelector("p").textContent=(get(it.key).w?`Você ajustou este peso. O padrão é ${INC[it.w0].toLowerCase()}. `:"")+
     (INC_NEW.has(it.key)?"Tema novo (10/2026), ainda sem contagem própria nas 12 provas analisadas.":D[0]?`Caiu ${D[0]} ${D[0]===1?"vez":"vezes"} em ${D[1]} das 12 provas analisadas${D[2]?`, ${D[2]} no Enamed 2025`:""}${it.key==="CM-50"?" (contando toda a psiquiatria, antes de ela ser dividida em 4 temas)":""}.`:"Não apareceu com esse nome nas 12 provas analisadas.");
   gw.querySelector(".dhow p").textContent=(D[3]?"Peso elevado porque os cursinhos o apontam como prioritário. ":"")+`O peso decide quanto o tema pesa no plano do dia e no “onde ganhar pontos”. Fonte: ${INC_SRC}.`;
+  {const hb=hyTopicEl(it);if(hb)gw.insertBefore(hb,gw.querySelector(".dhow"))}
   if(get(it.key).w){const r=el(`<button class="link" type="button">Voltar ao padrão</button>`);r.onclick=()=>{upd(it.key,x=>{delete x.w});commit()};gw.insertBefore(r,gw.querySelector(".dhow"))}
   duo.appendChild(gw);
   }
@@ -115,7 +116,8 @@ function renderDetail(it,o={}){
     gs.querySelector("ul").appendChild(li)});
   if(L.length>=2)gs.appendChild(dnBoxEl(it,L));
   if(L.length){const hl=el(`<p class="hyline"><button class="link" type="button"></button></p>`),hb=hl.querySelector("button");hb.id="hyEd-"+it.key;hb.textContent=hyEdit===it.key?"Pronto":`${L.some(x=>x.hy)?"Mudar":"Marcar"} os subtópicos ★ HY`;hb.onclick=()=>{hyEdit=hyEdit===it.key?null:it.key;render()};
-    if(hyEdit===it.key)hl.appendChild(el(`<span class="how"> ★ = o que mais cai em prova (estimativa inicial; a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais no rodízio da revisão e puxam mais questões.</span>`));gs.appendChild(hl)}
+    if(hyEdit===it.key)hl.appendChild(el(`<span class="how"> ★ = o que mais cai em prova (estimativa inicial; a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais no rodízio da revisão e puxam mais questões.</span>`));gs.appendChild(hl);
+    if(!it.own){const hs=hySubEl(it);if(hs)gs.appendChild(hs)}}
   const af=el(`<form class="addsub"><input class="etext" id="as-${it.key}" maxlength="120" placeholder="Adicionar subtópico próprio" aria-label="Novo subtópico"><button class="btn" type="submit">Adicionar</button></form>`);
   const ai=af.querySelector("input");ai.value=subDraft[it.key]||"";ai.oninput=()=>subDraft[it.key]=ai.value;
   af.addEventListener("submit",ev=>{ev.preventDefault();const t=ai.value.trim();

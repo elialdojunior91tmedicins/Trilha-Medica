@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=67cde75e">
+<link rel="stylesheet" href="site.css?v=6a708536">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=67cde75e"></script>
-<script src="bridge.js?v=67cde75e"></script>
+<script src="config.js?v=6a708536"></script>
+<script src="bridge.js?v=6a708536"></script>
 </head>
 <body>
 <script>
@@ -548,7 +548,7 @@ html[data-layout="phone"] .bkopen{padding-left:12px}
 .bkfc .tfgrp>.tfgh{display:none}.bkfc .tfpanel .tfgrp{padding:0}
 .bkfix{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--accent-soft);border-radius:10px;padding:9px 12px;margin-bottom:6px;font-size:.88rem}.bkfix span{flex:1 1 200px}
 .bksis{display:flex;flex-direction:column;align-items:flex-start;gap:4px;border-left:3px solid var(--l2);padding:4px 0 4px 12px}.bksis .how{margin:0;font-size:.82rem}
-.bkb.dz{background:var(--late-soft);color:var(--late)}
+.bkb.dz{background:var(--late-soft);color:var(--late)}.bkb.rc{background:color-mix(in srgb,var(--gold) 14%,transparent);color:var(--goldInk,var(--ink))}
 /* B2: tela inteira do banco */
 html:is([data-bkfull],[data-pfull]) body{overflow:hidden}
 html[data-bkfull] .bkcard.bkrun,.pfullc{position:fixed!important;inset:0;z-index:80;max-width:none;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px)) ;background:var(--surface)}
@@ -721,7 +721,8 @@ li.t.open{background:var(--bg)}
 .r-cont{background:color-mix(in srgb,var(--mi) 20%,transparent);color:var(--li)}
 .hyb{display:inline-block;margin-left:6px;font:700 .62rem var(--body);letter-spacing:.06em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 4px;line-height:1.5;vertical-align:1px}
 .hyst{border:1px dashed var(--line);background:none;color:var(--muted);font:700 .68rem var(--body);padding:2px 7px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}.hyst[aria-pressed="true"]{border:1px solid var(--gold);color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,transparent)}
-.subtags{margin-left:auto;display:inline-flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;flex:none;max-width:50%}.subtags .hyst,.subtags .dnb{margin-left:0}.hyline{margin:6px 0 0}.hyline .how{font-size:.8rem}
+.subtags{margin-left:auto;display:inline-flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;flex:none;max-width:50%}.subtags .hyst,.subtags .dnb{margin-left:0}.hyline{margin:6px 0 0}.hybank{margin:6px 0 0}.hybank .how{margin:0 0 4px}.hysug{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:6px 0 0;padding:7px 10px;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:9px;background:color-mix(in srgb,var(--gold) 7%,transparent);font-size:.86rem}.hysug span{flex:1 1 220px}.crlist{margin:6px 0 10px;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:.9rem}.crh2{margin:14px 0 6px}.crpairs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}.crpair{border:1px solid var(--line);border-radius:10px;padding:10px 12px}.crpair .crt{margin:0 0 6px}.crab{display:grid;grid-template-columns:1fr 1fr;gap:10px}.crab p{margin:2px 0 0;font-size:.88rem}.crsrc{color:var(--muted);font-weight:600}html[data-layout="phone"] .crab{grid-template-columns:1fr}.crpair .btns{margin-top:8px}
+.hylist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}.hylist>li>.link{font-weight:600}.hyline .how{font-size:.8rem}
 .dnb{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .7rem var(--body);padding:2px 8px;border-radius:99px;cursor:pointer;margin-left:auto;white-space:nowrap}
 .dnb[data-dn="u"],.dnb[data-dn="c"]{border-color:var(--li);color:var(--li);background:color-mix(in srgb,var(--mi) 14%,transparent)}.dnb[data-dn="c"]{border-style:dashed}
 .dnbox{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:6px;font-size:.85rem}.dnbox .how{margin:0;flex-basis:100%}
@@ -1256,6 +1257,7 @@ details.plain summary{display:block;padding:0;font-size:.88rem;color:var(--muted
 .mdview mark{background:color-mix(in srgb,var(--l1) 28%,transparent);color:inherit;padding:0 .15em;border-radius:3px}
 .mdview strong{font-weight:700}
 .mdview hr{border:0;border-top:1px dashed var(--line);margin:1em 0}
+.hyl .hys,p.hyl>.hys{color:var(--gold);font-weight:700}.mdview li.hyl,.mdview p.hyl{background:color-mix(in srgb,var(--gold) 9%,transparent);border-radius:6px;padding:1px 6px}
 .callout{border-left:3px solid var(--l1);background:var(--bg);padding:7px 11px;border-radius:0 7px 7px 0;margin:0 0 .6em;font-size:.92rem}
 .mdtable{overflow-x:auto;margin:0 0 .7em}
 .mdtable table{border-collapse:collapse;font-size:.88rem;min-width:100%}
@@ -3084,7 +3086,7 @@ Um dia de estudo:
 - **Subtópicos próprios:** adicione no fim da lista do tema.`],
 ["Questões",`A aba é o seu **Banco de questões**: toda questão que passa pelo app fica guardada (das provas importadas, dos simulados e as geradas, também as que você acerta). Cada questão respondida conta no acerto do tema. As erradas vão para **Refazer as que errei**.
 - **Partes da aba**, no topo: **Banco**, **Simulado misto**, **Refazer**, **Provas na íntegra** e **Resumo**. No celular, toque em **Banco ▾** para trocar.
-- **Banco:** busca no enunciado e no comentário, **Filtros** (Situação, Onde = área › especialidade › tema, Origem, Banca, Ano e Mais) e os atalhos **Inéditas**, **Teimosas**, **Eixo atual**, **Prova da faculdade** e **Favoritas**. **+ Salvar filtro** guarda o que está ligado como um atalho seu (× apaga). Os 4 números (não resolvidas, resolvidas, acertadas, erradas) também filtram. Cada linha mostra se você acertou (✓) ou errou (✕) da última vez, com o tracejado nas inéditas, e quantas vezes errou e acertou.
+- **Banco:** busca no enunciado e no comentário, **Filtros** (Situação, Onde = área › especialidade › tema, Origem, Banca, Ano e Mais) e os atalhos **Inéditas**, **Teimosas**, **Eixo atual**, **Prova da faculdade**, **Favoritas** e **HY recorrentes**. **+ Salvar filtro** guarda o que está ligado como um atalho seu (× apaga). Os 4 números (não resolvidas, resolvidas, acertadas, erradas) também filtram. Cada linha mostra se você acertou (✓) ou errou (✕) da última vez, com o tracejado nas inéditas, e quantas vezes errou e acertou.
 - **Resolver estas** (até 100, na ordem da lista) mostra o gabarito a cada questão. **Simulado com estas** sorteia, inéditas primeiro, no modo prova: relógio, mapa das questões e resultado só no fim (**Entregar**). O tempo de cada questão fica guardado. **⛶ Tela inteira** funciona também no celular, em pé ou deitado (deitado, o enunciado fica à esquerda e as alternativas à direita), com **≡ Menu** e **Sair** no topo. No celular, Simulado misto, Refazer e Provas na íntegra também têm **⛶ Tela inteira**.
 - **Conta no acerto do tema** só a primeira vez que você faz a questão. Refeita conta na meta semanal. Questão de prova na íntegra conta quando feita na própria prova.
 - **Uma agenda só com o Refazer:** errou no banco, a questão vai para o Refazer. Se ela já está lá e venceu, fazer no banco conta como a revisão dela; antes de vencer, só o erro conta.
@@ -3103,7 +3105,9 @@ Um dia de estudo:
 - **Refazer as que errei:** a questão volta amanhã; acertou, em 3 dias; **sai depois de 2 acertos em dias diferentes**. As de hoje entram na fila do dia. Errou 2 vezes (selo **teimosa**)? Leve ao caderno de erros. **O gabarito está errado?** corrige (e, se for de prova importada, a prova junto). Vencida há 21 dias sem fazer, sai sozinha.
 - **Ponto fraco:** menos de 60% nos últimos 30 dias (mín. 5 questões). Um por dia entra na fila como 5 questões; depois descansa 7 dias.
 - **Onde focar:** uma conta só (peso do tema × distância de 80% de acerto), usada no simulado, no gráfico, na lista de temas e nas Estatísticas.
-- **Resumo:** meta, ritmo, evolução, gráficos e bancas, **+ Registrar questões** e a lista dos seus temas, com Busca e Filtros próprios.
+- **Resumo:** **Acerto por banca no banco** (na 1ª vez de cada questão ou nos últimos 30 dias), **High Yield pelo seu banco**, **Conceitos recorrentes**, meta, ritmo, evolução, gráficos e bancas, **+ Registrar questões** e a lista dos seus temas, com Busca e Filtros próprios.
+- **High Yield pelo seu banco:** conta as questões das provas (na íntegra e oficiais) e **sugere** subir ou descer o peso do tema e pôr ou tirar a ★ dos subtópicos. Nada muda sem você tocar em **Aceitar** (vira escolha sua); **Agora não** esconde. As 12 provas que já formam o peso não contam de novo, as provas-alvo do seu Perfil pesam o dobro, e as sugestões de peso começam com 3 provas novas. No tema aparece "No seu banco: caiu N vezes em M provas".
+- **Conceito recorrente:** a mesma ideia cobrada em 2 ou mais provas diferentes. O Claude marca a ideia quando comenta uma prova; o app mostra pares parecidos para você confirmar (**É a mesma ideia** ou **Não é**). Essas questões ganham o selo **Recorrente** e entram primeiro no sorteio.
 - **Seus temas nas questões:** sem filtro, os 10 que mais pedem atenção (**Ver todos**). Toque num tema para ver acerto por semana e por banca, tendência, erros e as ações **Praticar**, **Pôr no simulado**, **Registrar**.
 - **+ Registrar questões:** para as feitas fora (bancos, provas). Informe a **banca** e, se quiser, o **tempo** (entra no Ritmo). **Juntar ou renomear fontes** une nomes repetidos.
 - **Meta semanal, Ritmo e Evolução:** questões de segunda a domingo, tempo médio por questão × o tempo da prova, e as últimas 12 semanas. Tendência ▲/▼ compara 30 dias com os 90 antes.
@@ -3127,10 +3131,10 @@ Um dia de estudo:
 - **Partes** (celular e tablet em pé): **Caderno**, **Revisar** (cartões) e **Pegadinhas**. No computador, tudo numa página, com o sumário ao lado.
 - **Uma busca só** para páginas livres e dos temas; em **Filtros**, Tipo, Etiquetas, Mostrar só (editadas na semana, com pegadinhas, com tabela, com cartões, **temas estudados sem anotação**) e Onde.
 - **Página do tema e páginas ligadas:** cada tema tem uma página principal e quantas ligadas quiser (**+ Nova página ligada**). Página nova ligada a um tema sem anotação vira a página dele.
-- **Escrever:** título, negrito, ==destaque==, listas (Tab recua), pegadinha, tabela, link, **fluxograma** e **[[ ]]** para ligar a outro tema ou página (**Mencionado em** mostra quem liga para ela). **Selo** põe na linha um erro ou uma questão de prova. Modelos: **Doença** e, para tema de SP, **Resumo de SP**.
-- **Ler:** cada título abre e fecha; seções vazias somem e as **Pegadinhas** ficam em destaque. **+ Criar cartão do trecho** em cada seção (ou selecione um texto).
+- **Escrever:** título, negrito, ==destaque==, listas (Tab recua), pegadinha, **★** (a linha que cai muito em prova, o High Yield), tabela, link, **fluxograma** e **[[ ]]** para ligar a outro tema ou página (**Mencionado em** mostra quem liga para ela). **Selo** põe na linha um erro ou uma questão de prova. Modelos: **Doença** e, para tema de SP, **Resumo de SP**.
+- **Ler:** cada título abre e fecha; seções vazias somem e as **Pegadinhas** ficam em destaque. **+ Criar cartão do trecho** em cada seção (ou selecione um texto); trecho com ★ vai para o Anki com a etiqueta high-yield.
 - **Levar para a anotação** (em toda questão respondida): entra um bloco **Da questão** com o caso e a resposta inteira, mais o que você marcar (Por quê, Ponto-chave, Pegadinha, Por que não…). O app sugere a seção; **✦ Escrever com o Claude** transforma em 2 a 4 frases.
-- **Pegadinhas e destaques:** junta as linhas "> Pegadinha:", os ==destaques== e as seções Pegadinhas/Alertas, dos temas e das páginas livres. Filtre por tipo, temas de hoje, prova da faculdade ou **Não sabia**. **Revisar pegadinhas** passa uma a uma; **Folha de véspera** baixa um PDF. No erro "Li errado" ou "Confundi", **Virar pegadinha** escreve na anotação.
+- **Pegadinhas e destaques:** junta as linhas "> Pegadinha:", os ==destaques==, as linhas **★** e as seções Pegadinhas/Alertas, dos temas e das páginas livres. Filtre por tipo (**Só HY** mostra as ★), temas de hoje, prova da faculdade ou **Não sabia**. **Revisar pegadinhas** passa uma a uma; **Folha de véspera** baixa um PDF. No erro "Li errado" ou "Confundi", **Virar pegadinha** escreve na anotação.
 - **Cartões** (Revisar): cada cartão volta quando você estaria perto de esquecer (**FSRS**, o do Anki). **Mostrar resposta** e escolha **Errei**, **Difícil**, **Bom** ou **Fácil** (teclas espaço e 1–4). Até 14 novos por dia (**Ajustes dos cartões**). Crie no tema com **Criar cartões com o Claude** ou **+ Cartão manual**, ou a partir de um erro.
 - **Anki:** cartões a 40+ dias da próxima revisão aparecem em **Prontos para o Anki**. **Exportar (.apkg)** e, no Anki, Arquivo › Importar com **importar o progresso**; depois **Já importei no Anki** tira eles daqui (ficam 30 dias na lixeira).
 - **📄 Ler arquivo:** foto, PDF, Word, PowerPoint ou texto, um ou vários. Diga o tipo e onde salvar (tema ou caderno livre); o Claude organiza com explicação, fluxograma e pegadinhas, e você confere antes de salvar. O arquivo não fica guardado, só o texto.
@@ -3476,6 +3480,9 @@ function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt
 function inl(s){const keep=[],ph=h=>{keep.push(h);return "\u0000"+(keep.length-1)+"\u0000"};
   s=String(s).replace(/\[\[([^\[\]\n|]{1,120})(?:\|([^\[\]\n]{1,120}))?\]\]/g,(m,a,b)=>ph(wkHTML(a.trim(),(b||"").trim()))).replace(/\{\{([eq]):([A-Za-z0-9:_-]{1,80})\}\}/g,(m,t,id)=>ph(nbHTML(t,id)));
   return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>').replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/\u0000(\d+)\u0000/g,(m,i)=>keep[+i])}
+/* B5: linha que começa com ★ (depois do marcador de lista, se houver) = fato HY, "isto cai muito": estrela dourada na leitura, "HY" no PDF,
+   item "Só HY" em Pegadinhas e destaques; o cartão do trecho leva a etiqueta high-yield. Diferente da pegadinha (> ) e do ==destaque==. */
+const HY_LINE=/^\s*★\s*/,HY_STAR=`<b class="hys" title="Cai muito em prova (HY)">★</b> `;
 function md(src,o){o=o||{};
   const L=String(src).replace(/\r/g,"").split("\n"),out=[];let i=0;
   const isRow=l=>/^\s*\|.*\|\s*$/.test(l), isSep=l=>/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
@@ -3493,11 +3500,12 @@ function md(src,o){o=o||{};
       out.push(`<div class="mdtable"><table>${head?`<thead><tr>${head.map(c=>`<th>${c}</th>`).join("")}</tr></thead>`:""}<tbody>${body.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);continue}
     if(/^\s*>/.test(l)){const b=[];while(i<L.length&&/^\s*>/.test(L[i])){b.push(inl(L[i].replace(/^\s*>\s?/,"")));i++}
       out.push(`<div class="callout">${b.join("<br>")}</div>`);continue}
-    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const ind=L[i].match(/^\s*/)[0].replace(/\t/g,"  ").length,cls=ind>=4?"sub3":ind>=2?"sub2":"";b.push({cls,h:inl(L[i].replace(/^\s*[-*\u2022]\s*/,""))});i++}
-      out.push(`<ul>${b.map((x,j)=>{const kid=o.fold&&b[j+1]&&(x.cls===""?b[j+1].cls!=="":x.cls==="sub2"&&b[j+1].cls==="sub3");return `<li${x.cls||kid?` class="${[x.cls,kid?"haskids":""].filter(Boolean).join(" ")}"`:""}>${kid?`<button type="button" class="lfold" aria-expanded="true" aria-label="Recolher os subitens"></button>`:""}${x.h}</li>`}).join("")}</ul>`);continue}
-    if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){b.push(`<li>${inl(L[i].replace(/^\s*\d+[.)]\s*/,""))}</li>`);i++}
+    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const ind=L[i].match(/^\s*/)[0].replace(/\t/g,"  ").length,cls=ind>=4?"sub3":ind>=2?"sub2":"",r=L[i].replace(/^\s*[-*\u2022]\s*/,""),hy=HY_LINE.test(r);b.push({cls:[cls,hy?"hyl":""].filter(Boolean).join(" "),h:(hy?HY_STAR:"")+inl(r.replace(HY_LINE,""))});i++}
+      out.push(`<ul>${b.map((x,j)=>{const lv=c=>/sub3/.test(c)?"sub3":/sub2/.test(c)?"sub2":"",kid=o.fold&&b[j+1]&&(lv(x.cls)===""?lv(b[j+1].cls)!=="":lv(x.cls)==="sub2"&&lv(b[j+1].cls)==="sub3");return `<li${x.cls||kid?` class="${[x.cls,kid?"haskids":""].filter(Boolean).join(" ")}"`:""}>${kid?`<button type="button" class="lfold" aria-expanded="true" aria-label="Recolher os subitens"></button>`:""}${x.h}</li>`}).join("")}</ul>`);continue}
+    if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){const r=L[i].replace(/^\s*\d+[.)]\s*/,""),hy=HY_LINE.test(r);b.push(`<li${hy?` class="hyl"`:""}>${hy?HY_STAR:""}${inl(r.replace(HY_LINE,""))}</li>`);i++}
       out.push(`<ol>${b.join("")}</ol>`);continue}
-    const p=[];while(i<L.length&&L[i].trim()&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
+    if(HY_LINE.test(l)){out.push(`<p class="hyl">${HY_STAR}${inl(l.replace(HY_LINE,""))}</p>`);i++;continue}
+    const p=[];while(i<L.length&&L[i].trim()&&!HY_LINE.test(L[i])&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
     if(p.length)out.push(`<p>${p.join("<br>")}</p>`);else i++;
   }
   return mdFold(out,o.fold);
@@ -3599,6 +3607,9 @@ function nbPickEl(ta,k,close,keys){const C=nbChoices(keys||k),w=el(`<div class="
 function edit(ta,k,fn){const s=ta.selectionStart,e=ta.selectionEnd,v=ta.value;const r=fn(v,s,e);
   ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);if(typeof k==="function")k(ta.value);else saveNote(k,ta.value)}
 /* Lote 20C: pegadinha estruturada "> Pegadinha: … — Por quê: …" (a linha atual vira a pegadinha; o cursor fica no porquê) */
+function hyInsert(ta,k){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;const line=v.slice(ls,le),m=line.match(/^(\s*(?:[-*\u2022]|\d+[.)])\s+)?(.*)$/),pre=m[1]||"",rest=m[2];
+  if(HY_LINE.test(rest)){const nv=pre+rest.replace(HY_LINE,""),d=line.length-nv.length;return {v:v.slice(0,ls)+nv+v.slice(le),s:Math.max(ls,s-d),e:Math.max(ls,e-d)}}
+  const ins=pre+"★ "+rest;return {v:v.slice(0,ls)+ins+v.slice(le),s:s+2,e:e+2}})}
 function pegInsert(ta,k){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;const line=v.slice(ls,le);if(/^\s*>/.test(line))return {v,s,e};
   const body=line.replace(/^\s*[-*•]\s+/,"").trim(),ph="o que costuma enganar";if(!body){const ins=`> Pegadinha: ${ph} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+13,e:ls+13+ph.length}}
   const ins=`> Pegadinha: ${body} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+ins.length,e:ls+ins.length}})}
@@ -4188,6 +4199,7 @@ function renderDetail(it,o={}){
   gw.querySelector("p").textContent=(get(it.key).w?`Você ajustou este peso. O padrão é ${INC[it.w0].toLowerCase()}. `:"")+
     (INC_NEW.has(it.key)?"Tema novo (10/2026), ainda sem contagem própria nas 12 provas analisadas.":D[0]?`Caiu ${D[0]} ${D[0]===1?"vez":"vezes"} em ${D[1]} das 12 provas analisadas${D[2]?`, ${D[2]} no Enamed 2025`:""}${it.key==="CM-50"?" (contando toda a psiquiatria, antes de ela ser dividida em 4 temas)":""}.`:"Não apareceu com esse nome nas 12 provas analisadas.");
   gw.querySelector(".dhow p").textContent=(D[3]?"Peso elevado porque os cursinhos o apontam como prioritário. ":"")+`O peso decide quanto o tema pesa no plano do dia e no “onde ganhar pontos”. Fonte: ${INC_SRC}.`;
+  {const hb=hyTopicEl(it);if(hb)gw.insertBefore(hb,gw.querySelector(".dhow"))}
   if(get(it.key).w){const r=el(`<button class="link" type="button">Voltar ao padrão</button>`);r.onclick=()=>{upd(it.key,x=>{delete x.w});commit()};gw.insertBefore(r,gw.querySelector(".dhow"))}
   duo.appendChild(gw);
   }
@@ -4218,7 +4230,8 @@ function renderDetail(it,o={}){
     gs.querySelector("ul").appendChild(li)});
   if(L.length>=2)gs.appendChild(dnBoxEl(it,L));
   if(L.length){const hl=el(`<p class="hyline"><button class="link" type="button"></button></p>`),hb=hl.querySelector("button");hb.id="hyEd-"+it.key;hb.textContent=hyEdit===it.key?"Pronto":`${L.some(x=>x.hy)?"Mudar":"Marcar"} os subtópicos ★ HY`;hb.onclick=()=>{hyEdit=hyEdit===it.key?null:it.key;render()};
-    if(hyEdit===it.key)hl.appendChild(el(`<span class="how"> ★ = o que mais cai em prova (estimativa inicial; a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais no rodízio da revisão e puxam mais questões.</span>`));gs.appendChild(hl)}
+    if(hyEdit===it.key)hl.appendChild(el(`<span class="how"> ★ = o que mais cai em prova (estimativa inicial; a sua escolha sempre vale). Os ★ vêm primeiro nas partes do tema, voltam mais no rodízio da revisão e puxam mais questões.</span>`));gs.appendChild(hl);
+    if(!it.own){const hs=hySubEl(it);if(hs)gs.appendChild(hs)}}
   const af=el(`<form class="addsub"><input class="etext" id="as-${it.key}" maxlength="120" placeholder="Adicionar subtópico próprio" aria-label="Novo subtópico"><button class="btn" type="submit">Adicionar</button></form>`);
   const ai=af.querySelector("input");ai.value=subDraft[it.key]||"";ai.oninput=()=>subDraft[it.key]=ai.value;
   af.addEventListener("submit",ev=>{ev.preventDefault();const t=ai.value.trim();
@@ -6128,7 +6141,7 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";{const bb=bkBancaEl();if(bb)sb.appendChild(bb);const hc=hyCardEl();if(hc)sb.appendChild(hc);const cc=crCardEl();if(cc)sb.appendChild(cc)}sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qLegacy()?qSeg:"";vq.dataset.qpart=qLegacy()?"all":qPart;
@@ -6805,7 +6818,7 @@ function trDrafts(k,txt){const it=BYKEY[k],L=esc(cdLabel(it)),t=txt.replace(/\s+
   if(m)out.push({kind:"disc",q:`<b>${L}.</b> ${esc(m[1])}?`,a:`<b>${esc(clCut(m[2],220))}</b>`,ref:"",keep:!strong});
   if(!out.length)out.push({kind:"disc",q:`<b>${L}.</b> O que você precisa lembrar sobre: ${esc(clCut(t,140))}`,a:`<b>${esc(clCut(t,300))}</b>`,ref:"",keep:true});
   return out}
-function trStart(k,txt){const id="tr-"+k;delete cdErr[id];trE[k]={id,virtual:true,trecho:txt,k,okq:true,w:"",p:"",r:txt,t:"conhecimento",c:"",s:"",onSaved:ids=>{tcMsg[k]=`${ids.length} ${ids.length===1?"cartão guardado":"cartões guardados"} em Caderno › Revisar.`;delete trE[k]}};
+function trStart(k,txt){const id="tr-"+k;delete cdErr[id];trE[k]={id,virtual:true,trecho:txt,hy:/★/.test(txt),k,okq:true,w:"",p:"",r:txt,t:"conhecimento",c:"",s:"",onSaved:ids=>{tcMsg[k]=`${ids.length} ${ids.length===1?"cartão guardado":"cartões guardados"} em Caderno › Revisar.`;delete trE[k]}};
   cdErr[id]={list:trDrafts(k,txt)};trSel=null;render();setTimeout(()=>{const x=document.querySelector(`.cderr[data-eid="${id}"]`);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},60)}
 let tcMsg={},trSel=null;
 function trPrompt(e){const it=BYKEY[e.k];return `Você cria flashcards no Padrão Osler (Anki) para um estudante de medicina, a partir de um TRECHO da anotação dele.
@@ -6895,7 +6908,7 @@ function renderNotes(it,full){
     const ta=el(`<textarea class="ntext" maxlength="${NOTE_MAX}" placeholder="Escreva seu resumo, macetes e pegadinhas. Use a barra acima para formatar ou um dos modelos."></textarea>`);
     ta.id=(full?"fnt-":"nt-")+k;ta.setAttribute("aria-label","Anotações de "+it.t);ta.value=notes[k]||"";
     const T=[["Título","H",()=>prefix(ta,k,"## ")],["Negrito","B",()=>wrap(ta,k,"**","**","texto")],["Destaque","==",()=>wrap(ta,k,"==","==","cai na prova")],
-      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>pegInsert(ta,k)],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)],["Link para outro tema ou página: digite [[ e escolha na lista","[[ ]]",()=>{edit(ta,k,(v,s0,e0)=>{const ins="[[";return {v:v.slice(0,s0)+ins+v.slice(e0),s:s0+2,e:s0+2}});wkPopUpdate(ta,k,pop)}],["Marcar uma questão ou um erro deste tema na linha","Selo",()=>{const o=box.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(ta,k,()=>{const x=box.querySelector(".nbpick");if(x)x.remove();ta.focus()}))}]];
+      ["Lista","•",()=>prefix(ta,k,"- ")],["Lista numerada","1.",()=>prefix(ta,k,"",true)],["Pegadinha",">",()=>pegInsert(ta,k)],["Cai muito em prova (HY): marca a linha com ★","★",()=>hyInsert(ta,k)],["Link (cole o endereço de uma foto no Drive, Google Fotos ou site)","Link",()=>edit(ta,k,(v,s0,e0)=>{const sel=v.slice(s0,e0)||"texto",ins=`[${sel}](https://)`,u=s0+sel.length+3;return {v:v.slice(0,s0)+ins+v.slice(e0),s:u,e:u+8}})],["Fluxograma","Fluxo",()=>insertBlock(ta,k,"```fluxo\nPrimeira etapa\n? Pergunta\n  Sim: conduta\n  Não: outra conduta\nEtapa final\n```")],["Tabela comparativa","Tabela",()=>insertBlock(ta,k,TPL_TABELA)],["Link para outro tema ou página: digite [[ e escolha na lista","[[ ]]",()=>{edit(ta,k,(v,s0,e0)=>{const ins="[[";return {v:v.slice(0,s0)+ins+v.slice(e0),s:s0+2,e:s0+2}});wkPopUpdate(ta,k,pop)}],["Marcar uma questão ou um erro deste tema na linha","Selo",()=>{const o=box.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(ta,k,()=>{const x=box.querySelector(".nbpick");if(x)x.remove();ta.focus()}))}]];
     const pop=el(`<div class="wkpop" role="listbox" aria-label="Temas e páginas" hidden></div>`);
     T.forEach(([title,lab,fn])=>{const b=el(`<button type="button" class="tool"></button>`);b.textContent=lab;b.title=title;b.setAttribute("aria-label",title);b.onmousedown=e=>e.preventDefault();b.onclick=fn;tb.appendChild(b)});
     const sep=el(`<span class="tsep" aria-hidden="true"></span>`);tb.appendChild(sep);
@@ -7083,19 +7096,20 @@ function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||""
   c.appendChild(ol);
   if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
   return c}
-/* pegadinhas e destaques (Lote 20C): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
+/* pegadinhas e destaques (Lote 20C; B5: linhas ★ = HY, tipo "hy"): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
    Pegadinhas/Alertas/Cuidado; vale para a página do tema e para as páginas livres. Cada item guarda a seção de onde veio. */
 function pegParse(txt){const t=String(txt||"").replace(/\r/g,""),out=[];let inPeg=false,sec="",fen=false;
   const one=(raw,kind)=>{let x=raw.trim(),why="";const m=x.match(/^\*\*Pegadinha:?\*\*:?\s*(.*)$/i)||x.match(/^Pegadinha\s*:\s*(.*)$/i);if(m){x=m[1].trim();kind="peg"}const w=x.split(/\s+[—–-]\s+(?:\*\*)?Por qu[eê]:?(?:\*\*)?:?\s*/i);if(w.length>1){x=w[0].trim();why=w.slice(1).join(" ").trim()}if(x)out.push({x,why,kind,sec})};
   t.split("\n").forEach(l=>{if(/^\s*```/.test(l)){fen=!fen;return}if(fen)return;const h=l.match(/^#{1,3}\s+(.*)/);if(h){sec=h[1].replace(/\*\*|==/g,"").trim();inPeg=/pegadinha|alerta|armadilha|cuidado/i.test(h[1]);return}
     if(/^\s*>/.test(l)){one(l.replace(/^\s*>\s?/,""),"peg");return}
+    {const r=l.replace(/^\s*(?:[-*\u2022]|\d+[.)])\s+/,"");if(HY_LINE.test(r)){one(r.replace(HY_LINE,"").replace(/==/g,""),"hy");return}}
     const li=l.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)/);if(li&&/^\*\*Pegadinha:?\*\*/i.test(li[1])){one(li[1],"peg");return}
     if(inPeg&&li){one(li[1],"peg");return}
     (l.match(/==([^=]+)==/g)||[]).forEach(m=>out.push({x:m.slice(2,-2).trim(),why:"",kind:"dest",sec}))});
   const seen=new Set();return out.filter(o=>o.x&&!seen.has(o.x)&&seen.add(o.x))}
 const pegOf=k=>pegParse(notes[k]);
 const pgId=x=>{let h=0;for(const ch of norm(x))h=(h*31+ch.charCodeAt(0))|0;return "p"+(h>>>0).toString(36)};
-let pgF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-pgf")||"{}");return {t:["peg","dest"].includes(v.t)?v.t:"all",today:!!v.today,prova:!!v.prova,miss:!!v.miss}}catch(e){return {t:"all",today:false,prova:false,miss:false}}})();
+let pgF=(()=>{try{const v=JSON.parse(localStorage.getItem("resid-pgf")||"{}");return {t:["peg","dest","hy"].includes(v.t)?v.t:"all",today:!!v.today,prova:!!v.prova,miss:!!v.miss}}catch(e){return {t:"all",today:false,prova:false,miss:false}}})();
 let pgRun=null,pgOpen=new Set();
 const pgSave=()=>lsSet("resid-pgf",JSON.stringify(pgF));
 const pgMiss=()=>{const m=ui.prefs.pgm;return m&&typeof m==="object"?m:{}};
@@ -7111,7 +7125,7 @@ function pgGo(o){const find=root=>{if(!root)return null;const key=norm(o.x).slic
   if(o.f){const f=freeN.find(x=>x.id===o.f);if(!f)return;nType="all";frQ=frQRaw="";freeTag="all";setNSeg("livre");freeOpen.add(f.id);render();setTimeout(()=>flash(find(document.getElementById("fr-"+f.id))),120);return}
   detTab[o.k]="notas";noteMode[o.k]="ler";openTopic(o.k);setTimeout(()=>flash(find(document.getElementById("t-"+o.k))),160)}
 /* folha de véspera: PDF só com as pegadinhas e destaques do recorte */
-async function pgSheet(L){if(!downloadsFn||!L.length)return;const by={},fr=[];L.forEach(o=>{const line=o.kind==="peg"?`> ${o.x}${o.why?" — Por quê: "+o.why:""}`:`- ==${o.x}==`;if(o.k&&!o.f)(by[o.k]=by[o.k]||[]).push(line);else fr.push(line)});
+async function pgSheet(L){if(!downloadsFn||!L.length)return;const by={},fr=[];L.forEach(o=>{const line=o.kind==="peg"?`> ${o.x}${o.why?" — Por quê: "+o.why:""}`:o.kind==="hy"?`- ★ ${o.x}${o.why?" — Por quê: "+o.why:""}`:`- ==${o.x}==`;if(o.k&&!o.f)(by[o.k]=by[o.k]||[]).push(line);else fr.push(line)});
   const ks=Object.keys(by),free=fr.length?[{id:"pgfree",t:"Das páginas livres",b:fr.join("\n"),tags:[],ks:[]}]:[];
   const bytes=notesPDF(ks,free,{title:"Folha de véspera",scope:"Pegadinhas e destaques",kicker:"CADERNO  ·  PEGADINHAS",freeTitle:"Páginas livres",textOf:k=>by[k].join("\n")});
   await downloadsFn.save({filename:`pegadinhas-${today()}.pdf`,data:new Blob([bytes],{type:"application/pdf"})})}
@@ -7129,7 +7143,7 @@ let pgFull=false,pgFullTo=null,pgTopOpen=new Set();
 function nPegCard(vis,o={}){const c=el(`<section class="card npeg${o.side?" npegside":""}${o.full?" npegall":""}" aria-labelledby="${o.full?"nphf":"nph"}"><div class="dhead"><h2 id="${o.full?"nphf":"nph"}">${o.full?"Todas as pegadinhas e destaques":"Pegadinhas e destaques"}</h2><span class="todaydate"></span></div></section>`);
   if(o.full){const x=el(`<button class="link" type="button" id="pgFullX">Fechar</button>`);x.onclick=()=>{pgFull=false;render()};c.querySelector(".dhead").appendChild(x)}
   const all=pgAll(vis),miss=pgMiss();
-  if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
+  if(!all.length){c.appendChild(el(`<p class="cempty">Nada marcado ainda. Nas anotações, use a ferramenta <b>Pegadinha</b> (escreve “&gt; Pegadinha: … — Por quê: …”), o <b>Destaque</b> (==texto==), a <b>★</b> (linha que cai muito em prova) ou uma seção “Pegadinhas de prova”: tudo aparece aqui, reunido por especialidade, para a revisão de véspera. Vale também para as páginas livres.</p>`));return c}
   const tk=new Set(notesTodayKeys().map(x=>x.k)),PV=pgProvaKeys();
   const okT=o=>pgF.t==="all"||o.kind===pgF.t,okD=o=>!pgF.today||o.k&&tk.has(o.k),okP=o=>!pgF.prova||PV&&o.k&&PV.keys.has(o.k),okM=o=>!pgF.miss||miss[o.id];
   const L=all.filter(o=>okT(o)&&okD(o)&&okP(o)&&okM(o)).sort((a,b)=>(miss[b.id]||0)-(miss[a.id]||0));
@@ -7137,12 +7151,12 @@ function nPegCard(vis,o={}){const c=el(`<section class="card npeg${o.side?" npeg
   if(o.full){c.appendChild(el(`<p class="how">Filtros, revisão e folha de véspera ficam no cartão ao lado.</p>`));if(!L.length){c.appendChild(el(`<p class="cempty">Nada com esses filtros.</p>`));return c}return pgGroupsEl(c,L,miss,true)}
   /* filtros no padrão: tipo (um) + atalhos (combinam), com contagem */
   const f=el(`<div class="pgfil"></div>`),base=all.filter(o=>okD(o)&&okP(o)&&okM(o)),pk=all.filter(o=>okT(o));
-  f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`]],"Tipo"));
+  f.appendChild(fcPer("pgT",pgF.t,v=>{pgF.t=v;pgSave()},[["all",`Tudo · ${base.length}`],["peg",`Pegadinhas · ${base.filter(o=>o.kind==="peg").length}`],["dest",`Destaques · ${base.filter(o=>o.kind==="dest").length}`],["hy",`Só HY · ${base.filter(o=>o.kind==="hy").length}`]],"Tipo"));
   const ch=[fcChip(`Dos temas de hoje · ${pk.filter(o=>o.k&&tk.has(o.k)&&okP(o)&&okM(o)).length}`,pgF.today,()=>{pgF.today=!pgF.today;pgSave()},"pgToday",null,"Temas em revisão hoje e do plano do dia")];
   if(PV)ch.push(fcChip(`Da prova (${PV.lab}) · ${pk.filter(o=>o.k&&PV.keys.has(o.k)&&okD(o)&&okM(o)).length}`,pgF.prova,()=>{pgF.prova=!pgF.prova;pgSave()},"pgProva",null,`Conteúdos da prova da faculdade em ${PV.d} dias`));
   ch.push(fcChip(`Não sabia · ${pk.filter(o=>miss[o.id]&&okD(o)&&okP(o)).length}`,pgF.miss,()=>{pgF.miss=!pgF.miss;pgSave()},"pgMiss",null,"As que você marcou como Não sabia na revisão"));
   f.appendChild(fcChips(ch));c.appendChild(f);
-  c.appendChild(el(`<p class="how hx">Tudo o que você marcou como pegadinha ou destaque nas páginas dos temas e nas páginas livres${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque num item para abrir a anotação no ponto exato. As que você não sabia sobem para o topo.</p>`));
+  c.appendChild(el(`<p class="how hx">Tudo o que você marcou como pegadinha, destaque ou ★ HY nas páginas dos temas e nas páginas livres${vis.length<Object.keys(notes).length?" (com os filtros da aba)":""}. Toque num item para abrir a anotação no ponto exato. As que você não sabia sobem para o topo.</p>`));
   {const B=el(`<div class="btns pgacts"></div>`),go=el(`<button class="btn primary" type="button" id="pgGo"></button>`);go.textContent=`Revisar pegadinhas · ${Math.min(L.length,30)}`;go.disabled=!L.length;
     go.onclick=()=>{pgRun={list:L.slice(0,30),i:0,ok:0,no:0,show:false};render()};B.appendChild(go);
     if(downloadsFn){const s=el(`<button class="btn" type="button" id="pgPdf">Folha de véspera (PDF)</button>`);s.disabled=!L.length;s.onclick=async()=>{try{await pgSheet(L);$("#nmsg").textContent=`Folha de véspera salva com ${L.length} itens.`}catch(e){$("#nmsg").textContent="Não foi possível gerar o PDF agora."}};B.appendChild(s)}
@@ -7351,6 +7365,7 @@ function notesPDF(keys,free,opt){opt=opt||{};free=free||[];
       if(daq&&/^\s{2,}[-*•]\s+/.test(l)){rich("– "+l.replace(/^\s*[-*•]\s+/,""),{qbox:true,qind:4,indent:22,size:9.2,after:0});return}
       if(daq){daq=false;y+=4}
       if(/^\s*>/.test(l)){rich(l.replace(/^\s*>\s?/,""),{box:true,indent:4,size:9.4});return}
+      {const r=l.replace(/^\s*(?:[-*•]|\d+[.)])\s+/,"");if(HY_LINE.test(r)){const lv=(l.match(/^\s*/)[0].replace(/\t/g,"  ").length),ind=lv>=4?34:lv>=2?22:10;rich("**HY ·** "+r.replace(HY_LINE,""),{indent:ind});return}}
       if(m=l.match(/^(\s*)([-*•]|\d+[.)])\s+(.*)/)){const lv=m[1].replace(/\t/g,"  ").length,ind=lv>=4?34:lv>=2?22:10;rich((/\d/.test(m[2])?m[2]+" ":lv>=2?"– ":"• ")+m[3],{indent:ind});return}
       rich(l)});if(daq)y+=4};
     groups.forEach(A=>{if(!first){P.add();y=M}first=false;starts["a:"+A.code]=P.pages.length-1;
@@ -7433,7 +7448,7 @@ function freeEditor(){const E=freeEdit,w=el(`<div class="freeed"><label class="f
   const t=w.querySelector("#frT"),b=w.querySelector("#frB"),tg=w.querySelector("#frTags"),q=w.querySelector("#frQ");t.value=E.t;b.value=E.b;tg.value=E.tags;q.value=E.q;
   t.oninput=()=>E.t=t.value;
   {const K=v=>{E.b=v},pop=w.querySelector(".wkpop"),tb=w.querySelector(".frtools");
-    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>pegInsert(b,K)],
+    [["Título","H",()=>prefix(b,K,"## ")],["Negrito","B",()=>wrap(b,K,"**","**","texto")],["Destaque","==",()=>wrap(b,K,"==","==","cai na prova")],["Lista","•",()=>prefix(b,K,"- ")],["Pegadinha",">",()=>pegInsert(b,K)],["Cai muito em prova (HY): marca a linha com ★","★",()=>hyInsert(b,K)],
      ["Link para um tema ou outra página: digite [[ e escolha na lista","[[ ]]",()=>{edit(b,K,(v,s0,e0)=>({v:v.slice(0,s0)+"[["+v.slice(e0),s:s0+2,e:s0+2}));wkPopUpdate(b,K,pop)}],
      ["Marcar uma questão ou um erro dos temas ligados","Selo",()=>{const o=w.querySelector(".nbpick");if(o){o.remove();return}tb.after(nbPickEl(b,K,()=>{const x=w.querySelector(".nbpick");if(x)x.remove();b.focus()},E.ks.filter(x=>BYKEY[x])))}]].forEach(([title,lab,fn])=>{
       const x=el(`<button type="button" class="tool"></button>`);x.textContent=lab;x.title=title;x.setAttribute("aria-label",title);x.onmousedown=e=>e.preventDefault();x.onclick=fn;tb.appendChild(x)});
@@ -7599,7 +7614,7 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(!f){f=n||box?{st:2,s:CD_INT[box]||1,d:5,last:fromNum(dnum(due)-(CD_INT[box]||1)),reps:n,lapses:0,first:""}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""}}
   if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
   const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
-  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;return o}
+  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
@@ -7719,7 +7734,7 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
     else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:!!e.trecho||kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
-function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{})}).id);
+function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
   if(dr&&ids.length)setTimeout(()=>infoToast(`${ids.length} ${ids.length===1?"cartão foi":"cartões foram"} para o lote de melhorias (fora da revisão até o Claude melhorar).`,"Ver em Cartões",cdGoCards),30);
   if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
 function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.trecho?"Cartões deste trecho":e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.trecho?"Rascunhos feitos pelo app a partir do trecho (lacuna no termo em negrito ou destaque). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões. Para cartões melhores, peça ao Claude.":e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
@@ -7900,7 +7915,7 @@ const APKG_CSS=`.card{font-family:Arial,Helvetica,sans-serif;font-size:20px;line
 .nx-ref{max-width:720px;margin:2px auto 0;text-align:right;color:#8b1a1a;font-size:14px}
 .nightMode .card,.night_mode .card{color:#eee;background:#1e1e1e}.nightMode .nx-q,.nightMode .nx-a{border-color:#555}.nightMode .nx-ref{color:#e58a8a}`;
 const apkgSlug=s=>norm(String(s||"")).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
-function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}
+function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}if(x.hy&&!T.includes("high-yield"))T.push("high-yield")
   const e=x.eid&&errors.find(y=>y.id===x.eid);if(x.eid)T.push("erro-nexus");if(e&&e.c)T.push(apkgSlug(e.c));if(x.kind)T.push("cartao-"+apkgSlug(CDK[x.kind]||x.kind));return [...new Set(T)]}
 async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay=new Date(today()+"T00:00:00"),crt=Math.floor(crtDay.getTime()/1000);
   const fld=(x,f)=>x.h?cdSafe(x[f]||""):esc(x[f]||"").replace(/\n/g,"<br>");
@@ -9809,6 +9824,8 @@ function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profil
   /* Lote 20E: plano alinhado ao eixo */if(typeof p.align==="boolean")o.prefs.align=p.align;if(["111","021","120"].includes(p.amix))o.prefs.amix=p.amix;if(typeof p.anear==="boolean")o.prefs.anear=p.anear;
   if(p.eixo&&typeof p.eixo==="object"&&typeof p.eixo.a==="string"&&typeof p.eixo.sp==="string")o.prefs.eixo={a:p.eixo.a.slice(0,6),sp:p.eixo.sp.slice(0,80),...(typeof p.eixo.until==="string"&&/^\d{4}-\d\d-\d\d$/.test(p.eixo.until)?{until:p.eixo.until}:{})};
   if(p.pgm&&typeof p.pgm==="object"&&!Array.isArray(p.pgm)){const m={};Object.entries(p.pgm).slice(-400).forEach(([k,v])=>{if(/^p[a-z0-9]{1,12}$/.test(k)&&Number.isInteger(v)&&v>0&&v<1000)m[k]=v});if(Object.keys(m).length)o.prefs.pgm=m}// Lote 20C: pegadinhas "não sabia"
+  if(Array.isArray(p.hyno)){const L=p.hyno.filter(x=>typeof x==="string"&&/^[ws]:[A-Z]+-\d+:[^\s]{1,70}$/.test(x)).slice(-300);if(L.length)o.prefs.hyno=L}// B5: sugestões de HY dispensadas
+  if(Array.isArray(p.crno)){const L=p.crno.filter(x=>typeof x==="string"&&/^b[a-z0-9]{1,30}\|b[a-z0-9]{1,30}$/.test(x)).slice(-500);if(L.length)o.prefs.crno=L}// B5: pares que não são o mesmo conceito
   if(Array.isArray(p.bkps)){const L=p.bkps.filter(x=>x&&/^u[a-z0-9]{1,14}$/.test(x.id)&&typeof x.n==="string"&&x.n.trim()).slice(-12).map(x=>({id:x.id,n:x.n.trim().slice(0,40),f:bkFClean(x.f)}));if(L.length)o.prefs.bkps=L}// B2: filtros salvos do banco
   if(["auto","light","dark"].includes(p.theme))o.prefs.theme=p.theme;
   if(["n","g"].includes(p.font))o.prefs.font=p.font;
@@ -10443,7 +10460,7 @@ function bqClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",now=new D
   const o={id:x.id,h:s(x.h,20),o:BQ_O.includes(x.o)?x.o:"gerada",ks,at:s(x.at,40)||now,u:s(x.u,40)||s(x.at,40)||now,q:bqQ(x.q)};
   for(const f of ["ban","niv","pv"])if(s(x[f],140).trim())o[f]=s(x[f],140);if(/^\d{4}$/.test(String(x.ano||"")))o.ano=String(x.ano);
   if(Number.isInteger(x.pn)&&x.pn>0)o.pn=x.pn;if(s(x.sb,80))o.sb=s(x.sb,80);if(typeof x.ex==="string"&&x.ex)o.ex=x.ex.slice(0,60);if(Number.isInteger(x.ei)&&x.ei>=0)o.ei=x.ei;
-  for(const f of ["fg","nf","mat","an","fm","fav","del","dz"])if(x[f])o[f]=1;return o}
+  for(const f of ["fg","nf","mat","an","fm","fav","del","dz"])if(x[f])o[f]=1;if(s(x.cr,80).trim()){o.cr=s(x.cr,80);o.crs=x.crs==="u"?"u":"c"}return o}
 function bhClean(x){const D=/^\d{4}-\d{2}-\d{2}$/;
   const L=(Array.isArray(x.a)?x.a:[]).filter(y=>y&&D.test(y.d)).map(y=>{const o={d:y.d,l:typeof y.l==="string"?y.l.slice(0,3):"",ok:y.ok?1:0,s:Math.max(0,Math.min(1800,Math.round(+y.s||0))),src:BH_SRC.includes(y.src)?y.src:"gen"};if(y.c)o.c=1;if(y.m)o.m=1;return o});
   L.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);return {id:x.id,a:L.slice(-BH_MAX)}}
@@ -10479,7 +10496,7 @@ function bankPut(n){let cur=bankById.get(n.id);
   const before=stab(cur);
   if((n.o==="prova"||n.o==="oficial")&&n.ex&&(cur.o!=="oficial"||cur.ex===n.ex)&&(!cur.ex||cur.ex===n.ex)){// a prova na íntegra manda no texto dela (gabarito colado, tema trocado…)
     const old=cur.q;cur.q=n.q;bqFill(cur.q,old);bhRemap(cur.id,old,cur.q);cur.h=n.h;cur.o=n.o;cur.ks=n.ks.length?n.ks:cur.ks;
-    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["niv","sb"])if(n[f])cur[f]=n[f];else delete cur[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f]}
+    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["niv","sb"])if(n[f])cur[f]=n[f];else delete cur[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f];if(n.cr&&cur.crs!=="u"){cur.cr=n.cr;cur.crs="c"}}
   else{bqFill(cur.q,n.q);if(BQ_RANK[n.o]>BQ_RANK[cur.o]){cur.o=n.o;for(const f of ["ban","ano","niv","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];if(n.fg)cur.fg=1}
     cur.ks=[...new Set([...cur.ks,...n.ks])].slice(0,3);if(n.mat)cur.mat=1;if(n.nf&&!cur.fm)cur.nf=1;if(n.at<cur.at)cur.at=n.at}
   if(stab(cur)!==before){cur.u=new Date().toISOString();bankDirty.add(cur.id);bankSoon()}return cur}
@@ -10508,7 +10525,7 @@ function bankFeedAll(){bankDo(()=>{
   /* erro do caderno ou 1º erro do Refazer: é o registro de uma resposta errada que já pode estar no histórico (prova, simulado), muitas vezes salva no dia seguinte */
   const wrongBy=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d<=d&&!y.ok)};
   exams.forEach(ex=>{if(sbFill(ex))setTimeout(()=>exPut(ex),0);const P=exProg.find(x=>x.id===ex.id);ex.qs.forEach((r,i)=>{if(!r||!r.q)return;
-    const b=bqFrom(r.q,ex.of?"oficial":"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{}),...(ex.niv?{niv:ex.niv}:{}),...(r.sb?{sb:r.sb}:{})});if(!b)return;const bq=bankPut(b);
+    const b=bqFrom(r.q,ex.of?"oficial":"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{}),...(ex.niv?{niv:ex.niv}:{}),...(r.sb?{sb:r.sb}:{}),...(r.cr?{cr:r.cr,crs:"c"}:{})});if(!b)return;const bq=bankPut(b);
     if(!P)return;const cur=P.a&&P.a[i],L=[...((P.h&&P.h[i])||[]),...(cur?[cur]:[])];
     L.forEach(y=>{if(y.l)bhAdd(bq.id,{d:y.d,l:y.l,ok:y.l===bq.q.correta?1:0,s:y===cur?y.s||0:0,src:"exam",...(y===cur?{c:1}:{}),m:1})})})});
   sims.forEach(x=>x.qs.forEach(r=>{if(!BYKEY[r.k])return;const b=bqFrom(r.q,"simulado",[r.k],{...bqExtra(r.q,"simulado"),at:x.at||x.d+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b);
@@ -10541,7 +10558,7 @@ function bankBoot(prog){if(bankBootP)return bankBootP;bankBootP=(async()=>{await
   if(prog){bankStore=packStore(prog,"bank");bankHStore=packStore(prog,"bankh");await bankSyncStart()}bankFeedAll()})();return bankBootP}
 /* backup: histórico inteiro; questões que não voltam pela prova na íntegra guardada */
 const bankById2=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
-function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||!((x.o==="prova"||x.o==="oficial")&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
+function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||x.crs==="u"||!((x.o==="prova"||x.o==="oficial")&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
 /* importar backup: troca o banco pelo do arquivo (as questões das provas voltam pela própria prova) e regrava na conta */
 async function bankRestore(Q,H){await bankReady;if(bankBootP)await bankBootP;
   bank=(Array.isArray(Q)?Q:[]).filter(bqOk).map(bqClean);bankH=(Array.isArray(H)?H:[]).filter(x=>x&&typeof x.id==="string").map(bhClean);bqIdx();
@@ -10584,16 +10601,29 @@ const BK_O=[["prova","Provas na íntegra"],["oficial","Provas oficiais"],["simul
 const BK_ST=[["nr","Não resolvidas"],["r","Resolvidas"],["ok","Acertadas"],["no","Erradas"]];
 const BK_SORT=[["new","Mais recentes"],["err","Mais erradas"],["old","Feitas há mais tempo"],["ban","Banca e ano"]];
 const BK_PAGE=40,BK_RUN_MAX=100;
-function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",sb:"",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,dyn:"",pre:""}}
+function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",sb:"",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,rc:false,dyn:"",pre:""}}
 function bkFClean(f){const o=bkFDef();if(!f||typeof f!=="object")return o;const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
   o.q=s(f.q,80);if(["all","nr","r","ok","no"].includes(f.st))o.st=f.st;for(const k of ["area","sp","k"])if(s(f[k],80))o[k]=s(f[k],80);if(o.k!=="all"&&s(f.sb,70))o.sb=s(f.sb,70);
   for(const k of ["ban","ano","niv","o"])if(Array.isArray(f[k]))o[k]=f[k].filter(v=>typeof v==="string").map(v=>v.slice(0,140)).slice(0,20);
-  for(const k of ["fav","img","old","nf","teim"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
+  for(const k of ["fav","img","old","nf","teim","rc"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
 let bkF=bkFDef(),bkSort=(()=>{const v=lsGet("resid-bksort","new");return BK_SORT.some(x=>x[0]===v)?v:"new"})(),bkOpen=null,bkShown=BK_PAGE,bkRun=null,bkFPanel=false,bkSimOpen=false,bkSimN=10,bkSaveOn=false,bkArm=null,bkQT=null;
 const bkStxt=new Map();
 const bkLive=()=>bank.filter(x=>!x.del);
 const bkH=x=>{const H=bankHById.get(x.id);return H?H.a:[]};
 function bkTeim(A){let e=0,inT=false,st=0,ld="";for(const y of A){if(!y.ok){e++;if(e>=3)inT=true;st=0;ld=""}else if(inT&&y.d!==ld){st++;ld=y.d;if(st>=2){inT=false;st=0}}}return inT}
+/* B5: acerto por banca a partir do banco (Questões › Resumo). Grupo = banca da questão (provas e oficiais) ou a origem (geradas, simulados,
+   material). "1ª vez" = acerto na primeira resposta de cada questão feita; "Últimos 30 dias" = todas as respostas do período. */
+let bkBcBy=lsGet("resid-bkbc")==="d30"?"d30":"first";
+function bkBancaGroup(x){const b=String(x.ban||"").trim();if(b)return b;const o=x.mat?"mat":x.o;return (BK_O.find(r=>r[0]===o)||[0,"Outras"])[1]}
+function bkBancaStats(from){const by={};bkLive().forEach(x=>{const g=bkBancaGroup(x),r=by[g]||(by[g]={n:0,f:0,fo:0,p:0,po:0}),A=bkH(x);r.n++;
+    if(A.length){r.f++;const a0=A.reduce((m,a)=>!m||a.d<m.d?a:m,null);if(a0.ok)r.fo++}A.forEach(a=>{if(a.d>=from){r.p++;if(a.ok)r.po++}})});return by}
+function bkBancaEl(){const from=fromNum(dnum(today())-29),by=bkBancaStats(from),G=Object.entries(by).filter(([,r])=>r.f>0||r.p>0);if(!G.length)return null;
+  const c=el(`<section class="card qsrc bkbc" aria-labelledby="bkbch"><div class="dhead"><h2 id="bkbch">Acerto por banca no banco</h2></div></section>`);
+  c.appendChild(fcPer("bkBc",bkBcBy,v=>{bkBcBy=v;lsSet("resid-bkbc",v)},[["first","1ª vez"],["d30","Últimos 30 dias"]],"Contar"));
+  const d30=bkBcBy==="d30",rows=G.map(([g,r])=>[`${g} · ${r.n} no banco`,d30?r.po:r.fo,d30?r.p:r.f]).filter(r=>r[2]>0).sort((a,b)=>b[2]-a[2]);
+  const box=el(`<div class="qsrows"></div>`);box.innerHTML=rows.length?hbarRows(rows):`<p class="cempty">Nenhuma resposta nos últimos 30 dias.</p>`;c.appendChild(box);
+  c.appendChild(el(`<p class="how hx">${d30?"Todas as respostas dos últimos 30 dias, inclusive as refeitas.":"Acerto na primeira vez que você fez cada questão (as refeitas não entram). O número depois de / é quantas questões dessa banca você já fez."} Provas na íntegra e oficiais contam pela banca; o resto pela origem (geradas, simulados, seu material).</p>`));
+  return c}
 function bkInfo(x){const A=bkH(x),last=A.length?A[A.length-1]:null,no=A.filter(y=>!y.ok).length;return {A,n:A.length,ok:A.length-no,no,last,st:!last?"nr":last.ok?"ok":"no",teim:bkTeim(A)}}
 function bkTxt(x){let c=bkStxt.get(x.id);if(!c||c.u!==x.u){c={u:x.u,t:" "+bqT([x.q.enunciado,x.q.comentario||"",...x.q.alternativas.map(a=>a.texto)].join(" "))+" "};bkStxt.set(x.id,c)}return c.t}
 function bkAxKeys(){const AX=axNow(),S=new Set();AX.list.forEach(e=>{ALL.forEach(it=>{if(it.area.code===e.area&&(!e.spec||it.sp===e.spec))S.add(it.key)});(e.sps||[]).forEach(f=>topicKeysOf(spAsProva(f.d,f.s).items).forEach(k=>S.add(k)))});
@@ -10611,7 +10641,7 @@ function bkMatch(R,F,K,skip){const x=R.x,I=R.I;skip=skip||"";
   if(!skip.includes("ban")&&F.ban.length&&!F.ban.includes(x.ban||""))return false;
   if(!skip.includes("ano")&&F.ano.length&&!F.ano.includes(x.ano||""))return false;
   if(!skip.includes("niv")&&F.niv.length&&!F.niv.includes(x.niv||""))return false;
-  if(!skip.includes("m")){if(F.fav&&!x.fav)return false;if(F.img&&!(x.fg||x.fm))return false;if(F.old&&(x.an||x.dz))return false;if(F.nf&&!(x.nf&&!x.fm))return false;if(F.teim&&!I.teim)return false}
+  if(!skip.includes("m")){if(F.fav&&!x.fav)return false;if(F.img&&!(x.fg||x.fm))return false;if(F.old&&(x.an||x.dz))return false;if(F.nf&&!(x.nf&&!x.fm))return false;if(F.teim&&!I.teim)return false;if(F.rc&&!crRec(x))return false}
   if(F.dyn&&!skip.includes("dyn")&&!(K&&x.ks.some(k=>K.has(k))))return false;
   return true}
 function bkSorted(L){const t=x=>x.I.last?x.I.last.d:"";const S={new:(a,b)=>a.x.at<b.x.at?1:a.x.at>b.x.at?-1:0,
@@ -10656,7 +10686,7 @@ function bkRdLink(x,ok){const r=bkRdOf(x.id),k=x.ks[0];
   if(!ok&&k&&BYKEY[k]&&!((x.o==="prova"||x.o==="oficial")&&!rdStudied(k))){rdAdd(k,JSON.parse(JSON.stringify(x.q)),x.o==="simulado"?"sim":"gen");return "add"}return ""}
 function bkScore(x,C){const its=bkIts(x),I=C.info.get(x.id);let s=!I.n?100:I.st==="no"?40:Math.min(30,(I.last?-daysTo(I.last.d):0)/3),w=0,f=0,ax=0,pv=0;
   its.forEach(it=>{w=Math.max(w,wOf(it)||1);const fi=C.focus.get(it.key);if(fi!=null)f=Math.max(f,30*(1-fi/C.focusN));if(C.ax.has(it.key))ax=25;if(C.pv&&C.pv.has(it.key))pv=25});
-  return s+w*7+f+ax+pv+Math.random()*12}
+  return s+w*7+f+ax+pv+(crRec(x)?20:0)+Math.random()*12}
 function bkSmart(L,n){const ok=L.filter(x=>!x.del&&!x.an&&!x.dz&&bkIts(x).length);if(!ok.length)return [];
   const fr=focusRank().slice(0,20),pk=bkProvaKeys(),C={info:new Map(ok.map(x=>[x.id,bkInfo(x)])),focus:new Map(fr.map((it,i)=>[it.key,i])),focusN:Math.max(1,fr.length),ax:bkAxKeys().keys,pv:pk&&pk.d!=null&&pk.d<=21?pk.keys:null};
   const S=ok.map(x=>({x,s:bkScore(x,C)})).sort((a,b)=>b.s-a.s),cap=Math.max(2,Math.ceil(n/4)),per={},out=[],rest=[];
@@ -10747,7 +10777,7 @@ document.addEventListener("keydown",ev=>{if(view!=="quest"||!bkRun||bkRun.done||
   if(/^[A-H]$/.test(k)&&x.q.alternativas.some(a=>a.letra===k)){ev.preventDefault();bkPick(k);return}
   if(ev.key===" "){if(R.mode==="e"&&R.ans[R.i]){ev.preventDefault();bkNext()}else if(R.mode==="p"&&R.i+1<R.ids.length){ev.preventDefault();bkGoQ(R.i+1)}}});
 /* ---- filtros ---- */
-const BK_PRE=[["ined","Inéditas",F=>{F.st="nr"},"Nunca respondidas"],["teim","Teimosas",F=>{F.teim=true},"Erradas 3 vezes ou mais; saem com 2 acertos seguidos em dias diferentes"],["eixo","Eixo atual",F=>{F.dyn="eixo"},"Temas da área e das SPs que a faculdade está vendo agora"],["prova","Prova da faculdade",F=>{F.dyn="prova"},"Temas da sua próxima prova da faculdade"],["fav","Favoritas",F=>{F.fav=true},"As que você marcou com ☆"]];
+const BK_PRE=[["ined","Inéditas",F=>{F.st="nr"},"Nunca respondidas"],["teim","Teimosas",F=>{F.teim=true},"Erradas 3 vezes ou mais; saem com 2 acertos seguidos em dias diferentes"],["eixo","Eixo atual",F=>{F.dyn="eixo"},"Temas da área e das SPs que a faculdade está vendo agora"],["prova","Prova da faculdade",F=>{F.dyn="prova"},"Temas da sua próxima prova da faculdade"],["fav","Favoritas",F=>{F.fav=true},"As que você marcou com ☆"],["hy","HY recorrentes",F=>{F.rc=true},"A mesma ideia cobrada em 2 ou mais provas diferentes"]];
 function bkSet(fn){fn(bkF);bkF.pre="";bkShown=BK_PAGE;bkOpen=null}
 function bkPreset(id){if(bkF.pre===id)bkF=bkFDef();else{const p=BK_PRE.find(x=>x[0]===id),c=(ui.prefs.bkps||[]).find(x=>x.id===id);bkF=bkFDef();if(p)p[2](bkF);else if(c)bkF=bkFClean(c.f);bkF.pre=id}bkShown=BK_PAGE;bkOpen=null}
 const bkActive=F=>!!(F.q||F.st!=="all"||F.area!=="all"||F.k!=="all"||F.ban.length||F.ano.length||F.niv.length||F.o.length||F.fav||F.img||F.old||F.nf||F.teim||F.dyn);
@@ -10789,7 +10819,7 @@ function bkGroups(C){const {F,R,K}=C,n=skip=>R.filter(x=>bkMatch(x,F,K,skip)),G=
     if(!vals.length&&!F[key].length)continue;const V=[...vals,...(L.some(r=>!r.x[key])?[""]:[])],w=box("bkfchips");
     V.forEach((v,i)=>w.appendChild(bkFc(`bk${key}-${i}`,v||emp,L.filter(r=>(r.x[key]||"")===v).length,F[key].includes(v),()=>bkSet(f=>{f[key]=f[key].includes(v)?f[key].filter(y=>y!==v):[...f[key],v]}))));
     G.push(bkFg(key,lab,F[key].length?F[key].map(v=>v||emp).join(", "):"Todas",w,!!F[key].length))}
-  {const L=n("m"),M=[["fav","☆ Favoritas",r=>r.x.fav,""],["teim","Teimosas",r=>r.I.teim,"Erradas 3 vezes ou mais"],["img","Com imagem",r=>r.x.fg||r.x.fm,""],["old","Esconder anuladas e desatualizadas",r=>r.x.an||r.x.dz,"Anuladas pela banca e as que você marcou como \"Diretriz mudou\""],["nf","Figura não guardada",r=>r.x.nf&&!r.x.fm,"Tinham figura do seu material, que não ficou guardada"]]
+  {const L=n("m"),M=[["fav","☆ Favoritas",r=>r.x.fav,""],["teim","Teimosas",r=>r.I.teim,"Erradas 3 vezes ou mais"],["img","Com imagem",r=>r.x.fg||r.x.fm,""],["rc","Conceito recorrente",r=>crRec(r.x),"A mesma ideia cobrada em 2 ou mais provas diferentes"],["old","Esconder anuladas e desatualizadas",r=>r.x.an||r.x.dz,"Anuladas pela banca e as que você marcou como \"Diretriz mudou\""],["nf","Figura não guardada",r=>r.x.nf&&!r.x.fm,"Tinham figura do seu material, que não ficou guardada"]]
       .filter(([v,,f])=>v==="old"?L.some(f)||F.old:v==="nf"?L.some(f)||F.nf:true),w=box("bkfrows"),on=M.filter(([v])=>F[v]);
     M.forEach(([v,l,f,tip])=>w.appendChild(bkFs("bkM-"+v,l,L.filter(f).length,F[v],()=>bkSet(g=>{g[v]=!g[v]}),tip)));
     G.push(bkFg("m","Mais",on.length?on.map(([,l])=>l.replace("☆ ","")).join(", "):"",w,!!on.length))}
@@ -10850,7 +10880,7 @@ function bkRowEl(r){const {x,I}=r,its=bkIts(x),open=bkOpen===x.id,li=el(`<li cla
   b.querySelector(".bkstem").textContent=x.q.enunciado;
   b.querySelector(".bkmeta").textContent=[x.ban?`${x.ban}${x.ano?" "+x.ano:""}`:x.mat?"Do seu material":x.o==="simulado"?"Simulado":x.o==="gerada"?"Gerada pelo Claude":x.pv||"",its.map(it=>it.t).join(" · ")].filter(Boolean).join(" · ");
   const bd=b.querySelector(".bkbadges"),badge=(t,c)=>{const s=el(`<span class="bkb ${c}"></span>`);s.textContent=t;bd.appendChild(s)};
-  if(x.fav)badge("☆ Favorita","fav");if(I.teim)badge("Teimosa","teim");if(x.fg||x.fm)badge("Imagem","img");if(x.nf&&!x.fm)badge("Figura não guardada","nf");if(x.an)badge("Anulada","an");if(x.dz)badge("Diretriz mudou","dz");if(!bd.children.length)bd.remove();
+  if(x.fav)badge("☆ Favorita","fav");if(I.teim)badge("Teimosa","teim");if(x.fg||x.fm)badge("Imagem","img");if(x.nf&&!x.fm)badge("Figura não guardada","nf");if(x.an)badge("Anulada","an");if(x.dz)badge("Diretriz mudou","dz");{const rn=crRec(x);if(rn)badge(`Recorrente · ${rn} provas`,"rc")}if(!bd.children.length)bd.remove();
   b.querySelector(".bkhist b").textContent=bkHistTxt(I);b.querySelector(".bkhist span").textContent=I.last?bkAgo(I.last.d):"";
   b.onclick=()=>{bkOpen=open?null:x.id;render()};li.appendChild(b);
   if(open){const p=el(`<div class="bkopen"><p class="qstem"></p></div>`);p.querySelector(".qstem").textContent=x.q.enunciado;{const f=bkFigEl(x);if(f)p.appendChild(f)}
@@ -10932,13 +10962,13 @@ const cmNeed=ex=>ex.qs.map((r,i)=>i).filter(i=>{const r=ex.qs[i];return !!r.q.co
 function cmPrompt(ex,idx){return `Você é professor de residência médica. Comente as questões abaixo da prova ${ex.name}${ex.banca?` (${ex.banca}${ex.ano?" "+ex.ano:""})`:""}, como nos comentários dos cursinhos, com base nas diretrizes brasileiras atuais e em fontes confiáveis. O gabarito oficial já está indicado: não discuta se ele está certo, explique por que está. Não cite letras no comentário; o porquê de cada alternativa errada vai no campo "porque".
 
 Devolva SOMENTE um JSON: uma lista com um objeto por questão, na mesma ordem:
-[{"n":número da questão,"comentario":"por que a resposta certa está certa (2 a 5 frases)","porque":{"A":"por que esta alternativa está errada (vazio na correta)","B":"…"},"pontoChave":"a ideia que decide a questão (1 frase)","takeHome":"o que levar para a prova (1 frase)","conceito":"o conceito em poucas palavras","fonte":"diretriz ou referência usada"}]
+[{"n":número da questão,"comentario":"por que a resposta certa está certa (2 a 5 frases)","porque":{"A":"por que esta alternativa está errada (vazio na correta)","B":"…"},"pontoChave":"a ideia que decide a questão (1 frase)","takeHome":"o que levar para a prova (1 frase)","conceito":"o conceito em poucas palavras","chave":"nome curto da ideia cobrada (3 a 8 palavras, sem o caso clínico), escrito sempre do mesmo jeito para questões que cobram a mesma ideia, mesmo em provas diferentes","fonte":"diretriz ou referência usada"}]
 
 ${idx.map(i=>{const r=ex.qs[i],q=r.q;return `### Questão ${r.n||i+1}\n${q.enunciado}\n${q.alternativas.map(a=>a.letra+") "+a.texto).join("\n")}\nGabarito oficial: ${q.correta}`}).join("\n\n")}`}
 function cmApply(ex,arr,idx){let n=0;const t=v=>typeof v==="string"?v.trim():"",by={};(Array.isArray(arr)?arr:[]).forEach(o=>{if(o&&typeof o==="object"&&+o.n)by[+o.n]=o});
   idx.forEach((i,j)=>{const r=ex.qs[i],o=by[r.n||i+1]||(Array.isArray(arr)&&!Object.keys(by).length?arr[j]:null);if(!o||!t(o.comentario))return;const q=r.q;
     q.comentario=t(o.comentario).slice(0,4000);const P=o.porque&&typeof o.porque==="object"?o.porque:{};q.alternativas.forEach(a=>{if(a.letra!==q.correta&&t(P[a.letra]))a.porque=t(P[a.letra]).slice(0,1200)});
-    if(t(o.pontoChave))q.pc=t(o.pontoChave).slice(0,1200);if(t(o.takeHome))q.th=t(o.takeHome).slice(0,800);if(t(o.conceito))q.conceito=t(o.conceito).slice(0,600);if(t(o.fonte))q.fonte=t(o.fonte).slice(0,400);
+    if(t(o.pontoChave))q.pc=t(o.pontoChave).slice(0,1200);if(t(o.takeHome))q.th=t(o.takeHome).slice(0,800);if(t(o.conceito))q.conceito=t(o.conceito).slice(0,600);if(t(o.fonte))q.fonte=t(o.fonte).slice(0,400);if(crNorm(t(o.chave)))r.cr=crNorm(t(o.chave));
     if(!r.ck)r.ck=q.correta;r.cm=1;n++});
   if(n){exPut(ex);if(typeof bankFeedSoon==="function")bankFeedSoon()}return n}
 async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")return;const parts=[];for(let i=0;i<idx.length;i+=CM_PART)parts.push(idx.slice(i,i+CM_PART));
@@ -10951,7 +10981,7 @@ async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")r
 function cmLineEl(ex){if(!cmRun||cmRun.id!==ex.id)return null;const C=cmRun,p=el(`<p class="exline cmline"></p>`);
   p.textContent=C.st==="run"?`✦ Comentando com o Claude${C.m>1?`: parte ${C.i+1} de ${C.m}`:""}…`:C.msg;if(C.st==="run"){const b=el(`<button class="link" type="button" id="cmStop">Parar</button>`);b.onclick=()=>{C.ctl.abort()};p.append(" ",b)}return p}
 /* "Juntar gabarito e comentários" (arquivo .json preparado pelo Claude numa conversa): {app:"nexus-comentarios",v:1,prova,gab:"oficial"|"claude",kst?:"p"|"d",
-   qs:[{n,ini,correta?,anulada?,comentario,porque:{A:…},pontoChave,takeHome,conceito,fonte}]}. Cada item só entra se o número existe e o começo do enunciado (ini) bate. */
+   qs:[{n,ini,correta?,anulada?,comentario,porque:{A:…},pontoChave,takeHome,conceito,chave?,fonte}]} (chave = B5, conceito recorrente). Cada item só entra se o número existe e o começo do enunciado (ini) bate. */
 const CJ_APP="nexus-comentarios";let cjMsg=null;
 function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,an:0,skip:[],kept:0};if(!o||o.app!==CJ_APP||!Array.isArray(o.qs))return null;
   const off=o.gab==="oficial";
@@ -10965,7 +10995,7 @@ function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,
     if(t(it.comentario)&&(!r.an||it.anulada)){const q=r.q;if(r.q.correta&&v&&r.q.correta!==v&&!off&&r.g==="b"){/* o comentário foi escrito para outra letra: não junta */}
       else{q.comentario=t(it.comentario).slice(0,4000);const P=it.porque&&typeof it.porque==="object"?it.porque:{};q.alternativas.forEach(x=>{if(x.letra!==q.correta&&t(P[x.letra]))x.porque=t(P[x.letra]).slice(0,1200);else if(x.letra===q.correta)x.porque=""});
         if(t(it.pontoChave))q.pc=t(it.pontoChave).slice(0,1200);if(t(it.takeHome))q.th=t(it.takeHome).slice(0,800);if(t(it.conceito))q.conceito=t(it.conceito).slice(0,600);if(t(it.fonte))q.fonte=t(it.fonte).slice(0,400);
-        r.ck=q.correta;r.cm=1;R.ok++}}});
+        r.ck=q.correta;r.cm=1;R.ok++}if(crNorm(t(it.chave)))r.cr=crNorm(t(it.chave))}});
   if(off&&(R.key||R.an))ex.kst=o.kst==="p"?"p":"d";
   const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),tt=P.tries[P.tries.length-1];tt.hit=S.hit;tt.n=S.ans}
   exPut(ex);exPSave(ex.id);if(typeof bankFeedSoon==="function")bankFeedSoon();return R}
@@ -10995,6 +11025,138 @@ function ofCardEl(){const flat=OF_CAT.flatMap(g=>g[1]),got=flat.filter(c=>ofFind
       else{b.textContent="Importar";b.onclick=()=>ofImport(c)}li.appendChild(b);ul.appendChild(li)});d.appendChild(s)});
   return d}
 const ofGuess=R=>/\b(enare|enamed|revalida|enade|inep|usp|unifesp|unicamp|sus[- ]?sp|ses[- ]|amrigs|psu|einstein|s[ií]rio|iamspe|iscmsp|santa casa|fmj|puc|sesap|uepa|iff|fiocruz|ebserh|hcpa|ufrn|ufpe|ufmg|ufrj)\b/i.test([R.banca,R.name].join(" "));
+/* ===== B5 (12/11/2026): High Yield pelo banco. Decidido pelo usuário: o banco SUGERE, não troca. O tema mostra o que o banco viu
+   ("No seu banco: caiu N vezes em M provas") e, com provas suficientes, sugere o peso e o ★ dos subtópicos; o usuário aceita com um toque
+   (vira escolha dele, que sempre vence) ou dispensa ("Agora não", em ui.prefs.hyno).
+   - Conta só questões de provas (origem "prova" ou "oficial"), por prova (ex/banca/ano); anuladas não contam.
+   - Peso do tema: as 12 provas da base (INC_DATA/INC_SRC) já estão no peso, então as mesmas provas no banco NÃO contam de novo (hyBase).
+     Contagem = base + provas novas do banco (as provas-alvo do Perfil valem HY_TGT_W; sem alvo: ENARE/ENAMED). Os temas são ordenados
+     por essa contagem e recebem 3/2/1 na mesma proporção do padrão de hoje; só sugere com HY_NEW_MIN provas novas (≥ HY_NEW_Q questões)
+     e quando o tema passou da fronteira por pelo menos HY_MARGIN posições (evita ficar trocando por uma questão); e só com evidência do
+     banco: para subir, ≥ HY_UP_MIN questões e taxa nas provas novas ≥ 1,5× a da base; para descer, taxa ≤ metade da da base.
+   - ★ dos subtópicos: a base não tinha contagem por subtópico (HY_DEF é estimativa), então valem todas as provas do banco com subtópico
+     classificado (r.sb do B4). Com HY_SB_MIN questões no tema: sugere ★ nos que mais caem (≥2 questões, teto igual ao do HY_DEF) e tirar
+     a ★ da estimativa que não apareceu nenhuma vez (só com 2 questões por subtópico, em média). Marca feita pelo usuário nunca recebe sugestão. ===== */
+const HY_NEW_MIN=3,HY_NEW_Q=150,HY_UP_MIN=3,HY_SB_MIN=8,HY_TGT_W=2,HY_MARGIN=5,HY_BASE_Q=1182;
+function hyBase(ban,ano){const b=bqT(ban),a=+ano||0;return /\benare\b/.test(b)&&a>=2020&&a<=2024||/\benamed\b/.test(b)&&a===2025||/\brevalida\b/.test(b)&&a>=2021&&a<=2026}
+const HY_TGT_SKIP=new Set(["prova","provas","residencia","medica","medico","acesso","direto","selecao","pelo","pela","para","geral","hospital","universitario"]);
+function hyTargets(){const W=new Set();exList().forEach(e=>bqT(e.name).split(" ").forEach(w=>{if(w.length>=4&&!HY_TGT_SKIP.has(w)&&!/^\d+$/.test(w))W.add(w)}));return W.size?W:new Set(["enare","enamed"])}
+/* provas do banco: {key,name,ban,ano,base,tgt,w,qs:[questões]} */
+function hyExams(){const by=new Map(),T=hyTargets();
+  bkLive().forEach(x=>{if((x.o!=="prova"&&x.o!=="oficial")||x.an||!x.ks||!x.ks.length)return;const ex=x.ex&&typeof exams!=="undefined"?exams.find(e=>e.id===x.ex):null;
+    const key=x.ex||bqT((x.ban||"")+" "+(x.ano||""));if(!key)return;
+    let E=by.get(key);if(!E){const name=ex&&ex.name||[x.ban,x.ano].filter(Boolean).join(" ")||"Prova",hay=bqT(name+" "+(x.ban||""));
+      E={key,name,ban:x.ban||"",ano:x.ano||"",base:hyBase(x.ban||name,x.ano||(String(name).match(/\b(20\d\d)\b/)||[])[1]),tgt:[...T].some(w=>new RegExp("\\b"+w+"\\b").test(hay)),qs:[]};E.w=E.tgt?HY_TGT_W:1;by.set(key,E)}
+    E.qs.push(x)});return [...by.values()]}
+/* contagem por tema (todas as provas, para mostrar; e só as novas, para o peso) e por subtópico */
+function hyCount(){const E=hyExams(),t={},sb={};let newN=0,newQ=0,newW=0;
+  E.forEach(e=>{if(!e.base){newN++;newQ+=e.qs.length;newW+=e.qs.length*e.w}
+    e.qs.forEach(x=>{x.ks.forEach((k,j)=>{if(!BYKEY[k])return;const f=j?0.5:1,r=t[k]||(t[k]={n:0,pv:new Set(),nw:0});r.n+=f;r.pv.add(e.key);if(!e.base)r.nw+=f*e.w});
+      const k=x.ks[0];if(x.sb&&BYKEY[k]){const S=sb[k]||(sb[k]={tot:0,c:{}}),c=S.c[x.sb]||(S.c[x.sb]={n:0,w:0});S.tot++;c.n++;c.w+=e.w}})});
+  return {E,t,sb,newN,newQ,newW,ready:newN>=HY_NEW_MIN&&newQ>=HY_NEW_Q}}
+const hyNo=()=>Array.isArray(ui.prefs.hyno)?ui.prefs.hyno:[];
+function hyDismiss(key){ui.prefs.hyno=[...hyNo().filter(x=>x!==key),key].slice(-300);saveUI();render()}
+/* peso sugerido para cada tema da residência (só quando o banco está pronto) */
+function hyWeightSugs(C){C=C||hyCount();if(!C.ready)return [];const T=ALL.filter(it=>!it.own),N=T.length,n3=T.filter(it=>it.w0===3).length,n1=T.filter(it=>it.w0===1).length,no=new Set(hyNo());
+  /* base + provas novas; se as novas passarem do tamanho da base, são reduzidas para pesar no máximo o mesmo que ela */
+  const sc=it=>{const D=INC_DATA[it.key]||[0];return (D[0]||0)+((C.t[it.key]||{}).nw||0)*Math.min(1,HY_BASE_Q/Math.max(C.newW,1))};
+  const R=T.map(it=>[it,sc(it)]).sort((a,b)=>b[1]-a[1]||a[0].num-b[0].num),out=[];
+  /* só com evidência do próprio banco: nas provas novas o tema caiu bem mais (subir) ou bem menos (descer) que na base. Sem isso, a ordem pura
+     da contagem discordaria do peso atual em temas que o banco nem viu (o peso padrão também leva o consenso dos cursinhos, D[3]). */
+  const rate=it=>{const D=INC_DATA[it.key]||[0];return {b:(D[0]||0)/HY_BASE_Q,n:((C.t[it.key]||{}).nw||0)/Math.max(C.newW,1),raw:(C.t[it.key]||{}).n||0}};
+  R.forEach(([it,v],i)=>{const sug=i<n3?3:i>=N-n1?1:2,cur=wOf(it);if(sug===cur||get(it.key).w)return;const r=rate(it);
+    if(sug>cur&&!(r.raw>=HY_UP_MIN&&r.n>=Math.max(r.b*1.5,1/HY_BASE_Q)))return;if(sug<cur&&!(r.b*C.newW>=HY_UP_MIN*2&&r.n<=r.b*0.5))return;/* descer: o banco tinha de mostrar ao menos 6 questões pelo ritmo da base e mostrou metade ou menos */
+    const dist=sug===3?n3-i:sug===1?i-(N-n1)+1:Math.min(i-n3+1,N-n1-i);if(dist<HY_MARGIN)return;
+    const key=`w:${it.key}:${sug}`;if(no.has(key))return;out.push({k:it.key,from:cur,to:sug,key,n:(C.t[it.key]||{}).n||0,pv:((C.t[it.key]||{}).pv||new Set()).size,exp:Math.round(r.b*C.newQ),nn:Math.round(r.raw)})});
+  return out}
+/* ★ sugeridas num tema: {on:[x],off:[x]} */
+function hySubSug(k,C){C=C||hyCount();const it=BYKEY[k],S=C.sb[k];if(!it||it.own||!S||S.tot<HY_SB_MIN)return null;const s=get(k),L=subList(it),no=new Set(hyNo()),n=L.length;
+  const teto=n<=3?1:n<=6?2:Math.ceil(n/3),cnt=x=>S.c[sbKey(x)]||{n:0,w:0},mine=x=>x.i!==undefined?!!(s.hy&&s.hy[x.i]):!!x.hy;
+  const top=new Set(L.filter(x=>cnt(x).n>=2).sort((a,b)=>cnt(b).w-cnt(a).w||cnt(b).n-cnt(a).n).slice(0,teto).map(sbKey));
+  const on=L.filter(x=>top.has(sbKey(x))&&!x.hy&&!mine(x)&&!no.has(`s:${k}:${sbKey(x)}:1`)),off=S.tot<2*n?[]:L.filter(x=>x.hy&&x.hyc&&!cnt(x).n&&!no.has(`s:${k}:${sbKey(x)}:0`));
+  return on.length||off.length?{on,off,tot:S.tot,cnt}:null}
+function hyApplySub(k,on,off){const it=BYKEY[k];upd(k,s=>{const h={...(s.hy||{})},def=HY_DEF[k]||[];
+    const put=(x,v)=>{if(x.i!==undefined){if(v===def.includes(x.i))delete h[x.i];else h[x.i]=v?"u":"n"}else s.cs=(s.cs||[]).map((c,j)=>j!==x.j?c:v?{...c,hy:"u"}:(({hy,...r})=>r)(c))};
+    on.forEach(x=>put(x,true));off.forEach(x=>put(x,false));if(Object.keys(h).length)s.hy=h;else delete s.hy});commit()}
+function hyApplyW(k,v){const it=BYKEY[k];upd(k,x=>{if(v===it.w0)delete x.w;else x.w=v});commit()}
+/* no tema: o que o banco viu + sugestão de peso */
+function hyTopicEl(it,C){C=C||hyCount();const r=C.t[it.key];const w=el(`<div class="hybank"></div>`);
+  if(r&&r.n){const p=el(`<p class="how"></p>`);const n=Math.round(r.n*10)/10;p.textContent=`No seu banco: caiu ${String(n).replace(".",",")} ${n===1?"vez":"vezes"} em ${r.pv.size} ${r.pv.size===1?"prova":"provas"}.`;w.appendChild(p)}
+  const S=hyWeightSugs(C).find(x=>x.k===it.key);if(S)w.appendChild(hySugRow(`O banco sugere peso ${INC[S.to].toLowerCase()} (hoje: ${INC[S.from].toLowerCase()}): ${hyWhy(S,C)}.`,"hyw-"+it.key,()=>hyApplyW(it.key,S.to),()=>hyDismiss(S.key)));
+  return w.childNodes.length?w:null}
+const hyWhy=(S,C)=>S.to>S.from?`caiu ${S.n%1?String(S.n).replace(".",","):S.n} vezes em ${S.pv} ${S.pv===1?"prova":"provas"} do banco`:`nas ${C.newN} provas novas caiu ${S.nn} ${S.nn===1?"vez":"vezes"}; pelo peso de hoje seriam umas ${S.exp}`;
+function hySugRow(txt,id,ok,no){const p=el(`<div class="hysug"><span></span><button class="btn mini" type="button">Aceitar</button><button class="link" type="button">Agora não</button></div>`);
+  p.querySelector("span").textContent=txt;const [a,b]=p.querySelectorAll("button");a.id=id;b.id=id+"-no";a.onclick=ok;b.onclick=no;return p}
+/* nos subtópicos do tema */
+function hySubEl(it,C){const G=hySubSug(it.key,C);if(!G)return null;const parts=[];if(G.on.length)parts.push(`★ em ${G.on.map(x=>`“${x.t}” (${G.cnt(x).n})`).join(", ")}`);
+  if(G.off.length)parts.push(`tirar a ★ de ${G.off.map(x=>`“${x.t}”`).join(", ")} (nenhuma questão)`);
+  return hySugRow(`Pelas ${G.tot} questões do banco com subtópico: ${parts.join("; ")}.`,"hys-"+it.key,()=>hyApplySub(it.key,G.on,G.off),()=>{ui.prefs.hyno=[...hyNo(),...G.on.map(x=>`s:${it.key}:${sbKey(x)}:1`),...G.off.map(x=>`s:${it.key}:${sbKey(x)}:0`)].slice(-300);saveUI();render()})}
+/* Questões › Resumo: situação do HY pelo banco e todas as sugestões num lugar só */
+function hyCardEl(){const C=hyCount();if(!C.E.length)return null;const c=el(`<section class="card hycard" aria-labelledby="hych"><div class="dhead"><h2 id="hych">High Yield pelo seu banco</h2></div></section>`);
+  const nb=C.E.filter(e=>e.base).length;
+  c.appendChild(el(`<p class="gtext"></p>`)).textContent=`${C.E.length} ${C.E.length===1?"prova":"provas"} no banco: ${C.newN} fora das 12 que já formam o peso${nb?` (${nb} já ${nb===1?"está":"estão"} na base e não ${nb===1?"conta":"contam"} de novo)`:""}.`+(C.ready?"":` As sugestões de peso começam com ${HY_NEW_MIN} provas novas (${HY_NEW_Q}+ questões); faltam ${Math.max(0,HY_NEW_MIN-C.newN)}.`);
+  const W=hyWeightSugs(C),SS=ALL.filter(it=>!it.own).map(it=>[it,hySubSug(it.key,C)]).filter(([,g])=>g);
+  if(!W.length&&!SS.length){c.appendChild(el(`<p class="how">Nenhuma sugestão agora. Elas aparecem aqui e no próprio tema, e só mudam algo quando você aceitar.</p>`));return c}
+  const ul=el(`<ul class="hylist"></ul>`);
+  W.slice(0,12).forEach(S=>{const it=BYKEY[S.k],li=el(`<li></li>`),a=el(`<button class="link" type="button"></button>`);a.textContent=it.t;a.onclick=()=>openTopic(S.k);li.appendChild(a);
+    li.appendChild(hySugRow(`peso ${INC[S.from].toLowerCase()} → ${INC[S.to].toLowerCase()} · ${hyWhy(S,C)}`,"hyw-"+S.k,()=>hyApplyW(S.k,S.to),()=>hyDismiss(S.key)));ul.appendChild(li)});
+  SS.slice(0,12).forEach(([it])=>{const li=el(`<li></li>`),a=el(`<button class="link" type="button"></button>`);a.textContent=it.t;a.onclick=()=>openTopic(it.key);li.appendChild(a);li.appendChild(hySubEl(it,C));ul.appendChild(li)});
+  c.appendChild(ul);c.appendChild(el(`<p class="how hx">Contam só as questões de provas (na íntegra e oficiais). As provas-alvo do seu Perfil pesam o dobro. Aceitar vira escolha sua, que sempre vale; “Agora não” esconde a sugestão.</p>`));return c}
+/* ===== B5 (12/11/2026): conceito recorrente = a mesma ideia cobrada em 2 ou mais provas diferentes (só questões de provas: "prova" e
+   "oficial"). Decidido pelo usuário: app + Claude.
+   - Claude: ao comentar (cmPrompt) ou no arquivo de gabarito e comentários (cjApply), devolve "chave" = nome curto da ideia cobrada;
+     fica na questão da prova (r.cr) e vai para o banco (x.cr, crs "c"). Mesma chave (crNorm) em provas diferentes = recorrente.
+   - App: sugere pares de provas diferentes, do mesmo tema (e do mesmo subtópico, quando os dois têm), com palavras parecidas no conceito,
+     ponto-chave e take home (ou o começo do comentário). O usuário confirma ("É a mesma ideia": as duas ganham a mesma chave, crs "u",
+     que a prova não apaga) ou recusa ("Não é": ui.prefs.crno).
+   - Usos: selo "Recorrente" na lista do banco, filtro/preset "HY recorrentes" (bkF.rc), +20 no sorteio (bkScore) e o cartão do Resumo. ===== */
+const CR_SIM=0.34,CR_MIN_W=4,CR_KEY_SIM=0.6;
+const CR_STOP=new Set(["quando","sempre","pacientes","paciente","podem","pode","deve","devem","sendo","entre","apresenta","presenca","principal","principais","questao","alternativa","correta","incorreta","diagnostico","tratamento","conduta","quadro","clinico","clinica","exame","exames","casos","indicado","indicada","maior","menor","outros","outras","porque","ainda","tambem","forma","importante","geralmente","mesmo","sobre","muito","pelos","pelas","resposta"]);
+const crNorm=s=>bqT(s).split(" ").filter(w=>w.length>2).slice(0,10).join(" ").slice(0,80);
+const crExamKey=x=>x.ex||bqT((x.ban||"")+" "+(x.ano||""));
+const crProva=x=>(x.o==="prova"||x.o==="oficial")&&!x.del&&!x.an&&x.ks&&x.ks.length&&!!crExamKey(x);
+function crWords(x){const q=x.q,t=[q.conceito,q.pc,q.th].filter(Boolean).join(" ")||String(q.comentario||"").slice(0,400);return new Set(bqT(t).split(" ").filter(w=>w.length>=5&&!CR_STOP.has(w)))}
+const crJac=(A,B)=>{let n=0;A.forEach(w=>{if(B.has(w))n++});return {n,j:n/Math.max(1,A.size+B.size-n)}};
+const crNo=()=>Array.isArray(ui.prefs.crno)?ui.prefs.crno:[];
+const crPair=(a,b)=>a.id<b.id?a.id+"|"+b.id:b.id+"|"+a.id;
+/* grupos pela chave e quem é recorrente (id → nº de provas); guardado por 1 s para a lista do banco não recalcular a cada linha */
+let crMemo={t:0,v:null};
+function crIndex(){if(crMemo.v&&Date.now()-crMemo.t<1000)return crMemo.v;const g=new Map();
+  bank.forEach(x=>{if(!x.cr||!crProva(x))return;if(!g.has(x.cr))g.set(x.cr,[]);g.get(x.cr).push(x)});
+  const rec=new Map(),groups=[];g.forEach((L,k)=>{const E=new Set(L.map(crExamKey));if(E.size<2)return;L.forEach(x=>rec.set(x.id,E.size));groups.push({k,L,n:E.size})});
+  groups.sort((a,b)=>b.n-a.n||b.L.length-a.L.length);crMemo={t:Date.now(),v:{rec,groups}};return crMemo.v}
+const crRec=x=>crIndex().rec.get(x.id)||0;
+const crReset=()=>{crMemo={t:0,v:null}};
+/* pares para conferir: provas diferentes, mesmo tema (e subtópico), palavras do conceito parecidas ou chaves do Claude parecidas */
+function crSuggest(max){const no=new Set(crNo()),by=new Map(),out=[];
+  bank.forEach(x=>{if(!crProva(x))return;const k=x.ks[0];if(!by.has(k))by.set(k,[]);by.get(k).push({x,W:crWords(x),K:x.cr?new Set(x.cr.split(" ").filter(w=>w.length>=4)):null})});
+  by.forEach(L=>{for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const a=L[i],b=L[j];
+    if(crExamKey(a.x)===crExamKey(b.x)||a.x.cr&&a.x.cr===b.x.cr||a.x.sb&&b.x.sb&&a.x.sb!==b.x.sb||no.has(crPair(a.x,b.x)))continue;
+    let s=0;if(a.K&&b.K&&a.K.size&&b.K.size){const r=crJac(a.K,b.K);if(r.j>=CR_KEY_SIM)s=1+r.j}
+    if(!s){const r=crJac(a.W,b.W);if(r.n>=CR_MIN_W&&r.j>=CR_SIM)s=r.j}
+    if(s)out.push({a:a.x,b:b.x,s,w:[...a.W].filter(w=>b.W.has(w))})}});
+  out.sort((p,q)=>q.s-p.s);return max?out.slice(0,max):out}
+function crConfirm(P){const a=P.a,b=P.b;let key=a.cr||b.cr||crNorm(P.w.slice(0,6).join(" "))||crNorm(a.q.conceito||a.q.pc||"");if(!key)return;
+  const old=[a.cr,b.cr].filter(k=>k&&k!==key);bank.forEach(x=>{if(x===a||x===b||x.cr&&old.includes(x.cr)){if(x.cr!==key||x.crs!=="u"){x.cr=key;x.crs="u";bkTouch(x)}}});crReset();render()}
+function crReject(P){ui.prefs.crno=[...crNo().filter(k=>k!==crPair(P.a,P.b)),crPair(P.a,P.b)].slice(-500);saveUI();render()}
+function crUnlink(x){if(!x.cr)return;delete x.cr;delete x.crs;bkTouch(x);crReset();render()}
+/* Questões › Resumo */
+function crCardEl(){const I=crIndex(),S=crSuggest(6),nP=bank.filter(crProva).length;if(!nP)return null;
+  const c=el(`<section class="card crcard" aria-labelledby="crh"><div class="dhead"><h2 id="crh">Conceitos recorrentes</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=I.groups.length?`${I.groups.length} ${I.groups.length===1?"conceito":"conceitos"}`:"";
+  c.appendChild(el(`<p class="how hx">A mesma ideia cobrada em 2 ou mais provas diferentes: o High Yield mais confiável, porque vem de prova real. O Claude marca a ideia quando comenta uma prova; o app sugere pares parecidos para você confirmar.</p>`));
+  if(I.groups.length){const ul=el(`<ul class="crlist"></ul>`);I.groups.slice(0,8).forEach(G=>{const x=G.L[0],it=BYKEY[x.ks[0]],li=el(`<li><b></b><span class="how"></span></li>`);
+      li.querySelector("b").textContent=x.q.conceito||x.q.pc||G.k;li.querySelector("span").textContent=` · ${it?it.t:""} · ${G.n} provas`;ul.appendChild(li)});c.appendChild(ul);
+    const go=el(`<button class="btn" type="button" id="crSee">Ver no banco</button>`);go.onclick=()=>{bkF=bkFDef();bkF.rc=true;bkShown=BK_PAGE;qGo("banco")};c.appendChild(go)}
+  else c.appendChild(el(`<p class="cempty">Nenhum ainda. Eles aparecem quando a mesma ideia cai em duas provas diferentes do seu banco.</p>`));
+  if(S.length){const h=el(`<p class="glabel crh2">Para conferir · ${crSuggest().length}</p>`);c.appendChild(h);const ol=el(`<ol class="crpairs"></ol>`);
+    S.forEach((P,i)=>{const it=BYKEY[P.a.ks[0]],li=el(`<li class="crpair"><p class="crt how"></p><div class="crab"><div></div><div></div></div><div class="btns"></div></li>`);
+      li.querySelector(".crt").textContent=(it?it.t:"")+(P.w.length?` · em comum: ${P.w.slice(0,5).join(", ")}`:"");
+      [P.a,P.b].forEach((x,j)=>{const d=li.querySelectorAll(".crab>div")[j];d.appendChild(el(`<small class="crsrc"></small>`)).textContent=x.pv||[x.ban,x.ano].filter(Boolean).join(" ")||"Prova";
+        d.appendChild(el(`<p></p>`)).textContent=clCut(x.q.conceito||x.q.pc||x.q.th||x.q.comentario||x.q.enunciado,220)});
+      const ok=el(`<button class="btn primary" type="button">É a mesma ideia</button>`),no=el(`<button class="btn" type="button">Não é</button>`);ok.id="crOk-"+i;no.id="crNo-"+i;
+      ok.onclick=()=>crConfirm(P);no.onclick=()=>crReject(P);li.querySelector(".btns").append(no,ok);ol.appendChild(li)});c.appendChild(ol)}
+  return c}
 /* ---------- Provas na íntegra: importar o PDF (ou fotos) de uma prova, conferir as questões e fazer no app ----------
    exams = [{id,name,banca,ano,at,qs:[{n,p,pe,k,q,g:"b"|"c",an,im,ck}]}]  (questões; muda pouco: importação, gabarito, tema)
    exProg = [{id,i,mode:"p"|"e",fin,tries:[{d,hit,n,s}],a:{idx:{l,d,s}},h:{idx:[{l,d}]}}]  (respostas; documento pequeno, gravado a cada resposta)
@@ -11007,7 +11169,7 @@ function exQClean(r){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",q=r.q;
   const cor=String(q.correta||"").trim().toUpperCase().slice(0,3),k=typeof r.k==="string"?r.k:"";
   return {n:Number.isInteger(r.n)&&r.n>0?r.n:0,p:Number.isInteger(r.p)?r.p:0,pe:Number.isInteger(r.pe)?r.pe:0,k:BYKEY[k]&&!BYKEY[k].own?k:"",
     q:{enunciado:q.enunciado.slice(0,8000),alternativas:L,correta:L.some(a=>a.letra===cor)?cor:"",comentario:s(q.comentario,4000),conceito:s(q.conceito,600),alerta:"",...(s(q.pc,1200)?{pc:s(q.pc,1200)}:{}),...(s(q.th,800)?{th:s(q.th,800)}:{}),...(s(q.fonte,400)?{fonte:s(q.fonte,400)}:{})},
-    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{}),...(r.kd?{kd:1}:{}),...(s(r.sb,80)?{sb:s(r.sb,80)}:{}),...(r.sbd?{sbd:1}:{}),...(r.sbg?{sbg:1}:{}),...(r.cm?{cm:1}:{})}}
+    g:r.g==="b"?"b":"c",an:!!r.an,im:!!r.im,ck:typeof r.ck==="string"?r.ck.slice(0,3):"",...(r.x?{x:true}:{}),...(exKs(r).length?{ks:exKs(r)}:{}),...(r.fg?{fg:1}:{}),...(r.kd?{kd:1}:{}),...(s(r.sb,80)?{sb:s(r.sb,80)}:{}),...(r.sbd?{sbd:1}:{}),...(r.sbg?{sbg:1}:{}),...(r.cm?{cm:1}:{}),...(s(r.cr,80)?{cr:s(r.cr,80)}:{})}}
 /* temas extras da questão (até 2 além do principal); contam inteiros em cada tema, mas uma vez só no dia/semana */
 function exKs(r){const k=typeof r.k==="string"?r.k:"";return Array.isArray(r.ks)?[...new Set(r.ks.filter(x=>typeof x==="string"&&BYKEY[x]&&!BYKEY[x].own&&x!==k))].slice(0,2):[]}
 function exOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&Array.isArray(x.qs)}
