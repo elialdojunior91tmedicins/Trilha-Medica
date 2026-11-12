@@ -6,7 +6,7 @@ const dep = n => require(path.join(L.ROOT, "tools/divisao/node_modules", n));
 
 /* Conta sem lugar no backup, de propósito. Cada item precisa de um motivo; qualquer outro que apareça é aviso (e o teste falha). */
 const FORA = {
-  "col:trash": "Lixeira (30 dias). Fica fora do backup: pendente de decisão do usuário (achado em 12/11/2026).",
+  "col:trash": "Lixeira (30 dias). Fica fora do backup por decisão do usuário (12/11/2026, 14h36: \"Não precisa da lixeira no backup\").",
   "doc:p0": "Nome do pacote, não é lista (aparece no código de packStore).",
   "col:pk": "Coleção interna dos pacotes (packStore).",
 };

@@ -20,6 +20,7 @@ com a data e não apague o histórico.
 - **IA por copiar e colar** no site. Chamar a API do Claude direto do site: decidido em 24/10/2026 **não fazer agora** (o copiar e colar atende). (claude/problemas-a-resolver.md › Ideias profundas)
 - Hospedagem própria, domínio e armazenamento de arquivos (R2/Worker): conversa de 01/11/2026, **não fazer agora**, só quando o app estiver estável e houver semanas de uso real. (claude/problemas-a-resolver.md › Ideias profundas)
 - **Sem lembretes nem notificações** (10/10/2026); eventos de calendário sem alerta. **Sem Notion.** (claude/integracoes.md; skill nexus-dev)
+- **Lixeira fora do backup** (12/11/2026, 14h36: "Não precisa da lixeira no backup"): ela vive 30 dias no aparelho e na conta; o backup não a leva. (tools/mapa/dados.js › FORA)
 - Se o GitHub cair: não propor outro serviço de código sem o usuário pedir e **nunca sugerir criar outra conta no GitHub**. (skill nexus-dev)
 
 ## Questões e Banco de questões
