@@ -23,7 +23,7 @@ function inputs() {
 function stamp() {
   const I = inputs(), h = crypto.createHash("sha1");
   for (const f of [].concat(I.js, I.tests, I.unit, I.extra, I.html, I.css, I.doc, I.list)) { const s = fs.statSync(path.join(ROOT, f)); h.update(f + ":" + s.size + ":" + Math.floor(s.mtimeMs) + ";"); }
-  for (const f of ["tools/mapa/lib.js", "tools/mapa/gerar.js", "tools/mapa/dados.js"]) h.update(rd(f));
+  for (const f of ["tools/mapa/lib.js", "tools/mapa/gerar.js", "tools/mapa/dados.js", "tools/mapa/telas.js"]) h.update(rd(f));
   return h.digest("hex").slice(0, 16);
 }
 
@@ -201,7 +201,14 @@ function build() {
   for (const name in M.tests) M.tests[name].ids.forEach(id => add(M.ids, id, "tests", name));
   /* 6. CLAUDE.md: em que linha cada nome é citado */
   for (const f of I.doc) { const L = rd(f).split("\n"); L.forEach((ln, i) => { const seenL = new Set(); for (const re = /`([^`]+)`/g; ;) { const m = re.exec(ln); if (!m) break; (m[1].match(/[A-Za-z_$][\w$]*/g) || []).forEach(w => { if (M.sym[w] && w.length > 2 && !seenL.has(w)) { seenL.add(w); if (M.sym[w].cm.length < 5) M.sym[w].cm.push(f + ":" + (i + 1)); } }); } }); }
+  /* 7. chamadas de fora do app (o site, bridge.js, usa funções e variáveis do app) e o que não tem nenhuma referência */
+  { const out = ["bridge.js"].filter(has).map(f => ({ f, w: new Set(rd(f).match(/[A-Za-z_$][\w$]*/g) || []) }));
+    for (const n of symNames) { const ext = out.filter(o => o.w.has(n)).map(o => o.f); if (ext.length) M.sym[n].ext = ext; }
+    const appText = I.js.map(rd).join("\n") + I.html.map(rd).join("\n");
+    const cnt = {}; for (const w of appText.match(/[A-Za-z_$][\w$]*/g) || []) if (M.sym[w]) cnt[w] = (cnt[w] || 0) + 1;
+    M.unused = symNames.filter(n => M.sym[n].k === "fn" && !M.sym[n].by.length && !M.sym[n].ext && (cnt[n] || 0) <= 1).sort(); }
   M.data = require("./dados.js").build(M);
+  M.ui = require("./telas.js").build(M);
   M.count = { files: M.files.length, lines: M.files.reduce((a, f) => a + f.lines, 0), sym: symNames.length, fn: symNames.filter(n => M.sym[n].k === "fn").length, anon: anonN, ids: Object.keys(M.ids).length, cls: Object.keys(M.cls).length, ls: Object.keys(M.ls).length, prefs: Object.keys(M.prefs).length, tests: Object.keys(M.tests).length, css: C.rules.length };
   return M;
 }

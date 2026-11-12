@@ -38,3 +38,15 @@ test("dados salvos: toda lista da conta está no backup (ou explicada), e o site
     assert.match(W, /sims: .*Drive/); assert.match(W, /col:novaLista: está na conta e não entra no backup/);
   } finally { L.rd = rd; }
 });
+
+test("telas: aba › cartão › botão › função", { skip: semDeps && "falta cd tools/divisao && npm i" }, () => {
+  const L = require("../../tools/mapa/lib.js"), M = L.build(), U = M.ui;
+  assert.ok(U.views.quest.fns.includes("bkCard") && U.views.quest.fns.includes("crCardEl"));
+  assert.ok(M.sym.renderDetail.views.includes("temas"), "o tema aberto é da Residência");
+  assert.ok(!U.views.temas.fns.includes("renderErros"), "uma aba não puxa as outras pelo renderAll");
+  assert.deepEqual(M.sym.crCardEl.tit, ["Conceitos recorrentes"]);
+  const b = M.sym.crCardEl.btn; assert.ok(b.some(x => x.t === "É a mesma ideia" && x.id === "crOk-*") && b.some(x => x.t === "Ver no banco" && x.id === "crSee"));
+  const go = M.sym.bkCard.btn.find(x => x.id === "bkGo"); assert.ok(go && /Resolver esta/.test(go.t), "texto do botão montado depois, em textContent");
+  // sem uso: só a definição; o que o site (bridge.js) chama não entra
+  assert.ok(M.unused.includes("crUnlink") && !M.unused.includes("bankRestore") && M.sym.bankRestore.ext.includes("bridge.js"));
+});

@@ -15,15 +15,20 @@ velho, porque o `onde.js` gera de novo sozinho quando algum arquivo mudou.
 - `node tools/mapa/onde.js --testes <nome…>` — os testes que citam esses nomes (e quem os chama), com o comando pronto.
 - `node tools/mapa/onde.js --diff [base]` — nomes mexidos desde a base (padrão `main`) e os testes a rodar.
 - `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo de um módulo.
+- `node tools/mapa/onde.js "texto do botão"` — botão ou cartão pelo que aparece na tela (sem acento, palavras em qualquer ordem), com a função,
+  o arquivo e a aba; a mesma busca procura as decisões do usuário em `docs/decisoes.md`.
 - `node tools/mapa/onde.js --dados [tipo]` — dados salvos: o que o backup leva, onde cada lista vive (aparelho, conta), quem a limpa ao carregar,
   se o site e o Drive a leem, e os campos de cada tipo. Lista da conta fora do backup precisa de motivo em `FORA` (`tools/mapa/dados.js`), senão o teste falha.
 
 Arquivos gerados: `INDICE.md` (comece aqui: módulos na ordem de carga, funções mais usadas, maiores, sem uso), `modulos/*.md` (um por
-arquivo JS), `dados.md`, `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv` e `mapa.json` (tudo, para scripts).
+arquivo JS), `telas.md` (aba › cartão › botão › função), `dados.md`, `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv` e `mapa.json` (tudo, para scripts).
 
 ## Limites (o que o mapa NÃO vê)
 - Só nomes do **topo** dos arquivos. Função declarada dentro de outra aparece no código da de fora (`--codigo`).
-- "Usado por" vem das referências pelo nome. Chamada montada como texto (`onclick="x()"` dentro de HTML) não é vista: confira com `grep`.
+- "Usado por" vem das referências pelo nome; o que o site (`bridge.js`) usa aparece como "usado pelo site". O app não liga botões por texto
+  (`onclick="x()"` em HTML montado; conferido em 12/11/2026), então "Funções sem uso" no INDICE = o nome só aparece na definição.
+- Telas: a árvore parte do `renderAll` (aba aberta) e desce 5 níveis, sem as peças comuns (usadas por mais de 25 funções). Texto de botão montado
+  com variáveis aparece com `…`, e `a/b` quando há mais de um texto possível.
 - Ids e classes vêm de textos reconhecíveis (`id="…"`, `.id=`, `class="…"`, `classList`, seletores). Id montado em pedaços aparece como `prefixo*`.
 - Teste "toca" um nome quando a palavra aparece no arquivo do teste; nomes que aparecem em mais da metade dos testes ficam de fora.
 - `--diff` é por linha: num arquivo com várias declarações na mesma linha, todas aparecem como mexidas.

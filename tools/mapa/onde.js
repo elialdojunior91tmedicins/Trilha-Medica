@@ -2,7 +2,8 @@
 // Consulta o mapa do código (gera de novo sozinho se algum arquivo mudou). Uso, na raiz do repositório:
 //   node tools/mapa/onde.js crSuggest            nome exato: onde está, o que usa, quem usa, testes, CLAUDE.md
 //   node tools/mapa/onde.js '#bkGo' .crcard resid-bkbc prefs.hgoal col:exams     id, classe, chave, preferência, conta
-//   node tools/mapa/onde.js sugest               sem nome exato: procura no nome, no comentário, nos ids e nas classes
+//   node tools/mapa/onde.js sugest               sem nome exato: procura no nome, no comentário, nos ids, nas classes e no texto dos botões e cartões
+//   node tools/mapa/onde.js "Resolver estas"     botão ou cartão pelo texto que aparece na tela (sem acento, em qualquer parte)
 //   node tools/mapa/onde.js --codigo crSuggest   o código do nome (--tudo tira o limite de 6000 letras)
 //   node tools/mapa/onde.js --quem render -n 2   quem chama, em N níveis (padrão 1)
 //   node tools/mapa/onde.js --testes a b         testes que tocam nesses nomes ou em quem os chama (comando pronto)
@@ -26,6 +27,11 @@ function card(k) { const r = rec(k), o = [];
   if (r.val) o.push("  valor: " + r.val); if (r.doc) o.push("  " + r.doc);
   if (r.uses.length) o.push("  usa: " + some(r.uses, 40)); if (r.writes.length) o.push("  muda: " + r.writes.join(", "));
   if (r.by.length) o.push(`  usado por (${r.by.length}): ` + some(r.by.map(x => { const q = rec(x); return (x.startsWith("@") ? "topo" : x) + "·" + q.f.replace(/\.js$/, ""); }), 30));
+  if (r.ext) o.push("  usado pelo site: " + r.ext.join(", ") + " (mudar o nome ou os parâmetros quebra o Importar backup/a conta no site)");
+  if ((M.unused || []).includes(k)) o.push("  ⚠ sem uso: o nome só aparece na definição");
+  if (r.views) o.push("  aparece em: " + r.views.map(v => M.ui.views[v].name).join(", "));
+  if (r.tit) o.push("  cartão: " + r.tit.map(t => `"${t}"`).join(", "));
+  if (r.btn) o.push("  botões: " + some(r.btn.map(b => `"${b.t}"${b.id ? " #" + b.id : ""}`), 16));
   if (r.idDef.length) o.push("  cria #" + r.idDef.join(", #")); if (r.idUse.length) o.push("  procura #" + some(r.idUse, 30));
   if (r.cls.length) o.push("  classes: " + some(r.cls, 30)); if (r.ls.length) o.push("  localStorage: " + r.ls.join(", "));
   if (r.prefs.length) o.push("  ui.prefs: " + r.prefs.map(p => p + (r.prefsW.includes(p) ? "✎" : "")).join(", ")); if (r.fs.length) o.push("  conta: " + r.fs.join(", "));
@@ -71,7 +77,7 @@ if (flag("--diff")) { const base = args[0] || "main"; let d = "";
   if (names.length) printTests(names); process.exit(0); }
 
 /* consulta livre */
-if (!args.length) { console.log(fs.readFileSync(__filename, "utf8").split("\n").slice(1, 12).map(l => l.replace(/^\/\/ ?/, "")).join("\n")); process.exit(0); }
+if (!args.length) { console.log(fs.readFileSync(__filename, "utf8").split("\n").slice(1, 14).map(l => l.replace(/^\/\/ ?/, "")).join("\n")); process.exit(0); }
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 for (const q0 of args) { let q = q0, done = false; console.log(args.length > 1 ? `\n===== ${q0} =====` : "");
   const idCard = k => { const e = M.ids[k]; console.log(`#${k}` + (e.def ? "\n  criado em: " + e.def.map(at).join("; ") : "") + (e.html ? "\n  no HTML fixo: " + e.html.join("; ") : "") + (e.use ? "\n  procurado em: " + some(e.use.map(at), 20) : "") + (e.css ? "\n  CSS: src/app/css/app.css L" + e.css.join(", L") : "") + (e.extra ? "\n  fora do app: " + e.extra.join(", ") : "") + (e.tests ? "\n  testes: " + some(e.tests, 30) : "")); };
@@ -87,12 +93,18 @@ for (const q0 of args) { let q = q0, done = false; console.log(args.length > 1 ?
   if (M.css.vars[q]) { const v = M.css.vars[q]; console.log(`${q}  definida em app.css L${L.uniq(v.def).join(", L") || "—"} · usada ${v.n}×`); done = true; }
   if (done) continue;
   const n = norm(q), S = Object.keys(M.sym).filter(k => norm(k).includes(n)), D = Object.keys(M.sym).filter(k => !S.includes(k) && norm(M.sym[k].doc).includes(n)), I = Object.keys(M.ids).filter(k => norm(k).includes(n)), C = Object.keys(M.cls).filter(k => norm(k).includes(n)), T = Object.keys(M.tests).filter(k => norm(M.tests[k].desc).includes(n)), F = M.files.filter(f => norm(f.short + " " + f.head).includes(n));
-  if (S.length === 1) { console.log(card(S[0])); continue; }
+  const words = n.split(/\s+/).filter(Boolean), has = t => { const x = norm(t); return words.every(w => x.includes(w) || (w.length > 6 && x.includes(w.slice(0, w.length - 3)))); }; // "notificação" acha "notificações"
+  const B = Object.keys(M.ui.labels).filter(has), TT = Object.keys(M.sym).filter(k => (M.sym[k].tit || []).some(has));
+  if (B.length || TT.length) { console.log(`Na tela:`); B.slice(0, 20).forEach(t => M.ui.labels[t].forEach(x => console.log(`  botão "${t}"${x.id ? " #" + x.id : ""} — ${at(x.fn)}${M.sym[x.fn].views ? " · " + M.sym[x.fn].views.map(v => M.ui.views[v].name).join(", ") : ""}`)));
+    TT.slice(0, 12).forEach(k => console.log(`  cartão ${M.sym[k].tit.filter(has).map(t => '"' + t + '"').join(", ")} — ${at(k)}${M.sym[k].views ? " · " + M.sym[k].views.map(v => M.ui.views[v].name).join(", ") : ""}`)); }
+  if (S.length === 1 && !B.length && !TT.length) { console.log(card(S[0])); continue; }
   if (S.length) console.log(`Nomes (${S.length}):\n` + S.slice(0, 40).map(k => "  " + at(k) + (M.sym[k].doc ? "  — " + L.cut(M.sym[k].doc, 70) : "")).join("\n") + (S.length > 40 ? `\n  … +${S.length - 40}` : ""));
   if (D.length) console.log(`No comentário (${D.length}):\n` + D.slice(0, 15).map(k => "  " + at(k) + "  — " + L.cut(M.sym[k].doc, 90)).join("\n"));
   if (F.length) console.log("Arquivos: " + F.map(f => f.short).join(", "));
   if (I.length) console.log(`Ids (${I.length}): ` + some(I.map(i => "#" + i), 30));
   if (C.length) console.log(`Classes (${C.length}): ` + some(C.map(i => "." + i), 30));
   if (T.length) console.log(`Testes que falam disso (${T.length}): ` + some(T, 30));
-  if (!S.length && !D.length && !I.length && !C.length && !T.length && !F.length) console.log(`Nada no mapa com "${q0}". É texto dentro de uma função? Use: grep -rn "${q0}" src/app/`);
+  let DC = []; try { DC = fs.readFileSync(path.join(L.ROOT, "docs/decisoes.md"), "utf8").split("\n").filter(l => /^- /.test(l) && has(l)); } catch (e) {}
+  if (DC.length) console.log(`Decisões do usuário (docs/decisoes.md):\n` + DC.slice(0, 8).map(l => "  " + L.cut(l.slice(2), 220)).join("\n"));
+  if (!S.length && !D.length && !I.length && !C.length && !T.length && !F.length && !B.length && !TT.length && !DC.length) console.log(`Nada no mapa com "${q0}". É texto dentro de uma função? Use: grep -rn "${q0}" src/app/`);
 }

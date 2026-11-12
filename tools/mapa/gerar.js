@@ -33,6 +33,8 @@ for (const F of M.files) {
     if (x.uses.length) more.push("usa: " + some(x.uses, 24));
     if (x.writes.length) more.push("muda: " + some(x.writes, 12));
     if (x.by && x.by.length) more.push("usado por: " + some(x.by.map(k => k.replace(/^@/, "topo ")), 14));
+    if (x.ext) more.push("usado pelo site: " + x.ext.join(", "));
+    if (M.unused.includes(x.n)) more.push("⚠ sem uso");
     if (x.idDef.length) more.push("cria #" + some(x.idDef, 14));
     if (x.idUse.length) more.push("procura #" + some(x.idUse, 14));
     if (x.ls.length) more.push("localStorage: " + x.ls.join(", "));
@@ -52,7 +54,7 @@ for (const F of M.files) {
 const top = F => (symByFile[F.short] || []).filter(n => M.sym[n].k === "fn").sort((a, b) => M.sym[b].by.length - M.sym[a].by.length).slice(0, 7);
 let ix = `# Mapa do código — Nexus - Trilha Médica\n\nGerado por \`node tools/mapa/gerar.js\` em ${M.at.slice(0, 16).replace("T", " ")} UTC. **Não editar: é saída.** Os números de linha valem para os arquivos como estão agora.\n\n`;
 ix += `${M.count.files} arquivos JS (${M.count.lines} linhas) · ${M.count.sym} nomes no topo (${M.count.fn} funções) · ${M.count.anon} instruções soltas · ${M.count.css} regras de CSS · ${M.count.ids} ids · ${M.count.cls} classes · ${M.count.ls} chaves do localStorage · ${M.count.prefs} preferências · ${M.count.tests} arquivos de teste.\n\n`;
-ix += "## Como consultar\n\n- `node tools/mapa/onde.js <nome|#id|.classe|resid-chave|prefs.x|texto>` — onde está, quem usa, testes, linha do CLAUDE.md.\n- `node tools/mapa/onde.js --codigo <nome>` — o código exato daquele nome (sem abrir o arquivo inteiro).\n- `node tools/mapa/onde.js --testes <nome…>` e `--diff [base]` — que testes rodar depois de mexer.\n- `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo do módulo.\n- Arquivos: `modulos/*.md` (um por arquivo JS), `dados.md` (dados salvos e backup), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv`, `mapa.json`.\n\n";
+ix += "## Como consultar\n\n- `node tools/mapa/onde.js <nome|#id|.classe|resid-chave|prefs.x|texto>` — onde está, quem usa, testes, linha do CLAUDE.md.\n- `node tools/mapa/onde.js --codigo <nome>` — o código exato daquele nome (sem abrir o arquivo inteiro).\n- `node tools/mapa/onde.js --testes <nome…>` e `--diff [base]` — que testes rodar depois de mexer.\n- `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo do módulo.\n- Arquivos: `modulos/*.md` (um por arquivo JS), `telas.md` (aba › cartão › botão › função), `dados.md` (dados salvos e backup), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv`, `mapa.json`.\n\n";
 ix += "## Módulos, na ordem em que o app carrega\n\n| Arquivo | Linhas | KB | Nomes | O que tem | Mais usados |\n|---|--:|--:|--:|---|---|\n";
 for (const F of M.files) ix += `| [${F.short}](modulos/${modFile(F.short)}) | ${F.lines} | ${F.kb} | ${F.n} | ${cut(F.head, 150).replace(/\|/g, "/")} | ${top(F).join(", ")} |\n`;
 ix += `\n## Resto do app\n\n| Arquivo | Linhas | O que é |\n|---|--:|---|\n`;
@@ -63,8 +65,7 @@ const hub = Object.keys(M.sym).filter(n => M.sym[n].k === "fn").sort((a, b) => M
 ix += `\n## As 40 funções mais usadas (mexer nelas afeta muita coisa)\n\n` + hub.map(n => `- ${n}${M.sym[n].sig} · ${M.sym[n].f}:${M.sym[n].l} · usada por ${M.sym[n].by.length}`).join("\n") + "\n";
 const big = Object.keys(M.sym).filter(n => M.sym[n].k === "fn").sort((a, b) => M.sym[b].sz - M.sym[a].sz).slice(0, 25);
 ix += `\n## As 25 funções maiores\n\n` + big.map(n => `- ${n} · ${M.sym[n].f}:${M.sym[n].l} · ${sz(M.sym[n].sz)}`).join("\n") + "\n";
-const dead = Object.keys(M.sym).filter(n => M.sym[n].k === "fn" && !M.sym[n].by.length && !(M.sym[n].tests || []).length);
-ix += `\n## Funções que ninguém chama pelo nome (${dead.length})\n\nPodem ser usadas só por texto (onclick em HTML montado) ou estar sem uso: conferir com \`grep\` antes de apagar.\n\n` + dead.map(n => `${n} (${M.sym[n].f}:${M.sym[n].l})`).join(", ") + "\n";
+ix += `\n## Funções sem uso (${M.unused.length})\n\nO nome só aparece na própria definição: nenhuma chamada no app (nem em HTML montado, que o app não usa: os botões ligam funções por \`onclick = () =>\`), nem no \`bridge.js\`.\nSobras de recursos retirados. Podem ser apagadas numa limpeza (os testes que as citam aparecem ao lado).\n\n` + M.unused.map(n => `${n} (${M.sym[n].f}:${M.sym[n].l})${(M.sym[n].tests || []).length ? " · citada em " + M.sym[n].tests.join(", ") : ""}`).join(", ") + "\n";
 w("INDICE.md", ix);
 
 /* ---- tabelas para grep ---- */
@@ -107,6 +108,16 @@ for (const f in M.extra) { const E = M.extra[f]; ex += `\n## ${f} · ${E.lines} 
   ex += E.items.map(i => `- ${i.l === i.e ? "L" + i.l : "L" + i.l + "–" + i.e} · ${i.k} **${i.n}**${i.sig || ""}${i.doc ? " — " + cut(i.doc, 160) : ""}`).join("\n") + "\n";
   if (E.ls && E.ls.length) ex += `\nlocalStorage: ${E.ls.join(", ")}\n`; if (E.fs && E.fs.length) ex += `conta: ${E.fs.join(", ")}\n`; if (E.idDef && E.idDef.length) ex += `cria #${E.idDef.join(", #")}\n`; if (E.idUse && E.idUse.length) ex += `procura #${E.idUse.join(", #")}\n`; }
 w("fora-do-app.md", ex);
+
+/* ---- telas ---- */
+{ const U = M.ui, fnLine = n => { const r = M.sym[n], b = (r.btn || []).map(x => `"${x.t}"${x.id ? " #" + x.id : ""}`);
+    return `- **${n}** \`${r.f}:${r.l}\`${r.tit ? " · cartão: " + r.tit.map(t => `"${t}"`).join(", ") : ""}${b.length ? "\n  botões: " + b.join(" · ") : ""}${!b.length && r.idDef.length ? "\n  ids: " + some(r.idDef.map(i => "#" + i), 12) : ""}`; };
+  let t = "# Telas\n\nCada aba, as funções que a desenham (a partir do `renderAll`, que redesenha só a aba aberta), com os títulos dos cartões e o texto e o id dos botões, como aparecem no código.\n" +
+    "Para achar um botão pelo que o usuário fala: `node tools/mapa/onde.js \"texto do botão\"`. Texto com `…` = parte que muda (número, nome); `a/b` = um dos textos possíveis.\n" +
+    "Peças comuns (usadas por mais de 25 funções, como `el`, `fcBody`, `altsEl`) não entram na árvore: veja-as no INDICE.\n";
+  for (const v in U.views) { const V = U.views[v]; t += `\n## ${V.name} (view \`${v}\`)\n\nComeça em: ${V.roots.map(n => "`" + n + "`").join(", ") || "—"}\n\n` + (V.fns.map(fnLine).join("\n") || "(só texto, sem botões próprios)") + "\n"; }
+  t += "\n## Fora das abas (painéis abertos por toque, barras e avisos de qualquer tela)\n\n" + U.loose.map(fnLine).join("\n") + "\n";
+  w("telas.md", t); }
 
 /* ---- dados salvos ---- */
 { const D = M.data, fl = f => "`" + f.k + "`" + (f.sub ? " {" + f.sub.join(", ") + "}" : "") + (f.by && f.by.length ? " ← " + f.by.join(", ") : "");

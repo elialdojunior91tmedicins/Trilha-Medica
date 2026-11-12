@@ -174,6 +174,8 @@ Cada tela e cada lote tem um bloco lá, com funções, ids, formatos e as decis�
 - Sem lembretes/notificações e sem Notion. Provas e PDFs nunca entram no repositório.
 - Banco de questões: "assinale a incorreta" SEM selo, de propósito; só a 1ª tentativa conta no acerto do tema; uma agenda só (errou → Refazer);
   nada copiado de banco de cursinho (fontes externas = provas oficiais). O resto em `docs/recursos.md` › "Banco de questões: as decisões do plano".
+- **Registro completo em `docs/decisoes.md`**: o que o usuário decidiu (com data e onde está anotado) e o que ele **recusou** (não propor de novo).
+  Antes de sugerir uma ideia nova, procure lá (`node tools/mapa/onde.js <palavra>` também procura). Decisão nova ou mudança: escreva lá, com a data.
 
 ## Cuidados
 
