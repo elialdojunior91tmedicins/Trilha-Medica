@@ -12,4 +12,4 @@ tools/divisao/package-lock.json
 src/checklist-residencia.html
 src/app/.gerado.sha1
 # mapa do código (saída de node tools/mapa/gerar.js)
-mapa/
+/mapa/
