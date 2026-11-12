@@ -55,11 +55,16 @@ com a data e não apague o histórico.
 
 ## Aprovado e ainda não feito
 
+- **Histórico das revisões** (guardar cada resposta, não só a última; mostrar a retenção e ajustar os intervalos) e **plano de recuperação do atraso** ("zerar em N dias") — aprovados em 12/11/2026, 14h53. (claude/sugestoes-12-11.md)
+- **Cartões (flashcards) numa aba própria**, fora do Caderno — pedido em 12/11/2026, 14h53; desenho a combinar. (claude/sugestoes-12-11.md)
+- **Revisar com questões do banco** (a nota da revisão sai do acerto) — guardado para quando o banco tiver **5.000 questões** (12/11/2026). (claude/sugestoes-12-11.md)
+- Contador de uso só no aparelho, para basear um novo lote de enxugamento — mais adiante (12/11/2026). Demais sugestões de 12/11 (por aba, beleza, código): guardadas para depois, em claude/sugestoes-12-11.md.
 - Provas, entregas e fechamentos no **Calendário do iPhone** pela conta Google (agenda "Nexus", só leitura, sem alertas) — opção A, 01/11/2026, 08h23. (claude/integracoes.md)
 - **Atalhos do iPhone/iPad** (links que abrem uma tela pronta: Foco, Registrar tempo, Revisar erros, Fila do dia, abas) — aprovado em 01/11/2026, 07h49; os links exatos a confirmar ao fazer. (claude/integracoes.md)
 
 ## Recusado (não propor de novo sem o usuário pedir)
 
+- Faculdade: mandar os conteúdos fracos da prova para a fila da Residência depois da nota — não escolhido em 12/11/2026.
 - Botão "+ Nova" nas revisões (elas nascem ao estudar; "Já estudei antes" cobre o resto) — 11/10/2026.
 - Painel único de "Evolução" e gráfico em radar — 11/10/2026.
 - Telas de outro app: lista de aulas de cursinho, "Provas focais" (reta final), grade/página de "Ferramentas", ranking — 11/10/2026.
