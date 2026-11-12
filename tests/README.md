@@ -9,7 +9,7 @@ monitor 1920. Cada linha impressa começa com `OK` ou `FALHA`.
 ## Como rodar
 
 ```
-python3 src/build_site.py   # o site precisa do index.html atualizado
+python3 src/build_site.py   # gera o index.html e o src/checklist-residencia.html (saída do build, fora do repositório)
 tests/run.sh                # todos (uns 10 minutos), 3 em paralelo
 tests/run.sh t74 t76        # só alguns
 tests/run.sh --monkey       # toques aleatórios nos 6 aparelhos, procura erros de JavaScript

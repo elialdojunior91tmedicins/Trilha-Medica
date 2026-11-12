@@ -30,9 +30,10 @@ consultado quando há dúvida. Responda em português.
    sincronização) · `220-abertura` (carga, por último). Arquivo novo numa pasta de módulo: `NNN-nome.js`, de 10 em 10.
    Para achar uma função: `grep -rn "function nome" src/app/js/`. Recurso novo vai no módulo do assunto dele, nunca no fim.
    Mover código de lugar: `tools/divisao/` (`check.js` confere a ordem nova antes; veja o LEIA.md de lá).
-   **Não edite `src/checklist-residencia.html` nem `index.html` à mão: os dois são gerados** (o build para se o primeiro foi mudado à mão).
-2. Gere o site: `python3 src/build_site.py` (junta `src/app/` em `src/checklist-residencia.html`, monta `index.html` e muda a versão do `sw.js`).
-   `python3 src/build_site.py --check` só confere se o gerado bate com `src/app/`.
+   **Não edite `index.html` nem `src/checklist-residencia.html` à mão: os dois são gerados.** O segundo (o app sem a conta) é só saída
+   do build desde 12/11/2026: fica fora do repositório (`.gitignore`) e o `tests/run.sh` o gera quando falta ou quando `src/app/` mudou.
+2. Gere o site: `python3 src/build_site.py` (junta `src/app/`, monta `index.html`, muda a versão do `sw.js` e grava `src/checklist-residencia.html`).
+   `python3 src/build_site.py --check` só confere se `index.html` e `sw.js` batem com `src/app/`.
 3. Rode os testes: `tests/run.sh --rapido` a cada mudança (unitários no Node + t151, a abertura nos 6 aparelhos; ~30 s) e
    `tests/run.sh` (todos; veja `tests/README.md`) antes de publicar. Lógica nova sem tela (cálculo, datas, limpeza de dados) ganha teste em `tests/unit/` e escreva um teste novo `tests/tNN.js` para cada recurso novo
    (inclua-o em `tests/list.txt`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
@@ -45,10 +46,10 @@ consultado quando há dúvida. Responda em português.
 
 ## Arquitetura
 
-- `src/app/`: o código do app em trechos (HTML/CSS/JS); `src/checklist-residencia.html` = os trechos juntados (gerado; o preview
-  `tests/mkprev.py` e vários testes leem esse arquivo). No Claude usa `window.claude.use(...)` (db, user, sample, downloads).
+- `src/app/`: o código do app em trechos (HTML/CSS/JS); `src/checklist-residencia.html` = os trechos juntados (saída do build, fora do
+  repositório; o preview `tests/mkprev.py` e 20 testes antigos abrem esse arquivo, que é o app sem o `bridge.js`). No Claude usa `window.claude.use(...)` (db, user, sample, downloads).
   Divisão em módulos: fase 1 (cortar) e 1.5 (testes de proteção: `tests/unit/`, `tests/t151.js`) em 06/11/2026; fase 2 (agrupar
-  por assunto, sem mudar linha) em 11/11/2026; próximas em `docs/adr/001-divisao-em-modulos.md`. Tempo de abertura: Configurações › Tempo de abertura
+  por assunto, sem mudar linha) em 11/11/2026 e o gerado fora do repositório em 12/11/2026; próxima (fase 3) em `docs/adr/001-divisao-em-modulos.md`. Tempo de abertura: Configurações › Tempo de abertura
   (`perfCardEl`; o script do `topo.html` grava as últimas 12 em `resid-perf`; teste t150).
 - `bridge.js`: no site, implementa o mesmo `window.claude.use` com Firebase (Auth e-mail/senha +
   Firestore, persistência offline), download/compartilhamento de arquivos e IA por **copiar e colar**

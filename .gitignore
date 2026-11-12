@@ -8,3 +8,6 @@ tests/trilha-*.txt
 tests/out_sim17_*.json
 tools/divisao/node_modules/
 tools/divisao/package-lock.json
+# saída do build (o app sem a conta, para o preview e os testes antigos); gere com python3 src/build_site.py
+src/checklist-residencia.html
+src/app/.gerado.sha1

@@ -7,6 +7,9 @@
 cd "$(dirname "$0")"
 if [ "$1" = "--unit" ]; then node --test unit/*.test.js 2>&1 | grep -E "^# (pass|fail)|^not ok"; exit "${PIPESTATUS[0]}"; fi
 if [ "$1" = "--rapido" ]; then ./run.sh --unit || exit 1; set -- t151; fi
+# src/checklist-residencia.html é saída do build e não vai para o repositório: gera se faltar ou se src/app/ mudou depois
+G=../src/checklist-residencia.html
+if [ ! -f "$G" ] || [ -n "$(find ../src/app -newer "$G" -type f ! -name .gerado.sha1 -print -quit)" ]; then (cd .. && python3 src/build_site.py) || exit 1; fi
 python3 mkprev.py
 # os testes do site abrem http://localhost:8765/ (a raiz do repositório, com index.html gerado)
 if ! curl -s -o /dev/null http://localhost:8765/; then (cd .. && setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &); sleep 1; fi

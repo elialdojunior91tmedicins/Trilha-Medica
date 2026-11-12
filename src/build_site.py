@@ -1,15 +1,16 @@
 # Gera ../index.html (o site).
 # Desde a fase 1 da divisão (11/2026, docs/adr/001-divisao-em-modulos.md) o código-fonte vive em src/app/:
 #   topo.html + css/app.css + corpo.html + js/**/*.js (em ordem de caminho) + fim.html
-# O build junta esses arquivos, sem mudar nenhum byte, em src/checklist-residencia.html (GERADO: não editar à mão;
-# o preview e testes leem esse arquivo) e depois monta o index.html como antes.
+# O build junta esses arquivos, sem mudar nenhum byte, em src/checklist-residencia.html e depois monta o index.html.
+# src/checklist-residencia.html é só uma SAÍDA do build (o app sem a conta, que o preview e testes antigos abrem):
+# desde 12/11/2026 não vai para o repositório (.gitignore); não editar à mão.
 # Uso, na raiz do repositório: python3 src/build_site.py
-#   --check : só confere se src/checklist-residencia.html está igual ao que os trechos geram (não grava nada)
+#   --check : só confere se index.html e sw.js estão iguais ao que src/app/ gera (não grava nada)
 import re, sys, pathlib, hashlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 APP = ROOT / "src/app"
 GEN = ROOT / "src/checklist-residencia.html"
-STAMP = APP / ".gerado.sha1"  # impressão do último arquivo gerado: se o gerado mudar à mão, o build para
+STAMP = APP / ".gerado.sha1"  # impressão do último gerado (fora do repositório): se o gerado mudar à mão, o build para
 
 
 def assemble():
@@ -19,20 +20,16 @@ def assemble():
     return b"".join(p.read_bytes() for p in pieces)
 
 
-if APP.is_dir():
-    out = assemble()
-    cur = GEN.read_bytes() if GEN.exists() else b""
-    if "--check" in sys.argv:
-        if cur != out:
-            sys.exit("src/checklist-residencia.html está diferente do que src/app/ gera. Edite os arquivos em src/app/ e rode o build.")
-        print("ok: src/checklist-residencia.html confere com src/app/")
-        sys.exit(0)
+CHECK = "--check" in sys.argv
+out = assemble()
+cur = GEN.read_bytes() if GEN.exists() else b""
+if not CHECK:
     if cur and cur != out and STAMP.exists() and hashlib.sha1(cur).hexdigest() != STAMP.read_text().strip():
         sys.exit("src/checklist-residencia.html foi editado à mão (é gerado). Passe a mudança para os arquivos em src/app/ "
                  "e rode o build de novo; nada foi gravado.")
     GEN.write_bytes(out)
     STAMP.write_text(hashlib.sha1(out).hexdigest() + "\n")
-src = GEN.read_text(encoding="utf-8")
+src = out.decode("utf-8")
 FB = "10.12.2"
 ver = hashlib.sha1((src + "".join((ROOT / f).read_text(encoding="utf-8") for f in ("bridge.js", "config.js", "site.css"))).encode()).hexdigest()[:8]
 head = f"""<!doctype html>
@@ -62,7 +59,15 @@ head = f"""<!doctype html>
 <body>
 """
 body = src.replace('<meta charset="utf-8">\n', "", 1).replace("<title>Nexus - Trilha Médica</title>\n", "", 1)
-(ROOT / "index.html").write_text(head + body + "\n</body>\n</html>\n", encoding="utf-8")
+index = head + body + "\n</body>\n</html>\n"
 sw = (ROOT / "sw.js").read_text(encoding="utf-8")
-(ROOT / "sw.js").write_text(re.sub(r'const V = "checklist-[^"]*";', f'const V = "checklist-{ver}";', sw), encoding="utf-8")
+sw2 = re.sub(r'const V = "checklist-[^"]*";', f'const V = "checklist-{ver}";', sw)
+if CHECK:
+    old = (ROOT / "index.html").read_text(encoding="utf-8") if (ROOT / "index.html").exists() else ""
+    if old != index or sw != sw2:
+        sys.exit("index.html ou sw.js está diferente do que src/app/ gera. Rode python3 src/build_site.py.")
+    print("ok: index.html e sw.js conferem com src/app/")
+    sys.exit(0)
+(ROOT / "index.html").write_text(index, encoding="utf-8")
+(ROOT / "sw.js").write_text(sw2, encoding="utf-8")
 print("index.html gerado · versão", ver)
