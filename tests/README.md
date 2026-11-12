@@ -17,6 +17,10 @@ tests/run.sh --unit         # lógica no Node, sem navegador (~2 s)
 tests/run.sh --rapido       # unitários + t151 (abertura nos 6 aparelhos, todas as abas; ~30 s)
 ```
 
+O que falha na rodada em paralelo roda de novo **sozinho**, uma vez. Passou na 2ª = `inst` (instável: falha de carga ou de tempo do teste,
+não do app; fica anotado em `tests/out_instaveis.txt`, que junta o histórico); falhou de novo = `FALHA`, defeito a investigar. A saída da
+1ª tentativa fica em `out_<teste>.1a.txt`. `SEM_REPETIR=1 tests/run.sh` desliga. O comando sai com 1 se sobrar alguma `FALHA`.
+
 ## Testes unitários (`tests/unit/`, desde 11/2026)
 
 `tests/unit/load.js` carrega a lógica do app no Node, sem navegador: lê `src/app/js/` (e as pastas de módulo) na ordem, declara todas as

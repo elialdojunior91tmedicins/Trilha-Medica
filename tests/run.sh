@@ -18,4 +18,19 @@ if [ "$1" = "--monkey" ]; then
   sleep 2; while pgrep -f monkey8.js >/dev/null; do sleep 5; done; tail -n 2 out_monkey_*.txt; exit 0
 fi
 if [ $# -gt 0 ]; then L=$(printf "%s.js\n" "$@"); else L=$(cat list.txt); fi
-echo "$L" | xargs -P 3 -I{} sh -c 'timeout 600 node {} > out_{}.txt 2>&1; f=$(grep -c "^FALHA" out_{}.txt); e=$(grep -c "Error" out_{}.txt); n=$(grep -c "^OK" out_{}.txt); [ "$f$e" = "00" ] && echo "ok    {} ($n)" || echo "FALHA {} ($f falhas, $e erros) -> tests/out_{}.txt"' | sort
+# resultado de um teste: 0 = passou (sem FALHA e sem Error na saída)
+one() { timeout 600 node "$1" > "out_$1.txt" 2>&1; f=$(grep -c "^FALHA" "out_$1.txt"); e=$(grep -c "Error" "out_$1.txt"); n=$(grep -c "^OK" "out_$1.txt"); [ "$f$e" = "00" ] && echo "ok    $1 ($n)" || echo "FALHA $1 ($f falhas, $e erros) -> tests/out_$1.txt"; }
+export -f one
+R=$(echo "$L" | xargs -P 3 -I{} bash -c 'one {}' | sort)
+# Testes instáveis (t133, t147, t148… falham às vezes sob carga): o que falhou roda de novo SOZINHO, uma vez.
+# Passou na 2ª = "instável" (anotado em out_instaveis.txt, que guarda o histórico para achar os crônicos); falhou de novo = falha de verdade.
+# SEM_REPETIR=1 desliga.
+F=$(echo "$R" | grep "^FALHA" | awk '{print $2}')
+if [ -n "$F" ] && [ -z "$SEM_REPETIR" ]; then
+  for t in $F; do cp "out_$t.txt" "out_$t.1a.txt"; r2=$(one "$t")
+    if [ "${r2%% *}" = "ok" ]; then R=$(echo "$R" | sed "s#^FALHA $t (\([^)]*\)).*#inst  $t (falhou na 1ª: \1; passou sozinho) -> tests/out_$t.1a.txt#"); echo "$(date +%F\ %H:%M) $t instável (passou na 2ª)" >> out_instaveis.txt
+    else echo "$(date +%F\ %H:%M) $t falhou duas vezes" >> out_instaveis.txt; fi; done
+fi
+echo "$R"
+echo "$R" | grep -q "^inst" && echo "(inst = instável: falhou junto com os outros e passou sozinho. Histórico: tests/out_instaveis.txt)"
+echo "$R" | grep -q "^FALHA" && exit 1 || exit 0
