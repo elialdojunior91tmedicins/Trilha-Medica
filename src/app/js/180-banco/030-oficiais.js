@@ -65,13 +65,13 @@ const cmNeed=ex=>ex.qs.map((r,i)=>i).filter(i=>{const r=ex.qs[i];return !!r.q.co
 function cmPrompt(ex,idx){return `Você é professor de residência médica. Comente as questões abaixo da prova ${ex.name}${ex.banca?` (${ex.banca}${ex.ano?" "+ex.ano:""})`:""}, como nos comentários dos cursinhos, com base nas diretrizes brasileiras atuais e em fontes confiáveis. O gabarito oficial já está indicado: não discuta se ele está certo, explique por que está. Não cite letras no comentário; o porquê de cada alternativa errada vai no campo "porque".
 
 Devolva SOMENTE um JSON: uma lista com um objeto por questão, na mesma ordem:
-[{"n":número da questão,"comentario":"por que a resposta certa está certa (2 a 5 frases)","porque":{"A":"por que esta alternativa está errada (vazio na correta)","B":"…"},"pontoChave":"a ideia que decide a questão (1 frase)","takeHome":"o que levar para a prova (1 frase)","conceito":"o conceito em poucas palavras","fonte":"diretriz ou referência usada"}]
+[{"n":número da questão,"comentario":"por que a resposta certa está certa (2 a 5 frases)","porque":{"A":"por que esta alternativa está errada (vazio na correta)","B":"…"},"pontoChave":"a ideia que decide a questão (1 frase)","takeHome":"o que levar para a prova (1 frase)","conceito":"o conceito em poucas palavras","chave":"nome curto da ideia cobrada (3 a 8 palavras, sem o caso clínico), escrito sempre do mesmo jeito para questões que cobram a mesma ideia, mesmo em provas diferentes","fonte":"diretriz ou referência usada"}]
 
 ${idx.map(i=>{const r=ex.qs[i],q=r.q;return `### Questão ${r.n||i+1}\n${q.enunciado}\n${q.alternativas.map(a=>a.letra+") "+a.texto).join("\n")}\nGabarito oficial: ${q.correta}`}).join("\n\n")}`}
 function cmApply(ex,arr,idx){let n=0;const t=v=>typeof v==="string"?v.trim():"",by={};(Array.isArray(arr)?arr:[]).forEach(o=>{if(o&&typeof o==="object"&&+o.n)by[+o.n]=o});
   idx.forEach((i,j)=>{const r=ex.qs[i],o=by[r.n||i+1]||(Array.isArray(arr)&&!Object.keys(by).length?arr[j]:null);if(!o||!t(o.comentario))return;const q=r.q;
     q.comentario=t(o.comentario).slice(0,4000);const P=o.porque&&typeof o.porque==="object"?o.porque:{};q.alternativas.forEach(a=>{if(a.letra!==q.correta&&t(P[a.letra]))a.porque=t(P[a.letra]).slice(0,1200)});
-    if(t(o.pontoChave))q.pc=t(o.pontoChave).slice(0,1200);if(t(o.takeHome))q.th=t(o.takeHome).slice(0,800);if(t(o.conceito))q.conceito=t(o.conceito).slice(0,600);if(t(o.fonte))q.fonte=t(o.fonte).slice(0,400);
+    if(t(o.pontoChave))q.pc=t(o.pontoChave).slice(0,1200);if(t(o.takeHome))q.th=t(o.takeHome).slice(0,800);if(t(o.conceito))q.conceito=t(o.conceito).slice(0,600);if(t(o.fonte))q.fonte=t(o.fonte).slice(0,400);if(crNorm(t(o.chave)))r.cr=crNorm(t(o.chave));
     if(!r.ck)r.ck=q.correta;r.cm=1;n++});
   if(n){exPut(ex);if(typeof bankFeedSoon==="function")bankFeedSoon()}return n}
 async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")return;const parts=[];for(let i=0;i<idx.length;i+=CM_PART)parts.push(idx.slice(i,i+CM_PART));
@@ -84,7 +84,7 @@ async function cmGo(ex,idx){if(!sampleFn||!idx.length||cmRun&&cmRun.st==="run")r
 function cmLineEl(ex){if(!cmRun||cmRun.id!==ex.id)return null;const C=cmRun,p=el(`<p class="exline cmline"></p>`);
   p.textContent=C.st==="run"?`✦ Comentando com o Claude${C.m>1?`: parte ${C.i+1} de ${C.m}`:""}…`:C.msg;if(C.st==="run"){const b=el(`<button class="link" type="button" id="cmStop">Parar</button>`);b.onclick=()=>{C.ctl.abort()};p.append(" ",b)}return p}
 /* "Juntar gabarito e comentários" (arquivo .json preparado pelo Claude numa conversa): {app:"nexus-comentarios",v:1,prova,gab:"oficial"|"claude",kst?:"p"|"d",
-   qs:[{n,ini,correta?,anulada?,comentario,porque:{A:…},pontoChave,takeHome,conceito,fonte}]}. Cada item só entra se o número existe e o começo do enunciado (ini) bate. */
+   qs:[{n,ini,correta?,anulada?,comentario,porque:{A:…},pontoChave,takeHome,conceito,chave?,fonte}]} (chave = B5, conceito recorrente). Cada item só entra se o número existe e o começo do enunciado (ini) bate. */
 const CJ_APP="nexus-comentarios";let cjMsg=null;
 function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,an:0,skip:[],kept:0};if(!o||o.app!==CJ_APP||!Array.isArray(o.qs))return null;
   const off=o.gab==="oficial";
@@ -98,7 +98,7 @@ function cjApply(ex,o){const t=v=>typeof v==="string"?v.trim():"",R={ok:0,key:0,
     if(t(it.comentario)&&(!r.an||it.anulada)){const q=r.q;if(r.q.correta&&v&&r.q.correta!==v&&!off&&r.g==="b"){/* o comentário foi escrito para outra letra: não junta */}
       else{q.comentario=t(it.comentario).slice(0,4000);const P=it.porque&&typeof it.porque==="object"?it.porque:{};q.alternativas.forEach(x=>{if(x.letra!==q.correta&&t(P[x.letra]))x.porque=t(P[x.letra]).slice(0,1200);else if(x.letra===q.correta)x.porque=""});
         if(t(it.pontoChave))q.pc=t(it.pontoChave).slice(0,1200);if(t(it.takeHome))q.th=t(it.takeHome).slice(0,800);if(t(it.conceito))q.conceito=t(it.conceito).slice(0,600);if(t(it.fonte))q.fonte=t(it.fonte).slice(0,400);
-        r.ck=q.correta;r.cm=1;R.ok++}}});
+        r.ck=q.correta;r.cm=1;R.ok++}if(crNorm(t(it.chave)))r.cr=crNorm(t(it.chave))}});
   if(off&&(R.key||R.an))ex.kst=o.kst==="p"?"p":"d";
   const P=exPg(ex.id);if(P.fin&&P.tries.length){const S=exScore(ex),tt=P.tries[P.tries.length-1];tt.hit=S.hit;tt.n=S.ans}
   exPut(ex);exPSave(ex.id);if(typeof bankFeedSoon==="function")bankFeedSoon();return R}

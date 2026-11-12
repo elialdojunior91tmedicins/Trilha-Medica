@@ -23,7 +23,7 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(!f){f=n||box?{st:2,s:CD_INT[box]||1,d:5,last:fromNum(dnum(due)-(CD_INT[box]||1)),reps:n,lapses:0,first:""}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""}}
   if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
   const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
-  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;return o}
+  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
@@ -143,7 +143,7 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
     else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:!!e.trecho||kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
-function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{})}).id);
+function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
   if(dr&&ids.length)setTimeout(()=>infoToast(`${ids.length} ${ids.length===1?"cartão foi":"cartões foram"} para o lote de melhorias (fora da revisão até o Claude melhorar).`,"Ver em Cartões",cdGoCards),30);
   if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
 function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.trecho?"Cartões deste trecho":e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.trecho?"Rascunhos feitos pelo app a partir do trecho (lacuna no termo em negrito ou destaque). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões. Para cartões melhores, peça ao Claude.":e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
@@ -324,7 +324,7 @@ const APKG_CSS=`.card{font-family:Arial,Helvetica,sans-serif;font-size:20px;line
 .nx-ref{max-width:720px;margin:2px auto 0;text-align:right;color:#8b1a1a;font-size:14px}
 .nightMode .card,.night_mode .card{color:#eee;background:#1e1e1e}.nightMode .nx-q,.nightMode .nx-a{border-color:#555}.nightMode .nx-ref{color:#e58a8a}`;
 const apkgSlug=s=>norm(String(s||"")).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
-function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}
+function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}if(x.hy&&!T.includes("high-yield"))T.push("high-yield")
   const e=x.eid&&errors.find(y=>y.id===x.eid);if(x.eid)T.push("erro-nexus");if(e&&e.c)T.push(apkgSlug(e.c));if(x.kind)T.push("cartao-"+apkgSlug(CDK[x.kind]||x.kind));return [...new Set(T)]}
 async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay=new Date(today()+"T00:00:00"),crt=Math.floor(crtDay.getTime()/1000);
   const fld=(x,f)=>x.h?cdSafe(x[f]||""):esc(x[f]||"").replace(/\n/g,"<br>");

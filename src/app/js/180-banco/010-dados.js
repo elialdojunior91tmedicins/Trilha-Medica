@@ -31,7 +31,7 @@ function bqClean(x){const s=(v,m)=>typeof v==="string"?v.slice(0,m):"",now=new D
   const o={id:x.id,h:s(x.h,20),o:BQ_O.includes(x.o)?x.o:"gerada",ks,at:s(x.at,40)||now,u:s(x.u,40)||s(x.at,40)||now,q:bqQ(x.q)};
   for(const f of ["ban","niv","pv"])if(s(x[f],140).trim())o[f]=s(x[f],140);if(/^\d{4}$/.test(String(x.ano||"")))o.ano=String(x.ano);
   if(Number.isInteger(x.pn)&&x.pn>0)o.pn=x.pn;if(s(x.sb,80))o.sb=s(x.sb,80);if(typeof x.ex==="string"&&x.ex)o.ex=x.ex.slice(0,60);if(Number.isInteger(x.ei)&&x.ei>=0)o.ei=x.ei;
-  for(const f of ["fg","nf","mat","an","fm","fav","del","dz"])if(x[f])o[f]=1;return o}
+  for(const f of ["fg","nf","mat","an","fm","fav","del","dz"])if(x[f])o[f]=1;if(s(x.cr,80).trim()){o.cr=s(x.cr,80);o.crs=x.crs==="u"?"u":"c"}return o}
 function bhClean(x){const D=/^\d{4}-\d{2}-\d{2}$/;
   const L=(Array.isArray(x.a)?x.a:[]).filter(y=>y&&D.test(y.d)).map(y=>{const o={d:y.d,l:typeof y.l==="string"?y.l.slice(0,3):"",ok:y.ok?1:0,s:Math.max(0,Math.min(1800,Math.round(+y.s||0))),src:BH_SRC.includes(y.src)?y.src:"gen"};if(y.c)o.c=1;if(y.m)o.m=1;return o});
   L.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);return {id:x.id,a:L.slice(-BH_MAX)}}
@@ -67,7 +67,7 @@ function bankPut(n){let cur=bankById.get(n.id);
   const before=stab(cur);
   if((n.o==="prova"||n.o==="oficial")&&n.ex&&(cur.o!=="oficial"||cur.ex===n.ex)&&(!cur.ex||cur.ex===n.ex)){// a prova na íntegra manda no texto dela (gabarito colado, tema trocado…)
     const old=cur.q;cur.q=n.q;bqFill(cur.q,old);bhRemap(cur.id,old,cur.q);cur.h=n.h;cur.o=n.o;cur.ks=n.ks.length?n.ks:cur.ks;
-    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["niv","sb"])if(n[f])cur[f]=n[f];else delete cur[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f]}
+    for(const f of ["ban","ano","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];for(const f of ["niv","sb"])if(n[f])cur[f]=n[f];else delete cur[f];for(const f of ["fg","an"])if(n[f])cur[f]=1;else delete cur[f];if(n.cr&&cur.crs!=="u"){cur.cr=n.cr;cur.crs="c"}}
   else{bqFill(cur.q,n.q);if(BQ_RANK[n.o]>BQ_RANK[cur.o]){cur.o=n.o;for(const f of ["ban","ano","niv","pv","pn","ex","ei"])if(n[f]!=null)cur[f]=n[f];if(n.fg)cur.fg=1}
     cur.ks=[...new Set([...cur.ks,...n.ks])].slice(0,3);if(n.mat)cur.mat=1;if(n.nf&&!cur.fm)cur.nf=1;if(n.at<cur.at)cur.at=n.at}
   if(stab(cur)!==before){cur.u=new Date().toISOString();bankDirty.add(cur.id);bankSoon()}return cur}
@@ -96,7 +96,7 @@ function bankFeedAll(){bankDo(()=>{
   /* erro do caderno ou 1º erro do Refazer: é o registro de uma resposta errada que já pode estar no histórico (prova, simulado), muitas vezes salva no dia seguinte */
   const wrongBy=(id,d)=>{const H=bankHById.get(id);return !!H&&H.a.some(y=>y.d<=d&&!y.ok)};
   exams.forEach(ex=>{if(sbFill(ex))setTimeout(()=>exPut(ex),0);const P=exProg.find(x=>x.id===ex.id);ex.qs.forEach((r,i)=>{if(!r||!r.q)return;
-    const b=bqFrom(r.q,ex.of?"oficial":"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{}),...(ex.niv?{niv:ex.niv}:{}),...(r.sb?{sb:r.sb}:{})});if(!b)return;const bq=bankPut(b);
+    const b=bqFrom(r.q,ex.of?"oficial":"prova",[r.k,...(r.ks||[])],{ban:ex.banca,ano:ex.ano,pv:ex.name,pn:r.n||i+1,ex:ex.id,ei:i,at:ex.at,...(r.fg?{fg:1}:{}),...(r.an?{an:1}:{}),...(ex.niv?{niv:ex.niv}:{}),...(r.sb?{sb:r.sb}:{}),...(r.cr?{cr:r.cr,crs:"c"}:{})});if(!b)return;const bq=bankPut(b);
     if(!P)return;const cur=P.a&&P.a[i],L=[...((P.h&&P.h[i])||[]),...(cur?[cur]:[])];
     L.forEach(y=>{if(y.l)bhAdd(bq.id,{d:y.d,l:y.l,ok:y.l===bq.q.correta?1:0,s:y===cur?y.s||0:0,src:"exam",...(y===cur?{c:1}:{}),m:1})})})});
   sims.forEach(x=>x.qs.forEach(r=>{if(!BYKEY[r.k])return;const b=bqFrom(r.q,"simulado",[r.k],{...bqExtra(r.q,"simulado"),at:x.at||x.d+"T12:00:00.000Z"});if(!b)return;const bq=bankPut(b);
@@ -129,7 +129,7 @@ function bankBoot(prog){if(bankBootP)return bankBootP;bankBootP=(async()=>{await
   if(prog){bankStore=packStore(prog,"bank");bankHStore=packStore(prog,"bankh");await bankSyncStart()}bankFeedAll()})();return bankBootP}
 /* backup: histórico inteiro; questões que não voltam pela prova na íntegra guardada */
 const bankById2=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
-function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||!((x.o==="prova"||x.o==="oficial")&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
+function bankBackup(){const E=new Set(exams.map(x=>x.id));return {bank:bank.filter(x=>x.fav||x.del||x.dz||x.crs==="u"||!((x.o==="prova"||x.o==="oficial")&&x.ex&&E.has(x.ex))).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2),bankh:bankH.filter(x=>x.a.length).map(x=>JSON.parse(JSON.stringify(x))).sort(bankById2)}}
 /* importar backup: troca o banco pelo do arquivo (as questões das provas voltam pela própria prova) e regrava na conta */
 async function bankRestore(Q,H){await bankReady;if(bankBootP)await bankBootP;
   bank=(Array.isArray(Q)?Q:[]).filter(bqOk).map(bqClean);bankH=(Array.isArray(H)?H:[]).filter(x=>x&&typeof x.id==="string").map(bhClean);bqIdx();

@@ -491,6 +491,19 @@ consultado quando há dúvida. Responda em português.
   Subtópico: `sbFill(ex)` (no `bankFeedAll`) → `r.sb` (chave `sbKey` do subtópico do tema principal), `r.sbd` = conferir, `r.sbg` = já sugerido; `#exsbd-<id>` → `sbEditEl` (`#sbs-<ex>-<i>`, `#sbok-`); banco `x.sb`, filtro `bkF.sb` (`#bkSub`, "-" = sem subtópico).
   Arquivo de gabarito e comentários feito pelo Claude numa conversa: `cjApply(ex,o)` (`o.app`="nexus-comentarios", `gab` oficial|claude, `qs[{n,ini,correta,anulada,comentario,porque,pontoChave,takeHome,conceito,fonte}]`; confere `ini` com o enunciado; Claude não passa por cima do oficial), `cjPick` = botão `#exjc-<id>`, aviso `cjMsg`.
   Lista `OF_CAT` [banca,ano,nome,nível,noDrive,sub?] → `ofCardEl` (`details.ofcat`, `resid-ofopen`, botões `#of-<ofNorm(nome)>`, `ofFind`, `ofState`, `ofImport` → `imp.ofPre`, `#impOfPre`). Atualizar `OF_CAT` junto com `claude/banco-provas-lidas.md`. Teste: `tests/t149.js`; capturas `tests/shotsB4.js`.
+- Banco de questões B5 (11/2026, High Yield pelo banco; decisões do usuário em 12/11: o banco SUGERE, não troca; recorrente = app + Claude):
+  **★ HY na anotação**: linha que começa com ★ (depois do marcador de lista) = fato HY; `HY_LINE`/`HY_STAR` no `md` (`p.hyl`/`li.hyl` + `b.hys`), `hyInsert` (botão ★ nos dois editores,
+  alterna), `pegParse` tipo "hy" (`pgF.t` "hy", `#pgT-hy` "Só HY"), folha de véspera e `notesPDF` escrevem "HY ·" (Helvetica não tem ★), cartão do trecho com ★ guarda `x.hy` (`cdClean`) → `apkgTags` põe high-yield.
+  **Acerto por banca** (`js/180-banco/020-tela.js`): `bkBancaEl` no Resumo (`.bkbc`, grupo `bkBancaGroup` = banca ou origem; `#bkBc-first|d30`, `resid-bkbc`).
+  **Sugestões de HY** (`js/180-banco/040-hy.js`): `hyExams` (provas "prova"/"oficial" do banco por `ex`; `hyBase` = as 12 provas de `INC_SRC`, que não contam de novo; `hyTargets` = palavras das provas-alvo do Perfil, peso `HY_TGT_W`),
+  `hyCount`, `hyWeightSugs` (base `INC_DATA` + provas novas; ordem → 3/2/1 na proporção do `w0`; só com `HY_NEW_MIN` provas novas e evidência: subir ≥`HY_UP_MIN` questões e taxa ≥1,5× a da base, descer
+  esperado ≥6 e visto ≤ metade; `HY_MARGIN`; nunca com `s.w`), `hySubSug` (pelo `x.sb` de todas as provas; ≥`HY_SB_MIN`; ligar = mais cobrados com ≥2, teto do `HY_DEF`; tirar só a ★ da estimativa sem questão e com
+  2 questões por subtópico em média; marca do usuário nunca), `hyApplyW`/`hyApplySub` (viram escolha do usuário), `hyDismiss` → `ui.prefs.hyno` (`uiSanitize`). Tela: `hyTopicEl` no peso do tema (`.hybank`, "No seu banco…",
+  `#hyw-<k>`), `hySubEl` nos subtópicos (`#hys-<k>`), `hyCardEl` no Resumo (`.hycard`); `-no` = Agora não.
+  **Conceito recorrente** (`js/180-banco/050-recorrente.js`): chave `x.cr` + origem `x.crs` "c" (Claude: campo "chave" no `cmPrompt`/`cmApply` e no `cjApply` → `r.cr` na questão da prova → banco) | "u" (usuário;
+  a prova não apaga; backup e Apps Script levam). `crIndex` (memo 1 s; `crReset`) → `crRec(x)` = nº de provas com a mesma chave (≥2); `crSuggest` (mesmo tema e subtópico, provas diferentes, palavras de conceito/pc/th
+  `crWords` com `CR_SIM`/`CR_MIN_W`, ou chaves parecidas `CR_KEY_SIM`), `crConfirm`/`crReject` (`ui.prefs.crno`)/`crUnlink`; `crCardEl` no Resumo (`.crcard`, `#crOk-<i>`, `#crNo-<i>`, `#crSee`); banco: selo `.bkb.rc`,
+  `bkF.rc` (chave "Conceito recorrente", preset `#bkP-hy` "HY recorrentes"), `bkScore` +20. Testes: `tests/unit/hy.test.js`, `tests/t152.js`; capturas `tests/shotsB5.js`.
 - Backup automático no Google Drive: `tools/backup-drive.gs` + `tools/appsscript.json` (Apps Script na conta do usuário, gatilho diário às 3h;
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
@@ -498,7 +511,7 @@ consultado quando há dúvida. Responda em português.
 
 ## Ideia: Banco de questões
 
-Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela), B2 (a tela), B3 (ligações) e B4 (provas oficiais: leitor da Medway, gabarito preliminar/definitivo, comentários, subtópico) feitos em 11/2026; ENARE 2025 e 2024 lidos, arquivos de gabarito e comentários com o usuário (não vão para o repositório). Próximo: B5.
+Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`claude/banco-plano.md`); B1 (fundação, sem tela), B2 (a tela), B3 (ligações), B4 (provas oficiais: leitor da Medway, gabarito preliminar/definitivo, comentários, subtópico) e B5 (High Yield pelo banco) feitos em 11/2026; ENARE 2025 e 2024 lidos, arquivos de gabarito e comentários com o usuário (não vão para o repositório). Lotes do plano concluídos.
 
 - **Fontes (duas frentes):** guardar tudo o que já passa pelo app (geradas, inclusive as acertadas, que hoje somem; simulados; provas na íntegra
   importadas) e importar de fora (provas oficiais em PDF, como ENARE e Revalida).

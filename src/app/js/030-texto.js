@@ -3,6 +3,9 @@ function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt
 function inl(s){const keep=[],ph=h=>{keep.push(h);return "\u0000"+(keep.length-1)+"\u0000"};
   s=String(s).replace(/\[\[([^\[\]\n|]{1,120})(?:\|([^\[\]\n]{1,120}))?\]\]/g,(m,a,b)=>ph(wkHTML(a.trim(),(b||"").trim()))).replace(/\{\{([eq]):([A-Za-z0-9:_-]{1,80})\}\}/g,(m,t,id)=>ph(nbHTML(t,id)));
   return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>').replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/==(.+?)==/g,"<mark>$1</mark>").replace(/(^|[\s(])_(.+?)_(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s.,;:!?)]|$)/g,"$1<em>$2</em>").replace(/\u0000(\d+)\u0000/g,(m,i)=>keep[+i])}
+/* B5: linha que começa com ★ (depois do marcador de lista, se houver) = fato HY, "isto cai muito": estrela dourada na leitura, "HY" no PDF,
+   item "Só HY" em Pegadinhas e destaques; o cartão do trecho leva a etiqueta high-yield. Diferente da pegadinha (> ) e do ==destaque==. */
+const HY_LINE=/^\s*★\s*/,HY_STAR=`<b class="hys" title="Cai muito em prova (HY)">★</b> `;
 function md(src,o){o=o||{};
   const L=String(src).replace(/\r/g,"").split("\n"),out=[];let i=0;
   const isRow=l=>/^\s*\|.*\|\s*$/.test(l), isSep=l=>/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
@@ -20,11 +23,12 @@ function md(src,o){o=o||{};
       out.push(`<div class="mdtable"><table>${head?`<thead><tr>${head.map(c=>`<th>${c}</th>`).join("")}</tr></thead>`:""}<tbody>${body.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);continue}
     if(/^\s*>/.test(l)){const b=[];while(i<L.length&&/^\s*>/.test(L[i])){b.push(inl(L[i].replace(/^\s*>\s?/,"")));i++}
       out.push(`<div class="callout">${b.join("<br>")}</div>`);continue}
-    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const ind=L[i].match(/^\s*/)[0].replace(/\t/g,"  ").length,cls=ind>=4?"sub3":ind>=2?"sub2":"";b.push({cls,h:inl(L[i].replace(/^\s*[-*\u2022]\s*/,""))});i++}
-      out.push(`<ul>${b.map((x,j)=>{const kid=o.fold&&b[j+1]&&(x.cls===""?b[j+1].cls!=="":x.cls==="sub2"&&b[j+1].cls==="sub3");return `<li${x.cls||kid?` class="${[x.cls,kid?"haskids":""].filter(Boolean).join(" ")}"`:""}>${kid?`<button type="button" class="lfold" aria-expanded="true" aria-label="Recolher os subitens"></button>`:""}${x.h}</li>`}).join("")}</ul>`);continue}
-    if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){b.push(`<li>${inl(L[i].replace(/^\s*\d+[.)]\s*/,""))}</li>`);i++}
+    if(/^\s*[-*\u2022](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*[-*\u2022](\s+|$)/.test(L[i])){const ind=L[i].match(/^\s*/)[0].replace(/\t/g,"  ").length,cls=ind>=4?"sub3":ind>=2?"sub2":"",r=L[i].replace(/^\s*[-*\u2022]\s*/,""),hy=HY_LINE.test(r);b.push({cls:[cls,hy?"hyl":""].filter(Boolean).join(" "),h:(hy?HY_STAR:"")+inl(r.replace(HY_LINE,""))});i++}
+      out.push(`<ul>${b.map((x,j)=>{const lv=c=>/sub3/.test(c)?"sub3":/sub2/.test(c)?"sub2":"",kid=o.fold&&b[j+1]&&(lv(x.cls)===""?lv(b[j+1].cls)!=="":lv(x.cls)==="sub2"&&lv(b[j+1].cls)==="sub3");return `<li${x.cls||kid?` class="${[x.cls,kid?"haskids":""].filter(Boolean).join(" ")}"`:""}>${kid?`<button type="button" class="lfold" aria-expanded="true" aria-label="Recolher os subitens"></button>`:""}${x.h}</li>`}).join("")}</ul>`);continue}
+    if(/^\s*\d+[.)](\s+|$)/.test(l)){const b=[];while(i<L.length&&/^\s*\d+[.)](\s+|$)/.test(L[i])){const r=L[i].replace(/^\s*\d+[.)]\s*/,""),hy=HY_LINE.test(r);b.push(`<li${hy?` class="hyl"`:""}>${hy?HY_STAR:""}${inl(r.replace(HY_LINE,""))}</li>`);i++}
       out.push(`<ol>${b.join("")}</ol>`);continue}
-    const p=[];while(i<L.length&&L[i].trim()&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
+    if(HY_LINE.test(l)){out.push(`<p class="hyl">${HY_STAR}${inl(l.replace(HY_LINE,""))}</p>`);i++;continue}
+    const p=[];while(i<L.length&&L[i].trim()&&!HY_LINE.test(L[i])&&!/^(#{1,3}\s|\s*>|\s*[-*\u2022](\s+|$)|\s*\d+[.)](\s+|$)|\s*\||\s*```)/.test(L[i])&&!/^\s*(-{3,}|\*{3,})\s*$/.test(L[i])){p.push(inl(L[i]));i++}
     if(p.length)out.push(`<p>${p.join("<br>")}</p>`);else i++;
   }
   return mdFold(out,o.fold);
@@ -126,6 +130,9 @@ function nbPickEl(ta,k,close,keys){const C=nbChoices(keys||k),w=el(`<div class="
 function edit(ta,k,fn){const s=ta.selectionStart,e=ta.selectionEnd,v=ta.value;const r=fn(v,s,e);
   ta.value=r.v;ta.focus();ta.setSelectionRange(r.s,r.e);if(typeof k==="function")k(ta.value);else saveNote(k,ta.value)}
 /* Lote 20C: pegadinha estruturada "> Pegadinha: … — Por quê: …" (a linha atual vira a pegadinha; o cursor fica no porquê) */
+function hyInsert(ta,k){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;const line=v.slice(ls,le),m=line.match(/^(\s*(?:[-*\u2022]|\d+[.)])\s+)?(.*)$/),pre=m[1]||"",rest=m[2];
+  if(HY_LINE.test(rest)){const nv=pre+rest.replace(HY_LINE,""),d=line.length-nv.length;return {v:v.slice(0,ls)+nv+v.slice(le),s:Math.max(ls,s-d),e:Math.max(ls,e-d)}}
+  const ins=pre+"★ "+rest;return {v:v.slice(0,ls)+ins+v.slice(le),s:s+2,e:e+2}})}
 function pegInsert(ta,k){edit(ta,k,(v,s,e)=>{const ls=v.lastIndexOf("\n",s-1)+1;let le=v.indexOf("\n",e);if(le<0)le=v.length;const line=v.slice(ls,le);if(/^\s*>/.test(line))return {v,s,e};
   const body=line.replace(/^\s*[-*•]\s+/,"").trim(),ph="o que costuma enganar";if(!body){const ins=`> Pegadinha: ${ph} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+13,e:ls+13+ph.length}}
   const ins=`> Pegadinha: ${body} — Por quê: `;return {v:v.slice(0,ls)+ins+v.slice(le),s:ls+ins.length,e:ls+ins.length}})}

@@ -56,6 +56,9 @@ const SEED=`(async()=>{await bankBootP;const Q=(e,a,c,co)=>({enunciado:e,alterna
  await p.evaluate(()=>{bkRun=null;render();setLevel(BYKEY["GO-1"],1)});await p.waitForTimeout(150);
  ok(await p.evaluate(()=>{const t=$("#trToast");return !!t&&t.textContent.includes("Tema concluído")&&!!$("#toastGo")}),"ao concluir um tema com questões no banco, o aviso oferece Fixar agora");
  /* 5. questão irmã */
+ /* o sorteio dos passos anteriores é aleatório e pode ter respondido a 3 ou a 4: começam inéditas */
+ /* a conta junta o histórico por união: zera aqui E na conta (senão a resposta volta pela sincronização) */
+ await p.evaluate(async()=>{await bankFlush();bank.filter(y=>/^Tema CM-1 questão [34]:/.test(y.q.enunciado)).forEach(y=>{const H=bankHById.get(y.id);if(H){H.a=[];bankHDirty.add(H.id)}});await bankFlush();bqIdx()});await p.waitForTimeout(300);
  const sis=await p.evaluate(()=>{const x=bank.find(y=>y.q.enunciado.startsWith("Tema CM-1 questão 2:"));bkStart([x.id],"e");return x.id});await p.waitForTimeout(250);
  await p.click("#bka-A");await p.waitForTimeout(250);
  const SI=await p.evaluate(()=>!!$("#bkSis"));ok(SI,"errou: aparece \"Fazer uma questão irmã\"");

@@ -30,16 +30,29 @@ const BK_O=[["prova","Provas na íntegra"],["oficial","Provas oficiais"],["simul
 const BK_ST=[["nr","Não resolvidas"],["r","Resolvidas"],["ok","Acertadas"],["no","Erradas"]];
 const BK_SORT=[["new","Mais recentes"],["err","Mais erradas"],["old","Feitas há mais tempo"],["ban","Banca e ano"]];
 const BK_PAGE=40,BK_RUN_MAX=100;
-function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",sb:"",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,dyn:"",pre:""}}
+function bkFDef(){return {q:"",st:"all",area:"all",sp:"all",k:"all",sb:"",ban:[],ano:[],niv:[],o:[],fav:false,img:false,old:false,nf:false,teim:false,rc:false,dyn:"",pre:""}}
 function bkFClean(f){const o=bkFDef();if(!f||typeof f!=="object")return o;const s=(v,m)=>typeof v==="string"?v.slice(0,m):"";
   o.q=s(f.q,80);if(["all","nr","r","ok","no"].includes(f.st))o.st=f.st;for(const k of ["area","sp","k"])if(s(f[k],80))o[k]=s(f[k],80);if(o.k!=="all"&&s(f.sb,70))o.sb=s(f.sb,70);
   for(const k of ["ban","ano","niv","o"])if(Array.isArray(f[k]))o[k]=f[k].filter(v=>typeof v==="string").map(v=>v.slice(0,140)).slice(0,20);
-  for(const k of ["fav","img","old","nf","teim"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
+  for(const k of ["fav","img","old","nf","teim","rc"])o[k]=!!f[k];if(["eixo","prova"].includes(f.dyn))o.dyn=f.dyn;return o}
 let bkF=bkFDef(),bkSort=(()=>{const v=lsGet("resid-bksort","new");return BK_SORT.some(x=>x[0]===v)?v:"new"})(),bkOpen=null,bkShown=BK_PAGE,bkRun=null,bkFPanel=false,bkSimOpen=false,bkSimN=10,bkSaveOn=false,bkArm=null,bkQT=null;
 const bkStxt=new Map();
 const bkLive=()=>bank.filter(x=>!x.del);
 const bkH=x=>{const H=bankHById.get(x.id);return H?H.a:[]};
 function bkTeim(A){let e=0,inT=false,st=0,ld="";for(const y of A){if(!y.ok){e++;if(e>=3)inT=true;st=0;ld=""}else if(inT&&y.d!==ld){st++;ld=y.d;if(st>=2){inT=false;st=0}}}return inT}
+/* B5: acerto por banca a partir do banco (Questões › Resumo). Grupo = banca da questão (provas e oficiais) ou a origem (geradas, simulados,
+   material). "1ª vez" = acerto na primeira resposta de cada questão feita; "Últimos 30 dias" = todas as respostas do período. */
+let bkBcBy=lsGet("resid-bkbc")==="d30"?"d30":"first";
+function bkBancaGroup(x){const b=String(x.ban||"").trim();if(b)return b;const o=x.mat?"mat":x.o;return (BK_O.find(r=>r[0]===o)||[0,"Outras"])[1]}
+function bkBancaStats(from){const by={};bkLive().forEach(x=>{const g=bkBancaGroup(x),r=by[g]||(by[g]={n:0,f:0,fo:0,p:0,po:0}),A=bkH(x);r.n++;
+    if(A.length){r.f++;const a0=A.reduce((m,a)=>!m||a.d<m.d?a:m,null);if(a0.ok)r.fo++}A.forEach(a=>{if(a.d>=from){r.p++;if(a.ok)r.po++}})});return by}
+function bkBancaEl(){const from=fromNum(dnum(today())-29),by=bkBancaStats(from),G=Object.entries(by).filter(([,r])=>r.f>0||r.p>0);if(!G.length)return null;
+  const c=el(`<section class="card qsrc bkbc" aria-labelledby="bkbch"><div class="dhead"><h2 id="bkbch">Acerto por banca no banco</h2></div></section>`);
+  c.appendChild(fcPer("bkBc",bkBcBy,v=>{bkBcBy=v;lsSet("resid-bkbc",v)},[["first","1ª vez"],["d30","Últimos 30 dias"]],"Contar"));
+  const d30=bkBcBy==="d30",rows=G.map(([g,r])=>[`${g} · ${r.n} no banco`,d30?r.po:r.fo,d30?r.p:r.f]).filter(r=>r[2]>0).sort((a,b)=>b[2]-a[2]);
+  const box=el(`<div class="qsrows"></div>`);box.innerHTML=rows.length?hbarRows(rows):`<p class="cempty">Nenhuma resposta nos últimos 30 dias.</p>`;c.appendChild(box);
+  c.appendChild(el(`<p class="how hx">${d30?"Todas as respostas dos últimos 30 dias, inclusive as refeitas.":"Acerto na primeira vez que você fez cada questão (as refeitas não entram). O número depois de / é quantas questões dessa banca você já fez."} Provas na íntegra e oficiais contam pela banca; o resto pela origem (geradas, simulados, seu material).</p>`));
+  return c}
 function bkInfo(x){const A=bkH(x),last=A.length?A[A.length-1]:null,no=A.filter(y=>!y.ok).length;return {A,n:A.length,ok:A.length-no,no,last,st:!last?"nr":last.ok?"ok":"no",teim:bkTeim(A)}}
 function bkTxt(x){let c=bkStxt.get(x.id);if(!c||c.u!==x.u){c={u:x.u,t:" "+bqT([x.q.enunciado,x.q.comentario||"",...x.q.alternativas.map(a=>a.texto)].join(" "))+" "};bkStxt.set(x.id,c)}return c.t}
 function bkAxKeys(){const AX=axNow(),S=new Set();AX.list.forEach(e=>{ALL.forEach(it=>{if(it.area.code===e.area&&(!e.spec||it.sp===e.spec))S.add(it.key)});(e.sps||[]).forEach(f=>topicKeysOf(spAsProva(f.d,f.s).items).forEach(k=>S.add(k)))});
@@ -57,7 +70,7 @@ function bkMatch(R,F,K,skip){const x=R.x,I=R.I;skip=skip||"";
   if(!skip.includes("ban")&&F.ban.length&&!F.ban.includes(x.ban||""))return false;
   if(!skip.includes("ano")&&F.ano.length&&!F.ano.includes(x.ano||""))return false;
   if(!skip.includes("niv")&&F.niv.length&&!F.niv.includes(x.niv||""))return false;
-  if(!skip.includes("m")){if(F.fav&&!x.fav)return false;if(F.img&&!(x.fg||x.fm))return false;if(F.old&&(x.an||x.dz))return false;if(F.nf&&!(x.nf&&!x.fm))return false;if(F.teim&&!I.teim)return false}
+  if(!skip.includes("m")){if(F.fav&&!x.fav)return false;if(F.img&&!(x.fg||x.fm))return false;if(F.old&&(x.an||x.dz))return false;if(F.nf&&!(x.nf&&!x.fm))return false;if(F.teim&&!I.teim)return false;if(F.rc&&!crRec(x))return false}
   if(F.dyn&&!skip.includes("dyn")&&!(K&&x.ks.some(k=>K.has(k))))return false;
   return true}
 function bkSorted(L){const t=x=>x.I.last?x.I.last.d:"";const S={new:(a,b)=>a.x.at<b.x.at?1:a.x.at>b.x.at?-1:0,
@@ -102,7 +115,7 @@ function bkRdLink(x,ok){const r=bkRdOf(x.id),k=x.ks[0];
   if(!ok&&k&&BYKEY[k]&&!((x.o==="prova"||x.o==="oficial")&&!rdStudied(k))){rdAdd(k,JSON.parse(JSON.stringify(x.q)),x.o==="simulado"?"sim":"gen");return "add"}return ""}
 function bkScore(x,C){const its=bkIts(x),I=C.info.get(x.id);let s=!I.n?100:I.st==="no"?40:Math.min(30,(I.last?-daysTo(I.last.d):0)/3),w=0,f=0,ax=0,pv=0;
   its.forEach(it=>{w=Math.max(w,wOf(it)||1);const fi=C.focus.get(it.key);if(fi!=null)f=Math.max(f,30*(1-fi/C.focusN));if(C.ax.has(it.key))ax=25;if(C.pv&&C.pv.has(it.key))pv=25});
-  return s+w*7+f+ax+pv+Math.random()*12}
+  return s+w*7+f+ax+pv+(crRec(x)?20:0)+Math.random()*12}
 function bkSmart(L,n){const ok=L.filter(x=>!x.del&&!x.an&&!x.dz&&bkIts(x).length);if(!ok.length)return [];
   const fr=focusRank().slice(0,20),pk=bkProvaKeys(),C={info:new Map(ok.map(x=>[x.id,bkInfo(x)])),focus:new Map(fr.map((it,i)=>[it.key,i])),focusN:Math.max(1,fr.length),ax:bkAxKeys().keys,pv:pk&&pk.d!=null&&pk.d<=21?pk.keys:null};
   const S=ok.map(x=>({x,s:bkScore(x,C)})).sort((a,b)=>b.s-a.s),cap=Math.max(2,Math.ceil(n/4)),per={},out=[],rest=[];
@@ -193,7 +206,7 @@ document.addEventListener("keydown",ev=>{if(view!=="quest"||!bkRun||bkRun.done||
   if(/^[A-H]$/.test(k)&&x.q.alternativas.some(a=>a.letra===k)){ev.preventDefault();bkPick(k);return}
   if(ev.key===" "){if(R.mode==="e"&&R.ans[R.i]){ev.preventDefault();bkNext()}else if(R.mode==="p"&&R.i+1<R.ids.length){ev.preventDefault();bkGoQ(R.i+1)}}});
 /* ---- filtros ---- */
-const BK_PRE=[["ined","Inéditas",F=>{F.st="nr"},"Nunca respondidas"],["teim","Teimosas",F=>{F.teim=true},"Erradas 3 vezes ou mais; saem com 2 acertos seguidos em dias diferentes"],["eixo","Eixo atual",F=>{F.dyn="eixo"},"Temas da área e das SPs que a faculdade está vendo agora"],["prova","Prova da faculdade",F=>{F.dyn="prova"},"Temas da sua próxima prova da faculdade"],["fav","Favoritas",F=>{F.fav=true},"As que você marcou com ☆"]];
+const BK_PRE=[["ined","Inéditas",F=>{F.st="nr"},"Nunca respondidas"],["teim","Teimosas",F=>{F.teim=true},"Erradas 3 vezes ou mais; saem com 2 acertos seguidos em dias diferentes"],["eixo","Eixo atual",F=>{F.dyn="eixo"},"Temas da área e das SPs que a faculdade está vendo agora"],["prova","Prova da faculdade",F=>{F.dyn="prova"},"Temas da sua próxima prova da faculdade"],["fav","Favoritas",F=>{F.fav=true},"As que você marcou com ☆"],["hy","HY recorrentes",F=>{F.rc=true},"A mesma ideia cobrada em 2 ou mais provas diferentes"]];
 function bkSet(fn){fn(bkF);bkF.pre="";bkShown=BK_PAGE;bkOpen=null}
 function bkPreset(id){if(bkF.pre===id)bkF=bkFDef();else{const p=BK_PRE.find(x=>x[0]===id),c=(ui.prefs.bkps||[]).find(x=>x.id===id);bkF=bkFDef();if(p)p[2](bkF);else if(c)bkF=bkFClean(c.f);bkF.pre=id}bkShown=BK_PAGE;bkOpen=null}
 const bkActive=F=>!!(F.q||F.st!=="all"||F.area!=="all"||F.k!=="all"||F.ban.length||F.ano.length||F.niv.length||F.o.length||F.fav||F.img||F.old||F.nf||F.teim||F.dyn);
@@ -235,7 +248,7 @@ function bkGroups(C){const {F,R,K}=C,n=skip=>R.filter(x=>bkMatch(x,F,K,skip)),G=
     if(!vals.length&&!F[key].length)continue;const V=[...vals,...(L.some(r=>!r.x[key])?[""]:[])],w=box("bkfchips");
     V.forEach((v,i)=>w.appendChild(bkFc(`bk${key}-${i}`,v||emp,L.filter(r=>(r.x[key]||"")===v).length,F[key].includes(v),()=>bkSet(f=>{f[key]=f[key].includes(v)?f[key].filter(y=>y!==v):[...f[key],v]}))));
     G.push(bkFg(key,lab,F[key].length?F[key].map(v=>v||emp).join(", "):"Todas",w,!!F[key].length))}
-  {const L=n("m"),M=[["fav","☆ Favoritas",r=>r.x.fav,""],["teim","Teimosas",r=>r.I.teim,"Erradas 3 vezes ou mais"],["img","Com imagem",r=>r.x.fg||r.x.fm,""],["old","Esconder anuladas e desatualizadas",r=>r.x.an||r.x.dz,"Anuladas pela banca e as que você marcou como \"Diretriz mudou\""],["nf","Figura não guardada",r=>r.x.nf&&!r.x.fm,"Tinham figura do seu material, que não ficou guardada"]]
+  {const L=n("m"),M=[["fav","☆ Favoritas",r=>r.x.fav,""],["teim","Teimosas",r=>r.I.teim,"Erradas 3 vezes ou mais"],["img","Com imagem",r=>r.x.fg||r.x.fm,""],["rc","Conceito recorrente",r=>crRec(r.x),"A mesma ideia cobrada em 2 ou mais provas diferentes"],["old","Esconder anuladas e desatualizadas",r=>r.x.an||r.x.dz,"Anuladas pela banca e as que você marcou como \"Diretriz mudou\""],["nf","Figura não guardada",r=>r.x.nf&&!r.x.fm,"Tinham figura do seu material, que não ficou guardada"]]
       .filter(([v,,f])=>v==="old"?L.some(f)||F.old:v==="nf"?L.some(f)||F.nf:true),w=box("bkfrows"),on=M.filter(([v])=>F[v]);
     M.forEach(([v,l,f,tip])=>w.appendChild(bkFs("bkM-"+v,l,L.filter(f).length,F[v],()=>bkSet(g=>{g[v]=!g[v]}),tip)));
     G.push(bkFg("m","Mais",on.length?on.map(([,l])=>l.replace("☆ ","")).join(", "):"",w,!!on.length))}
@@ -296,7 +309,7 @@ function bkRowEl(r){const {x,I}=r,its=bkIts(x),open=bkOpen===x.id,li=el(`<li cla
   b.querySelector(".bkstem").textContent=x.q.enunciado;
   b.querySelector(".bkmeta").textContent=[x.ban?`${x.ban}${x.ano?" "+x.ano:""}`:x.mat?"Do seu material":x.o==="simulado"?"Simulado":x.o==="gerada"?"Gerada pelo Claude":x.pv||"",its.map(it=>it.t).join(" · ")].filter(Boolean).join(" · ");
   const bd=b.querySelector(".bkbadges"),badge=(t,c)=>{const s=el(`<span class="bkb ${c}"></span>`);s.textContent=t;bd.appendChild(s)};
-  if(x.fav)badge("☆ Favorita","fav");if(I.teim)badge("Teimosa","teim");if(x.fg||x.fm)badge("Imagem","img");if(x.nf&&!x.fm)badge("Figura não guardada","nf");if(x.an)badge("Anulada","an");if(x.dz)badge("Diretriz mudou","dz");if(!bd.children.length)bd.remove();
+  if(x.fav)badge("☆ Favorita","fav");if(I.teim)badge("Teimosa","teim");if(x.fg||x.fm)badge("Imagem","img");if(x.nf&&!x.fm)badge("Figura não guardada","nf");if(x.an)badge("Anulada","an");if(x.dz)badge("Diretriz mudou","dz");{const rn=crRec(x);if(rn)badge(`Recorrente · ${rn} provas`,"rc")}if(!bd.children.length)bd.remove();
   b.querySelector(".bkhist b").textContent=bkHistTxt(I);b.querySelector(".bkhist span").textContent=I.last?bkAgo(I.last.d):"";
   b.onclick=()=>{bkOpen=open?null:x.id;render()};li.appendChild(b);
   if(open){const p=el(`<div class="bkopen"><p class="qstem"></p></div>`);p.querySelector(".qstem").textContent=x.q.enunciado;{const f=bkFigEl(x);if(f)p.appendChild(f)}

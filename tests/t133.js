@@ -52,8 +52,9 @@ const srv=(p,col)=>p.evaluate(c=>Object.keys(window.__store).filter(k=>k.include
 /* 6. Pacotes: a mesma questão na coleção antiga e num pacote → apagar tira dos dois */
 {const id="D1",j=JSON.stringify(rd(id,"Questão D"));
   const {p,ctx}=await open({[P+"redo/"+id]:rd(id,"Questão D"),[P+"redopk/p0"]:{i:{[id]:j}}},{"resid-seen-v1":{redo:[id]}},"window.__packs=true");
-  await p.waitForTimeout(400);
-  await p.evaluate(id=>rdDel(id),id);await p.waitForTimeout(400);
+  await p.waitForFunction(id=>typeof liveOn!=="undefined"&&liveOn&&redo.some(x=>x.id===id),id,{timeout:8000}).catch(()=>{});await p.waitForTimeout(200);
+  await p.evaluate(id=>rdDel(id),id);
+  await p.waitForFunction(a=>{const s=window.__store;return !s[a.P+"redo/"+a.id]&&!Object.keys(s).filter(k=>k.includes("/redopk/")).some(k=>s[k].i&&a.id in s[k].i)},{P,id},{timeout:5000}).catch(()=>{});
   const st=await p.evaluate((a)=>{const s=window.__store;return {old:!!s[a.P+"redo/"+a.id],pk:Object.keys(s).filter(k=>k.includes("/redopk/")).some(k=>s[k].i&&a.id in s[k].i)}},{P,id});
   ok(!st.old&&!st.pk,"pacotes: some da coleção antiga e do pacote: "+JSON.stringify(st));
   await ctx.close()}

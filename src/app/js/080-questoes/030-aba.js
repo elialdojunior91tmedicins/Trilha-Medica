@@ -51,7 +51,7 @@ function renderQuest(){
   {const rb=$("#qRegB");rb.textContent=qReg?"Fechar registro":"+ Registrar questões";rb.onclick=()=>{qReg=qReg?null:{d:today(),query:""};render();if(qReg)setTimeout(()=>{const q=$("#qrq");if(q)q.focus()},30)};
    const box=$("#qRegBox");box.innerHTML="";if(qReg)box.appendChild(qRegPanel());
    const U0=qUniverse();const qe=$("#qEvo");qe.innerHTML=qEvoSvg(U0,qe.clientWidth||qe.parentNode.clientWidth).html;
-   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";sb.appendChild(qSrcCard(U0,qFrom()));
+   const ex=$("#qExtra");ex.innerHTML="";ex.append(qSimCard(U0),qRedoCard(U0));{const eb=$("#qExamBox");eb.innerHTML="";eb.appendChild(qExamCard())}const sb=$("#qSrcBox");sb.innerHTML="";{const bb=bkBancaEl();if(bb)sb.appendChild(bb);const hc=hyCardEl();if(hc)sb.appendChild(hc);const cc=crCardEl();if(cc)sb.appendChild(cc)}sb.appendChild(qSrcCard(U0,qFrom()));
    const gb=$("#qGoal");gb.innerHTML="";gb.appendChild(qGoalEl());const pb=$("#qPace");pb.innerHTML="";pb.appendChild(qPaceEl());
    // partes (celular e tablet em pé)
    const vq=$("#viewQuest");vq.dataset.qseg=qLegacy()?qSeg:"";vq.dataset.qpart=qLegacy()?"all":qPart;
