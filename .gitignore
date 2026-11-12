@@ -11,3 +11,5 @@ tools/divisao/package-lock.json
 # saída do build (o app sem a conta, para o preview e os testes antigos); gere com python3 src/build_site.py
 src/checklist-residencia.html
 src/app/.gerado.sha1
+# mapa do código (saída de node tools/mapa/gerar.js)
+mapa/

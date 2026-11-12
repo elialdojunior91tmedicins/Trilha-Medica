@@ -31,6 +31,9 @@ consultado quando há dúvida. Responda em português.
    sincronização) · `220-abertura` (carga, por último). Arquivo novo numa pasta de módulo: `NNN-nome.js`, de 10 em 10.
    Para achar uma função: `grep -rn "function nome" src/app/js/`. Recurso novo vai no módulo do assunto dele, nunca no fim.
    Mover código de lugar: `tools/divisao/` (`check.js` confere a ordem nova antes; veja o LEIA.md de lá).
+   **Mapa do código** (12/11/2026, `tools/mapa/`, LEIA.md lá): `node tools/mapa/onde.js <nome|#id|.classe|resid-chave|prefs.x|texto>` diz onde está e quem usa;
+   `--codigo <nome>` mostra o código exato; `--testes <nomes>` e `--diff [base]` dizem que testes rodar; `--arquivo <módulo>` resume um arquivo. O mapa (`mapa/`, fora do
+   repositório) é gerado do código em ~2 s e se refaz sozinho quando algo muda; `mapa/INDICE.md` é o começo. Teste: `tests/unit/mapa.test.js`.
    **Não edite `index.html` nem `src/checklist-residencia.html` à mão: os dois são gerados.** O segundo (o app sem a conta) é só saída
    do build desde 12/11/2026: fica fora do repositório (`.gitignore`) e o `tests/run.sh` o gera quando falta ou quando `src/app/` mudou.
 2. Gere o site: `python3 src/build_site.py` (junta `src/app/`, monta `index.html`, muda a versão do `sw.js` e grava `src/checklist-residencia.html`).
