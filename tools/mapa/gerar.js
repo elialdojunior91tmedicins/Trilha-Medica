@@ -41,7 +41,7 @@ for (const F of M.files) {
     if (x.ev.length) more.push("eventos: " + x.ev.join(", "));
     if (x.help.length) more.push("Ajuda: " + x.help.join(", "));
     if (x.tests && x.tests.length) more.push("testes: " + some(x.tests, 12));
-    if (x.cm && x.cm.length) more.push("CLAUDE.md L" + x.cm.join(", L"));
+    if (x.cm && x.cm.length) more.push("explicado em " + x.cm.join(", "));
     if (x.dup) more.push("⚠ nome repetido, também em " + x.dup);
     if (more.length) s += "  " + more.join(" · ") + "\n";
   }
@@ -52,7 +52,7 @@ for (const F of M.files) {
 const top = F => (symByFile[F.short] || []).filter(n => M.sym[n].k === "fn").sort((a, b) => M.sym[b].by.length - M.sym[a].by.length).slice(0, 7);
 let ix = `# Mapa do código — Nexus - Trilha Médica\n\nGerado por \`node tools/mapa/gerar.js\` em ${M.at.slice(0, 16).replace("T", " ")} UTC. **Não editar: é saída.** Os números de linha valem para os arquivos como estão agora.\n\n`;
 ix += `${M.count.files} arquivos JS (${M.count.lines} linhas) · ${M.count.sym} nomes no topo (${M.count.fn} funções) · ${M.count.anon} instruções soltas · ${M.count.css} regras de CSS · ${M.count.ids} ids · ${M.count.cls} classes · ${M.count.ls} chaves do localStorage · ${M.count.prefs} preferências · ${M.count.tests} arquivos de teste.\n\n`;
-ix += "## Como consultar\n\n- `node tools/mapa/onde.js <nome|#id|.classe|resid-chave|prefs.x|texto>` — onde está, quem usa, testes, linha do CLAUDE.md.\n- `node tools/mapa/onde.js --codigo <nome>` — o código exato daquele nome (sem abrir o arquivo inteiro).\n- `node tools/mapa/onde.js --testes <nome…>` e `--diff [base]` — que testes rodar depois de mexer.\n- `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo do módulo.\n- Arquivos: `modulos/*.md` (um por arquivo JS), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv`, `mapa.json`.\n\n";
+ix += "## Como consultar\n\n- `node tools/mapa/onde.js <nome|#id|.classe|resid-chave|prefs.x|texto>` — onde está, quem usa, testes, linha do CLAUDE.md.\n- `node tools/mapa/onde.js --codigo <nome>` — o código exato daquele nome (sem abrir o arquivo inteiro).\n- `node tools/mapa/onde.js --testes <nome…>` e `--diff [base]` — que testes rodar depois de mexer.\n- `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo do módulo.\n- Arquivos: `modulos/*.md` (um por arquivo JS), `dados.md` (dados salvos e backup), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv`, `mapa.json`.\n\n";
 ix += "## Módulos, na ordem em que o app carrega\n\n| Arquivo | Linhas | KB | Nomes | O que tem | Mais usados |\n|---|--:|--:|--:|---|---|\n";
 for (const F of M.files) ix += `| [${F.short}](modulos/${modFile(F.short)}) | ${F.lines} | ${F.kb} | ${F.n} | ${cut(F.head, 150).replace(/\|/g, "/")} | ${top(F).join(", ")} |\n`;
 ix += `\n## Resto do app\n\n| Arquivo | Linhas | O que é |\n|---|--:|---|\n`;
@@ -107,5 +107,20 @@ for (const f in M.extra) { const E = M.extra[f]; ex += `\n## ${f} · ${E.lines} 
   ex += E.items.map(i => `- ${i.l === i.e ? "L" + i.l : "L" + i.l + "–" + i.e} · ${i.k} **${i.n}**${i.sig || ""}${i.doc ? " — " + cut(i.doc, 160) : ""}`).join("\n") + "\n";
   if (E.ls && E.ls.length) ex += `\nlocalStorage: ${E.ls.join(", ")}\n`; if (E.fs && E.fs.length) ex += `conta: ${E.fs.join(", ")}\n`; if (E.idDef && E.idDef.length) ex += `cria #${E.idDef.join(", #")}\n`; if (E.idUse && E.idUse.length) ex += `procura #${E.idUse.join(", #")}\n`; }
 w("fora-do-app.md", ex);
+
+/* ---- dados salvos ---- */
+{ const D = M.data, fl = f => "`" + f.k + "`" + (f.sub ? " {" + f.sub.join(", ") + "}" : "") + (f.by && f.by.length ? " ← " + f.by.join(", ") : "");
+  let d = "# Dados salvos\n\nTirado do código: o que o backup leva (`buildBackup`), onde cada lista vive, quem a limpa ao carregar, e os campos de cada tipo.\n" +
+    "**Campo novo num dado salvo:** ele precisa passar pela limpeza da carga (coluna *Limpa*; nas que guardam campo a campo, o que não estiver lá some ao abrir o app), " +
+    "e conferir as colunas *Site* (Importar backup) e *Drive*. O significado de cada campo está no `CLAUDE.md` (procure o nome).\n\n";
+  d += D.warn.length ? "## ⚠ Avisos\n\n" + D.warn.map(w => "- " + w).join("\n") + "\n\n" : "Sem avisos: toda lista da conta está no backup (ou explicada abaixo) e o site e o Drive leem todas as chaves do backup.\n\n";
+  d += "## Listas do backup\n\n| Chave no backup | Variável | Aparelho (localStorage) | Conta | Limpa ao carregar | Site importa | Drive leva |\n|---|---|---|---|---|:-:|:-:|\n";
+  for (const r of D.rows) d += `| ${r.key} | ${cut(r.expr, 40).replace(/\|/g, "/")} | ${r.ls.join(", ") || "—"} | ${r.acct.join(", ") || "—"} | ${r.clean ? r.clean + " (" + r.cleanAt + ")" : "—"} | ${r.imp ? "sim" : "**não**"} | ${r.drive ? "sim" : "**não**"} |\n`;
+  d += "\n## Na conta, fora do backup\n\n" + (D.outside.map(a => `- \`${a.id}\` — ${a.why || "**sem motivo registrado**"}`).join("\n") || "nada") + "\n";
+  d += "\n## No aparelho, fora do backup\n\nEstado da tela ou do relógio (não é dado do usuário), menos o que estiver também em \"Na conta, fora do backup\".\n\n" + D.lsList.map(x => `- \`${x.v}\` → ${x.ls.join(", ")}`).join("\n") + "\n";
+  d += "\n## Campos de cada tipo\n\n`?` = opcional (só gravado quando tem valor). `← funções` = quem grava (nos tipos que a carga não limpa campo a campo).\n";
+  for (const t of D.types) d += `\n### ${t.key}\n\n${t.how}${t.at ? " · `" + t.at + "`" : ""}\n\n` + t.fields.map(fl).join(" · ") + "\n";
+  d += "\n### Sem lista de campos aqui\n\n`fac` (faculdade: semestres, disciplinas, SPs, provas, aulas), `hist` (por dia), `plan` (plano do dia) e as notas: formato no `CLAUDE.md` (Arquitetura). Campos gravados só pela migração (ex.: `qe`, `p11` dos temas) também não aparecem: veja `migrate()`.\n";
+  w("dados.md", d); }
 w("mapa.json", JSON.stringify(M));
 if (!arg.has("--quieto")) console.log(`mapa/ gerado: ${M.count.files} arquivos JS, ${M.count.sym} nomes, ${M.count.ids} ids, ${M.count.cls} classes, ${M.count.tests} arquivos de teste. Comece por mapa/INDICE.md`);

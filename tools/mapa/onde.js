@@ -8,6 +8,7 @@
 //   node tools/mapa/onde.js --testes a b         testes que tocam nesses nomes ou em quem os chama (comando pronto)
 //   node tools/mapa/onde.js --diff [base]        nomes mexidos desde a base (padrão: main) e os testes a rodar
 //   node tools/mapa/onde.js --arquivo 180-banco/040   o resumo de um módulo
+//   node tools/mapa/onde.js --dados [cards]      dados salvos: listas do backup, onde vivem, limpeza, campos de cada tipo
 const fs = require("fs"), path = require("path"), cp = require("child_process");
 const L = require("./lib.js"), MAP = path.join(L.ROOT, "mapa/mapa.json");
 let M; try { M = JSON.parse(fs.readFileSync(MAP, "utf8")); } catch (e) { M = null; }
@@ -28,7 +29,7 @@ function card(k) { const r = rec(k), o = [];
   if (r.idDef.length) o.push("  cria #" + r.idDef.join(", #")); if (r.idUse.length) o.push("  procura #" + some(r.idUse, 30));
   if (r.cls.length) o.push("  classes: " + some(r.cls, 30)); if (r.ls.length) o.push("  localStorage: " + r.ls.join(", "));
   if (r.prefs.length) o.push("  ui.prefs: " + r.prefs.map(p => p + (r.prefsW.includes(p) ? "✎" : "")).join(", ")); if (r.fs.length) o.push("  conta: " + r.fs.join(", "));
-  if (r.tests && r.tests.length) o.push("  testes: " + some(r.tests, 30)); if (r.cm && r.cm.length) o.push("  CLAUDE.md: L" + r.cm.join(", L"));
+  if (r.tests && r.tests.length) o.push("  testes: " + some(r.tests, 30)); if (r.cm && r.cm.length) o.push("  explicado em: " + r.cm.join(", ") + "  (leia a linha)");
   return o.join("\n"); }
 const callers = (names, depth) => { const seen = new Set(names); let cur = names; for (let d = 0; d < depth; d++) { const nx = []; for (const n of cur) for (const b of (rec(n) || { by: [] }).by) if (!seen.has(b)) { seen.add(b); nx.push(b); } cur = nx; } return [...seen]; };
 function testsFor(names) { const direct = new Map(), near = new Map();
@@ -47,6 +48,8 @@ function printTests(names) { const T = testsFor(names), common = names.filter(n 
   if (common.length) console.log("  ⚠ usados em mais da metade dos testes (rode a suíte inteira): " + common.join(", "));
   if (!T.direct.length && !nt.length) console.log("  nenhum: recurso sem teste que o cite pelo nome. Escreva um, ou confira pelos ids em mapa/testes.md"); }
 
+if (flag("--dados")) { const t = fs.readFileSync(path.join(L.ROOT, "mapa/dados.md"), "utf8"); if (!args.length) { process.stdout.write(t); process.exit(0); }
+  const parts = t.split(/\n(?=### )/).filter(p => args.some(q => p.slice(0, 80).toLowerCase().includes(q.toLowerCase()))); console.log(parts.join("\n") || "Tipo não achado. Tipos: " + M.data.types.map(x => x.key).join(", ")); process.exit(0); }
 if (flag("--arquivo")) { const q = args[0] || "", F = M.files.filter(f => f.short.includes(q)); if (F.length !== 1) { console.log(F.length ? "Mais de um:\n  " + F.map(f => f.short).join("\n  ") : "Nenhum arquivo com esse trecho."); process.exit(F.length ? 0 : 1); }
   process.stdout.write(fs.readFileSync(path.join(L.ROOT, "mapa/modulos", F[0].short.replace(/\//g, "__").replace(/\.js$/, ".md")), "utf8")); process.exit(0); }
 if (flag("--codigo")) { const all = flag("--tudo"); for (const k of args) { if (!rec(k)) { console.log(`${k}: não é um nome do topo. Tente: node tools/mapa/onde.js ${k}`); continue; } const r = rec(k), s = body(k); console.log(`// ${k} · src/app/js/${r.f}:${r.l}${r.e > r.l ? "–" + r.e : ""}\n` + (all || s.length <= 6000 ? s : s.slice(0, 6000) + `\n… (+${s.length - 6000} letras; --tudo mostra o resto)`) + "\n"); } process.exit(0); }
@@ -68,7 +71,7 @@ if (flag("--diff")) { const base = args[0] || "main"; let d = "";
   if (names.length) printTests(names); process.exit(0); }
 
 /* consulta livre */
-if (!args.length) { console.log(fs.readFileSync(__filename, "utf8").split("\n").slice(1, 11).map(l => l.replace(/^\/\/ ?/, "")).join("\n")); process.exit(0); }
+if (!args.length) { console.log(fs.readFileSync(__filename, "utf8").split("\n").slice(1, 12).map(l => l.replace(/^\/\/ ?/, "")).join("\n")); process.exit(0); }
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 for (const q0 of args) { let q = q0, done = false; console.log(args.length > 1 ? `\n===== ${q0} =====` : "");
   const idCard = k => { const e = M.ids[k]; console.log(`#${k}` + (e.def ? "\n  criado em: " + e.def.map(at).join("; ") : "") + (e.html ? "\n  no HTML fixo: " + e.html.join("; ") : "") + (e.use ? "\n  procurado em: " + some(e.use.map(at), 20) : "") + (e.css ? "\n  CSS: src/app/css/app.css L" + e.css.join(", L") : "") + (e.extra ? "\n  fora do app: " + e.extra.join(", ") : "") + (e.tests ? "\n  testes: " + some(e.tests, 30) : "")); };

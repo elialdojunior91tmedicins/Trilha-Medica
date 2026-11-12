@@ -18,3 +18,23 @@ test("mapa: todos os arquivos, nomes sem repetição, ligações entre funções
   assert.ok(M.tests.t152.syms.includes("crSuggest") || M.tests["hy.test"].syms.includes("crSuggest"));
   assert.ok(M.extra["bridge.js"].items.some(i => i.n === "applyBackup"));
 });
+
+test("dados salvos: toda lista da conta está no backup (ou explicada), e o site e o Drive leem cada chave", { skip: semDeps && "falta cd tools/divisao && npm i" }, () => {
+  const L = require("../../tools/mapa/lib.js"), D = require("../../tools/mapa/dados.js");
+  const M = L.build();
+  assert.deepEqual(M.data.warn, [], "veja mapa/dados.md (node tools/mapa/gerar.js)");
+  const row = k => M.data.rows.find(r => r.key === k);
+  assert.ok(row("cards").ls.includes("resid-cards-v1") && row("cards").acct.includes("pk:cards") && row("cards").clean === "cdClean");
+  assert.equal(row("examProg").clean, "exPClean");
+  const ty = k => M.data.types.find(t => t.key === k).fields.map(f => f.k.replace("?", ""));
+  assert.ok(ty("cards").includes("hy") && ty("bank").includes("fav") && ty("bank").includes("crs"));
+  assert.ok(ty("topics (state[chave])").includes("qd") && ty("topics (state[chave])").includes("qb") && ty("errors").includes("ra"));
+  assert.ok(!ty("errors").includes("textContent"), "elemento da tela não é campo do erro");
+  // o aviso aparece de verdade: lista nova na conta sem backup, chave que o Drive esqueceu
+  const rd = L.rd;
+  try {
+    L.rd = f => f === "tools/backup-drive.gs" ? rd(f).replace(/\bsims\b/g, "simsX") : f.endsWith("220-abertura.js") ? rd(f).replace('notes:prog.collection("notes")', 'notes:prog.collection("notes"),novaLista:prog.collection("novaLista")') : rd(f);
+    const W = D.build(M).warn.join("\n");
+    assert.match(W, /sims: .*Drive/); assert.match(W, /col:novaLista: está na conta e não entra no backup/);
+  } finally { L.rd = rd; }
+});

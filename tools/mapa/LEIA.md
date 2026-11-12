@@ -15,9 +15,11 @@ velho, porque o `onde.js` gera de novo sozinho quando algum arquivo mudou.
 - `node tools/mapa/onde.js --testes <nome…>` — os testes que citam esses nomes (e quem os chama), com o comando pronto.
 - `node tools/mapa/onde.js --diff [base]` — nomes mexidos desde a base (padrão `main`) e os testes a rodar.
 - `node tools/mapa/onde.js --arquivo <trecho do caminho>` — o resumo de um módulo.
+- `node tools/mapa/onde.js --dados [tipo]` — dados salvos: o que o backup leva, onde cada lista vive (aparelho, conta), quem a limpa ao carregar,
+  se o site e o Drive a leem, e os campos de cada tipo. Lista da conta fora do backup precisa de motivo em `FORA` (`tools/mapa/dados.js`), senão o teste falha.
 
 Arquivos gerados: `INDICE.md` (comece aqui: módulos na ordem de carga, funções mais usadas, maiores, sem uso), `modulos/*.md` (um por
-arquivo JS), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv` e `mapa.json` (tudo, para scripts).
+arquivo JS), `dados.md`, `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv`, `ids.tsv`, `classes.tsv` e `mapa.json` (tudo, para scripts).
 
 ## Limites (o que o mapa NÃO vê)
 - Só nomes do **topo** dos arquivos. Função declarada dentro de outra aparece no código da de fora (`--codigo`).
@@ -25,4 +27,6 @@ arquivo JS), `css.md`, `chaves.md`, `testes.md`, `fora-do-app.md`, `simbolos.tsv
 - Ids e classes vêm de textos reconhecíveis (`id="…"`, `.id=`, `class="…"`, `classList`, seletores). Id montado em pedaços aparece como `prefixo*`.
 - Teste "toca" um nome quando a palavra aparece no arquivo do teste; nomes que aparecem em mais da metade dos testes ficam de fora.
 - `--diff` é por linha: num arquivo com várias declarações na mesma linha, todas aparecem como mexidas.
-- O formato dos dados salvos (campos de `state[k]`, `fac`, erros, cartões…) não sai do código: está no `CLAUDE.md`.
+- Campos dos dados: nos tipos que a carga limpa campo a campo, a lista é exata; nos outros (temas, erros) vem de onde o código grava, e campos gravados
+  só pela migração não aparecem. `fac`, `hist`, `plan` e as notas não têm lista: formato no `CLAUDE.md`. O significado de cada campo está no
+  `CLAUDE.md` e em `docs/recursos.md` (o `onde.js` diz a linha).

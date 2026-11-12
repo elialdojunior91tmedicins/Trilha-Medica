@@ -18,12 +18,12 @@ function inputs() {
   const unit = has("tests/unit") ? fs.readdirSync(path.join(ROOT, "tests/unit")).filter(f => f.endsWith(".js")).sort().map(f => "tests/unit/" + f) : [];
   const extra = ["bridge.js", "sw.js", "config.js", "tools/backup-drive.gs", "src/build_site.py", "firestore.rules", "manifest.webmanifest", "site.css"].filter(has);
   const html = ["src/app/topo.html", "src/app/corpo.html", "src/app/fim.html"], css = ["src/app/css/app.css"];
-  return { js, tests, unit, extra, html, css, doc: ["CLAUDE.md"].filter(has), list: has("tests/list.txt") ? ["tests/list.txt"] : [] };
+  return { js, tests, unit, extra, html, css, doc: ["CLAUDE.md", "docs/recursos.md"].filter(has), list: has("tests/list.txt") ? ["tests/list.txt"] : [] };
 }
 function stamp() {
   const I = inputs(), h = crypto.createHash("sha1");
   for (const f of [].concat(I.js, I.tests, I.unit, I.extra, I.html, I.css, I.doc, I.list)) { const s = fs.statSync(path.join(ROOT, f)); h.update(f + ":" + s.size + ":" + Math.floor(s.mtimeMs) + ";"); }
-  for (const f of ["tools/mapa/lib.js", "tools/mapa/gerar.js"]) h.update(rd(f));
+  for (const f of ["tools/mapa/lib.js", "tools/mapa/gerar.js", "tools/mapa/dados.js"]) h.update(rd(f));
   return h.digest("hex").slice(0, 16);
 }
 
@@ -194,13 +194,14 @@ function build() {
     const body = hm ? t.slice(hm[0].length) : t, words = new Set(body.match(/[A-Za-z_$][\w$]*/g) || []);
     const syms = symNames.filter(n => n.length > 2 && words.has(n));
     const ids = new Set(); for (const re = /#([A-Za-z][\w-]*)/g; ;) { const m = re.exec(body); if (!m) break; const v = m[1]; if (idExact.has(v)) ids.add(v); else { const p = idPre.find(p => v.startsWith(p)); if (p) ids.add(p + "*"); } }
-    M.tests[name] = { f, kind: /unit\//.test(f) ? "unit" : /^t\d+$/.test(name) ? "tela" : "apoio", inList: inList.has(name) || inList.has(name + ".js"), desc, checks: (body.match(/\bok\(|\bassert\.|\btest\(/g) || []).length, syms, ids: [...ids] };
+    M.tests[name] = { f, kind: /mapa\.test/.test(f) ? "apoio" : /unit\//.test(f) ? "unit" : /^t\d+$/.test(name) ? "tela" : "apoio", inList: inList.has(name) || inList.has(name + ".js"), desc, checks: (body.match(/\bok\(|\bassert\.|\btest\(/g) || []).length, syms, ids: [...ids] };
     syms.forEach(n => (hit[n] = hit[n] || []).push(name)); }
   const real = Object.values(M.tests).filter(t => t.kind !== "apoio").length || 1;
   for (const n in hit) { const L = hit[n].filter(t => M.tests[t].kind !== "apoio"); if (L.length > real * 0.5) { M.common.push(n); M.sym[n].tests = ["(em mais da metade dos testes)"]; } else M.sym[n].tests = L; }
   for (const name in M.tests) M.tests[name].ids.forEach(id => add(M.ids, id, "tests", name));
   /* 6. CLAUDE.md: em que linha cada nome é citado */
-  for (const f of I.doc) { const L = rd(f).split("\n"); L.forEach((ln, i) => { const seenL = new Set(); for (const re = /`([^`]+)`/g; ;) { const m = re.exec(ln); if (!m) break; (m[1].match(/[A-Za-z_$][\w$]*/g) || []).forEach(w => { if (M.sym[w] && w.length > 2 && !seenL.has(w)) { seenL.add(w); if (M.sym[w].cm.length < 4) M.sym[w].cm.push(i + 1); } }); } }); }
+  for (const f of I.doc) { const L = rd(f).split("\n"); L.forEach((ln, i) => { const seenL = new Set(); for (const re = /`([^`]+)`/g; ;) { const m = re.exec(ln); if (!m) break; (m[1].match(/[A-Za-z_$][\w$]*/g) || []).forEach(w => { if (M.sym[w] && w.length > 2 && !seenL.has(w)) { seenL.add(w); if (M.sym[w].cm.length < 5) M.sym[w].cm.push(f + ":" + (i + 1)); } }); } }); }
+  M.data = require("./dados.js").build(M);
   M.count = { files: M.files.length, lines: M.files.reduce((a, f) => a + f.lines, 0), sym: symNames.length, fn: symNames.filter(n => M.sym[n].k === "fn").length, anon: anonN, ids: Object.keys(M.ids).length, cls: Object.keys(M.cls).length, ls: Object.keys(M.ls).length, prefs: Object.keys(M.prefs).length, tests: Object.keys(M.tests).length, css: C.rules.length };
   return M;
 }
