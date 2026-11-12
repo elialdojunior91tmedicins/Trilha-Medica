@@ -21,7 +21,7 @@ const src = r => { const t = fs.readFileSync(path.join(L.ROOT, "src/app/js", r.f
 const body = (k) => { const r = rec(k), t = fs.readFileSync(path.join(L.ROOT, "src/app/js", r.f), "utf8"); const O = L.topOutline(t, r.f).out.find(x => x.n === k && x.l === r.l); return O ? t.slice(O.a, O.b) : src(r); };
 
 function card(k) { const r = rec(k), o = [];
-  o.push(`${k}${r.k === "fn" ? r.sig : ""}  [${r.k}]  src/app/js/${r.f}:${r.l}${r.e > r.l ? "–" + r.e : ""}  (${r.sz} letras)`);
+  o.push(`${r.k === "fn" && r.sig.startsWith("async ") ? "async " : ""}${k}${r.k === "fn" ? r.sig.replace(/^async /, "") : ""}  [${r.k}]  src/app/js/${r.f}:${r.l}${r.e > r.l ? "–" + r.e : ""}  (${r.sz} letras)`);
   if (r.val) o.push("  valor: " + r.val); if (r.doc) o.push("  " + r.doc);
   if (r.uses.length) o.push("  usa: " + some(r.uses, 40)); if (r.writes.length) o.push("  muda: " + r.writes.join(", "));
   if (r.by.length) o.push(`  usado por (${r.by.length}): ` + some(r.by.map(x => { const q = rec(x); return (x.startsWith("@") ? "topo" : x) + "·" + q.f.replace(/\.js$/, ""); }), 30));

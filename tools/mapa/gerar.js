@@ -27,7 +27,7 @@ for (const F of M.files) {
   const secs = F.sections.slice(); let si = 0;
   for (const x of items) {
     while (si < secs.length && secs[si].l <= x.l) { s += `\n## L${secs[si].l} · ${cut(secs[si].t, 150)}\n\n`; si++; }
-    const head = x.n ? `**${x.n}**${x.k === "fn" ? x.sig : ""}` : "(instrução do topo)";
+    const head = x.n ? `${x.k === "fn" && x.sig.startsWith("async ") ? "async " : ""}**${x.n}**${x.k === "fn" ? x.sig.replace(/^async /, "") : ""}` : "(instrução do topo)";
     s += `- ${loc(x)} · ${x.k === "stmt" ? "topo" : x.k} ${head} · ${sz(x.sz)}${x.val ? " = `" + x.val.replace(/`/g, "'") + "`" : ""}${x.doc && !F.sections.some(q => q.t.slice(0, 40) === x.doc.slice(0, 40)) ? " — " + cut(x.doc, 200) : ""}\n`;
     const more = [];
     if (x.uses.length) more.push("usa: " + some(x.uses, 24));
