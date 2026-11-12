@@ -5,8 +5,10 @@
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync(__dirname+'/mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 (async()=>{const b=await chromium.launch();const errs=[];
 const Q=st=>({enunciado:st,alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"}],correta:"B",comentario:"",conceito:"",alerta:""});
-const rd=(id,st)=>({id,k:"CM-1",d:"2026-10-20",n:1,due:"2026-10-21",q:Q(st)});
-const er=id=>({id,k:"CM-1",w:"errei "+id,r:"certo",t:"conhecimento",s:"",d:"2026-10-20"});
+// datas relativas a hoje: com datas fixas o item passava de RD_EXP (21 dias) e o Refazer o descartava sozinho
+const dAgo=n=>{const x=new Date();x.setDate(x.getDate()-n);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")};
+const rd=(id,st)=>({id,k:"CM-1",d:dAgo(3),n:1,due:dAgo(2),q:Q(st)});
+const er=id=>({id,k:"CM-1",w:"errei "+id,r:"certo",t:"conhecimento",s:"",d:dAgo(3)});
 const P="data/users/u1/progress/";
 async function open(seed,ls,extra){const ctx=await b.newContext();
   await ctx.addInitScript(mock+`;try{if(!sessionStorage.getItem('x')){sessionStorage.setItem('x',1);const L=${JSON.stringify(ls)};for(const k in L)localStorage.setItem(k,JSON.stringify(L[k]))}}catch(e){};${extra||""};window.__mock(${JSON.stringify(seed)},2);`);

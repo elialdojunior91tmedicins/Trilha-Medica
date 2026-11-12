@@ -27,6 +27,8 @@ Usa só o `node:test` do próprio Node e o acorn guardado em `tests/unit/vendor/
 
 - `fsrs.test.js`: FSRS dos cartões (`fsNext`, `fsPreview`) e a fila `cdDue`.
 - `revisoes.test.js`: `INT`, `interval` com o acerto, `dueIn`, ajuste `s.adj`, botões `revNext`, folga.
+- `dados.test.js`: os literais de `js/010-dados/` (198 temas; `HY_DEF` com índices válidos e dentro do teto; `DN_DEF`, `AX_NEAR`,
+  `EX_CAT`, `OF_CAT`; `HELP` com 18 assuntos e todo `helpBtn`/`goHelp` apontando para um que existe; instruções antigas do gerador → padrão).
 - `markdown.test.js`: `md`/`inl`/`flowHTML`; 24 textos de ataque não podem virar HTML ativo.
 - `backup.test.js`: `backup-sample.json` passa pela carga (`registerOwn` → `migrate`, `errOk`, `facNormalize`) e volta igual.
 

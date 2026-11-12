@@ -37,61 +37,6 @@ const E_PAGE=60;let eLimit=E_PAGE;
 let errors=[], errStore=null, view="inicio", eArea="all", eSp="all", eOrder="sp", nSp="all", eType="all", eQuery="", eTopicKey=null, drafts={}, eErr="", delArm=null;
 const LSE="resid-erros-v1", LSP="resid-prompt-v1", LSN="resid-notas-v1";
 let notes={}, notesStore=null, noteTimers={}, subDraft={}, subErr="", genFocus={};
-const DEFAULT_PROMPT=`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
-
-Estilo
-- Cerca de 70–80% em caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP); o restante, conceito aplicado.
-- Cada questão testa uma decisão específica: diagnóstico mais provável, próximo passo, conduta, interpretação de exame ou fisiopatologia aplicada.
-- Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
-- O enunciado traz os dados necessários para decidir. A dificuldade vem do conteúdo, nunca de ambiguidade.
-
-Alternativas
-- 4 alternativas (A a D), uma única melhor resposta.
-- Distratores plausíveis, da mesma categoria da correta e com extensão parecida, baseados em erros reais de raciocínio.
-- Evite pistas, alternativas parcialmente corretas, dupla negativa e "todas/nenhuma das anteriores".
-
-Dificuldade
-- Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
-- Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
-
-Conteúdo e fontes
-- Use só fontes confiáveis e vigentes: diretrizes e protocolos brasileiros (Ministério da Saúde, PCDTs, sociedades médicas brasileiras como SBC, SBD, SBP, FEBRASGO, SBPT, SBEM, AMIB), o que as bancas brasileiras cobram e, quando não houver diretriz brasileira, diretrizes internacionais de referência (OMS, ACC/AHA, ESC, KDIGO, GOLD, GINA, ADA, IDSA, Surviving Sepsis) e livros-texto clássicos (Harrison, Sabiston, Nelson, Williams, Guyton).
-- Nada inventado: nenhum dado, dose, critério, valor de corte, estudo ou referência que você não tenha certeza de que existe e está correto. Se não tiver certeza de um detalhe, não o use na questão.
-- Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
-
-Comentário
-- Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
-- Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
-- Conceito-chave: uma frase curta, boa para revisar depois.
-- Apoie o comentário na referência: diga o que ela estabelece (critério, conduta, valor de corte, dose) e por que isso decide o caso. Nunca mande o estudante "conferir na diretriz": a explicação tem de estar aqui.
-- Se o tema mudou recentemente ou as fontes divergem, diga no alerta qual versão você seguiu (ano) e o que mudou.`;
-const DEFAULT_PROMPT_1026A=`Você é um elaborador experiente de questões de residência médica no Brasil, com foco no Enamed.
-
-Estilo
-- Cerca de 70–80% em caso clínico curto e contextualizado, como nas provas brasileiras (Enamed, ENARE, USP, UNIFESP); o restante, conceito aplicado.
-- Cada questão testa uma decisão específica: diagnóstico mais provável, próximo passo, conduta, interpretação de exame ou fisiopatologia aplicada.
-- Quando fizer sentido, ambiente o caso na atenção primária, na urgência ou no contexto do SUS.
-- O enunciado traz os dados necessários para decidir. A dificuldade vem do conteúdo, nunca de ambiguidade.
-
-Alternativas
-- 4 alternativas (A a D), uma única melhor resposta.
-- Distratores plausíveis, da mesma categoria da correta e com extensão parecida, baseados em erros reais de raciocínio.
-- Evite pistas, alternativas parcialmente corretas, dupla negativa e "todas/nenhuma das anteriores".
-
-Dificuldade
-- Média, como em prova real. Varie os subtópicos e o tipo de pergunta.
-- Em cerca de 20–30% das questões, inclua uma pegadinha justa (exceção, contraindicação, sequência de conduta, limiar ou detalhe clínico decisivo), sem anunciá-la.
-
-Conteúdo e fontes
-- Use só fontes confiáveis e vigentes: diretrizes e protocolos brasileiros (Ministério da Saúde, PCDTs, sociedades médicas brasileiras como SBC, SBD, SBP, FEBRASGO, SBPT, SBEM, AMIB), o que as bancas brasileiras cobram e, quando não houver diretriz brasileira, diretrizes internacionais de referência (OMS, ACC/AHA, ESC, KDIGO, GOLD, GINA, ADA, IDSA, Surviving Sepsis) e livros-texto clássicos (Harrison, Sabiston, Nelson, Williams, Guyton).
-- Nada inventado: nenhum dado, dose, critério, valor de corte, estudo ou referência que você não tenha certeza de que existe e está correto. Se não tiver certeza de um detalhe, não o use na questão.
-- Evite basear a questão em ponto controverso. Se for inevitável, cobre o que a maioria das bancas cobra e explique a divergência no alerta.
-
-Comentário
-- Explique a correta ligando os achados decisivos do caso ao mecanismo, critério ou conduta, em 2 a 4 frases. Nas pegadinhas, aponte o detalhe decisivo.
-- Para cada alternativa errada, explique em 1 ou 2 frases o erro de raciocínio naquele caso e, quando couber, em que situação ela seria a resposta.
-- Conceito-chave: uma frase curta, boa para revisar depois.
-- Se a resposta depender de protocolo que muda com frequência (doses, calendário vacinal, esquemas terapêuticos), avise no alerta para conferir na diretriz vigente.`;
 const $=s=>document.querySelector(s);
 const normRaw=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 /* caches: textos longos (anotações) não são reprocessados a cada redesenho */
@@ -226,9 +171,6 @@ function weighted(){let tw=0,dw=0;ALL.forEach(i=>{const w=wOf(i);tw+=w;if((get(i
 /* c[0..3] por nível; c[4] = quantos dos não iniciados estão em "Estudando" */
 function counts(items){const c=[0,0,0,0,0];items.forEach(it=>{const s=get(it.key);c[s.l||0]++;if(isIng(s)&&!(s.l>0))c[4]++});return c}
 function bar(el,c,tot){const w=[c[3],c[2],c[1]].map(v=>(v/tot*100)+"%");[...el.children].forEach((i,k)=>i.style.width=w[k])}
-/* Lote 21 item 7: ★ HY nos subtópicos. HY_DEF = ESTIMATIVA DO CLAUDE, PROVISÓRIA até o Banco de questões ter a contagem real por subtópico
-   (ENAMED/Revalida/ENARE primeiro, demais bancas como complemento; teto: até 3 subtópicos = 1, 4 a 6 = 2, 7 ou mais = 1/3; feita em 05/11/2026 para os 198 temas). s.hy={índice:"u"|"n"} e cs[j].hy = toque do usuário, que sempre vence. */
-const HY_DEF={"CM-1":[2,7,9,11,12,13],"CM-2":[0,2],"CM-5":[1,2],"CM-6":[2,5,9,11,14,15],"CM-7":[2,3,6,7,8,14],"CM-8":[1,5,6,9,13],"CM-10":[0,2],"CM-11":[0,1],"CM-12":[0,2],"CM-3":[1,4,6,8,9,17],"CM-4":[1,2],"CM-31":[0,1,4,6],"CM-32":[0,1],"CM-33":[0,3],"CM-17":[0,3],"CM-18":[1,2],"CM-19":[3,4,5,6,9],"CM-20":[0,1],"CM-13":[0,3,6,8,11],"CM-14":[1,3,10,14,15],"CM-15":[1,2,4,5,9,17],"CM-48":[1,2,3,9],"CM-46":[0,2,3,10],"CM-47":[0,2],"CM-55":[0,2,3],"CM-56":[0,1,4],"CM-51":[0,1,5],"CM-9":[1,2,6],"CM-16":[0,2,5,7],"CM-49":[3,4],"CM-21":[3,4,6,11,14],"CM-22":[0,1],"CM-23":[2,3],"CM-24":[0,4],"CM-25":[0,1],"CM-52":[0,1],"CM-58":[0,6],"CM-57":[0,2],"CM-26":[0,3],"CM-27":[0,1],"CM-28":[0,1],"CM-29":[2,4,5,11],"CM-30":[0,2,3,4],"CM-34":[0,1,2,5,11],"CM-35":[0,2],"CM-36":[0,2],"CM-37":[0,1],"CM-53":[0,1],"CM-40":[2,3],"CM-41":[0,2],"CM-59":[0,1],"CM-38":[1,2,5,6,9],"CM-39":[2,4,5,7],"CM-42":[0,1],"CM-43":[0,3],"CM-44":[0,2],"CM-45":[0,3],"CM-65":[0,2],"CM-50":[1,2],"CM-60":[1,2],"CM-61":[1,3],"CM-62":[0,4],"CM-63":[0,1],"CM-64":[3,7,9],"CM-54":[0,2],"CIR-1":[0,3,6],"CIR-2":[0,2],"CIR-3":[0,2,4,5],"CIR-4":[2,3,4,7],"CIR-5":[0,2,5],"CIR-6":[0,2],"CIR-7":[0,4],"CIR-8":[1,2,3],"CIR-9":[1],"CIR-10":[1,2,3],"CIR-15":[0,2,7],"CIR-16":[0],"CIR-17":[0],"CIR-11":[2,3,4],"CIR-12":[1,2],"CIR-13":[1,2,5],"CIR-14":[1,2],"CIR-18":[1,3,4,8],"CIR-19":[0,1],"CIR-22":[0,1],"CIR-23":[0,1],"CIR-21":[2,3,4],"CIR-26":[0,1],"CIR-20":[1,3,6],"CIR-24":[1,2,6],"CIR-25":[0,5,7],"CIR-27":[0,1],"CIR-28":[1],"CIR-31":[0,1],"CIR-32":[3,4],"CIR-30":[0,2],"CIR-29":[0,1],"CIR-33":[0,1],"CIR-34":[0,2],"CIR-35":[0,2],"CIR-36":[0,2],"PED-6":[2,4,6],"PED-7":[0,3,5],"PED-8":[0,1],"PED-9":[0,3],"PED-10":[0,1,2,3],"PED-11":[0],"PED-12":[0,1],"PED-1":[0,1,6],"PED-2":[0,1,7],"PED-3":[0,4,7,11,13],"PED-4":[2,3,4,9],"PED-5":[0],"PED-20":[0,1],"PED-25":[0,1],"PED-13":[4,5,6],"PED-14":[0,1],"PED-15":[3,4,8],"PED-16":[1,2,7,11],"PED-17":[1,3,4],"PED-18":[0,2,7,9],"PED-19":[0,3,4],"PED-26":[2],"PED-21":[0,2],"PED-22":[0,1],"PED-30":[0,1],"PED-29":[1,2],"PED-23":[0,1],"PED-24":[0,1],"PED-28":[0,1],"PED-32":[0,2],"PED-33":[0,2],"PED-27":[0,3],"PED-31":[0,2],"GO-1":[2,4,6,7],"GO-2":[3,4,5,6],"GO-31":[0,1],"GO-32":[0],"GO-14":[1,4],"GO-3":[1,4,6,9],"GO-4":[1,2,4,5],"GO-12":[0,1,2],"GO-13":[0,1],"GO-33":[0,2],"GO-5":[0,4,9],"GO-6":[1,5,7],"GO-7":[0,2,5],"GO-8":[0,1,3,4],"GO-9":[4,6,7],"GO-10":[0,1],"GO-11":[1,3,6],"GO-15":[0,1],"GO-16":[0],"GO-17":[0,1,5],"GO-18":[0,1],"GO-19":[0,1],"GO-20":[0,1,3],"GO-30":[0,2],"GO-21":[1,4,7,9],"GO-24":[0,3],"GO-25":[0,1],"GO-26":[1,2],"GO-27":[0,2],"GO-28":[1,2],"GO-22":[0,1],"GO-23":[0,3],"GO-29":[0,1],"PREV-1":[0,3,4],"PREV-2":[0,6,7],"PREV-3":[0,1],"PREV-6":[0,1],"PREV-7":[0,1],"PREV-8":[0,1],"PREV-29":[0,2],"PREV-30":[0,1],"PREV-4":[0,2],"PREV-5":[0,1,6],"PREV-27":[0,1],"PREV-28":[0,1],"PREV-9":[3,4,5],"PREV-10":[1,2],"PREV-11":[0,2],"PREV-24":[0,1],"PREV-12":[0,3,5],"PREV-13":[0,1],"PREV-23":[0,2],"PREV-31":[0],"PREV-14":[5,6,8],"PREV-15":[0,2],"PREV-16":[1,2,5],"PREV-17":[1,2],"PREV-21":[0,2],"PREV-22":[2,3],"PREV-18":[2,3,4],"PREV-19":[0,1,4],"PREV-20":[1,6],"PREV-25":[0,1,3],"PREV-26":[2,4]};
 function subList(it){const s=get(it.key),sd=s.sd||[],dn=s.dn||{},df=DN_DEF[it.key]||[],hy=s.hy||{},hd=HY_DEF[it.key]||[];
   return [...it.subs.map((t,i)=>({t,done:sd.includes(i),i,dn:dn[i]||(df.includes(i)?"c":""),hy:hy[i]==="u"||hy[i]!=="n"&&hd.includes(i),hyc:!hy[i]&&hd.includes(i)})),...(s.cs||[]).map((c,j)=>({t:c.t,done:!!c.d,j,dn:c.dn||"",hy:c.hy==="u"}))]}
 function setHy(it,x,on){upd(it.key,s=>{if(x.i!==undefined){const h={...(s.hy||{})};const def=(HY_DEF[it.key]||[]).includes(x.i);if(on===def)delete h[x.i];else h[x.i]=on?"u":"n";if(Object.keys(h).length)s.hy=h;else delete s.hy}
@@ -238,8 +180,6 @@ const hyFirst=L=>[...L.filter(x=>x.hy),...L.filter(x=>!x.hy)];
 const dnHeavy=x=>x.dn==="u"||x.dn==="c";
 const subW=x=>dnHeavy(x)?2:1;
 const PART_BIG=6,PART_CAP=4;
-/* revisão do Claude (10/2026) dos 198 temas: subtópicos densos por índice. Valem como sugestão ("c") até você mudar; tema listado aqui já foi revisado */
-const DN_DEF={"CM-1":[10],"CM-2":[2],"CM-5":[],"CM-6":[14,17],"CM-7":[13,15],"CM-8":[0,13],"CM-10":[0,1,2,3],"CM-11":[],"CM-12":[],"CM-3":[7,16],"CM-4":[],"CM-31":[6],"CM-32":[0,1],"CM-33":[],"CM-17":[2],"CM-18":[1],"CM-19":[],"CM-20":[3],"CM-13":[6],"CM-14":[7],"CM-15":[5,11],"CM-48":[9],"CM-46":[3],"CM-47":[0,1,2,3,4],"CM-51":[0,7],"CM-9":[],"CM-16":[11],"CM-49":[0],"CM-21":[0,14],"CM-22":[1],"CM-23":[0,2],"CM-24":[0],"CM-25":[],"CM-52":[0,1,3],"CM-26":[0],"CM-27":[2],"CM-28":[0,1,2],"CM-29":[2],"CM-30":[4,11],"CM-34":[2,5,7,11],"CM-35":[0,1,2,3],"CM-36":[0,1,2],"CM-37":[0,1,3],"CM-53":[],"CM-40":[0,3],"CM-41":[0,2],"CM-38":[2,6],"CM-39":[2,3],"CM-42":[0,2,4],"CM-43":[0,3],"CM-44":[0,3],"CM-45":[0,3],"CM-50":[1,6,7],"CM-55":[3],"CM-56":[0],"CM-57":[],"CM-58":[],"CM-59":[],"CM-60":[3],"CM-61":[],"CM-62":[],"CM-63":[],"CM-64":[],"CM-65":[],"CIR-35":[],"CIR-36":[],"CM-54":[0],"CIR-1":[0],"CIR-2":[],"CIR-3":[],"CIR-4":[7],"CIR-5":[5],"CIR-6":[0,2],"CIR-7":[0],"CIR-8":[2],"CIR-9":[1],"CIR-10":[],"CIR-15":[],"CIR-16":[],"CIR-17":[0],"CIR-11":[3],"CIR-12":[],"CIR-13":[2,6],"CIR-14":[0,2],"CIR-18":[],"CIR-19":[],"CIR-22":[],"CIR-23":[0,1],"CIR-21":[2,7],"CIR-26":[0,2],"CIR-20":[0],"CIR-24":[0],"CIR-25":[0],"CIR-27":[0,1],"CIR-28":[],"CIR-31":[],"CIR-32":[],"CIR-30":[0,1,2],"CIR-29":[0,1],"CIR-33":[],"CIR-34":[],"PED-6":[4],"PED-7":[5],"PED-8":[0],"PED-9":[0],"PED-10":[],"PED-11":[],"PED-12":[],"PED-1":[6],"PED-2":[0],"PED-3":[0],"PED-4":[],"PED-5":[],"PED-20":[2],"PED-25":[1],"PED-13":[],"PED-14":[],"PED-15":[4],"PED-16":[],"PED-17":[3],"PED-18":[0,2],"PED-19":[3],"PED-26":[],"PED-21":[2],"PED-22":[0,1],"PED-30":[1,2],"PED-29":[],"PED-23":[],"PED-24":[],"PED-28":[0,1],"PED-32":[0],"PED-33":[],"PED-27":[2],"PED-31":[],"GO-1":[6],"GO-2":[2,5],"GO-31":[1],"GO-32":[],"GO-14":[],"GO-3":[2,6],"GO-4":[1],"GO-12":[],"GO-13":[0],"GO-33":[0],"GO-5":[4],"GO-6":[7],"GO-7":[2,5],"GO-8":[4],"GO-9":[4],"GO-10":[1],"GO-11":[2,5],"GO-15":[],"GO-16":[],"GO-17":[7],"GO-18":[1,3],"GO-19":[1],"GO-20":[3,6],"GO-30":[1,2],"GO-21":[1,3],"GO-24":[0],"GO-25":[],"GO-26":[0,1],"GO-27":[],"GO-28":[],"GO-22":[],"GO-23":[],"GO-29":[1],"PREV-1":[],"PREV-2":[0],"PREV-3":[],"PREV-6":[],"PREV-7":[],"PREV-8":[],"PREV-29":[],"PREV-30":[],"PREV-4":[],"PREV-5":[],"PREV-27":[],"PREV-28":[],"PREV-9":[3],"PREV-10":[],"PREV-11":[],"PREV-24":[],"PREV-12":[1],"PREV-13":[],"PREV-23":[],"PREV-31":[],"PREV-14":[5,6],"PREV-15":[],"PREV-16":[],"PREV-17":[],"PREV-21":[],"PREV-22":[4],"PREV-18":[0],"PREV-19":[],"PREV-20":[],"PREV-25":[],"PREV-26":[4]};
 /* partes do tema: até 6 subtópicos (peso até 6) = uma parte só; maior que isso, partes de peso 3 a 4, na ordem da lista */
 function subParts(L){const W=L.reduce((a,x)=>a+subW(x),0);if(!L.length)return [];if(L.length<=PART_BIG&&W<=PART_BIG)return [L];
   const n=Math.ceil(W/PART_CAP),tg=W/n,P=Array.from({length:n},()=>[]);let acc=0;

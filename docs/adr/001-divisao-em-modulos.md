@@ -1,6 +1,6 @@
 # ADR 001 — Dividir o app em módulos
 
-Data: 06/11/2026 · Situação: fases 1 e 1.5 na `main` (06/11); fase 2 concluída e na `main` em 12/11/2026 (branches `fase-2-juntar` e `fase-2-gerado`, aprovadas pelo usuário)
+Data: 06/11/2026 · Situação: fases 1 e 1.5 na `main` (06/11); fase 2 concluída e na `main` em 12/11/2026 (branches `fase-2-juntar` e `fase-2-gerado`, aprovadas pelo usuário); fase 3 em 12/11/2026 (branch `fase-3-dados`)
 
 ## Contexto
 
@@ -48,6 +48,11 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
    `build_site.py --check` passou a conferir `index.html` e `sw.js` (os gerados que ficam no repositório).
 4. **Dados e textos** (temas, incidência, Ajuda) em `.js` próprios ou embutidos pelo build, sem carga assíncrona;
    ampliar `tests/unit/`.
+   **Feito em 12/11/2026:** pasta `js/010-dados/` com 4 arquivos só de literais, carregados primeiro: `010-temas` (o antigo
+   `010-dados.js`), `020-curadoria` (`HY_DEF`, `DN_DEF`, `AX_NEAR`), `030-catalogos` (`EXC_REG`/`EX_CAT`, `OF_NIV`/`OF_CAT`) e
+   `040-textos` (`DEFAULT_PROMPT`, `DEFAULT_PROMPT_1026A`, `OLD_PROMPTS`, `HERO_FRASES`, `HELP`). Movidos com o mover e conferidos com
+   `check.js` (ordem segura); só foram acrescentados comentários de cabeçalho. Ficaram onde estão os dados que são lógica (`SPECS`,
+   `INT`, `HW` das larguras do PDF). Novo `tests/unit/dados.test.js` (10 testes) confere os literais contra os temas e quem os usa.
 
 Antes da fase 2: medir a abertura no celular (pode pedir carga sob demanda de PDF, Anki e importação, o que muda
 as fronteiras dos módulos). Simulação de 06/11 (CPU 4× mais lenta): ~0,8 s com o app guardado no aparelho, ~1,5 s

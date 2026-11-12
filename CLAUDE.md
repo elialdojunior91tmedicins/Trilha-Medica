@@ -19,7 +19,8 @@ consultado quando há dúvida. Responda em português.
 
 1. Edite os arquivos em **`src/app/`** (fonte do app desde 11/2026; `docs/adr/001-divisao-em-modulos.md`):
    `topo.html`, `css/app.css`, `corpo.html`, `js/` (módulos por assunto, juntados em ordem de caminho) e `fim.html`.
-   Módulos (fase 2, 11/11/2026): `010-dados` (temas, incidência) · `020-nucleo` (estado, datas, subtópicos, níveis, `lsGet`) · `030-texto`
+   Módulos (fase 2, 11/11/2026; fase 3, 12/11/2026): `010-dados/` (só literais: `010-temas` = áreas, temas, subtópicos, incidência; `020-curadoria` = `HY_DEF`,
+   `DN_DEF`, `AX_NEAR`; `030-catalogos` = `EX_CAT`, `OF_CAT`; `040-textos` = instruções do gerador, `HERO_FRASES`, `HELP`; conferidos em `tests/unit/dados.test.js`) · `020-nucleo` (estado, datas, subtópicos, níveis, `lsGet`) · `030-texto`
    (markdown, `[[links]]`, selos, editor, fluxograma) · `040-plano` (plano do dia, revisões, semana, eixo, modo provas) · `050-residencia`
    (lista, filtros, tema aberto, agenda, mapa) · `060-faculdade/` (estrutura, provas, grade, telas) · `070-arquivos` (Word/PowerPoint,
    materiais, figuras) · `080-questoes/` (gerador, ações da questão, aba, Refazer, simulado) · `090-caderno/` (página, pegadinhas, livre e PDF,
@@ -42,14 +43,14 @@ consultado quando há dúvida. Responda em português.
 4. Commit e push na `main` (o GitHub Pages publica a raiz).
 5. ~~Republique o artefato~~: desde 05/11/2026 o artefato do Claude fica congelado (a ferramenta exige ler a cópia publicada inteira,
    1,4 MB, o que não cabe numa conversa). Publicar = site + manual.
-6. Se a mudança afetar o uso, atualize a aba Ajuda (constante `HELP` no fonte) e o manual.
+6. Se a mudança afetar o uso, atualize a aba Ajuda (constante `HELP` em `js/010-dados/040-textos.js`) e o manual.
 
 ## Arquitetura
 
 - `src/app/`: o código do app em trechos (HTML/CSS/JS); `src/checklist-residencia.html` = os trechos juntados (saída do build, fora do
   repositório; o preview `tests/mkprev.py` e 20 testes antigos abrem esse arquivo, que é o app sem o `bridge.js`). No Claude usa `window.claude.use(...)` (db, user, sample, downloads).
   Divisão em módulos: fase 1 (cortar) e 1.5 (testes de proteção: `tests/unit/`, `tests/t151.js`) em 06/11/2026; fase 2 (agrupar
-  por assunto, sem mudar linha) em 11/11/2026 e o gerado fora do repositório em 12/11/2026; próxima (fase 3) em `docs/adr/001-divisao-em-modulos.md`. Tempo de abertura: Configurações › Tempo de abertura
+  por assunto, sem mudar linha) em 11/11/2026 e o gerado fora do repositório em 12/11/2026; fase 3 (dados e textos em `js/010-dados/`) em 12/11/2026; detalhes em `docs/adr/001-divisao-em-modulos.md`. Tempo de abertura: Configurações › Tempo de abertura
   (`perfCardEl`; o script do `topo.html` grava as últimas 12 em `resid-perf`; teste t150).
 - `bridge.js`: no site, implementa o mesmo `window.claude.use` com Firebase (Auth e-mail/senha +
   Firestore, persistência offline), download/compartilhamento de arquivos e IA por **copiar e colar**

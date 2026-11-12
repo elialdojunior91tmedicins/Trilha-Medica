@@ -111,14 +111,6 @@ function bkCmBtn(x,id){if(!x||!x.ex||x.ei==null)return null;const ex=exams.find(
 function cmBtn(ex,i,id){if(!sampleFn||!ex)return null;const r=ex.qs[i];if(!r||!r.q.correta||r.an||(r.q.comentario||"").trim())return null;const b=el(`<button class="btn cmbtn" type="button">✦ Comentar com o Claude</button>`);b.id=id;
   b.disabled=!!(cmRun&&cmRun.st==="run");b.onclick=()=>cmGo(ex,[i]);return b}
 /* ---- provas oficiais: lidas e faltando ---- */
-const OF_NIV=["R1","R+","Revalida","ENADE","Outra"];
-const OF_CAT=[["ENARE e ENAMED",[["ENARE","2025","ENARE 2025 (prova própria, R1)","R1",1],["ENARE","2024","ENARE 2024 (objetiva)","R1",1],["ENAMED","2025","ENAMED 2025 (acesso direto do ENARE 2025/2026)","R1",0],["ENAMED","2026","ENAMED 2026","R1",0],["ENARE","2023","ENARE 2023","R1",0],["ENARE","2022","ENARE 2022","R1",0],["ENARE","2021","ENARE 2021","R1",0]]],
-  ["Revalida (Inep), objetivas",[["REVALIDA","2023","Revalida 2023.1","Revalida",1,"2023.1"],["REVALIDA","2024","Revalida 2024.1","Revalida",1,"2024.1"],["REVALIDA","2024","Revalida 2024.2","Revalida",1,"2024.2"],["REVALIDA","2025","Revalida 2025.1","Revalida",1,"2025.1"],["REVALIDA","2026","Revalida 2026.1","Revalida",1,"2026.1"]]],
-  ["ENADE Medicina (Inep)",[["ENADE","2016","ENADE Medicina 2016","ENADE",1],["ENADE","2019","ENADE Medicina 2019","ENADE",1],["ENADE","2023","ENADE Medicina 2023","ENADE",1]]],
-  ["Rio Grande do Norte",[["SESAP-RN","2024","SESAP-RN 2024","R1",1]]],
-  ["São Paulo",[["USP-SP","2023","USP-SP 2023","R1",1],["USP-SP","2025","USP-SP 2025","R1",1],["USP-RP","2025","USP-RP 2025","R1",1],["USP-RP","2026","USP-RP 2026","R1",1],["EINSTEIN","2024","Einstein 2024","R1",1],["EINSTEIN","2025","Einstein 2025","R1",1],["EINSTEIN","2026","Einstein 2026","R1",1],
-    ["SÍRIO-LIBANÊS","2025","Sírio-Libanês 2025","R1",1],["SÍRIO-LIBANÊS","2026","Sírio-Libanês 2026","R1",1],["IAMSPE","2024","IAMSPE 2024","R1",1],["IAMSPE","2026","IAMSPE 2026","R1",1],["ISCMSP","2026","Santa Casa de SP (ISCMSP) 2026","R1",1],["FMJ","2026","FMJ 2026","R1",1],["PUC-SP","2022","PUC-SP Especialização 2022","R1",1],["PUC-SP","2023","PUC-SP Especialização 2023","R1",1]]],
-  ["Outros estados",[["SES-PE","2026","SES-PE 2026","R1",1],["UEPA","2026","UEPA 2026","R1",1],["IFF","2020","IFF/Fiocruz-RJ 2020","R1",1]]]];
 const ofNorm=s=>bqT(s).replace(/\s+/g,"");
 function ofFind(c){const [b,a,n,,,sub]=c,B=ofNorm(b),S=sub?ofNorm(sub):"";return exams.filter(e=>{const t=ofNorm([e.banca,e.name].join(" "));return t.includes(B)&&(e.ano===a||t.includes(a))&&(!S||t.includes(S)||t.includes(S.replace(/(\d{4})(\d)$/,"$1$2")))})}
 function ofState(e){const N=e.qs.length,nb=e.qs.filter(r=>r.g==="b"||r.an).length,nc=cmNeed(e).length,sd=e.qs.filter(r=>r.sbd).length;

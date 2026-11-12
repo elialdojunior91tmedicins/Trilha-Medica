@@ -287,17 +287,6 @@ function redoPlan(note){planNote=typeof note==="string"?note:"";const keep=(dayP
    Eixo = área/especialidade das SPs da semana (fechamento nesta semana ou na próxima; sem nenhuma, a próxima a fechar). Vários eixos: a vaga reveza por dia.
    Também dá para fixar à mão (ui.prefs.eixo={a,sp,until}). Composição padrão 1·1·1 = 1 da faculdade (próximo conteúdo da SP) · 1 da residência do eixo · 1 livre.
    Prova e fechamento continuam tomando vagas como antes; semana da prova, modo provas, dia de 30 min e freio de revisões ficam por cima. */
-const AX_NEAR={"Neurologia":["Psiquiatria"],"Psiquiatria":["Neurologia"],"Hematologia e oncologia":["Hematologia pediátrica","Cuidados paliativos"],"Hematologia pediátrica":["Hematologia e oncologia"],
-  "Pneumologia":["Infectologia","Doenças respiratórias"],"Infectologia":["Pneumologia","Infectologia pediátrica","Ginecologia: infecções genitais","Vigilância em saúde"],"Infectologia pediátrica":["Infectologia","Doenças respiratórias"],"Doenças respiratórias":["Pneumologia","Infectologia pediátrica"],
-  "Cardiologia":["Nefrologia","Cirurgia vascular","Cardiologia e reumatologia pediátrica"],"Nefrologia":["Cardiologia","Urologia","Nefrologia pediátrica"],"Urologia":["Nefrologia"],"Nefrologia pediátrica":["Nefrologia","Urologia"],
-  "Gastroenterologia e hepatologia":["Aparelho digestivo e coloproctologia","Vias biliares e pâncreas","Abdome agudo"],"Aparelho digestivo e coloproctologia":["Gastroenterologia e hepatologia","Abdome agudo"],"Vias biliares e pâncreas":["Gastroenterologia e hepatologia","Abdome agudo"],"Abdome agudo":["Gastroenterologia e hepatologia","Trauma"],
-  "Endocrinologia":["Obstetrícia: intercorrências clínicas","Ginecologia: endócrina e reprodutiva"],"Obstetrícia: intercorrências clínicas":["Endocrinologia","Cardiologia"],"Ginecologia: endócrina e reprodutiva":["Endocrinologia"],
-  "Reumatologia":["Ortopedia","Cardiologia e reumatologia pediátrica","Dermatologia"],"Ortopedia":["Reumatologia","Trauma"],"Cardiologia e reumatologia pediátrica":["Cardiologia","Reumatologia"],
-  "Emergência e terapia intensiva":["Trauma","Emergências e violência"],"Trauma":["Emergência e terapia intensiva","Abdome agudo","Ortopedia"],"Emergências e violência":["Emergência e terapia intensiva","Ginecologia: violência sexual"],
-  "Dermatologia":["Alergia e imunologia","Reumatologia"],"Alergia e imunologia":["Dermatologia","Doenças respiratórias"],"Puericultura":["Neonatologia","Atenção primária e MFC"],"Neonatologia":["Puericultura","Obstetrícia: complicações e medicina fetal"],
-  "Obstetrícia: complicações e medicina fetal":["Neonatologia","Obstetrícia: hemorragias"],"Obstetrícia: hemorragias":["Obstetrícia: complicações e medicina fetal"],"Obstetrícia: pré-natal, parto e puerpério":["Obstetrícia: intercorrências clínicas"],
-  "Cirurgia vascular":["Cardiologia"],"Cuidados paliativos":["Hematologia e oncologia"],"Ginecologia: oncologia e mastologia":["Hematologia e oncologia"],"Ginecologia: infecções genitais":["Infectologia"],
-  "Atenção primária e MFC":["Puericultura","SUS e políticas de saúde"],"Vigilância em saúde":["Infectologia","Indicadores e perfil de saúde"]};
 const AX_MIX={"111":[1,1,1],"021":[0,2,1],"120":[1,2,0]},AX_MIX_LAB={"111":"1 faculdade · 1 do eixo · 1 livre","021":"2 do eixo · 1 livre","120":"1 faculdade · 2 do eixo"};
 const axOn=()=>{const v=ui.prefs.align;return v===true||v===false?v:(ui.profile.phase||phaseSuggest())==="clinico"};
 const axMix=()=>AX_MIX[ui.prefs.amix]||AX_MIX["111"];
