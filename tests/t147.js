@@ -98,8 +98,10 @@ const SEED=`(async()=>{await bankBootP;const Q=(e,a,c,extra)=>({enunciado:e,alte
  await p.click("#bkNextP");await p.waitForFunction(()=>bkRun.i===1&&document.querySelector(".bkq"));await p.click("#bka-C");await p.click("#bkm-0");await p.click("#bka-A");await p.waitForTimeout(40);
  ok(await p.evaluate(()=>bkRun.i===0&&!bkRun.ans[0]),"tocar de novo deixa em branco; dá para voltar pelo mapa");
  await p.click("#bka-B");await p.waitForTimeout(40);ok(await p.evaluate(h=>bankH.reduce((s,x)=>s+x.a.length,0)===h,hb),"nada é gravado antes de entregar");
+ /* o sorteio dos passos anteriores é aleatório: uma questão deste simulado pode já ter a mesma resposta de hoje no histórico (o banco guarda uma por dia/origem/letra); limpa as de hoje das sorteadas */
+ const hb2=await p.evaluate(()=>{const ids=new Set(bkRun.ids),D=today();bankH.forEach(h=>{if(ids.has(h.id))h.a=h.a.filter(y=>!(y.d===D&&y.src==="bank"))});return bankH.reduce((s,x)=>s+x.a.length,0)});
  await p.click("#bkFinish");await p.waitForFunction(()=>bkRun&&bkRun.done,null,{timeout:5000}).catch(()=>{});await p.waitForTimeout(80);
- const FN=await p.evaluate(h=>({done:bkRun.done,add:bankH.reduce((s,x)=>s+x.a.length,0)-h,kpi:$(".bkplay .kpis").textContent,list:document.querySelectorAll(".bkres li").length,blank:$(".bkplay .kpis").textContent.includes("em branco")}),hb);
+ const FN=await p.evaluate(h=>({done:bkRun.done,add:bankH.reduce((s,x)=>s+x.a.length,0)-h,kpi:$(".bkplay .kpis").textContent,list:document.querySelectorAll(".bkres li").length,blank:$(".bkplay .kpis").textContent.includes("em branco")}),hb2);
  ok(FN.done&&FN.add===2&&FN.list===6&&FN.blank,"entregar: resultado com acerto, tempo e as em branco; só as respondidas vão ao histórico "+JSON.stringify(FN));
  await p.click("#bkrv-0");await p.waitForTimeout(40);ok(await p.evaluate(()=>!!$(".bkres .bkq .verdict")),"rever cada questão depois de entregar");
  await p.click("#bkBack");await p.waitForTimeout(40);
