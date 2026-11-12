@@ -130,21 +130,6 @@ function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return nu
   c.querySelector("p.how").textContent=`${br(fromNum(ws))} a ${br(fromNum(ws+6))}.${best?" "+best:""}`;return c}
 /* ----- 12. Início personalizável ----- */
 /* ---------- Início: saudação do dia (#iHero) — data, "Bom dia, Nome.", o que espera hoje, prova perto, feito real ou frase do dia e o botão da fila ---------- */
-const HERO_FRASES=["Constância vence intensidade.","Cada questão errada hoje é um ponto a mais na prova.","Não precisa ser um dia perfeito. Precisa ser um dia de estudo.","Disciplina é fazer o combinado mesmo sem vontade.",
-"A aprovação é feita de dias comuns bem usados.","Revisar é o que transforma estudo em memória.","Um tema por vez. Uma revisão por vez.","Quem revisa no dia certo não estuda duas vezes.",
-"O cansaço passa. O que você aprendeu hoje fica.","Pequenos avanços diários somam uma especialidade inteira.","O erro de hoje é o acerto da prova.","Comece pelo mais difícil enquanto a cabeça está fresca.",
-"Vitória é a soma de manhãs em que você sentou para estudar.","Você não precisa de motivação para abrir o caderno. Precisa abrir.","Uma hora focada vale mais que três distraídas.","A prova premia quem viu o assunto muitas vezes, não uma vez só.",
-"Hoje conta. Mesmo que seja pouco.","Faça o simples bem feito: revisar, questionar, corrigir.","Seu futuro paciente agradece cada revisão de hoje.","Ritmo sustentável ganha da maratona de véspera.",
-"Errar na questão é barato. Errar no plantão não é.","Domine o básico: é ele que cai mais.","A dúvida de hoje é a pegadinha que você não vai cair.","Quem anota o próprio erro não repete o mesmo erro.",
-"Estudar cansado ainda é estudar. Parar de vez é que não.","Celebre o dia cumprido, não só a nota final.","Um passo hoje vale mais que um plano perfeito para amanhã.","Foque no que depende de você: as próximas horas.",
-"Cada tema dominado é um a menos para temer.","Respeite o descanso: ele também faz parte do plano.","A disciplina de hoje é a tranquilidade da véspera.","Questão feita com atenção ensina mais que dez feitas com pressa.",
-"Não compare o seu capítulo 3 com o capítulo 20 de ninguém.","O que é revisado no tempo certo não precisa ser reaprendido.","Persistência é voltar ao plano depois de um dia ruim.","Um dia de cada vez, um tema de cada vez.",
-"Vencer a preguiça nos primeiros cinco minutos é metade do trabalho.","Leia o enunciado inteiro. A resposta costuma estar nele.","Quem entende o porquê não precisa decorar tudo.","Organização hoje poupa desespero amanhã.",
-"Seu esforço de hoje é invisível agora e evidente na prova.","Aprender devagar ainda é aprender.","A constância transforma o difícil em rotina.","Toda especialidade parece enorme até você dividir em temas.",
-"Melhor feito do que perfeito: termine o bloco de hoje.","Cada acerto novo é prova de que o método funciona.","Desligue o celular por uma sessão e veja a diferença.","Revisão atrasada se resolve com uma por vez, não com culpa.",
-"Disciplina é escolher o que você quer mais em vez do que você quer agora.","O ritmo de hoje decide a calma de amanhã.","Estude para entender o paciente, não só para marcar a alternativa.","A cada revisão, o esquecimento perde força.",
-"Hoje é um bom dia para fechar uma lacuna antiga.","Quem mede o progresso enxerga o quanto já andou.","Dias difíceis também contam como dias de estudo.","A prova é longa; o preparo também. Vá no seu passo.",
-"Faça a parte de hoje e deixe o resto para amanhã.","Seu melhor método é o que você consegue repetir todo dia.","O hábito leva você onde a motivação não alcança.","Cada sessão concluída é uma pequena vitória. Some todas."];
 const heroDate=()=>{const s=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)};
 const nowHour=()=>typeof window.__hour==="number"?window.__hour:new Date().getHours();
 /* Lote 18: depois das 19 h o Início vira o fechamento do dia (o que foi feito e o que pode ficar para amanhã) */
