@@ -41,8 +41,11 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
    (os 8 `keydown` do `document`, `visibilitychange`, `online`, `focusout`) na mesma ordem, o que fixou a ordem caderno < erros <
    geral < banco < provas e foco < banco < abertura. Os 9 avisos que a ordem antiga tinha (caminhos que não rodam na carga) caíram
    para 1. Provas: unitários 27/27, abertura (t151) nos 6 aparelhos e a suíte completa.
-   **Falta da fase 2:** os testes que abrem `src/checklist-residencia.html` passarem a abrir o `index.html`, e o gerado sair do
-   repositório (vira saída do build).
+   **Fim da fase 2 (12/11/2026):** `src/checklist-residencia.html` saiu do repositório e virou saída do build (`.gitignore`, junto
+   com `src/app/.gerado.sha1`). Diferença do plano: os 19 testes antigos e o `mkprev.py` continuam abrindo esse arquivo, em vez do
+   `index.html`. Motivo: eles testam o app SEM a conta; o `index.html` sempre carrega o `bridge.js` e o Firebase, então trocar
+   mudaria o que cada teste confere. O `tests/run.sh` gera o arquivo quando ele falta ou quando `src/app/` mudou, e o
+   `build_site.py --check` passou a conferir `index.html` e `sw.js` (os gerados que ficam no repositório).
 4. **Dados e textos** (temas, incidência, Ajuda) em `.js` próprios ou embutidos pelo build, sem carga assíncrona;
    ampliar `tests/unit/`.
 
