@@ -1,6 +1,6 @@
 # ADR 001 — Dividir o app em módulos
 
-Data: 06/11/2026 · Situação: fases 1 e 1.5 na `main` (06/11); fase 2 na `main` em 12/11/2026 (branch `fase-2-juntar`, aprovada pelo usuário)
+Data: 06/11/2026 · Situação: fases 1 e 1.5 na `main` (06/11); fase 2 concluída e na `main` em 12/11/2026 (branches `fase-2-juntar` e `fase-2-gerado`, aprovadas pelo usuário)
 
 ## Contexto
 
