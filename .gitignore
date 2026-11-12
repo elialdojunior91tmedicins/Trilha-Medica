@@ -6,3 +6,5 @@ tests/*.pdf
 tests/*.ics
 tests/trilha-*.txt
 tests/out_sim17_*.json
+tools/divisao/node_modules/
+tools/divisao/package-lock.json

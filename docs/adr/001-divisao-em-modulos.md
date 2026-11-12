@@ -1,6 +1,6 @@
 # ADR 001 — Dividir o app em módulos
 
-Data: 06/11/2026 · Situação: proposta (fase 1 feita na branch `fase-1-dividir-arquivo`, aguardando o teste do usuário)
+Data: 06/11/2026 · Situação: fases 1 e 1.5 na `main` (06/11); fase 2 feita em 11/11/2026 na branch `fase-2-juntar`, aguardando aprovação
 
 ## Contexto
 
@@ -29,6 +29,20 @@ byte, em `src/checklist-residencia.html` (gerado: não editar à mão), que o pr
    (acorn) lista o que cada trecho declara com `const`/`let` e executa no topo; só se move o que for seguro.
    Unitários e abertura a cada movimento; 134 testes a cada módulo. No fim, os 21 testes leem o `index.html` e o
    arquivo gerado sai do repositório.
+   **Feito em 11/11/2026, numa passada só** (o plano previa 2.0/2a/2b/2c em branches separadas; a ferramenta da branch
+   `fase-2-analise`, que não chegou ao GitHub, foi refeita em `tools/divisao/`). Cada bloco entre comentários do topo foi marcado
+   com um assunto (`tools/divisao/fase2-marcacoes.txt`) e os 31 trechos viraram 22 módulos, 8 deles pastas com 3–5 arquivos
+   (todos ≤ 61 KB): dados, núcleo, texto, plano, residência, faculdade/, arquivos, questões/, caderno/, cartões, erros/, início,
+   foco, geral/, perfil, pdf, estatísticas, banco/, provas/, backup, conta, abertura. Dentro de cada módulo os blocos ficam na ordem
+   antiga; nenhuma linha mudou (o mover confere que o conjunto de linhas é o mesmo). O build e `tests/unit/load.js` leem as pastas
+   (ordem de caminho). A conferência (`tools/divisao/check.js`, acorn + eslint-scope) compara com a ordem antiga: (a) nada usado
+   antes de declarar na carga — instruções do topo, IIFE, callbacks que rodam na hora e, de forma transitiva, as funções que eles
+   chamam; (b) quem muda um objeto global no topo continua antes/depois de quem o lê; (c) ouvintes do mesmo evento no mesmo alvo
+   (os 8 `keydown` do `document`, `visibilitychange`, `online`, `focusout`) na mesma ordem, o que fixou a ordem caderno < erros <
+   geral < banco < provas e foco < banco < abertura. Os 9 avisos que a ordem antiga tinha (caminhos que não rodam na carga) caíram
+   para 1. Provas: unitários 27/27, abertura (t151) nos 6 aparelhos e a suíte completa.
+   **Falta da fase 2:** os testes que abrem `src/checklist-residencia.html` passarem a abrir o `index.html`, e o gerado sair do
+   repositório (vira saída do build).
 4. **Dados e textos** (temas, incidência, Ajuda) em `.js` próprios ou embutidos pelo build, sem carga assíncrona;
    ampliar `tests/unit/`.
 
@@ -41,8 +55,9 @@ de 2 s ou se o app instalado passar de 1 s.
 
 ## Consequências
 
-- (+) cada trecho cabe numa conversa (o maior tem 80 KB); mudanças menores e revisáveis
+- (+) cada trecho cabe numa conversa (fase 1: o maior com 80 KB; fase 2: o maior com 61 KB); mudanças menores e revisáveis
 - (+) base para testes unitários
 - (−) o build junta vários arquivos; editar o gerado à mão é barrado pelo build
 - (−) a fase 2 muda a ordem do código; a análise do topo e o teste de abertura reduzem o risco
+- (+) depois da fase 2, cada assunto mora num lugar só; mapa dos módulos no CLAUDE.md (Como atualizar, item 1)
 - O artefato do Claude continua congelado: ele exige o arquivo inteiro.

@@ -1,0 +1,6 @@
+{
+  "name": "nexus-divisao",
+  "private": true,
+  "description": "Ferramentas da divisão do código em módulos (docs/adr/001-divisao-em-modulos.md)",
+  "dependencies": { "acorn": "8.19.0", "eslint-scope": "8.4.0" }
+}
