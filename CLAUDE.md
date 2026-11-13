@@ -6,7 +6,7 @@ como `--accent`. Fontes: Cormorant Garamond (`--display`, títulos) e Manrope (`
 
 Checklist de estudos para residência médica (198 temas, plano do dia, revisões espaçadas,
 faculdade, questões, anotações, caderno de erros, foco). Abas: Início (view `inicio`, padrão), Residência (view `temas`),
-Faculdade, Questões, Caderno (view `notas`, antes "Anotações"), Estatísticas (view `stats`), Foco, Erros; no celular Caderno, Estatísticas e Foco ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
+Faculdade, Questões, Cartões (view `cartoes`, desde 13/11/2026), Caderno (view `notas`, antes "Anotações"), Estatísticas (view `stats`), Foco, Erros; no celular Caderno, Estatísticas, Foco e Erros ficam no ≡ Menu (`#tabM` abre `#navMenu`; a view `mais` mostra a mesma lista). Existe em duas versões com o MESMO código:
 
 - **Site** (este repositório, GitHub Pages): https://elialdojunior91tmedicins.github.io/Trilha-Medica/
 - **Artefato no Claude** (congelado na versão de 30/10/2026 por decisão do usuário em 05/11/2026: "Ficar só com o site"; não republicar): https://claude.ai/artifact/4jniuB68sNVjGFhfT2n4jQ
@@ -24,7 +24,7 @@ consultado quando há dúvida. Responda em português.
    (markdown, `[[links]]`, selos, editor, fluxograma) · `040-plano` (plano do dia, revisões, semana, eixo, modo provas) · `050-residencia`
    (lista, filtros, tema aberto, agenda, mapa) · `060-faculdade/` (estrutura, provas, grade, telas) · `070-arquivos` (Word/PowerPoint,
    materiais, figuras) · `080-questoes/` (gerador, ações da questão, aba, Refazer, simulado) · `090-caderno/` (página, pegadinhas, livre e PDF,
-   ler arquivo) · `100-cartoes` · `110-erros/` (dados, revisar, aba) · `120-inicio` (fila, saudação, placar, projeção) · `130-foco` ·
+   ler arquivo) · `100-cartoes/` (base: FSRS, erro → cartão, lote, editor, Anki; dados: contas da aba; aba: Hoje, Todos, Números) · `110-erros/` (dados, revisar, aba) · `120-inicio` (fila, saudação, placar, projeção) · `130-foco` ·
    `140-geral/` (peças comuns: dica, filtros `fc*`, tela inteira, avisos, lixeira; busca, primeiros passos, .ics, Ajuda; navegação, `render`,
    `renderAll`) · `150-perfil` (preferências `ui`, Perfil, Configurações, catálogo de provas) · `160-pdf` · `170-estatisticas` ·
    `180-banco/` (dados, tela, provas oficiais) · `190-provas/` (dados, importar, fazer a prova) · `200-backup` · `210-conta` (gravação,
@@ -167,6 +167,7 @@ Cada tela e cada lote tem um bloco lá, com funções, ids, formatos e as decis�
 - Banco de questões B4 · provas oficiais: leitor da Medway, gabarito, comentários, subtópico
 - Banco de questões B5 · High Yield pelo banco, acerto por banca, conceito recorrente
 - Revisões: histórico e recuperação do atraso
+- Aba Cartões
 - Banco de questões: as decisões do plano (30/10 a 12/11/2026)
 
 ## Decisões que valem sempre

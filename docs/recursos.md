@@ -95,7 +95,7 @@ deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no esti
   "Para reler hoje" (`nTodayCard`, `s.nread`), pegadinhas `pegOf(k)` (linhas "> ", ==destaque==, seção "Pegadinhas"), cobertura
   `noNoteKeys()`/`nNoNote`, cartões `cards` = [{id,k,q,a,box,due,n,ok,src}] (`resid-cards-v1` + Firestore `progress/cards/{id}`,
   `cardsBlock` no tema, `cdGenerate` via `sample.json`, revisão Leitner `CD_INT` em `nCardsCard`; backup `data.cards`).
-  Cartões (Lote 5, 10/2026; `js/100-cartoes.js`): cada cartão `{id,k,q,a,ref?,h?,kind?,eid?,src,due,n,ok,box,at?,f:{st,s,d,last,reps,lapses,first}}`
+  Cartões (Lote 5, 10/2026; hoje em `js/100-cartoes/010-base.js`; desde 13/11/2026 a tela fica na aba Cartões, veja "Aba Cartões"): cada cartão `{id,k,q,a,ref?,h?,kind?,eid?,src,due,n,ok,box,at?,f:{st,s,d,last,reps,lapses,first}}`
   (`h`=1 = campos em HTML simples do padrão Osler, mostrados por `cdSafe`; `st` 0 novo, 1 aprendendo, 2 revisão, 3 reaprendendo). FSRS-4.5 em dias (`FW`, `fsNext(x,g)` → `{f,days}`,
   `days`=0 = volta na mesma sessão; `fsPreview`, `fsLab`); `cdClean` migra os antigos pelo `box` (revisão com `s`=`CD_INT[box]`). `cdDue()` = vencidos + novos até `cdNewLimit()`
   (`ui.prefs.cdNew`, padrão 14; `cdNewToday` pelo `f.first`). Tela `nCardsCard0` (título "Cartões"): resumo `.cdsum`, previsão `.cdfc` (`cdForecast`, 7 dias), `#cdGo` → `cdRunStart`,
@@ -571,6 +571,59 @@ deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no esti
   Tela: aviso `recNoteEl(sfx)` no Início (`#recNote`, em `iNoticeEl`) e no topo das revisões (`#recNoteR`), botões `#recSee`/`#recUndo`/`#recX` (+sufixo; fechar grava `resid-recdis`);
   `.recorig` "era para DD/MM" (`recOrig(s)`) nos cartões das revisões e no tema aberto; Próximos dias com `.agday.rec` e `#agRec` (`recLine()`); fila concluída → `#recMore` "Revisar mais 3 do atraso" (`recPull(n)`).
   Testes: `tests/unit/revisoes.test.js`, `tests/t153.js`; capturas `tests/shotsRev.js`.
+
+## Aba Cartões
+
+- Aba Cartões (13/11/2026; desenho `docs/superpowers/specs/2026-11-13-aba-cartoes-design.md`, plano em `docs/superpowers/plans/`). **Módulo:** `js/100-cartoes/`.
+  - `010-base.js`: o antigo `100-cartoes.js` (FSRS, erro → cartão, lote, editor, árvore, Anki).
+  - `020-dados.js`: funções puras.
+  - `030-aba.js`: as telas.
+- **Navegação:**
+  - view `cartoes` (`#viewCards`, `#cdBody`), aba `#tabC` depois de `#tabQ`, contagem `#ccount` = `cdDue().length`;
+  - no celular `#tabE` some da barra (CSS em `html[data-layout="phone"] .appnav #tabE`) e Erros fica no ≡ Menu; `#tabM` aceso também com `erros`;
+  - partes `cSeg` hoje|todos|numeros (`resid-cseg`, `#cSegBar` em todos os tamanhos, `setCSeg`);
+  - todo caminho passa por `cdOpen(seg,{k,leech,pick,run,gen,go,novo})`: fila do dia `qGoStep("cards")` (`go`), `nextSteps`, `cdGenGo`, `cdGoCards`, grade da faculdade (`run`), busca (`pick`) e o bloco do tema `cardsBlock` (`.cdseeall` "Ver os N cartões" → Todos com `cdF.k`);
+  - tela inteira `fullOn.cd` e as teclas (espaço, 1–4; ignoradas em campo de texto) valem na view `cartoes`.
+  - **Caderno sem "Revisar"**: `nSeg` só livre|pegadinhas ("revisar" salvo vira livre); `#nRevBox` (classe `ns-free`) guarda só o `#nNoLine`.
+- **Dados:**
+  - `x.rv=[{d,g,i,r?,m?}]`, as últimas `CD_RV_MAX`=30 (`cdLog`, chamado em `cdAnswer`; o treino extra não chama);
+    - `g` 1–4, `i` intervalo que saiu;
+    - `r:1` = o cartão estava em revisão (`f.st===2`), e só esses contam no "quanto lembra";
+    - `m:1` = estava maduro (intervalo agendado ≥ `CD_MAT`=21).
+  - `x.su=1` suspenso; `cdLive(x)` = tema existe, sem rascunho, sem suspenso. Usado em `cdDue`, `cdForecast`, `cdReady`, `cdGenIds`, árvore, `eByCard` (erro com cartão suspenso volta à revisão de erros), contagem do Início e "Cartões da SP".
+  - `x.og` = origem sem `eid` (tr trecho, q questão; gravado por `cdErrSave`); cartão manual `kind:"man"`.
+  - `cdClean` guarda `rv`/`su`/`og`, que vão no backup e nos pacotes como o resto do cartão.
+  - `apkgCardRow`: cartão novo vai ao Anki como novo (type 0, queue 0).
+- **Funções puras** (`020-dados.js`):
+  - `cdTxt` (texto sem HTML), `cdState`, `cdOrigin`;
+  - `cdParsePaste` (`::` ou tabulação), `cdWords`/`cdDupOf(k,q,except)` (igual ou ≥ `CD_DUP`=80% das palavras com 3+ letras);
+  - `cdFilter(L,{q,area,k,st,org,leech,sort})`, `cdLeeches(n)` (`lapses` ≥ `CD_LEECH`=4);
+  - `cdStats(L,a,b)` → `{n,pass,young,mat,byDay,first}`, `cdStreak`, `cdMix`.
+- **Hoje** (`cdHojeEls`):
+  - o `nCardsCard0`, com o título "Revisão de hoje", mais `#cdLine` "N para revisar · M novos · ~X min";
+  - `#cdNew` "+ Novo cartão" ao lado de `#cdGo`;
+  - criador `cdNewEl` (`#cdNewBox`, estado `cdNS`, modos `#cdnM-um|varios|claude`):
+    - busca de tema `cdTopicPick(id,onPick)` (atualiza só a lista), último tema em `resid-cdlastk`;
+    - um cartão: `#cdnQ`/`#cdnA`, `#cdnMore`, `#cdnSave`; repetido `#cdnDup` com `#cdnDupGo` e `#cdnDupSee`;
+    - colar vários: `#cdnPaste`, `#cdnRead`, `#cdnPrev`, `.cdnchk`, `#cdnBad`, `#cdnMany`;
+    - com o Claude: até 5 temas, um `cardsBlock` por tema;
+  - "Cartões que você mais esquece" `cdLeechEl` (`#cdLeech`, `.cdlrow`, `#cdLE-`/`#cdLJ-<id>` Editar e Juntar ao lote, `#cdLAll`).
+- **Todos** (`cdAllEl`):
+  - `cdF` (ordem em `resid-cdsort`), busca `#cdQ` (redesenha só a lista), filtros `#cdfArea`/`#cdfSt`/`#cdfOrg`/`#cdfSort`, chips `#cdfK` e `#cdfLeech`;
+  - lista `#cdList` `.cdrow[data-id]` (`.cdrq`), de 50 em 50 (`cdLim`, `#cdMore`), vazio `#cdEmpty`;
+  - `cdPick` abre o editor (`cdEdFor`): no computador em `#cdSide`, sem tirar a lista; sem duas colunas, sozinho, com `#cdBackList`;
+  - o editor `cdEditEl` ganha `.cdeacts`: `#cdeSu` Suspender/Reativar, `#cdeK` Trocar de tema (`#cdeKT`), `#cdeDel` Apagar;
+  - Selecionar `#cdSelOn` (`cdSel`): `#cdBulk` com `#cdSelAll`, `#cdbK` (`#cdbKT`), `#cdbSu`, `#cdbRe`, `#cdbDel` (`cdBulkDel`: lixeira com um item só), `#cdbAnki` (`cdBulkAnki`: o mesmo `cdExp`/"Já importei no Anki"; sem rascunhos) e `#cdSelOff`.
+- **Números** (`cdNumEl`): período `cdPer` 7|30|90|Tudo (`resid-cdper`, `#cdP-*`); `#cdnFew` quando há menos de 20 revisões `r:1`. Cartões `.stcard`:
+  - `#cdnRet`: quanto lembra, jovens × maduros, meta `CD_GOAL`=90%;
+  - `#cdnDay`: por dia até 31 dias, por semana acima;
+  - `#cdnFc`: previsão de 30 dias;
+  - `#cdnMix`: situação;
+  - `#cdnArea`: % com 10 revisões ou mais;
+  - `#cdnLeech`: os 10 mais esquecidos (`#cdnE-<id>`);
+  - `#cdnCal`: `.cdcd` `.l0–l4`, 27 semanas a partir da segunda, com `#cdnStreak`.
+  - `stW()` mede a view aberta.
+- **Testes:** `tests/unit/cartoes.test.js` e `tests/t154.js` (partes A–D: `node t154.js A`). Ajustados: t61, t70, t74, t85, t105, t110, t121, t134 (entram por `cdOpen`); `dados.test.js` (19 assuntos na Ajuda, com "Cartões").
 
 ## Banco de questões: as decisões do plano (30/10 a 12/11/2026)
 

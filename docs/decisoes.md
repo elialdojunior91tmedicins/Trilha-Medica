@@ -58,10 +58,14 @@ com a data e não apague o histórico.
 - **Histórico de cada revisão e retenção** (no prazo × atrasadas) nas Estatísticas e no tema; ajustar intervalos pelos dados fica para depois de ~2 meses.
 - **Recuperação do atraso automática** (abordagem A, 13/11, 07h33): espalha em até 14 dias, mais esquecidas primeiro, limite +2 por dia, "era para", Revisar mais 3, Desfazer (vale aquele dia, em todos os aparelhos); 1 tema novo por dia durante ela. Recusada: modo recuperação sem mexer nas datas (B). (docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md)
 
+## Cartões (13/11/2026)
+
+- **Aba própria** (pedido 12/11, 14h53): no celular no lugar de **Erros**, que foi para o ≡ Menu (13/11, 08h54). Partes Hoje · Todos · Números.
+- Sugestões aceitas (13/11, 09h06): todas de 1 a 18, menos a **6 (cartão de lacuna), recusada**. Histórico de cada revisão (30 por cartão); "lembrou" = Difícil/Bom/Fácil; maduro = 21 dias; mais esquecido = 4 vezes. (docs/superpowers/specs/2026-11-13-aba-cartoes-design.md)
+
 ## Aprovado e ainda não feito
 
 - Ajustar os intervalos pela retenção das revisões — depois de ~2 meses de histórico (13/11/2026). (claude/sugestoes-12-11.md)
-- **Cartões (flashcards) numa aba própria**, fora do Caderno — pedido em 12/11/2026, 14h53; desenho a combinar. (claude/sugestoes-12-11.md)
 - **Revisar com questões do banco** (a nota da revisão sai do acerto) — guardado para quando o banco tiver **5.000 questões** (12/11/2026). (claude/sugestoes-12-11.md)
 - Contador de uso só no aparelho, para basear um novo lote de enxugamento — mais adiante (12/11/2026). Demais sugestões de 12/11 (por aba, beleza, código): guardadas para depois, em claude/sugestoes-12-11.md.
 - Provas, entregas e fechamentos no **Calendário do iPhone** pela conta Google (agenda "Nexus", só leitura, sem alertas) — opção A, 01/11/2026, 08h23. (claude/integracoes.md)
