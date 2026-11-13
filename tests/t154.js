@@ -77,5 +77,40 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
     ok(await p.evaluate(()=>document.querySelectorAll("#cdNewBox .cdnblk .cardsblk").length===2),name+": Com o Claude mostra um bloco por tema");await p.evaluate(()=>{cdNewOpen=false;cdNS.mode="um";cdNS.ks=[];render()})}
   ok(await wide()<=w,name+": criador sem rolagem lateral");
  }
+ if(PART.includes("C")){
+  await p.evaluate(SEED=>{eval(SEED);const k1=ALL[1].key;for(let i=0;i<120;i++)cards.push(cdClean({id:"cdx"+i,k:k1,q:"Cartão em massa "+i,a:"r",src:"eu",at:new Date(Date.now()-i*1000).toISOString()}));cdSaveLocal();cdPick=null;cdSel=null;cdF={sort:"due"};cdOpen("todos")},SEED);await p.waitForTimeout(200);
+  let r=await p.evaluate(()=>({rows:document.querySelectorAll("#cdList .cdrow").length,more:!!$("#cdMore")}));ok(r.rows===50&&r.more,name+": lista mostra 50 e Mostrar mais "+JSON.stringify(r));
+  await tap("#cdMore");ok(await p.evaluate(()=>document.querySelectorAll("#cdList .cdrow").length===100),name+": Mostrar mais traz 100");
+  await p.fill("#cdQ","leucoplasia");await p.waitForTimeout(150);
+  r=await p.evaluate(()=>[...document.querySelectorAll("#cdList .cdrow")].map(x=>x.textContent));ok(r.length===1&&/leucoplasia/i.test(r[0]),name+": busca filtra "+r.length);
+  ok(await p.evaluate(()=>document.activeElement&&document.activeElement.id==="cdQ"),name+": a busca não perde o foco ao filtrar");
+  await p.fill("#cdQ","");await p.waitForTimeout(100);
+  await p.selectOption("#cdfSt","suspenso");await p.waitForTimeout(150);ok(await p.evaluate(()=>document.querySelectorAll("#cdList .cdrow").length===0&&!!$("#cdEmpty")),name+": filtro Suspensos vazio");
+  await p.selectOption("#cdfSt","");await p.waitForTimeout(100);
+  const id=await p.evaluate(()=>cards.find(x=>/leucoplasia/.test(x.q)).id);
+  await tap(`.cdrow[data-id="${id}"] .cdrq`);
+  r=await p.evaluate(()=>({ed:!!$("#cdEdit"),side:!!document.querySelector("#cdSide #cdEdit"),list:!!$("#cdList")&&$("#cdList").offsetParent!==null,back:!!$("#cdBackList")}));
+  if(mob)ok(r.ed&&!r.list&&r.back,name+": no celular o editor abre sozinho com Voltar à lista "+JSON.stringify(r));
+  else ok(r.ed&&r.side&&r.list,name+": no computador o editor fica ao lado da lista "+JSON.stringify(r));
+  await tap("#cdeSu");ok(await p.evaluate(id=>cards.find(x=>x.id===id).su===1&&!cdDue().some(x=>x.id===id),id),name+": Suspender tira da revisão");
+  ok(await p.evaluate(()=>/Reativar/.test(($("#cdeSu")||{}).textContent||"")),name+": botão vira Reativar");
+  if(mob)await tap("#cdBackList");
+  await p.selectOption("#cdfSt","suspenso");await p.waitForTimeout(150);ok(await p.evaluate(()=>document.querySelectorAll("#cdList .cdrow").length===1),name+": filtro Suspensos mostra 1");
+  await p.selectOption("#cdfSt","");await p.waitForTimeout(100);
+  /* selecionar vários */
+  await p.evaluate(()=>{cdPick=null;cdEd=null;render()});await tap("#cdSelOn");
+  const two=await p.evaluate(()=>[...document.querySelectorAll("#cdList .cdrow")].slice(0,2).map(x=>x.dataset.id));
+  for(const t of two)await tap(`.cdrow[data-id="${t}"] .cdsel`);
+  ok(await p.evaluate(()=>/2/.test(($("#cdBulk")||{}).textContent||"")),name+": barra com 2 selecionados");
+  await tap("#cdbSu");ok(await p.evaluate(two=>two.every(i=>cards.find(x=>x.id===i).su===1),two),name+": Suspender os 2");
+  await tap("#cdbRe");ok(await p.evaluate(two=>two.every(i=>!cards.find(x=>x.id===i).su),two),name+": Reativar os 2");
+  await p.evaluate(()=>{cdSel=new Set();render()});await tap(`.cdrow[data-id="${two[0]}"] .cdsel`);await tap("#cdbK");
+  await p.fill("#cdbKT",await p.evaluate(()=>ALL[5].t.slice(0,6)));await p.waitForTimeout(100);await tap("#cdbKT-0");
+  ok(await p.evaluate(t=>cards.find(x=>x.id===t).k===ALL[5].key,two[0]),name+": Trocar de tema");
+  const n0=await p.evaluate(()=>cards.length);await p.evaluate(()=>{cdSel=new Set();render()});await tap(`.cdrow[data-id="${two[1]}"] .cdsel`);await tap("#cdbDel");
+  ok(await p.evaluate(n=>cards.length===n-1,n0),name+": Apagar tira o cartão (vai para a lixeira)");
+  await p.evaluate(()=>{cdSel=null;render()});
+  ok(await wide()<=w,name+": Todos sem rolagem lateral");
+ }
  await ctx.close()}
 ok(!errs.length,"sem erros de JavaScript "+errs.join(" | "));await b.close()})();
