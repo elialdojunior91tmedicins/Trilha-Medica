@@ -3,7 +3,7 @@ const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64],CD_ANKI=40;
 /* aba Cartões (13/11/2026): histórico de cada revisão (x.rv) e suspenso (x.su); números fixos do desenho */
 const CD_RV_MAX=30,CD_MAT=21,CD_GOAL=.9,CD_LEECH=4,CD_DUP=.8;
 const cdLive=x=>!!BYKEY[x.k]&&!x.dr&&!x.su;
-function cdLog(x,g,days,wasRev){const L=Array.isArray(x.rv)?x.rv:[];const r={d:today(),g,i:days};if(wasRev)r.r=1;L.push(r);x.rv=L.slice(-CD_RV_MAX)}
+function cdLog(x,g,days,wasRev,wasMat){const L=Array.isArray(x.rv)?x.rv:[];const r={d:today(),g,i:days};if(wasRev)r.r=1;if(wasMat)r.m=1;L.push(r);x.rv=L.slice(-CD_RV_MAX)}
 let cards=[],cardStore=null,cdRun=null,cdGen={},cdNew={},cdErr={},cdExp=null;
 try{const v=JSON.parse(localStorage.getItem("resid-cdexp")||"null");if(v&&Array.isArray(v.ids))cdExp=v}catch(e){}
 /* FSRS-4.5 (pesos padrão), em dias */
@@ -28,7 +28,7 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
   const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
   if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;if(x.su)o.su=1;if(typeof x.og==="string")o.og=x.og.slice(0,4);
-  if(Array.isArray(x.rv)){const R=x.rv.filter(r=>r&&D.test(r.d)&&[1,2,3,4].includes(r.g)).map(r=>{const y={d:r.d,g:r.g,i:Number.isFinite(+r.i)?Math.max(0,Math.round(+r.i)):0};if(r.r)y.r=1;return y}).slice(-CD_RV_MAX);if(R.length)o.rv=R}return o}
+  if(Array.isArray(x.rv)){const R=x.rv.filter(r=>r&&D.test(r.d)&&[1,2,3,4].includes(r.g)).map(r=>{const y={d:r.d,g:r.g,i:Number.isFinite(+r.i)?Math.max(0,Math.round(+r.i)):0};if(r.r)y.r=1;if(r.m)y.m=1;return y}).slice(-CD_RV_MAX);if(R.length)o.rv=R}return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
@@ -39,7 +39,7 @@ const cdNewToday=()=>cards.filter(x=>x.f.first===today()).length;
 /* fila de hoje: revisões e aprendizado vencidos + novos até o limite do dia */
 function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>cdLive(x)&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
   const nw=left?cards.filter(x=>cdLive(x)&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
-function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const wasRev=x.f&&x.f.st===2,N=fsNext(x,g);cdLog(x,g,N.days,wasRev);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
+function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const wasRev=x.f&&x.f.st===2,wasMat=wasRev&&x.f.last&&dnum(x.due)-dnum(x.f.last)>=CD_MAT,N=fsNext(x,g);cdLog(x,g,N.days,wasRev,wasMat);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
 const cdReady=()=>cards.filter(x=>cdLive(x)&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
 function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>cdLive(x)&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
 /* texto dos cartões: os novos (h=1) guardam HTML simples do padrão Osler; o app só deixa passar b, i, u, br, listas */

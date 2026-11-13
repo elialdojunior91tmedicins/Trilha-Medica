@@ -57,3 +57,68 @@ test("apkgCardRow: cartão novo vai como novo no Anki; em revisão, com interval
   assert.equal(N[6], 0); assert.equal(N[7], 0); assert.equal(N[8], 7); assert.equal(N[9], 0);
   assert.equal(R[6], 2); assert.equal(R[7], 2); assert.ok(R[9] > 0);
 });
+
+test("cdParsePaste: '::' ou tabulação; linhas em branco ignoradas; linhas ruins listadas", () => {
+  const A = novo(), R = A.cdParsePaste("a :: b\n\nc\td\nsem separador\n x ::  ");
+  assert.deepEqual([...R.ok].map(o => [o.q, o.a, o.line]), [["a", "b", 1], ["c", "d", 3]]);
+  assert.deepEqual([...R.bad], [4, 5]);
+});
+
+test("cdDupOf: igual ou quase igual no mesmo tema; outro tema não conta", () => {
+  const A = novo(), x = mk(A, { q: "Qual o agente da leucoplasia pilosa?" });
+  assert.equal(A.cdDupOf(K(A), "qual é o agente da leucoplasia pilosa").id, x.id);
+  assert.equal(A.cdDupOf(A.ALL[1].key, "qual é o agente da leucoplasia pilosa"), null);
+  assert.equal(A.cdDupOf(K(A), "Qual o tratamento da sífilis latente tardia?"), null);
+  assert.equal(A.cdDupOf(K(A), "Qual o agente da leucoplasia pilosa?", x.id), null, "o próprio cartão não conta");
+});
+
+test("cdStats: quanto lembra (só em revisão), jovens × maduros, revisões por dia e primeiro dia", () => {
+  const A = novo(), x = rev(A);
+  x.rv = Array.from({ length: 10 }, (_, i) => ({ d: ago(A, i), g: i < 8 ? 3 : 1, i: 5, r: 1, ...(i < 3 ? { m: 1 } : {}) }));
+  x.rv.push({ d: ago(A, 2), g: 3, i: 1 });
+  const S = A.cdStats(A.cards, A.dnum(HOJE) - 29, A.dnum(HOJE));
+  assert.equal(S.n, 10); assert.equal(S.pass, 8);
+  assert.deepEqual({ ...S.mat }, { n: 3, pass: 3 }); assert.deepEqual({ ...S.young }, { n: 7, pass: 5 });
+  assert.equal(S.byDay[ago(A, 2)], 2); assert.equal(S.first, ago(A, 9));
+});
+
+test("cdStreak: dias seguidos até hoje (ou até ontem, se hoje ainda não teve)", () => {
+  const A = novo(), T = HOJE;
+  assert.equal(A.cdStreak({ [T]: 3, [ago(A, 1)]: 1 }, T), 2);
+  assert.equal(A.cdStreak({ [ago(A, 1)]: 1, [ago(A, 2)]: 4 }, T), 2);
+  assert.equal(A.cdStreak({ [T]: 1, [ago(A, 2)]: 4 }, T), 1);
+  assert.equal(A.cdStreak({}, T), 0);
+});
+
+test("cdState e cdOrigin", () => {
+  const A = novo();
+  assert.equal(A.cdState(mk(A, { dr: 1 })), "rascunho");
+  assert.equal(A.cdState(rev(A, { su: 1 })), "suspenso");
+  assert.equal(A.cdState(mk(A)), "novo");
+  assert.equal(A.cdState(mk(A, { f: { st: 1, s: 1, d: 5, last: HOJE } })), "aprendendo");
+  assert.equal(A.cdState(rev(A)), "revisao");
+  assert.equal(A.cdOrigin(mk(A, { eid: "e1", src: "claude", kind: "disc" })), "erro");
+  assert.equal(A.cdOrigin(mk(A, { og: "tr", kind: "lac" })), "trecho");
+  assert.equal(A.cdOrigin(mk(A, { og: "q", kind: "disc" })), "questao");
+  assert.equal(A.cdOrigin(mk(A, { kind: "man" })), "manual");
+  assert.equal(A.cdOrigin(mk(A, { src: "claude" })), "claude");
+  assert.equal(A.cdOrigin(mk(A)), "manual");
+});
+
+test("cdFilter: busca sem acento, situação, mais esquecidos e ordem", () => {
+  const A = novo();
+  const a = rev(A, { q: "Leucoplasia pilosa: agente?", due: ago(A, 2), f: { st: 2, s: 9, d: 5, last: ago(A, 20), reps: 9, lapses: 5 } });
+  const b = rev(A, { q: "Sífilis latente", due: ago(A, 5) }), c = rev(A, { q: "Outro", su: 1 }), n = mk(A, { q: "Novo cartão" });
+  assert.deepEqual([...A.cdFilter(A.cards, { q: "sifilis" }).map(x => x.id)], [b.id]);
+  assert.deepEqual([...A.cdFilter(A.cards, { st: "suspenso" }).map(x => x.id)], [c.id]);
+  assert.deepEqual([...A.cdFilter(A.cards, { leech: true }).map(x => x.id)], [a.id]);
+  assert.deepEqual([...A.cdFilter(A.cards, {}).map(x => x.id)], [b.id, a.id, n.id, c.id], "próxima revisão; novos e suspensos no fim");
+  assert.equal(A.cdFilter(A.cards, { sort: "lapses" })[0].id, a.id);
+  assert.deepEqual([...A.cdLeeches(5).map(x => x.id)], [a.id]);
+});
+
+test("cdMix: novos, aprendendo, jovens, maduros e suspensos", () => {
+  const A = novo();
+  mk(A); rev(A); rev(A, { due: ago(A, -30) }); rev(A, { su: 1 }); mk(A, { f: { st: 1, s: 1, d: 5, last: HOJE } }); mk(A, { dr: 1 });
+  assert.deepEqual({ ...A.cdMix(A.cards) }, { novo: 1, aprendendo: 1, jovem: 1, maduro: 1, suspenso: 1 });
+});
