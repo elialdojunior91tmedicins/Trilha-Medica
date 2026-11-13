@@ -53,9 +53,14 @@ com a data e não apague o histórico.
 - Conteúdo da faculdade ligado a vários temas da Residência: conta como estudado quando **todos** estiverem estudados; notas, erros e cartões aparecem nos dois lados (11/10 e 14/10/2026). (claude/problemas-a-resolver.md)
 - Filtros: um vocabulário só (segmento, chip, lista), períodos 7 · 15 · 30 · 60 · 90 · Tudo; as partes de navegação das abas ficam fora (29/10/2026, 08h41). (claude/problemas-a-resolver.md)
 
+## Revisões (13/11/2026, publicado)
+
+- **Histórico de cada revisão e retenção** (no prazo × atrasadas) nas Estatísticas e no tema; ajustar intervalos pelos dados fica para depois de ~2 meses.
+- **Recuperação do atraso automática** (abordagem A, 13/11, 07h33): espalha em até 14 dias, mais esquecidas primeiro, limite +2 por dia, "era para", Revisar mais 3, Desfazer (vale aquele dia, em todos os aparelhos); 1 tema novo por dia durante ela. Recusada: modo recuperação sem mexer nas datas (B). (docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md)
+
 ## Aprovado e ainda não feito
 
-- **Histórico das revisões** (guardar cada resposta, não só a última; mostrar a retenção e ajustar os intervalos) e **plano de recuperação do atraso** ("zerar em N dias") — aprovados em 12/11/2026, 14h53. (claude/sugestoes-12-11.md)
+- Ajustar os intervalos pela retenção das revisões — depois de ~2 meses de histórico (13/11/2026). (claude/sugestoes-12-11.md)
 - **Cartões (flashcards) numa aba própria**, fora do Caderno — pedido em 12/11/2026, 14h53; desenho a combinar. (claude/sugestoes-12-11.md)
 - **Revisar com questões do banco** (a nota da revisão sai do acerto) — guardado para quando o banco tiver **5.000 questões** (12/11/2026). (claude/sugestoes-12-11.md)
 - Contador de uso só no aparelho, para basear um novo lote de enxugamento — mais adiante (12/11/2026). Demais sugestões de 12/11 (por aba, beleza, código): guardadas para depois, em claude/sugestoes-12-11.md.

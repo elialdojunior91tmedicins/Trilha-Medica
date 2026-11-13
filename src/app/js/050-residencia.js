@@ -97,8 +97,10 @@ function renderDetail(it,o={}){
   else{const next=fromNum(dnum(today())+d);
     const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;pill.textContent=dueLabel(d);g2.dataset.st=d<0?"late":d===0?"today":"ok";
     p.innerHTML=`<span class="dnext">Próxima revisão: <b></b></span><span class="dsub"></span>`;p.querySelector("b").textContent=br(next);
-    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
-    bt.appendChild(revBtns(it.key,"drevb"));}
+    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.${s.rc?` Remanejada pela recuperação do atraso: era para ${br(recOrig(s))}.`:""}`;
+    bt.appendChild(revBtns(it.key,"drevb"));
+    if(Array.isArray(s.rv)&&s.rv.length){const L=s.rv,u=L[L.length-1],lem=L.filter(e=>e.g===2).length,ago=dnum(today())-dnum(u.d);
+      const h=el(`<p class="how drevh"></p>`);h.textContent=`${L.length} ${L.length===1?"revisão":"revisões"} · lembrou ${lem} · última: ${["Esqueci","Difícil","Lembrei"][u.g]||"—"} (${ago===0?"hoje":ago===1?"ontem":"há "+ago+" dias"})`;bt.before(h)}}
   box.appendChild(g2);
   // subtópicos
   const L=subList(it),[sdn,stot]=subCount(it);
@@ -282,11 +284,12 @@ function renderAgenda0(box){const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.m
   if(!tot){box.appendChild(el(`<p class="cempty">Nenhuma revisão nos próximos 14 dias. Elas aparecem aqui conforme você estuda os temas.</p>`));return}
   const g=el(`<div class="agrid" role="list"></div>`);
   D.forEach((list,i)=>{const day=fromNum(T+i),dt=new Date(T*864e5),w=wd[(new Date(day+"T12:00:00").getDay())],over=list.length>cap;
-    const b=el(`<button type="button" class="agday${i===0?" now":""}${over?" over":""}${agOpen===i?" sel":""}" role="listitem"><span class="agn">${list.length||""}</span><span class="agb"><i style="height:${list.length/mx*100}%"></i></span><span class="agw">${w}</span><span class="agd">${br(day).slice(0,2)}</span></button>`);
+    const b=el(`<button type="button" class="agday${i===0?" now":""}${over?" over":""}${agOpen===i?" sel":""}${list.some(it=>get(it.key).rc)?" rec":""}" role="listitem"><span class="agn">${list.length||""}</span><span class="agb"><i style="height:${list.length/mx*100}%"></i></span><span class="agw">${w}</span><span class="agd">${br(day).slice(0,2)}</span></button>`);
     b.dataset.tip=`${i===0?"Hoje (com as atrasadas)":["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"][new Date(day+"T12:00:00").getDay()]+" "+br(day)}: ${list.length} ${list.length===1?"revisão":"revisões"}`;b.onclick=()=>{agOpen=agOpen===i?null:i;render()};g.appendChild(b)});
   box.appendChild(g);
   const over=D.filter(x=>x.length>cap).length;
   const info=el(`<p class="how"></p>`);info.textContent=`${tot} ${tot===1?"revisão":"revisões"} em 14 dias · ritmo confortável: até ${cap} por dia.${over?` ${over} ${over===1?"dia passa":"dias passam"} disso.`:""}`;box.appendChild(info);
+  {const rl=recLine();if(rl){const m=el(`<p class="pnote agrec" id="agRec"></p>`);m.textContent=rl+". Os dias com a marca dourada têm revisões da recuperação.";box.appendChild(m)}}
   if(agMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=agMsg;box.appendChild(m)}
   if(over){const eb=el(`<button class="btn" type="button" id="agBal">Equilibrar</button>`);eb.onclick=agBalance;box.appendChild(eb);
     box.appendChild(el(`<p class="how hx">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}

@@ -54,8 +54,59 @@ function revNext(s,g){const st=s.step||0,mx=INT.length-1;if(g===1)return st;if(g
   if(s.last){const gone=dnum(today())-dnum(s.last),pl=interval(s);if(gone>pl)while(n<mx&&INT[n]<gone)n++}return n}
 function revPreview(s,g){const n=revNext(s,g),x={...s,step:n,last:today()};delete x.adj;delete x.adjFrom;return interval(x)}
 function reviewTopic(k,good,o){const g=good===true?2:good===false?1:good,it=itemByKey(k);o=o||{};
-  upd(k,x=>{if(it)markSubsReviewed(x,it);const n=revNext(x,g);x.last=today();x.step=n;x.rg=g;if(o.auto)x.ar={d:today(),a:o.acc};else delete x.ar;if(g===2)x.l=Math.max(x.l||0,2)});
+  upd(k,x=>{if(it)markSubsReviewed(x,it);revLog(x,g,o);const n=revNext(x,g);x.last=today();x.step=n;x.rg=g;if(o.auto)x.ar={d:today(),a:o.acc};else delete x.ar;if(g===2)x.l=Math.max(x.l||0,2)});
   logAct("r");markReviewed(k);if(!o.quiet)commit()}
+/* Histórico das revisões (13/11/2026; docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md):
+   s.rv = [{d,g,l,i,a?}] (as REV_HIST_MAX mais novas, a última no fim): dia, resposta (0 Esqueci · 1 Difícil · 2 Lembrei), dias de atraso contra a
+   data ORIGINAL (sem o ajuste da recuperação ou do Equilibrar), intervalo previsto e a:1 = revisada sozinha pelas questões. Retenção: revStats. */
+const REV_HIST_MAX=40;
+function revIv(s){const x={...s};delete x.adj;delete x.adjFrom;return interval(x)}
+function revLate(s,T){if(!s||!s.last)return null;return dnum(T||today())-(dnum(s.last)+revIv(s))}
+function revLog(x,g,o){if(!x.last)return;const T=today(),L=Array.isArray(x.rv)?x.rv.slice():[],u=L[L.length-1];
+  if(u&&u.d===T){const e={...u,g};if(o&&o.auto)e.a=1;else delete e.a;L[L.length-1]=e;x.rv=L;delete x.rc;return}// revisou de novo no mesmo dia: vale a última resposta
+  const e={d:T,g,l:revLate(x,T),i:revIv(x)};if(o&&o.auto)e.a=1;x.rv=[...L,e].slice(-REV_HIST_MAX);delete x.rc}
+function revStats(L,from,to){const R={n:0,g2:0,g1:0,g0:0,ok:{n:0,g2:0},late:{n:0,g2:0}};
+  (L||[]).forEach(e=>{if(!e||(from&&e.d<from)||(to&&e.d>to))return;R.n++;R["g"+(e.g===2?2:e.g===1?1:0)]++;const b=(e.l||0)<=1?R.ok:R.late;b.n++;if(e.g===2)b.g2++});return R}
+/* Recuperação do atraso (13/11/2026): quando as atrasadas passam do que cabe em ~3 dias (REC_TRIG × limite diário), o app dá data nova a cada
+   uma e espalha em até REC_DAYS dias (sem folgas), as mais esquecidas primeiro (peso × atraso ÷ intervalo); o limite pode subir até +REC_EXTRA.
+   A data muda pelo mesmo ajuste do Equilibrar (adj/adjFrom, vale até a próxima revisão); s.rc={d,o} guarda o ajuste anterior para o Desfazer;
+   ui.prefs.rec={d,n,until,ov} = a recuperação em curso (sincroniza). Durante ela, 1 tema novo por dia (revBrake). */
+const REC_DAYS=14,REC_EXTRA=2,REC_TRIG=3,LSREC="resid-recchk";
+function recBase(){const n=[...ALL,...FAC_ITEMS].filter(it=>{const d=dueIn(get(it.key));return d!==null&&d>=0&&d<REC_DAYS}).length;return Math.max(3,Math.ceil(n/REC_DAYS*1.25))}
+function recPlan(items,D,cap,offs){const L=items.slice().sort((a,b)=>b.w*(b.late/Math.max(1,b.iv))-a.w*(a.late/Math.max(1,a.iv))||b.late-a.late);
+  let days=[...Array(REC_DAYS).keys()].filter(d=>!offs.has(d));if(!days.length)days=[REC_DAYS-1];const lastDay=days[days.length-1];
+  for(let c=cap;c<=cap+REC_EXTRA;c++){const used=D.slice(),asg={};let rest=[];
+    L.forEach(x=>{const d=days.find(d=>used[d]<c);if(d===undefined){rest.push(x);return}used[d]++;asg[x.k]=d});
+    if(!rest.length)return {asg,cap:c,last:Math.max(0,...Object.values(asg)),over:0};
+    if(c===cap+REC_EXTRA){rest.forEach(x=>asg[x.k]=lastDay);return {asg,cap:c,last:lastDay,over:rest.length}}}}
+function recLateItems(){return [...ALL,...FAC_ITEMS].filter(it=>{const d=dueIn(get(it.key));return d!==null&&d<0})}
+function recApply(T){T=T||today();const late=recLateItems();if(!late.length)return {n:0};const t=dnum(T),D=Array(REC_DAYS).fill(0),offs=new Set();
+  [...ALL,...FAC_ITEMS].forEach(it=>{const d=dueIn(get(it.key));if(d!==null&&d>=0&&d<REC_DAYS)D[d]++});
+  for(let d=0;d<REC_DAYS;d++)if(dayMin(t+d)===0)offs.add(d);
+  const items=late.map(it=>{const s=get(it.key);return {k:it.key,w:wOf(it)||2,late:Math.max(1,revLate(s,T)||0),iv:interval(s)}});
+  const P=recPlan(items,D,recBase(),offs);
+  Object.entries(P.asg).forEach(([k,d])=>{const s={...get(k)},had=s.adjFrom===s.last&&"adj" in s,base=dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)];
+    s.rc={d:T,o:had?[s.adj,s.adjFrom]:null};s.adj=t+d-base;s.adjFrom=s.last;state[k]=s});
+  const until=fromNum(t+P.last);ui.prefs.rec={d:T,n:late.length,until,ov:P.over};saveUI();return {n:late.length,until,over:P.over}}
+function recActive(){return [...ALL,...FAC_ITEMS].filter(it=>{const s=get(it.key);return s.rc&&s.adjFrom===s.last}).map(it=>it.key)}
+function recUndo(){recActive().forEach(k=>{const s={...get(k)},o=s.rc.o;if(o){s.adj=o[0];s.adjFrom=o[1]}else{delete s.adj;delete s.adjFrom}delete s.rc;state[k]=s});
+  delete ui.prefs.rec;ui.prefs.recNo=today();saveUI();try{localStorage.setItem(LSREC,today())}catch(e){}commit()}
+function recCheck(){const T=today();if(!synced||!uiLoaded)return false;// antes das preferências da conta chegarem, gravar aqui passaria por cima delas
+  if(ui.prefs.rec&&!recActive().length){delete ui.prefs.rec;saveUI()}
+  if(ui.prefs.recNo===T||lsGet(LSREC,"")===T||isOffDay()||examCrunch().active||provaWeek().length||recActive().length)return false;
+  try{localStorage.setItem(LSREC,T)}catch(e){}
+  if(recLateItems().length<=REC_TRIG*recBase())return false;return recApply(T).n>0}
+function recPull(n){const t=dnum(today());recActive().map(k=>({k,d:dueIn(get(k))})).filter(x=>x.d>0).sort((a,b)=>a.d-b.d).slice(0,n||3).forEach(({k})=>{
+    const s={...get(k)};s.adj=t-(dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]);state[k]=s});goRevs();commit()}
+function recOrig(s){if(!s||!s.rc)return null;const o=s.rc.o;return fromNum(o&&o[1]===s.last?dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]+o[0]:dnum(s.last)+revIv(s))}
+/* aviso da recuperação (Início e topo das revisões); sfx separa os ids das duas telas */
+function recNoteEl(sfx){const R=ui.prefs.rec;sfx=sfx||"";if(!R||!recActive().length||lsGet("resid-recdis","")===R.d)return null;
+  const n=el(`<div class="inote recnote" role="status"><p></p><div class="btns"><button class="btn" type="button">Ver nos próximos dias</button><button class="btn" type="button">Desfazer</button><button class="link" type="button">Fechar</button></div></div>`);
+  n.id="recNote"+sfx;n.querySelector("p").textContent=`${R.n} ${R.n===1?"revisão atrasada foi distribuída":"revisões atrasadas foram distribuídas"} até ${br(R.until)}, as mais esquecidas primeiro.${R.ov?` ${R.ov} não couberam e ficaram para ${br(R.until)}.`:""} Enquanto isso, 1 tema novo por dia.`;
+  const [see,und,x]=n.querySelectorAll("button");see.id="recSee"+sfx;und.id="recUndo"+sfx;x.id="recX"+sfx;
+  see.onclick=()=>{goRevs();setTimeout(()=>{const a=$("#revAgenda");if(a)a.scrollIntoView({block:"center",behavior:"smooth"})},120)};und.onclick=recUndo;x.onclick=()=>{lsSet("resid-recdis",R.d);render()};return n}
+function recLine(){const R=ui.prefs.rec,act=recActive().length;if(!R||!act)return "";return `Recuperação: ${Math.max(0,R.n-act)} de ${R.n} feitas · termina em ${br(R.until)}`}
+function topicRevs(){const out=[];[...ALL,...FAC_ITEMS].forEach(it=>{const L=get(it.key).rv;if(Array.isArray(L))L.forEach(e=>out.push({k:it.key,...e}))});return out}
 function revBtns(k,cls){const s=get(k),w=el(`<div class="pacts revg${cls?" "+cls:""}"></div>`);[2,1,0].forEach(g=>{const d=revPreview(s,g),b=el(`<button class="btn${g===2?" primary":""}" type="button"><span></span><small></small></button>`);
     b.id=`rg${g}-${k}`;b.querySelector("span").textContent=REV_G[g][0];b.querySelector("small").textContent=d===1?"1 dia":d+" dias";b.title=`${REV_G[g][0]}: ${REV_G[g][1]} (próxima em ${d===1?"1 dia":d+" dias"})`;b.onclick=()=>reviewTopic(k,g);w.appendChild(b)});return w}
 /* questões contam como revisão: no dia em que o tema vence, ${QREV_MIN}+ questões dele marcam a revisão sozinhas, com a resposta pelo acerto */
@@ -68,7 +119,7 @@ const revScore=it=>(wOf(it)||2)*(1+Math.max(0,-(dueIn(get(it.key))||0)));
 const revPri=(a,b)=>revScore(b)-revScore(a)||dueIn(get(a.key))-dueIn(get(b.key));
 /* freio de carga: muitas revisões atrasadas → menos (ou nenhum) tema novo */
 const REV_BRAKE1=20,REV_BRAKE2=40;
-function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
+function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:recActive().length?1:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
 /* minutos estimados: fila do dia e plano */
 const MIN_EST={revs:5,errs:1.5,redo:2,cards:.25,"r-new":40,"r-cont":40,"r-eixo":40,"r-own":40,"r-fac":40,"r-weak":10,"r-pfr":15};
 function qMinutes(C){return Math.round(["revs","errs","redo","cards"].reduce((a,id)=>a+(C[id]||0)*MIN_EST[id],0)+(C.weak||0)*MIN_EST.redo)}
@@ -91,7 +142,7 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
   if(m>0){const qm=qMinutes(qCounts()),pm=dayPlan&&dayPlan.d===today()?planMinutes(dayPlan):0,tot=qm+pm,e=el(`<p class="pest" id="pEst"></p>`);
     e.textContent=`Tempo estimado: fila ≈ ${fmtMin(qm*60)} + plano ≈ ${fmtMin(pm*60)} = ${fmtMin(tot*60)}${m<180?` · você tem ${WP_LAB[m]}`:""}`;if(m<180&&tot>m)e.classList.add("over");w.appendChild(e)}
   {const BR=revBrake();if(BR.cap<99&&!CR.active&&!PW.length&&m>=60){const b=el(`<p class="pbrake" id="pBrake"></p>`);
-    b.textContent=BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
+    b.textContent=recActive().length?`Recuperação do atraso até ${br((ui.prefs.rec||{}).until||today())}: hoje só 1 tema novo. As revisões remanejadas vêm primeiro.`:BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
     if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont"||x.cls==="r-eixo")&&!itemStarted(x)).length>BR.cap)b.textContent+=" O plano de hoje foi montado antes: toque em Refazer plano para aplicar.";w.appendChild(b)}}
   if(m>0){const fn=facDayNotesEl();if(fn)w.appendChild(fn)}
   if(m>=60&&!CR.active&&!PW.length){const ax=axLineEl();if(ax)w.appendChild(ax)}
@@ -207,6 +258,7 @@ function renderRevs(){
   const QC=qCounts();$("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${QC.revs<due.length?` · cabem hoje ${QC.revs}`:late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
   const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
+  {const o=$("#recNoteR");if(o)o.remove();const rn=recNoteEl("R");if(rn)list.before(rn)}
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
   const shown=revMore?due:due.slice(0,4);
   shown.forEach(it=>{const s=get(it.key),d=dueIn(s),subs=pickSubs(it,"r-rev"),chk=rchk(it.key),L=subList(it);
@@ -214,6 +266,7 @@ function renderRevs(){
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=dueLabel(d);
     const pa=li.querySelector(".pa");pa.textContent=`${it.area===FAC_AREA?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · último estudo ${br(s.last)} · intervalo ${interval(s)} ${interval(s)===1?"dia":"dias"} · `;if(it.own){pa.prepend(el(`<span class="facchip">FAC</span>`))}else{pa.appendChild(incEl(wOf(it),false));const L0=FL[it.key];if(L0){const x=el(`<span class="fbadge"></span>`);x.textContent=`FAC · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");pa.appendChild(x)}}
+    if(s.rc){const o=el(`<span class="recorig"></span>`);o.textContent="era para "+br(recOrig(s));o.title="Data remanejada pela recuperação do atraso";li.querySelector(".pa").prepend(o)}
     {const started=chk.length>0,ov=revOpen[it.key],open=ov?ov.v:started;
       const sm=el(`<button class="psum" type="button" aria-expanded="${open}"><span class="psp"></span><span class="pst"></span><span class="pchev" aria-hidden="true"></span></button>`);
       sm.querySelector(".psp").textContent=subs.length?`${chk.filter(t=>subs.includes(t)).length} de ${subs.length} subtópicos`:"tema inteiro";sm.querySelector(".pst").textContent=open?"":subs.join(" · ");

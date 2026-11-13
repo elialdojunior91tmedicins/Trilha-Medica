@@ -557,6 +557,21 @@ deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no esti
   `crWords` com `CR_SIM`/`CR_MIN_W`, ou chaves parecidas `CR_KEY_SIM`), `crConfirm`/`crReject` (`ui.prefs.crno`)/`crUnlink`; `crCardEl` no Resumo (`.crcard`, `#crOk-<i>`, `#crNo-<i>`, `#crSee`); banco: selo `.bkb.rc`,
   `bkF.rc` (chave "Conceito recorrente", preset `#bkP-hy` "HY recorrentes"), `bkScore` +20. Testes: `tests/unit/hy.test.js`, `tests/t152.js`; capturas `tests/shotsB5.js`.
 
+## Revisões: histórico e recuperação do atraso
+
+- Revisões: histórico e recuperação do atraso (13/11/2026; desenho `docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md`, plano em `docs/superpowers/plans/`; `js/040-plano.js`).
+  **Histórico:** `reviewTopic` → `revLog(x,g,o)` grava em `s.rv=[{d,g,l,i,a?}]` (as `REV_HIST_MAX`=40 mais novas; `g` 0 Esqueci · 1 Difícil · 2 Lembrei; `l` = `revLate(s,T)` = atraso contra a data
+  ORIGINAL, sem `adj`, via `revIv`; `i` = intervalo previsto; `a:1` = revisada sozinha pelas questões) e apaga `s.rc`. `revStats(L,de,até)` → `{n,g2,g1,g0,ok:{n,g2},late:{n,g2}}` (no prazo = `l≤1`);
+  `topicRevs()` junta Residência + Faculdade. Tela: Estatísticas › 1 linha "Retenção nas revisões" (`stRes` → `R.RT/R.RTP`, só temas da residência, mín. 10) e `#stRet` (No prazo · Atrasadas, mín. 5 de cada;
+  "Poucas revisões registradas ainda" antes disso); tema aberto `.drevh` ("N revisões · lembrou M · última: …"). O histórico começa em 13/11/2026 (as respostas antigas não existiam).
+  **Recuperação:** `recCheck()` no `render` (junto do `qAutoRev`), uma vez por dia (`resid-recchk`), só com `synced`, fora de folga, sem `examCrunch().active`, sem `provaWeek()`, sem recuperação ativa:
+  atrasadas (`recLateItems`) > `REC_TRIG`(3) × `recBase()` (= máx(3, ⌈revisões dos próximos 14 dias ÷ 14 × 1,25⌉)) → `recApply(T)`: `recPlan(items,D,cap,offs)` (pura; ordem peso × atraso ÷ intervalo,
+  até `REC_DAYS`=14 dias sem folgas, limite sobe até +`REC_EXTRA`=2, o resto vai para o último dia = `over`) → em cada tema `adj/adjFrom` (o mesmo ajuste do Equilibrar, vale até a próxima revisão) e
+  `s.rc={d,o}` (`o` = `[adj,adjFrom]` anterior ou null); `ui.prefs.rec={d,n,until,ov}` (`uiSanitize`; some quando `recActive()` esvazia). `recUndo()` devolve `o`. `revBrake` = 1 tema novo com recuperação ativa.
+  Tela: aviso `recNoteEl(sfx)` no Início (`#recNote`, em `iNoticeEl`) e no topo das revisões (`#recNoteR`), botões `#recSee`/`#recUndo`/`#recX` (+sufixo; fechar grava `resid-recdis`);
+  `.recorig` "era para DD/MM" (`recOrig(s)`) nos cartões das revisões e no tema aberto; Próximos dias com `.agday.rec` e `#agRec` (`recLine()`); fila concluída → `#recMore` "Revisar mais 3 do atraso" (`recPull(n)`).
+  Testes: `tests/unit/revisoes.test.js`, `tests/t153.js`; capturas `tests/shotsRev.js`.
+
 ## Banco de questões: as decisões do plano (30/10 a 12/11/2026)
 
 
