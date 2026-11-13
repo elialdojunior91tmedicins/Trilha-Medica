@@ -246,10 +246,10 @@ function renderNotasView(){
   {const L=$("#nlist"),H=$("#nTopicH"),hideT=nType==="free"&&!nNoNote;L.hidden=hideT;H.hidden=hideT||(nType!=="all"&&!nNoNote);
     H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
-  // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
-  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=0;
-   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
-   const rb=$("#nRevBox");rb.innerHTML="";rb.append(nCardsCard());{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
+  // partes (celular e tablet em pé): Caderno e Pegadinhas (os cartões têm aba própria desde 13/11/2026)
+  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;
+   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
+   const rb=$("#nRevBox");rb.innerHTML="";{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
      l.querySelector("span").textContent=`${nn} ${nn===1?"tema estudado sem anotação":"temas estudados sem anotação"}.`;l.querySelector("button").onclick=()=>{nNoNote=true;if(nType==="free"){nType="all";lsSet("resid-ntype","all")}setNSeg("livre");render();setTimeout(()=>{const x=$("#nTopicH");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};rb.appendChild(l)}}const pb=$("#nPegBox");pb.innerHTML="";const two=twoCols();pb.appendChild(nPegCard(vis,two?{side:true}:{}));
      /* Lote 21: no computador, a lista inteira abre na coluna principal ("Ver todas") */
      const pf=$("#nPegFull");pf.innerHTML="";pf.hidden=!(two&&pgFull);if(two&&pgFull){pf.appendChild(nPegCard(vis,{full:true}));if(pgFullTo){const t=pgFullTo;pgFullTo=null;setTimeout(()=>{const x=document.querySelector(`#nPegFull [data-pgt="${CSS.escape(t)}"]`)||pf;x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}

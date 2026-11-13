@@ -33,21 +33,21 @@ function fullBtn(k){const on=fullOn[k],b=el(`<button class="mini erfullb" type="
 function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").forEach(x=>x.classList.remove("fullhide","fullpath","vfull"));
   document.querySelectorAll(".pfullc").forEach(x=>x.classList.remove("pfullc"));document.querySelectorAll(".pfbar").forEach(x=>x.remove());delete document.documentElement.dataset.pfull;
   const ph=isPhoneL();if(!twoCols()&&!ph)return;let v=null,card=null;
-  if(view==="notas"&&cdRun&&fullOn.cd){v=$("#viewNotas");card=v&&v.querySelector(".ncards")}
+  if(view==="cartoes"&&cdRun&&fullOn.cd){v=$("#viewCards");card=v&&v.querySelector(".ncards")}
   else if(view==="quest"&&sim&&sim.status!=="error"&&fullOn.sim){v=$("#viewQuest");card=v&&v.querySelector(".qsim")}
   else if(view==="foco"&&foRun&&fullOn.fo){v=$("#viewFoco");card=v&&v.querySelector(".fotimer")}
   else if(view==="quest"&&exRun&&fullOn.ex){v=$("#viewQuest");card=v&&v.querySelector(".qexam")}
   else if(view==="quest"&&rdRun&&fullOn.rd){v=$("#viewQuest");card=v&&v.querySelector(".qredo")}
   if(!v||!card)return;
   /* celular (B3): o cartão ocupa a tela inteira, em pé ou deitado, com ≡ Menu e Sair no topo */
-  if(ph){const k=view==="notas"?"cd":view==="foco"?"fo":card.classList.contains("qsim")?"sim":card.classList.contains("qexam")?"ex":"rd";card.classList.add("pfullc");document.documentElement.dataset.pfull=k;
+  if(ph){const k=view==="cartoes"?"cd":view==="foco"?"fo":card.classList.contains("qsim")?"sim":card.classList.contains("qexam")?"ex":"rd";card.classList.add("pfullc");document.documentElement.dataset.pfull=k;
     const h=card.querySelector("h2"),bar=el(`<div class="bkfbar pfbar"><button class="bkfb" type="button" id="pfMenu" aria-label="Abrir o menu do app"><span aria-hidden="true">≡</span> Menu</button><div class="bkft"><h2></h2></div><button class="bkfb" type="button" id="pfExit" aria-label="Sair da tela inteira">Sair <span aria-hidden="true">✕</span></button></div>`);
     bar.querySelector("h2").textContent=h?h.textContent:"";bar.querySelector("#pfMenu").onclick=()=>navMenuOpen();bar.querySelector("#pfExit").onclick=()=>fullSet(k,false);card.insertBefore(bar,card.firstChild);return}
   v.classList.add("vfull");let n=card;
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
-  if(view==="notas"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
+  if(view==="cartoes"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
     if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
   if(view==="foco"&&foRun){if(ev.key===" "){b("#foPauseB");return}if(ev.key==="d"||ev.key==="D"){b("#foDist");return}
     if(ev.key==="Escape"&&fullOn.fo&&twoCols()){ev.preventDefault();fullSet("fo",false)}return}

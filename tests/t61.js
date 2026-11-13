@@ -7,7 +7,7 @@ const click=s=>mob?p.tap(s):p.click(s);const tag=mob?"celular":"computador";cons
 await p.evaluate(()=>{const D=n=>fromNum(dnum(today())+n);state={"CM-1":{l:1,last:D(-1),step:0},"CM-2":{l:1,last:D(-1),step:0},"CM-3":{l:1,last:D(-9),step:2}};
   notes={"CM-1":"## Resumo\n- PA ≥ 140/90 em duas medidas\n> MAPA confirma HAS do avental branco\n- Meta ==< 130/80== em alto risco\n## Pegadinhas de prova\n- Não usar IECA na gestação","CM-9":"Texto simples sem marcações"};
   sampleFn.json=async()=>[{pergunta:"Qual o critério de HAS no consultório?",resposta:"PA ≥ 140/90 em duas medidas."},{pergunta:"IECA na gestação?",resposta:"Contraindicado."},{pergunta:"",resposta:"x"}];
-  commit();setView("notas")});await seg("revisar");
+  commit();setView("notas")});
 // 1. reler hoje
 // Lote 17: reler faz parte da revisão do tema (sem o cartão Para reler hoje)
 ok(await p.evaluate(()=>!document.querySelector('.ntoday')&&/Reler a anotação/.test(rereadEl("CM-1").textContent)&&/Sem anotação neste tema/.test(rereadEl("CM-9x"in BYKEY?"CM-9x":"CM-2").textContent)),tag+": reler dentro da revisão; tema sem anotação oferece escrever");
@@ -25,7 +25,7 @@ await click('#t-CM-1 .cardsblk .btn');await p.waitForTimeout(300);ok((await p.$$
 await click('#t-CM-1 .cdrev li:nth-child(2) input');await click('#t-CM-1 .cardsblk .btn.primary');await p.waitForTimeout(200);ok(await p.evaluate(()=>cards.length===1),tag+": salvar só os marcados");
 await click('#t-CM-1 .cardsblk .link');await p.fill('#cdq-CM-1','Pergunta manual?');await p.fill('#cda-CM-1','Resposta manual.');await click('#t-CM-1 .cdform .btn');await p.waitForTimeout(150);ok(await p.evaluate(()=>cards.length===2&&cards[1].src==="eu"),tag+": cartão manual");
 await p.waitForTimeout(800);ok(await p.evaluate(()=>Object.keys(window.__store).filter(k=>k.includes("/progress/cards/")).length===2),tag+": cartões gravados na conta");
-await p.evaluate(()=>setView("notas"));await seg("revisar");ok(/Revisar 2 cartões/.test(await p.$eval('#cdGo',x=>x.textContent)),tag+": cartões de hoje");
+await p.evaluate(()=>cdOpen("hoje"));await p.waitForTimeout(120);ok(/Revisar 2 cartões/.test(await p.$eval('#cdGo',x=>x.textContent)),tag+": cartões de hoje");
 await click('#cdGo');await p.waitForTimeout(100);ok(!(await p.isVisible('.oscard .osa')),tag+": resposta escondida");await click('#cdShow');await p.waitForTimeout(100);ok(await p.isVisible('.oscard .osa'),tag+": mostrar resposta");
 await click('#cdR3');await p.waitForTimeout(100);await click('#cdShow');await click('#cdR1');await p.waitForTimeout(150);await click('#cdShow');await click('#cdR3');await p.waitForTimeout(150);
 const st=await p.evaluate(()=>cards.map(x=>x.f.st+":"+x.f.lapses+":"+(dnum(x.due)-dnum(today()))).sort());ok(st.length===2&&st.every(x=>/^2:0:[1-9]\d*$/.test(x)),tag+": Bom agenda; Errei volta na sessão e depois Bom "+st);

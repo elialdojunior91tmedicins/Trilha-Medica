@@ -1,7 +1,7 @@
 /* ---------- Anotações: reler hoje, pegadinhas, cartões e cobertura ---------- */
-let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","revisar","pegadinhas"].includes(v))nSeg=v}catch(e){}
+let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","pegadinhas"].includes(v))nSeg=v}catch(e){}
 /* Lote 13: caderno único — "Temas" e "Livre" viraram a parte "Caderno" (nSeg "livre"); "todas" continua aceito como apelido */
-function setNSeg(v){if(v==="todas")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
+function setNSeg(v){if(v==="todas"||v==="revisar")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
 let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};

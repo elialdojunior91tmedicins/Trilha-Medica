@@ -61,7 +61,7 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  await p.evaluate(()=>{while(dayQ&&dayQ.ids[dayQ.i]!=="errs")qNext()});await p.waitForTimeout(250);ok(await p.evaluate(()=>view==="erros"&&!!erRun),name+": passo dos erros abre a revisão dos erros");ok(await vis(p,'#qBar'),name+": barra da fila aparece");
  const bar=await p.evaluate(()=>{const r=document.querySelector('#qBar').getBoundingClientRect(),n=document.querySelector('.appnav');const nr=n&&n.offsetParent!==null?n.getBoundingClientRect():null;return {b:r.bottom,h:innerHeight,overlap:nr?(r.bottom>nr.top+1&&r.top<nr.bottom):false,w:r.width}});
  ok(bar.b<=bar.h+1&&!bar.overlap,name+": barra não cobre a navegação "+JSON.stringify(bar));await p.screenshot({path:`qbar-${name}.png`});
- await p.evaluate(()=>{while(dayQ&&dayQ.ids[dayQ.i+1]!=="cards"&&dayQ.i<dayQ.ids.length-1)qNext()});await click('#qNext');await p.waitForTimeout(250);ok(await p.evaluate(()=>view==="notas"&&!!cdRun),name+": próximo = cartões");
+ await p.evaluate(()=>{while(dayQ&&dayQ.ids[dayQ.i+1]!=="cards"&&dayQ.i<dayQ.ids.length-1)qNext()});await click('#qNext');await p.waitForTimeout(250);ok(await p.evaluate(()=>view==="cartoes"&&!!cdRun),name+": próximo = cartões");
  await p.evaluate(()=>{while(dayQ&&dayQ.i<dayQ.ids.length-1)qNext();qNext()});await p.waitForTimeout(150);
  ok(await p.evaluate(()=>!dayQ&&view==="inicio"&&!document.querySelector('#qBar')&&/concluída/.test(document.querySelector('#iQueue').textContent)),name+": fila termina no Início");
  await p.evaluate(()=>{erRun=null;cdRun=null;render()});

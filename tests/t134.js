@@ -45,7 +45,7 @@ for(const [name,[w,h,mob]] of Object.entries(DEV)){
   const N=await p.evaluate(()=>{const s=$("#nSide"),f=$("#nFreeBox").getBoundingClientRect(),r=s.getBoundingClientRect();return {in:!!s.querySelector("#nRevBox")&&!!s.querySelector("#nPegBox"),right:r.left>f.right-1}});
   ok(N.in&&N.right,name+": Caderno com coluna da direita (Cartões, Pegadinhas, PDF) "+JSON.stringify(N));
   const fs=await p.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).fontSize));ok(name==="monitor"?fs>16:fs===16,name+": letra base "+fs+"px")}
- else{await p.evaluate(()=>{setView("notas");nSeg="revisar";render()});await W(200);ok(await p.evaluate(()=>getComputedStyle($("#nSide")).display==="contents"&&$("#nRevBox").offsetHeight>0),name+": no celular o Caderno continua em partes")}
+ else{await p.evaluate(()=>{setView("notas");nSeg="pegadinhas";render()});await W(200);ok(await p.evaluate(()=>getComputedStyle($("#nSide")).display==="contents"&&$("#nPegBox").offsetHeight>0),name+": no celular o Caderno continua em partes")}
  /* 8. saudação no escuro */
  await p.evaluate(()=>{ui.prefs.theme="dark";applyUI();setView("inicio");render()});await W(250);
  ok(await p.evaluate(()=>/inset/.test(getComputedStyle($("#iHero")).boxShadow)),name+": saudação com contorno dourado no modo escuro");

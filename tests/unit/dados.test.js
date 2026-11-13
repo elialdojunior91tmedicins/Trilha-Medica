@@ -65,9 +65,9 @@ test("provas oficiais (OF_CAT): nível conhecido e nomes únicos", () => {
   }
 });
 
-test("Ajuda (HELP): 18 assuntos, títulos únicos, e todo helpBtn/goHelp do código aponta para um que existe", () => {
+test("Ajuda (HELP): 19 assuntos (Cartões desde 13/11/2026), títulos únicos, e todo helpBtn/goHelp do código aponta para um que existe", () => {
   const T = A.HELP.map(h => h[0]);
-  assert.equal(T.length, 18);
+  assert.equal(T.length, 19);
   assert.equal(new Set(T).size, T.length, "título repetido");
   const ls = d => fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? ls(path.join(d, e.name)) : e.name.endsWith(".js") ? [path.join(d, e.name)] : []);
   const used = new Set();

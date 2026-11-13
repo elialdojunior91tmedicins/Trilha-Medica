@@ -24,7 +24,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  /* 2. limite de novos por dia e fila */
  await p.evaluate(()=>{cards.length=0;for(let i=0;i<20;i++)cdAdd("CM-1","Pergunta "+i,"Resposta "+i,"eu");const r=cdAdd("CM-4","Revisão","R","eu");r.f={st:2,s:5,d:5,last:fromNum(dnum(today())-5),reps:2,lapses:0,first:""};r.due=today();cdPut(r);
    const ready=cdAdd("CM-34","<b>Anemia ferropriva.</b> Exame inicial?","<b>Ferritina.</b><br><br><i>Baixa confirma.</i>","eu",{h:1,ref:"<i>Anemias</i>, em <b>UpToDate</b>.",kind:"disc"});ready.f={st:2,s:60,d:4,last:fromNum(dnum(today())-20),reps:5,lapses:0,first:""};ready.due=fromNum(dnum(today())+45);cdPut(ready);
-   ui.prefs.cdNew=14;commit();backStack=[];nSeg="revisar";setView("notas")});await p.waitForTimeout(250);
+   ui.prefs.cdNew=14;commit();backStack=[];cdOpen("hoje")});await p.waitForTimeout(250);
  const Q=await p.evaluate(()=>({due:cdDue().length,nw:cdDue().filter(x=>!x.f.st).length,go:document.querySelector('#cdGo').textContent,kpi:[...document.querySelectorAll('.cdsum .kpi b')].map(x=>x.textContent),fc:document.querySelectorAll('.cdfcc').length,ready:cdReady().length}));
  ok(Q.due===15&&Q.nw===14&&/Revisar 15 cartões/.test(Q.go)&&Q.kpi.join()==="1,14,1"&&Q.fc===7&&Q.ready===1,name+": fila = revisões + 14 novos; previsão de 7 dias; 1 pronto para o Anki "+JSON.stringify(Q));
  if(name==="fone"||name==="note"){await p.evaluate(()=>document.querySelector('.ncards').scrollIntoView({block:"start"}));await p.waitForTimeout(120);await p.screenshot({path:`t105-painel-${name}.png`})}
@@ -69,7 +69,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  ok(A2.ic==="ok"&&A2.notes===400&&A2.cards===400,name+": 400 cartões (com textos longos) continuam um banco íntegro "+JSON.stringify({ic:A2.ic,n:A2.notes,err:A2.err}));
  [out,big].forEach(f=>{try{fs.unlinkSync(f)}catch(e){}});
  /* 6. exportar pela tela e confirmar "Já importei no Anki" */
- await p.evaluate(()=>{backStack=[];nSeg="revisar";setView("notas")});await p.waitForTimeout(200);
+ await p.evaluate(()=>{backStack=[];cdOpen("hoje")});await p.waitForTimeout(200);
  if(await p.evaluate(()=>!!document.querySelector('#cdApkg')&&!document.querySelector('#cdApkg').disabled)){await click('#cdApkg');await p.waitForTimeout(400);
    ok(await p.evaluate(()=>!!cdExp&&cdExp.ids.length===1&&!!document.querySelector('#cdAnkiDone')),name+": depois de exportar, pede para confirmar a importação");
    const before=await p.evaluate(()=>cards.length);await click('#cdAnkiDone');

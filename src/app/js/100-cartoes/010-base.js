@@ -56,7 +56,7 @@ function cdGenScope(){const t=dnum(today()),up=upcomingProvas().find(p=>daysTo(p
   if(up)return {lab:up.name,prova:true,keys:new Set(topicKeysOf(up.items))};
   const ws=wpMon(t),K=new Set();[...ALL,...FAC_ITEMS].forEach(i=>{if((get(i.key).ed||[]).some(d=>dnum(d)>=ws))K.add(i.key)});return {lab:"temas da semana",prova:false,keys:K}}
 function cdGenIds(S){return cards.filter(x=>cdLive(x)&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
-function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
+function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;cdOpen("hoje");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
   setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
 function cdRate(x,g){const R=cdRun,xt=R.extra&&R.extra.includes(x.id),days=xt?(g===1?0:1):cdAnswer(x,g);R.done++;R.g[g]++;if(xt)R.xn=(R.xn||0)+1;if(!days){R.ids.push(x.id);R.again[x.id]=(R.again[x.id]||0)+1}R.i++;R.show=false;cdEd=null;render()}
 function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões</h2><span class="todaydate"></span></div></section>`);
@@ -165,7 +165,7 @@ function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=e
   if(S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}
   return w}
 /* ===== Lote 21 item 3: lote de melhorias, árvore, estudo por recorte e editor ===== */
-function cdGoCards(){backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},80)}
+function cdGoCards(){cdOpen("hoje")}
 const cdDrafts=()=>cards.filter(x=>x.dr&&BYKEY[x.k]);
 const CD_LOT=8;// cartões por pedido ao Claude (no site, cada pedido é um copiar e colar)
 let cdLot=null,cdLotOpen=false;
@@ -230,7 +230,7 @@ function cdSplitA(x){const h=x.h?String(x.a||""):cdTxt2html(x.a);const i=h.searc
   rest=rest.replace(/^\s*<i>([\s\S]*)<\/i>\s*$/i,"$1");const m=/(?:<br\s*\/?>\s*)*(?:<b>)?\s*Note:\s*(?:<\/b>)?\s*([\s\S]*)$/i.exec(rest),note=m?m[1]:"",ex=m?rest.slice(0,m.index):rest;
   return {a:cdH2T(ans),x:cdH2T(ex.replace(/<\/?i>/gi,"")),n:cdH2T(note.replace(/<\/?i>/gi,""))}}
 function cdJoinA(a,x,n){const A=cdT2H(a),X=cdT2H(x),N=cdT2H(n);return A+(X||N?`<br><br><i>${X}${X&&N?"<br><br>":""}${N?"<b>Note:</b> "+N:""}</i>`:"")}
-function cdEditOpen(x){const S=cdSplitA(x);if(x.dr)cdLotOpen=true;else if(!(cdRun&&cdRun.ids[cdRun.i]===x.id)&&BYKEY[x.k]){const it=BYKEY[x.k];["a:"+it.area.code,"s:"+specId(it),"t:"+x.k].forEach(i=>cdTreeOpen.add(i))}cdEd={id:x.id,q:cdH2T(x.h?x.q:cdTxt2html(x.q)),a:S.a,x:S.x,n:S.n,r:cdH2T(x.ref||""),msg:""};render();setTimeout(()=>{const t=$("#cde-q");if(t)t.focus()},50)}
+function cdEditOpen(x,noTree){const S=cdSplitA(x);if(x.dr&&!noTree)cdLotOpen=true;else if(!noTree&&!(cdRun&&cdRun.ids[cdRun.i]===x.id)&&BYKEY[x.k]){const it=BYKEY[x.k];["a:"+it.area.code,"s:"+specId(it),"t:"+x.k].forEach(i=>cdTreeOpen.add(i))}cdEd={id:x.id,q:cdH2T(x.h?x.q:cdTxt2html(x.q)),a:S.a,x:S.x,n:S.n,r:cdH2T(x.ref||""),msg:""};render();setTimeout(()=>{const t=$("#cde-q");if(t)t.focus()},50)}
 function cdEditSave(){const E=cdEd,x=cards.find(c=>c.id===E.id);if(!x){cdEd=null;render();return}if(!E.q.trim()||!E.a.trim()){E.msg="Frente e resposta não podem ficar vazias.";render();return}
   x.q=cdSafe(cdT2H(E.q));x.a=cdSafe(cdJoinA(E.a,E.x,E.n));const r=cdT2H(E.r);if(r)x.ref=cdSafe(r);else delete x.ref;x.h=1;cdPut(x);cdEd=null;render()}
 function cdEditEl(){const E=cdEd,w=el(`<div class="cdedit" id="cdEdit"><div class="dhead"><b>Editar cartão</b><button class="link" type="button" id="cdeX">Cancelar</button></div><p class="how">Use **negrito** e *itálico*. Enter quebra a linha.</p></div>`);
@@ -382,13 +382,14 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
   if(G&&G.status==="review"){w.appendChild(el(`<p class="how">Confira os cartões. Desmarque os que não quiser e salve.</p>`));const ul=el(`<ul class="cdrev"></ul>`);
     G.list.forEach((c,i)=>{const li=el(`<li><label><input type="checkbox"${c.keep?" checked":""}><span><b></b><span></span></span></label></li>`);li.querySelector("b").textContent=c.q;li.querySelector("label>span>span").textContent=c.a;li.querySelector("input").onchange=e=>{c.keep=e.target.checked};ul.appendChild(li)});w.appendChild(ul);
     const a=el(`<div class="btns"></div>`),s=el(`<button class="btn primary" type="button">Salvar cartões</button>`),x=el(`<button class="btn" type="button">Descartar</button>`);
-    s.onclick=()=>{const n=G.list.filter(c=>c.keep).map(c=>cdAdd(k,c.q,c.a,"claude")).length;delete cdGen[k];nMsgCards=`${n} ${n===1?"cartão salvo":"cartões salvos"}: eles aparecem em Cartões para revisar, na aba Anotações.`;render()};x.onclick=()=>{delete cdGen[k];render()};a.append(s,x);w.appendChild(a);return w}
+    s.onclick=()=>{const n=G.list.filter(c=>c.keep).map(c=>cdAdd(k,c.q,c.a,"claude")).length;delete cdGen[k];nMsgCards=`${n} ${n===1?"cartão salvo":"cartões salvos"}: eles aparecem na aba Cartões.`;render()};x.onclick=()=>{delete cdGen[k];render()};a.append(s,x);w.appendChild(a);return w}
   if(G&&G.msg){const p=el(`<p class="err"></p>`);p.textContent=G.msg;w.appendChild(p)}
   if(nMsgCards){const p=el(`<p class="pnote" role="status"></p>`);p.textContent=nMsgCards;w.appendChild(p);nMsgCards=""}
   if(mine.length){const ul=el(`<ul class="cdmine"></ul>`);mine.forEach(x=>{const li=el(`<li><span><b></b><span></span></span><button class="foxb" type="button" aria-label="Excluir cartão">×</button></li>`);li.querySelector("b").textContent=x.q;li.querySelector("span>span").textContent=`${x.a} · próxima ${x.due<=today()?"hoje":br(x.due)}`;li.querySelector("button").onclick=()=>cdDel(x.id);ul.appendChild(li)});w.appendChild(ul)}
   const acts=el(`<div class="btns"></div>`);
   if(!sampleOff){const g=el(`<button class="btn" type="button">Criar cartões com o Claude</button>`);g.disabled=!sampleFn||!(notes[k]||"").trim();if(!(notes[k]||"").trim())g.title="Escreva a anotação primeiro";g.onclick=()=>cdGenerate(k);acts.appendChild(g)}
-  const m=el(`<button class="link" type="button">+ Cartão manual</button>`);m.onclick=()=>{cdNew[k]=cdNew[k]?null:{q:"",a:""};render()};acts.appendChild(m);w.appendChild(acts);
+  const m=el(`<button class="link" type="button">+ Cartão manual</button>`);m.onclick=()=>{cdNew[k]=cdNew[k]?null:{q:"",a:""};render()};acts.appendChild(m);
+  if(mine.length){const sa=el(`<button class="link cdseeall" type="button"></button>`);sa.textContent=`Ver os ${mine.length} ${mine.length===1?"cartão":"cartões"}`;sa.onclick=()=>cdOpen("todos",{k});acts.appendChild(sa)}w.appendChild(acts);
   if(cdNew[k]){const f=el(`<div class="eform cdform"><label>Pergunta</label><textarea class="etext" id="cdq-${k}" maxlength="600" rows="2"></textarea><label>Resposta</label><textarea class="etext" id="cda-${k}" maxlength="1200" rows="2"></textarea><button class="btn primary" type="button">Salvar cartão</button></div>`);
     const [qa,aa]=f.querySelectorAll("textarea");qa.value=cdNew[k].q;aa.value=cdNew[k].a;qa.oninput=()=>cdNew[k].q=qa.value;aa.oninput=()=>cdNew[k].a=aa.value;
     f.querySelector("button").onclick=()=>{if(!qa.value.trim()||!aa.value.trim())return;cdAdd(k,qa.value,aa.value,"eu");cdNew[k]=null;render()};w.appendChild(f)}
@@ -396,5 +397,5 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
 let nMsgCards="";
 /* sessão de revisão dos cartões */
 
-function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Caderno"));
+function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
   return c}

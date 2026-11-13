@@ -98,7 +98,7 @@ function facDayNotes(){const t=dnum(today()),out=[];
   fac.discs.forEach(d=>{if(!activeSems().includes(d.semId))return;(d.sps||[]).forEach(sp=>{if(!sp.fech||sp.fadi||sp.pos===sp.fech)return;const n=t-dnum(sp.fech);if(n<0||n>3)return;
     const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>cdLive(c)&&keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
     const acts=[];if(pk&&BYKEY[pk]&&!sampleOff)acts.push(["Gerar questões",()=>{detTab[pk]="questoes";openTopic(pk);setTimeout(()=>{const g=detGet("qf-",pk);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}]);
-    if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(cs.map(c=>c.id))}]);
+    if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>cdOpen("hoje",{run:cs.map(c=>c.id)})]);
     acts.push(["Dispensar",()=>{sp.pos=sp.fech;saveFac();render()}]);
     out.push({id:"pos-"+sp.id,t:`${spShort(sp.name)} fechou ${n===0?"hoje":n===1?"ontem":`há ${n} dias`}: faça questões${cs.length?" e os cartões":""} dela enquanto está fresco.`,acts})})});
   return out}

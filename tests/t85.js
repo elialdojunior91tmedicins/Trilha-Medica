@@ -51,7 +51,7 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
     const b=document.querySelector('#pLightGenBox');return {box:!!b,txt:b?b.textContent:"",ids:cdGenIds(cdGenScope())}});
   ok(g0.box&&/: 3/.test(g0.txt)&&/semana/.test(g0.txt)&&g0.ids.length===3,name+": revisão geral com os cartões dos temas da semana "+JSON.stringify(g0));
   await click('#pLightGen');
-  ok(await p.evaluate(()=>view==="notas"&&cdRun&&cdRun.ids.length===3&&/Revisão geral/.test(cdRun.gen)&&!!document.querySelector('#cdGenNote')),name+": Revisão geral abre os cartões no Caderno, com o aviso");
+  ok(await p.evaluate(()=>view==="cartoes"&&cdRun&&cdRun.ids.length===3&&/Revisão geral/.test(cdRun.gen)&&!!document.querySelector('#cdGenNote')),name+": Revisão geral abre os cartões no Caderno, com o aviso");
   const g1=await p.evaluate(()=>{cdRun=null;const t=dnum(today());fac={sems:[{id:"s",name:"S",archived:false}],discs:[{id:"d",semId:"s",name:"NCS",items:["T:PED-3"],sps:[]}],provas:[{id:"p",discId:"d",name:"P2",date:fromNum(t+4),items:["T:PED-3"],done:[]}],own:{}};saveFac();
     const S=cdGenScope(),r={prova:S.prova,lab:S.lab,ids:cdGenIds(S)};fac={sems:[],discs:[],provas:[],own:{}};saveFac();cards=cards.filter(x=>!/^cg/.test(x.id));backStack=[];setView("temas");return r});
   ok(g1.prova&&g1.lab==="P2"&&g1.ids.join()==="cgo",name+": com prova da faculdade em até 7 dias, a revisão geral usa os temas da prova "+JSON.stringify(g1));

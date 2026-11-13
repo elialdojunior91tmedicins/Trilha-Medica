@@ -28,7 +28,7 @@ function qGoStep(id){backStack=[];
   else if(id==="weak"){const W=weakToday();if(W){detTab[W.k]="questoes";openTopic(W.k);setTimeout(()=>{const g=detGet("qf-",W.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}}
   else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar","redo");const K=pwKeys(),ids=rdDueList().sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
   else if(id==="plan"){const P=ensurePlan(),x=P.items.find(p=>BYKEY[p.k]&&!itemDone(p));setView("inicio");if(x)startStep({k:x.k,kind:"plan"});else setTimeout(()=>{const c=$("#viewInicio .card.today");if(c)c.scrollIntoView({behavior:"smooth",block:"start"})},60)}
-  else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
+  else if(id==="cards"){cdOpen("hoje",{go:true})}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
   else goRevs()}
 /* revisões dos temas: ficam só na Residência (cartão .card.revs); k = rola até o tema */
@@ -52,7 +52,7 @@ function offDayEl(){const w=el(`<div class="ioff" id="iOff"></div>`),rest=lsGet(
   if(rest){const p=el(`<p class="how">Bom descanso. <button class="link" type="button" id="iOffShow">Mostrar sugestões leves</button></p>`);p.querySelector("button").onclick=()=>{lsSet("resid-offrest",null);render()};w.appendChild(p);return w}
   const T=today(),ne=eDueList().length,nc=cards.filter(x=>cdLive(x)&&x.f&&x.f.st&&x.due<=T).length,L=[];
   if(ne)L.push(["errs",`Erros que vencem: ${ne}`,ne*1.5,()=>{backStack=[];setView("erros")}]);
-  if(nc)L.push(["cards",`Cartões vencidos: ${nc}`,nc*.25,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar")}]);
+  if(nc)L.push(["cards",`Cartões vencidos: ${nc}`,nc*.25,()=>cdOpen("hoje")]);
   if(sampleFn&&!sampleOff)L.push(["sim","Bloco rápido de 5 questões",10,()=>{const U=qUniverse(),wk=simTopics("week",U);simCfg={...simCfg,mode:"temas",src:wk.length?"week":"gain",n:5};backStack=[];setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");simStart(U)}]);
   if(L.length){const mn=Math.round(L.reduce((a,x)=>a+x[2],0));w.appendChild(el(`<p class="how">Se quiser, algo leve (≈ ${mn} min). Estudar hoje soma +1 na sequência.</p>`));
     const ul=el(`<ul class="iofflist"></ul>`);L.forEach(([id,lab,,go])=>{const li=el(`<li><span></span><button class="link" type="button"></button></li>`);li.querySelector("span").textContent=lab;const b=li.querySelector("button");b.id="iOff-"+id;b.textContent="abrir";b.onclick=go;ul.appendChild(li)});w.appendChild(ul)}

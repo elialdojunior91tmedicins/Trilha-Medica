@@ -93,7 +93,7 @@ const W=await p.evaluate(()=>{const k="CM-7";upd(k,x=>{x.last=fromNum(dnum(today
   return {noPlan:!P.items.some(x=>x.cls==="r-weak"),k:!!w&&isWeak(get(w.k))===true||!!w,c0,c1,rest,q:/Ponto fraco/.test(($("#iQueue")||{}).textContent||"")}});
 ok(W.noPlan&&W.k&&W.c0===5&&W.c1===0&&W.rest,"Ponto fraco: fora do plano, na fila com 5 questões; feitas, descansa 7 dias "+JSON.stringify(W));
 }else{
-await p.evaluate(()=>{notes["CM-1"]="## a\n- b";upd("CM-1",x=>{x.last=fromNum(dnum(today())-5);x.step=1;x.l=1});setView("notas");setNSeg("revisar")});await p.waitForTimeout(300);
+await p.evaluate(()=>{notes["CM-1"]="## a\n- b";upd("CM-1",x=>{x.last=fromNum(dnum(today())-5);x.step=1;x.l=1});cdOpen("hoje")});await p.waitForTimeout(300);
 ok(await p.evaluate(()=>!document.querySelector("#viewNotas .ntoday")),name+": Caderno › Revisar sem o Para reler hoje");
 await p.evaluate(()=>goRevs("CM-1"));await p.waitForTimeout(400);
 ok(await p.evaluate(()=>{const g=document.querySelector('.rcard[data-k="CM-1"] .revg');return !!g&&g.scrollWidth<=g.clientWidth+2}),name+": os 3 botões cabem no celular");

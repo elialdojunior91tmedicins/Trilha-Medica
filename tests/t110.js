@@ -9,11 +9,11 @@ for(const [name,w,h,mob] of [["fone",390,844,true],["ipad578",578,820,true],["no
   await p.goto('http://localhost:8765/tests/preview.html');await p.waitForFunction(()=>typeof liveOn!=="undefined"&&liveOn,null,{polling:100,timeout:15000});await p.waitForTimeout(200);
   /* 1. aba Caderno */
   const T=await p.evaluate(()=>({tab:document.querySelector('#tabN .tl').textContent,seg:[...document.querySelectorAll('#nSegBar button')].map(b=>b.dataset.n+":"+b.textContent.replace(/\d+$/,"")).join(),nseg:nSeg}));
-  ok(T.tab==="Caderno"&&T.seg==="livre:Caderno,revisar:Revisar,pegadinhas:Pegadinhas"&&T.nseg==="livre",name+": aba Caderno com Livre primeiro "+JSON.stringify(T));
+  ok(T.tab==="Caderno"&&T.seg==="livre:Caderno,pegadinhas:Pegadinhas"&&T.nseg==="livre",name+": aba Caderno com Livre primeiro "+JSON.stringify(T));
   await p.evaluate(()=>{notes["CM-12"]="## Resumo\nTexto.";saveNotesLocal();backStack=[];setView("notas")});await p.waitForTimeout(200);
   const V=await p.evaluate(()=>{const vis=s=>{const x=document.querySelector(s);return !!x&&x.getClientRects().length>0};return {free:vis('.nfree'),list:vis('#nlist'),rev:vis('#nRevBox'),order:[...document.querySelectorAll('#viewNotas > *')].map(x=>x.id||x.className).slice(0,3).join("|")}});
   if(name==="note")ok(V.free&&V.list&&V.rev&&/nFreeBox/.test(V.order),name+": no computador tudo numa página, caderno livre no topo "+JSON.stringify(V));
-  else ok(V.free&&V.list&&!V.rev,name+": a parte Caderno mostra as páginas livres e as dos temas juntas "+JSON.stringify(V));
+  else ok(V.free&&V.list,name+": a parte Caderno mostra as páginas livres e as dos temas juntas "+JSON.stringify(V));
   if(SHOT&&name==="fone")await p.screenshot({path:SHOT+'/l8-caderno-fone.png'});
   await p.evaluate(()=>{nFOpen=true;render();document.querySelector('#nTy-topic').click()});await p.waitForTimeout(150);
   ok(await p.evaluate(()=>document.querySelector('#nlist').getClientRects().length>0&&!document.querySelector('.nfree .elist')),name+": tipo Temas mostra só as páginas dos temas");

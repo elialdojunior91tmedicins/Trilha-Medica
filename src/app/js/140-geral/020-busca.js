@@ -6,7 +6,7 @@ function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],
   Object.keys(notes).forEach(k=>{if(BYKEY[k]&&norm(notes[k]).includes(n))add("Anotações",BYKEY[k].t,gsSnip(notes[k],n),()=>{detTab[k]="notas";openTopic(k)})});
   freeN.forEach(f=>{if(norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(n))add("Caderno livre",f.t||"Sem título",gsSnip(f.b,n),()=>{freeOpen.add(f.id);backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("todas");setTimeout(()=>{const x=document.getElementById("fr-"+f.id);if(x)x.scrollIntoView({block:"center"})},80)})});
   errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros")})});
-  cards.forEach(x=>{if(BYKEY[x.k]&&norm(x.q+" "+x.a).includes(n))add("Cartões",x.q.slice(0,90),BYKEY[x.k].t,()=>{detTab[x.k]="notas";openTopic(x.k)})});
+  cards.forEach(x=>{if(BYKEY[x.k]&&norm(cdTxt(x.q)+" "+cdTxt(x.a)).includes(n))add("Cartões",cdTxt(x.q).slice(0,90),BYKEY[x.k].t,()=>cdOpen("todos",{pick:x.id}))});
   fac.discs.forEach(d=>{if(norm(d.name).includes(n))add("Faculdade",d.name,"disciplina",()=>goDisc(d));
     (d.sps||[]).forEach(s=>{if(norm(s.name+" "+s.objs.join(" ")).includes(n))add("Faculdade",s.name,d.name,()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(s.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+s.id),60)})});
     [d,...(d.sps||[])].forEach(o=>(o.links||[]).forEach(l=>{if(norm((l.t||"")+" "+l.u).includes(n))add("Materiais",l.t||hostOf(l.u),`${d.name} · ${hostOf(l.u)}`,()=>window.open(l.u,"_blank","noopener"))}))});

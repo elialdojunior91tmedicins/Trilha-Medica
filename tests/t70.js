@@ -7,15 +7,15 @@ const p=await ctx.newPage();p.on('pageerror',e=>errs.push(name+":"+e.message));a
 const click=s=>mob?p.tap(s):p.click(s);const visible=s=>p.evaluate(s=>{const x=document.querySelector(s);return !!x&&x.offsetParent!==null},s);
 await p.evaluate(()=>{notes["CM-1"]="## a\n- b";for(let i=0;i<4;i++)cdAdd("CM-1","Pergunta "+i+"?","Resposta "+i,"eu");
   sampleFn.json=async(input)=>{const n=+input.match(/simulado com (\d+)/)[1];return Array.from({length:n},(_,i)=>({enunciado:"Caso "+i,alternativas:[{letra:"A",texto:"a"},{letra:"B",texto:"b"},{letra:"C",texto:"c"}],correta:"B",comentario:"c",conceito:"k",alerta:""}))};
-  const D=n=>fromNum(dnum(today())+n);["CM-1","CM-4","CM-6"].forEach(k=>state[k]={l:1,last:D(-2),qt:10,qc:3});commit();setView("notas");if(typeof setNSeg==="function")setNSeg("revisar")});await p.waitForTimeout(150);
+  const D=n=>fromNum(dnum(today())+n);["CM-1","CM-4","CM-6"].forEach(k=>state[k]={l:1,last:D(-2),qt:10,qc:3});commit();cdOpen("hoje")});await p.waitForTimeout(150);
 // cartões
 await click('#cdGo');await p.waitForTimeout(150);ok(await visible('#cdFullB')===big,name+": botão nos cartões "+(big?"aparece":"não aparece"));
-if(big){await click('#cdFullB');await p.waitForTimeout(150);const st=await p.evaluate(()=>({others:[...document.querySelectorAll('#viewNotas section.card')].filter(c=>!c.classList.contains("ncards")&&c.offsetParent!==null).length,w:document.querySelector('.ncards').getBoundingClientRect().width}));
+if(big){await click('#cdFullB');await p.waitForTimeout(150);const st=await p.evaluate(()=>({others:[...document.querySelectorAll('#viewCards section.card')].filter(c=>!c.classList.contains("ncards")&&c.offsetParent!==null).length,w:document.querySelector('.ncards').getBoundingClientRect().width}));
   ok(st.others===0&&st.w>500,name+": cartões em tela inteira "+JSON.stringify(st));await p.screenshot({path:`fullcd-${name}.png`});
   if(!mob){await p.keyboard.press(' ');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.show),name+": espaço mostra a resposta");await p.keyboard.press('3');await p.waitForTimeout(60);ok(await p.evaluate(()=>cdRun.i===1&&cdRun.g[3]===1),name+": 3 = Bom");
     await p.keyboard.press('Escape');await p.waitForTimeout(80);ok(await p.evaluate(()=>!fullOn.cd),name+": Esc sai")}
   else{await click('#cdFullB');await p.waitForTimeout(80);ok(await p.evaluate(()=>!fullOn.cd),name+": botão sai")}
-  await p.evaluate(()=>{fullSet("cd",true);cdRun=null;render()});ok(await p.evaluate(()=>[...document.querySelectorAll('#viewNotas section.card')].filter(c=>c.offsetParent!==null).length>1),name+": sem sessão, aba normal");}
+  await p.evaluate(()=>{fullSet("cd",true);cdRun=null;render()});ok(await p.evaluate(()=>!document.querySelector('#viewCards.vfull')&&!document.querySelector('#viewCards .fullhide')&&document.querySelector('#cSegBar').offsetParent!==null),name+": sem sessão, aba normal");}
 // simulado
 await p.evaluate(()=>{cdRun=null;setView("quest");if(typeof setQSeg==="function")setQSeg("praticar")});await p.waitForTimeout(150);
 ok(!(await visible('#simFullB')),name+": sem botão antes de começar");

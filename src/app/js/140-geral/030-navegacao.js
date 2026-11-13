@@ -1,5 +1,5 @@
 function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
-  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewStats").hidden=v!=="stats";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas","stats"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
+  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewStats").hidden=v!=="stats";$("#viewMais").hidden=v!=="mais";$("#viewCards").hidden=v!=="cartoes";$("#tabM").setAttribute("aria-selected",["mais","foco","notas","stats","erros"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 /* Lote 19 (10/2026): explicações fixas dos cartões (.hx) ficam recolhidas atrás do "?" do cabeçalho do cartão.
@@ -54,7 +54,7 @@ new MutationObserver(()=>sbApply()).observe(document.documentElement,{attributes
   $("#sbPinOpen").onclick=()=>sbSetPin(sbPin==="open"?"":"open");
   $("#sbPinRail").onclick=()=>sbSetPin(sbPin==="rail"?"":"rail")}
 /* menu ≡: lista de todas as seções com um resumo de cada */
-const NM_SUB={inicio:"Painel do dia",temas:"198 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Banco de questões, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros",stats:"Como estou indo e se chego a tempo"};
+const NM_SUB={inicio:"Painel do dia",temas:"198 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Banco de questões, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros",cartoes:"Revisar, criar e acompanhar os cartões",stats:"Como estou indo e se chego a tempo"};
 function nmInfo(v){try{
   if(v==="inicio"){const P=ensurePlan();if(P.items.length){const d=P.items.filter(itemDone).length;return [`Estudar hoje: ${d} de ${P.items.length} temas`,""]}}
   if(v==="temas"){const n=dueCount();return [n?`${n} ${n===1?"revisão pendente":"revisões pendentes"}`:"Revisões em dia",n?"late":"",n]}
@@ -63,6 +63,7 @@ function nmInfo(v){try{
   if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,nf=freeN.length;if(nk||nf)return [[nf?`${nf} no caderno livre`:"",nk?`${nk} ${nk===1?"tema":"temas"} com anotações`:""].filter(Boolean).join(" · "),""]}
   if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${foDG()?` de ${fmtMin(foDG()*60)}`:""}`,"",foRun?"●":0]}
   if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}
+  if(v==="cartoes"){const n=cdDue().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje","",n]}
   if(v==="stats"){const V=stVerdRes(stRes(30)),a=V[0],b=V[1];if(a[1]==="na"&&b[1]==="na")return [NM_SUB.stats,""];return [[a[1]!=="na"?a[2]:"",b[1]!=="na"?`chegar a tempo: ${b[2].toLowerCase()}`:""].filter(Boolean).join(" · "),b[1]==="bad"||b[1]==="warn"?"late":""]}}catch(e){}return [NM_SUB[v]||"",""]}
 function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
   document.querySelectorAll(".appnav .tabs .tab").forEach(t=>{const v=t.dataset.v;if(!v||v==="mais"||v==="help")return;
@@ -101,6 +102,7 @@ function renderAll(){
   // contadores das abas (sempre visíveis)
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):"";$("#ecount").title=n?`${n} ${n===1?"erro para revisar":"erros para revisar"} hoje`:""}
   {const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;$("#ncount").textContent=nk?String(nk):""}
+  {const n=cdDue().length;$("#ccount").textContent=n?String(n):"";$("#ccount").title=n?`${n} ${n===1?"cartão":"cartões"} hoje`:""}
   const P0=ensurePlan(),dueN=dueCount();
   /* Lote 19: o selo mostra o que cabe fazer hoje (fila do dia), não a dívida inteira */
   {let fit=dueN;try{fit=Math.min(dueN,qCounts().revs)}catch(e){}$("#rcount").textContent=fit?String(fit):"";$("#rcount").title=fit?`${fit} ${fit===1?"revisão cabe":"revisões cabem"} hoje${dueN>fit?` (${dueN} pendentes)`:""}`:""}
@@ -118,6 +120,8 @@ function renderAll(){
   else if(view==="foco")renderFoco();
   else if(view==="stats")renderStats();
   else if(view==="mais")renderMais();
+  else if(view==="cartoes")renderCards();
+  if(view!=="cartoes")$("#cdBody").innerHTML="";
   if(view!=="foco")$("#foBody").innerHTML="";
   foEnsureTick();foPaint();
   renderHead();
