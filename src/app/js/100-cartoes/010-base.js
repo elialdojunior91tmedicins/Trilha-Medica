@@ -32,6 +32,10 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
+/* vários de uma vez: salva no aparelho uma vez e manda tudo junto para a conta (revisão final, 13/11/2026) */
+function cdPutMany(L){if(!L.length)return;cdSaveLocal();if(!cardStore)return;const R=L.map(x=>JSON.parse(JSON.stringify(x))),k="cd:many";
+  (cardStore.putMany?cardStore.putMany(R):Promise.all(R.map(x=>cardStore.doc(x.id).set(x)))).then(()=>saveOk(k),e=>saveFail(k,"cartões",e,()=>cdPutMany(L.filter(x=>cards.includes(x)))))}
+const cdNextDue=()=>cards.filter(x=>cdLive(x)&&x.f.st).map(x=>x.due).sort()[0];
 async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",cdPlain(x.q).slice(0,120),topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
 function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src,at:new Date().toISOString(),...(o||{})});cards.push(x);cdPut(x);return x}
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
@@ -83,7 +87,7 @@ function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria
   const FC=cdForecast(),mx=Math.max(1,...FC.map(x=>x.n)),fc=el(`<figure class="cdfc"><figcaption>Revisões nos próximos 7 dias</figcaption><div class="cdfcb"></div></figure>`),fb=fc.querySelector(".cdfcb");
   FC.forEach((x,i)=>{const d=el(`<div class="cdfcc"><span class="cdfn"></span><i style="height:${Math.round(x.n/mx*100)}%"></i><span class="cdfd"></span></div>`);d.querySelector(".cdfn").textContent=x.n;d.querySelector(".cdfd").textContent=i?new Date(x.d+"T12:00").toLocaleDateString("pt-BR",{weekday:"short"}).replace(".",""):"hoje";fb.appendChild(d)});c.appendChild(fc);
   if(due.length){const go=el(`<button class="btn primary" type="button" id="cdGo"></button>`);go.textContent=`Revisar ${due.length} ${due.length===1?"cartão":"cartões"}`;go.onclick=cdRunStart;c.appendChild(go)}
-  else{const nx=cards.filter(x=>x.f.st).map(x=>x.due).sort()[0];c.appendChild(el(`<p class="cempty">Nada para hoje.${nx?` O próximo volta em ${br(nx)}.`:""}${cards.some(x=>!x.f.st)?` Os novos do dia já entraram (limite ${cdNewLimit()}).`:""}</p>`))}
+  else{const nx=cdNextDue();c.appendChild(el(`<p class="cempty">Nada para hoje.${nx?` O próximo volta em ${br(nx)}.`:""}${cards.some(x=>cdLive(x)&&!x.f.st)?` Os novos do dia já entraram (limite ${cdNewLimit()}).`:""}</p>`))}
   {const tr=cdTreeEl();if(tr)c.appendChild(tr)}
   c.appendChild(cdAnkiEl());c.appendChild(cdCfgEl());return c}
 function cdCfgEl(){const w=el(`<details class="plain cdcfg"><summary>Ajustes dos cartões</summary></details>`);

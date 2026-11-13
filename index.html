@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=7dddf3a7">
+<link rel="stylesheet" href="site.css?v=158d70a5">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=7dddf3a7"></script>
-<script src="bridge.js?v=7dddf3a7"></script>
+<script src="config.js?v=158d70a5"></script>
+<script src="bridge.js?v=158d70a5"></script>
 </head>
 <body>
 <script>
@@ -7739,6 +7739,10 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
+/* vários de uma vez: salva no aparelho uma vez e manda tudo junto para a conta (revisão final, 13/11/2026) */
+function cdPutMany(L){if(!L.length)return;cdSaveLocal();if(!cardStore)return;const R=L.map(x=>JSON.parse(JSON.stringify(x))),k="cd:many";
+  (cardStore.putMany?cardStore.putMany(R):Promise.all(R.map(x=>cardStore.doc(x.id).set(x)))).then(()=>saveOk(k),e=>saveFail(k,"cartões",e,()=>cdPutMany(L.filter(x=>cards.includes(x)))))}
+const cdNextDue=()=>cards.filter(x=>cdLive(x)&&x.f.st).map(x=>x.due).sort()[0];
 async function cdDel(id){{const x=cards.find(c=>c.id===id);if(x)toTrash("card",cdPlain(x.q).slice(0,120),topicName(x.k),x)}cards=cards.filter(x=>x.id!==id);cdSaveLocal();render();if(cardStore)try{await cardStore.doc(id).delete()}catch(e){}}
 function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),k,q:q.trim(),a:a.trim(),box:0,due:today(),n:0,ok:0,src,at:new Date().toISOString(),...(o||{})});cards.push(x);cdPut(x);return x}
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
@@ -7790,7 +7794,7 @@ function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria
   const FC=cdForecast(),mx=Math.max(1,...FC.map(x=>x.n)),fc=el(`<figure class="cdfc"><figcaption>Revisões nos próximos 7 dias</figcaption><div class="cdfcb"></div></figure>`),fb=fc.querySelector(".cdfcb");
   FC.forEach((x,i)=>{const d=el(`<div class="cdfcc"><span class="cdfn"></span><i style="height:${Math.round(x.n/mx*100)}%"></i><span class="cdfd"></span></div>`);d.querySelector(".cdfn").textContent=x.n;d.querySelector(".cdfd").textContent=i?new Date(x.d+"T12:00").toLocaleDateString("pt-BR",{weekday:"short"}).replace(".",""):"hoje";fb.appendChild(d)});c.appendChild(fc);
   if(due.length){const go=el(`<button class="btn primary" type="button" id="cdGo"></button>`);go.textContent=`Revisar ${due.length} ${due.length===1?"cartão":"cartões"}`;go.onclick=cdRunStart;c.appendChild(go)}
-  else{const nx=cards.filter(x=>x.f.st).map(x=>x.due).sort()[0];c.appendChild(el(`<p class="cempty">Nada para hoje.${nx?` O próximo volta em ${br(nx)}.`:""}${cards.some(x=>!x.f.st)?` Os novos do dia já entraram (limite ${cdNewLimit()}).`:""}</p>`))}
+  else{const nx=cdNextDue();c.appendChild(el(`<p class="cempty">Nada para hoje.${nx?` O próximo volta em ${br(nx)}.`:""}${cards.some(x=>cdLive(x)&&!x.f.st)?` Os novos do dia já entraram (limite ${cdNewLimit()}).`:""}</p>`))}
   {const tr=cdTreeEl();if(tr)c.appendChild(tr)}
   c.appendChild(cdAnkiEl());c.appendChild(cdCfgEl());return c}
 function cdCfgEl(){const w=el(`<details class="plain cdcfg"><summary>Ajustes dos cartões</summary></details>`);
@@ -8170,8 +8174,8 @@ function cdLeechEl(){const L=cdLeeches(5);if(!L.length)return null;const all=car
   const c=el(`<section class="card cdleech" id="cdLeech" aria-labelledby="cdLh"><div class="dhead"><h2 id="cdLh">Cartões que você mais esquece</h2></div><p class="how">Esqueceu ${CD_LEECH} vezes ou mais. Reescrever costuma resolver: deixe a pergunta mais específica ou divida em dois cartões.</p><ul class="cdlist"></ul></section>`),ul=c.querySelector("ul");
   L.forEach(x=>{const it=BYKEY[x.k],li=el(`<li class="cdlrow"><div class="cdlq"></div><div class="cdlm how"></div><div class="btns"><button class="mini" type="button">Editar</button><button class="mini" type="button">Juntar ao lote de melhorias</button></div></li>`);
     li.querySelector(".cdlq").textContent=cdTxt(x.q);li.querySelector(".cdlm").textContent=`esqueceu ${x.f.lapses}× · ${it?it.t:""}`;
-    const [e,j]=li.querySelectorAll("button");e.id="cdLE-"+x.id;e.onclick=()=>cdEditOpen(x,true);j.id="cdLJ-"+x.id;j.onclick=()=>{x.dr=1;cdPut(x);infoToast("Foi para o lote de melhorias (fora da revisão até o Claude melhorar).","Ver o lote",()=>{cdLotOpen=true;cdOpen("hoje")});render()};
-    if(cdEd&&cdEd.id===x.id)li.appendChild(cdEditEl());ul.appendChild(li)});
+    const [e,j]=li.querySelectorAll("button");e.id="cdLE-"+x.id;e.onclick=()=>cdOpen("todos",{pick:x.id});j.id="cdLJ-"+x.id;j.onclick=()=>{x.dr=1;cdPut(x);infoToast("Foi para o lote de melhorias (fora da revisão até o Claude melhorar).","Ver o lote",()=>{cdLotOpen=true;cdOpen("hoje")});render()};
+    ul.appendChild(li)});
   if(all>L.length){const m=el(`<button class="link" type="button" id="cdLAll"></button>`);m.textContent=`Ver todos os ${all}`;m.onclick=()=>cdOpen("todos",{leech:true});c.appendChild(m)}
   return c}
 /* ---- Todos: busca, filtros, ordem, lista de 50 em 50, editor ao lado (computador) ou em tela própria; Selecionar vários ---- */
@@ -8195,11 +8199,11 @@ function cdBulkEl(N){const L=cdBulkSel(),w=el(`<div class="cdbulk" id="cdBulk" r
   const btn=(id,t,fn,cls)=>{const b=el(`<button type="button"></button>`);b.className=cls||"mini";b.id=id;b.textContent=t;b.disabled=!L.length&&id!=="cdSelAll"&&id!=="cdSelOff";b.onclick=()=>fn(b);B.appendChild(b);return b};
   if(N>L.length)btn("cdSelAll",`Selecionar todos os ${N}`,()=>{cdFilter(cards,cdF).forEach(x=>cdSel.add(x.id));render()});
   btn("cdbK","Trocar de tema",()=>{cdBulkK=!cdBulkK;render();setTimeout(()=>{const x=$("#cdbKT");if(x)x.focus()},40)});
-  btn("cdbSu","Suspender",()=>{L.forEach(x=>{x.su=1;cdPut(x)});render()});btn("cdbRe","Reativar",()=>{L.forEach(x=>{if(x.su){delete x.su;cdPut(x)}});render()});
+  btn("cdbSu","Suspender",()=>{L.forEach(x=>{x.su=1});cdPutMany(L);render()});btn("cdbRe","Reativar",()=>{const R=L.filter(x=>x.su);R.forEach(x=>{delete x.su});cdPutMany(R);render()});
   btn("cdbDel","Apagar",()=>{cdBulkDel(L);cdSel=new Set();render()});
-  const ak=btn("cdbAnki","Exportar para o Anki",b=>cdBulkAnki(L.filter(x=>!x.dr),b));if(!downloadsFn)ak.disabled=true;
+  const ak=btn("cdbAnki","Exportar para o Anki",b=>cdBulkAnki(L.filter(x=>!x.dr&&!x.su),b));if(!downloadsFn)ak.disabled=true;
   btn("cdSelOff","Cancelar",()=>{cdSel=null;cdBulkK=false;render()},"link");
-  if(cdBulkK&&L.length)w.appendChild(cdTopicPick("cdbKT",key=>{L.forEach(x=>{x.k=key;cdPut(x)});cdBulkK=false;infoToast(`${L.length} ${L.length===1?"cartão mudou":"cartões mudaram"} de tema.`);render()},"Novo tema dos selecionados"));
+  if(cdBulkK&&L.length)w.appendChild(cdTopicPick("cdbKT",key=>{L.forEach(x=>{x.k=key});cdPutMany(L);cdBulkK=false;infoToast(`${L.length} ${L.length===1?"cartão mudou":"cartões mudaram"} de tema.`);render()},"Novo tema dos selecionados"));
   return w}
 function cdAllEl(){const live=cards.filter(x=>BYKEY[x.k]),c=el(`<section class="card cdall" id="cdAll" aria-labelledby="cdAh"><div class="dhead"><h2 id="cdAh">Todos os cartões</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=`${live.length} ${live.length===1?"cartão":"cartões"}`;c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
@@ -9727,7 +9731,7 @@ function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").for
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
-  if(view==="cartoes"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
+  if(view==="cartoes"&&cdRun){if(cdEd&&(ev.key===" "||ev.key==="Enter"||/^[1-4]$/.test(ev.key)))return;if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
     if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
   if(view==="foco"&&foRun){if(ev.key===" "){b("#foPauseB");return}if(ev.key==="d"||ev.key==="D"){b("#foDist");return}
     if(ev.key==="Escape"&&fullOn.fo&&twoCols()){ev.preventDefault();fullSet("fo",false)}return}

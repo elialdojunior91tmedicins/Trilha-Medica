@@ -122,3 +122,16 @@ test("cdMix: novos, aprendendo, jovens, maduros e suspensos", () => {
   mk(A); rev(A); rev(A, { due: ago(A, -30) }); rev(A, { su: 1 }); mk(A, { f: { st: 1, s: 1, d: 5, last: HOJE } }); mk(A, { dr: 1 });
   assert.deepEqual({ ...A.cdMix(A.cards) }, { novo: 1, aprendendo: 1, jovem: 1, maduro: 1, suspenso: 1 });
 });
+
+test("revisão final: ações em vários salvam no aparelho uma vez e mandam tudo junto para a conta", () => {
+  const A = novo(); const L = Array.from({ length: 50 }, () => rev(A));
+  let saves = 0, many = 0, docs = 0; A.cdSaveLocal = () => { saves++; };
+  A.cardStore = { putMany: async l => { many++; assert.equal(l.length, 50); }, doc: () => ({ set: async () => { docs++; } }) };
+  A.cdPutMany(L);
+  assert.equal(saves, 1); assert.equal(many, 1); assert.equal(docs, 0);
+});
+
+test("revisão final: Hoje não usa cartão suspenso em 'o próximo volta em'", () => {
+  const A = novo(); rev(A, { su: 1, due: ago(A, -2) }); rev(A, { due: ago(A, -9) });
+  assert.equal(A.cdNextDue(), ago(A, -9));
+});

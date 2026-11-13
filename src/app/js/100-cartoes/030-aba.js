@@ -24,8 +24,8 @@ function cdLeechEl(){const L=cdLeeches(5);if(!L.length)return null;const all=car
   const c=el(`<section class="card cdleech" id="cdLeech" aria-labelledby="cdLh"><div class="dhead"><h2 id="cdLh">Cartões que você mais esquece</h2></div><p class="how">Esqueceu ${CD_LEECH} vezes ou mais. Reescrever costuma resolver: deixe a pergunta mais específica ou divida em dois cartões.</p><ul class="cdlist"></ul></section>`),ul=c.querySelector("ul");
   L.forEach(x=>{const it=BYKEY[x.k],li=el(`<li class="cdlrow"><div class="cdlq"></div><div class="cdlm how"></div><div class="btns"><button class="mini" type="button">Editar</button><button class="mini" type="button">Juntar ao lote de melhorias</button></div></li>`);
     li.querySelector(".cdlq").textContent=cdTxt(x.q);li.querySelector(".cdlm").textContent=`esqueceu ${x.f.lapses}× · ${it?it.t:""}`;
-    const [e,j]=li.querySelectorAll("button");e.id="cdLE-"+x.id;e.onclick=()=>cdEditOpen(x,true);j.id="cdLJ-"+x.id;j.onclick=()=>{x.dr=1;cdPut(x);infoToast("Foi para o lote de melhorias (fora da revisão até o Claude melhorar).","Ver o lote",()=>{cdLotOpen=true;cdOpen("hoje")});render()};
-    if(cdEd&&cdEd.id===x.id)li.appendChild(cdEditEl());ul.appendChild(li)});
+    const [e,j]=li.querySelectorAll("button");e.id="cdLE-"+x.id;e.onclick=()=>cdOpen("todos",{pick:x.id});j.id="cdLJ-"+x.id;j.onclick=()=>{x.dr=1;cdPut(x);infoToast("Foi para o lote de melhorias (fora da revisão até o Claude melhorar).","Ver o lote",()=>{cdLotOpen=true;cdOpen("hoje")});render()};
+    ul.appendChild(li)});
   if(all>L.length){const m=el(`<button class="link" type="button" id="cdLAll"></button>`);m.textContent=`Ver todos os ${all}`;m.onclick=()=>cdOpen("todos",{leech:true});c.appendChild(m)}
   return c}
 /* ---- Todos: busca, filtros, ordem, lista de 50 em 50, editor ao lado (computador) ou em tela própria; Selecionar vários ---- */
@@ -49,11 +49,11 @@ function cdBulkEl(N){const L=cdBulkSel(),w=el(`<div class="cdbulk" id="cdBulk" r
   const btn=(id,t,fn,cls)=>{const b=el(`<button type="button"></button>`);b.className=cls||"mini";b.id=id;b.textContent=t;b.disabled=!L.length&&id!=="cdSelAll"&&id!=="cdSelOff";b.onclick=()=>fn(b);B.appendChild(b);return b};
   if(N>L.length)btn("cdSelAll",`Selecionar todos os ${N}`,()=>{cdFilter(cards,cdF).forEach(x=>cdSel.add(x.id));render()});
   btn("cdbK","Trocar de tema",()=>{cdBulkK=!cdBulkK;render();setTimeout(()=>{const x=$("#cdbKT");if(x)x.focus()},40)});
-  btn("cdbSu","Suspender",()=>{L.forEach(x=>{x.su=1;cdPut(x)});render()});btn("cdbRe","Reativar",()=>{L.forEach(x=>{if(x.su){delete x.su;cdPut(x)}});render()});
+  btn("cdbSu","Suspender",()=>{L.forEach(x=>{x.su=1});cdPutMany(L);render()});btn("cdbRe","Reativar",()=>{const R=L.filter(x=>x.su);R.forEach(x=>{delete x.su});cdPutMany(R);render()});
   btn("cdbDel","Apagar",()=>{cdBulkDel(L);cdSel=new Set();render()});
-  const ak=btn("cdbAnki","Exportar para o Anki",b=>cdBulkAnki(L.filter(x=>!x.dr),b));if(!downloadsFn)ak.disabled=true;
+  const ak=btn("cdbAnki","Exportar para o Anki",b=>cdBulkAnki(L.filter(x=>!x.dr&&!x.su),b));if(!downloadsFn)ak.disabled=true;
   btn("cdSelOff","Cancelar",()=>{cdSel=null;cdBulkK=false;render()},"link");
-  if(cdBulkK&&L.length)w.appendChild(cdTopicPick("cdbKT",key=>{L.forEach(x=>{x.k=key;cdPut(x)});cdBulkK=false;infoToast(`${L.length} ${L.length===1?"cartão mudou":"cartões mudaram"} de tema.`);render()},"Novo tema dos selecionados"));
+  if(cdBulkK&&L.length)w.appendChild(cdTopicPick("cdbKT",key=>{L.forEach(x=>{x.k=key});cdPutMany(L);cdBulkK=false;infoToast(`${L.length} ${L.length===1?"cartão mudou":"cartões mudaram"} de tema.`);render()},"Novo tema dos selecionados"));
   return w}
 function cdAllEl(){const live=cards.filter(x=>BYKEY[x.k]),c=el(`<section class="card cdall" id="cdAll" aria-labelledby="cdAh"><div class="dhead"><h2 id="cdAh">Todos os cartões</h2><span class="todaydate"></span></div></section>`);
   c.querySelector(".todaydate").textContent=`${live.length} ${live.length===1?"cartão":"cartões"}`;c.querySelector(".dhead").appendChild(helpBtn("Cartões"));

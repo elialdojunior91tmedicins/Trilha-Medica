@@ -32,13 +32,17 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await tap("#tabC");
   r=await p.evaluate(()=>({v:view,seg:cSeg,line:(document.getElementById("cdLine")||{}).textContent,go:!!document.getElementById("cdGo"),nw:!!document.getElementById("cdNew"),lc:document.querySelectorAll("#cdLeech .cdlrow").length,cc:document.getElementById("ccount").textContent}));
   ok(r.v==="cartoes"&&r.seg==="hoje"&&/4 para revisar · 1 novo/.test(r.line||"")&&r.go&&r.nw,name+": Hoje com a linha do dia, Revisar e + Novo cartão "+JSON.stringify(r));
-  ok(r.lc===1,name+": Cartões que você mais esquece ("+r.lc+")");ok(r.cc==="5",name+": contagem na aba "+r.cc);
+  ok(r.lc===1,name+": Cartões que você mais esquece ("+r.lc+")");
+  {const lid=await p.evaluate(()=>cards.find(x=>x.f.lapses>=4).id);await tap("#cdLE-"+lid);
+   const e=await p.evaluate(()=>({v:cSeg,n:document.querySelectorAll("#cdEdit").length}));ok(e.v==="todos"&&e.n===1,name+": Editar dos mais esquecidos abre um editor só, em Todos "+JSON.stringify(e));
+   await p.evaluate(()=>{cdPick=null;cdEd=null;cdOpen("hoje")})}ok(r.cc==="5",name+": contagem na aba "+r.cc);
   /* fila do dia abre a revisão na aba */
   await p.evaluate(()=>{setView("inicio");qGoStep("cards")});await p.waitForTimeout(300);
   r=await p.evaluate(()=>({v:view,show:!!document.getElementById("cdShow")}));ok(r.v==="cartoes"&&r.show,name+": fila do dia → revisão na aba "+JSON.stringify(r));
   if(!mob){await p.keyboard.press("Space");await p.waitForTimeout(150);ok(await p.evaluate(()=>cdRun&&cdRun.show),name+": espaço mostra a resposta");
     const n0=await p.evaluate(()=>cdRun.done);await p.evaluate(()=>{const b=document.getElementById("cdEdRun");if(b)b.click()});await p.waitForTimeout(150);
     await p.focus("#cde-q");await p.keyboard.press("3");await p.waitForTimeout(150);ok(await p.evaluate(n0=>cdRun.done===n0,n0),name+": '3' dentro do editor não responde");
+    await p.evaluate(()=>document.activeElement.blur());await p.keyboard.press("3");await p.waitForTimeout(150);ok(await p.evaluate(n0=>cdRun.done===n0&&!!cdEd,n0),name+": com o editor aberto e fora do campo, '3' também não responde (revisão final)");
     await p.evaluate(()=>{cdEd=null;render()});await p.waitForTimeout(100);await p.keyboard.press("3");await p.waitForTimeout(150);ok(await p.evaluate(n0=>cdRun.done===n0+1,n0),name+": tecla 3 responde")}
   await p.evaluate(()=>{cdRun=null;render()});
   /* tela inteira na aba (celular) */

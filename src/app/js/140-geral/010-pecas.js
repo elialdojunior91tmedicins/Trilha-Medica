@@ -47,7 +47,7 @@ function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").for
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
-  if(view==="cartoes"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
+  if(view==="cartoes"&&cdRun){if(cdEd&&(ev.key===" "||ev.key==="Enter"||/^[1-4]$/.test(ev.key)))return;if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
     if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
   if(view==="foco"&&foRun){if(ev.key===" "){b("#foPauseB");return}if(ev.key==="d"||ev.key==="D"){b("#foDist");return}
     if(ev.key==="Escape"&&fullOn.fo&&twoCols()){ev.preventDefault();fullSet("fo",false)}return}
