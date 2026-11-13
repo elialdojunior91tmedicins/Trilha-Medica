@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=befff09e">
+<link rel="stylesheet" href="site.css?v=7dddf3a7">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=befff09e"></script>
-<script src="bridge.js?v=befff09e"></script>
+<script src="config.js?v=7dddf3a7"></script>
+<script src="bridge.js?v=7dddf3a7"></script>
 </head>
 <body>
 <script>
@@ -2105,7 +2105,7 @@ html:not([data-layout="phone"]) body.haspill>.wrap{padding-bottom:72px}
 html[data-layout="phone"] body.typing .fopill{display:none}
 #tabM{display:none}
 html[data-layout="phone"] #tabM{display:flex}
-html[data-layout="phone"] .appnav #tabN,html[data-layout="phone"] .appnav #tabFo,html[data-layout="phone"] .appnav #tabS{display:none}
+html[data-layout="phone"] .appnav #tabN,html[data-layout="phone"] .appnav #tabFo,html[data-layout="phone"] .appnav #tabS,html[data-layout="phone"] .appnav #tabE{display:none}
 .appnav #mcount,.appnav #focount{background:var(--accent)!important;color:var(--on-accent)}
 .appnav #mcount:empty,.appnav #focount:empty{display:none}
 html[data-layout="tablet"] #viewFoco,html[data-layout="tablet"] #viewMais{max-width:820px}
@@ -2377,6 +2377,49 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
 :root[data-theme="dark"] #iHero{--hero1:#2a4176;--hero2:#1d2f57;--hero3:#15233f;box-shadow:inset 0 0 0 1px rgb(207 171 99 / .45),0 10px 28px -14px rgb(0 0 0 / .7)}
 /* Configurações › Tempo de abertura */
 #perfCard summary{cursor:pointer}#perfCard .perflist{margin:10px 0;padding-left:20px;font-size:.88em;line-height:1.6}#perfCard .row{display:flex;gap:12px;align-items:center}
+/* Aba Cartões (13/11/2026): partes em todos os tamanhos de tela */
+.tseg.csegbar{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 14px}
+html:not([data-layout="phone"]) .tseg.csegbar{max-width:480px}
+html[data-layout="phone"] .tseg.csegbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6}
+.cdline{margin:2px 0 10px}
+.cdgorow{margin-top:10px}
+.cdlist{list-style:none;margin:0;padding:0}
+.cdlrow{padding:10px 0;border-top:1px solid var(--line)}
+.cdlrow:first-child{border-top:0}
+.cdlq{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.cdlm{margin:2px 0 6px}
+.cdnew{border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0;background:var(--surface)}
+.cdnew .dhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tseg.cdnmodes{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:10px}
+.cdnk{margin-bottom:8px}.cdnkcur{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.cdtpick .qrres{list-style:none;margin:6px 0 0;padding:0}
+.cdnew textarea{width:100%;box-sizing:border-box}
+.cdndup{margin:8px 0}.cdnblk{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.cdnbt{display:block;margin-bottom:4px}
+.cdnprev .cdrev{max-height:50vh;overflow:auto}
+.cdallb{margin:4px 0 10px}
+.cdctl .cdqf{display:block;margin-bottom:8px}.cdctl .cdqf input{width:100%;box-sizing:border-box}
+.cdfrow{display:flex;flex-wrap:wrap;gap:8px}.cdfch{margin:8px 0}
+.cdallg.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.cdside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border-left:1px solid var(--line);padding-left:16px}
+.cdlist2{list-style:none;margin:0;padding:0}
+.cdrow{display:grid;grid-template-columns:minmax(0,1fr);padding:9px 6px;border-top:1px solid var(--line)}
+.cdrow.sel{grid-template-columns:auto minmax(0,1fr);column-gap:10px}.cdrow.sel .cdsel{grid-row:span 2;margin-top:3px}
+.cdrow.on{background:color-mix(in srgb,var(--accent) 9%,transparent);border-radius:8px}
+.cdrq{all:unset;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;color:var(--ink);font-weight:500}
+.cdrq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cdrm{font-size:.8rem;margin-top:2px}
+.cdbulk{position:sticky;top:0;z-index:4;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:8px}
+.cdbulk .btns{flex-wrap:wrap;margin-top:6px}
+.cdeacts{margin-top:10px;flex-wrap:wrap}.cdback{margin-bottom:8px}
+.cdnhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.cdnumg{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .cdnumg{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.cdnum .stvs{display:flex;flex-wrap:wrap;gap:8px}
+.cdcal{display:grid;grid-template-rows:repeat(7,auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;max-width:560px}
+.cdcd{display:block;aspect-ratio:1;border-radius:2px;background:var(--line)}
+.cdcd.l1{background:color-mix(in srgb,var(--accent) 30%,var(--surface))}.cdcd.l2{background:color-mix(in srgb,var(--accent) 55%,var(--surface))}
+.cdcd.l3{background:color-mix(in srgb,var(--accent) 78%,var(--surface))}.cdcd.l4{background:var(--accent)}
+.cdstreak{font-weight:600;margin:4px 0 8px}
 </style>
 
 <div class="wrap">
@@ -2395,6 +2438,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
     <button class="tab" role="tab" id="tabT" data-v="temas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg><span class="tl">Residência</span></button>
     <button class="tab" role="tab" id="tabF" data-v="fac" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c0 1.4 2.5 3 5.5 3s5.5-1.6 5.5-3v-4.5M21.5 9.5V15"/></svg><span class="tl">Faculdade</span></button>
     <button class="tab" role="tab" id="tabQ" data-v="quest" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.4M12 17.2v.1"/></svg><span class="tl">Questões</span></button>
+    <button class="tab" role="tab" id="tabC" data-v="cartoes" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7.5" width="12.5" height="12.5" rx="2"/><path d="M8 4h10.5A1.5 1.5 0 0 1 20 5.5V16"/></svg><span class="tl">Cartões</span><span class="ecount" id="ccount"></span></button>
     <button class="tab" role="tab" id="tabN" data-v="notas" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L19 8v12.5H6z"/><path d="M14.5 3.5V8H19M9 12.5h7M9 16h5"/></svg><span class="tl">Caderno</span><span class="ecount" id="ncount"></span></button>
     <button class="tab" role="tab" id="tabS" data-v="stats" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M6.5 16.5l4-5 3.5 3 5-7"/><path d="M15.5 7.5H19V11"/></svg><span class="tl">Estatísticas</span></button>
     <button class="tab" role="tab" id="tabFo" data-v="foco" aria-selected="false"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M10 3h4M19.2 6.3l1.3-1.3"/></svg><span class="tl">Foco</span><span class="ecount" id="focount"></span></button>
@@ -2441,9 +2485,9 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
   </div>
 
   <div id="viewNotas" class="wrap" style="width:100%" data-nseg="livre" hidden>
-    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Caderno</button><button type="button" data-n="revisar">Revisar</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
+    <div class="tseg nsegbar" role="group" aria-label="Partes da aba Caderno" id="nSegBar"><button type="button" data-n="livre">Caderno</button><button type="button" data-n="pegadinhas">Pegadinhas</button></div>
     <div id="nPegFull" class="npegfull" hidden></div>
-    <div id="nRevBox" class="ns-rev nrevbox"></div>
+    <div id="nRevBox" class="ns-free nrevbox"></div>
     <div id="nFreeBox" class="ns-free"></div>
     <h3 class="nlisth ns-all" id="nTopicH" hidden></h3>
     <ol class="elist ns-all" id="nlist"></ol>
@@ -2461,6 +2505,10 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewQues
 
   <div id="viewStats" class="wrap" style="width:100%" hidden><div id="stBody" class="stbody"></div></div>
   <div id="viewFoco" class="wrap" style="width:100%" hidden><div id="foBody" class="fobody"></div></div>
+  <div id="viewCards" class="wrap" style="width:100%" data-cseg="hoje" hidden>
+    <div class="tseg csegbar" role="group" aria-label="Partes da aba Cartões" id="cSegBar"><button type="button" data-c="hoje">Hoje</button><button type="button" data-c="todos">Todos</button><button type="button" data-c="numeros">Números</button></div>
+    <div id="cdBody" class="cdbody"></div>
+  </div>
   <div id="viewMais" class="wrap" style="width:100%" hidden><div id="maisBody" class="cfbody"></div></div>
 
   <div id="viewInstr" class="wrap" style="width:100%" hidden>
@@ -3134,19 +3182,25 @@ Um dia de estudo:
 - **Ligar a temas:** liga a prova a temas da residência e conteúdos da faculdade; ela aparece dentro do tema e o acerto conta também no conteúdo da faculdade.
 - Cada resposta conta no acerto do tema e da banca, e as erradas de temas já estudados vão para Refazer.`],
 ["Caderno",`A aba **Caderno** junta as **páginas livres** (aula, plantão, dicas) e a **página de cada tema**, que é a mesma anotação da Residência. Tudo é salvo enquanto você escreve.
-- **Partes** (celular e tablet em pé): **Caderno**, **Revisar** (cartões) e **Pegadinhas**. No computador, tudo numa página, com o sumário ao lado.
+- **Partes** (celular e tablet em pé): **Caderno** e **Pegadinhas**. No computador, tudo numa página, com o sumário ao lado. Os cartões têm aba própria, **Cartões**.
 - **Uma busca só** para páginas livres e dos temas; em **Filtros**, Tipo, Etiquetas, Mostrar só (editadas na semana, com pegadinhas, com tabela, com cartões, **temas estudados sem anotação**) e Onde.
 - **Página do tema e páginas ligadas:** cada tema tem uma página principal e quantas ligadas quiser (**+ Nova página ligada**). Página nova ligada a um tema sem anotação vira a página dele.
 - **Escrever:** título, negrito, ==destaque==, listas (Tab recua), pegadinha, **★** (a linha que cai muito em prova, o High Yield), tabela, link, **fluxograma** e **[[ ]]** para ligar a outro tema ou página (**Mencionado em** mostra quem liga para ela). **Selo** põe na linha um erro ou uma questão de prova. Modelos: **Doença** e, para tema de SP, **Resumo de SP**.
 - **Ler:** cada título abre e fecha; seções vazias somem e as **Pegadinhas** ficam em destaque. **+ Criar cartão do trecho** em cada seção (ou selecione um texto); trecho com ★ vai para o Anki com a etiqueta high-yield.
 - **Levar para a anotação** (em toda questão respondida): entra um bloco **Da questão** com o caso e a resposta inteira, mais o que você marcar (Por quê, Ponto-chave, Pegadinha, Por que não…). O app sugere a seção; **✦ Escrever com o Claude** transforma em 2 a 4 frases.
 - **Pegadinhas e destaques:** junta as linhas "> Pegadinha:", os ==destaques==, as linhas **★** e as seções Pegadinhas/Alertas, dos temas e das páginas livres. Filtre por tipo (**Só HY** mostra as ★), temas de hoje, prova da faculdade ou **Não sabia**. **Revisar pegadinhas** passa uma a uma; **Folha de véspera** baixa um PDF. No erro "Li errado" ou "Confundi", **Virar pegadinha** escreve na anotação.
-- **Cartões** (Revisar): cada cartão volta quando você estaria perto de esquecer (**FSRS**, o do Anki). **Mostrar resposta** e escolha **Errei**, **Difícil**, **Bom** ou **Fácil** (teclas espaço e 1–4). Até 14 novos por dia (**Ajustes dos cartões**). Crie no tema com **Criar cartões com o Claude** ou **+ Cartão manual**, ou a partir de um erro.
-- **Anki:** cartões a 40+ dias da próxima revisão aparecem em **Prontos para o Anki**. **Exportar (.apkg)** e, no Anki, Arquivo › Importar com **importar o progresso**; depois **Já importei no Anki** tira eles daqui (ficam 30 dias na lixeira).
+- **+ Criar cartão do trecho** e os cartões dos erros vão para a aba **Cartões**.
 - **📄 Ler arquivo:** foto, PDF, Word, PowerPoint ou texto, um ou vários. Diga o tipo e onde salvar (tema ou caderno livre); o Claude organiza com explicação, fluxograma e pegadinhas, e você confere antes de salvar. O arquivo não fica guardado, só o texto.
 - **Erros junto:** abaixo da página do tema, os erros que ainda pedem atenção (até 3), com o selo que abre o caderno de erros.
 - **Baixar PDF:** como está na tela, tudo, uma área ou os temas que você escolher. Tem capa, sumário, texto justificado, tabelas com grade, pegadinhas em caixa e links entre temas com a página.
 - **✦ Gerar resumo** e **Organizar minhas anotações** com o Claude: você insere ou descarta; **Desfazer última substituição** volta.`],
+["Cartões",`A aba **Cartões** (no celular, na barra de baixo; **Erros** fica no ≡ Menu) tem três partes: **Hoje**, **Todos** e **Números**.
+- **Revisar:** cada cartão volta quando você estaria perto de esquecer (**FSRS**, o do Anki). **Mostrar resposta** e escolha **Errei**, **Difícil**, **Bom** ou **Fácil** (no computador: espaço e 1–4). Até 14 novos por dia (**Ajustes dos cartões**).
+- **+ Novo cartão:** escolha o tema e escreva; **Salvar e criar outro** mantém o tema. **Colar vários**: um por linha, **pergunta :: resposta** (ou separado por tabulação, como no .txt do Anki). **Criar com o Claude**: escolha até 5 temas. Se já existe um cartão parecido no mesmo tema, o app avisa.
+- **Cartões que você mais esquece:** os que você esqueceu 4 vezes ou mais. **Editar** ou **Juntar ao lote de melhorias** (o Claude reescreve em lote).
+- **Todos:** busca, filtros (área, tema, situação, origem, mais esquecidos) e ordem. Toque num cartão para editar (no computador, o editor fica ao lado). **Suspender** tira da revisão sem apagar; **Reativar** traz de volta. **Selecionar** faz o mesmo em vários: trocar de tema, suspender, apagar ou exportar para o Anki.
+- **Números:** quanto você lembra nas revisões (meta de 90%), jovens × maduros (21 dias ou mais), revisões por dia, previsão de 30 dias, por área, os mais esquecidos e o calendário com os dias seguidos. O histórico começou em 13/11/2026.
+- **Anki:** cartões a 40+ dias da próxima revisão aparecem em **Prontos para o Anki**. **Exportar (.apkg)** e, no Anki, Arquivo › Importar com **importar o progresso**; depois **Já importei no Anki** tira eles daqui (ficam 30 dias na lixeira). Cartões novos vão como novos.`],
 ["Caderno de erros",`Registre o erro: o que você pensou, o conceito certo, o tipo e a fonte. Na questão errada, **Levar para o caderno de erros** já monta tudo: **O que eu errei**, a **Pista do caso** (com o que decide em negrito), **Dados decisivos**, **Ponto-chave**, **Conceito correto** e a questão inteira guardada. Ajuste com as suas palavras; **✦ Resumir com o Claude** encurta.
 - **Revisar:** a frente mostra o caso inteiro e a pergunta, sem a resposta: responda de cabeça e toque em **Mostrar a resposta** (**Ver alternativas** ajuda, mas aí vale no máximo Em parte). O verso traz **Certa × Você marcou**, **A regra**, **O raciocínio** e **Por que não a sua**, montados pelo app (✎ **Corrigir**, toque num dado marcado para tirar, ✦ **Melhorar com o Claude** opcional). Notas: **Errei** volta amanhã, **Em parte** na metade do prazo do Acertei (2, 3, 7 ou 15 dias, conforme o degrau), **Acertei** vai para 3, 7, 15 e 30 dias. A partir da 3ª revisão pode vir um caso novo com a mesma regra. Acertou no degrau de 30 dias: o erro fica **formado** (sai da revisão; volta se você errar de novo no tema).
 - **Uma agenda por questão:** erro que virou cartão passa a ser revisado pelos cartões; questão levada do Refazer sai do Refazer.
@@ -5216,9 +5270,9 @@ function facDayNotes(){const t=dnum(today()),out=[];
   provaWeek().forEach(p=>{const K=provaReadKeys(p);if(!K.length)return;const n=daysTo(p.date);
     out.push({id:"rd-"+p.id,t:`Revisar para a prova ${p.name} (${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}): leia as ${K.length} ${K.length===1?"página":"páginas"} dos conteúdos dela numa leitura só.`,acts:[["Ler as anotações da prova",()=>provaReadGo(p)]]})});
   fac.discs.forEach(d=>{if(!activeSems().includes(d.semId))return;(d.sps||[]).forEach(sp=>{if(!sp.fech||sp.fadi||sp.pos===sp.fech)return;const n=t-dnum(sp.fech);if(n<0||n>3)return;
-    const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
+    const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>cdLive(c)&&keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
     const acts=[];if(pk&&BYKEY[pk]&&!sampleOff)acts.push(["Gerar questões",()=>{detTab[pk]="questoes";openTopic(pk);setTimeout(()=>{const g=detGet("qf-",pk);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}]);
-    if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(cs.map(c=>c.id))}]);
+    if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>cdOpen("hoje",{run:cs.map(c=>c.id)})]);
     acts.push(["Dispensar",()=>{sp.pos=sp.fech;saveFac();render()}]);
     out.push({id:"pos-"+sp.id,t:`${spShort(sp.name)} fechou ${n===0?"hoje":n===1?"ontem":`há ${n} dias`}: faça questões${cs.length?" e os cartões":""} dela enquanto está fresco.`,acts})})});
   return out}
@@ -7077,10 +7131,10 @@ function renderNotasView(){
   {const L=$("#nlist"),H=$("#nTopicH"),hideT=nType==="free"&&!nNoNote;L.hidden=hideT;H.hidden=hideT||(nType!=="all"&&!nNoNote);
     H.textContent=nNoNote?"Temas estudados sem anotação":`Páginas dos temas · ${keys.length}`;$("#nPdf")&&($("#nPdf").closest("section").hidden=false)}
   {const ib=$("#nImgBox");ib.innerHTML="";if(imgR&&!imgR.from)ib.appendChild(imgPanel());const nb=$("#nImg");nb.hidden=sampleOff;nb.disabled=!sampleFn;nb.onclick=()=>imgStart(null)}
-  // partes (celular e tablet em pé), revisar hoje, cartões, pegadinhas e cobertura
-  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;const dn=cdDue().length,tn=0;
-   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",revisar:"Revisar"+(dn+tn?`<b>${dn+tn}</b>`:""),pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
-   const rb=$("#nRevBox");rb.innerHTML="";rb.append(nCardsCard());{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
+  // partes (celular e tablet em pé): Caderno e Pegadinhas (os cartões têm aba própria desde 13/11/2026)
+  {const vn=$("#viewNotas");vn.dataset.nseg=nSeg;
+   $("#nSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.n===nSeg);b.innerHTML={livre:"Caderno",pegadinhas:"Pegadinhas"}[b.dataset.n];b.onclick=()=>setNSeg(b.dataset.n)});
+   const rb=$("#nRevBox");rb.innerHTML="";{const nn=noNoteKeys().length;if(nn){const l=el(`<p class="how nnoline" id="nNoLine"><span></span> <button class="link" type="button">ver</button></p>`);
      l.querySelector("span").textContent=`${nn} ${nn===1?"tema estudado sem anotação":"temas estudados sem anotação"}.`;l.querySelector("button").onclick=()=>{nNoNote=true;if(nType==="free"){nType="all";lsSet("resid-ntype","all")}setNSeg("livre");render();setTimeout(()=>{const x=$("#nTopicH");if(x)x.scrollIntoView({block:"start",behavior:"smooth"})},60)};rb.appendChild(l)}}const pb=$("#nPegBox");pb.innerHTML="";const two=twoCols();pb.appendChild(nPegCard(vis,two?{side:true}:{}));
      /* Lote 21: no computador, a lista inteira abre na coluna principal ("Ver todas") */
      const pf=$("#nPegFull");pf.innerHTML="";pf.hidden=!(two&&pgFull);if(two&&pgFull){pf.appendChild(nPegCard(vis,{full:true}));if(pgFullTo){const t=pgFullTo;pgFullTo=null;setTimeout(()=>{const x=document.querySelector(`#nPegFull [data-pgt="${CSS.escape(t)}"]`)||pf;x.scrollIntoView({block:"start",behavior:"smooth"})},60)}}
@@ -7124,9 +7178,9 @@ function renderNotasView(){
   ["nRevBox","nPegBox"].forEach(id=>{const n=document.getElementById(id);if(n)S.appendChild(n)});const ex=V.querySelector(".nexport");if(ex)S.appendChild(ex);
   const t=document.getElementById("nToc");if(t)S.appendChild(t);V.appendChild(S)})();
 /* ---------- Anotações: reler hoje, pegadinhas, cartões e cobertura ---------- */
-let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","revisar","pegadinhas"].includes(v))nSeg=v}catch(e){}
+let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","pegadinhas"].includes(v))nSeg=v}catch(e){}
 /* Lote 13: caderno único — "Temas" e "Livre" viraram a parte "Caderno" (nSeg "livre"); "todas" continua aceito como apelido */
-function setNSeg(v){if(v==="todas")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
+function setNSeg(v){if(v==="todas"||v==="revisar")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
 let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
@@ -7653,6 +7707,10 @@ function imgPanel(){const R=imgR,w=el(`<div class="imgpanel" id="imgPanel"><div 
   return w}
 /* ===== Cartões (Lote 5): FSRS com 4 botões, limite de novos por dia, visual Osler, cartões dos erros e exportação .apkg ===== */
 const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64],CD_ANKI=40;
+/* aba Cartões (13/11/2026): histórico de cada revisão (x.rv) e suspenso (x.su); números fixos do desenho */
+const CD_RV_MAX=30,CD_MAT=21,CD_GOAL=.9,CD_LEECH=4,CD_DUP=.8;
+const cdLive=x=>!!BYKEY[x.k]&&!x.dr&&!x.su;
+function cdLog(x,g,days,wasRev,wasMat){const L=Array.isArray(x.rv)?x.rv:[];const r={d:today(),g,i:days};if(wasRev)r.r=1;if(wasMat)r.m=1;L.push(r);x.rv=L.slice(-CD_RV_MAX)}
 let cards=[],cardStore=null,cdRun=null,cdGen={},cdNew={},cdErr={},cdExp=null;
 try{const v=JSON.parse(localStorage.getItem("resid-cdexp")||"null");if(v&&Array.isArray(v.ids))cdExp=v}catch(e){}
 /* FSRS-4.5 (pesos padrão), em dias */
@@ -7676,7 +7734,8 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(!f){f=n||box?{st:2,s:CD_INT[box]||1,d:5,last:fromNum(dnum(due)-(CD_INT[box]||1)),reps:n,lapses:0,first:""}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""}}
   if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
   const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
-  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;return o}
+  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;if(x.su)o.su=1;if(typeof x.og==="string")o.og=x.og.slice(0,4);
+  if(Array.isArray(x.rv)){const R=x.rv.filter(r=>r&&D.test(r.d)&&[1,2,3,4].includes(r.g)).map(r=>{const y={d:r.d,g:r.g,i:Number.isFinite(+r.i)?Math.max(0,Math.round(+r.i)):0};if(r.r)y.r=1;if(r.m)y.m=1;return y}).slice(-CD_RV_MAX);if(R.length)o.rv=R}return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
@@ -7685,11 +7744,11 @@ function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Mat
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
 const cdNewToday=()=>cards.filter(x=>x.f.first===today()).length;
 /* fila de hoje: revisões e aprendizado vencidos + novos até o limite do dia */
-function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>BYKEY[x.k]&&!x.dr&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
-  const nw=left?cards.filter(x=>BYKEY[x.k]&&!x.dr&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
-function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const N=fsNext(x,g);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
-const cdReady=()=>cards.filter(x=>BYKEY[x.k]&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
-function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>BYKEY[x.k]&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
+function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>cdLive(x)&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
+  const nw=left?cards.filter(x=>cdLive(x)&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
+function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const wasRev=x.f&&x.f.st===2,wasMat=wasRev&&x.f.last&&dnum(x.due)-dnum(x.f.last)>=CD_MAT,N=fsNext(x,g);cdLog(x,g,N.days,wasRev,wasMat);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
+const cdReady=()=>cards.filter(x=>cdLive(x)&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
+function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>cdLive(x)&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
 /* texto dos cartões: os novos (h=1) guardam HTML simples do padrão Osler; o app só deixa passar b, i, u, br, listas */
 function cdSafe(html){const t=document.createElement("template");t.innerHTML=String(html||"");const ok=new Set(["B","STRONG","I","EM","U","BR","UL","OL","LI","SUB","SUP"]);
   const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===1){walk(c);if(!ok.has(c.tagName)){c.replaceWith(...c.childNodes)}else[...c.attributes].forEach(a=>c.removeAttribute(a.name))}else if(c.nodeType!==3)c.remove()})};walk(t.content);return t.innerHTML}
@@ -7703,8 +7762,8 @@ const CD_GEN_MAX=20;
 function cdGenScope(){const t=dnum(today()),up=upcomingProvas().find(p=>daysTo(p.date)<=7);
   if(up)return {lab:up.name,prova:true,keys:new Set(topicKeysOf(up.items))};
   const ws=wpMon(t),K=new Set();[...ALL,...FAC_ITEMS].forEach(i=>{if((get(i.key).ed||[]).some(d=>dnum(d)>=ws))K.add(i.key)});return {lab:"temas da semana",prova:false,keys:K}}
-function cdGenIds(S){return cards.filter(x=>BYKEY[x.k]&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
-function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
+function cdGenIds(S){return cards.filter(x=>cdLive(x)&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
+function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;cdOpen("hoje");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
   setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
 function cdRate(x,g){const R=cdRun,xt=R.extra&&R.extra.includes(x.id),days=xt?(g===1?0:1):cdAnswer(x,g);R.done++;R.g[g]++;if(xt)R.xn=(R.xn||0)+1;if(!days){R.ids.push(x.id);R.again[x.id]=(R.again[x.id]||0)+1}R.i++;R.show=false;cdEd=null;render()}
 function nCardsCard0(){const due=cdDue(),c=el(`<section class="card ncards" aria-labelledby="nch"><div class="dhead"><h2 id="nch">Cartões</h2><span class="todaydate"></span></div></section>`);
@@ -7796,7 +7855,7 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
     else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:!!e.trecho||kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
-function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
+function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{og:e.trecho?"tr":"q"}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
   if(dr&&ids.length)setTimeout(()=>infoToast(`${ids.length} ${ids.length===1?"cartão foi":"cartões foram"} para o lote de melhorias (fora da revisão até o Claude melhorar).`,"Ver em Cartões",cdGoCards),30);
   if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
 function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.trecho?"Cartões deste trecho":e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.trecho?"Rascunhos feitos pelo app a partir do trecho (lacuna no termo em negrito ou destaque). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões. Para cartões melhores, peça ao Claude.":e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
@@ -7813,7 +7872,7 @@ function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=e
   if(S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}
   return w}
 /* ===== Lote 21 item 3: lote de melhorias, árvore, estudo por recorte e editor ===== */
-function cdGoCards(){backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},80)}
+function cdGoCards(){cdOpen("hoje")}
 const cdDrafts=()=>cards.filter(x=>x.dr&&BYKEY[x.k]);
 const CD_LOT=8;// cartões por pedido ao Claude (no site, cada pedido é um copiar e colar)
 let cdLot=null,cdLotOpen=false;
@@ -7878,14 +7937,19 @@ function cdSplitA(x){const h=x.h?String(x.a||""):cdTxt2html(x.a);const i=h.searc
   rest=rest.replace(/^\s*<i>([\s\S]*)<\/i>\s*$/i,"$1");const m=/(?:<br\s*\/?>\s*)*(?:<b>)?\s*Note:\s*(?:<\/b>)?\s*([\s\S]*)$/i.exec(rest),note=m?m[1]:"",ex=m?rest.slice(0,m.index):rest;
   return {a:cdH2T(ans),x:cdH2T(ex.replace(/<\/?i>/gi,"")),n:cdH2T(note.replace(/<\/?i>/gi,""))}}
 function cdJoinA(a,x,n){const A=cdT2H(a),X=cdT2H(x),N=cdT2H(n);return A+(X||N?`<br><br><i>${X}${X&&N?"<br><br>":""}${N?"<b>Note:</b> "+N:""}</i>`:"")}
-function cdEditOpen(x){const S=cdSplitA(x);if(x.dr)cdLotOpen=true;else if(!(cdRun&&cdRun.ids[cdRun.i]===x.id)&&BYKEY[x.k]){const it=BYKEY[x.k];["a:"+it.area.code,"s:"+specId(it),"t:"+x.k].forEach(i=>cdTreeOpen.add(i))}cdEd={id:x.id,q:cdH2T(x.h?x.q:cdTxt2html(x.q)),a:S.a,x:S.x,n:S.n,r:cdH2T(x.ref||""),msg:""};render();setTimeout(()=>{const t=$("#cde-q");if(t)t.focus()},50)}
+function cdEditOpen(x,noTree){const S=cdSplitA(x);if(x.dr&&!noTree)cdLotOpen=true;else if(!noTree&&!(cdRun&&cdRun.ids[cdRun.i]===x.id)&&BYKEY[x.k]){const it=BYKEY[x.k];["a:"+it.area.code,"s:"+specId(it),"t:"+x.k].forEach(i=>cdTreeOpen.add(i))}cdEd={id:x.id,q:cdH2T(x.h?x.q:cdTxt2html(x.q)),a:S.a,x:S.x,n:S.n,r:cdH2T(x.ref||""),msg:""};render();setTimeout(()=>{const t=$("#cde-q");if(t)t.focus()},50)}
 function cdEditSave(){const E=cdEd,x=cards.find(c=>c.id===E.id);if(!x){cdEd=null;render();return}if(!E.q.trim()||!E.a.trim()){E.msg="Frente e resposta não podem ficar vazias.";render();return}
   x.q=cdSafe(cdT2H(E.q));x.a=cdSafe(cdJoinA(E.a,E.x,E.n));const r=cdT2H(E.r);if(r)x.ref=cdSafe(r);else delete x.ref;x.h=1;cdPut(x);cdEd=null;render()}
 function cdEditEl(){const E=cdEd,w=el(`<div class="cdedit" id="cdEdit"><div class="dhead"><b>Editar cartão</b><button class="link" type="button" id="cdeX">Cancelar</button></div><p class="how">Use **negrito** e *itálico*. Enter quebra a linha.</p></div>`);
   [["q","Frente","A pergunta, com o rótulo do tema em negrito",3],["a","Resposta","A resposta em uma linha, em negrito",2],["x","Explicação","Por que é assim; pode acrescentar quanto quiser",4],["n","Note","A armadilha, se houver",2],["r","Referência","Fonte: *título*, em **publicação**",2]].forEach(([k,l,ph,rows])=>{
     const f=el(`<label class="cdef"><span>${l}</span><textarea rows="${rows}"></textarea></label>`),t=f.querySelector("textarea");t.id="cde-"+k;t.placeholder=ph;t.value=E[k];t.oninput=()=>{E[k]=t.value;const pv=$("#cdePrev");if(pv)cdPrevFill(pv)};w.appendChild(f)});
   const pv=el(`<div class="oscard mini cdeprev" id="cdePrev"><div class="osq"></div><div class="osa"></div><div class="osref"></div></div>`);cdPrevFill(pv);w.appendChild(el(`<span class="glabel">Como fica</span>`));w.appendChild(pv);
-  const B=el(`<div class="btns"><button class="btn primary" type="button" id="cdeSave">Salvar</button></div>`);B.querySelector("button").onclick=cdEditSave;w.appendChild(B);w.querySelector("#cdeX").onclick=()=>{cdEd=null;render()};
+  const B=el(`<div class="btns"><button class="btn primary" type="button" id="cdeSave">Salvar</button></div>`);B.querySelector("button").onclick=cdEditSave;w.appendChild(B);
+  /* aba Cartões: suspender, trocar de tema e apagar (fora da revisão em andamento) */
+  {const x=cards.find(c=>c.id===E.id),inRun=cdRun&&cdRun.ids[cdRun.i]===E.id;if(x&&!inRun&&!x.dr){const A=el(`<div class="btns cdeacts"><button class="mini" type="button" id="cdeSu"></button><button class="mini" type="button" id="cdeK">Trocar de tema</button><button class="mini dangerb" type="button" id="cdeDel">Apagar</button></div>`);
+    const su=A.querySelector("#cdeSu");su.textContent=x.su?"Reativar":"Suspender";su.title=x.su?"Volta para a revisão":"Sai da revisão sem ser apagado";su.onclick=()=>{if(x.su)delete x.su;else x.su=1;cdPut(x);render()};
+    A.querySelector("#cdeK").onclick=()=>{E.kOpen=!E.kOpen;render();setTimeout(()=>{const t=$("#cdeKT");if(t)t.focus()},40)};A.querySelector("#cdeDel").onclick=()=>{if(cdPick===x.id)cdPick=null;cdEd=null;cdDel(x.id)};w.appendChild(A);
+    if(E.kOpen)w.appendChild(cdTopicPick("cdeKT",key=>{x.k=key;cdPut(x);E.kOpen=false;infoToast(`Agora em: ${BYKEY[key].t}`);render()},"Novo tema deste cartão"))}}w.querySelector("#cdeX").onclick=()=>{cdEd=null;render()};
   if(E.msg){const m=el(`<p class="err"></p>`);m.textContent=E.msg;w.appendChild(m)}return w}
 function cdPrevFill(pv){const E=cdEd;pv.querySelector(".osq").innerHTML=cdSafe(cdT2H(E.q));pv.querySelector(".osa").innerHTML=cdSafe(cdJoinA(E.a,E.x,E.n));const r=cdT2H(E.r);pv.querySelector(".osref").innerHTML=r?cdSafe(r):"";pv.querySelector(".osref").hidden=!r}
 /* ---- árvore Grande área › Especialidade › Tema, com estudo por recorte ---- */
@@ -7897,7 +7961,7 @@ function cdSliceIds(L){const T=today(),due=L.filter(x=>x.f.st&&x.due<=T).sort((a
   const used=new Set([...due,...nw].map(x=>x.id)),ex=L.filter(x=>!used.has(x.id)).sort((a,b)=>a.due<b.due?-1:1).slice(0,40);return {ids:[...due,...nw,...ex].map(x=>x.id),extra:ex.map(x=>x.id),n:due.length+nw.length}}
 function cdSliceGo(L,lab){const S=cdSliceIds(L);if(!S.ids.length)return;cdRunStart(S.ids,`Estudar · ${lab}`);if(cdRun){cdRun.extra=S.extra;cdRun.slice=1}
   setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
-function cdTreeEl(){const L=cards.filter(x=>BYKEY[x.k]&&!x.dr);if(!L.length)return null;const A={};
+function cdTreeEl(){const L=cards.filter(cdLive);if(!L.length)return null;const A={};
   L.forEach(x=>{const it=BYKEY[x.k],a=it.area,ak=a.code,sk=specId(it);const g=A[ak]||(A[ak]={lab:a.name,sp:{},L:[]});g.L.push(x);const sp=g.sp[sk]||(g.sp[sk]={lab:it.sp||a.name,t:{},L:[]});sp.L.push(x);(sp.t[x.k]=sp.t[x.k]||[]).push(x)});
   const w=el(`<div class="cdtree" id="cdTree"><span class="glabel">Por área, especialidade e tema</span><ul class="cdtl0"></ul></div>`),ul0=w.querySelector("ul");
   const row=(id,lab,Ls,lv,kids)=>{const li=el(`<li class="cdtn lv${lv}"><div class="cdtr"><button class="cdtt" type="button"><span class="cdtar" aria-hidden="true"></span><span class="cdtl"></span><span class="cdtc"></span></button><button class="mini cdts" type="button">Estudar</button></div></li>`);
@@ -7979,6 +8043,10 @@ const APKG_CSS=`.card{font-family:Arial,Helvetica,sans-serif;font-size:20px;line
 const apkgSlug=s=>norm(String(s||"")).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
 function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}if(x.hy&&!T.includes("high-yield"))T.push("high-yield")
   const e=x.eid&&errors.find(y=>y.id===x.eid);if(x.eid)T.push("erro-nexus");if(e&&e.c)T.push(apkgSlug(e.c));if(x.kind)T.push("cartao-"+apkgSlug(CDK[x.kind]||x.kind));return [...new Set(T)]}
+/* linha da tabela cards do Anki: cartão novo vai como novo (type 0, queue 0, due = posição); em revisão, com intervalo e facilidade */
+function apkgCardRow(x,cid,nid,sec,crt,pos){if(!x.f||!x.f.st)return [null,nid,APKG_DID,0,sec,-1,0,0,pos,0,0,0,0,0,0,0,0,""];
+  const ivl=Math.max(1,dnum(x.due)-dnum(x.f.last||today())),due=dnum(x.due)-dnum(today()),factor=Number.isFinite(x.f.d)?Math.round(fClamp(3000-(x.f.d-1)*(1700/9),1300,3000)):2500;
+  return [null,nid,APKG_DID,0,sec,-1,2,2,due,ivl,factor,Math.max(1,x.f.reps||x.n||1),x.f.lapses||0,0,0,0,0,""]}
 async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay=new Date(today()+"T00:00:00"),crt=Math.floor(crtDay.getTime()/1000);
   const fld=(x,f)=>x.h?cdSafe(x[f]||""):esc(x[f]||"").replace(/\n/g,"<br>");
   const model={id:APKG_MID,name:"Osler Flashcard (Nexus)",type:0,mod:sec,usn:-1,sortf:0,did:APKG_DID,tags:[],vers:[],latexsvg:false,css:APKG_CSS,req:[[0,"any",[0]]],
@@ -7992,8 +8060,7 @@ async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay
   for(let i=0;i<L.length;i++){const x=L[i],nid=now+i,cid=now+L.length+i,q=fld(x,"q"),a=fld(x,"a"),ref=x.ref?(x.h?cdSafe(x.ref):esc(x.ref)):"";
     const sf=cdPlain(q),hash=new Uint8Array(await crypto.subtle.digest("SHA-1",sqlTE.encode(sf))),csum=((hash[0]<<24)>>>0)+(hash[1]<<16)+(hash[2]<<8)+hash[3];
     notesR.push([nid,[null,"nx"+x.id,APKG_MID,sec,-1," "+apkgTags(x).join(" ")+" ",[q,a,ref].join("\x1f"),sf,csum,0,""]]);
-    const ivl=Math.max(1,dnum(x.due)-dnum(x.f.last||today())),due=dnum(x.due)-dnum(today()),factor=Number.isFinite(x.f.d)?Math.round(fClamp(3000-(x.f.d-1)*(1700/9),1300,3000)):2500;
-    cardsR.push([cid,[null,nid,APKG_DID,0,sec,-1,2,2,due,ivl,factor,Math.max(1,x.f.reps||x.n||1),x.f.lapses||0,0,0,0,0,""]])}
+    cardsR.push([cid,apkgCardRow(x,cid,nid,sec,crt,i+1)])}
   const db=sqliteBuild([
     {name:"col",sql:"CREATE TABLE col (\n    id              integer primary key,\n    crt             integer not null,\n    mod             integer not null,\n    scm             integer not null,\n    ver             integer not null,\n    dty             integer not null,\n    usn             integer not null,\n    ls              integer not null,\n    conf            text not null,\n    models          text not null,\n    decks           text not null,\n    dconf           text not null,\n    tags            text not null\n)",
       rows:[[1,[null,crt,now,now,11,0,0,0,JSON.stringify(conf),JSON.stringify({[APKG_MID]:model}),JSON.stringify({"1":deck(1,"Default"),[APKG_DID]:deck(APKG_DID,"Nexus::Cartões dos erros")}),JSON.stringify(dconf),"{}"]]]},
@@ -8027,13 +8094,14 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
   if(G&&G.status==="review"){w.appendChild(el(`<p class="how">Confira os cartões. Desmarque os que não quiser e salve.</p>`));const ul=el(`<ul class="cdrev"></ul>`);
     G.list.forEach((c,i)=>{const li=el(`<li><label><input type="checkbox"${c.keep?" checked":""}><span><b></b><span></span></span></label></li>`);li.querySelector("b").textContent=c.q;li.querySelector("label>span>span").textContent=c.a;li.querySelector("input").onchange=e=>{c.keep=e.target.checked};ul.appendChild(li)});w.appendChild(ul);
     const a=el(`<div class="btns"></div>`),s=el(`<button class="btn primary" type="button">Salvar cartões</button>`),x=el(`<button class="btn" type="button">Descartar</button>`);
-    s.onclick=()=>{const n=G.list.filter(c=>c.keep).map(c=>cdAdd(k,c.q,c.a,"claude")).length;delete cdGen[k];nMsgCards=`${n} ${n===1?"cartão salvo":"cartões salvos"}: eles aparecem em Cartões para revisar, na aba Anotações.`;render()};x.onclick=()=>{delete cdGen[k];render()};a.append(s,x);w.appendChild(a);return w}
+    s.onclick=()=>{const n=G.list.filter(c=>c.keep).map(c=>cdAdd(k,c.q,c.a,"claude")).length;delete cdGen[k];nMsgCards=`${n} ${n===1?"cartão salvo":"cartões salvos"}: eles aparecem na aba Cartões.`;render()};x.onclick=()=>{delete cdGen[k];render()};a.append(s,x);w.appendChild(a);return w}
   if(G&&G.msg){const p=el(`<p class="err"></p>`);p.textContent=G.msg;w.appendChild(p)}
   if(nMsgCards){const p=el(`<p class="pnote" role="status"></p>`);p.textContent=nMsgCards;w.appendChild(p);nMsgCards=""}
   if(mine.length){const ul=el(`<ul class="cdmine"></ul>`);mine.forEach(x=>{const li=el(`<li><span><b></b><span></span></span><button class="foxb" type="button" aria-label="Excluir cartão">×</button></li>`);li.querySelector("b").textContent=x.q;li.querySelector("span>span").textContent=`${x.a} · próxima ${x.due<=today()?"hoje":br(x.due)}`;li.querySelector("button").onclick=()=>cdDel(x.id);ul.appendChild(li)});w.appendChild(ul)}
   const acts=el(`<div class="btns"></div>`);
   if(!sampleOff){const g=el(`<button class="btn" type="button">Criar cartões com o Claude</button>`);g.disabled=!sampleFn||!(notes[k]||"").trim();if(!(notes[k]||"").trim())g.title="Escreva a anotação primeiro";g.onclick=()=>cdGenerate(k);acts.appendChild(g)}
-  const m=el(`<button class="link" type="button">+ Cartão manual</button>`);m.onclick=()=>{cdNew[k]=cdNew[k]?null:{q:"",a:""};render()};acts.appendChild(m);w.appendChild(acts);
+  const m=el(`<button class="link" type="button">+ Cartão manual</button>`);m.onclick=()=>{cdNew[k]=cdNew[k]?null:{q:"",a:""};render()};acts.appendChild(m);
+  if(mine.length){const sa=el(`<button class="link cdseeall" type="button"></button>`);sa.textContent=`Ver os ${mine.length} ${mine.length===1?"cartão":"cartões"}`;sa.onclick=()=>cdOpen("todos",{k});acts.appendChild(sa)}w.appendChild(acts);
   if(cdNew[k]){const f=el(`<div class="eform cdform"><label>Pergunta</label><textarea class="etext" id="cdq-${k}" maxlength="600" rows="2"></textarea><label>Resposta</label><textarea class="etext" id="cda-${k}" maxlength="1200" rows="2"></textarea><button class="btn primary" type="button">Salvar cartão</button></div>`);
     const [qa,aa]=f.querySelectorAll("textarea");qa.value=cdNew[k].q;aa.value=cdNew[k].a;qa.oninput=()=>cdNew[k].q=qa.value;aa.oninput=()=>cdNew[k].a=aa.value;
     f.querySelector("button").onclick=()=>{if(!qa.value.trim()||!aa.value.trim())return;cdAdd(k,qa.value,aa.value,"eu");cdNew[k]=null;render()};w.appendChild(f)}
@@ -8041,8 +8109,206 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
 let nMsgCards="";
 /* sessão de revisão dos cartões */
 
-function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Caderno"));
+function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
   return c}
+/* Aba Cartões (13/11/2026): contas da lista, do criador e dos Números. Funções puras (sem tela); testes em tests/unit/cartoes.test.js.
+   Desenho: docs/superpowers/specs/2026-11-13-aba-cartoes-design.md */
+const cdTxt=h=>String(h||"").replace(/<br\s*\/?>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&").replace(/\s+/g," ").trim();
+function cdState(x){if(x.dr)return "rascunho";if(x.su)return "suspenso";if(!x.f||!x.f.st)return "novo";return x.f.st===2?"revisao":"aprendendo"}
+function cdOrigin(x){if(x.eid)return "erro";if(x.og==="tr")return "trecho";if(x.og==="q")return "questao";if(x.kind==="man")return "manual";
+  if(x.kind&&CDK[x.kind])return "questao";return x.src==="claude"?"claude":"manual"}
+/* colar vários: um cartão por linha, "pergunta :: resposta" ou separado por tabulação (o .txt do Anki e da planilha) */
+function cdParsePaste(txt){const ok=[],bad=[];String(txt||"").split(/\r?\n/).forEach((l,i)=>{if(!l.trim())return;
+  let j=l.indexOf("::"),w=2;const t=l.indexOf("\t");if(j<0||(t>=0&&t<j)){j=t;w=1}
+  const q=j<0?"":l.slice(0,j).trim(),a=j<0?"":l.slice(j+w).trim();if(q&&a)ok.push({q,a,line:i+1});else bad.push(i+1)});return {ok,bad}}
+const cdWords=s=>new Set(norm(cdTxt(s)).split(/[^a-z0-9]+/).filter(w=>w.length>2));
+function cdDupOf(k,q,exceptId){const A=cdWords(q),nq=norm(cdTxt(q)).replace(/[^a-z0-9]+/g," ").trim();if(!nq)return null;
+  return cards.find(x=>{if(x.k!==k||x.id===exceptId)return false;const nx=norm(cdTxt(x.q)).replace(/[^a-z0-9]+/g," ").trim();if(nx===nq)return true;
+    const B=cdWords(x.q);if(!A.size||!B.size)return false;let n=0;A.forEach(w=>{if(B.has(w))n++});return n/Math.max(A.size,B.size)>=CD_DUP})||null}
+const cdIvl=x=>x.f&&x.f.last?dnum(x.due)-dnum(x.f.last):0;
+/* lista Todos: F={q,area,k,st,org,leech,sort}; ordem "due" (padrão: em revisão pela data, depois novos, depois suspensos e rascunhos) | "lapses" | "new" */
+function cdFilter(L,F){F=F||{};const q=F.q?norm(F.q.trim()):"";
+  const R=L.filter(x=>{const it=BYKEY[x.k];if(!it)return false;if(F.k&&x.k!==F.k)return false;if(F.area&&!(it.area&&it.area.code===F.area))return false;
+    if(F.st&&cdState(x)!==F.st)return false;if(F.org&&cdOrigin(x)!==F.org)return false;if(F.leech&&!((x.f&&x.f.lapses||0)>=CD_LEECH))return false;
+    if(q&&!norm(cdTxt(x.q)+" "+cdTxt(x.a)).includes(q))return false;return true});
+  const at=x=>x.at||x.id,rank=x=>{const s=cdState(x);return s==="revisao"||s==="aprendendo"?0:s==="novo"?1:2};
+  if(F.sort==="lapses")return R.sort((a,b)=>(b.f.lapses||0)-(a.f.lapses||0)||(a.due<b.due?-1:a.due>b.due?1:0));
+  if(F.sort==="new")return R.sort((a,b)=>at(a)<at(b)?1:at(a)>at(b)?-1:0);
+  return R.sort((a,b)=>rank(a)-rank(b)||(rank(a)===1?(at(a)<at(b)?-1:1):(a.due<b.due?-1:a.due>b.due?1:0)))}
+const cdLeeches=n=>cards.filter(x=>cdLive(x)&&(x.f.lapses||0)>=CD_LEECH).sort((a,b)=>b.f.lapses-a.f.lapses||(a.due<b.due?-1:1)).slice(0,n);
+/* Números: a=dnum inicial, b=dnum final. "Lembrou" = Difícil/Bom/Fácil, só revisões de cartões que já estavam em revisão (r:1);
+   maduro = m:1 (intervalo de 21 dias ou mais antes de responder) */
+function cdStats(L,a,b){const S={n:0,pass:0,young:{n:0,pass:0},mat:{n:0,pass:0},byDay:{},first:""};
+  L.forEach(x=>(x.rv||[]).forEach(r=>{if(!S.first||r.d<S.first)S.first=r.d;const t=dnum(r.d);if(t<a||t>b)return;S.byDay[r.d]=(S.byDay[r.d]||0)+1;
+    if(!r.r)return;const p=r.g>=2?1:0,G=r.m?S.mat:S.young;S.n++;S.pass+=p;G.n++;G.pass+=p}));return S}
+function cdStreak(byDay,T){let t=dnum(T);if(!byDay[T])t--;let n=0;while(byDay[fromNum(t)]){n++;t--}return n}
+function cdMix(L){const M={novo:0,aprendendo:0,jovem:0,maduro:0,suspenso:0};L.forEach(x=>{if(!BYKEY[x.k]||x.dr)return;const s=cdState(x);
+  if(s==="revisao")M[cdIvl(x)>=CD_MAT?"maduro":"jovem"]++;else M[s]++});return M}
+/* Aba Cartões (13/11/2026): partes Hoje · Todos · Números (view "cartoes", #viewCards, #cSegBar, #cdBody).
+   Todo caminho até os cartões passa por cdOpen(parte, opções). Desenho: docs/superpowers/specs/2026-11-13-aba-cartoes-design.md */
+let cSeg="hoje";try{const v=localStorage.getItem("resid-cseg");if(["hoje","todos","numeros"].includes(v))cSeg=v}catch(e){}
+let cdF={sort:(()=>{const v=lsGet("resid-cdsort","due");return ["due","lapses","new"].includes(v)?v:"due"})()},cdNewOpen=false,cdPick=null;
+function setCSeg(v){cSeg=v;lsSet("resid-cseg",v);render();window.scrollTo({top:0})}
+/* o={k:tema (filtro em Todos), leech:true, pick:id (abre no editor), run:[ids], gen:rótulo, go:true (começa a revisão do dia), novo:true} */
+function cdOpen(seg,o){o=o||{};backStack=[];cSeg=seg||"hoje";lsSet("resid-cseg",cSeg);
+  if(seg==="todos"&&(o.k||o.leech))cdF={sort:cdF.sort,...(o.k?{k:o.k}:{}),...(o.leech?{leech:true}:{})};if(o.pick)cdPick=o.pick;if(o.novo)cdNewOpen=true;
+  showView("cartoes");if(o.run)cdRunStart(o.run,o.gen);else if(o.go)cdRunStart();else render();window.scrollTo({top:0})}
+function renderCards(){const v=$("#viewCards"),B=$("#cdBody");if(!v||!B)return;v.dataset.cseg=cSeg;const dn=cdDue().length;
+  $("#cSegBar").querySelectorAll("button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.c===cSeg);b.innerHTML={hoje:"Hoje"+(dn?`<b>${dn}</b>`:""),todos:"Todos",numeros:"Números"}[b.dataset.c];b.onclick=()=>setCSeg(b.dataset.c)});
+  B.innerHTML="";const L=cSeg==="todos"?[cdAllEl()]:cSeg==="numeros"?[cdNumEl()]:cdHojeEls();L.filter(Boolean).forEach(x=>B.appendChild(x))}
+/* ---- Hoje ---- */
+function cdHojeEls(){const c=nCardsCard0(),h=c.querySelector("h2");h.textContent="Revisão de hoje";c.querySelector(".dhead").appendChild(helpBtn("Cartões"));const out=[c];
+  if(cdRun)return out;
+  const due=cdDue(),nNew=due.filter(x=>!x.f.st).length,nRev=due.length-nNew,line=el(`<p class="how cdline" id="cdLine"></p>`);
+  line.textContent=due.length?`${nRev} para revisar · ${nNew} ${nNew===1?"novo":"novos"} · ~${Math.max(1,Math.round(due.length*.25))} min`:"Nada para revisar hoje.";
+  c.querySelector(".dhead").after(line);
+  const nb=el(`<button class="btn" type="button" id="cdNew">+ Novo cartão</button>`);nb.setAttribute("aria-expanded",cdNewOpen);nb.onclick=()=>{cdNewOpen=!cdNewOpen;render();if(cdNewOpen)setTimeout(()=>{const x=$("#cdNewBox");if(x)x.scrollIntoView({block:"nearest",behavior:"smooth"})},60)};
+  const go=c.querySelector("#cdGo"),row=el(`<div class="btns cdgorow"></div>`);if(go){go.before(row);row.append(go,nb)}else{line.after(row);row.appendChild(nb)}
+  if(cdNewOpen&&typeof cdNewEl==="function")row.after(cdNewEl());
+  const lc=cdLeechEl();if(lc)out.push(lc);return out}
+function cdLeechEl(){const L=cdLeeches(5);if(!L.length)return null;const all=cards.filter(x=>cdLive(x)&&(x.f.lapses||0)>=CD_LEECH).length;
+  const c=el(`<section class="card cdleech" id="cdLeech" aria-labelledby="cdLh"><div class="dhead"><h2 id="cdLh">Cartões que você mais esquece</h2></div><p class="how">Esqueceu ${CD_LEECH} vezes ou mais. Reescrever costuma resolver: deixe a pergunta mais específica ou divida em dois cartões.</p><ul class="cdlist"></ul></section>`),ul=c.querySelector("ul");
+  L.forEach(x=>{const it=BYKEY[x.k],li=el(`<li class="cdlrow"><div class="cdlq"></div><div class="cdlm how"></div><div class="btns"><button class="mini" type="button">Editar</button><button class="mini" type="button">Juntar ao lote de melhorias</button></div></li>`);
+    li.querySelector(".cdlq").textContent=cdTxt(x.q);li.querySelector(".cdlm").textContent=`esqueceu ${x.f.lapses}× · ${it?it.t:""}`;
+    const [e,j]=li.querySelectorAll("button");e.id="cdLE-"+x.id;e.onclick=()=>cdEditOpen(x,true);j.id="cdLJ-"+x.id;j.onclick=()=>{x.dr=1;cdPut(x);infoToast("Foi para o lote de melhorias (fora da revisão até o Claude melhorar).","Ver o lote",()=>{cdLotOpen=true;cdOpen("hoje")});render()};
+    if(cdEd&&cdEd.id===x.id)li.appendChild(cdEditEl());ul.appendChild(li)});
+  if(all>L.length){const m=el(`<button class="link" type="button" id="cdLAll"></button>`);m.textContent=`Ver todos os ${all}`;m.onclick=()=>cdOpen("todos",{leech:true});c.appendChild(m)}
+  return c}
+/* ---- Todos: busca, filtros, ordem, lista de 50 em 50, editor ao lado (computador) ou em tela própria; Selecionar vários ---- */
+let cdLim=50,cdSel=null,cdBulkK=false;
+const CD_ST=[["","Todas"],["novo","Novos"],["aprendendo","Aprendendo"],["revisao","Em revisão"],["suspenso","Suspensos"],["rascunho","Rascunhos"]];
+const CD_ORG=[["","Todas"],["erro","Erros"],["questao","Questões"],["trecho","Trechos"],["manual","Manuais"],["claude","Do Claude"]];
+const CD_STL={novo:"novo",aprendendo:"aprendendo",revisao:"",suspenso:"suspenso",rascunho:"rascunho"};
+function cdEdFor(x){const S=cdSplitA(x);cdEd={id:x.id,q:cdH2T(x.h?x.q:cdTxt2html(x.q)),a:S.a,x:S.x,n:S.n,r:cdH2T(x.ref||""),msg:""}}
+function cdRowEl(x){const it=BYKEY[x.k],st=cdState(x),li=el(`<li class="cdrow"><button class="cdrq" type="button"></button><div class="cdrm how"></div></li>`);li.dataset.id=x.id;
+  if(cdSel){const c=el(`<input type="checkbox" class="cdsel">`);c.checked=cdSel.has(x.id);c.setAttribute("aria-label","Selecionar");c.onchange=()=>{if(c.checked)cdSel.add(x.id);else cdSel.delete(x.id);render()};li.prepend(c);li.classList.add("sel")}
+  const q=li.querySelector(".cdrq");q.textContent=cdTxt(x.q);if(cdPick===x.id)li.classList.add("on");q.onclick=()=>{cdPick=x.id;cdEdFor(x);render();if(!twoCols())window.scrollTo({top:0})};
+  li.querySelector(".cdrm").textContent=[it?it.t:"",CD_STL[st]||"",st==="suspenso"||st==="rascunho"?"":!x.f.st?"":`próxima ${x.due<=today()?"hoje":br(x.due)}`,(x.f.lapses||0)>=CD_LEECH?`esqueceu ${x.f.lapses}×`:""].filter(Boolean).join(" · ");return li}
+function cdBulkSel(){return cards.filter(x=>cdSel&&cdSel.has(x.id))}
+function cdBulkDel(L){if(!L.length)return;toTrash("cards",`${L.length} ${L.length===1?"cartão apagado":"cartões apagados"}`,br(today()),L);const ids=new Set(L.map(x=>x.id));
+  cards=cards.filter(x=>!ids.has(x.id));cdSaveLocal();if(cardStore){if(cardStore.delMany)cardStore.delMany([...ids]).catch(()=>{});else ids.forEach(id=>cardStore.doc(id).delete().catch(()=>{}))}}
+async function cdBulkAnki(L,b){b.disabled=true;b.textContent="Gerando…";try{const u=await apkgBuild(L);await downloadsFn.save({filename:`nexus-anki-${today()}.apkg`,data:new Blob([u],{type:"application/octet-stream"})});
+  cdExp={d:today(),ids:L.map(x=>x.id)};try{localStorage.setItem("resid-cdexp",JSON.stringify(cdExp))}catch(x){}cdSel=null;infoToast("Depois de importar no Anki, confirme em Hoje › Prontos para o Anki: eles saem daqui.","Ir para Hoje",()=>cdOpen("hoje"))}
+  catch(x){infoToast(x&&(x.code==="declined"||x.code==="cancelled")?"Download cancelado.":"Não foi possível gerar agora.")}render()}
+function cdBulkEl(N){const L=cdBulkSel(),w=el(`<div class="cdbulk" id="cdBulk" role="toolbar" aria-label="Ações nos selecionados"><b></b><div class="btns"></div></div>`),B=w.querySelector(".btns");
+  w.querySelector("b").textContent=`${L.length} ${L.length===1?"selecionado":"selecionados"}`;
+  const btn=(id,t,fn,cls)=>{const b=el(`<button type="button"></button>`);b.className=cls||"mini";b.id=id;b.textContent=t;b.disabled=!L.length&&id!=="cdSelAll"&&id!=="cdSelOff";b.onclick=()=>fn(b);B.appendChild(b);return b};
+  if(N>L.length)btn("cdSelAll",`Selecionar todos os ${N}`,()=>{cdFilter(cards,cdF).forEach(x=>cdSel.add(x.id));render()});
+  btn("cdbK","Trocar de tema",()=>{cdBulkK=!cdBulkK;render();setTimeout(()=>{const x=$("#cdbKT");if(x)x.focus()},40)});
+  btn("cdbSu","Suspender",()=>{L.forEach(x=>{x.su=1;cdPut(x)});render()});btn("cdbRe","Reativar",()=>{L.forEach(x=>{if(x.su){delete x.su;cdPut(x)}});render()});
+  btn("cdbDel","Apagar",()=>{cdBulkDel(L);cdSel=new Set();render()});
+  const ak=btn("cdbAnki","Exportar para o Anki",b=>cdBulkAnki(L.filter(x=>!x.dr),b));if(!downloadsFn)ak.disabled=true;
+  btn("cdSelOff","Cancelar",()=>{cdSel=null;cdBulkK=false;render()},"link");
+  if(cdBulkK&&L.length)w.appendChild(cdTopicPick("cdbKT",key=>{L.forEach(x=>{x.k=key;cdPut(x)});cdBulkK=false;infoToast(`${L.length} ${L.length===1?"cartão mudou":"cartões mudaram"} de tema.`);render()},"Novo tema dos selecionados"));
+  return w}
+function cdAllEl(){const live=cards.filter(x=>BYKEY[x.k]),c=el(`<section class="card cdall" id="cdAll" aria-labelledby="cdAh"><div class="dhead"><h2 id="cdAh">Todos os cartões</h2><span class="todaydate"></span></div></section>`);
+  c.querySelector(".todaydate").textContent=`${live.length} ${live.length===1?"cartão":"cartões"}`;c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
+  const x0=cdPick&&cards.find(x=>x.id===cdPick);if(cdPick&&!x0)cdPick=null;if(x0&&(!cdEd||cdEd.id!==x0.id))cdEdFor(x0);
+  const edEl=()=>{if(!x0)return el(`<p class="how cdsidehint">Toque num cartão para ver e editar.</p>`);const e=cdEditEl(),xb=e.querySelector("#cdeX");if(xb)xb.onclick=()=>{cdEd=null;cdPick=null;render()};return e};
+  /* celular e tablet em pé: o cartão aberto ocupa a tela */
+  if(x0&&!twoCols()){const bk=el(`<button class="link cdback" type="button" id="cdBackList">‹ Voltar à lista</button>`);bk.onclick=()=>{cdPick=null;cdEd=null;render()};c.append(bk,edEl());return c}
+  const top=el(`<div class="btns cdallb"><button class="btn" type="button" id="cdNew2">+ Novo cartão</button><button class="btn" type="button" id="cdSelOn"></button></div>`);
+  top.querySelector("#cdNew2").onclick=()=>{cdNewOpen=!cdNewOpen;render()};const so=top.querySelector("#cdSelOn");so.textContent=cdSel?"Sair da seleção":"Selecionar";so.setAttribute("aria-pressed",!!cdSel);so.onclick=()=>{cdSel=cdSel?null:new Set();cdBulkK=false;render()};c.appendChild(top);
+  if(cdNewOpen)c.appendChild(cdNewEl());
+  const ctl=el(`<div class="cdctl"><label class="ffield cdqf"><span class="glabel">Buscar</span><input class="etext" id="cdQ" type="search" placeholder="Pergunta ou resposta" autocomplete="off"></label><div class="qfrow cdfrow"></div><div class="chips cdfch"></div></div>`),R=ctl.querySelector(".cdfrow");
+  R.appendChild(fcSel("cdfArea","Área",[["","Todas"],...[...AREAS,FAC_AREA].map(a=>[a.code,a===FAC_AREA?"Faculdade":a.name])],cdF.area||"",v=>{cdF.area=v;cdF.k="";cdLim=50}));
+  R.appendChild(fcSel("cdfSt","Situação",CD_ST,cdF.st||"",v=>{cdF.st=v;cdLim=50}));R.appendChild(fcSel("cdfOrg","Origem",CD_ORG,cdF.org||"",v=>{cdF.org=v;cdLim=50}));
+  R.appendChild(fcSel("cdfSort","Ordem",[["due","Próxima revisão"],["lapses","Mais esquecidos"],["new","Mais recentes"]],cdF.sort||"due",v=>{cdF.sort=v;lsSet("resid-cdsort",v)}));
+  const CH=ctl.querySelector(".cdfch");if(cdF.k&&BYKEY[cdF.k])CH.appendChild(fcChip(`Tema: ${BYKEY[cdF.k].t} ×`,true,()=>{cdF.k="";cdLim=50},"cdfK"));
+  CH.appendChild(fcChip("Mais esquecidos",!!cdF.leech,()=>{cdF.leech=!cdF.leech;cdLim=50},"cdfLeech"));c.appendChild(ctl);
+  const g=el(`<div class="cdallg"><div class="cdcol"><div class="cdlistw"></div></div></div>`),W=g.querySelector(".cdlistw");
+  const paint=()=>{W.innerHTML="";const L=cdFilter(cards,cdF);if(cdSel)W.appendChild(cdBulkEl(L.length));
+    if(!L.length){W.appendChild(el(`<p class="cempty" id="cdEmpty">${live.length?"Nenhum cartão com esses filtros.":"Nenhum cartão ainda. Toque em + Novo cartão."}</p>`));return}
+    const ul=el(`<ul class="cdlist2" id="cdList"></ul>`);L.slice(0,cdLim).forEach(x=>ul.appendChild(cdRowEl(x)));W.appendChild(ul);
+    if(L.length>cdLim){const m=el(`<button class="btn" type="button" id="cdMore"></button>`);m.textContent=`Mostrar mais ${Math.min(50,L.length-cdLim)} (de ${L.length})`;m.onclick=()=>{cdLim+=50;paint()};W.appendChild(m)}
+    else if(L.length>8)W.appendChild(el(`<p class="how">${L.length} ${L.length===1?"cartão":"cartões"}.</p>`))};
+  const q=ctl.querySelector("#cdQ");q.value=cdF.q||"";q.oninput=()=>{cdF.q=q.value;cdLim=50;paint()};paint();
+  if(twoCols()){const sd=el(`<aside class="cdside" id="cdSide" aria-label="Cartão aberto"></aside>`);sd.appendChild(edEl());g.appendChild(sd);g.classList.add("two")}
+  c.appendChild(g);return c}
+/* ---- Números: quanto lembra, por dia, previsão, situação, por área, os mais esquecidos, calendário ---- */
+let cdPer=(()=>{const v=+lsGet("resid-cdper","30");return [7,30,90,0].includes(v)?v:30})();
+const cdBr4=d=>d?d.split("-").reverse().join("/"):"";
+const cdPct=(p,n)=>n?Math.round(p/n*100)+"%":"—";
+function cdNumEl(){const w=el(`<div class="cdnum" id="cdNum"></div>`),t=dnum(today()),L=cards.filter(x=>BYKEY[x.k]),A=cdStats(L,0,t),a=cdPer?t-cdPer+1:(A.first?dnum(A.first):t),S=cdStats(L,a,t);
+  const head=el(`<div class="cdnhead"><span class="glabel">Período</span></div>`);head.appendChild(fcPer("cdP",cdPer||"all",v=>{cdPer=v==="all"?0:+v;lsSet("resid-cdper",String(cdPer))},[["7","7 dias"],["30","30 dias"],["90","90 dias"],["all","Tudo"]]));w.appendChild(head);
+  if(S.n<20){const f=el(`<p class="pnote" id="cdnFew"></p>`);f.textContent=`Poucas revisões registradas ainda (o histórico começou em ${cdBr4(A.first||today())}).`;w.appendChild(f)}
+  const G=el(`<div class="cdnumg"></div>`);w.appendChild(G);
+  /* 1. quanto lembra */
+  {const c=stCard(1,"Quanto você lembra","cdnRet"),lv=n=>!S.n?"na":n>=CD_GOAL?"ok":n>=CD_GOAL-.1?"warn":"bad";
+    stLead(c,`Meta do método: <b>${Math.round(CD_GOAL*100)}%</b>. Conta como lembrou Difícil, Bom ou Fácil em cartões que já estavam em revisão.`);
+    const tl=el(`<div class="stvs"></div>`);tl.appendChild(stTile("No período",lv(S.n?S.pass/S.n:0),cdPct(S.pass,S.n),`${S.n} ${S.n===1?"revisão":"revisões"}`));
+    tl.appendChild(stTile("Jovens",lv(S.young.n?S.young.pass/S.young.n:0),cdPct(S.young.pass,S.young.n),`intervalo < ${CD_MAT} dias · ${S.young.n}`));
+    tl.appendChild(stTile("Maduros",lv(S.mat.n?S.mat.pass/S.mat.n:0),cdPct(S.mat.pass,S.mat.n),`${CD_MAT} dias ou mais · ${S.mat.n}`));c.appendChild(tl);G.appendChild(c)}
+  /* 2. revisões por dia (até 30 dias; acima disso, por semana) */
+  {const c=stCard(2,"Revisões por dia","cdnDay"),n=t-a+1,wk=n>31,V=[];
+    if(!wk)for(let d=a;d<=t;d++){const ds=fromNum(d),v=S.byDay[ds]||0,i=d-a;V.push({v,lab:(n<=7||i%5===0||d===t)?(d===t?"hoje":String(+ds.slice(8))):"",tip:`${cdBr4(ds)}: ${v}`})}
+    else{for(let s0=Math.max(a,t-52*7+1);s0<=t;s0+=7){let v=0;for(let d=s0;d<=Math.min(t,s0+6);d++)v+=S.byDay[fromNum(d)]||0;V.push({v,lab:"",tip:`semana de ${cdBr4(fromNum(s0))}: ${v}`})}if(V.length)V[V.length-1].lab="esta"}
+    stLead(c,wk?"Por semana, no período.":"Cada barra é um dia.");c.appendChild(stBars(V,{aria:"Revisões de cartões por "+(wk?"semana":"dia")}));G.appendChild(c)}
+  /* 3. previsão de 30 dias */
+  {const c=stCard(3,"Previsão de 30 dias","cdnFc"),V=[],T=today();for(let i=0;i<30;i++){const d=fromNum(t+i),v=cards.filter(x=>cdLive(x)&&x.f.st&&(i?x.due===d:x.due<=T)).length;V.push({v,lab:i===0?"hoje":i%5===0?String(+d.slice(8)):"",tip:`${cdBr4(d)}: ${v}`})}
+    stLead(c,"Cartões que vencem em cada dia (hoje inclui os atrasados).");c.appendChild(stBars(V,{aria:"Previsão de revisões"}));G.appendChild(c)}
+  /* 4. situação */
+  {const c=stCard(4,"Situação dos cartões","cdnMix"),M=cdMix(L);stLead(c,`Maduro = ${CD_MAT} dias ou mais até a próxima revisão.`);
+    c.appendChild(stKpis([["Novos",M.novo,""],["Aprendendo",M.aprendendo,""],["Jovens",M.jovem,""],["Maduros",M.maduro,""],["Suspensos",M.suspenso,""]]));G.appendChild(c)}
+  /* 5. por área */
+  {const c=stCard(5,"Por área","cdnArea"),by={};L.filter(x=>!x.dr).forEach(x=>{const ar=BYKEY[x.k].area,code=ar?ar.code:"?";const o=by[code]||(by[code]={name:ar===FAC_AREA?"Faculdade":ar?ar.name:"Outros",n:0,L:[]});o.n++;o.L.push(x)});
+    const R=Object.values(by).sort((p,q)=>q.n-p.n);stLead(c,"Número de cartões e quanto você lembra (com 10 revisões ou mais na área, no período).");
+    if(!R.length)c.appendChild(el(`<p class="how">Nenhum cartão ainda.</p>`));R.forEach(o=>{const s=cdStats(o.L,a,t);c.appendChild(stRow(o.name,`${o.n} ${o.n===1?"cartão":"cartões"}${s.n>=10?` · lembra ${cdPct(s.pass,s.n)}`:""}`))});G.appendChild(c)}
+  /* 6. os mais esquecidos */
+  {const c=stCard(6,"Os mais esquecidos","cdnLeech"),X=cdLeeches(10);stLead(c,`Esqueceu ${CD_LEECH} vezes ou mais.`);if(!X.length)c.appendChild(el(`<p class="how">Nenhum por enquanto.</p>`));
+    const ul=el(`<ul class="cdlist"></ul>`);X.forEach(x=>{const li=el(`<li class="cdlrow"><div class="cdlq"></div><div class="cdlm how"></div><button class="mini" type="button">Editar</button></li>`);li.querySelector(".cdlq").textContent=cdTxt(x.q);li.querySelector(".cdlm").textContent=`esqueceu ${x.f.lapses}× · ${BYKEY[x.k].t}`;const b=li.querySelector("button");b.id="cdnE-"+x.id;b.onclick=()=>cdOpen("todos",{pick:x.id});ul.appendChild(li)});c.appendChild(ul);G.appendChild(c)}
+  /* 7. calendário: 26 semanas, segunda a domingo */
+  {const c=stCard(7,"Calendário","cdnCal"),B=cdStats(L,t-200,t).byDay,wd=(new Date(today()+"T12:00").getDay()+6)%7,s0=t-wd-26*7,g=el(`<div class="cdcal" role="img"></div>`);let tot=0;
+    for(let d=s0;d<=t;d++){const ds=fromNum(d),v=B[ds]||0;tot+=v;const q=el(`<i class="cdcd"></i>`);q.classList.add("l"+(v?v<=10?1:v<=25?2:v<=50?3:4:0));q.title=`${cdBr4(ds)}: ${v} ${v===1?"revisão":"revisões"}`;g.appendChild(q)}
+    g.setAttribute("aria-label",`Revisões de cartões nas últimas 27 semanas: ${tot}`);const st=cdStreak(B,today()),sp=el(`<p class="cdstreak" id="cdnStreak"></p>`);sp.textContent=st?`${st} ${st===1?"dia seguido":"dias seguidos"} com revisão`:"Nenhuma revisão hoje nem ontem.";
+    stLead(c,"Cada quadrado é um dia; mais escuro, mais revisões.");c.append(sp,g);G.appendChild(c)}
+  return w}
+/* ---- Criar: um cartão, colar vários, com o Claude; aviso de repetido (cdDupOf) ---- */
+let cdNS={mode:"um",k:"",q:"",a:"",paste:"",prev:null,dup:"",ks:[],tq:"",msg:""};
+const cdPool=()=>[...ALL,...FAC_ITEMS];
+function cdNsK(){if(cdNS.kOff)return "";if(cdNS.k&&BYKEY[cdNS.k])return cdNS.k;const f=cdF.k&&BYKEY[cdF.k]?cdF.k:"",l=lsGet("resid-cdlastk","");return f||(l&&BYKEY[l]?l:"")}
+/* busca de tema: atualiza só a lista (não redesenha a tela, para não perder o foco) */
+function cdTopicPick(id,onPick,ph){const w=el(`<div class="cdtpick"><input class="etext" type="search" autocomplete="off"><ul class="qrres"></ul></div>`),i=w.querySelector("input"),ul=w.querySelector("ul");
+  i.id=id;i.placeholder=ph||"Buscar tema (ex.: sepse, IAM)";i.setAttribute("aria-label","Buscar tema");
+  const fill=()=>{ul.innerHTML="";const n=norm(i.value.trim());if(n.length<2)return;
+    cdPool().map(x=>{const t=norm(x.t),sub=norm((x.sp||"")+" "+(x.own?"faculdade":""));return {x,sc:t.startsWith(n)?3:t.includes(n)?2:sub.includes(n)?1:0}}).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc||(a.x.num||0)-(b.x.num||0)).slice(0,6)
+      .forEach(({x},j)=>{const li=el(`<li><button type="button" class="qrpick"><b></b><span></span></button></li>`),b=li.querySelector("button");b.id=id+"-"+j;b.querySelector("b").textContent=x.t;b.querySelector("span").textContent=x.own?"Faculdade":`${x.area.code} · ${x.sp||x.area.name}`;b.onclick=()=>onPick(x.key);ul.appendChild(li)});
+    if(!ul.children.length)ul.appendChild(el(`<li class="how">Nenhum tema com esse nome.</li>`))};
+  i.oninput=fill;return w}
+function cdNsTopicEl(){const k=cdNsK(),w=el(`<div class="cdnk"><span class="glabel">Tema</span></div>`);
+  if(k){const r=el(`<div class="cdnkcur"><b></b><button class="link" type="button" id="cdnKx">Trocar</button></div>`);r.querySelector("b").textContent=BYKEY[k].t;r.querySelector("button").onclick=()=>{cdNS.kOff=true;render();setTimeout(()=>{const x=$("#cdnT");if(x)x.focus()},40)};w.appendChild(r)}
+  else w.appendChild(cdTopicPick("cdnT",key=>{cdNS.k=key;cdNS.kOff=false;lsSet("resid-cdlastk",key);cdNS.dup="";render();setTimeout(()=>{const x=$("#cdnQ")||$("#cdnPaste");if(x)x.focus()},40)}));
+  return w}
+function cdNsSave(more,force){const k=cdNsK(),q=cdNS.q.trim(),a=cdNS.a.trim();
+  if(!k){cdNS.msg="Escolha o tema.";render();return}if(!q||!a){cdNS.msg="Escreva a pergunta e a resposta.";render();return}
+  const d=!force&&cdDupOf(k,cdT2H(q));if(d){cdNS.dup=d.id;cdNS.msg="";render();return}
+  cdAdd(k,cdT2H(q),cdT2H(a),"eu",{h:1,kind:"man"});lsSet("resid-cdlastk",k);cdNS={...cdNS,k,q:"",a:"",dup:"",msg:""};
+  if(!more)cdNewOpen=false;infoToast("Cartão criado. Ele entra na revisão como novo.");render();if(more)setTimeout(()=>{const x=$("#cdnQ");if(x)x.focus()},40)}
+function cdNsPrev(){const k=cdNsK(),P=cdParsePaste(cdNS.paste);cdNS.prev={k,bad:P.bad,list:P.ok.map(o=>{const d=k&&cdDupOf(k,cdT2H(o.q));return {...o,dup:d?d.id:"",keep:!d}})};render()}
+function cdNsMany(){const R=cdNS.prev,k=cdNsK();if(!R||!k)return;const L=R.list.filter(o=>o.keep);L.forEach(o=>cdAdd(k,cdT2H(o.q),cdT2H(o.a),"eu",{h:1,kind:"man"}));lsSet("resid-cdlastk",k);
+  cdNS={...cdNS,paste:"",prev:null};cdNewOpen=false;infoToast(`${L.length} ${L.length===1?"cartão criado":"cartões criados"}. Entram na revisão como novos.`);render()}
+function cdNewEl(){const S=cdNS,w=el(`<div class="cdnew" id="cdNewBox"><div class="dhead"><b>Novo cartão</b><button class="link" type="button" id="cdnX">Fechar</button></div><div class="tseg cdnmodes" role="group" aria-label="Como criar"></div></div>`);
+  w.querySelector("#cdnX").onclick=()=>{cdNewOpen=false;render()};const M=w.querySelector(".cdnmodes");
+  [["um","Um cartão"],["varios","Colar vários"],...(sampleOff?[]:[["claude","Com o Claude"]])].forEach(([m,l])=>{const b=el(`<button type="button"></button>`);b.id="cdnM-"+m;b.textContent=l;b.setAttribute("aria-pressed",S.mode===m);b.onclick=()=>{S.mode=m;S.msg="";render()};M.appendChild(b)});
+  if(S.mode==="claude"){w.appendChild(el(`<p class="how">Escolha até 5 temas. Para cada um, o Claude cria cartões a partir da sua anotação (o tema precisa ter anotação).</p>`));
+    const ch=el(`<div class="chips cdnks"></div>`);S.ks.filter(k=>BYKEY[k]).forEach(k=>{const c=el(`<button class="chip" type="button" aria-pressed="true"></button>`);c.textContent=BYKEY[k].t+" ×";c.title="Tirar";c.onclick=()=>{S.ks=S.ks.filter(x=>x!==k);render()};ch.appendChild(c)});if(S.ks.length)w.appendChild(ch);
+    if(S.ks.length<5)w.appendChild(cdTopicPick("cdnC",key=>{if(!S.ks.includes(key))S.ks.push(key);render()},"Buscar tema para criar com o Claude"));
+    S.ks.filter(k=>BYKEY[k]).forEach(k=>{const b=el(`<div class="cdnblk"><b class="cdnbt"></b></div>`);b.dataset.k=k;b.querySelector("b").textContent=BYKEY[k].t;b.appendChild(cardsBlock(BYKEY[k]));w.appendChild(b)});return w}
+  w.appendChild(cdNsTopicEl());
+  if(S.mode==="um"){const f=el(`<div class="cdnf"><label class="cdef"><span>Pergunta</span><textarea id="cdnQ" rows="3" maxlength="1500" placeholder="Ex.: **Leucoplasia pilosa** — qual o agente?"></textarea></label><label class="cdef"><span>Resposta</span><textarea id="cdnA" rows="3" maxlength="3000"></textarea></label><p class="how">Use **negrito** e *itálico*.</p></div>`);
+    const [q,a]=f.querySelectorAll("textarea");q.value=S.q;a.value=S.a;q.oninput=()=>{S.q=q.value;if(S.dup){S.dup="";const d=$("#cdnDup");if(d)d.remove()}};a.oninput=()=>{S.a=a.value};w.appendChild(f);
+    if(S.dup){const x=cards.find(c=>c.id===S.dup);if(x){const d=el(`<div class="pnote cdndup" id="cdnDup" role="status"><span></span><div class="btns"><button class="btn" type="button" id="cdnDupGo">Criar mesmo assim</button><button class="link" type="button" id="cdnDupSee">Ver o outro</button></div></div>`);
+      d.querySelector("span").textContent=`Parecido com: ${cdTxt(x.q).slice(0,140)}`;d.querySelector("#cdnDupGo").onclick=()=>cdNsSave(false,true);d.querySelector("#cdnDupSee").onclick=()=>{cdNewOpen=false;cdOpen("todos",{pick:x.id})};w.appendChild(d)}}
+    const B=el(`<div class="btns"><button class="btn primary" type="button" id="cdnMore">Salvar e criar outro</button><button class="btn" type="button" id="cdnSave">Salvar</button></div>`);B.querySelector("#cdnMore").onclick=()=>cdNsSave(true);B.querySelector("#cdnSave").onclick=()=>cdNsSave(false);w.appendChild(B)}
+  else{const f=el(`<label class="cdef"><span>Um cartão por linha: pergunta :: resposta (ou separados por tabulação)</span><textarea id="cdnPaste" rows="6" placeholder="Agente da leucoplasia pilosa :: Vírus Epstein-Barr&#10;Tratamento da sífilis latente tardia :: Penicilina benzatina 3 doses"></textarea></label>`),t=f.querySelector("textarea");t.value=S.paste;t.oninput=()=>{S.paste=t.value;if(S.prev){S.prev=null;const p=$("#cdnPrev");if(p)p.remove();const m=$("#cdnMany");if(m)m.remove()}};w.appendChild(f);
+    const rd=el(`<div class="btns"><button class="btn" type="button" id="cdnRead">Ver prévia</button></div>`);rd.querySelector("button").onclick=cdNsPrev;w.appendChild(rd);
+    const R=S.prev;if(R){const p=el(`<div class="cdnprev" id="cdnPrev"><ul class="cdrev"></ul></div>`),ul=p.querySelector("ul");
+      R.list.forEach((o,i)=>{const li=el(`<li><label><input type="checkbox" class="cdnchk"><span><b></b><span></span></span></label></li>`),c=li.querySelector("input");c.id="cdnP-"+i;c.checked=o.keep;c.onchange=()=>{o.keep=c.checked;const m=$("#cdnMany");if(m){const n=R.list.filter(z=>z.keep).length;m.textContent=`Criar ${n} ${n===1?"cartão":"cartões"}`;m.disabled=!n||!cdNsK()}};
+        li.querySelector("b").textContent=o.q;li.querySelector("label>span>span").textContent=o.a;if(o.dup){const x=cards.find(c=>c.id===o.dup);const d=el(`<p class="how cdndupl"></p>`);d.textContent=`Parecido com: ${x?cdTxt(x.q).slice(0,100):""}`;li.appendChild(d)}ul.appendChild(li)});
+      if(!R.list.length)p.appendChild(el(`<p class="how">Nenhuma linha com pergunta e resposta.</p>`));
+      if(R.bad.length){const b=el(`<p class="how cdnbad" id="cdnBad"></p>`);b.textContent=`${R.bad.length===1?"Linha":"Linhas"} sem "::" ou tabulação (não entram): ${R.bad.join(", ")}.`;p.appendChild(b)}
+      const n=R.list.filter(o=>o.keep).length,mb=el(`<button class="btn primary" type="button" id="cdnMany"></button>`);mb.textContent=`Criar ${n} ${n===1?"cartão":"cartões"}`;mb.disabled=!n||!cdNsK();mb.onclick=cdNsMany;p.appendChild(mb);w.appendChild(p)}}
+  if(S.msg){const m=el(`<p class="err"></p>`);m.textContent=S.msg;w.appendChild(m)}return w}
 /* caderno de erros */
 const byNewest=(a,b)=>a.d<b.d?1:a.d>b.d?-1:(a.id<b.id?1:-1);
 function ecardEl(e,withTopic){
@@ -8085,7 +8351,7 @@ function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.
 // erros antigos (sem data marcada) entram pela data do último "revisei" ou do registro
 function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
 /* uma agenda por questão (Lote 17): erro que virou cartão é revisado pelo cartão, não volta na revisão de erros */
-const eByCard=e=>cards.some(x=>!x.dr&&(x.eid===e.id||(e.cd&&x.id===e.cd)));
+const eByCard=e=>cards.some(x=>!x.dr&&!x.su&&(x.eid===e.id||(e.cd&&x.id===e.cd)));
 const eDueNow=e=>eDue(e)<=today()&&!eByCard(e)&&!e.fm;
 const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDueNow(e));
 /* auditoria 26/10: acertou no degrau de 30 dias → o erro se forma (e.fm = data): sai da revisão, continua no caderno; volta se você errar o tema de novo (eNew) */
@@ -8673,7 +8939,7 @@ function qGoStep(id){backStack=[];
   else if(id==="weak"){const W=weakToday();if(W){detTab[W.k]="questoes";openTopic(W.k);setTimeout(()=>{const g=detGet("qf-",W.k);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}}
   else if(id==="redo"){setView("quest");if(typeof setQSeg==="function")setQSeg("praticar","redo");const K=pwKeys(),ids=rdDueList().sort((a,b)=>pwFirst(K,x=>x.k)(a,b)||(rdDue(a)<rdDue(b)?-1:1)||b.n-a.n).slice(0,RD_DAY).map(x=>x.id);if(ids.length)rdStart(ids)}
   else if(id==="plan"){const P=ensurePlan(),x=P.items.find(p=>BYKEY[p.k]&&!itemDone(p));setView("inicio");if(x)startStep({k:x.k,kind:"plan"});else setTimeout(()=>{const c=$("#viewInicio .card.today");if(c)c.scrollIntoView({behavior:"smooth",block:"start"})},60)}
-  else if(id==="cards"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const b=$("#cdGo");if(b)b.click()},60)}
+  else if(id==="cards"){cdOpen("hoje",{go:true})}
   else if(id==="notes"){setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");setTimeout(()=>{const h=document.querySelector("#viewNotas .ntoday");if(h)h.scrollIntoView({block:"start",behavior:"smooth"})},60)}
   else goRevs()}
 /* revisões dos temas: ficam só na Residência (cartão .card.revs); k = rola até o tema */
@@ -8695,9 +8961,9 @@ function offDayEl(){const w=el(`<div class="ioff" id="iOff"></div>`),rest=lsGet(
   w.appendChild(el(`<p class="ioffh"><b>${hnd?"Hoje não deu":"Dia de folga"}</b> · as revisões voltam ${nextStudyLabel()} e a sequência fica congelada.</p>`));
   if(hnd){const u=el(`<button class="link" type="button" id="iHndUndo">Desfazer “Hoje não deu”</button>`);u.onclick=hndUndo;w.appendChild(u)}
   if(rest){const p=el(`<p class="how">Bom descanso. <button class="link" type="button" id="iOffShow">Mostrar sugestões leves</button></p>`);p.querySelector("button").onclick=()=>{lsSet("resid-offrest",null);render()};w.appendChild(p);return w}
-  const T=today(),ne=eDueList().length,nc=cards.filter(x=>BYKEY[x.k]&&x.f&&x.f.st&&x.due<=T).length,L=[];
+  const T=today(),ne=eDueList().length,nc=cards.filter(x=>cdLive(x)&&x.f&&x.f.st&&x.due<=T).length,L=[];
   if(ne)L.push(["errs",`Erros que vencem: ${ne}`,ne*1.5,()=>{backStack=[];setView("erros")}]);
-  if(nc)L.push(["cards",`Cartões vencidos: ${nc}`,nc*.25,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar")}]);
+  if(nc)L.push(["cards",`Cartões vencidos: ${nc}`,nc*.25,()=>cdOpen("hoje")]);
   if(sampleFn&&!sampleOff)L.push(["sim","Bloco rápido de 5 questões",10,()=>{const U=qUniverse(),wk=simTopics("week",U);simCfg={...simCfg,mode:"temas",src:wk.length?"week":"gain",n:5};backStack=[];setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");simStart(U)}]);
   if(L.length){const mn=Math.round(L.reduce((a,x)=>a+x[2],0));w.appendChild(el(`<p class="how">Se quiser, algo leve (≈ ${mn} min). Estudar hoje soma +1 na sequência.</p>`));
     const ul=el(`<ul class="iofflist"></ul>`);L.forEach(([id,lab,,go])=>{const li=el(`<li><span></span><button class="link" type="button"></button></li>`);li.querySelector("span").textContent=lab;const b=li.querySelector("button");b.id="iOff-"+id;b.textContent="abrir";b.onclick=go;ul.appendChild(li)});w.appendChild(ul)}
@@ -9447,21 +9713,21 @@ function fullBtn(k){const on=fullOn[k],b=el(`<button class="mini erfullb" type="
 function applyFull(){document.querySelectorAll(".fullhide,.fullpath,.vfull").forEach(x=>x.classList.remove("fullhide","fullpath","vfull"));
   document.querySelectorAll(".pfullc").forEach(x=>x.classList.remove("pfullc"));document.querySelectorAll(".pfbar").forEach(x=>x.remove());delete document.documentElement.dataset.pfull;
   const ph=isPhoneL();if(!twoCols()&&!ph)return;let v=null,card=null;
-  if(view==="notas"&&cdRun&&fullOn.cd){v=$("#viewNotas");card=v&&v.querySelector(".ncards")}
+  if(view==="cartoes"&&cdRun&&fullOn.cd){v=$("#viewCards");card=v&&v.querySelector(".ncards")}
   else if(view==="quest"&&sim&&sim.status!=="error"&&fullOn.sim){v=$("#viewQuest");card=v&&v.querySelector(".qsim")}
   else if(view==="foco"&&foRun&&fullOn.fo){v=$("#viewFoco");card=v&&v.querySelector(".fotimer")}
   else if(view==="quest"&&exRun&&fullOn.ex){v=$("#viewQuest");card=v&&v.querySelector(".qexam")}
   else if(view==="quest"&&rdRun&&fullOn.rd){v=$("#viewQuest");card=v&&v.querySelector(".qredo")}
   if(!v||!card)return;
   /* celular (B3): o cartão ocupa a tela inteira, em pé ou deitado, com ≡ Menu e Sair no topo */
-  if(ph){const k=view==="notas"?"cd":view==="foco"?"fo":card.classList.contains("qsim")?"sim":card.classList.contains("qexam")?"ex":"rd";card.classList.add("pfullc");document.documentElement.dataset.pfull=k;
+  if(ph){const k=view==="cartoes"?"cd":view==="foco"?"fo":card.classList.contains("qsim")?"sim":card.classList.contains("qexam")?"ex":"rd";card.classList.add("pfullc");document.documentElement.dataset.pfull=k;
     const h=card.querySelector("h2"),bar=el(`<div class="bkfbar pfbar"><button class="bkfb" type="button" id="pfMenu" aria-label="Abrir o menu do app"><span aria-hidden="true">≡</span> Menu</button><div class="bkft"><h2></h2></div><button class="bkfb" type="button" id="pfExit" aria-label="Sair da tela inteira">Sair <span aria-hidden="true">✕</span></button></div>`);
     bar.querySelector("h2").textContent=h?h.textContent:"";bar.querySelector("#pfMenu").onclick=()=>navMenuOpen();bar.querySelector("#pfExit").onclick=()=>fullSet(k,false);card.insertBefore(bar,card.firstChild);return}
   v.classList.add("vfull");let n=card;
   while(n&&n!==v){[...n.parentElement.children].forEach(x=>{if(x!==n)x.classList.add("fullhide")});if(n.parentElement!==v)n.parentElement.classList.add("fullpath");n=n.parentElement}}
 document.addEventListener("keydown",ev=>{const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||ev.metaKey||ev.ctrlKey||ev.altKey)return;
   const b=sel=>{const x=$(sel);if(x&&!x.disabled&&x.offsetParent!==null){ev.preventDefault();x.click();return true}return false};
-  if(view==="notas"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
+  if(view==="cartoes"&&cdRun){if(ev.key===" "||ev.key==="Enter"){if(b("#cdShow"))return}if(/^[1-4]$/.test(ev.key)){b("#cdR"+ev.key);return}
     if(ev.key==="Escape"&&fullOn.cd&&twoCols()){ev.preventDefault();fullSet("cd",false)}return}
   if(view==="foco"&&foRun){if(ev.key===" "){b("#foPauseB");return}if(ev.key==="d"||ev.key==="D"){b("#foDist");return}
     if(ev.key==="Escape"&&fullOn.fo&&twoCols()){ev.preventDefault();fullSet("fo",false)}return}
@@ -9601,7 +9867,7 @@ function gsResults(q){const n=norm(q.trim());if(n.length<2)return [];const R=[],
   Object.keys(notes).forEach(k=>{if(BYKEY[k]&&norm(notes[k]).includes(n))add("Anotações",BYKEY[k].t,gsSnip(notes[k],n),()=>{detTab[k]="notas";openTopic(k)})});
   freeN.forEach(f=>{if(norm(f.t+" "+f.b+" "+f.tags.join(" ")).includes(n))add("Caderno livre",f.t||"Sem título",gsSnip(f.b,n),()=>{freeOpen.add(f.id);backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("todas");setTimeout(()=>{const x=document.getElementById("fr-"+f.id);if(x)x.scrollIntoView({block:"center"})},80)})});
   errors.forEach(e=>{if(BYKEY[e.k]&&norm(e.w+" "+e.r+" "+(e.s||"")).includes(n))add("Erros",BYKEY[e.k].t,gsSnip(e.w+" → "+e.r,n),()=>{eGoTopic(e.k);if(e.arch)eFlags.add("arch");backStack=[];setView("erros")})});
-  cards.forEach(x=>{if(BYKEY[x.k]&&norm(x.q+" "+x.a).includes(n))add("Cartões",x.q.slice(0,90),BYKEY[x.k].t,()=>{detTab[x.k]="notas";openTopic(x.k)})});
+  cards.forEach(x=>{if(BYKEY[x.k]&&norm(cdTxt(x.q)+" "+cdTxt(x.a)).includes(n))add("Cartões",cdTxt(x.q).slice(0,90),BYKEY[x.k].t,()=>cdOpen("todos",{pick:x.id}))});
   fac.discs.forEach(d=>{if(norm(d.name).includes(n))add("Faculdade",d.name,"disciplina",()=>goDisc(d));
     (d.sps||[]).forEach(s=>{if(norm(s.name+" "+s.objs.join(" ")).includes(n))add("Faculdade",s.name,d.name,()=>{facOpenSem.add(d.semId);facOpenDisc.add(d.id);facOpenSP.add(s.id);backStack=[];setView("fac");setTimeout(()=>scrollToId("sp-"+s.id),60)})});
     [d,...(d.sps||[])].forEach(o=>(o.links||[]).forEach(l=>{if(norm((l.t||"")+" "+l.u).includes(n))add("Materiais",l.t||hostOf(l.u),`${d.name} · ${hostOf(l.u)}`,()=>window.open(l.u,"_blank","noopener"))}))});
@@ -9674,7 +9940,7 @@ function renderHelp(){const box=$("#helpList");const q=helpQ?norm(helpQ):"";cons
     d.querySelector("summary").textContent=t;d.querySelector(".mdview").innerHTML=md(body);box.appendChild(d)});
   if(!n)box.appendChild(el(`<p class="hempty">Nada encontrado. Tente outra palavra, como "prova", "revisão" ou "senha".</p>`))}
 function showView(v){view=v;$("#viewInicio").hidden=v!=="inicio";$("#viewPerfil").hidden=v!=="perfil";$("#viewConfig").hidden=v!=="config";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
-  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewStats").hidden=v!=="stats";$("#viewMais").hidden=v!=="mais";$("#tabM").setAttribute("aria-selected",["mais","foco","notas","stats"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
+  $("#viewTemas").hidden=v!=="temas";$("#viewNotas").hidden=v!=="notas";$("#viewQuest").hidden=v!=="quest";$("#viewFac").hidden=v!=="fac";document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v||(v==="instr"&&t.dataset.v==="quest")));$("#viewErros").hidden=v!=="erros";$("#viewInstr").hidden=v!=="instr";$("#viewHelp").hidden=v!=="help";$("#viewFoco").hidden=v!=="foco";$("#viewStats").hidden=v!=="stats";$("#viewMais").hidden=v!=="mais";$("#viewCards").hidden=v!=="cartoes";$("#tabM").setAttribute("aria-selected",["mais","foco","notas","stats","erros"].includes(v)&&document.documentElement.dataset.layout==="phone"||v==="mais")}
 function setView(v){showView(v);render();window.scrollTo({top:0})}
 
 /* Lote 19 (10/2026): explicações fixas dos cartões (.hx) ficam recolhidas atrás do "?" do cabeçalho do cartão.
@@ -9729,7 +9995,7 @@ new MutationObserver(()=>sbApply()).observe(document.documentElement,{attributes
   $("#sbPinOpen").onclick=()=>sbSetPin(sbPin==="open"?"":"open");
   $("#sbPinRail").onclick=()=>sbSetPin(sbPin==="rail"?"":"rail")}
 /* menu ≡: lista de todas as seções com um resumo de cada */
-const NM_SUB={inicio:"Painel do dia",temas:"198 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Banco de questões, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros",stats:"Como estou indo e se chego a tempo"};
+const NM_SUB={inicio:"Painel do dia",temas:"198 temas e revisões",fac:"Semestres, disciplinas e provas",quest:"Banco de questões, simulados e provas",notas:"Caderno livre e anotações dos temas",foco:"Pomodoro e cronômetro",erros:"Caderno de erros",cartoes:"Revisar, criar e acompanhar os cartões",stats:"Como estou indo e se chego a tempo"};
 function nmInfo(v){try{
   if(v==="inicio"){const P=ensurePlan();if(P.items.length){const d=P.items.filter(itemDone).length;return [`Estudar hoje: ${d} de ${P.items.length} temas`,""]}}
   if(v==="temas"){const n=dueCount();return [n?`${n} ${n===1?"revisão pendente":"revisões pendentes"}`:"Revisões em dia",n?"late":"",n]}
@@ -9738,6 +10004,7 @@ function nmInfo(v){try{
   if(v==="notas"){const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length,nf=freeN.length;if(nk||nf)return [[nf?`${nf} no caderno livre`:"",nk?`${nk} ${nk===1?"tema":"temas"} com anotações`:""].filter(Boolean).join(" · "),""]}
   if(v==="foco"){const td=foSum(foSess.filter(x=>x.d===today()));return [foRun?`${foRun.ph==="b"?"Pausa":"Sessão"} em andamento · ${foShown().txt}`:`Hoje: ${fmtMin(td)}${foDG()?` de ${fmtMin(foDG()*60)}`:""}`,"",foRun?"●":0]}
   if(v==="erros"){const n=eDueList().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje",n?"late":"",n]}
+  if(v==="cartoes"){const n=cdDue().length;return [n?`${n} para revisar hoje`:"Nada para revisar hoje","",n]}
   if(v==="stats"){const V=stVerdRes(stRes(30)),a=V[0],b=V[1];if(a[1]==="na"&&b[1]==="na")return [NM_SUB.stats,""];return [[a[1]!=="na"?a[2]:"",b[1]!=="na"?`chegar a tempo: ${b[2].toLowerCase()}`:""].filter(Boolean).join(" · "),b[1]==="bad"||b[1]==="warn"?"late":""]}}catch(e){}return [NM_SUB[v]||"",""]}
 function navListEl(onGo){const ul=el(`<ul class="nmlist"></ul>`),cur=["mais"].includes(view)?"":view;
   document.querySelectorAll(".appnav .tabs .tab").forEach(t=>{const v=t.dataset.v;if(!v||v==="mais"||v==="help")return;
@@ -9776,6 +10043,7 @@ function renderAll(){
   // contadores das abas (sempre visíveis)
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):"";$("#ecount").title=n?`${n} ${n===1?"erro para revisar":"erros para revisar"} hoje`:""}
   {const nk=Object.keys(notes).filter(k=>BYKEY[k]&&notes[k].trim()).length;$("#ncount").textContent=nk?String(nk):""}
+  {const n=cdDue().length;$("#ccount").textContent=n?String(n):"";$("#ccount").title=n?`${n} ${n===1?"cartão":"cartões"} hoje`:""}
   const P0=ensurePlan(),dueN=dueCount();
   /* Lote 19: o selo mostra o que cabe fazer hoje (fila do dia), não a dívida inteira */
   {let fit=dueN;try{fit=Math.min(dueN,qCounts().revs)}catch(e){}$("#rcount").textContent=fit?String(fit):"";$("#rcount").title=fit?`${fit} ${fit===1?"revisão cabe":"revisões cabem"} hoje${dueN>fit?` (${dueN} pendentes)`:""}`:""}
@@ -9793,6 +10061,8 @@ function renderAll(){
   else if(view==="foco")renderFoco();
   else if(view==="stats")renderStats();
   else if(view==="mais")renderMais();
+  else if(view==="cartoes")renderCards();
+  if(view!=="cartoes")$("#cdBody").innerHTML="";
   if(view!=="foco")$("#foBody").innerHTML="";
   foEnsureTick();foPaint();
   renderHead();
@@ -10314,7 +10584,7 @@ function stRow(l,r){const x=el(`<div class="strow"><b></b><span class="how"></sp
 const svgEsc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 /* barras por semana: vals [{v,lab,cur,tip}], meta (linha tracejada com rótulo), semana atual mais clara com "até hoje" */
 /* largura do desenho = largura real do cartão (no computador, os gráficos ficam largos sem crescer o texto) */
-function stW(){const v=document.getElementById("viewStats"),w=v&&v.clientWidth||0;if(!w)return 320;const c=twoCols()?w/2-56:w-40;return Math.max(320,Math.min(760,Math.round(c)))}
+function stW(){const v=document.getElementById(view==="cartoes"?"viewCards":"viewStats"),w=v&&v.clientWidth||0;if(!w)return 320;const c=twoCols()?w/2-56:w-40;return Math.max(320,Math.min(760,Math.round(c)))}
 function stBars(vals,o={}){const W=stW(),H=128,P={l:26,r:6,t:14,b:22},n=vals.length,mx=Math.max(o.goal||0,...vals.map(x=>x.v),o.min||1)*1.12,bw=(W-P.l-P.r)/n,y=v=>P.t+(H-P.t-P.b)*(1-v/mx);
   let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${svgEsc(o.aria||"")}">`;
   [0,.5,1].forEach(f=>{const v=mx/1.12*f,yy=y(v);s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="ax" x="${P.l-4}" y="${yy+3}" text-anchor="end">${svgEsc(o.fmt?o.fmt(v):Math.round(v))}</text>`});
