@@ -98,7 +98,9 @@ function renderDetail(it,o={}){
     const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;pill.textContent=dueLabel(d);g2.dataset.st=d<0?"late":d===0?"today":"ok";
     p.innerHTML=`<span class="dnext">Próxima revisão: <b></b></span><span class="dsub"></span>`;p.querySelector("b").textContent=br(next);
     p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
-    bt.appendChild(revBtns(it.key,"drevb"));}
+    bt.appendChild(revBtns(it.key,"drevb"));
+    if(Array.isArray(s.rv)&&s.rv.length){const L=s.rv,u=L[L.length-1],lem=L.filter(e=>e.g===2).length,ago=dnum(today())-dnum(u.d);
+      const h=el(`<p class="how drevh"></p>`);h.textContent=`${L.length} ${L.length===1?"revisão":"revisões"} · lembrou ${lem} · última: ${["Esqueci","Difícil","Lembrei"][u.g]||"—"} (${ago===0?"hoje":ago===1?"ontem":"há "+ago+" dias"})`;bt.before(h)}}
   box.appendChild(g2);
   // subtópicos
   const L=subList(it),[sdn,stot]=subCount(it);

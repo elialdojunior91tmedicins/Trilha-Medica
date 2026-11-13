@@ -67,7 +67,9 @@ function stRes(D){const t=dnum(today()),a=t-D+1,pa=a-D,pb=a-1,FK=stFacKeys(),key
   let tTop=0,tHi=0;const bySp={};foSess.forEach(x=>{const n=dnum(x.d);if(n<a||n>t)return;const r=x.ref||"";if(!r.startsWith("T:"))return;const it=BYKEY[r.slice(2)];if(!it||it.own)return;tTop+=x.sec;if(wOf(it)>=2)tHi+=x.sec;const sk=spKey(it);bySp[sk]=(bySp[sk]||0)+x.sec});
   const sps=[];AREAS.forEach(A=>A.specs.forEach(S=>{const k=A.code+":"+S.name,ks=S.items.map(i=>i.key),q=stQ(ks,a,t),left=S.items.filter(i=>!get(i.key).last&&!isIng(get(i.key))),inc=left.reduce((s,i)=>s+wOf(i),0);
     sps.push({A,S,k,sec:bySp[k]||0,q:q.q,c:q.c,acc:q.q>=5?q.c/q.q:null,left:left.length,inc})}));
-  return {t,a,pa,pb,D,H,HP,Q,QP,acc,accP,still,stillP,M,PT,wk,T,hW,goal,tTop,tHi,sps,FK}}
+  /* retenção nas revisões (histórico s.rv, desde 13/11/2026): só temas da residência */
+  const RV=topicRevs().filter(e=>BYKEY[e.k]&&!BYKEY[e.k].own),RT=revStats(RV,fromNum(a),fromNum(t)),RTP=revStats(RV,fromNum(pa),fromNum(pb));
+  return {t,a,pa,pb,D,H,HP,Q,QP,acc,accP,still,stillP,M,PT,wk,T,hW,goal,tTop,tHi,sps,FK,RT,RTP}}
 function stWeeks(n,FK){const ws=foWeekStart(),t=dnum(today()),out=[];for(let i=n-1;i>=0;i--){const s=ws-7*i,e=Math.min(s+6,t);out.push({s,e,cur:i===0,H:stHist(s,e),T:stTime(s,e,FK),plan:wpArr(s).reduce((x,m)=>x+m,0)*60})}return out}
 function stVerdRes(R){const out=[];
   if(R.acc===null)out.push(["Como estou indo","na","Poucos dados",`Faça pelo menos 10 questões em ${R.D} dias`]);
@@ -119,7 +121,9 @@ function stResBlocks(R){const out=[],per=`${R.D} dias`;
   {const c=stCard(1,"Como estou indo","stB1"),dA=stDelta(R.acc,R.accP,{pts:true}),dQ=stDelta(R.Q.q,R.QP.q),dE=stDelta(R.H.e,R.HP.e),dR=stDelta(R.H.r,R.HP.r),dS=stDelta(R.still,R.stillP,{lowGood:true});
     const parts=[];if(dA[0]==="up")parts.push("<strong>acertou mais</strong>");else if(dA[0]==="dn")parts.push("<strong>acertou menos</strong>");if(dQ[0])parts.push(dQ[0]==="up"?"fez mais questões":"fez menos questões");if(dE[0])parts.push(dE[0]==="up"?"estudou <strong>mais temas novos</strong>":"estudou <strong>menos temas novos</strong>");
     stLead(c,parts.length?`Nos últimos ${per}, comparado aos ${per} anteriores, você ${parts.join(", ").replace(/, ([^,]*)$/," e $1")}.`:`Nos últimos ${per}: ${R.Q.q} questões e ${R.H.e} temas novos.`);
-    c.appendChild(stTable([["Acerto nas questões",stPct(R.acc),dA],["Questões feitas",R.Q.q.toLocaleString("pt-BR"),dQ],["Temas novos estudados",String(R.H.e),dE],["Revisões feitas",String(R.H.r),dR],["Erros que você ainda erraria",String(R.still),dS]]));
+    c.appendChild(stTable([["Acerto nas questões",stPct(R.acc),dA],["Questões feitas",R.Q.q.toLocaleString("pt-BR"),dQ],["Temas novos estudados",String(R.H.e),dE],["Revisões feitas",String(R.H.r),dR],["Retenção nas revisões",R.RT.n>=10?stPct(R.RT.g2/R.RT.n):"—",stDelta(R.RT.n>=10?R.RT.g2/R.RT.n:null,R.RTP.n>=10?R.RTP.g2/R.RTP.n:null,{pts:true})],["Erros que você ainda erraria",String(R.still),dS]]));
+    {const ret=el(`<p class="how" id="stRet"></p>`),rt=R.RT,pc=(x)=>Math.round(x.g2/x.n*100)+"%";
+      ret.textContent=rt.n<10?"Poucas revisões registradas ainda (o histórico começou em 13/11/2026).":`Retenção = revisões em que você tocou Lembrei. ${rt.ok.n>=5?"No prazo: "+pc(rt.ok):""}${rt.ok.n>=5&&rt.late.n>=5?" · ":""}${rt.late.n>=5?"Atrasadas: "+pc(rt.late):""}${rt.ok.n<5&&rt.late.n<5?"Ainda poucas para separar no prazo e atrasadas.":""}`;c.appendChild(ret)}
     c.appendChild(el(`<p class="how stnote hx">"Errei" = erros do caderno que você errou de novo na revisão no período. Menos é melhor.</p>`));
     const ser={};exams.forEach(ex=>{const P=exProg.find(x=>x.id===ex.id);if(!P)return;(P.tries||[]).forEach(tr=>{if(!tr.n)return;const b=ex.banca||"Outras";(ser[b]=ser[b]||[]).push({n:dnum(tr.d),v:tr.hit/tr.n,t:ex.name})})});
     const S=Object.keys(ser).map(name=>({name,pts:ser[name]}));c.appendChild(stRow("Nota nas provas na íntegra","cada ponto é uma prova terminada"));
