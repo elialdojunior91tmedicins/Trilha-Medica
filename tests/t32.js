@@ -8,15 +8,15 @@ for(const [name,opt] of Object.entries(DV)){const ctx=await b.newContext(opt);aw
  ok(await p.isVisible('#cfgBtn')&&!(await p.$('#tabH')),`${name}: ajuda dentro da engrenagem`);
  if(phone)await p.tap('#cfgBtn');else await p.click('#cfgBtn');await p.waitForTimeout(150);
  if(phone)await p.tap('#cfBody .cflink:has-text("Ajuda")');else await p.click('#cfBody .cflink:has-text("Ajuda")');await p.waitForTimeout(150);
- ok(await p.evaluate(()=>view==="help"&&!document.getElementById("viewHelp").hidden&&document.querySelectorAll(".hsec").length===18),`${name}: abre a Ajuda com 18 assuntos`);
+ ok(await p.evaluate(()=>view==="help"&&!document.getElementById("viewHelp").hidden&&document.querySelectorAll(".hsec").length===19),`${name}: abre a Ajuda com 19 assuntos`);
  if(name==="celular"){
   await p.fill('#hq','senha');await p.waitForTimeout(350);
   const r=await p.evaluate(()=>[...document.querySelectorAll(".hsec")].map(d=>d.querySelector("summary").textContent+(d.open?"*":"")));
   ok(r.length>=2&&r.every(x=>x.endsWith("*")),"busca 'senha' filtra e abre: "+r.join(", "));
   await p.fill('#hq','xyzabc');await p.waitForTimeout(350);ok(await p.evaluate(()=>!!document.querySelector(".hempty")),"busca sem resultado avisa");
   await p.fill('#hq','');await p.waitForTimeout(350);
-  await p.locator('.hsec summary').nth(8).click();await p.waitForTimeout(100);
-  ok(await p.evaluate(()=>{const d=document.querySelectorAll(".hsec")[8];return d.open&&d.querySelector("table")&&/15 a 21/.test(d.textContent)}),"Faculdade mostra a tabela de vagas");
+  await p.locator('.hsec summary').nth(9).click();await p.waitForTimeout(100);
+  ok(await p.evaluate(()=>{const d=document.querySelectorAll(".hsec")[9];return d.open&&d.querySelector("table")&&/15 a 21/.test(d.textContent)}),"Faculdade mostra a tabela de vagas");
   ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),"sem rolagem lateral no celular");
   await p.screenshot({path:'help-fone.png'});
   await p.tap('.appnav #tabT');ok(await p.evaluate(()=>view==="temas"),"volta para Temas pela barra");

@@ -14,7 +14,7 @@ const login=async(p,tap,create)=>{const c=s=>tap?p.tap(s):p.click(s);await c('#p
 for(const [tag,opt,tap] of (process.argv[2]==="d"?[["computador",{},false]]:[["celular",{viewport:{width:390,height:844},isMobile:true,hasTouch:true},true],["computador",{},false]])){
 const c1=await ctxFor(b,opt);const p=await c1.newPage();p.on('pageerror',e=>errs.push(tag+":"+e.message));await boot(p);await login(p,tap,true);
 const c=s=>tap?p.tap(s):p.click(s);
-await c('#tabE');await p.waitForTimeout(150);await c('#eRegB');await p.fill('#erq','sepse');await p.waitForTimeout(500);await c('#eReg .qrpick');await p.waitForTimeout(100);
+await p.evaluate(()=>setView("erros"));await p.waitForTimeout(150);await c('#eRegB');await p.fill('#erq','sepse');await p.waitForTimeout(500);await c('#eReg .qrpick');await p.waitForTimeout(100);
 await p.fill('#erg-w','dei antibiótico depois de 3h');await p.fill('#erg-r','antibiótico na 1ª hora');await p.selectOption('#erg-t','confusao');await p.selectOption('#erg-c','Lembrei pela metade');await p.fill('#erg-s','ENARE');await c('#eReg button[type=submit]');await p.waitForTimeout(200);
 await c('#eReg .dhead .link');
 // erro antigo vencido + revisão + arquivar + cartão + anotação

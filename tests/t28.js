@@ -21,7 +21,7 @@ ok(await p.evaluate(()=>{const r=document.getElementById("resetBtn").getBounding
 // lembrar seção
 await go();ok(await p.evaluate(()=>tSeg==="lista"&&document.getElementById("viewTemas").dataset.seg==="lista"),"seção escolhida é lembrada ao reabrir");
 // teclado
-await p.tap('#tabE');await p.tap('#eq');await p.waitForTimeout(120);ok(await p.evaluate(()=>getComputedStyle(document.querySelector(".appnav")).display==="none"),"barra some enquanto digita");
+await p.evaluate(()=>setView("erros"));await p.waitForTimeout(150);await p.tap('#eq');await p.waitForTimeout(120);ok(await p.evaluate(()=>getComputedStyle(document.querySelector(".appnav")).display==="none"),"barra some enquanto digita");
 await p.evaluate(()=>document.activeElement.blur());await p.waitForTimeout(150);ok(await p.evaluate(()=>getComputedStyle(document.querySelector(".appnav")).display!=="none"),"barra volta ao sair do campo");
 // sobreposição de anotações cobre a barra
 await p.evaluate(()=>{noteMode["CM-4"]="editar";focusKey="CM-4";render()});await p.waitForTimeout(100);
