@@ -48,6 +48,8 @@ const RV=`(()=>{const T=today(),ago=n=>fromNum(dnum(T)-n),mk=(n,g,l)=>({d:ago(n)
  ok(/Recuperação: 0 de 30 feitas · termina em/.test(r.ag||"")&&r.agd>1,"Próximos dias: linha da recuperação e dias marcados "+JSON.stringify(r));
  r=await p.evaluate(()=>{dayPlan=null;ensurePlan();return (dayPlan.items||[]).filter(i=>i.cls==="r-new"||i.cls==="r-cont"||i.cls==="r-eixo").length});
  ok(r<=1,"plano do dia com no máximo 1 tema novo durante a recuperação ("+r+")");
+ r=await p.evaluate(()=>{setView("temas");render();const b=document.getElementById("pBrake");return b&&b.textContent});
+ ok(/Recuperação do atraso/.test(r||"")&&!/^0 revisões/.test(r||""),"aviso do plano explica que o limite vem da recuperação "+JSON.stringify(r));
  /* adiantar: com a fila concluída */
  r=await p.evaluate(()=>{const h0=recActive().filter(k=>dueIn(get(k))===0).length;qCounts=()=>({});setView("inicio");render();const b=document.getElementById("recMore");if(b)b.click();return {b:!!b,h0,h1:recActive().filter(k=>dueIn(get(k))===0).length}});
  ok(r.b&&r.h1===r.h0+3,"fila concluída: Revisar mais 3 do atraso traz 3 para hoje "+JSON.stringify(r));

@@ -166,6 +166,7 @@ Cada tela e cada lote tem um bloco lá, com funções, ids, formatos e as decis�
 - Banco de questões B3 · ligações: uma agenda só, sorteio, Fixar, irmã, Diretriz mudou
 - Banco de questões B4 · provas oficiais: leitor da Medway, gabarito, comentários, subtópico
 - Banco de questões B5 · High Yield pelo banco, acerto por banca, conceito recorrente
+- Revisões: histórico e recuperação do atraso
 - Banco de questões: as decisões do plano (30/10 a 12/11/2026)
 
 ## Decisões que valem sempre

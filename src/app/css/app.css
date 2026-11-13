@@ -822,7 +822,7 @@ body:has(.bulkbar)>.wrap{padding-bottom:220px}
 .agday.now .agw,.agday.now .agd{color:var(--accent);font-weight:700}
 /* recuperação do atraso (13/11/2026) */
 .agday.rec .agw{text-decoration:underline 2px var(--gold);text-underline-offset:3px}
-.recorig{font-size:.72rem;color:var(--muted2);white-space:nowrap}
+.recorig{font-size:.72rem;color:var(--muted2);white-space:nowrap;display:block;margin-bottom:2px}
 .recnote .btns{flex-wrap:wrap}
 .aglist{margin-top:4px}
 html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="phone"] #viewTemas[data-seg="hoje"] .agenda{display:none}
