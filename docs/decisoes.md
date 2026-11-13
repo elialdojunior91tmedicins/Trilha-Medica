@@ -61,6 +61,7 @@ com a data e não apague o histórico.
 ## Cartões (13/11/2026)
 
 - **Aba própria** (pedido 12/11, 14h53): no celular no lugar de **Erros**, que foi para o ≡ Menu (13/11, 08h54). Partes Hoje · Todos · Números.
+- Aparelho com versão antiga do app (sem atualizar) apaga o histórico e o "suspenso" de um cartão ao responder; some quando ele atualiza (revisão final, 13/11). Ações em vários vão juntas para a conta.
 - Sugestões aceitas (13/11, 09h06): todas de 1 a 18, menos a **6 (cartão de lacuna), recusada**. Histórico de cada revisão (30 por cartão); "lembrou" = Difícil/Bom/Fácil; maduro = 21 dias; mais esquecido = 4 vezes. (docs/superpowers/specs/2026-11-13-aba-cartoes-design.md)
 
 ## Aprovado e ainda não feito
