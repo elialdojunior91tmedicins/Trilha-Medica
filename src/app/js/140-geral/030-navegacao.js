@@ -20,7 +20,7 @@ function hxShow(card){const on=hxOpen.has(card.dataset.hxk);card.querySelectorAl
   card.querySelectorAll(".hxb").forEach(b=>{b.setAttribute("aria-expanded",on?"true":"false");b.classList.toggle("on",on)})}
 (()=>{let q=0;const go=()=>{q=0;hxScan()};new MutationObserver(()=>{if(!q)q=requestAnimationFrame(go)}).observe(document.documentElement,{childList:true,subtree:true})})();
 function render(){
-  if(qAutoRev())persist();rdExpire();
+  if(qAutoRev())persist();if(recCheck())persist();rdExpire();
   const ae=document.activeElement,keep=ae&&ae.id&&/^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)?{id:ae.id,s:ae.selectionStart,e:ae.selectionEnd,st:ae.scrollTop}:null;
   renderAll();applyFull();if(typeof bkFullApply==="function")bkFullApply();sbApply();if(view==="notas"&&nTocRender.last)nTocRender(...nTocRender.last);foNoiseSync();renderQBar();maybeOnb();
   if(keep){const n=document.getElementById(keep.id);if(n&&n!==document.activeElement){n.focus({preventScroll:true});try{n.setSelectionRange(keep.s,keep.e)}catch(e){}n.scrollTop=keep.st}}

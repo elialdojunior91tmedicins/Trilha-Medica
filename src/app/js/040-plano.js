@@ -66,6 +66,37 @@ function revLog(x,g,o){if(!x.last)return;const T=today(),e={d:T,g,l:revLate(x,T)
   x.rv=[...(Array.isArray(x.rv)?x.rv:[]),e].slice(-REV_HIST_MAX);delete x.rc}
 function revStats(L,from,to){const R={n:0,g2:0,g1:0,g0:0,ok:{n:0,g2:0},late:{n:0,g2:0}};
   (L||[]).forEach(e=>{if(!e||(from&&e.d<from)||(to&&e.d>to))return;R.n++;R["g"+(e.g===2?2:e.g===1?1:0)]++;const b=(e.l||0)<=1?R.ok:R.late;b.n++;if(e.g===2)b.g2++});return R}
+/* Recuperação do atraso (13/11/2026): quando as atrasadas passam do que cabe em ~3 dias (REC_TRIG × limite diário), o app dá data nova a cada
+   uma e espalha em até REC_DAYS dias (sem folgas), as mais esquecidas primeiro (peso × atraso ÷ intervalo); o limite pode subir até +REC_EXTRA.
+   A data muda pelo mesmo ajuste do Equilibrar (adj/adjFrom, vale até a próxima revisão); s.rc={d,o} guarda o ajuste anterior para o Desfazer;
+   ui.prefs.rec={d,n,until,ov} = a recuperação em curso (sincroniza). Durante ela, 1 tema novo por dia (revBrake). */
+const REC_DAYS=14,REC_EXTRA=2,REC_TRIG=3,LSREC="resid-recchk";
+function recBase(){const n=[...ALL,...FAC_ITEMS].filter(it=>{const d=dueIn(get(it.key));return d!==null&&d>=0&&d<REC_DAYS}).length;return Math.max(3,Math.ceil(n/REC_DAYS*1.25))}
+function recPlan(items,D,cap,offs){const L=items.slice().sort((a,b)=>b.w*(b.late/Math.max(1,b.iv))-a.w*(a.late/Math.max(1,a.iv))||b.late-a.late);
+  let days=[...Array(REC_DAYS).keys()].filter(d=>!offs.has(d));if(!days.length)days=[REC_DAYS-1];const lastDay=days[days.length-1];
+  for(let c=cap;c<=cap+REC_EXTRA;c++){const used=D.slice(),asg={};let rest=[];
+    L.forEach(x=>{const d=days.find(d=>used[d]<c);if(d===undefined){rest.push(x);return}used[d]++;asg[x.k]=d});
+    if(!rest.length)return {asg,cap:c,last:Math.max(0,...Object.values(asg)),over:0};
+    if(c===cap+REC_EXTRA){rest.forEach(x=>asg[x.k]=lastDay);return {asg,cap:c,last:lastDay,over:rest.length}}}}
+function recLateItems(){return [...ALL,...FAC_ITEMS].filter(it=>{const d=dueIn(get(it.key));return d!==null&&d<0})}
+function recApply(T){T=T||today();const late=recLateItems();if(!late.length)return {n:0};const t=dnum(T),D=Array(REC_DAYS).fill(0),offs=new Set();
+  [...ALL,...FAC_ITEMS].forEach(it=>{const d=dueIn(get(it.key));if(d!==null&&d>=0&&d<REC_DAYS)D[d]++});
+  for(let d=0;d<REC_DAYS;d++)if(dayMin(t+d)===0)offs.add(d);
+  const items=late.map(it=>{const s=get(it.key);return {k:it.key,w:wOf(it)||2,late:Math.max(1,revLate(s,T)||0),iv:interval(s)}});
+  const P=recPlan(items,D,recBase(),offs);
+  Object.entries(P.asg).forEach(([k,d])=>{const s={...get(k)},had=s.adjFrom===s.last&&"adj" in s,base=dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)];
+    s.rc={d:T,o:had?[s.adj,s.adjFrom]:null};s.adj=t+d-base;s.adjFrom=s.last;state[k]=s});
+  const until=fromNum(t+P.last);ui.prefs.rec={d:T,n:late.length,until,ov:P.over};saveUI();return {n:late.length,until,over:P.over}}
+function recActive(){return [...ALL,...FAC_ITEMS].filter(it=>{const s=get(it.key);return s.rc&&s.adjFrom===s.last}).map(it=>it.key)}
+function recUndo(){recActive().forEach(k=>{const s={...get(k)},o=s.rc.o;if(o){s.adj=o[0];s.adjFrom=o[1]}else{delete s.adj;delete s.adjFrom}delete s.rc;state[k]=s});
+  delete ui.prefs.rec;saveUI();try{localStorage.setItem(LSREC,today())}catch(e){}commit()}
+function recCheck(){const T=today();if(ui.prefs.rec&&!recActive().length){delete ui.prefs.rec;saveUI()}
+  if(!synced||lsGet(LSREC,"")===T||isOffDay()||examCrunch().active||provaWeek().length||recActive().length)return false;
+  try{localStorage.setItem(LSREC,T)}catch(e){}
+  if(recLateItems().length<=REC_TRIG*recBase())return false;return recApply(T).n>0}
+function recPull(n){const t=dnum(today());recActive().map(k=>({k,d:dueIn(get(k))})).filter(x=>x.d>0).sort((a,b)=>a.d-b.d).slice(0,n||3).forEach(({k})=>{
+    const s={...get(k)};s.adj=t-(dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]);state[k]=s});goRevs();commit()}
+function recOrig(s){if(!s||!s.rc)return null;const o=s.rc.o;return fromNum(o&&o[1]===s.last?dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]+o[0]:dnum(s.last)+revIv(s))}
 function topicRevs(){const out=[];[...ALL,...FAC_ITEMS].forEach(it=>{const L=get(it.key).rv;if(Array.isArray(L))L.forEach(e=>out.push({k:it.key,...e}))});return out}
 function revBtns(k,cls){const s=get(k),w=el(`<div class="pacts revg${cls?" "+cls:""}"></div>`);[2,1,0].forEach(g=>{const d=revPreview(s,g),b=el(`<button class="btn${g===2?" primary":""}" type="button"><span></span><small></small></button>`);
     b.id=`rg${g}-${k}`;b.querySelector("span").textContent=REV_G[g][0];b.querySelector("small").textContent=d===1?"1 dia":d+" dias";b.title=`${REV_G[g][0]}: ${REV_G[g][1]} (próxima em ${d===1?"1 dia":d+" dias"})`;b.onclick=()=>reviewTopic(k,g);w.appendChild(b)});return w}
@@ -79,7 +110,7 @@ const revScore=it=>(wOf(it)||2)*(1+Math.max(0,-(dueIn(get(it.key))||0)));
 const revPri=(a,b)=>revScore(b)-revScore(a)||dueIn(get(a.key))-dueIn(get(b.key));
 /* freio de carga: muitas revisões atrasadas → menos (ou nenhum) tema novo */
 const REV_BRAKE1=20,REV_BRAKE2=40;
-function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
+function revBrake(){const n=examCrunch().active?0:[...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))&&dueIn(get(i.key))<0).length;return {n,cap:recActive().length?1:n>REV_BRAKE2?0:n>REV_BRAKE1?1:99}}
 /* minutos estimados: fila do dia e plano */
 const MIN_EST={revs:5,errs:1.5,redo:2,cards:.25,"r-new":40,"r-cont":40,"r-eixo":40,"r-own":40,"r-fac":40,"r-weak":10,"r-pfr":15};
 function qMinutes(C){return Math.round(["revs","errs","redo","cards"].reduce((a,id)=>a+(C[id]||0)*MIN_EST[id],0)+(C.weak||0)*MIN_EST.redo)}

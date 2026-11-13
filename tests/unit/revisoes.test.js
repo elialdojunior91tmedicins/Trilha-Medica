@@ -3,7 +3,8 @@
 const test = require("node:test"), assert = require("node:assert/strict");
 const load = require("./load");
 const HOJE = "2026-11-13";
-const novo = () => { const A = load({ now: HOJE + "T12:00:00" }); A.commit = () => {}; A.render = () => {}; A.persist = () => {}; return A; };
+// a abertura simulada pelo load já roda um render (e marca "conferido hoje" com os temas ainda vazios): o teste começa sem a marca
+const novo = () => { const A = load({ now: HOJE + "T12:00:00" }); A.commit = () => {}; A.render = () => {}; A.persist = () => {}; A.localStorage.removeItem("resid-recchk"); A.synced = true; return A; };
 const daysAgo = (A, n) => A.fromNum(A.dnum(HOJE) - n);
 
 test("revLate: atraso contra a data original, mesmo com ajuste de data; sem estudo = null", () => {
@@ -46,4 +47,83 @@ test("topicRevs junta as revisões da Residência e da Faculdade", () => {
   A.state["F-teste"] = { last: HOJE, rv: [{ d: HOJE, g: 1, l: 2, i: 7 }] };
   const L = A.topicRevs();
   assert.ok(L.some(x => x.k === "CM-1" && x.g === 2) && L.some(x => x.k === "F-teste" && x.g === 1));
+});
+
+/* ---------- recuperação do atraso ---------- */
+const atrasar = (A, n, o = {}) => { const ks = A.ALL.filter(it => !it.own).slice(0, n).map(it => it.key);
+  ks.forEach((k, i) => { A.state[k] = { l: 1, last: daysAgo(A, (o.ago || 40) + (i % 5)), step: o.step == null ? 1 : o.step }; }); return ks; };
+
+test("recPlan: até o limite por dia, sem folga, o mais esquecido (peso × atraso ÷ intervalo) primeiro", () => {
+  const A = novo(), D = Array(14).fill(0), offs = new Set([2]);
+  const items = Array.from({ length: 20 }, (_, i) => ({ k: "k" + i, w: 2, late: 10, iv: 30 }));
+  items[7] = { k: "k7", w: 3, late: 40, iv: 3 };
+  const P = A.recPlan(items, D, 3, offs);
+  assert.equal(Object.keys(P.asg).length, 20); assert.equal(P.over, 0); assert.equal(P.cap, 3);
+  const per = Array(14).fill(0); Object.values(P.asg).forEach(d => per[d]++);
+  assert.ok(per.every(n => n <= 3)); assert.equal(per[2], 0, "nada no dia de folga");
+  assert.equal(P.asg.k7, 0, "o mais esquecido vai para hoje");
+});
+
+test("recPlan: sobe o limite até +2; se nem assim couber, o resto vai para o último dia (over)", () => {
+  const A = novo(), D = Array(14).fill(0), mk = n => Array.from({ length: n }, (_, i) => ({ k: "k" + i, w: 2, late: 5 + i, iv: 7 }));
+  const P = A.recPlan(mk(60), D, 3, new Set());
+  assert.equal(P.cap, 5); assert.equal(P.over, 0); assert.equal(Object.keys(P.asg).length, 60);
+  const Q = A.recPlan(mk(200), D, 3, new Set());
+  assert.equal(Q.cap, 5); assert.ok(Q.over > 0); assert.equal(Q.last, 13);
+  assert.equal(Object.values(Q.asg).filter(d => d === 13).length, 5 + Q.over);
+});
+
+test("recApply: cada tema vence no dia marcado, guarda o ajuste anterior; o atraso verdadeiro não muda", () => {
+  const A = novo(), ks = atrasar(A, 30), T = HOJE;
+  const k0 = ks[0]; A.state[k0] = { ...A.state[k0], adj: 2, adjFrom: A.state[k0].last };
+  const late0 = A.revLate(A.get(k0), T);
+  const R = A.recApply(T);
+  assert.equal(R.n, 30);
+  ks.forEach(k => { const s = A.get(k); assert.ok(s.rc && s.rc.d === T, k); assert.ok(A.dueIn(s) >= 0 && A.dueIn(s) <= 13, k + " dueIn " + A.dueIn(s)); });
+  assert.deepEqual([...A.get(k0).rc.o], [2, A.get(k0).last]);
+  assert.equal(A.revLate(A.get(k0), T), late0);
+  assert.equal(A.ui.prefs.rec.n, 30); assert.equal(A.ui.prefs.rec.d, T);
+  assert.equal(A.recActive().length, 30);
+  assert.ok(A.recOrig(A.get(ks[1])) < T, "data original no passado");
+});
+
+test("recUndo devolve exatamente o ajuste de antes e tira a recuperação", () => {
+  const A = novo(), ks = atrasar(A, 30), k0 = ks[0], last = A.state[k0].last;
+  A.state[k0] = { ...A.state[k0], adj: 2, adjFrom: last };
+  A.recApply(HOJE); A.recUndo();
+  assert.equal(A.get(k0).adj, 2); assert.equal(A.get(k0).adjFrom, last); assert.equal(A.get(k0).rc, undefined);
+  assert.equal(A.get(ks[1]).adj, undefined); assert.ok(A.dueIn(A.get(ks[1])) < 0, "volta a ser atrasada");
+  assert.equal(A.recActive().length, 0); assert.equal(A.ui.prefs.rec, undefined);
+});
+
+test("recCheck: atraso pequeno não dispara; grande dispara uma vez por dia; não em modo provas, folga ou com recuperação ativa", () => {
+  let A = novo(); atrasar(A, 5); assert.equal(A.recCheck(), false);
+  A = novo(); atrasar(A, 30); assert.equal(A.recCheck(), true); assert.equal(A.recActive().length, 30);
+  assert.equal(A.recCheck(), false, "segunda vez no mesmo dia");
+  A = novo(); atrasar(A, 30); A.examCrunch = () => ({ active: true }); assert.equal(A.recCheck(), false, "modo provas");
+  A = novo(); atrasar(A, 30); A.ui.prefs.wday = [180, 180, 180, 180, 180, 0, 180]; assert.equal(A.recCheck(), false, "hoje (sexta) é folga");
+});
+
+test("revBrake: com recuperação ativa, 1 tema novo por dia", () => {
+  const A = novo(); atrasar(A, 30); A.recApply(HOJE);
+  assert.equal(A.revBrake().cap, 1);
+});
+
+test("recPull traz para hoje as próximas da recuperação", () => {
+  const A = novo(); atrasar(A, 30); A.recApply(HOJE); A.goRevs = () => {};
+  const hoje0 = A.recActive().filter(k => A.dueIn(A.get(k)) === 0).length;
+  A.recPull(3);
+  assert.equal(A.recActive().filter(k => A.dueIn(A.get(k)) === 0).length, hoje0 + 3);
+});
+
+test("uiSanitize guarda prefs.rec válido e descarta o inválido", () => {
+  const A = novo();
+  assert.deepEqual({ ...A.uiSanitize({ prefs: { rec: { d: HOJE, n: 30, until: "2026-11-25", ov: 0 } } }).prefs.rec }, { d: HOJE, n: 30, until: "2026-11-25", ov: 0 });
+  assert.equal(A.uiSanitize({ prefs: { rec: { d: "x", n: "y" } } }).prefs.rec, undefined);
+});
+
+test("recCheck espera os dados carregados (synced) para não marcar o dia com os temas ainda vazios", () => {
+  const A = novo(); atrasar(A, 30); A.synced = false;
+  assert.equal(A.recCheck(), false); assert.equal(A.lsGet("resid-recchk", ""), "", "não marcou o dia");
+  A.synced = true; assert.equal(A.recCheck(), true);
 });
