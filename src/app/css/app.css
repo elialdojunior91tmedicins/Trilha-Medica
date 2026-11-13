@@ -2340,3 +2340,11 @@ html[data-layout="phone"] .tseg.csegbar{position:sticky;top:env(safe-area-inset-
 .cdlrow:first-child{border-top:0}
 .cdlq{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .cdlm{margin:2px 0 6px}
+.cdnew{border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0;background:var(--surface)}
+.cdnew .dhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tseg.cdnmodes{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:10px}
+.cdnk{margin-bottom:8px}.cdnkcur{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.cdtpick .qrres{list-style:none;margin:6px 0 0;padding:0}
+.cdnew textarea{width:100%;box-sizing:border-box}
+.cdndup{margin:8px 0}.cdnblk{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.cdnbt{display:block;margin-bottom:4px}
+.cdnprev .cdrev{max-height:50vh;overflow:auto}

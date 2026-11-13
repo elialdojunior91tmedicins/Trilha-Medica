@@ -51,5 +51,31 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await p.evaluate(()=>{cdF={};setCSeg("hoje")});
   ok(await wide()<=w,name+": sem rolagem lateral");
  }
+ if(PART.includes("B")){
+  await p.evaluate(()=>{cdNewOpen=false;cdNS={mode:"um",k:"",q:"",a:"",paste:"",prev:null,dup:"",ks:[],tq:"",msg:""};try{localStorage.removeItem("resid-cdlastk")}catch(e){};cdOpen("hoje")});await p.waitForTimeout(150);
+  await tap("#cdNew");ok(await vis("#cdNewBox")&&await vis("#cdnT"),name+": + Novo cartão abre o criador com a busca de tema");
+  await p.fill("#cdnT",await p.evaluate(()=>ALL[0].t.slice(0,6)));await p.waitForTimeout(100);
+  const t0=await p.evaluate(()=>{const b=document.querySelector("#cdnT-0");return b&&b.textContent});await tap("#cdnT-0");
+  ok(await p.evaluate(()=>!!document.querySelector("#cdNewBox .cdnkcur")),name+": tema escolhido "+t0);
+  const n0=await p.evaluate(()=>cards.length);
+  await p.fill("#cdnQ","Qual o **agente** da sífilis?");await p.fill("#cdnA","*Treponema pallidum*");await tap("#cdnMore");
+  let r=await p.evaluate(()=>({n:cards.length,q:$("#cdnQ")&&$("#cdnQ").value,k:!!document.querySelector("#cdNewBox .cdnkcur"),x:cards[cards.length-1]}));
+  ok(r.n===n0+1&&r.q===""&&r.k&&r.x.kind==="man"&&/<b>agente<\/b>/.test(r.x.q)&&/<i>Treponema/.test(r.x.a),name+": Salvar e criar outro cria, mantém o tema e limpa "+JSON.stringify({n:r.n,q:r.x.q}));
+  ok(await p.evaluate(()=>cdOrigin(cards[cards.length-1])==="manual"),name+": origem manual");
+  /* repetido */
+  await p.fill("#cdnQ","qual é o agente da sífilis");await p.fill("#cdnA","Treponema");await tap("#cdnSave");
+  ok(await vis("#cdnDup")&&await p.evaluate(n=>cards.length===n,n0+1),name+": quase igual no mesmo tema avisa e não cria");
+  await tap("#cdnDupGo");ok(await p.evaluate(n=>cards.length===n,n0+2),name+": Criar mesmo assim cria");
+  /* colar vários */
+  await p.evaluate(()=>{cdNewOpen=true;render()});await tap("#cdnM-varios");
+  await p.fill("#cdnPaste","Critério de Light :: Proteína e DHL do líquido pleural\nlinha sem separador\nQual o agente da sífilis? :: T. pallidum");await tap("#cdnRead");
+  r=await p.evaluate(()=>({chk:[...document.querySelectorAll("#cdnPrev .cdnchk")].map(c=>c.checked),bad:($("#cdnBad")||{}).textContent,btn:$("#cdnMany").textContent}));
+  ok(JSON.stringify(r.chk)==="[true,false]"&&/2/.test(r.bad||"")&&r.btn==="Criar 1 cartão",name+": prévia com o repetido desmarcado e a linha ruim listada "+JSON.stringify(r));
+  await tap("#cdnMany");ok(await p.evaluate(n=>cards.length===n&&!cdNewOpen,n0+3),name+": Criar 1 cartão");
+  /* com o Claude: 2 temas = 2 blocos */
+  if(await p.evaluate(()=>!sampleOff)){await p.evaluate(()=>{cdNewOpen=true;cdNS.mode="claude";cdNS.ks=[ALL[0].key,ALL[1].key];render()});await p.waitForTimeout(150);
+    ok(await p.evaluate(()=>document.querySelectorAll("#cdNewBox .cdnblk .cardsblk").length===2),name+": Com o Claude mostra um bloco por tema");await p.evaluate(()=>{cdNewOpen=false;cdNS.mode="um";cdNS.ks=[];render()})}
+  ok(await wide()<=w,name+": criador sem rolagem lateral");
+ }
  await ctx.close()}
 ok(!errs.length,"sem erros de JavaScript "+errs.join(" | "));await b.close()})();
