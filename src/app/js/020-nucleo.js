@@ -54,7 +54,7 @@ function fromNum(x){return new Date(x*864e5).toISOString().slice(0,10)}
 function br(s){const [y,m,d]=s.split("-");return d+"/"+m}
 const get=k=>state[k]||{l:0};
 let synced=false;const touchedEarly=new Set();
-function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if(s.last&&s.ing)delete s.ing;if((s.last!==l0||s.step!==st0)&&"adj" in s){delete s.adj;delete s.adjFrom}
+function upd(k,fn){const s={...get(k)},l0=s.last,st0=s.step;fn(s);if(s.last&&s.ing)delete s.ing;if((s.last!==l0||s.step!==st0)&&"adj" in s){delete s.adj;delete s.adjFrom}if((s.last!==l0||s.step!==st0)&&s.rc)delete s.rc;
   if(s.last===today()&&!(s.ed||[]).includes(s.last))s.ed=[...(s.ed||[]),s.last].slice(-200);// dias de estudo/revisão do tema
   state[k]=s;if(!synced)touchedEarly.add(k)}
 let estChanged=false;

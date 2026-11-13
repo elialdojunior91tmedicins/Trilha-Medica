@@ -62,8 +62,9 @@ function reviewTopic(k,good,o){const g=good===true?2:good===false?1:good,it=item
 const REV_HIST_MAX=40;
 function revIv(s){const x={...s};delete x.adj;delete x.adjFrom;return interval(x)}
 function revLate(s,T){if(!s||!s.last)return null;return dnum(T||today())-(dnum(s.last)+revIv(s))}
-function revLog(x,g,o){if(!x.last)return;const T=today(),e={d:T,g,l:revLate(x,T),i:revIv(x)};if(o&&o.auto)e.a=1;
-  x.rv=[...(Array.isArray(x.rv)?x.rv:[]),e].slice(-REV_HIST_MAX);delete x.rc}
+function revLog(x,g,o){if(!x.last)return;const T=today(),L=Array.isArray(x.rv)?x.rv.slice():[],u=L[L.length-1];
+  if(u&&u.d===T){const e={...u,g};if(o&&o.auto)e.a=1;else delete e.a;L[L.length-1]=e;x.rv=L;delete x.rc;return}// revisou de novo no mesmo dia: vale a última resposta
+  const e={d:T,g,l:revLate(x,T),i:revIv(x)};if(o&&o.auto)e.a=1;x.rv=[...L,e].slice(-REV_HIST_MAX);delete x.rc}
 function revStats(L,from,to){const R={n:0,g2:0,g1:0,g0:0,ok:{n:0,g2:0},late:{n:0,g2:0}};
   (L||[]).forEach(e=>{if(!e||(from&&e.d<from)||(to&&e.d>to))return;R.n++;R["g"+(e.g===2?2:e.g===1?1:0)]++;const b=(e.l||0)<=1?R.ok:R.late;b.n++;if(e.g===2)b.g2++});return R}
 /* Recuperação do atraso (13/11/2026): quando as atrasadas passam do que cabe em ~3 dias (REC_TRIG × limite diário), o app dá data nova a cada
@@ -89,9 +90,10 @@ function recApply(T){T=T||today();const late=recLateItems();if(!late.length)retu
   const until=fromNum(t+P.last);ui.prefs.rec={d:T,n:late.length,until,ov:P.over};saveUI();return {n:late.length,until,over:P.over}}
 function recActive(){return [...ALL,...FAC_ITEMS].filter(it=>{const s=get(it.key);return s.rc&&s.adjFrom===s.last}).map(it=>it.key)}
 function recUndo(){recActive().forEach(k=>{const s={...get(k)},o=s.rc.o;if(o){s.adj=o[0];s.adjFrom=o[1]}else{delete s.adj;delete s.adjFrom}delete s.rc;state[k]=s});
-  delete ui.prefs.rec;saveUI();try{localStorage.setItem(LSREC,today())}catch(e){}commit()}
-function recCheck(){const T=today();if(ui.prefs.rec&&!recActive().length){delete ui.prefs.rec;saveUI()}
-  if(!synced||lsGet(LSREC,"")===T||isOffDay()||examCrunch().active||provaWeek().length||recActive().length)return false;
+  delete ui.prefs.rec;ui.prefs.recNo=today();saveUI();try{localStorage.setItem(LSREC,today())}catch(e){}commit()}
+function recCheck(){const T=today();if(!synced||!uiLoaded)return false;// antes das preferências da conta chegarem, gravar aqui passaria por cima delas
+  if(ui.prefs.rec&&!recActive().length){delete ui.prefs.rec;saveUI()}
+  if(ui.prefs.recNo===T||lsGet(LSREC,"")===T||isOffDay()||examCrunch().active||provaWeek().length||recActive().length)return false;
   try{localStorage.setItem(LSREC,T)}catch(e){}
   if(recLateItems().length<=REC_TRIG*recBase())return false;return recApply(T).n>0}
 function recPull(n){const t=dnum(today());recActive().map(k=>({k,d:dueIn(get(k))})).filter(x=>x.d>0).sort((a,b)=>a.d-b.d).slice(0,n||3).forEach(({k})=>{

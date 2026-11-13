@@ -4,7 +4,7 @@ const test = require("node:test"), assert = require("node:assert/strict");
 const load = require("./load");
 const HOJE = "2026-11-13";
 // a abertura simulada pelo load já roda um render (e marca "conferido hoje" com os temas ainda vazios): o teste começa sem a marca
-const novo = () => { const A = load({ now: HOJE + "T12:00:00" }); A.commit = () => {}; A.render = () => {}; A.persist = () => {}; A.localStorage.removeItem("resid-recchk"); A.synced = true; return A; };
+const novo = () => { const A = load({ now: HOJE + "T12:00:00" }); A.commit = () => {}; A.render = () => {}; A.persist = () => {}; A.localStorage.removeItem("resid-recchk"); A.synced = true; A.uiLoaded = true; return A; };
 const daysAgo = (A, n) => A.fromNum(A.dnum(HOJE) - n);
 
 test("revLate: atraso contra a data original, mesmo com ajuste de data; sem estudo = null", () => {
@@ -25,11 +25,14 @@ test("reviewTopic grava cada revisão no fim de s.rv (40 no máximo), marca a au
   assert.deepEqual(Object.keys(s.rv[0]).sort(), ["d", "g", "i", "l"]);
   assert.equal(s.rv[0].d, HOJE); assert.equal(s.rv[0].g, 2); assert.equal(s.rv[0].l, 30 - A.INT[1]);
   assert.equal(s.rc, undefined, "a recuperação daquele tema acaba ao revisar");
-  for (let i = 0; i < 44; i++) { A.state[k] = { ...A.get(k), last: daysAgo(A, 3) }; A.reviewTopic(k, i % 3); }
+  // 44 revisões antigas, em dias diferentes, + a de hoje: ficam as 40 mais novas, a de hoje no fim
+  A.state[k] = { ...A.get(k), last: daysAgo(A, 3), rv: Array.from({ length: 44 }, (_, i) => ({ d: daysAgo(A, 100 - i), g: 1, l: 0, i: 3 })) };
+  A.reviewTopic(k, 0);
   assert.equal(A.get(k).rv.length, A.REV_HIST_MAX); assert.equal(A.REV_HIST_MAX, 40);
-  assert.equal(A.get(k).rv[39].g, 43 % 3, "a mais nova fica no fim");
-  A.state[k] = { ...A.get(k), last: daysAgo(A, 3) }; A.reviewTopic(k, 2, { auto: true, quiet: true, acc: 80 });
-  assert.equal(A.get(k).rv[39].a, 1);
+  assert.equal(A.get(k).rv[39].d, HOJE); assert.equal(A.get(k).rv[39].g, 0, "a mais nova fica no fim");
+  assert.equal(A.get(k).rv[0].d, daysAgo(A, 100 - 5), "as mais antigas saem");
+  A.state[k] = { ...A.get(k), last: daysAgo(A, 3), rv: [] }; A.reviewTopic(k, 2, { auto: true, quiet: true, acc: 80 });
+  assert.equal(A.get(k).rv[0].a, 1);
 });
 
 test("revStats: no prazo = até 1 dia de atraso; lembrou = Lembrei", () => {
@@ -126,4 +129,33 @@ test("recCheck espera os dados carregados (synced) para não marcar o dia com os
   const A = novo(); atrasar(A, 30); A.synced = false;
   assert.equal(A.recCheck(), false); assert.equal(A.lsGet("resid-recchk", ""), "", "não marcou o dia");
   A.synced = true; assert.equal(A.recCheck(), true);
+});
+
+/* ---------- achados da revisão final (13/11/2026) ---------- */
+test("recCheck espera as preferências da conta carregarem (uiLoaded) e não marca as preferências como mexidas antes disso", () => {
+  const A = novo(); atrasar(A, 30); A.uiLoaded = false; A.uiTouched = false; A.ui.prefs.rec = { d: "2026-11-01", n: 3, until: "2026-11-10", ov: 0 };
+  assert.equal(A.recCheck(), false); assert.equal(A.uiTouched, false, "não pode gravar por cima das preferências da conta");
+  A.uiLoaded = true; assert.equal(A.recCheck(), true);
+});
+
+test("Desfazer vale para os outros aparelhos no mesmo dia (marca sincronizada nas preferências)", () => {
+  const A = novo(); atrasar(A, 30); A.recApply(HOJE); A.recUndo();
+  assert.equal(A.ui.prefs.recNo, HOJE);
+  A.localStorage.removeItem("resid-recchk"); // outro aparelho: sem a marca local
+  assert.equal(A.recCheck(), false);
+  assert.equal(A.uiSanitize({ prefs: { recNo: HOJE } }).prefs.recNo, HOJE);
+});
+
+test("tema que mudou de data por outro caminho (subtópico, nível) perde a marca da recuperação", () => {
+  const A = novo(), [k] = atrasar(A, 30); A.recApply(HOJE);
+  assert.ok(A.get(k).rc);
+  A.upd(k, x => { x.last = HOJE; x.step = 0; });
+  assert.equal(A.get(k).rc, undefined);
+});
+
+test("duas revisões do mesmo tema no mesmo dia contam uma vez (vale a última)", () => {
+  const A = novo(), k = "CM-1";
+  A.state[k] = { l: 1, last: daysAgo(A, 20), step: 1 };
+  A.reviewTopic(k, 0); A.reviewTopic(k, 2);
+  assert.equal(A.get(k).rv.length, 1); assert.equal(A.get(k).rv[0].g, 2);
 });

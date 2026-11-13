@@ -3,9 +3,10 @@ const LSUI="resid-ui-v1";
 const UI_DEF={prefs:{wnew:[0,1,2,3,4,5,6],wsim:[],woff:[],wday:[180,180,180,180,180,180,180],hgoal:600,wplans:{},layout:"classic",theme:"auto",font:"n",planN:3,subN:3,ints:"padrao",facWin:21,resWeek:2,fw:25,fb:5,fsnd:true,fgoal:0,fwake:true,flong:15,fevery:4,fnoise:"",fvol:40,fwgoal:0,qgoal:0,qpace:180,adapt:true},profile:{name:"",goal:"",goalDate:"",exams:[]}};
 const INT_SETS={padrao:[1,3,7,15,30,60,90],intensivo:[1,2,4,7,15,30,60],espacado:[1,4,10,21,45,90,120]};
 const INT_LAB={padrao:"Padrão",intensivo:"Intensivo",espacado:"Espaçado"};
-let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiNote="",backStack=[],acctEmail=null;
+let ui=JSON.parse(JSON.stringify(UI_DEF)),uiDoc=null,uiTimer=null,uiTouched=false,uiLoaded=false/* preferências da conta já chegaram (a recuperação do atraso espera) */,uiNote="",backStack=[],acctEmail=null;
 function uiSanitize(x){const D=UI_DEF,o={prefs:{...D.prefs},profile:{...D.profile}},p=(x&&x.prefs)||{},f=(x&&x.profile)||{};
   if(["classic","compact","focus"].includes(p.layout))o.prefs.layout=p.layout;
+  if(/^\d{4}-\d\d-\d\d$/.test(p.recNo||""))o.prefs.recNo=p.recNo;
   if(p.rec&&typeof p.rec==="object"&&/^\d{4}-\d\d-\d\d$/.test(p.rec.d)&&/^\d{4}-\d\d-\d\d$/.test(p.rec.until)&&Number.isInteger(p.rec.n))o.prefs.rec={d:p.rec.d,n:p.rec.n,until:p.rec.until,ov:Number.isInteger(p.rec.ov)?p.rec.ov:0};
   if(p.hnd&&typeof p.hnd==="object"&&!Array.isArray(p.hnd)){const H={};Object.entries(p.hnd).forEach(([k,v])=>{if(/^\d{4}-\d\d-\d\d$/.test(k)&&v&&typeof v.d==="string")H[k]={d:v.d,prev:Number.isInteger(v.prev)?v.prev:60}});if(Object.keys(H).length)o.prefs.hnd=H}
   if(Array.isArray(p.fotps)){const T=p.fotps.filter(t=>typeof t==="string"&&t.trim()).map(t=>t.trim().slice(0,40)).slice(-12);if(T.length)o.prefs.fotps=T}// Lote 21: tipos do Registrar tempo
