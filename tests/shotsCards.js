@@ -8,7 +8,7 @@ const SEED=`(()=>{cards.length=0;const T=today(),ago=n=>fromNum(dnum(T)-n),K=ALL
       due:st?fromNum(dnum(last)+ivl-(i%3===0?ivl:0)):T,f:st?{st:2,s:ivl,d:5,last,reps:5+i%9,lapses:i%11===0?5:i%3,first:ago(80)}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""},at:new Date(Date.now()-i*6e4).toISOString()});
     if(st)x.rv=Array.from({length:12},(_,j)=>({d:ago((j*3+i)%60),g:(i+j)%9===0?1:(i+j)%4===0?2:3,i:ivl,r:1,...(ivl>=21?{m:1}:{})}));cards.push(x)}
   cards[3].su=1;cdSaveLocal();ui.prefs.cdNew=14;render()})()`;
-const DEV={fone:[390,844,true],ipad578:[578,820,true],note:[1366,900,false]};
+const DEV=process.env.DEVS?Object.fromEntries(Object.entries({fone:[390,844,true],ipad578:[578,820,true],tab1180:[1180,820,true],note:[1366,900,false],monitor:[1920,1080,false]}).filter(([k])=>process.env.DEVS.split(",").includes(k))):{fone:[390,844,true],ipad578:[578,820,true],note:[1366,900,false]};
 (async()=>{const b=await chromium.launch();
 for(const [name,[w,h,mob]] of Object.entries(DEV))for(const th of ["light","dark"]){if(name==="ipad578"&&th==="dark")continue;
   const ctx=await b.newContext({viewport:{width:w,height:h},deviceScaleFactor:2,hasTouch:mob,isMobile:mob,colorScheme:th,screen:name==="ipad578"?{width:1180,height:820}:undefined});

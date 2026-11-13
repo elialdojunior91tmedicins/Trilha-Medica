@@ -83,8 +83,12 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  }
  if(PART.includes("C")){
   await p.evaluate(SEED=>{eval(SEED);const k1=ALL[1].key;for(let i=0;i<120;i++)cards.push(cdClean({id:"cdx"+i,k:k1,q:"Cartão em massa "+i,a:"r",src:"eu",at:new Date(Date.now()-i*1000).toISOString()}));cdSaveLocal();cdPick=null;cdSel=null;cdF={sort:"due"};cdOpen("todos")},SEED);await p.waitForTimeout(200);
-  let r=await p.evaluate(()=>({rows:document.querySelectorAll("#cdList .cdrow").length,more:!!$("#cdMore")}));ok(r.rows===50&&r.more,name+": lista mostra 50 e Mostrar mais "+JSON.stringify(r));
-  await tap("#cdMore");ok(await p.evaluate(()=>document.querySelectorAll("#cdList .cdrow").length===100),name+": Mostrar mais traz 100");
+  const PG=mob?20:50;
+  let r=await p.evaluate(()=>({rows:document.querySelectorAll("#cdList .cdrow").length,more:!!$("#cdMore")}));ok(r.rows===PG&&r.more,name+": lista mostra "+PG+" e Mostrar mais "+JSON.stringify(r));
+  await tap("#cdMore");ok(await p.evaluate(PG=>document.querySelectorAll("#cdList .cdrow").length===2*PG,PG),name+": Mostrar mais traz "+2*PG);
+  /* 13/11, 11h45 ("encolher essa barra gigante"): no computador a lista rola dentro da própria caixa e a página não passa de uma tela */
+  if(!mob){r=await p.evaluate(()=>{const c=document.querySelector(".cdallg.two .cdcol"),s=getComputedStyle(c);return {ov:s.overflowY,h:Math.round(c.getBoundingClientRect().height),vh:innerHeight,doc:document.documentElement.scrollHeight}});
+    ok(r.ov==="auto"&&r.h<r.vh&&r.doc<=r.vh*1.6,name+": lista com rolagem própria, página curta "+JSON.stringify(r))}
   await p.fill("#cdQ","leucoplasia");await p.waitForTimeout(150);
   r=await p.evaluate(()=>[...document.querySelectorAll("#cdList .cdrow")].map(x=>x.textContent));ok(r.length===1&&/leucoplasia/i.test(r[0]),name+": busca filtra "+r.length);
   ok(await p.evaluate(()=>document.activeElement&&document.activeElement.id==="cdQ"),name+": a busca não perde o foco ao filtrar");

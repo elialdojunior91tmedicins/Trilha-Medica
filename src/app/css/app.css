@@ -2351,8 +2351,11 @@ html[data-layout="phone"] .tseg.csegbar{position:sticky;top:env(safe-area-inset-
 .cdallb{margin:4px 0 10px}
 .cdctl .cdqf{display:block;margin-bottom:8px}.cdctl .cdqf input{width:100%;box-sizing:border-box}
 .cdfrow{display:flex;flex-wrap:wrap;gap:8px}.cdfch{margin:8px 0}
-.cdallg.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
-.cdside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border-left:1px solid var(--line);padding-left:16px}
+/* computador e tablet deitado: lista e editor numa caixa da altura da tela, cada um com a própria rolagem (13/11, 11h45) */
+.cdallg.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;height:clamp(420px,calc(100dvh - 150px),1100px)}
+.cdallg.two .cdcol,.cdallg.two .cdside{min-height:0;overflow:auto;overscroll-behavior:contain}
+.cdallg.two .cdcol{padding-right:4px}
+.cdside{border-left:1px solid var(--line);padding-left:16px}
 .cdlist2{list-style:none;margin:0;padding:0}
 .cdrow{display:grid;grid-template-columns:minmax(0,1fr);padding:9px 6px;border-top:1px solid var(--line)}
 .cdrow.sel{grid-template-columns:auto minmax(0,1fr);column-gap:10px}.cdrow.sel .cdsel{grid-row:span 2;margin-top:3px}

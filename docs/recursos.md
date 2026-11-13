@@ -610,7 +610,7 @@ deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no esti
   - "Cartões que você mais esquece" `cdLeechEl` (`#cdLeech`, `.cdlrow`, `#cdLE-`/`#cdLJ-<id>` Editar e Juntar ao lote, `#cdLAll`).
 - **Todos** (`cdAllEl`):
   - `cdF` (ordem em `resid-cdsort`), busca `#cdQ` (redesenha só a lista), filtros `#cdfArea`/`#cdfSt`/`#cdfOrg`/`#cdfSort`, chips `#cdfK` e `#cdfLeech`;
-  - lista `#cdList` `.cdrow[data-id]` (`.cdrq`), de 50 em 50 (`cdLim`, `#cdMore`), vazio `#cdEmpty`;
+  - lista `#cdList` `.cdrow[data-id]` (`.cdrq`), de 50 em 50 com duas colunas e de 20 em 20 numa coluna só (`cdPage`, `cdLim`, `#cdMore`); com duas colunas, lista e editor ficam numa caixa da altura da tela, cada um com a própria rolagem (`.cdallg.two`, 13/11, 11h45: "encolher essa barra gigante"), vazio `#cdEmpty`;
   - `cdPick` abre o editor (`cdEdFor`): no computador em `#cdSide`, sem tirar a lista; sem duas colunas, sozinho, com `#cdBackList`;
   - o editor `cdEditEl` ganha `.cdeacts`: `#cdeSu` Suspender/Reativar, `#cdeK` Trocar de tema (`#cdeKT`), `#cdeDel` Apagar;
   - Selecionar `#cdSelOn` (`cdSel`): `#cdBulk` com `#cdSelAll`, `#cdbK` (`#cdbKT`), `#cdbSu`, `#cdbRe`, `#cdbDel` (`cdBulkDel`: lixeira com um item só), `#cdbAnki` (`cdBulkAnki`: o mesmo `cdExp`/"Já importei no Anki"; sem rascunhos) e `#cdSelOff`.

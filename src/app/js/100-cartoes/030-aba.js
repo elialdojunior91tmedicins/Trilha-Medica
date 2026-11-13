@@ -29,7 +29,9 @@ function cdLeechEl(){const L=cdLeeches(5);if(!L.length)return null;const all=car
   if(all>L.length){const m=el(`<button class="link" type="button" id="cdLAll"></button>`);m.textContent=`Ver todos os ${all}`;m.onclick=()=>cdOpen("todos",{leech:true});c.appendChild(m)}
   return c}
 /* ---- Todos: busca, filtros, ordem, lista de 50 em 50, editor ao lado (computador) ou em tela própria; Selecionar vários ---- */
-let cdLim=50,cdSel=null,cdBulkK=false;
+let cdLim=0,cdSel=null,cdBulkK=false;
+/* lista de 50 em 50 no computador (rola dentro da caixa) e de 20 em 20 numa coluna só (13/11, 11h45: página longa demais) */
+const cdPage=()=>twoCols()?50:20;
 const CD_ST=[["","Todas"],["novo","Novos"],["aprendendo","Aprendendo"],["revisao","Em revisão"],["suspenso","Suspensos"],["rascunho","Rascunhos"]];
 const CD_ORG=[["","Todas"],["erro","Erros"],["questao","Questões"],["trecho","Trechos"],["manual","Manuais"],["claude","Do Claude"]];
 const CD_STL={novo:"novo",aprendendo:"aprendendo",revisao:"",suspenso:"suspenso",rascunho:"rascunho"};
@@ -65,18 +67,18 @@ function cdAllEl(){const live=cards.filter(x=>BYKEY[x.k]),c=el(`<section class="
   top.querySelector("#cdNew2").onclick=()=>{cdNewOpen=!cdNewOpen;render()};const so=top.querySelector("#cdSelOn");so.textContent=cdSel?"Sair da seleção":"Selecionar";so.setAttribute("aria-pressed",!!cdSel);so.onclick=()=>{cdSel=cdSel?null:new Set();cdBulkK=false;render()};c.appendChild(top);
   if(cdNewOpen)c.appendChild(cdNewEl());
   const ctl=el(`<div class="cdctl"><label class="ffield cdqf"><span class="glabel">Buscar</span><input class="etext" id="cdQ" type="search" placeholder="Pergunta ou resposta" autocomplete="off"></label><div class="qfrow cdfrow"></div><div class="chips cdfch"></div></div>`),R=ctl.querySelector(".cdfrow");
-  R.appendChild(fcSel("cdfArea","Área",[["","Todas"],...[...AREAS,FAC_AREA].map(a=>[a.code,a===FAC_AREA?"Faculdade":a.name])],cdF.area||"",v=>{cdF.area=v;cdF.k="";cdLim=50}));
-  R.appendChild(fcSel("cdfSt","Situação",CD_ST,cdF.st||"",v=>{cdF.st=v;cdLim=50}));R.appendChild(fcSel("cdfOrg","Origem",CD_ORG,cdF.org||"",v=>{cdF.org=v;cdLim=50}));
+  R.appendChild(fcSel("cdfArea","Área",[["","Todas"],...[...AREAS,FAC_AREA].map(a=>[a.code,a===FAC_AREA?"Faculdade":a.name])],cdF.area||"",v=>{cdF.area=v;cdF.k="";cdLim=0}));
+  R.appendChild(fcSel("cdfSt","Situação",CD_ST,cdF.st||"",v=>{cdF.st=v;cdLim=0}));R.appendChild(fcSel("cdfOrg","Origem",CD_ORG,cdF.org||"",v=>{cdF.org=v;cdLim=0}));
   R.appendChild(fcSel("cdfSort","Ordem",[["due","Próxima revisão"],["lapses","Mais esquecidos"],["new","Mais recentes"]],cdF.sort||"due",v=>{cdF.sort=v;lsSet("resid-cdsort",v)}));
-  const CH=ctl.querySelector(".cdfch");if(cdF.k&&BYKEY[cdF.k])CH.appendChild(fcChip(`Tema: ${BYKEY[cdF.k].t} ×`,true,()=>{cdF.k="";cdLim=50},"cdfK"));
-  CH.appendChild(fcChip("Mais esquecidos",!!cdF.leech,()=>{cdF.leech=!cdF.leech;cdLim=50},"cdfLeech"));c.appendChild(ctl);
+  const CH=ctl.querySelector(".cdfch");if(cdF.k&&BYKEY[cdF.k])CH.appendChild(fcChip(`Tema: ${BYKEY[cdF.k].t} ×`,true,()=>{cdF.k="";cdLim=0},"cdfK"));
+  CH.appendChild(fcChip("Mais esquecidos",!!cdF.leech,()=>{cdF.leech=!cdF.leech;cdLim=0},"cdfLeech"));c.appendChild(ctl);
   const g=el(`<div class="cdallg"><div class="cdcol"><div class="cdlistw"></div></div></div>`),W=g.querySelector(".cdlistw");
   const paint=()=>{W.innerHTML="";const L=cdFilter(cards,cdF);if(cdSel)W.appendChild(cdBulkEl(L.length));
     if(!L.length){W.appendChild(el(`<p class="cempty" id="cdEmpty">${live.length?"Nenhum cartão com esses filtros.":"Nenhum cartão ainda. Toque em + Novo cartão."}</p>`));return}
-    const ul=el(`<ul class="cdlist2" id="cdList"></ul>`);L.slice(0,cdLim).forEach(x=>ul.appendChild(cdRowEl(x)));W.appendChild(ul);
-    if(L.length>cdLim){const m=el(`<button class="btn" type="button" id="cdMore"></button>`);m.textContent=`Mostrar mais ${Math.min(50,L.length-cdLim)} (de ${L.length})`;m.onclick=()=>{cdLim+=50;paint()};W.appendChild(m)}
+    const ul=el(`<ul class="cdlist2" id="cdList"></ul>`);const lim=cdLim||cdPage();L.slice(0,lim).forEach(x=>ul.appendChild(cdRowEl(x)));W.appendChild(ul);
+    if(L.length>lim){const m=el(`<button class="btn" type="button" id="cdMore"></button>`);m.textContent=`Mostrar mais ${Math.min(cdPage(),L.length-lim)} (de ${L.length})`;m.onclick=()=>{cdLim=lim+cdPage();paint()};W.appendChild(m)}
     else if(L.length>8)W.appendChild(el(`<p class="how">${L.length} ${L.length===1?"cartão":"cartões"}.</p>`))};
-  const q=ctl.querySelector("#cdQ");q.value=cdF.q||"";q.oninput=()=>{cdF.q=q.value;cdLim=50;paint()};paint();
+  const q=ctl.querySelector("#cdQ");q.value=cdF.q||"";q.oninput=()=>{cdF.q=q.value;cdLim=0;paint()};paint();
   if(twoCols()){const sd=el(`<aside class="cdside" id="cdSide" aria-label="Cartão aberto"></aside>`);sd.appendChild(edEl());g.appendChild(sd);g.classList.add("two")}
   c.appendChild(g);return c}
 /* ---- Números: quanto lembra, por dia, previsão, situação, por área, os mais esquecidos, calendário ---- */
