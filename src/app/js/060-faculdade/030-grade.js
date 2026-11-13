@@ -96,7 +96,7 @@ function facDayNotes(){const t=dnum(today()),out=[];
   provaWeek().forEach(p=>{const K=provaReadKeys(p);if(!K.length)return;const n=daysTo(p.date);
     out.push({id:"rd-"+p.id,t:`Revisar para a prova ${p.name} (${n===0?"hoje":n===1?"amanhã":`em ${n} dias`}): leia as ${K.length} ${K.length===1?"página":"páginas"} dos conteúdos dela numa leitura só.`,acts:[["Ler as anotações da prova",()=>provaReadGo(p)]]})});
   fac.discs.forEach(d=>{if(!activeSems().includes(d.semId))return;(d.sps||[]).forEach(sp=>{if(!sp.fech||sp.fadi||sp.pos===sp.fech)return;const n=t-dnum(sp.fech);if(n<0||n>3)return;
-    const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
+    const keys=topicKeysOf(sp.items),pr=primaryRef(sp),pk=pr&&refTopic(pr).k,cs=cards.filter(c=>cdLive(c)&&keys.includes(c.k)&&c.f&&c.f.st&&c.due<=fromNum(t+3));
     const acts=[];if(pk&&BYKEY[pk]&&!sampleOff)acts.push(["Gerar questões",()=>{detTab[pk]="questoes";openTopic(pk);setTimeout(()=>{const g=detGet("qf-",pk);if(g)g.scrollIntoView({behavior:"smooth",block:"center"})},350)}]);
     if(cs.length)acts.push([`Cartões da SP (${cs.length})`,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(cs.map(c=>c.id))}]);
     acts.push(["Dispensar",()=>{sp.pos=sp.fech;saveFac();render()}]);

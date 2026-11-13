@@ -40,7 +40,7 @@ function eBox(e){return Number.isInteger(e.box)&&e.box>=0&&e.box<E_INT.length?e.
 // erros antigos (sem data marcada) entram pela data do último "revisei" ou do registro
 function eDue(e){if(typeof e.due==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(e.due))return e.due;const b=/^\d{4}-\d{2}-\d{2}$/.test(e.lastRev||"")?e.lastRev:/^\d{4}-\d{2}-\d{2}$/.test(e.d||"")?e.d:today();return fromNum(dnum(b)+E_INT[eBox(e)])}
 /* uma agenda por questão (Lote 17): erro que virou cartão é revisado pelo cartão, não volta na revisão de erros */
-const eByCard=e=>cards.some(x=>!x.dr&&(x.eid===e.id||(e.cd&&x.id===e.cd)));
+const eByCard=e=>cards.some(x=>!x.dr&&!x.su&&(x.eid===e.id||(e.cd&&x.id===e.cd)));
 const eDueNow=e=>eDue(e)<=today()&&!eByCard(e)&&!e.fm;
 const eDueList=()=>errors.filter(e=>BYKEY[e.k]&&!e.arch&&eDueNow(e));
 /* auditoria 26/10: acertou no degrau de 30 dias → o erro se forma (e.fm = data): sai da revisão, continua no caderno; volta se você errar o tema de novo (eNew) */

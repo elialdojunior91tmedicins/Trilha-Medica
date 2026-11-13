@@ -1,5 +1,9 @@
 /* ===== Cartões (Lote 5): FSRS com 4 botões, limite de novos por dia, visual Osler, cartões dos erros e exportação .apkg ===== */
 const LSCD="resid-cards-v1",CD_INT=[1,2,4,8,16,32,64],CD_ANKI=40;
+/* aba Cartões (13/11/2026): histórico de cada revisão (x.rv) e suspenso (x.su); números fixos do desenho */
+const CD_RV_MAX=30,CD_MAT=21,CD_GOAL=.9,CD_LEECH=4,CD_DUP=.8;
+const cdLive=x=>!!BYKEY[x.k]&&!x.dr&&!x.su;
+function cdLog(x,g,days,wasRev){const L=Array.isArray(x.rv)?x.rv:[];const r={d:today(),g,i:days};if(wasRev)r.r=1;L.push(r);x.rv=L.slice(-CD_RV_MAX)}
 let cards=[],cardStore=null,cdRun=null,cdGen={},cdNew={},cdErr={},cdExp=null;
 try{const v=JSON.parse(localStorage.getItem("resid-cdexp")||"null");if(v&&Array.isArray(v.ids))cdExp=v}catch(e){}
 /* FSRS-4.5 (pesos padrão), em dias */
@@ -23,7 +27,8 @@ function cdClean(x){const D=/^\d{4}-\d{2}-\d{2}$/,box=Number.isInteger(x.box)&&x
   if(!f){f=n||box?{st:2,s:CD_INT[box]||1,d:5,last:fromNum(dnum(due)-(CD_INT[box]||1)),reps:n,lapses:0,first:""}:{st:0,s:0,d:0,last:"",reps:0,lapses:0,first:""}}
   if(f.st&&!(f.s>0)){f.s=1;f.d=f.d||5}
   const o={id:x.id,k:x.k,q:x.q.slice(0,1500),a:x.a.slice(0,3000),box,due,n,ok:Number.isInteger(x.ok)?x.ok:0,src:x.src==="claude"?"claude":"eu",f};
-  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;return o}
+  if(x.h)o.h=1;if(typeof x.ref==="string"&&x.ref.trim())o.ref=x.ref.slice(0,600);if(typeof x.kind==="string")o.kind=x.kind.slice(0,12);if(typeof x.eid==="string")o.eid=x.eid;if(typeof x.at==="string")o.at=x.at;if(x.dr)o.dr=1;if(x.hy)o.hy=1;if(x.su)o.su=1;if(typeof x.og==="string")o.og=x.og.slice(0,4);
+  if(Array.isArray(x.rv)){const R=x.rv.filter(r=>r&&D.test(r.d)&&[1,2,3,4].includes(r.g)).map(r=>{const y={d:r.d,g:r.g,i:Number.isFinite(+r.i)?Math.max(0,Math.round(+r.i)):0};if(r.r)y.r=1;return y}).slice(-CD_RV_MAX);if(R.length)o.rv=R}return o}
 try{const v=JSON.parse(localStorage.getItem(LSCD)||"[]");if(Array.isArray(v))cards=v.filter(cdOk).map(cdClean)}catch(e){}
 function cdSaveLocal(){try{localStorage.setItem(LSCD,JSON.stringify(cards))}catch(e){}}
 async function cdPut(x){cdSaveLocal();if(!cardStore)return;const k="cd:"+x.id;try{await cardStore.doc(x.id).set(JSON.parse(JSON.stringify(x)));saveOk(k)}catch(e){if(cards.includes(x))saveFail(k,"cartão",e,()=>cdPut(x))}}
@@ -32,11 +37,11 @@ function cdAdd(k,q,a,src,o){const x=cdClean({id:"cd"+Date.now().toString(36)+Mat
 const cdNewLimit=()=>{const v=ui.prefs.cdNew;return Number.isInteger(v)&&v>=0&&v<=100?v:14};
 const cdNewToday=()=>cards.filter(x=>x.f.first===today()).length;
 /* fila de hoje: revisões e aprendizado vencidos + novos até o limite do dia */
-function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>BYKEY[x.k]&&!x.dr&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
-  const nw=left?cards.filter(x=>BYKEY[x.k]&&!x.dr&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
-function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const N=fsNext(x,g);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
-const cdReady=()=>cards.filter(x=>BYKEY[x.k]&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
-function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>BYKEY[x.k]&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
+function cdDue(){const T=today(),K=pwKeys(),pf=pwFirst(K,x=>x.k),rev=cards.filter(x=>cdLive(x)&&x.f.st&&x.due<=T).sort((a,b)=>pf(a,b)||(a.due<b.due?-1:a.due>b.due?1:0)),left=Math.max(0,cdNewLimit()-cdNewToday());
+  const nw=left?cards.filter(x=>cdLive(x)&&!x.f.st).sort((a,b)=>pf(a,b)||((a.at||a.id)<(b.at||b.id)?-1:1)).slice(0,left):[];return [...rev,...nw]}
+function cdAnswer(x,g){if(g===true)g=3;else if(g===false)g=1;const wasRev=x.f&&x.f.st===2,N=fsNext(x,g);cdLog(x,g,N.days,wasRev);x.f=N.f;x.n++;if(g>1)x.ok++;x.due=fromNum(dnum(today())+N.days);x.box=Math.min(CD_INT.length-1,CD_INT.findIndex(v=>v>=N.days)<0?CD_INT.length-1:CD_INT.findIndex(v=>v>=N.days));cdPut(x);return N.days}
+const cdReady=()=>cards.filter(x=>cdLive(x)&&x.f.st===2&&dnum(x.due)-dnum(today())>=CD_ANKI);
+function cdForecast(){const T=dnum(today()),L=[];for(let i=0;i<7;i++){const d=fromNum(T+i);L.push({d,n:cards.filter(x=>cdLive(x)&&x.f.st&&(i?x.due===d:x.due<=d)).length})}return L}
 /* texto dos cartões: os novos (h=1) guardam HTML simples do padrão Osler; o app só deixa passar b, i, u, br, listas */
 function cdSafe(html){const t=document.createElement("template");t.innerHTML=String(html||"");const ok=new Set(["B","STRONG","I","EM","U","BR","UL","OL","LI","SUB","SUP"]);
   const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===1){walk(c);if(!ok.has(c.tagName)){c.replaceWith(...c.childNodes)}else[...c.attributes].forEach(a=>c.removeAttribute(a.name))}else if(c.nodeType!==3)c.remove()})};walk(t.content);return t.innerHTML}
@@ -50,7 +55,7 @@ const CD_GEN_MAX=20;
 function cdGenScope(){const t=dnum(today()),up=upcomingProvas().find(p=>daysTo(p.date)<=7);
   if(up)return {lab:up.name,prova:true,keys:new Set(topicKeysOf(up.items))};
   const ws=wpMon(t),K=new Set();[...ALL,...FAC_ITEMS].forEach(i=>{if((get(i.key).ed||[]).some(d=>dnum(d)>=ws))K.add(i.key)});return {lab:"temas da semana",prova:false,keys:K}}
-function cdGenIds(S){return cards.filter(x=>BYKEY[x.k]&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
+function cdGenIds(S){return cards.filter(x=>cdLive(x)&&S.keys.has(x.k)&&x.f&&x.f.st).sort((a,b)=>a.due<b.due?-1:a.due>b.due?1:0).slice(0,CD_GEN_MAX).map(x=>x.id)}
 function cdGenGo(){const S=cdGenScope(),ids=cdGenIds(S);if(!ids.length)return;backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar");cdRunStart(ids,S.prova?`Revisão geral · ${S.lab}`:"Revisão geral · temas da semana");
   setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
 function cdRate(x,g){const R=cdRun,xt=R.extra&&R.extra.includes(x.id),days=xt?(g===1?0:1):cdAnswer(x,g);R.done++;R.g[g]++;if(xt)R.xn=(R.xn||0)+1;if(!days){R.ids.push(x.id);R.again[x.id]=(R.again[x.id]||0)+1}R.i++;R.show=false;cdEd=null;render()}
@@ -143,7 +148,7 @@ async function cdErrClaude(e){if(!sampleFn)return;const S=cdErr[e.id]||(cdErr[e.
     else{S.list=arr.map(c=>{const kd=CD_TIPO[String(c.tipo||"").toLowerCase()]||"disc";return {kind:kd,q:cdSafe(c.question),a:cdSafe(c.answer),ref:cdSafe(c.reference||""),keep:!!e.trecho||kd==="disc"||kd==="nao",sug:kd==="con",src:"claude"}});S.st="done"}}
   catch(x){if(cdErr[e.id]!==S)return;const code=x&&x.code;if(code==="cancelled"){S.st="";render();return}S.st="error";S.msg=GEN_OFF.includes(code)?"O Claude não está disponível nesta visualização.":(GEN_ERR[code]||"Não foi possível agora.")}
   render()}
-function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
+function cdErrSave(e,dr){const S=cdErr[e.id]||{list:cdErrDrafts(e)},ids=S.list.filter(c=>c.keep).map(c=>cdAdd(e.k,c.q,c.a,c.src==="claude"?"claude":"eu",{h:1,ref:c.ref||"",kind:c.kind,...(e.virtual?{og:e.trecho?"tr":"q"}:{eid:e.id}),...(dr?{dr:1}:{}),...(e.hy?{hy:1}:{})}).id);
   if(dr&&ids.length)setTimeout(()=>infoToast(`${ids.length} ${ids.length===1?"cartão foi":"cartões foram"} para o lote de melhorias (fora da revisão até o Claude melhorar).`,"Ver em Cartões",cdGoCards),30);
   if(e.virtual){if(e.onSaved)e.onSaved(ids)}else if(ids.length){e.cd=ids[0];putErr(e)}delete cdErr[e.id];render();return ids}
 function cdErrEl(e){const S=cdErr[e.id]||(cdErr[e.id]={list:cdErrDrafts(e)}),w=el(`<div class="cderr" data-eid="${e.id}"><div class="dhead"><b>${e.trecho?"Cartões deste trecho":e.virtual?"Cartões desta questão":"Cartões deste erro"}</b><button class="link" type="button">Fechar</button></div><p class="how">${e.trecho?"Rascunhos feitos pelo app a partir do trecho (lacuna no termo em negrito ou destaque). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões. Para cartões melhores, peça ao Claude.":e.virtual?"O que decide a questão (e, se você errou, por que a sua não serve). Marque os que quer guardar: eles entram em Caderno › Revisar › Cartões.":"Dois por erro: o que separa a certa da sua e por que a sua não serve. Marque os que quer guardar."}</p><ol class="cdlist"></ol><div class="btns"></div></div>`);
@@ -244,7 +249,7 @@ function cdSliceIds(L){const T=today(),due=L.filter(x=>x.f.st&&x.due<=T).sort((a
   const used=new Set([...due,...nw].map(x=>x.id)),ex=L.filter(x=>!used.has(x.id)).sort((a,b)=>a.due<b.due?-1:1).slice(0,40);return {ids:[...due,...nw,...ex].map(x=>x.id),extra:ex.map(x=>x.id),n:due.length+nw.length}}
 function cdSliceGo(L,lab){const S=cdSliceIds(L);if(!S.ids.length)return;cdRunStart(S.ids,`Estudar · ${lab}`);if(cdRun){cdRun.extra=S.extra;cdRun.slice=1}
   setTimeout(()=>{const c=document.querySelector("#viewNotas .ncards");if(c)c.scrollIntoView({block:"start",behavior:"smooth"})},60)}
-function cdTreeEl(){const L=cards.filter(x=>BYKEY[x.k]&&!x.dr);if(!L.length)return null;const A={};
+function cdTreeEl(){const L=cards.filter(cdLive);if(!L.length)return null;const A={};
   L.forEach(x=>{const it=BYKEY[x.k],a=it.area,ak=a.code,sk=specId(it);const g=A[ak]||(A[ak]={lab:a.name,sp:{},L:[]});g.L.push(x);const sp=g.sp[sk]||(g.sp[sk]={lab:it.sp||a.name,t:{},L:[]});sp.L.push(x);(sp.t[x.k]=sp.t[x.k]||[]).push(x)});
   const w=el(`<div class="cdtree" id="cdTree"><span class="glabel">Por área, especialidade e tema</span><ul class="cdtl0"></ul></div>`),ul0=w.querySelector("ul");
   const row=(id,lab,Ls,lv,kids)=>{const li=el(`<li class="cdtn lv${lv}"><div class="cdtr"><button class="cdtt" type="button"><span class="cdtar" aria-hidden="true"></span><span class="cdtl"></span><span class="cdtc"></span></button><button class="mini cdts" type="button">Estudar</button></div></li>`);
@@ -326,6 +331,10 @@ const APKG_CSS=`.card{font-family:Arial,Helvetica,sans-serif;font-size:20px;line
 const apkgSlug=s=>norm(String(s||"")).replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
 function apkgTags(x){const it=BYKEY[x.k],T=["nexus"];if(it){const parts=[it.own?"faculdade":it.area.name,it.sp,it.t].map(apkgSlug).filter(Boolean);T.unshift(parts.slice(0,3).join("::"));if(!it.own&&wOf(it)>=3)T.push("high-yield")}if(x.hy&&!T.includes("high-yield"))T.push("high-yield")
   const e=x.eid&&errors.find(y=>y.id===x.eid);if(x.eid)T.push("erro-nexus");if(e&&e.c)T.push(apkgSlug(e.c));if(x.kind)T.push("cartao-"+apkgSlug(CDK[x.kind]||x.kind));return [...new Set(T)]}
+/* linha da tabela cards do Anki: cartão novo vai como novo (type 0, queue 0, due = posição); em revisão, com intervalo e facilidade */
+function apkgCardRow(x,cid,nid,sec,crt,pos){if(!x.f||!x.f.st)return [null,nid,APKG_DID,0,sec,-1,0,0,pos,0,0,0,0,0,0,0,0,""];
+  const ivl=Math.max(1,dnum(x.due)-dnum(x.f.last||today())),due=dnum(x.due)-dnum(today()),factor=Number.isFinite(x.f.d)?Math.round(fClamp(3000-(x.f.d-1)*(1700/9),1300,3000)):2500;
+  return [null,nid,APKG_DID,0,sec,-1,2,2,due,ivl,factor,Math.max(1,x.f.reps||x.n||1),x.f.lapses||0,0,0,0,0,""]}
 async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay=new Date(today()+"T00:00:00"),crt=Math.floor(crtDay.getTime()/1000);
   const fld=(x,f)=>x.h?cdSafe(x[f]||""):esc(x[f]||"").replace(/\n/g,"<br>");
   const model={id:APKG_MID,name:"Osler Flashcard (Nexus)",type:0,mod:sec,usn:-1,sortf:0,did:APKG_DID,tags:[],vers:[],latexsvg:false,css:APKG_CSS,req:[[0,"any",[0]]],
@@ -339,8 +348,7 @@ async function apkgBuild(L){const now=Date.now(),sec=Math.floor(now/1000),crtDay
   for(let i=0;i<L.length;i++){const x=L[i],nid=now+i,cid=now+L.length+i,q=fld(x,"q"),a=fld(x,"a"),ref=x.ref?(x.h?cdSafe(x.ref):esc(x.ref)):"";
     const sf=cdPlain(q),hash=new Uint8Array(await crypto.subtle.digest("SHA-1",sqlTE.encode(sf))),csum=((hash[0]<<24)>>>0)+(hash[1]<<16)+(hash[2]<<8)+hash[3];
     notesR.push([nid,[null,"nx"+x.id,APKG_MID,sec,-1," "+apkgTags(x).join(" ")+" ",[q,a,ref].join("\x1f"),sf,csum,0,""]]);
-    const ivl=Math.max(1,dnum(x.due)-dnum(x.f.last||today())),due=dnum(x.due)-dnum(today()),factor=Number.isFinite(x.f.d)?Math.round(fClamp(3000-(x.f.d-1)*(1700/9),1300,3000)):2500;
-    cardsR.push([cid,[null,nid,APKG_DID,0,sec,-1,2,2,due,ivl,factor,Math.max(1,x.f.reps||x.n||1),x.f.lapses||0,0,0,0,0,""]])}
+    cardsR.push([cid,apkgCardRow(x,cid,nid,sec,crt,i+1)])}
   const db=sqliteBuild([
     {name:"col",sql:"CREATE TABLE col (\n    id              integer primary key,\n    crt             integer not null,\n    mod             integer not null,\n    scm             integer not null,\n    ver             integer not null,\n    dty             integer not null,\n    usn             integer not null,\n    ls              integer not null,\n    conf            text not null,\n    models          text not null,\n    decks           text not null,\n    dconf           text not null,\n    tags            text not null\n)",
       rows:[[1,[null,crt,now,now,11,0,0,0,JSON.stringify(conf),JSON.stringify({[APKG_MID]:model}),JSON.stringify({"1":deck(1,"Default"),[APKG_DID]:deck(APKG_DID,"Nexus::Cartões dos erros")}),JSON.stringify(dconf),"{}"]]]},

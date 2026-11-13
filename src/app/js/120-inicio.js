@@ -50,7 +50,7 @@ function offDayEl(){const w=el(`<div class="ioff" id="iOff"></div>`),rest=lsGet(
   w.appendChild(el(`<p class="ioffh"><b>${hnd?"Hoje não deu":"Dia de folga"}</b> · as revisões voltam ${nextStudyLabel()} e a sequência fica congelada.</p>`));
   if(hnd){const u=el(`<button class="link" type="button" id="iHndUndo">Desfazer “Hoje não deu”</button>`);u.onclick=hndUndo;w.appendChild(u)}
   if(rest){const p=el(`<p class="how">Bom descanso. <button class="link" type="button" id="iOffShow">Mostrar sugestões leves</button></p>`);p.querySelector("button").onclick=()=>{lsSet("resid-offrest",null);render()};w.appendChild(p);return w}
-  const T=today(),ne=eDueList().length,nc=cards.filter(x=>BYKEY[x.k]&&x.f&&x.f.st&&x.due<=T).length,L=[];
+  const T=today(),ne=eDueList().length,nc=cards.filter(x=>cdLive(x)&&x.f&&x.f.st&&x.due<=T).length,L=[];
   if(ne)L.push(["errs",`Erros que vencem: ${ne}`,ne*1.5,()=>{backStack=[];setView("erros")}]);
   if(nc)L.push(["cards",`Cartões vencidos: ${nc}`,nc*.25,()=>{backStack=[];setView("notas");if(typeof setNSeg==="function")setNSeg("revisar")}]);
   if(sampleFn&&!sampleOff)L.push(["sim","Bloco rápido de 5 questões",10,()=>{const U=qUniverse(),wk=simTopics("week",U);simCfg={...simCfg,mode:"temas",src:wk.length?"week":"gain",n:5};backStack=[];setView("quest");if(typeof setQSeg==="function")setQSeg("praticar");simStart(U)}]);
