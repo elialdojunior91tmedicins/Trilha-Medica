@@ -79,7 +79,44 @@ function cdAllEl(){const live=cards.filter(x=>BYKEY[x.k]),c=el(`<section class="
   const q=ctl.querySelector("#cdQ");q.value=cdF.q||"";q.oninput=()=>{cdF.q=q.value;cdLim=50;paint()};paint();
   if(twoCols()){const sd=el(`<aside class="cdside" id="cdSide" aria-label="Cartão aberto"></aside>`);sd.appendChild(edEl());g.appendChild(sd);g.classList.add("two")}
   c.appendChild(g);return c}
-function cdNumEl(){return el(`<section class="card cdnum" id="cdNum"><div class="dhead"><h2>Números</h2></div></section>`)}
+/* ---- Números: quanto lembra, por dia, previsão, situação, por área, os mais esquecidos, calendário ---- */
+let cdPer=(()=>{const v=+lsGet("resid-cdper","30");return [7,30,90,0].includes(v)?v:30})();
+const cdBr4=d=>d?d.split("-").reverse().join("/"):"";
+const cdPct=(p,n)=>n?Math.round(p/n*100)+"%":"—";
+function cdNumEl(){const w=el(`<div class="cdnum" id="cdNum"></div>`),t=dnum(today()),L=cards.filter(x=>BYKEY[x.k]),A=cdStats(L,0,t),a=cdPer?t-cdPer+1:(A.first?dnum(A.first):t),S=cdStats(L,a,t);
+  const head=el(`<div class="cdnhead"><span class="glabel">Período</span></div>`);head.appendChild(fcPer("cdP",cdPer||"all",v=>{cdPer=v==="all"?0:+v;lsSet("resid-cdper",String(cdPer))},[["7","7 dias"],["30","30 dias"],["90","90 dias"],["all","Tudo"]]));w.appendChild(head);
+  if(S.n<20){const f=el(`<p class="pnote" id="cdnFew"></p>`);f.textContent=`Poucas revisões registradas ainda (o histórico começou em ${cdBr4(A.first||today())}).`;w.appendChild(f)}
+  const G=el(`<div class="cdnumg"></div>`);w.appendChild(G);
+  /* 1. quanto lembra */
+  {const c=stCard(1,"Quanto você lembra","cdnRet"),lv=n=>!S.n?"na":n>=CD_GOAL?"ok":n>=CD_GOAL-.1?"warn":"bad";
+    stLead(c,`Meta do método: <b>${Math.round(CD_GOAL*100)}%</b>. Conta como lembrou Difícil, Bom ou Fácil em cartões que já estavam em revisão.`);
+    const tl=el(`<div class="stvs"></div>`);tl.appendChild(stTile("No período",lv(S.n?S.pass/S.n:0),cdPct(S.pass,S.n),`${S.n} ${S.n===1?"revisão":"revisões"}`));
+    tl.appendChild(stTile("Jovens",lv(S.young.n?S.young.pass/S.young.n:0),cdPct(S.young.pass,S.young.n),`intervalo < ${CD_MAT} dias · ${S.young.n}`));
+    tl.appendChild(stTile("Maduros",lv(S.mat.n?S.mat.pass/S.mat.n:0),cdPct(S.mat.pass,S.mat.n),`${CD_MAT} dias ou mais · ${S.mat.n}`));c.appendChild(tl);G.appendChild(c)}
+  /* 2. revisões por dia (até 30 dias; acima disso, por semana) */
+  {const c=stCard(2,"Revisões por dia","cdnDay"),n=t-a+1,wk=n>31,V=[];
+    if(!wk)for(let d=a;d<=t;d++){const ds=fromNum(d),v=S.byDay[ds]||0,i=d-a;V.push({v,lab:(n<=7||i%5===0||d===t)?(d===t?"hoje":String(+ds.slice(8))):"",tip:`${cdBr4(ds)}: ${v}`})}
+    else{for(let s0=Math.max(a,t-52*7+1);s0<=t;s0+=7){let v=0;for(let d=s0;d<=Math.min(t,s0+6);d++)v+=S.byDay[fromNum(d)]||0;V.push({v,lab:"",tip:`semana de ${cdBr4(fromNum(s0))}: ${v}`})}if(V.length)V[V.length-1].lab="esta"}
+    stLead(c,wk?"Por semana, no período.":"Cada barra é um dia.");c.appendChild(stBars(V,{aria:"Revisões de cartões por "+(wk?"semana":"dia")}));G.appendChild(c)}
+  /* 3. previsão de 30 dias */
+  {const c=stCard(3,"Previsão de 30 dias","cdnFc"),V=[],T=today();for(let i=0;i<30;i++){const d=fromNum(t+i),v=cards.filter(x=>cdLive(x)&&x.f.st&&(i?x.due===d:x.due<=T)).length;V.push({v,lab:i===0?"hoje":i%5===0?String(+d.slice(8)):"",tip:`${cdBr4(d)}: ${v}`})}
+    stLead(c,"Cartões que vencem em cada dia (hoje inclui os atrasados).");c.appendChild(stBars(V,{aria:"Previsão de revisões"}));G.appendChild(c)}
+  /* 4. situação */
+  {const c=stCard(4,"Situação dos cartões","cdnMix"),M=cdMix(L);stLead(c,`Maduro = ${CD_MAT} dias ou mais até a próxima revisão.`);
+    c.appendChild(stKpis([["Novos",M.novo,""],["Aprendendo",M.aprendendo,""],["Jovens",M.jovem,""],["Maduros",M.maduro,""],["Suspensos",M.suspenso,""]]));G.appendChild(c)}
+  /* 5. por área */
+  {const c=stCard(5,"Por área","cdnArea"),by={};L.filter(x=>!x.dr).forEach(x=>{const ar=BYKEY[x.k].area,code=ar?ar.code:"?";const o=by[code]||(by[code]={name:ar===FAC_AREA?"Faculdade":ar?ar.name:"Outros",n:0,L:[]});o.n++;o.L.push(x)});
+    const R=Object.values(by).sort((p,q)=>q.n-p.n);stLead(c,"Número de cartões e quanto você lembra (com 10 revisões ou mais na área, no período).");
+    if(!R.length)c.appendChild(el(`<p class="how">Nenhum cartão ainda.</p>`));R.forEach(o=>{const s=cdStats(o.L,a,t);c.appendChild(stRow(o.name,`${o.n} ${o.n===1?"cartão":"cartões"}${s.n>=10?` · lembra ${cdPct(s.pass,s.n)}`:""}`))});G.appendChild(c)}
+  /* 6. os mais esquecidos */
+  {const c=stCard(6,"Os mais esquecidos","cdnLeech"),X=cdLeeches(10);stLead(c,`Esqueceu ${CD_LEECH} vezes ou mais.`);if(!X.length)c.appendChild(el(`<p class="how">Nenhum por enquanto.</p>`));
+    const ul=el(`<ul class="cdlist"></ul>`);X.forEach(x=>{const li=el(`<li class="cdlrow"><div class="cdlq"></div><div class="cdlm how"></div><button class="mini" type="button">Editar</button></li>`);li.querySelector(".cdlq").textContent=cdTxt(x.q);li.querySelector(".cdlm").textContent=`esqueceu ${x.f.lapses}× · ${BYKEY[x.k].t}`;const b=li.querySelector("button");b.id="cdnE-"+x.id;b.onclick=()=>cdOpen("todos",{pick:x.id});ul.appendChild(li)});c.appendChild(ul);G.appendChild(c)}
+  /* 7. calendário: 26 semanas, segunda a domingo */
+  {const c=stCard(7,"Calendário","cdnCal"),B=cdStats(L,t-200,t).byDay,wd=(new Date(today()+"T12:00").getDay()+6)%7,s0=t-wd-26*7,g=el(`<div class="cdcal" role="img"></div>`);let tot=0;
+    for(let d=s0;d<=t;d++){const ds=fromNum(d),v=B[ds]||0;tot+=v;const q=el(`<i class="cdcd"></i>`);q.classList.add("l"+(v?v<=10?1:v<=25?2:v<=50?3:4:0));q.title=`${cdBr4(ds)}: ${v} ${v===1?"revisão":"revisões"}`;g.appendChild(q)}
+    g.setAttribute("aria-label",`Revisões de cartões nas últimas 27 semanas: ${tot}`);const st=cdStreak(B,today()),sp=el(`<p class="cdstreak" id="cdnStreak"></p>`);sp.textContent=st?`${st} ${st===1?"dia seguido":"dias seguidos"} com revisão`:"Nenhuma revisão hoje nem ontem.";
+    stLead(c,"Cada quadrado é um dia; mais escuro, mais revisões.");c.append(sp,g);G.appendChild(c)}
+  return w}
 /* ---- Criar: um cartão, colar vários, com o Claude; aviso de repetido (cdDupOf) ---- */
 let cdNS={mode:"um",k:"",q:"",a:"",paste:"",prev:null,dup:"",ks:[],tq:"",msg:""};
 const cdPool=()=>[...ALL,...FAC_ITEMS];

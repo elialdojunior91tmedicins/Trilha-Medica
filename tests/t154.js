@@ -112,5 +112,19 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
   await p.evaluate(()=>{cdSel=null;render()});
   ok(await wide()<=w,name+": Todos sem rolagem lateral");
  }
+ if(PART.includes("D")){
+  await p.evaluate(SEED=>{eval(SEED);cards.forEach(x=>delete x.rv);cdPer=30;cdOpen("numeros")},SEED);await p.waitForTimeout(200);
+  let r=await p.evaluate(()=>({few:($("#cdnFew")||{}).textContent,ret:!!$("#cdnRet"),fc:document.querySelectorAll("#cdnFc .stb").length}));
+  ok(/Poucas revisões registradas ainda \(o histórico começou em \d\d\/\d\d\/\d{4}\)\./.test(r.few||"")&&r.ret,name+": sem histórico, aviso de poucas revisões e o resto aparece "+JSON.stringify(r.few));
+  ok(r.fc===30,name+": previsão de 30 dias ("+r.fc+" barras)");
+  await p.evaluate(()=>{const T=today(),ago=n=>fromNum(dnum(T)-n),x=cards[0],y=cards[1];
+    x.rv=Array.from({length:15},(_,i)=>({d:ago(i),g:i<12?3:1,i:5,r:1,...(i<3?{m:1}:{})}));y.rv=Array.from({length:15},(_,i)=>({d:ago(i+1),g:i<12?2:1,i:9,r:1,...(i<3?{m:1}:{})}));render()});await p.waitForTimeout(150);
+  r=await p.evaluate(()=>({few:!!$("#cdnFew"),ret:($("#cdnRet")||{}).textContent,cal:document.querySelectorAll("#cdnCal .cdcd").length,st:($("#cdnStreak")||{}).textContent,day:document.querySelectorAll("#cdnDay .stb").length,area:document.querySelectorAll("#cdnArea .strow").length,mix:($("#cdnMix")||{}).textContent}));
+  ok(!r.few&&/80%/.test(r.ret)&&/90%/.test(r.ret)&&/Maduros/.test(r.ret),name+": quanto lembra 80%, com a meta e jovens × maduros "+JSON.stringify(r.ret));
+  ok(r.cal>=182&&/16 dias seguidos/.test(r.st||""),name+": calendário de 6 meses e sequência "+JSON.stringify({cal:r.cal,st:r.st}));
+  ok(r.day===30&&r.area>=1&&/Maduros/.test(r.mix||""),name+": revisões por dia, por área e situação "+JSON.stringify({day:r.day,area:r.area}));
+  await p.evaluate(()=>{cdPer=7;render()});ok(await p.evaluate(()=>document.querySelectorAll("#cdnDay .stb").length===7),name+": período de 7 dias");
+  ok(await wide()<=w,name+": Números sem rolagem lateral");
+ }
  await ctx.close()}
 ok(!errs.length,"sem erros de JavaScript "+errs.join(" | "));await b.close()})();

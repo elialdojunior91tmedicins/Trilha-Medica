@@ -27,7 +27,7 @@ function stRow(l,r){const x=el(`<div class="strow"><b></b><span class="how"></sp
 const svgEsc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 /* barras por semana: vals [{v,lab,cur,tip}], meta (linha tracejada com rótulo), semana atual mais clara com "até hoje" */
 /* largura do desenho = largura real do cartão (no computador, os gráficos ficam largos sem crescer o texto) */
-function stW(){const v=document.getElementById("viewStats"),w=v&&v.clientWidth||0;if(!w)return 320;const c=twoCols()?w/2-56:w-40;return Math.max(320,Math.min(760,Math.round(c)))}
+function stW(){const v=document.getElementById(view==="cartoes"?"viewCards":"viewStats"),w=v&&v.clientWidth||0;if(!w)return 320;const c=twoCols()?w/2-56:w-40;return Math.max(320,Math.min(760,Math.round(c)))}
 function stBars(vals,o={}){const W=stW(),H=128,P={l:26,r:6,t:14,b:22},n=vals.length,mx=Math.max(o.goal||0,...vals.map(x=>x.v),o.min||1)*1.12,bw=(W-P.l-P.r)/n,y=v=>P.t+(H-P.t-P.b)*(1-v/mx);
   let s=`<svg class="stsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${svgEsc(o.aria||"")}">`;
   [0,.5,1].forEach(f=>{const v=mx/1.12*f,yy=y(v);s+=`<line class="gl" x1="${P.l}" x2="${W-P.r}" y1="${yy}" y2="${yy}"/><text class="ax" x="${P.l-4}" y="${yy+3}" text-anchor="end">${svgEsc(o.fmt?o.fmt(v):Math.round(v))}</text>`});
