@@ -156,6 +156,7 @@ Um dia de estudo:
 - **Na fila do dia** entram as revisões que cabem no tempo do seu dia; as outras esperam.
 - **Próximos dias:** quantas revisões caem em cada um dos próximos 14 dias. **Equilibrar** adianta revisões para dias mais leves (ou adia até 3 dias).
 - **Histórico:** o app guarda cada revisão (dia, resposta e se estava atrasada). A **retenção** (quanto você tocou Lembrei, no prazo e atrasado) aparece em Estatísticas › Como estou indo e no tema aberto.
+- **Atrasou muito?** Se as revisões atrasadas passarem do que cabe em uns 3 dias, o app as espalha sozinho pelos próximos dias (até 14), as mais esquecidas primeiro, e avisa no Início. Cada cartão mostra a data original ("era para"); enquanto isso entra 1 tema novo por dia. Sobrou tempo? **Revisar mais 3 do atraso** na fila. Não gostou? **Desfazer** no aviso.
 - **Não estudei este tema** tira das revisões e volta para Não iniciado (questões, anotações e erros ficam).
 - **Véspera de prova:** nos 3 dias antes, aparece só o que você já estudou para ela. **Modo provas** ligado pausa as revisões da residência.`],
 ["Residência: temas, níveis e incidência",`A lista começa recolhida: toque na área, na especialidade e no tema. Cada linha diz o **próximo passo** (Começar · parte 1 de 3, Revisar hoje, Acerto caiu…), o acerto colorido, o foco e os subtópicos; **☑ N/M** marca subtópicos sem abrir.

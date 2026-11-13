@@ -1,5 +1,6 @@
 // t153 (Revisões, 13/11/2026): histórico das revisões e recuperação do atraso.
 // Parte 1: revisar grava s.rv; retenção nas Estatísticas (linha da tabela + "No prazo · Atrasadas") e no tema aberto; poucos dados = aviso.
+// Parte 2: recuperação (aviso no Início e nas Revisões, "era para", Próximos dias, 1 tema novo, Revisar mais 3, Desfazer, celular).
 // Desenho: docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md
 const {chromium}=require('playwright');const fs=require('fs');const mock=fs.readFileSync(__dirname+'/mockdb.js','utf8');const ok=(c,m)=>console.log((c?"OK   ":"FALHA")+" "+m);
 const RV=`(()=>{const T=today(),ago=n=>fromNum(dnum(T)-n),mk=(n,g,l)=>({d:ago(n),g,l,i:7});
@@ -32,5 +33,31 @@ const RV=`(()=>{const T=today(),ago=n=>fromNum(dnum(T)-n),mk=(n,g,l)=>({d:ago(n)
  await p.evaluate(()=>{setView("temas");detTab["CM-3"]="estudo";openTopic("CM-3");render()});await p.waitForTimeout(300);
  r=await p.evaluate(()=>{const e=document.querySelector("#t-CM-3 .drevh");return e&&e.textContent});
  ok(/6 revisões/.test(r||"")&&/lembrou 2/.test(r||""),"tema aberto: resumo das revisões "+JSON.stringify(r));
+
+ /* Parte 2: recuperação do atraso */
+ const LATE=n=>`(()=>{const ks=ALL.filter(it=>!it.own).slice(20,20+${n}).map(it=>it.key);ks.forEach((k,i)=>upd(k,x=>{x.last=fromNum(dnum(today())-40-(i%5));x.step=1;x.l=1;delete x.rv}));
+   try{localStorage.removeItem("resid-recchk");localStorage.removeItem("resid-recdis")}catch(e){};return ks})()`;
+ let ks=await p.evaluate(LATE(5));await p.evaluate(()=>{setView("inicio");render()});await p.waitForTimeout(300);
+ r=await p.evaluate(()=>({note:!!document.getElementById("recNote"),act:recActive().length}));ok(!r.note&&r.act===0,"atraso pequeno: nada muda "+JSON.stringify(r));
+ ks=await p.evaluate(LATE(30));await p.evaluate(()=>{setView("inicio");render()});await p.waitForTimeout(300);
+ r=await p.evaluate(()=>{const n=document.getElementById("recNote");return {t:n&&n.textContent,act:recActive().length}});
+ ok(/30 revisões atrasadas foram distribuídas até/.test(r.t||"")&&r.act>=30,"atraso grande: aviso no Início "+JSON.stringify(r));
+ await p.evaluate(()=>{goRevs();render()});await p.waitForTimeout(300);
+ r=await p.evaluate(()=>({n:!!document.getElementById("recNoteR"),orig:document.querySelectorAll("#revlist .recorig").length,ag:(document.getElementById("agRec")||{}).textContent,agd:document.querySelectorAll("#revAgenda .agday.rec").length}));
+ ok(r.n,"aviso também no topo das revisões");ok(r.orig>0,"cartões da revisão com a data original (era para) "+r.orig);
+ ok(/Recuperação: 0 de 30 feitas · termina em/.test(r.ag||"")&&r.agd>1,"Próximos dias: linha da recuperação e dias marcados "+JSON.stringify(r));
+ r=await p.evaluate(()=>{dayPlan=null;ensurePlan();return (dayPlan.items||[]).filter(i=>i.cls==="r-new"||i.cls==="r-cont"||i.cls==="r-eixo").length});
+ ok(r<=1,"plano do dia com no máximo 1 tema novo durante a recuperação ("+r+")");
+ /* adiantar: com a fila concluída */
+ r=await p.evaluate(()=>{const h0=recActive().filter(k=>dueIn(get(k))===0).length;qCounts=()=>({});setView("inicio");render();const b=document.getElementById("recMore");if(b)b.click();return {b:!!b,h0,h1:recActive().filter(k=>dueIn(get(k))===0).length}});
+ ok(r.b&&r.h1===r.h0+3,"fila concluída: Revisar mais 3 do atraso traz 3 para hoje "+JSON.stringify(r));
+ /* desfazer */
+ await p.evaluate(()=>{setView("inicio");render()});await p.waitForTimeout(200);
+ await p.evaluate(()=>{const b=document.getElementById("recUndo");if(b)b.click()});await p.waitForTimeout(200);
+ r=await p.evaluate(ks=>({late:ks.filter(k=>dueIn(get(k))<0).length,note:!!document.getElementById("recNote"),rec:!!ui.prefs.rec}),ks);
+ ok(r.late===30&&!r.note&&!r.rec,"Desfazer: as 30 voltam a ser atrasadas e o aviso some "+JSON.stringify(r));
+ /* celular: sem rolagem lateral */
+ await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{localStorage.removeItem("resid-recchk");delete ui.prefs.rec;setView("inicio");render()});await p.waitForTimeout(300);
+ r=await p.evaluate(()=>({note:!!document.getElementById("recNote"),w:document.documentElement.scrollWidth}));ok(r.note&&r.w<=390,"celular: aviso aparece sem rolagem lateral "+JSON.stringify(r));
 
  ok(!errs.length,"sem erros de JavaScript "+errs.join(" | "));await b.close()})();

@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=d27e8a61">
+<link rel="stylesheet" href="site.css?v=b6c864f8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=d27e8a61"></script>
-<script src="bridge.js?v=d27e8a61"></script>
+<script src="config.js?v=b6c864f8"></script>
+<script src="bridge.js?v=b6c864f8"></script>
 </head>
 <body>
 <script>
@@ -868,6 +868,10 @@ body:has(.bulkbar)>.wrap{padding-bottom:220px}
 .agday.over .agb i{background:var(--due)}.agday.over .agn{color:var(--due);font-weight:700}
 .agw{font:600 .62rem var(--body);text-transform:uppercase;color:var(--muted)}.agd{font:500 .66rem var(--mono);color:var(--muted)}
 .agday.now .agw,.agday.now .agd{color:var(--accent);font-weight:700}
+/* recuperação do atraso (13/11/2026) */
+.agday.rec .agw{text-decoration:underline 2px var(--gold);text-underline-offset:3px}
+.recorig{font-size:.72rem;color:var(--muted2);white-space:nowrap}
+.recnote .btns{flex-wrap:wrap}
 .aglist{margin-top:4px}
 html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="phone"] #viewTemas[data-seg="hoje"] .agenda{display:none}
 .hsub{margin-top:-6px;min-height:12px}.hsub .hv{font-size:.72rem;color:var(--muted)}
@@ -3069,6 +3073,7 @@ Um dia de estudo:
 - **Na fila do dia** entram as revisões que cabem no tempo do seu dia; as outras esperam.
 - **Próximos dias:** quantas revisões caem em cada um dos próximos 14 dias. **Equilibrar** adianta revisões para dias mais leves (ou adia até 3 dias).
 - **Histórico:** o app guarda cada revisão (dia, resposta e se estava atrasada). A **retenção** (quanto você tocou Lembrei, no prazo e atrasado) aparece em Estatísticas › Como estou indo e no tema aberto.
+- **Atrasou muito?** Se as revisões atrasadas passarem do que cabe em uns 3 dias, o app as espalha sozinho pelos próximos dias (até 14), as mais esquecidas primeiro, e avisa no Início. Cada cartão mostra a data original ("era para"); enquanto isso entra 1 tema novo por dia. Sobrou tempo? **Revisar mais 3 do atraso** na fila. Não gostou? **Desfazer** no aviso.
 - **Não estudei este tema** tira das revisões e volta para Não iniciado (questões, anotações e erros ficam).
 - **Véspera de prova:** nos 3 dias antes, aparece só o que você já estudou para ela. **Modo provas** ligado pausa as revisões da residência.`],
 ["Residência: temas, níveis e incidência",`A lista começa recolhida: toque na área, na especialidade e no tema. Cada linha diz o **próximo passo** (Começar · parte 1 de 3, Revisar hoje, Acerto caiu…), o acerto colorido, o foco e os subtópicos; **☑ N/M** marca subtópicos sem abrir.
@@ -3754,6 +3759,13 @@ function recCheck(){const T=today();if(ui.prefs.rec&&!recActive().length){delete
 function recPull(n){const t=dnum(today());recActive().map(k=>({k,d:dueIn(get(k))})).filter(x=>x.d>0).sort((a,b)=>a.d-b.d).slice(0,n||3).forEach(({k})=>{
     const s={...get(k)};s.adj=t-(dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]);state[k]=s});goRevs();commit()}
 function recOrig(s){if(!s||!s.rc)return null;const o=s.rc.o;return fromNum(o&&o[1]===s.last?dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]+o[0]:dnum(s.last)+revIv(s))}
+/* aviso da recuperação (Início e topo das revisões); sfx separa os ids das duas telas */
+function recNoteEl(sfx){const R=ui.prefs.rec;sfx=sfx||"";if(!R||!recActive().length||lsGet("resid-recdis","")===R.d)return null;
+  const n=el(`<div class="inote recnote" role="status"><p></p><div class="btns"><button class="btn" type="button">Ver nos próximos dias</button><button class="btn" type="button">Desfazer</button><button class="link" type="button">Fechar</button></div></div>`);
+  n.id="recNote"+sfx;n.querySelector("p").textContent=`${R.n} ${R.n===1?"revisão atrasada foi distribuída":"revisões atrasadas foram distribuídas"} até ${br(R.until)}, as mais esquecidas primeiro.${R.ov?` ${R.ov} não couberam e ficaram para ${br(R.until)}.`:""} Enquanto isso, 1 tema novo por dia.`;
+  const [see,und,x]=n.querySelectorAll("button");see.id="recSee"+sfx;und.id="recUndo"+sfx;x.id="recX"+sfx;
+  see.onclick=()=>{goRevs();setTimeout(()=>{const a=$("#revAgenda");if(a)a.scrollIntoView({block:"center",behavior:"smooth"})},120)};und.onclick=recUndo;x.onclick=()=>{lsSet("resid-recdis",R.d);render()};return n}
+function recLine(){const R=ui.prefs.rec,act=recActive().length;if(!R||!act)return "";return `Recuperação: ${Math.max(0,R.n-act)} de ${R.n} feitas · termina em ${br(R.until)}`}
 function topicRevs(){const out=[];[...ALL,...FAC_ITEMS].forEach(it=>{const L=get(it.key).rv;if(Array.isArray(L))L.forEach(e=>out.push({k:it.key,...e}))});return out}
 function revBtns(k,cls){const s=get(k),w=el(`<div class="pacts revg${cls?" "+cls:""}"></div>`);[2,1,0].forEach(g=>{const d=revPreview(s,g),b=el(`<button class="btn${g===2?" primary":""}" type="button"><span></span><small></small></button>`);
     b.id=`rg${g}-${k}`;b.querySelector("span").textContent=REV_G[g][0];b.querySelector("small").textContent=d===1?"1 dia":d+" dias";b.title=`${REV_G[g][0]}: ${REV_G[g][1]} (próxima em ${d===1?"1 dia":d+" dias"})`;b.onclick=()=>reviewTopic(k,g);w.appendChild(b)});return w}
@@ -3906,12 +3918,14 @@ function renderRevs(){
   const QC=qCounts();$("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${QC.revs<due.length?` · cabem hoje ${QC.revs}`:late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
   const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
+  {const o=$("#recNoteR");if(o)o.remove();const rn=recNoteEl("R");if(rn)list.before(rn)}
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
   const shown=revMore?due:due.slice(0,4);
   shown.forEach(it=>{const s=get(it.key),d=dueIn(s),subs=pickSubs(it,"r-rev"),chk=rchk(it.key),L=subList(it);
     const li=el(`<li class="pcard rcard" data-k="${it.key}"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason r-rev"></span></div><div class="pa"></div><div class="pbody"></div></li>`);
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=dueLabel(d);
+    if(s.rc){const o=el(`<span class="recorig"></span>`);o.textContent="era para "+br(recOrig(s));o.title="Data remanejada pela recuperação do atraso";li.querySelector(".ptop").appendChild(o)}
     const pa=li.querySelector(".pa");pa.textContent=`${it.area===FAC_AREA?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · último estudo ${br(s.last)} · intervalo ${interval(s)} ${interval(s)===1?"dia":"dias"} · `;if(it.own){pa.prepend(el(`<span class="facchip">FAC</span>`))}else{pa.appendChild(incEl(wOf(it),false));const L0=FL[it.key];if(L0){const x=el(`<span class="fbadge"></span>`);x.textContent=`FAC · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");pa.appendChild(x)}}
     {const started=chk.length>0,ov=revOpen[it.key],open=ov?ov.v:started;
       const sm=el(`<button class="psum" type="button" aria-expanded="${open}"><span class="psp"></span><span class="pst"></span><span class="pchev" aria-hidden="true"></span></button>`);
@@ -4254,7 +4268,7 @@ function renderDetail(it,o={}){
   else{const next=fromNum(dnum(today())+d);
     const af=adaptF(s),aa=af!==1&&!(s.adjFrom===s.last&&s.adj)?adaptAcc(s):null;pill.textContent=dueLabel(d);g2.dataset.st=d<0?"late":d===0?"today":"ok";
     p.innerHTML=`<span class="dnext">Próxima revisão: <b></b></span><span class="dsub"></span>`;p.querySelector("b").textContent=br(next);
-    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.`;
+    p.querySelector(".dsub").textContent=`Último estudo em ${br(s.last)} · intervalo atual de ${interval(s)} ${interval(s)===1?"dia":"dias"}${aa?` (${af>1?"mais longo":"mais curto"} pelo seu acerto de ${Math.round(aa.a*100)}% nas questões)`:""}.${s.rc?` Remanejada pela recuperação do atraso: era para ${br(recOrig(s))}.`:""}`;
     bt.appendChild(revBtns(it.key,"drevb"));
     if(Array.isArray(s.rv)&&s.rv.length){const L=s.rv,u=L[L.length-1],lem=L.filter(e=>e.g===2).length,ago=dnum(today())-dnum(u.d);
       const h=el(`<p class="how drevh"></p>`);h.textContent=`${L.length} ${L.length===1?"revisão":"revisões"} · lembrou ${lem} · última: ${["Esqueci","Difícil","Lembrei"][u.g]||"—"} (${ago===0?"hoje":ago===1?"ontem":"há "+ago+" dias"})`;bt.before(h)}}
@@ -4441,11 +4455,12 @@ function renderAgenda0(box){const D=agDays(),cap=agCap(D),mx=Math.max(cap,...D.m
   if(!tot){box.appendChild(el(`<p class="cempty">Nenhuma revisão nos próximos 14 dias. Elas aparecem aqui conforme você estuda os temas.</p>`));return}
   const g=el(`<div class="agrid" role="list"></div>`);
   D.forEach((list,i)=>{const day=fromNum(T+i),dt=new Date(T*864e5),w=wd[(new Date(day+"T12:00:00").getDay())],over=list.length>cap;
-    const b=el(`<button type="button" class="agday${i===0?" now":""}${over?" over":""}${agOpen===i?" sel":""}" role="listitem"><span class="agn">${list.length||""}</span><span class="agb"><i style="height:${list.length/mx*100}%"></i></span><span class="agw">${w}</span><span class="agd">${br(day).slice(0,2)}</span></button>`);
+    const b=el(`<button type="button" class="agday${i===0?" now":""}${over?" over":""}${agOpen===i?" sel":""}${list.some(it=>get(it.key).rc)?" rec":""}" role="listitem"><span class="agn">${list.length||""}</span><span class="agb"><i style="height:${list.length/mx*100}%"></i></span><span class="agw">${w}</span><span class="agd">${br(day).slice(0,2)}</span></button>`);
     b.dataset.tip=`${i===0?"Hoje (com as atrasadas)":["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"][new Date(day+"T12:00:00").getDay()]+" "+br(day)}: ${list.length} ${list.length===1?"revisão":"revisões"}`;b.onclick=()=>{agOpen=agOpen===i?null:i;render()};g.appendChild(b)});
   box.appendChild(g);
   const over=D.filter(x=>x.length>cap).length;
   const info=el(`<p class="how"></p>`);info.textContent=`${tot} ${tot===1?"revisão":"revisões"} em 14 dias · ritmo confortável: até ${cap} por dia.${over?` ${over} ${over===1?"dia passa":"dias passam"} disso.`:""}`;box.appendChild(info);
+  {const rl=recLine();if(rl){const m=el(`<p class="pnote agrec" id="agRec"></p>`);m.textContent=rl+". Os dias com a marca dourada têm revisões da recuperação.";box.appendChild(m)}}
   if(agMsg){const m=el(`<p class="pnote" role="status"></p>`);m.textContent=agMsg;box.appendChild(m)}
   if(over){const eb=el(`<button class="btn" type="button" id="agBal">Equilibrar</button>`);eb.onclick=agBalance;box.appendChild(eb);
     box.appendChild(el(`<p class="how hx">Equilibrar adianta revisões dos dias cheios para dias mais leves (se não houver espaço antes, adia no máximo 3 dias) e, se hoje estiver acumulado, passa as menos urgentes para os próximos dias. As mais atrasadas e de maior incidência ficam primeiro.</p>`))}
@@ -8711,6 +8726,7 @@ function iQueueCard(){const C=qCounts(),tot=qTot(C),all=tot+(C.plan||0),eve=isEv
   if(eve||!all){const D=dayDone();if(D.length||eve){const box=el(`<div class="iqday"><p class="iqdh">Feito hoje</p></div>`);
       if(D.length){const u=el(`<ul class="iqdone"></ul>`);D.forEach(([v,t])=>{const li=el(`<li><b></b><span></span></li>`);li.querySelector("b").textContent=String(v);li.querySelector("span").textContent=t;u.appendChild(li)});box.appendChild(u)}
       else box.appendChild(el(`<p class="how">Nada registrado ainda hoje.</p>`));
+      if(!all&&recActive().some(k=>dueIn(get(k))>0)){const m=el(`<button class="btn" type="button" id="recMore">Revisar mais 3 do atraso</button>`);m.onclick=()=>recPull(3);box.appendChild(m)}
       if(eve&&all){box.appendChild(el(`<p class="iqdh">Pode ficar para amanhã</p>`));const u=el(`<ul class="iqlater"></ul>`),add=t=>{const li=el(`<li></li>`);li.textContent=t;u.appendChild(li)};
         if(C.revs)add(`${C.revs} ${C.revs===1?"revisão de tema":"revisões de temas"}: amanhã voltam primeiro, pelas mais importantes.`);
         const sm=(C.errs||0)+(C.cards||0)+(C.redo||0);if(sm)add(`Erros, cartões e questões para refazer (${sm}): continuam na fila de amanhã.`);
@@ -8733,7 +8749,7 @@ function renderQBar(){let bar=$("#qBar");const on=!!dayQ&&!bulk;if(!on){if(bar)b
 const lastBk=()=>lsGet("resid-lastbk","");
 function markBackup(){lsSet("resid-lastbk",today())}
 function hasData(){return Object.keys(state).length>0||errors.length>0||Object.keys(notes).length>0}
-function iNoticeEl(){const box=el(`<div class="inotices"></div>`);
+function iNoticeEl(){const box=el(`<div class="inotices"></div>`);{const rn=recNoteEl();if(rn)box.appendChild(rn)}
   if(!window.__site&&lsGet("resid-artnote-v1","")!=="1"){const n=el(`<div class="inote"><p><b>Você vai usar o site.</b> Os dados deste artefato ficam separados do site: o que você marcar aqui não aparece lá. Para levar o progresso, use <b>Perfil › Backup › Exportar</b> e, no site, <b>Importar</b>.</p><div class="btns"><a class="btn primary" target="_blank" rel="noopener">Abrir o site</a><button class="link" type="button">Entendi</button></div></div>`);
     n.querySelector("a").href=SITE_URL;n.querySelector(".link").onclick=()=>{lsSet("resid-artnote-v1","1");render()};box.appendChild(n)}
   const lb=lastBk(),days=lb?dnum(today())-dnum(lb):null,first=Object.keys(hist).sort()[0],age=first?dnum(today())-dnum(first):0,logged=!!(window.__site&&store);

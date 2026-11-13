@@ -97,6 +97,13 @@ function recCheck(){const T=today();if(ui.prefs.rec&&!recActive().length){delete
 function recPull(n){const t=dnum(today());recActive().map(k=>({k,d:dueIn(get(k))})).filter(x=>x.d>0).sort((a,b)=>a.d-b.d).slice(0,n||3).forEach(({k})=>{
     const s={...get(k)};s.adj=t-(dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]);state[k]=s});goRevs();commit()}
 function recOrig(s){if(!s||!s.rc)return null;const o=s.rc.o;return fromNum(o&&o[1]===s.last?dnum(s.last)+INT[Math.min(s.step||0,INT.length-1)]+o[0]:dnum(s.last)+revIv(s))}
+/* aviso da recuperação (Início e topo das revisões); sfx separa os ids das duas telas */
+function recNoteEl(sfx){const R=ui.prefs.rec;sfx=sfx||"";if(!R||!recActive().length||lsGet("resid-recdis","")===R.d)return null;
+  const n=el(`<div class="inote recnote" role="status"><p></p><div class="btns"><button class="btn" type="button">Ver nos próximos dias</button><button class="btn" type="button">Desfazer</button><button class="link" type="button">Fechar</button></div></div>`);
+  n.id="recNote"+sfx;n.querySelector("p").textContent=`${R.n} ${R.n===1?"revisão atrasada foi distribuída":"revisões atrasadas foram distribuídas"} até ${br(R.until)}, as mais esquecidas primeiro.${R.ov?` ${R.ov} não couberam e ficaram para ${br(R.until)}.`:""} Enquanto isso, 1 tema novo por dia.`;
+  const [see,und,x]=n.querySelectorAll("button");see.id="recSee"+sfx;und.id="recUndo"+sfx;x.id="recX"+sfx;
+  see.onclick=()=>{goRevs();setTimeout(()=>{const a=$("#revAgenda");if(a)a.scrollIntoView({block:"center",behavior:"smooth"})},120)};und.onclick=recUndo;x.onclick=()=>{lsSet("resid-recdis",R.d);render()};return n}
+function recLine(){const R=ui.prefs.rec,act=recActive().length;if(!R||!act)return "";return `Recuperação: ${Math.max(0,R.n-act)} de ${R.n} feitas · termina em ${br(R.until)}`}
 function topicRevs(){const out=[];[...ALL,...FAC_ITEMS].forEach(it=>{const L=get(it.key).rv;if(Array.isArray(L))L.forEach(e=>out.push({k:it.key,...e}))});return out}
 function revBtns(k,cls){const s=get(k),w=el(`<div class="pacts revg${cls?" "+cls:""}"></div>`);[2,1,0].forEach(g=>{const d=revPreview(s,g),b=el(`<button class="btn${g===2?" primary":""}" type="button"><span></span><small></small></button>`);
     b.id=`rg${g}-${k}`;b.querySelector("span").textContent=REV_G[g][0];b.querySelector("small").textContent=d===1?"1 dia":d+" dias";b.title=`${REV_G[g][0]}: ${REV_G[g][1]} (próxima em ${d===1?"1 dia":d+" dias"})`;b.onclick=()=>reviewTopic(k,g);w.appendChild(b)});return w}
@@ -249,12 +256,14 @@ function renderRevs(){
   const QC=qCounts();$("#revmeta").textContent=due.length?`${due.length} ${due.length===1?"pendente":"pendentes"}${QC.revs<due.length?` · cabem hoje ${QC.revs}`:late?` · ${late} ${late===1?"atrasada":"atrasadas"}`:""}`:"em dia";
   $("#revmeta").className="revmeta"+(late?" late":"");
   const list=$("#revlist");list.innerHTML="";const FL=facLinkMap();
+  {const o=$("#recNoteR");if(o)o.remove();const rn=recNoteEl("R");if(rn)list.before(rn)}
   if(!due.length)list.appendChild(el(`<li class="empty" style="padding:0">${ALL.some(i=>get(i.key).last)?"Nenhuma revisão pendente hoje.":"Quando você marcar \"Estudei hoje\" em um tema, a primeira revisão é agendada para o dia seguinte e aparece aqui."}</li>`));
   const shown=revMore?due:due.slice(0,4);
   shown.forEach(it=>{const s=get(it.key),d=dueIn(s),subs=pickSubs(it,"r-rev"),chk=rchk(it.key),L=subList(it);
     const li=el(`<li class="pcard rcard" data-k="${it.key}"><div class="ptop"><button class="ptitle" type="button"></button><span class="reason r-rev"></span></div><div class="pa"></div><div class="pbody"></div></li>`);
     const tb=li.querySelector(".ptitle");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
     li.querySelector(".reason").textContent=dueLabel(d);
+    if(s.rc){const o=el(`<span class="recorig"></span>`);o.textContent="era para "+br(recOrig(s));o.title="Data remanejada pela recuperação do atraso";li.querySelector(".ptop").appendChild(o)}
     const pa=li.querySelector(".pa");pa.textContent=`${it.area===FAC_AREA?"Faculdade":it.area.code}${it.sp?" · "+it.sp:""} · último estudo ${br(s.last)} · intervalo ${interval(s)} ${interval(s)===1?"dia":"dias"} · `;if(it.own){pa.prepend(el(`<span class="facchip">FAC</span>`))}else{pa.appendChild(incEl(wOf(it),false));const L0=FL[it.key];if(L0){const x=el(`<span class="fbadge"></span>`);x.textContent=`FAC · ${L0.s?spShort(L0.s.name):L0.d.name}`;x.title=L0.d.name+(L0.s?" · "+L0.s.name:"");pa.appendChild(x)}}
     {const started=chk.length>0,ov=revOpen[it.key],open=ov?ov.v:started;
       const sm=el(`<button class="psum" type="button" aria-expanded="${open}"><span class="psp"></span><span class="pst"></span><span class="pchev" aria-hidden="true"></span></button>`);
