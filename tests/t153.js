@@ -58,8 +58,10 @@ const RV=`(()=>{const T=today(),ago=n=>fromNum(dnum(T)-n),mk=(n,g,l)=>({d:ago(n)
  await p.evaluate(()=>{const b=document.getElementById("recUndo");if(b)b.click()});await p.waitForTimeout(200);
  r=await p.evaluate(ks=>({late:ks.filter(k=>dueIn(get(k))<0).length,note:!!document.getElementById("recNote"),rec:!!ui.prefs.rec}),ks);
  ok(r.late===30&&!r.note&&!r.rec,"Desfazer: as 30 voltam a ser atrasadas e o aviso some "+JSON.stringify(r));
+ r=await p.evaluate(()=>{localStorage.removeItem("resid-recchk");render();return {act:recActive().length,no:ui.prefs.recNo===today()}});
+ ok(r.act===0&&r.no,"depois do Desfazer não redistribui de novo no mesmo dia, nem em outro aparelho (marca nas preferências) "+JSON.stringify(r));
  /* celular: sem rolagem lateral */
- await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{localStorage.removeItem("resid-recchk");delete ui.prefs.rec;setView("inicio");render()});await p.waitForTimeout(300);
+ await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{localStorage.removeItem("resid-recchk");delete ui.prefs.rec;delete ui.prefs.recNo;setView("inicio");render()});await p.waitForTimeout(300);
  r=await p.evaluate(()=>({note:!!document.getElementById("recNote"),w:document.documentElement.scrollWidth}));ok(r.note&&r.w<=390,"celular: aviso aparece sem rolagem lateral "+JSON.stringify(r));
 
  ok(!errs.length,"sem erros de JavaScript "+errs.join(" | "));await b.close()})();
