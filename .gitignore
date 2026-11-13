@@ -13,3 +13,5 @@ src/checklist-residencia.html
 src/app/.gerado.sha1
 # mapa do código (saída de node tools/mapa/gerar.js)
 /mapa/
+# rascunho das ferramentas de plano (superpowers)
+/.superpowers/

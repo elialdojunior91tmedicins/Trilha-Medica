@@ -1,60 +1,49 @@
-// Revisões dos temas: intervalo (INT × acerto), data da próxima (dueIn), ajuste manual (s.adj) e os 3 botões.
+// Revisões: histórico de cada revisão (s.rv), retenção e recuperação do atraso.
+// Desenho: docs/superpowers/specs/2026-11-13-revisoes-historico-e-recuperacao-design.md
 const test = require("node:test"), assert = require("node:assert/strict");
 const load = require("./load");
-const HOJE = "2026-11-06";
-const novo = () => load({ now: HOJE + "T12:00:00" });
-const antes = (A, n) => A.fromNum(A.dnum(HOJE) - n);
+const HOJE = "2026-11-13";
+const novo = () => { const A = load({ now: HOJE + "T12:00:00" }); A.commit = () => {}; A.render = () => {}; A.persist = () => {}; return A; };
+const daysAgo = (A, n) => A.fromNum(A.dnum(HOJE) - n);
 
-test("intervalos padrão: 1 · 3 · 7 · 15 · 30 · 60 · 90 dias por degrau", () => {
+test("revLate: atraso contra a data original, mesmo com ajuste de data; sem estudo = null", () => {
+  const A = novo(), k = "CM-1", I1 = A.INT[1];
+  A.state[k] = { l: 1, last: daysAgo(A, I1 + 5), step: 1 };
+  assert.equal(A.revLate(A.get(k), HOJE), 5);
+  A.state[k] = { ...A.state[k], adj: 10, adjFrom: A.state[k].last };
+  assert.equal(A.revLate(A.get(k), HOJE), 5, "o ajuste não esconde o atraso");
+  assert.equal(A.revLate({}, HOJE), null);
+});
+
+test("reviewTopic grava cada revisão no fim de s.rv (40 no máximo), marca a automática e apaga s.rc", () => {
+  const A = novo(), k = "CM-1";
+  A.state[k] = { l: 1, last: daysAgo(A, 30), step: 1, rc: { d: daysAgo(A, 2), o: null } };
+  A.reviewTopic(k, 2);
+  const s = A.get(k);
+  assert.equal(s.rv.length, 1);
+  assert.deepEqual(Object.keys(s.rv[0]).sort(), ["d", "g", "i", "l"]);
+  assert.equal(s.rv[0].d, HOJE); assert.equal(s.rv[0].g, 2); assert.equal(s.rv[0].l, 30 - A.INT[1]);
+  assert.equal(s.rc, undefined, "a recuperação daquele tema acaba ao revisar");
+  for (let i = 0; i < 44; i++) { A.state[k] = { ...A.get(k), last: daysAgo(A, 3) }; A.reviewTopic(k, i % 3); }
+  assert.equal(A.get(k).rv.length, A.REV_HIST_MAX); assert.equal(A.REV_HIST_MAX, 40);
+  assert.equal(A.get(k).rv[39].g, 43 % 3, "a mais nova fica no fim");
+  A.state[k] = { ...A.get(k), last: daysAgo(A, 3) }; A.reviewTopic(k, 2, { auto: true, quiet: true, acc: 80 });
+  assert.equal(A.get(k).rv[39].a, 1);
+});
+
+test("revStats: no prazo = até 1 dia de atraso; lembrou = Lembrei", () => {
   const A = novo();
-  assert.deepEqual([...A.INT], [1, 3, 7, 15, 30, 60, 90]);
-  assert.deepEqual([0, 1, 2, 3, 4, 5, 6, 9].map(step => A.interval({ step, last: HOJE })), [1, 3, 7, 15, 30, 60, 90, 90]);
+  const r = A.revStats([{ d: HOJE, g: 2, l: 0 }, { d: HOJE, g: 0, l: 5 }, { d: HOJE, g: 2, l: 1 }, { d: HOJE, g: 1, l: 9 }]);
+  assert.equal(r.n, 4); assert.equal(r.g2, 2); assert.equal(r.g1, 1); assert.equal(r.g0, 1);
+  assert.deepEqual({ ...r.ok }, { n: 2, g2: 2 }); assert.deepEqual({ ...r.late }, { n: 2, g2: 0 });
+  assert.equal(A.revStats([{ d: "2026-10-01", g: 2, l: 0 }, { d: HOJE, g: 2, l: 0 }], "2026-11-01", HOJE).n, 1, "filtra pelo período");
 });
 
-test("dueIn: dias até a próxima revisão a partir da última", () => {
+test("topicRevs junta as revisões da Residência e da Faculdade", () => {
   const A = novo();
-  assert.equal(A.dueIn({}), null, "tema sem estudo não tem revisão");
-  assert.equal(A.dueIn({ last: antes(A, 5), step: 2 }), 2, "7 dias depois de 5 dias atrás = daqui a 2");
-  assert.equal(A.dueIn({ last: antes(A, 10), step: 2 }), -3, "atrasada 3 dias");
-});
-
-test("ajuste manual (s.adj) só vale para a revisão em que foi feito", () => {
-  const A = novo(), last = antes(A, 5);
-  assert.equal(A.dueIn({ last, step: 2, adj: 3, adjFrom: last }), 5, "adiada 3 dias");
-  assert.equal(A.dueIn({ last, step: 2, adj: 3, adjFrom: antes(A, 20) }), 2, "ajuste de uma revisão antiga é ignorado");
-});
-
-test("acerto alto nas questões alonga o intervalo; acerto baixo não encurta", () => {
-  const A = novo(), d = antes(A, 3);
-  const com = (q, c) => ({ step: 2, last: HOJE, qt: q, qc: c, qd: { [d]: [q, c] } });
-  assert.equal(A.interval(com(10, 9)), Math.round(7 * 1.4), "≥85% com 8+ questões: ×1,4");
-  assert.equal(A.interval(com(10, 8)), Math.round(7 * 1.2), "≥75%: ×1,2");
-  assert.equal(A.interval(com(10, 3)), 7, "acerto baixo não encurta (vira ponto fraco)");
-  assert.equal(A.interval({ ...com(10, 9), step: 0 }), 1, "no 1º degrau o acerto não mexe");
-  // com 5+ questões nos últimos 90 dias, só elas contam; com menos, vale o total acumulado
-  const rec = { step: 2, last: HOJE, qt: 20, qc: 13, qd: { [antes(A, 120)]: [10, 10], [d]: [10, 3] } };
-  assert.equal(A.interval(rec), 7, "as antigas (10/10) não salvam o acerto recente baixo (3/10)");
-  const pouco = { step: 2, last: HOJE, qt: 12, qc: 11, qd: { [antes(A, 120)]: [10, 9], [d]: [2, 2] } };
-  assert.equal(A.interval(pouco), Math.round(7 * 1.4), "menos de 5 recentes: usa o total (11/12)");
-  A.ui.prefs.adapt = false;
-  assert.equal(A.interval(com(10, 9)), 7, "preferência desligada");
-});
-
-test("botões da revisão: Esqueci volta 2 degraus, Difícil fica, Lembrei sobe", () => {
-  const A = novo(), s = { step: 3, last: antes(A, 15) };
-  assert.equal(A.revNext(s, 0), 1);
-  assert.equal(A.revNext({ step: 1 }, 0), 0, "nunca abaixo de zero");
-  assert.equal(A.revNext(s, 1), 3);
-  assert.equal(A.revNext(s, 2), 4);
-  assert.equal(A.revNext({ step: 6, last: antes(A, 90) }, 2), 6, "último degrau não passa do fim");
-  assert.equal(A.revPreview(s, 2), 30, "a prévia do Lembrei mostra o intervalo do degrau seguinte");
-});
-
-test("dia de folga: revisão que cairia na folga passa para o próximo dia de estudo", () => {
-  const A = novo();
-  const wd = new Date(HOJE + "T12:00:00").getDay(), amanha = (wd + 1) % 7;
-  const m = [60, 60, 60, 60, 60, 60, 60]; m[amanha] = 0;
-  A.ui.prefs.wday = m; A.HAS_OFF = true; // o applyUI() faria isso ao ler as preferências
-  assert.equal(A.dueIn({ last: HOJE, step: 0 }), 2, "cairia amanhã (folga): vai para depois de amanhã");
-  assert.equal(A.dueIn({ last: antes(A, 1), step: 1 }), 2, "dia sem folga no caminho não muda");
+  A.state["CM-1"] = { last: HOJE, rv: [{ d: HOJE, g: 2, l: 0, i: 3 }] };
+  A.FAC_ITEMS.push({ key: "F-teste", t: "Conteúdo da faculdade" });
+  A.state["F-teste"] = { last: HOJE, rv: [{ d: HOJE, g: 1, l: 2, i: 7 }] };
+  const L = A.topicRevs();
+  assert.ok(L.some(x => x.k === "CM-1" && x.g === 2) && L.some(x => x.k === "F-teste" && x.g === 1));
 });
