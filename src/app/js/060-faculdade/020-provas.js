@@ -37,7 +37,7 @@ let facShown=new Set(),facSemInit=false;
 const FOLDER_SVG=`<svg class="ffold" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.2l2 2.2h8.8A1.5 1.5 0 0 1 21 8.7v9.8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></svg>`;
 
 /* ---------- Faculdade: painel de provas, simulado da prova, depois da prova, materiais e foco por disciplina ---------- */
-let facProvAll=false,facRes=null,facLinkMsg="",facProvNew=false;
+let facProvAll=false,facRes=null,facProvNew=false;
 /* prontidão de uma prova: o que já está estudado e o ritmo para o resto (a véspera fica para revisar) */
 function provaStats(p){const refs=p.items.filter(refOk),pend=provaPending(p),dd=daysTo(p.date),tot=refs.length,done=tot-pend.length,avail=Math.max(1,dd-1),rate=pend.length/avail;
   const lvl=!tot||!pend.length?"ok":dd<=1||rate>1.5?"bad":rate>0.5?"warn":"ok";return {refs,pend,tot,done,dd,rate,lvl}}

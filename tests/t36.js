@@ -3,7 +3,7 @@ const FILE=process.argv[2]||'file://'+__dirname+'/../src/checklist-residencia.ht
 async function run(name,opts){const b=await chromium.launch();const ctx=await b.newContext(opts);await ctx.route(/googleapis|gstatic/,r=>r.abort());await ctx.addInitScript(mock+`;window.__mock({},5);`);
 const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
 await p.goto(FILE);await p.waitForFunction(()=>typeof saveFac==='function'&&synced,null,{polling:100});
-await p.evaluate(()=>{localStorage.clear();fac={sems:[{id:"s",name:"6° Semestre",archived:false},{id:"s2",name:"5° Semestre",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:[],info:{},eixos:[],sps:[]}],provas:[],own:{}};facSel="s";saveFac();setView("fac")});
+await p.evaluate(()=>{localStorage.clear();fac={sems:[{id:"s",name:"6° Semestre",archived:false},{id:"s2",name:"5° Semestre",archived:false}],discs:[{id:"d",semId:"s",name:"NCS 6",items:[],info:{},eixos:[],sps:[]}],provas:[],own:{}};saveFac();setView("fac")});
 await p.waitForTimeout(300);
 const tap=async s=>{const l=p.locator(s).first();if(opts.hasTouch)await l.tap();else await l.click();await p.waitForTimeout(150)};
 const cnt=async s=>p.locator(s).count();

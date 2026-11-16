@@ -703,3 +703,19 @@ Combinado com o usuário em 30/10/2026. Plano em lotes B1–B5 no projeto (`clau
   provas também contam; as provas-alvo do Perfil definem o peso; o toque do usuário sempre vence); ★ de fato HY na anotação (linha que começa
   com `★`, filtro "Só HY" em Pegadinhas e destaques, etiqueta `high-yield` no cartão do trecho); selo "conceito recorrente" na questão cobrada
   em 2+ provas/bancas. HY (o que cai) e "Onde focar" (o que cai × onde erra) continuam separados. Detalhes em `banco-de-questoes.md` do projeto.
+
+## Limpeza 16/11/2026 · código sem uso
+
+Pedido do usuário em 16/11/2026, 16h32 ("pode fazer todas as limpezas", sem esperar aprovação). A lista saiu da cobertura (`tests/run.sh --cobertura`) cruzada
+com o mapa ("sem uso" = o nome só aparece na definição). **Os nomes abaixo não existem mais**; os blocos antigos deste arquivo que os citam são histórico.
+- Funções (restos de cartões tirados nos Lotes 7, 10, 13, 17 e da ida dos cartões para a aba própria): `qGainCard` (Onde ganhar pontos), `nTodayCard`
+  (Para reler hoje), `eRepCard` (Erros que se repetem; `eRepeat` continua, usado pelo Onde melhorar), `iWeekCard` (resumo da semana do Início),
+  `ownDetailRow`, `ownLink` (virou `ownLinks`), `refKind`, `areaMapLabel`, `spChips`, `eNoteBtn` e `eToNote` (Levar para a anotação do erro, antigo),
+  `tplErros`, `nCardsCard`, `lastDays`, `newDaysWeek`, `aggr`, `eExtraOn`, `eAct`, `stHn`.
+- Variáveis que ninguém lia: `facSel`, `facEditDisc`, `facClosedEixo`, `facSynced`, `facLinkMsg`, `qGainMore`, `nTodayOpen`, `cdTopicOpen`, `wkMsg`.
+- CSS: 80 classes que nenhum código monta (nem por texto, nem por pedaço montado como `"r-"+x`; nomes que terminam em número ficaram, porque
+  podem vir de `c${i}`), 138 regras apagadas e 7 encurtadas; dentro de `:is()` sai só o item morto. app.css: 256,7 mil → 246,4 mil letras.
+- Ficou de propósito: `crUnlink` (desfazer do conceito recorrente; o botão foi adiado pelo usuário em 12/11).
+- Testes ajustados: t65 e t103 (tiradas as conferências do Levar para a anotação antigo e do Para reler hoje), t74 (resumo da semana do Início),
+  t68 (marca a anotação no erro direto), t36.
+

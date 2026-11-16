@@ -1,22 +1,6 @@
 /* ----- erros que se repetem (últimos 30 dias) ----- */
 function eRepeat(){const t=dnum(today()),by={};errors.forEach(e=>{if(BYKEY[e.k]&&!e.arch&&t-dnum(e.d)<=30)(by[e.k]=by[e.k]||[]).push(e)});
   return {tem:Object.entries(by).filter(([,l])=>l.length>=2).sort((a,b)=>b[1].length-a[1].length),stub:errors.filter(e=>BYKEY[e.k]&&!e.arch&&(e.miss||0)>=2).sort((a,b)=>b.miss-a.miss)}}
-function eRepCard(){const {tem,stub}=eRepeat();if(!tem.length&&!stub.length)return null;
-  const c=el(`<section class="card erep" aria-labelledby="eph"><div class="dhead"><h2 id="eph">Erros que se repetem</h2><span class="todaydate">últimos 30 dias</span></div></section>`);
-  if(tem.length){c.appendChild(el(`<p class="gtext">Errar várias vezes no mesmo tema é sinal de que a base não firmou. Antes de mais questões, volte à teoria ou à sua anotação desses temas.</p>`));
-    const ul=el(`<ul class="ereplist"></ul>`);tem.slice(0,6).forEach(([k,l])=>{const it=BYKEY[k],tc={};l.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const main=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
-      const li=el(`<li><button class="link" type="button"></button><span class="ks"></span><button class="mini" type="button">Ver erros</button><button class="mini" type="button">Estudar de novo</button></li>`);
-      li.querySelector(".link").textContent=it.t;li.querySelector(".link").onclick=()=>openTopic(k);
-      li.querySelector(".ks").textContent=`${l.length} erros · mais: ${(ETYPES[main]||"").toLowerCase()}`;
-      const [v,s]=li.querySelectorAll(".mini");v.onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
-      s.onclick=()=>{detTab[k]=(notes[k]||"").trim()?"notas":"estudo";openTopic(k)};ul.appendChild(li)});
-    if(tem.length>6)ul.appendChild(el(`<li class="how">+ ${tem.length-6} temas.</li>`));c.appendChild(ul)}
-  if(stub.length){c.appendChild(el(`<span class="glabel">Ainda não firmaram na revisão</span>`));
-    const ul=el(`<ul class="ereplist"></ul>`);stub.slice(0,5).forEach(e=>{const it=BYKEY[e.k],li=el(`<li><span class="ew"><b></b><span></span></span><span class="ks"></span></li>`);
-      li.querySelector("b").textContent=it.t+": ";li.querySelector(".ew span").textContent=eOneLine(e.w).slice(0,140)+(eOneLine(e.w).length>140?"…":"");li.querySelector(".ks").textContent=`"ainda erraria" ${e.miss}×`;
-      li.appendChild(eCardBtn(e));if(cdErr[e.id])li.appendChild(cdErrEl(e));ul.appendChild(li)});c.appendChild(ul);
-    c.appendChild(el(`<p class="how">Para estes, um cartão de memorização ajuda: ele volta mais vezes que a revisão do erro.</p>`))}
-  return c}
 /* ----- erros por semana, por tipo ----- */
 const ECOL={conhecimento:"var(--due)",interpretacao:"var(--l1)",confusao:"var(--l2)"};
 function eWeeksEl(){const N=8,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,n:0,t:{conhecimento:0,interpretacao:0,confusao:0}}));
@@ -51,7 +35,6 @@ const ECTIPS={"Nunca estudei isso":"Esses temas precisam de teoria antes de ques
   "Troquei critério ou classificação":"Escreva os critérios lado a lado e revise pelos cartões.",
   "Lembrei pela metade":"Revise o conceito inteiro, não só a resposta: reescreva o 'Correto' com as suas palavras."};
 /* ----- arquivar erros resolvidos ----- */
-const eAct=e=>!e.arch;
 function eArchive(e,on){eMenu=null;if(on)e.arch=today();else delete e.arch;putErr(e);render()}
 /* ----- filtros extras ----- */
 let eFlags=new Set(),ePer="all",eSrc="all",eCause="all",eVis=[],eMsg="",eSide="all";
@@ -73,7 +56,6 @@ function eExtraOk(e,R){
   if(eCause!=="all"&&(e.c||"")!==eCause)return false;
   if(eSide==="fac"&&!eIsFac(e,R.FL))return false;if(eSide==="res"&&eIsFac(e,R.FL))return false;
   if(eSide==="pw"&&!(R.PW&&R.PW.has(e.k)))return false;return true}
-const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all"||eSide!=="all";
 let eFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
 function eClearAll(){eFlags.clear();eSide="all";ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
 /* mostrar os erros de um tema: limpa os outros filtros (senão podia não sobrar nada) e, se o tema só tem arquivados, abre os arquivados */
@@ -139,10 +121,6 @@ async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Ne
 function eCardBtn(e){const n=cards.filter(x=>x.eid===e.id||x.id===e.cd).length,b=el(`<button class="mini" type="button"></button>`);b.textContent=n?`${n} ${n===1?"cartão":"cartões"} ✓`:cdErr[e.id]?"Cartões ▾":"Criar cartões";b.disabled=!!n;
   b.title="Cria dois cartões do padrão Osler a partir do erro: o que separa a certa da sua e por que a sua não serve";b.id="ecd-"+e.id;
   b.onclick=()=>{if(cdErr[e.id])delete cdErr[e.id];else cdErr[e.id]={list:cdErrDrafts(e)};render();setTimeout(()=>{const x=document.querySelector(`.cderr[data-eid="${e.id}"]`);if(x)x.scrollIntoView({block:"nearest"})},40)};return b}
-function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""} {{e:${e.id}}}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
-  if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
-  else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
-  replaceNote(k,v);e.nt=today();putErr(e);render()}
 /* 10/2026: erros saem das anotações. Uma vez por aparelho (resid-enm), a seção "## Meus erros" de cada anotação vai para o caderno:
    linha com o selo de um erro que existe = já está no caderno (só sai da anotação); o resto vira erro novo do tema (fonte "Anotação"). */
 function errNoteMig(){try{if(localStorage.getItem("resid-enm")==="1")return 0}catch(x){return 0}let moved=0,made=0;
@@ -155,8 +133,6 @@ function errNoteMig(){try{if(localStorage.getItem("resid-enm")==="1")return 0}ca
     const v=(cur.slice(0,at).replace(/\s+$/,"")+(end<cur.length?"\n\n"+cur.slice(end).replace(/^\s+/,""):"")).trim();saveNote(k,v)}
   errors.forEach(e=>{if(e.nt){delete e.nt;putErr(e)}});
   try{localStorage.setItem("resid-enm","1")}catch(x){}if(moved||made)render();return moved+made}
-function eNoteBtn(e){const b=el(`<button class="mini" type="button"></button>`);b.textContent=e.nt?"Na anotação ✓":"Levar para a anotação";b.disabled=!!e.nt;
-  b.title="Acrescenta o conceito correto na seção Meus erros da anotação do tema";b.onclick=()=>eToNote(e);return b}
 
 function renderErros(){
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):""}

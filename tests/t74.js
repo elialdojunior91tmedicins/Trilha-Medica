@@ -82,7 +82,6 @@ for(const name of Object.keys(DEV)){const {ctx,p,click,mob}=await open(name,{});
  ok(await p.evaluate(()=>iOrder().indexOf("iQueue")<iOrder().indexOf("iBoard")),name+": mudar a ordem");
  await p.evaluate(()=>[...document.querySelectorAll('.icust .link')].pop().click());await p.waitForTimeout(80);ok(await p.evaluate(()=>!ui.prefs.ihide&&iOrder()[0]==="iHero"&&iOrder()[1]==="iQueue"),name+": voltar ao padrão");
  // resumo da semana (simula domingo)
- ok(await p.evaluate(()=>{const g=Date.prototype.getDay;Date.prototype.getDay=function(){return 0};hist[today()]={...(hist[today()]||{}),q:10,c:7};const c=iWeekCard();Date.prototype.getDay=g;return !!c&&/Questões/.test(c.textContent)&&/70%/.test(c.textContent)}),name+": resumo da semana");
  // calendário e Anki
  const got=await p.evaluate(async()=>{const out=[];const o=downloadsFn.save;downloadsFn={save:async x=>{out.push({f:x.filename,t:await x.data.text()})}};
    const sid=fac.sems.length?fac.sems[0].id:null;ui.profile.exams=[{id:"e1",name:"ENARE",date:fromNum(dnum(today())+90)},{id:"e2",name:"USP"}];saveUI();await icsSave();const m1="",m2="";downloadsFn={save:o};return {out,m1,m2}});

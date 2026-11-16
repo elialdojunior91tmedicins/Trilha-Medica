@@ -11,10 +11,6 @@ addEventListener("scroll",()=>{tip.hidden=true},{passive:true});
 document.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")tip.hidden=true});
 
 /* filtros e agrupamento por especialidade (anotações e caderno de erros) */
-function spChips(box,area,sel,countOf,pick){box.innerHTML="";box.hidden=area==="all";if(area==="all")return;
-  const a=AREAS.find(x=>x.code===area);if(!a){box.hidden=true;return}
-  [["all","Todas as especialidades"],...a.specs.map(x=>[x.name,x.name])].forEach(([v,lab])=>{const c=countOf(v);if(v!=="all"&&!c)return;
-    const b=el(`<button class="chip" aria-pressed="${sel===v}"></button>`);b.textContent=`${lab} · ${c}`;b.onclick=()=>pick(v);box.appendChild(b)})}
 function groupHead(it,area,count,unit){const h=el(`<li class="lhead"><span class="code"></span><span class="lname"></span><span class="lcount"></span></li>`);
   h.querySelector(".code").textContent=it.area.code;h.querySelector(".lname").textContent=it.sp;
   h.querySelector(".lcount").textContent=`${count} ${count===1?unit[0]:unit[1]}`;return h}

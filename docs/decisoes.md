@@ -64,6 +64,8 @@ com a data e não apague o histórico.
 - Aparelho com versão antiga do app (sem atualizar) apaga o histórico e o "suspenso" de um cartão ao responder; some quando ele atualiza (revisão final, 13/11). Ações em vários vão juntas para a conta.
 - Sugestões aceitas (13/11, 09h06): todas de 1 a 18, menos a **6 (cartão de lacuna), recusada**. Histórico de cada revisão (30 por cartão); "lembrou" = Difícil/Bom/Fácil; maduro = 21 dias; mais esquecido = 4 vezes. (docs/superpowers/specs/2026-11-13-aba-cartoes-design.md)
 
+- **Limpeza do código sem uso** (16/11/2026, 16h32): o usuário pediu todas as limpezas, sem esperar aprovação; `crUnlink` fica (botão adiado em 12/11). (recursos › Limpeza 16/11/2026; claude/limpeza-funcoes.md)
+
 ## Aprovado e ainda não feito
 
 - Ajustar os intervalos pela retenção das revisões — depois de ~2 meses de histórico (13/11/2026). (claude/sugestoes-12-11.md)

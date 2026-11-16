@@ -2,7 +2,7 @@
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 let FAC_WIN=21, RES_MIN_WEEK=2;const LSF="resid-fac-v1", FAC_VESP=3, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facLinkSt=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facLinkSt=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
@@ -18,7 +18,6 @@ function refOk(r){const x=refTopic(r);return !!(x&&BYKEY[x.k])}
 /* todos os temas de um conteúdo: o próprio, ou cada tema da residência ligado a ele (o 1º é o principal) */
 function refTopics(r){const x=refTopic(r);if(!x)return [];return x.links?x.links.map(L=>({k:L.k,own:x.own,subs:L.subs})):[x]}
 function refLabel(r){const x=refTopic(r),it=x&&BYKEY[x.k];if(!it)return "";return x.own?fac.own[x.own].t:x.sub?x.sub:it.t}
-function refKind(r){return r.startsWith("O:")?"Próprio":r.startsWith("S:")?"Subtópico":"Residência"}
 function activeSems(){return fac.sems.filter(s=>!s.archived).map(s=>s.id)}
 function upcomingProvas(){const t=today(),act=new Set(activeSems());
   return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&!p.adi&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
@@ -126,7 +125,6 @@ const isSelf=(s,r)=>r==="O:"+s.id;
 const RESKEY=k=>!!BYKEY[k]&&!BYKEY[k].own;
 function linkDone(L){const s=get(L.k);if(!s.last)return false;if(!L.subs.length)return true;const SL=subList(BYKEY[L.k]);return L.subs.every(t=>{const y=SL.find(z=>z.t===t);return !y||y.done})}
 function ownLinks(id){const o=fac.own[id];return o&&Array.isArray(o.links)?o.links.filter(L=>L&&RESKEY(L.k)):[]}
-function ownLink(id){return ownLinks(id)[0]||null}
 const ownLinksTo=k=>Object.keys(fac.own).filter(id=>ownLinks(id).some(L=>L.k===k));
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
@@ -134,7 +132,6 @@ function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===i
 const refOfItem=it=>it.own?"O:"+it.key.slice(2):"T:"+it.key;
 const spShort=n=>{const m=String(n||"").match(/^\s*([A-Za-zÀ-ú]{1,12}\.?\s*\d+(?:[.,]\d+)*)/);return m?m[1].trim():(String(n||"").length>28?String(n).slice(0,26)+"…":String(n||""))};
 const spClean=n=>String(n||"").replace(/^\s*(sp|ncs|ap|aula|problema|tutoria|m[oó]dulo)\s*[\d.]+\s*[-–:·.]?\s*/i,"").trim()||String(n||"");
-function areaMapLabel(m){const A=AREAS.find(a=>a.code===m.area);return A?`${A.code} · ${m.spec||"Faculdade"}`:"Só na Faculdade"}
 /* sugere área e especialidade pelo nome do eixo (ex.: "Eixo de Hematologia" -> CM · Hematologia e oncologia) */
 function suggestMap(name){const n=norm(name);
   const hint=/pediatr|neonat|puericult|infancia|crianca/.test(n)?"PED":/obstet|ginec|gestac|saude da mulher|mama/.test(n)?"GO":/cirurg|trauma|ortoped|urolog/.test(n)?"CIR":/coletiva|preventiv|\bsus\b|epidemio|atencao primaria|familia|comunidade|iesc/.test(n)?"PREV":null;
@@ -341,15 +338,6 @@ function searchBox(d,mode){// mode: "disc" (adicionar conteúdo), {replace:id} o
   }
   return box}
 
-function ownDetailRow(it){const open=openKey===it.key,s=get(it.key),dd=dueIn(s);
-  const li=el(`<li class="t${open?" open":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">FAC</span><span class="topic"></span><span class="lvl" data-l="${lvKey(s)}">${lvName(s)}</span><span class="meta"></span></button></li>`);
-  li.querySelector(".topic").textContent=it.t;const m=li.querySelector(".meta");
-  if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
-  const [sd,st]=subCount(it);if(st)m.appendChild(el(`<span>${sd}/${st} subtópicos</span>`));if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
-  if(!m.children.length)m.appendChild(el(`<span>tema próprio</span>`));
-  li.querySelector(".item").onclick=()=>{openKey=open?null:it.key;formErr="";subErr="";render()};
-  if(open){const det=renderDetail(it);det.appendChild(dupBox(it));li.appendChild(det)}
-  return li}
 /* tema da faculdade repetido de um tema da residência: troca, levando tudo junto */
 function dupBox(it){const id=it.key.slice(2),o=fac.own[id],w=el(`<div class="fdup"></div>`);w.appendChild(linkPickEl(id));if(!(o&&o.spId===id))w.appendChild(dupBox0(it,id));return w}
 /* conteúdo ligado a vários temas: anotações, erros e cartões de cada um, juntos (só leitura; cada tema guarda os seus) */

@@ -80,8 +80,6 @@ function provaReadEl(){const p=fac.provas.find(x=>x.id===nProvaRd);if(!p){nProva
     const a=el(`<button class="link" type="button">Abrir o tema</button>`);a.onclick=()=>{detTab[k]="notas";openTopic(k)};sec.appendChild(a);c.appendChild(sec)});
   if(!K.length)c.appendChild(el(`<p class="cempty">Nenhum conteúdo desta prova tem página no Caderno ainda.</p>`));return c}
 function provaReadGo(p){nProvaRd=p.id;nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const x=$("#nProvaRead");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}
-function tplErros(it){const mine=errors.filter(e=>e.k===it.key).sort(byNewest);
-  return mine.length?"## Meus erros neste tema\n"+mine.map(e=>"- "+e.r.replace(/\s*\n\s*/g," — ")).join("\n"):null}
 
 /* Claude: gerar resumo ou organizar */
 function notePrompt(it,kind){

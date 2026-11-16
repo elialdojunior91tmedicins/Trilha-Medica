@@ -61,12 +61,9 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name.st
  ok(P.length===2&&/^Erro/.test(P[0])&&P[1]==="ENARE · 2024 · Q12",name+": Selo lista os erros e as questões do tema "+JSON.stringify(P));
  await p.evaluate(()=>{const t=document.querySelector('#nt-CM-34');t.focus();t.setSelectionRange(6,6);document.querySelectorAll('#t-CM-34 .nbpick .nbopts button')[1].id="__nq2"});await click('#__nq2');
  ok(await p.evaluate(()=>notes["CM-34"].split("\n")[0]==="- item {{q:exN:0}}"&&!document.querySelector('#t-CM-34 .nbpick')),name+": escolher insere o selo na linha "+JSON.stringify(await p.evaluate(()=>notes["CM-34"].split("\n")[0])));
- /* 7. Levar para a anotação põe o selo do erro */
- await p.evaluate(()=>{const e=errors[errors.length-1];eToNote(e)});ok(await p.evaluate(id=>notes["CM-34"].includes(`{{e:${id}}}`),eid),name+": Levar para a anotação deixa o selo do erro na linha");
- /* 7b. aba Anotações: cartão aberto com Mencionado em; Para reler hoje com tópicos; editor do caderno livre com [[, Tab e Selo */
+ /* 7b. aba Anotações: cartão aberto com Mencionado em; editor do caderno livre com [[, Tab e Selo */
  await p.evaluate(()=>{notes["CM-34"]="## Um\nTexto\n## Dois\nMais";notes["CM-1"]="Ver [[Anemias]].";commit();nOpen.add("CM-34");backStack=[];nSeg="todas";setView("notas")});await p.waitForTimeout(300);
  ok(await p.evaluate(()=>{const c=document.querySelector('#nc-CM-34');return c&&c.querySelectorAll('details.mdsec').length===2&&[...c.querySelectorAll('.wkback .wkchip')].some(x=>x.textContent==="Hipertensão arterial sistêmica")}),name+": cartão aberto na aba Anotações tem tópicos que recolhem e Mencionado em");
- ok(await p.evaluate(()=>{nTodayOpen.add("CM-34");const keys=notesTodayKeys().map(x=>x.k);render();const c=[...document.querySelectorAll('.ntoday .ncard')].find(x=>/Anemias/.test(x.textContent));return !keys.includes("CM-34")||(c&&c.querySelectorAll('details.mdsec').length===2)}),name+": Para reler hoje aberto também recolhe por títulos");
  await p.evaluate(()=>{freeEdit={id:"",t:"Aula",b:"- um",tags:"",ks:["CM-34"],q:""};nSeg="livre";render();document.querySelector('#frB').scrollIntoView({block:"center"})});await p.waitForTimeout(200);
  ok(await p.evaluate(()=>[...document.querySelectorAll('.freeed .frtools .tool')].map(x=>x.textContent).join()==="H,B,==,•,>,★,[[ ]],Selo"),name+": editor do caderno livre com barra (inclui [[ ]] e Selo)");
  await p.evaluate(()=>{const t=document.querySelector('#frB');t.focus();t.setSelectionRange(t.value.length,t.value.length)});await p.keyboard.type(' [[anem');await p.waitForTimeout(150);

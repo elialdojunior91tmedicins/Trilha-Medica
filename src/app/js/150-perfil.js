@@ -107,7 +107,6 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
 const goalSpan=dd=>dd>=60?`${Math.round(dd/30.4)} meses`:dd>=14?`${Math.round(dd/7)} semanas`:`${dd} dias`;
 
 /* ---------- Configurações ---------- */
-let wkMsg="";
 /* Lote 18: "Mais opções" dentro de cada cartão de Configurações (lembrado neste aparelho) */
 let cfOpen=new Set((()=>{try{return JSON.parse(localStorage.getItem("resid-cfmore")||"[]")}catch(e){return []}})());
 function cfLayer(card,key,labels,nodes){const rows=[...card.querySelectorAll(":scope>.cfrow")].filter(r=>labels.includes((r.querySelector(".cfl b")||{}).textContent)),N=[...nodes.filter(Boolean),...rows];if(!N.length)return;

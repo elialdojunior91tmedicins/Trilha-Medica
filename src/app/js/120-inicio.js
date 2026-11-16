@@ -120,15 +120,6 @@ function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
   foSess.forEach(x=>{const n=dnum(x.d);if(n>=ws&&n<=we)r.fo+=x.sec});
   for(let n=ws;n<=we;n++){const h=hist[fromNum(n)];if(h){r.q+=h.q||0;r.c+=h.c||0;r.e+=h.e||0;r.rv+=h.r||0}}
   errors.forEach(e=>{if(!e.d)return;const n=dnum(e.d);if(n>=ws&&n<=we)r.er++});return r}
-function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return null;const ws=dow===0?foWeekStart():foWeekStart()-7;if(lsGet("resid-wkdis","")===String(ws))return null;
-  const A=weekStats(ws),B=weekStats(ws-7);if(!A.fo&&!A.q&&!A.e&&!A.rv)return null;
-  const c=el(`<section class="card iweek" id="iWeek" aria-labelledby="iwh"><div class="dhead"><h2 id="iwh"></h2><button class="link" type="button">Fechar</button></div><div class="iwk"></div><p class="how"></p></section>`);
-  c.querySelector("h2").textContent=dow===0?"Sua semana":"Semana passada";c.querySelector(".dhead .link").onclick=()=>{lsSet("resid-wkdis",String(ws));render()};
-  const cmp=(a,b,fmt)=>{if(!b)return "";const d=a-b;return d===0?" · igual":` · ${d>0?"▲":"▼"} ${fmt(Math.abs(d))}`};
-  const rows=[["Foco",fmtMin(A.fo),cmp(A.fo,B.fo,fmtMin)],["Questões",A.q?`${A.q} · ${pct(A.c,A.q)}%`:"0",cmp(A.q,B.q,String)],["Temas estudados",String(A.e),cmp(A.e,B.e,String)],["Revisões",String(A.rv),cmp(A.rv,B.rv,String)],["Erros registrados",String(A.er),cmp(A.er,B.er,String)]];
-  const g=c.querySelector(".iwk");rows.forEach(([l,v,d])=>{const r=el(`<div class="kpi"><span class="kl"></span><b></b><span class="ks"></span></div>`);r.querySelector(".kl").textContent=l;r.querySelector("b").textContent=v;r.querySelector(".ks").textContent=d?`vs. anterior${d}`:"";g.appendChild(r)});
-  const best=A.fo>B.fo&&B.fo?"Mais tempo de foco que na semana anterior.":A.q>B.q&&B.q?"Mais questões que na semana anterior.":"";
-  c.querySelector("p.how").textContent=`${br(fromNum(ws))} a ${br(fromNum(ws+6))}.${best?" "+best:""}`;return c}
 /* ----- 12. Início personalizável ----- */
 /* ---------- Início: saudação do dia (#iHero) — data, "Bom dia, Nome.", o que espera hoje, prova perto, feito real ou frase do dia e o botão da fila ---------- */
 const heroDate=()=>{const s=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)};

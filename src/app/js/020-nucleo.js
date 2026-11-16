@@ -84,7 +84,6 @@ const isNewDay=()=>dayMin(dnum(today()))>=60;
 const isSimDay=()=>WK_SIM.has(wdOf(dnum(today())))&&!isOffDay();
 function offShift(n){let g=0;while(dayMin(n)===0&&g<7){n++;g++}return n}
 function nextStudyLabel(){const t=dnum(today()),n=offShift(t+1);return n===t+1?"amanhã":(wdOf(n)===0||wdOf(n)===6?"no ":"na ")+WD_FULL[wdOf(n)]}
-const newDaysWeek=()=>Math.max(1,ui.prefs.wday.filter(m=>m>=60).length);
 const weekCap=()=>{const W=ui.prefs.wday;let c=0;for(let d=0;d<7;d++){const m=W[d];c+=m<=30?0:m<=60?1:m<=120?Math.min(2,PLAN_N):PLAN_N}return Math.max(1,c)};
 /* revisão que cairia num dia de folga passa para o próximo dia de estudo; no dia de folga nada vence */
 function dueIn(s){if(!s.last)return null;const t=dnum(today()),raw=dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0);if(!HAS_OFF)return raw-t;
@@ -222,7 +221,6 @@ let hist={};const LSH="resid-hist-v1";
 function logAct(f,n,c,day){const d=day||today(),h=hist[d]||(hist[d]={});h[f]=Math.max(0,(h[f]||0)+(n||1));if(c)h.c=Math.max(0,(h.c||0)+c);
   const keys=Object.keys(hist).sort();if(keys.length>400)keys.slice(0,keys.length-400).forEach(k=>delete hist[k]);
   try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
-function lastDays(n){const t=dnum(today());return Array.from({length:n},(_,i)=>fromNum(t-n+1+i))}
 /* Lote 20E: uma regra só de sequência (Perfil, PDF, Estatísticas, saudação, meta do Foco): dia de folga planejada (ou "Hoje não deu")
    sem estudo CONGELA (não soma nem quebra); estudar na folga soma +1. Hoje ainda sem estudo não quebra. */
 const offDay=d=>dayMin(dnum(d))===0;

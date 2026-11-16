@@ -2,7 +2,7 @@
 let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","pegadinhas"].includes(v))nSeg=v}catch(e){}
 /* Lote 13: caderno único — "Temas" e "Livre" viraram a parte "Caderno" (nSeg "livre"); "todas" continua aceito como apelido */
 function setNSeg(v){if(v==="todas"||v==="revisar")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
-let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
+let nNoNote=false,nPegAll=false;
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
   [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))).forEach(i=>add(i.key,"Revisão de hoje"));
@@ -20,19 +20,6 @@ function rereadEl(k){const t=(notes[k]||"").trim(),it=BYKEY[k],w=el(`<div class=
   if(open){const v=el(`<div class="mdview"></div>`);v.innerHTML=md(notes[k],{fold:k});w.appendChild(v)}
   const n=(typeof freeN!=="undefined"?freeN:[]).filter(f=>(f.ks||[]).includes(k)).length,a=el(`<button class="link rrall" type="button"></button>`);
   a.textContent=n?`Ver todas as anotações do tema (+${n} ${n===1?"página ligada":"páginas ligadas"})`:"Ver todas as anotações do tema";a.onclick=()=>{detTab[k]="notas";openTopic(k)};w.appendChild(a);return w}
-function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||"").trim()),without=L.filter(x=>!(notes[x.k]||"").trim()),T=today(),read=withN.filter(x=>get(x.k).nread===T).length;
-  const c=el(`<section class="card ntoday" aria-labelledby="nth"><div class="dhead"><h2 id="nth">Para reler hoje</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=withN.length?`${read} de ${withN.length} relidas`:"";
-  if(!L.length){c.appendChild(el(`<p class="cempty">Nenhum tema no plano ou em revisão hoje.</p>`));return c}
-  if(!withN.length)c.appendChild(el(`<p class="cempty">Nenhum dos temas de hoje tem anotação ainda. Escrever um resumo curto depois de estudar ajuda nas revisões.</p>`));
-  const ol=el(`<ol class="elist"></ol>`);withN.forEach(({k,why})=>{const it=BYKEY[k],done=get(k).nread===T,open=nTodayOpen.has(k);
-    const li=el(`<li class="ncard${done?" nread":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span></div><div class="mdview${open?"":" clamp"}"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini nreadb" type="button"></button></div></li>`);
-    const tb=li.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);li.querySelector(".nloc").textContent=`${why} · ${it.area.code}${it.sp?" · "+it.sp:""}`;
-    li.querySelector(".mdview").innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);{const ne=noteErrsEl(k);if(ne)li.querySelector(".mdview").after(ne)}const [tg,rb]=li.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nTodayOpen.delete(k):nTodayOpen.add(k);render()};
-    rb.textContent=done?"✓ Reli":"Reli";rb.setAttribute("aria-pressed",done);rb.onclick=()=>{upd(k,s=>{if(s.nread===T)delete s.nread;else s.nread=T});if(!done)nTodayOpen.delete(k);commit()};ol.appendChild(li)});
-  c.appendChild(ol);
-  if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
-  return c}
 /* pegadinhas e destaques (Lote 20C; B5: linhas ★ = HY, tipo "hy"): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
    Pegadinhas/Alertas/Cuidado; vale para a página do tema e para as páginas livres. Cada item guarda a seção de onde veio. */
 function pegParse(txt){const t=String(txt||"").replace(/\r/g,""),out=[];let inPeg=false,sec="",fen=false;

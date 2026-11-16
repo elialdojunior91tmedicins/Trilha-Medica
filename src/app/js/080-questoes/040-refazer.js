@@ -1,7 +1,7 @@
 /* ---------- Questões: refazer erradas, registro rápido, onde ganhar pontos, evolução ---------- */
 /* questões geradas que você errou: {id, k, d, n (vezes errada), q:{enunciado, alternativas:[{letra,texto}], correta, comentario, conceito, alerta}} */
 const LSRD="resid-redo-v1",RD_MAX=600;
-let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
+let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
 /* Lote 12: due = quando volta; ok = acertos em dias diferentes (sai com RD_NEED); okd = dia do último acerto; wr = erros no próprio Refazer; src = gen|sim|exam */
 const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/,RD_IMG_MAX=180000;

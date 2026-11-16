@@ -170,6 +170,7 @@ Cada tela e cada lote tem um bloco lá, com funções, ids, formatos e as decis�
 - Revisões: histórico e recuperação do atraso
 - Aba Cartões
 - Banco de questões: as decisões do plano (30/10 a 12/11/2026)
+- Limpeza 16/11/2026 · código sem uso
 
 ## Decisões que valem sempre
 

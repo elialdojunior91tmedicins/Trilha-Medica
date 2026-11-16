@@ -14,7 +14,6 @@ function stPerTopic(){const by={};foSess.forEach(x=>{const r=x.ref||"";if(!r.sta
 function stFirst(){const d=[...Object.keys(hist).filter(heroActive),...foSess.map(x=>x.d)].sort()[0];return d?dnum(d):null}
 function stTopicAct(keys,a,b){let nw=0,rv=0;keys.forEach(k=>{const ed=(get(k).ed||[]).slice().sort();ed.forEach((d,i)=>{const n=dnum(d);if(n<a||n>b)return;if(i===0)nw++;else rv++})});return {nw,rv}}
 const stH=s=>s>=3600?(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1})+" h":Math.round(s/60)+" min";
-const stHn=s=>(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1});
 const stPct=x=>x===null||x===undefined?"—":Math.round(x*100)+"%";
 const stMon=d=>{const M=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];return M[+d.slice(5,7)-1]+" de "+d.slice(0,4)};
 function stDelta(n,p,o={}){if(n===null||p===null||n===undefined||p===undefined)return ["","—"];const d=o.pts?Math.round((n-p)*100):n-p;if(!d)return ["eq","="];

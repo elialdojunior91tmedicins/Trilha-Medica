@@ -250,7 +250,7 @@ function cdEditEl(){const E=cdEd,w=el(`<div class="cdedit" id="cdEdit"><div clas
   if(E.msg){const m=el(`<p class="err"></p>`);m.textContent=E.msg;w.appendChild(m)}return w}
 function cdPrevFill(pv){const E=cdEd;pv.querySelector(".osq").innerHTML=cdSafe(cdT2H(E.q));pv.querySelector(".osa").innerHTML=cdSafe(cdJoinA(E.a,E.x,E.n));const r=cdT2H(E.r);pv.querySelector(".osref").innerHTML=r?cdSafe(r):"";pv.querySelector(".osref").hidden=!r}
 /* ---- árvore Grande área › Especialidade › Tema, com estudo por recorte ---- */
-let cdTreeOpen=new Set(),cdTopicOpen=null;
+let cdTreeOpen=new Set();
 function cdCounts(L){const T=today();return {n:L.length,d:L.filter(x=>x.f.st&&x.due<=T).length,nw:L.filter(x=>!x.f.st).length}}
 function cdCountTxt(c){return `${c.n} ${c.n===1?"cartão":"cartões"}${c.d?` · <b class="cdtd">${c.d} hoje</b>`:""}${c.nw?` · ${c.nw} ${c.nw===1?"novo":"novos"}`:""}`}
 /* vencidos entram como revisão normal (e os novos até o limite do dia); o resto entra como treino extra, sem mexer na agenda */
@@ -406,5 +406,3 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
 let nMsgCards="";
 /* sessão de revisão dos cartões */
 
-function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
-  return c}

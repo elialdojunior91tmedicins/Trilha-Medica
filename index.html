@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=18b9c2a4">
+<link rel="stylesheet" href="site.css?v=a0f78ce3">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=18b9c2a4"></script>
-<script src="bridge.js?v=18b9c2a4"></script>
+<script src="config.js?v=a0f78ce3"></script>
+<script src="bridge.js?v=a0f78ce3"></script>
 </head>
 <body>
 <script>
@@ -102,7 +102,6 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
 .dcharts{display:grid;grid-template-columns:1fr;gap:18px}
 .chart{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0;border-top:1px solid var(--line);padding-top:14px}
 .chart figcaption{font:700 1.092rem var(--display)}
-.hrow{display:grid;grid-template-columns:2.6rem 1fr 2.6rem;gap:10px;align-items:center;font-size:.85rem;min-height:22px}
 #qChart,#areaChart{display:flex;flex-direction:column;gap:12px}
 #areaChart{gap:10px}button.arow{all:unset;display:flex;flex-direction:column;gap:5px;cursor:pointer;box-sizing:border-box;width:100%}button.arow:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .atop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.88rem}.al{font-weight:600}.an{color:var(--muted);font-size:.8rem;white-space:nowrap}.an b{color:var(--ink)}
@@ -114,7 +113,6 @@ button.qchrow{all:unset;display:flex;flex-direction:column;gap:5px;cursor:pointe
 .vl{flex:1;min-width:0}
 .vrow .hbar{height:10px}
 .hl{font:500 .78rem var(--mono);color:var(--muted)}
-.hl.wide{font:500 .85rem var(--body);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hv{font:500 .85rem var(--mono);text-align:right;font-variant-numeric:tabular-nums}
 .hn{font:500 .75rem var(--mono);color:var(--muted);text-align:right}
 .hbar{position:relative;height:14px;display:flex;gap:2px;background:var(--track);border-radius:0 4px 4px 0}
@@ -125,11 +123,7 @@ button.qchrow{all:unset;display:flex;flex-direction:column;gap:5px;cursor:pointe
 .ref{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--ink);opacity:.45}
 .refk{display:inline-block;width:1px;height:12px;background:var(--ink);opacity:.45;margin:0 4px}
 .cols{display:grid;grid-template-columns:auto 1fr;gap:8px}
-.yaxis{display:flex;flex-direction:column;justify-content:space-between;font:500 .7rem var(--mono);color:var(--muted);text-align:right;height:96px}
-.cgrid{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;align-items:end;background:linear-gradient(var(--line),var(--line)) 0 0/100% 1px no-repeat,linear-gradient(var(--line),var(--line)) 0 48px/100% 1px no-repeat,linear-gradient(var(--line),var(--line)) 0 95px/100% 1px no-repeat}
 .col{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
-.cbar{height:96px;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.cbar i{display:block;width:min(100%,14px);background:var(--accent);border-radius:4px 4px 0 0;min-height:0}
 .cdot{width:6px;height:6px;border-radius:50%;background:transparent;border:1px solid var(--line)}
 .cdot.on{background:var(--ink);border-color:var(--ink)}
 .cx{font:500 .65rem var(--mono);color:var(--muted);height:.9rem}
@@ -220,29 +214,14 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 .pweek{list-style:none;padding:0}.pfrnote{font-size:.76rem}.pweek .phint{margin:0}.pfrt .link{font-size:inherit}
 .fbadge{font:600 .72rem var(--body);color:var(--l2);border:1px solid var(--l2);border-radius:99px;padding:0 7px}
 .fbadgep{margin:0;font-size:.85rem;border-left:3px solid var(--l2);border-radius:0 8px 8px 0}
-.ftools{display:flex;gap:12px;flex-wrap:wrap}
-.fnext{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
-.fnext b{display:block;font-family:var(--display)}.fnext div span{font-size:.8rem;color:var(--muted)}
-.fnext .meter{grid-column:1/-1;margin:0}.fsub{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
+.ftools{display:flex;gap:12px;flex-wrap:wrap}.fsub{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
 .fcount{font:600 .8rem var(--body);color:var(--l2);white-space:nowrap}.fcount.soon{color:var(--due)}
-.fdisc{gap:14px}
 .facchip.lnk{color:var(--l2);background:color-mix(in srgb,var(--l2) 14%,transparent)}
 .fdup{display:flex;flex-direction:column;gap:16px}
 .flinkpick{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px}
 .flinkpick>p{margin:0}
 .flinkinfo{border-left:3px solid var(--l2);padding-left:12px}
-.flkrow{display:flex;flex-direction:column;gap:6px}.flkrow p{margin:0}.flkrow .ks{font-size:.8rem;color:var(--muted)}.flkrow+.flkrow{border-top:1px dashed var(--line);padding-top:8px}
-.fdh{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;background:none;border:0;padding:0;text-align:left;color:var(--ink);cursor:pointer;font:inherit}
-.fdh .chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 4px;grid-row:1/3}
-.fdh[aria-expanded="true"] .chev{transform:rotate(45deg)}
-.fdn{font:700 1.265rem/1.2 var(--display)}.fdm{font-size:.8rem;color:var(--muted)}
-.fitems{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.fitems>li{border-bottom:1px solid var(--line)}.fitems>li:last-child{border-bottom:0}
-.fitem{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:9px 12px}
-.fitem .etopic{font-size:.92rem}
-.fkind{font-size:.75rem;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
-.fitem .sp{flex:1}
-.fitems li.t>.link{margin:0 0 8px 18px}
+.flkrow{display:flex;flex-direction:column;gap:6px}.flkrow p{margin:0}.flkrow .ks{font-size:.8rem;color:var(--muted)}.flkrow+.flkrow{border-top:1px dashed var(--line);padding-top:8px}.fdm{font-size:.8rem;color:var(--muted)}
 .fsearch{display:flex;flex-direction:column;gap:6px}
 .fres{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
 .fres li{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
@@ -262,34 +241,20 @@ h1.brand{display:flex;align-items:center;gap:12px;letter-spacing:0}
 /* faculdade: disciplina › eixo › SP */
 .facchip{display:inline-block;font:700 .66rem var(--body);letter-spacing:.04em;color:var(--l1);background:color-mix(in srgb,var(--l1) 14%,transparent);border-radius:99px;padding:1px 7px;vertical-align:1px}
 li.t.own>.item .num{color:var(--l1);font-weight:700}
-.fdet>summary{font-size:.88rem}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 12px;margin-top:8px}
 .fgridw{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .ffield{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--muted)}
 .ffield textarea{resize:vertical;font:inherit;font-size:.9rem;color:var(--ink)}
-.feixos{display:flex;flex-direction:column;gap:12px}
-.feixo{border-left:3px solid var(--accent);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:8px}
-.feixo.fnoeixo{border-left-color:var(--line)}
-.fexh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
-.fexn{font-size:.98rem}
-.fexmap{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)}
-.fexact{display:flex;gap:10px;margin-left:auto}
 .fmapw{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;max-width:100%}
 .fmapsel{max-width:100%;font-size:.82rem;padding:4px 6px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 .fmapin{width:auto;min-width:0;font-size:.82rem;padding:4px 8px}
-.fsps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.fsp{border:1px solid var(--line);border-radius:10px;background:var(--surface)}
-.fsp.open{border-color:var(--accent)}
 .fsph{width:100%;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;background:none;border:0;padding:9px 12px;text-align:left;color:var(--ink);cursor:pointer;font:inherit}
 .fsph .chev{width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin:0 3px;grid-row:1/3}
 .fsph[aria-expanded="true"] .chev{transform:rotate(45deg)}
-.fspn{font-weight:600;font-size:.94rem}.fspm{font-size:.78rem;color:var(--muted)}.fspm.late{color:var(--due)}
-.fspb{display:flex;flex-direction:column;gap:12px;padding:0 12px 12px}
 .fsug{display:flex;flex-direction:column;gap:6px}
 .fobj .psubs li{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
 .fobj .psubs li label{flex:1 1 200px;min-width:0}
 .fobj .psubs li .link{font-size:.8rem;white-space:nowrap}
-.fspb .fitems>li.empty{padding:9px 12px!important}
 .fobjadd textarea{flex:1;min-width:0;resize:vertical;font:inherit;font-size:.9rem}
 .fspact{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:.85rem}
 .fmove{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
@@ -331,10 +296,6 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .pick{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 .83rem var(--body);padding:6px 10px;border-radius:99px;cursor:pointer;text-align:left}
 .pick[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .plan{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.planitem{width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
-.planitem:hover{border-color:var(--accent)}
-.planitem .pt{font-weight:600;min-width:0}
-.planitem .pa{font:500 .75rem var(--mono);color:var(--muted);grid-column:1}
 .reason{grid-row:1/3;grid-column:2;font:600 .75rem var(--body);padding:3px 9px;border-radius:99px;white-space:nowrap;letter-spacing:.02em}
 .r-rev{background:var(--due-soft);color:var(--due)}
 .r-weak{background:var(--accent-soft);color:var(--l2)}
@@ -342,7 +303,6 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .ioff{display:flex;flex-direction:column;gap:6px}.ioffh{margin:0}.iofflist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}.iofflist li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:5px 0}
 .phndb{margin-left:auto}.phndb.warn{color:var(--late);font-weight:700}.phndu{margin-left:auto;font-size:.8rem;color:var(--muted)}.phnd{margin:0;font-size:.88rem;color:var(--late)}.fohm i.off{background:color-mix(in srgb,var(--accent) 8%,transparent)}.fohm i.off .ofs{font-style:normal;opacity:.7}
 .paxis{margin:0;font-size:.86rem;color:var(--muted2);line-height:1.45}.paxis b{color:var(--ink)}.paxwarn{color:var(--late)}.axnow{margin:4px 0;font-size:.88rem}.axfix{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:6px}
-.sumtop{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .big{font:500 1.9rem/1 var(--mono);font-variant-numeric:tabular-nums}
 .big small{font-size:.9rem;color:var(--muted);font-family:var(--body)}
 .bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
@@ -352,14 +312,11 @@ li.t.own>.item .num{color:var(--l1);font-weight:700}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 .d1{background:var(--m1)}.d2{background:var(--m2)}.d3{background:var(--m3)}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;border-top:1px solid var(--line);padding-top:12px}
-.stat b{display:block;font:500 1.15rem var(--mono);font-variant-numeric:tabular-nums}
-.stat span{font-size:.8rem;color:var(--muted)}
 .save{font-size:.82rem;color:var(--muted)}
 .controls{display:flex;flex-direction:column;gap:10px}
 .qfrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
 .qfsel{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:.78rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
 .qfsel select{width:100%;min-width:0;padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;font-weight:400;letter-spacing:0}
-.qftop{display:flex;gap:8px;align-items:stretch}
 .qregb{padding:7px 12px;font-size:.85rem}
 .qgoal{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:flex-end;border-top:1px solid var(--line);padding-top:12px}
 .qgm{flex:1 1 260px;display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -387,7 +344,6 @@ html[data-layout="phone"] .qsrcform{grid-template-columns:1fr}
 .meter.pace{position:relative;overflow:visible}.meter.pace i{border-radius:99px}.meter.pace.ok i{background:var(--good)}.meter.pace.slow i{background:var(--warn)}
 .pref{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink);opacity:.5}
 #qRegBox:empty,#qPace:empty{display:none}
-.qfnote{margin:0}.qfnote .link{font-size:.85rem}
 .simcfg{display:flex;flex-direction:column;gap:8px}
 .qsim #simGo{align-self:flex-start}
 .simtopic{font-size:.8rem;color:var(--muted);font-style:italic}
@@ -415,9 +371,7 @@ html[data-layout="phone"] .qsrcform{grid-template-columns:1fr}
 .exlqs{display:flex;flex-wrap:wrap;gap:4px}
 .exlqs .chip{padding:3px 9px;font-size:.8rem}
 .simok{font-weight:700;text-align:center}.simok.ok{color:var(--good)}.simok.no{color:var(--due)}
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="resumo"] :is(.qs-prac,.qs-tem),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="praticar"] :is(.qs-res,.qs-tem),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="temas"] :is(.qs-res,.qs-prac,.qfnote){display:none!important}
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="resumo"] :is(.qs-prac,.qs-tem),html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="praticar"] :is(.qs-res,.qs-tem),html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewQuest[data-qseg="temas"] :is(.qs-res,.qs-prac){display:none!important}
 .qreg{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px 14px}
 .qreg .dhead b{font-family:var(--display)}
 .qreg .pnote{margin:0}
@@ -650,8 +604,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .rdfil{display:flex;flex-direction:column;gap:8px;align-items:flex-start}.rdfil select{padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.85rem}
 .rdteim{font:700 .66rem var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--bad);border:1px solid var(--bad);border-radius:99px;padding:0 6px;vertical-align:1px}
 .rdbytema{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.88rem}.rdbytema li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
-.qflink{color:var(--accent);font-weight:600}
-.ntype{align-self:flex-start;flex-wrap:wrap}.nlisth{margin:6px 0 0;font:700 1.05rem var(--display);color:var(--accent)}.ncadhow{margin:0;font-size:.82rem}.nexport h2{font-size:1.1rem}
+.qflink{color:var(--accent);font-weight:600}.nlisth{margin:6px 0 0;font:700 1.05rem var(--display);color:var(--accent)}.ncadhow{margin:0;font-size:.82rem}.nexport h2{font-size:1.1rem}
 #qFind #qlistT{margin-top:4px}html[data-cols="2"] #qlistT.q2c{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:start}#qlistT .qtophead,#qlistT .qtopmore{grid-column:1/-1;list-style:none}#qlistT .qtophead{margin:2px 0}#qlistT .qtopmore{padding:4px 0}.qfall{margin:0;font-size:.8rem}.qrow.qopen{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .qtp{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}.qtp .glabel{margin:0}.qtp .glabel .how{text-transform:none;letter-spacing:0;font-weight:400}
 .qtpw{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;height:110px}.qtpc{display:flex;flex-direction:column;align-items:center;min-width:0}.qtpv{font:600 .68rem var(--body);color:var(--muted);height:1rem}
@@ -660,26 +613,7 @@ html[data-layout="phone"] .exfields{grid-template-columns:minmax(0,1fr) 5.5rem}h
 .qtptr{margin:0;font-size:.82rem}.qtpsrc,.qtperr{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.85rem}.qtpsrc li{display:flex;justify-content:space-between;gap:10px}
 .qtperr .link{text-align:left;font-size:.85rem}.qtpacts .btn{font-size:.82rem}
 .rdtopic{font-size:.82rem}
-.qglist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column}
-.qglist li{display:grid;grid-template-columns:1.6rem minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.qgn{font:500 .8rem var(--mono);color:var(--muted);grid-row:1/3}
 .qgm{display:flex;flex-direction:column;gap:2px;min-width:0}
-.qgt{background:none;border:0;padding:0;text-align:left;font:600 .93rem var(--body);color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
-.qgs{font:500 .74rem var(--mono);color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:4px}
-.qga{display:flex;flex-direction:column;align-items:flex-end;font:500 .75rem var(--mono);color:var(--muted)}
-.qgp.none{font:600 .75rem var(--body);color:var(--muted)}
-.qgb{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px}
-.qftop .search{flex:1;min-width:0}
-.qfbtn{display:none;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9rem var(--body);padding:0 12px;border-radius:10px;cursor:pointer;white-space:nowrap}
-.qfbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-.qfbtn b{font:700 .72rem/18px var(--body);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--on-accent);text-align:center}
-.qfbtn[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
-.qfpanel{display:flex;flex-direction:column;gap:10px}
-.qfdone{display:none}
-html[data-layout="phone"] .qfbtn{display:inline-flex}
-html[data-layout="phone"] .qfpanel:not(.open){display:none}
-html[data-layout="phone"] .qfpanel.open{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
-html[data-layout="phone"] .qfdone{display:block;align-self:stretch}
 #qFilters>#qClear{align-self:flex-start}
 .qchtog{margin-bottom:10px;align-self:flex-start}
 .qmore{margin-top:6px}
@@ -756,7 +690,6 @@ li.t.open{background:var(--bg)}
 .glabel.dsm{margin-top:6px;padding-top:12px;border-top:1px dashed var(--line)}
 .nhint{font-weight:500;text-transform:none;letter-spacing:0;margin-left:8px;color:var(--muted);font-size:.76rem}
 .ntags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.ntag{font-size:.78rem;padding:3px 9px}.ntagf .etext{width:9rem;padding:4px 8px;font-size:.82rem}
-.ntagbar{align-items:center}.ntagbar .glabel{margin-right:4px}
 .exks{font-size:.76rem;padding:3px 9px}.exkadd{font-size:.8rem}
 .exsug{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;grid-column:1/-1}.exnote{grid-column:1/-1;margin:2px 0 0;font-size:.78rem}
 .excat{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}.excat .seg{flex-wrap:wrap}
@@ -874,7 +807,6 @@ body:has(.bulkbar)>.wrap{padding-bottom:220px}
 .recnote .btns{flex-wrap:wrap}
 .aglist{margin-top:4px}
 html[data-layout="phone"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="tablet"][data-cols="1"] #viewTemas[data-seg="prog"] .agenda,html[data-layout="phone"] #viewTemas[data-seg="hoje"] .agenda{display:none}
-.hsub{margin-top:-6px;min-height:12px}.hsub .hv{font-size:.72rem;color:var(--muted)}
 .sbar2{height:5px!important;background:var(--track)}.sbar2 i{background:var(--ink);opacity:.55;border-radius:0 3px 3px 0}
 .rmap{display:flex;flex-direction:column;gap:12px}
 .rmarea{display:flex;flex-direction:column;gap:6px}.rmh{font-size:.8rem;color:var(--muted)}.rmh b{font-family:var(--mono);color:var(--accent)}
@@ -905,12 +837,9 @@ html[data-layout="phone"] #viewTemas:is([data-seg="hoje"],[data-seg="rev"],[data
 .pint b{font-size:.93rem;font-weight:600}.pint span{font-size:.76rem;color:var(--muted)}
 .pinx{background:none;border:0;color:var(--l1);font-size:1.15rem;cursor:pointer;padding:4px}
 .dpin[aria-pressed="true"]{color:var(--l1);border-color:var(--l1)}
-.nrevbox{display:flex;flex-direction:column;gap:20px}
-.ntoday .ncard.nread{opacity:.7}.nreadb[aria-pressed="true"]{color:var(--good);border-color:var(--good)}
-.nwithout{margin:0}.erepb{display:inline-block;margin-left:8px;font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:var(--track);color:var(--warn);font-weight:600}.reread{display:flex;flex-direction:column;gap:6px;margin:4px 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.nrevbox{display:flex;flex-direction:column;gap:20px}.erepb{display:inline-block;margin-left:8px;font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:var(--track);color:var(--warn);font-weight:600}.reread{display:flex;flex-direction:column;gap:6px;margin:4px 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
 .rrhead{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}.rrhead .rrw{font-size:12px;color:var(--muted);flex:1}
-.rrhead .pchev{margin-left:auto}.reread .rrall{align-self:flex-start;font-size:13px}.reread .mdview{max-height:none}.nnoline{margin:4px 2px 0}.nwithout .link{font-size:.85rem}
-.ncover{margin:0}.ncover .link{font-size:.88rem}
+.rrhead .pchev{margin-left:auto}.reread .rrall{align-self:flex-start;font-size:13px}.reread .mdview{max-height:none}.nnoline{margin:4px 2px 0}
 .pgsec{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
 details.pgsec>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:4px 0}details.pgsec>summary::-webkit-details-marker{display:none}
 details.pgsec>summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s}details.pgsec[open]>summary::after{transform:rotate(-135deg)}
@@ -933,18 +862,12 @@ details.pgsec>summary::after{content:"";margin-left:auto;width:8px;height:8px;bo
 .cdmine li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;border-bottom:1px solid var(--line);padding:6px 0;font-size:.88rem}
 .cdform textarea{min-height:2.6rem}
 .fcard{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:150px}
-.fcard .fcq{margin:0;font:700 1.242rem/1.35 var(--display)}
 .fcard .fca{font-size:.98rem;border-top:1px dashed var(--line);padding-top:10px}.fcard:not(.flip) .fca{display:none}
 .fctopic{font-size:.8rem}
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="livre"] :is(.ns-peg,.ns-rev),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-ctl,.ns-peg,.ns-free),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-rev,.ns-free),
-html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-rev,.ns-peg,.ns-free){display:none!important}
+html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="livre"] :is(.ns-peg),html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="revisar"] :is(.ns-all,.ns-peg,.ns-free),html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="pegadinhas"] :is(.ns-all,.ns-free),html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[data-nseg="todas"] :is(.ns-peg,.ns-free){display:none!important}
 .nerrs{margin-top:8px;font-size:.85rem;display:flex;flex-direction:column;gap:6px}
 .nerrh{margin:0;font-size:.82rem;color:var(--muted)}.nerrs.live .nerrh>span{color:var(--due);font-weight:600}.nerrh .link{font-size:.82rem}
 .nerrs ul{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:4px}
-.nerr{width:100%;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px;text-align:left;background:none;border:0;border-left:3px solid var(--due);padding:3px 0 3px 9px;color:var(--ink);font:inherit;font-size:.86rem;cursor:pointer}
-.nerr:hover .ne-r{text-decoration:underline}.ne-r{flex:1 1 220px;min-width:0}.ne-m{font-size:.74rem;color:var(--due);font-weight:600;white-space:nowrap}
 .ecard.eflash{outline:2px solid var(--accent);outline-offset:2px;transition:outline-color .6s}
 .nfree .dhead .btn{padding:6px 12px;font-size:.85rem}
 .freeed{display:flex;flex-direction:column;gap:10px;background:var(--bg);border:1px solid var(--accent);border-radius:12px;padding:12px}
@@ -969,12 +892,8 @@ html:is([data-layout="phone"],[data-layout="tablet"][data-cols="1"]) #viewNotas[
 .imgpick{cursor:pointer}
 .imgprev{max-height:120px;max-width:100%;border-radius:8px;border:1px solid var(--line)}
 .imgpanel .how{margin:0;font-size:.8rem}
-.dsum{display:flex;flex-wrap:wrap;gap:6px}
-.dchip{display:flex;flex-direction:column;align-items:flex-start;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 10px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
-.dchip span{font:600 .64rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.dchip b{font:600 .86rem var(--body)}
-.dchip.late b{color:var(--due)}
 .dtabs{align-items:center}.dtabs .dpin{margin-left:auto}
-@media (max-width:480px){.dtabs button{padding:6px 9px;font-size:.8rem}.dchip{padding:4px 8px}}
+@media (max-width:480px){.dtabs button{padding:6px 9px;font-size:.8rem}}
 .ecount:not(:empty)::before{content:"("}.ecount:not(:empty)::after{content:")"}
 textarea,select,.etext{width:100%;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.95rem}
 textarea{min-height:4.2rem;resize:vertical}
@@ -1018,7 +937,6 @@ textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outl
 html[data-layout="phone"] .dqbar{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 .qbt{display:flex;flex-direction:column;flex:1 1 auto;min-width:0}.qbt b,.qbt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dqbar .btn{flex:none;white-space:nowrap}.dqbar .link{flex:none}.qbt b{font-size:.85rem}.qbt span{font-size:.8rem;color:var(--muted)}
 body.hasqbar>.wrap{padding-bottom:140px}body.hasqbar .fopill{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
-.iwk{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
 .iweek .how{margin:0}
 .ihid{display:none!important}
 .icustom{display:flex;flex-direction:column;align-items:center;gap:10px}.icustom>.link{font-size:.85rem}
@@ -1087,7 +1005,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFac>
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull:not([hidden]){display:block!important;max-width:860px!important;margin-inline:auto}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.ncards,.qsim,.qexam,.qredo){padding:26px 30px}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard{padding:22px 24px;min-height:260px}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull .fcard .fcq{font-size:1.3rem}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .vfull :is(.qsim,.qexam,.qredo) .qstem{font-size:1.08rem;line-height:1.55}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) .erfullb{display:inline-block}
 html[data-layout="desktop"] .erkeys{display:block}
@@ -1096,8 +1013,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .eside>.card,
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .etop>:not(.erev){display:none}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erev{padding:26px 30px}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erfc{padding:22px 24px;min-height:260px}
-html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erfc .ebody span{font-size:1.15rem;line-height:1.5}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros.erfull .erev .btn{padding:10px 18px;font-size:.95rem}
 /* duas colunas (tablet deitado, notebook, monitor): lista à esquerda; revisar, repetidos e onde melhorar à direita */
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros{max-width:none}
@@ -1107,7 +1022,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>.controls{grid-column:1;grid-row:1;min-width:0}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros>#elist{grid-column:1;grid-row:2;min-width:0}
 html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErros .etop{margin-bottom:0}
-.emore{display:flex;flex-direction:column;gap:8px}.emore .tfres{gap:4px 16px}
 .ecard .ehead .ecause{font-style:italic}
 .ecard.arch{opacity:.75;border-left-style:dashed}
 .emstat{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:2px 0 6px}.emnum{display:flex;align-items:baseline;gap:8px}.emnum b{font:500 2rem/1 var(--display);color:var(--ink)}.emnum span{font-size:.9rem;color:var(--muted)}
@@ -1124,7 +1038,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewErro
 .ecbar{display:block;height:5px;border-radius:99px;background:var(--track);overflow:hidden}.ecbar i{display:block;height:100%;border-radius:99px;background:var(--l1)}
 .ectip{margin:8px 0 0;font-size:.84rem;line-height:1.45;color:var(--muted)}.ectip span{font-weight:700;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-right:2px}
 .emgone{margin:12px 0 0;padding:9px 12px;border-radius:10px;border-left:3px solid var(--good);background:color-mix(in srgb,var(--good) 8%,transparent);font-size:.86rem}.emgone b{color:var(--good);margin-right:4px}
-.erfc .ebody span{font-size:1rem}.erfc .ehint{margin:0}
 /* Lote 21: Revisar erros refeito */
 .erv2{display:flex;flex-direction:column;gap:12px}
 .erprog{display:flex;align-items:center;gap:10px}.erpb{flex:1;height:4px;border-radius:4px;background:var(--line);overflow:hidden}.erpb i{display:block;height:100%;background:var(--accent);border-radius:4px}.erprog span{font-size:.78rem;color:var(--muted);white-space:nowrap}
@@ -1160,10 +1073,6 @@ mark.erdd{background:color-mix(in srgb,var(--gold) 28%,transparent);color:inheri
 .efoot .rv.due{color:var(--due);font-weight:700}
 .ecad{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-top:6px}
 .ecad.bare{border:0;padding:0}.ecad .pnote{margin:0}
-.ereplist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ereplist li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--bg)}
-.ereplist .ks{flex:1;min-width:130px;font-size:.8rem;color:var(--muted)}.ereplist .ew{flex:1 1 100%;min-width:0;font-size:.88rem;overflow-wrap:anywhere}
-.erep .glabel{display:block;margin-top:12px}
 .ewk{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin-top:6px}
 .ewcol{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
 .ewn{font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;min-height:1em}
@@ -1286,8 +1195,6 @@ body.noscroll{overflow:hidden}
 .inc[data-w="1"] i:nth-child(1),.inc[data-w="2"] i:nth-child(-n+2),.inc[data-w="3"] i{background:var(--due)}
 .inc[data-w="2"] i:nth-child(-n+2){background:var(--l1)}.inc[data-w="1"] i:nth-child(1){background:var(--muted)}
 .inc b{font:600 .72rem var(--body);color:var(--due);margin-left:5px;letter-spacing:.02em;align-self:center}
-.sortrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.88rem;color:var(--muted)}
-.sortrow select{width:auto}
 @media (max-width:560px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:480px){.tab{font-size:.8rem;padding:8px 4px}}
 @media (max-width:480px){.sphead button{padding:10px 14px}}
@@ -1304,7 +1211,6 @@ header{position:relative}
 .hbtn{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 1rem var(--body);cursor:pointer;display:none;-webkit-tap-highlight-color:transparent}
 .hbtn:hover{border-color:var(--accent)}
 header{padding-right:100px}
-html[data-layout="phone"] .appnav .tab.tabhelp{display:none}
 .hlist{display:flex;flex-direction:column;gap:6px}
 .hsec{border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 .hsec>summary{cursor:pointer;padding:11px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
@@ -1394,17 +1300,10 @@ html[data-layout="desktop"][data-cols="2"] #viewTemas>#resetBox{grid-column:1;gr
 
 /* ===== Faculdade: resumo, disciplinas no estilo da aba Residência, provas ===== */
 #viewFac .fside{display:contents}
-.fsemchips .chip{font-size:.88rem}
-.chip.fnewchip{border-style:dashed;color:var(--muted);background:none}
-.chip.fnewchip:hover{color:var(--accent);border-color:var(--accent)}
-.fpath{margin:0;font:500 .76rem var(--mono);color:var(--muted);letter-spacing:.02em}
 .fsteps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px;font-size:.93rem;border:0;list-style:decimal}
 .fsemmenu{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:12px}
 .fsemacts{display:flex;flex-wrap:wrap;gap:6px}
 .fsemedit{display:flex;flex-direction:column;gap:8px}
-.kpi.kbtn{cursor:pointer}
-.kpi.kbtn:hover,.kpi.kbtn:focus-visible{box-shadow:inset 0 0 0 1px var(--accent);outline:none}
-.kpi.alert.kbtn:hover{box-shadow:inset 3px 0 0 var(--due),inset 0 0 0 1px var(--accent)}
 .kpi .ks{overflow-wrap:anywhere}
 .fbars{display:flex;flex-direction:column;gap:12px}
 .fbrow{background:none;border:0;padding:0;text-align:left;color:var(--ink);font:inherit;cursor:pointer;width:100%;display:flex;flex-direction:column;gap:5px}
@@ -1414,9 +1313,6 @@ html[data-layout="desktop"][data-cols="2"] #viewTemas>#resetBox{grid-column:1;gr
 .fbrow:hover .vl{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .frevs{border:1.5px solid var(--l2)}.frevs .plan{margin:0}
 .fdiscs{display:flex;flex-direction:column;gap:10px;width:100%}
-.fdhead{display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap;padding:0 2px}
-.fdhead h2{font-size:1.3rem}
-.fdhead .how{font-size:.82rem;color:var(--muted)}
 .card.fimp.slim{padding:14px 18px}
 .card.fimp.slim .fimph{align-items:center;flex-wrap:nowrap}
 .card.fimp.slim .fimph>div{min-width:0;flex:1}
@@ -1433,8 +1329,6 @@ section.fdc.editing{border-color:var(--l1);box-shadow:0 0 0 1px var(--l1)}
 .fbadge.soon{color:var(--due);border-color:var(--due)}
 .fdbody{border-top:1px solid var(--line)}
 .fdtools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 18px}
-.mini.fedbtn[aria-pressed="true"]{background:var(--l1);border-color:var(--l1);color:var(--surface)}
-.fedtag{font-size:.78rem;color:var(--l1);font-weight:600}
 .mini:disabled{opacity:.55;cursor:default}
 .finfo{padding:0 18px 14px;display:flex;flex-direction:column;gap:10px}
 .finfo .fgrid,.finfo .fgridw{margin-top:0}
@@ -1442,20 +1336,12 @@ section.fdc.editing{border-color:var(--l1);box-shadow:0 0 0 1px var(--l1)}
 .fdl dt{color:var(--muted)}.fdl dd{margin:0;overflow-wrap:anywhere}
 .ftxt p{margin:4px 0 0;font-size:.9rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .fexh2 .spname{display:flex;flex-direction:column;gap:2px;min-width:0}
-.fexname{overflow-wrap:anywhere}
-.fearea{font:500 .72rem var(--mono);color:var(--muted);letter-spacing:.02em}
-.fearea.none{color:var(--due)}
-li.fexedit,li.fadd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 18px;background:color-mix(in srgb,var(--l1) 7%,var(--surface));border-bottom:1px solid var(--line);font-size:.82rem}
-li.fexedit.how{color:var(--muted)}
+li.fadd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 18px;background:color-mix(in srgb,var(--l1) 7%,var(--surface));border-bottom:1px solid var(--line);font-size:.82rem}
 li.fadd{padding:10px 18px}
 li.fadd form{flex:1}
-li.fexedit .fexact{margin-left:auto;display:flex;gap:12px}
-li.fexedit .fren{flex:1}
-.fempty{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .lvl[data-l="x"]{border-style:dashed;border-color:var(--due);color:var(--due)}
 li.fspr>.item .num{color:var(--accent);font-weight:600}
 li.fspr.open{background:var(--bg)}
-.fspfull{margin:0;font-size:.85rem;color:var(--muted)}
 .fsptl{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
 .fsptl li.t .item{padding:9px 12px;grid-template-columns:2.6rem minmax(0,1fr) auto}
 .fsptl li.t.open{background:var(--bg)}
@@ -1466,12 +1352,10 @@ li.fspr.open{background:var(--bg)}
 .fdprov{display:flex;flex-direction:column;gap:6px;padding:12px 18px;border-top:1px solid var(--line)}
 .fpchip.soon{border-color:var(--due);color:var(--due)}.fpchip.past{opacity:.6}
 .fdbody>.grp{padding:12px 18px;border-top:1px solid var(--line)}
-.fdbody>.feadd{padding:12px 18px 0}
 .fdbody>p.gtext{padding:8px 18px 12px}
 .fdfoot{padding:12px 18px;border-top:1px solid var(--line);align-items:center}
 .fdfoot .btn{margin-left:auto}
 .fadddisc{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:12px}
-.fprovcard .fprovas{margin:0}
 .fprova{background:var(--bg)}
 .fprova.open{border-color:var(--accent)}
 .fph{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center}
@@ -1541,10 +1425,9 @@ li.fspr.open{background:var(--bg)}
 .fsbody .fimp{background:var(--surface)}
 .farchbtn{align-self:flex-start}
 @media (max-width:480px){.fsbody{padding:10px;gap:10px}.fssum{padding:14px}.fspbody{padding:0 10px 12px}.fsph{padding:12px}}
-@media (max-width:480px){.fdsum{padding:14px}.fdtools,.finfo,.fdprov,.fdfoot,.fdbody>.grp{padding-left:14px;padding-right:14px}li.fexedit,li.fadd{padding-left:14px;padding-right:14px}.fdbody>.feadd{padding:12px 14px 0}.fdbody>p.gtext{padding:8px 14px 12px}
+@media (max-width:480px){.fdsum{padding:14px}.fdtools,.finfo,.fdprov,.fdfoot,.fdbody>.grp{padding-left:14px;padding-right:14px}li.fadd{padding-left:14px;padding-right:14px}.fdbody>p.gtext{padding:8px 14px 12px}
   .fsptl li.t .item{grid-template-columns:2.2rem minmax(0,1fr) auto}.frmrow{padding-left:12px}}
 /* semana de estudos (Configurações) */
-.wkcfg{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:14px}.wkh{display:flex;flex-direction:column;gap:2px}.wkh .how{margin:0;font-size:.82rem}
 .wkrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}.wkl{display:flex;flex-direction:column;min-width:0;flex:1 1 220px}.wkl b{font-size:.93rem}.wkl .how{font-size:.8rem}
 .wkdays{display:flex;gap:6px}.wkd{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 .85rem var(--body);cursor:pointer;padding:0}
 .wkd[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.wkd.woff[aria-pressed="true"]{background:var(--due-soft);border-color:var(--due);color:var(--due)}.wkd.wsim[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-accent)}
@@ -1780,7 +1663,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 .fres li.fcarea{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:flex-start;background:none;border:0;padding:2px 0;font-size:.8rem;color:var(--muted)}
 .fguide{margin:0 18px 14px;padding:12px 14px;border:1px dashed var(--accent);border-radius:12px;background:var(--surface);font-size:.9rem}
 .fguide ol{margin:6px 0 0;padding-left:1.2em;border:0;list-style:decimal;display:flex;flex-direction:column;gap:4px}
-.fdbody>.fedtag{margin:0 18px 10px;display:block}
 .fdtools .btn{padding:7px 12px}
 .flist .flsub{list-style:none;padding:12px 18px 4px;border:0}
 .fdset{margin:0 18px 12px;padding:12px;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:12px}
@@ -1815,9 +1697,7 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewInic
 .fspconv{margin:0 18px 10px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
 .fexlab{font-size:.8rem;color:var(--muted)}
 .fspd>.grp{margin-top:4px}
-@media (max-width:480px){.fadder,.fguide,.fdbody>.fedtag{margin-left:12px;margin-right:12px}}
-.fhowto{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
-.fhowto b{color:var(--ink)}
+@media (max-width:480px){.fadder,.fguide{margin-left:12px;margin-right:12px}}
 /* ===== barra lateral de altura inteira (computador e iPad deitado) ===== */
 .sbrand,.ssearch,.sfoot{display:none}
 .hacts .sstx,.hacts .sskbd{display:none}
@@ -1901,7 +1781,7 @@ html[data-skin="compact"] header .lede{display:none}
 html[data-skin="compact"] h1{font-size:1.35rem}
 html[data-skin="compact"] h2{font-size:1.02rem}
 html[data-skin="compact"] .card{padding:12px 14px;gap:8px;border-radius:10px}
-html[data-skin="compact"] .today>p.how,html[data-skin="compact"] .revs>p.how,html[data-skin="compact"] .cnote,html[data-skin="compact"] .fhowto,html[data-skin="compact"] .fdbody>p.gtext.how,html[data-skin="compact"] .frules{display:none}
+html[data-skin="compact"] .today>p.how,html[data-skin="compact"] .revs>p.how,html[data-skin="compact"] .cnote,html[data-skin="compact"] .fdbody>p.gtext.how,html[data-skin="compact"] .frules{display:none}
 html[data-skin="compact"] .pcard{padding:8px 10px;gap:5px;border-radius:9px}
 html[data-skin="compact"] .psubs{gap:4px}html[data-skin="compact"] .psubs li{padding:5px 8px;border-radius:6px}
 html[data-skin="compact"] .item{padding:7px 14px}
@@ -2123,7 +2003,6 @@ html[data-cols="2"]:is([data-layout="desktop"],[data-layout="tablet"]) #viewFoco
 html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .appnav{transition:width .16s ease,box-shadow .16s ease}
 html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sbpins{display:flex;align-items:center;gap:4px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}.sbpins .sbb{flex:1 1 0;white-space:nowrap;padding:0 6px}
 html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"]) .sbpins+.sfoot{margin-top:0}
-.sbpl{font:600 .68rem var(--body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-right:auto;padding-left:4px}
 html[data-sb]{transition:none}
 html:is([data-layout="desktop"],[data-layout="tablet"][data-cols="2"])[data-sb="rail"]{--sbw:76px}
 html[data-sb="rail"] #sbMenu{display:inline-flex;align-self:center;flex:none}
@@ -2253,8 +2132,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
 .simhist{display:flex;flex-direction:column;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
 .smlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.smrow{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
 .smh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.smlab{font-size:.9rem}.smpct{font:700 1rem var(--body)}.smpct[data-c=ok]{color:var(--good)}.smpct[data-c=mid]{color:var(--warn)}.smpct[data-c=bad]{color:var(--bad)}
-.smmeta{font-size:.78rem;color:var(--muted)}.smacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.smacts .smdel{margin-left:auto}.smrev{margin-top:6px}.smq{margin:6px 0 8px}
-.simeta{margin:-2px 0 0}.simgo{align-self:flex-start;min-height:44px;padding:10px 18px}
+.smmeta{font-size:.78rem;color:var(--muted)}.smacts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.smacts .smdel{margin-left:auto}.smrev{margin-top:6px}.smq{margin:6px 0 8px}.simgo{align-self:flex-start;min-height:44px;padding:10px 18px}
 .dflist li.err small{color:var(--bad)}
 .mslist{list-style:none;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:6px}
 .mslist li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 6px 8px 12px}
@@ -2320,8 +2198,7 @@ html[data-layout="tablet"] .nmgrab{display:none}
 @media (prefers-reduced-motion:reduce){.hx.hxshow{animation:none}}
 
 /* Lote 19 — rótulos legíveis: um tamanho acima, cinza mais escuro, menos espaço entre letras */
-.kl,.plabel,.glabel,.exch2,.ebody b,.qexp b,.qfonte b,.navextra .nk,.pjhead,.sbpl,.cdfc figcaption,.stsh,.fost,.agw,.fpdh2,.stq{font-size:.78rem;letter-spacing:.025em;color:var(--muted2)}
-.dchip span{font-size:.72rem;letter-spacing:.025em;color:var(--muted2)}
+.kl,.plabel,.glabel,.exch2,.ebody b,.qexp b,.qfonte b,.navextra .nk,.pjhead,.cdfc figcaption,.stsh,.fost,.agw,.fpdh2,.stq{font-size:.78rem;letter-spacing:.025em;color:var(--muted2)}
 .trk,.ifk,.imetab .ikl,.nta,.ntfree button,.fl-lab,.qgab span,.ectip span,.altwhy.mine b{letter-spacing:.03em;font-size:.74rem}
 .hxnew{margin-left:8px;margin-right:auto}
 
@@ -3388,7 +3265,6 @@ const isNewDay=()=>dayMin(dnum(today()))>=60;
 const isSimDay=()=>WK_SIM.has(wdOf(dnum(today())))&&!isOffDay();
 function offShift(n){let g=0;while(dayMin(n)===0&&g<7){n++;g++}return n}
 function nextStudyLabel(){const t=dnum(today()),n=offShift(t+1);return n===t+1?"amanhã":(wdOf(n)===0||wdOf(n)===6?"no ":"na ")+WD_FULL[wdOf(n)]}
-const newDaysWeek=()=>Math.max(1,ui.prefs.wday.filter(m=>m>=60).length);
 const weekCap=()=>{const W=ui.prefs.wday;let c=0;for(let d=0;d<7;d++){const m=W[d];c+=m<=30?0:m<=60?1:m<=120?Math.min(2,PLAN_N):PLAN_N}return Math.max(1,c)};
 /* revisão que cairia num dia de folga passa para o próximo dia de estudo; no dia de folga nada vence */
 function dueIn(s){if(!s.last)return null;const t=dnum(today()),raw=dnum(s.last)+interval(s)+(s.adjFrom===s.last?(s.adj||0):0);if(!HAS_OFF)return raw-t;
@@ -3526,7 +3402,6 @@ let hist={};const LSH="resid-hist-v1";
 function logAct(f,n,c,day){const d=day||today(),h=hist[d]||(hist[d]={});h[f]=Math.max(0,(h[f]||0)+(n||1));if(c)h.c=Math.max(0,(h.c||0)+c);
   const keys=Object.keys(hist).sort();if(keys.length>400)keys.slice(0,keys.length-400).forEach(k=>delete hist[k]);
   try{localStorage.setItem(LSH,JSON.stringify(hist))}catch(e){}}
-function lastDays(n){const t=dnum(today());return Array.from({length:n},(_,i)=>fromNum(t-n+1+i))}
 /* Lote 20E: uma regra só de sequência (Perfil, PDF, Estatísticas, saudação, meta do Foco): dia de folga planejada (ou "Hoje não deu")
    sem estudo CONGELA (não soma nem quebra); estudar na folga soma +1. Hoje ainda sem estudo não quebra. */
 const offDay=d=>dayMin(dnum(d))===0;
@@ -4589,7 +4464,7 @@ function renderPins(){const box=$("#pinBox");if(!box)return;box.innerHTML="";con
    fac = {sems:[{id,name,archived}], discs:[{id,semId,name,items:[ref]}], provas:[{id,discId,name,date,items:[ref],done:[ref]}], own:{id:{t,discId}}}
    ref: "T:CM-6" tema da residência · "S:CM-6:<subtópico>" subtópico · "O:<id>" tema próprio (chave de progresso "F-<id>") */
 let FAC_WIN=21, RES_MIN_WEEK=2;const LSF="resid-fac-v1", FAC_VESP=3, FAC_AREA={code:"FAC",name:"Faculdade",specs:[]};
-let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facSel=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facLinkSt=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facEditDisc=new Set(), facClosedEixo=new Set(), facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facSynced=false, facTouched=false;
+let fac={sems:[],discs:[],provas:[],own:{}}, facStore=null, facTimer=null, facShowArch=false, facOpenDisc=new Set(), facQuery={}, facProvaOpen=new Set(), facProvaAll=new Set(), facArm=null, facNew={}, facReplace=null, facLinkSt=null, facOpenSP=new Set(), facDetOpen=new Set(), facEdit=null, facSemMenu=false, facShowPast=new Set(), facOpenSem=new Set(), facOpenProv=new Set(), facSemAdj=null, facAddC=null, facNewDiscFor=null, facDraft={}, facFocus=false, facMapCustom=null, facImport={status:"closed",text:"",prop:null,msg:"",done:""}, facTouched=false;
 const FAC_ITEMS=[];
 const fuid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const discOf=id=>fac.discs.find(d=>d.id===id), semOf=id=>fac.sems.find(s=>s.id===id);
@@ -4605,7 +4480,6 @@ function refOk(r){const x=refTopic(r);return !!(x&&BYKEY[x.k])}
 /* todos os temas de um conteúdo: o próprio, ou cada tema da residência ligado a ele (o 1º é o principal) */
 function refTopics(r){const x=refTopic(r);if(!x)return [];return x.links?x.links.map(L=>({k:L.k,own:x.own,subs:L.subs})):[x]}
 function refLabel(r){const x=refTopic(r),it=x&&BYKEY[x.k];if(!it)return "";return x.own?fac.own[x.own].t:x.sub?x.sub:it.t}
-function refKind(r){return r.startsWith("O:")?"Próprio":r.startsWith("S:")?"Subtópico":"Residência"}
 function activeSems(){return fac.sems.filter(s=>!s.archived).map(s=>s.id)}
 function upcomingProvas(){const t=today(),act=new Set(activeSems());
   return fac.provas.filter(p=>{const d=discOf(p.discId);return d&&!p.adi&&act.has(d.semId)&&p.date>=t}).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
@@ -4713,7 +4587,6 @@ const isSelf=(s,r)=>r==="O:"+s.id;
 const RESKEY=k=>!!BYKEY[k]&&!BYKEY[k].own;
 function linkDone(L){const s=get(L.k);if(!s.last)return false;if(!L.subs.length)return true;const SL=subList(BYKEY[L.k]);return L.subs.every(t=>{const y=SL.find(z=>z.t===t);return !y||y.done})}
 function ownLinks(id){const o=fac.own[id];return o&&Array.isArray(o.links)?o.links.filter(L=>L&&RESKEY(L.k)):[]}
-function ownLink(id){return ownLinks(id)[0]||null}
 const ownLinksTo=k=>Object.keys(fac.own).filter(id=>ownLinks(id).some(L=>L.k===k));
 const discRefs=d=>[...new Set([...(d.items||[]),...(d.sps||[]).flatMap(s=>s.items)])];
 const refsInUse=()=>new Set(fac.discs.flatMap(discRefs));
@@ -4721,7 +4594,6 @@ function spOf(id){for(const d of fac.discs){const s=(d.sps||[]).find(x=>x.id===i
 const refOfItem=it=>it.own?"O:"+it.key.slice(2):"T:"+it.key;
 const spShort=n=>{const m=String(n||"").match(/^\s*([A-Za-zÀ-ú]{1,12}\.?\s*\d+(?:[.,]\d+)*)/);return m?m[1].trim():(String(n||"").length>28?String(n).slice(0,26)+"…":String(n||""))};
 const spClean=n=>String(n||"").replace(/^\s*(sp|ncs|ap|aula|problema|tutoria|m[oó]dulo)\s*[\d.]+\s*[-–:·.]?\s*/i,"").trim()||String(n||"");
-function areaMapLabel(m){const A=AREAS.find(a=>a.code===m.area);return A?`${A.code} · ${m.spec||"Faculdade"}`:"Só na Faculdade"}
 /* sugere área e especialidade pelo nome do eixo (ex.: "Eixo de Hematologia" -> CM · Hematologia e oncologia) */
 function suggestMap(name){const n=norm(name);
   const hint=/pediatr|neonat|puericult|infancia|crianca/.test(n)?"PED":/obstet|ginec|gestac|saude da mulher|mama/.test(n)?"GO":/cirurg|trauma|ortoped|urolog/.test(n)?"CIR":/coletiva|preventiv|\bsus\b|epidemio|atencao primaria|familia|comunidade|iesc/.test(n)?"PREV":null;
@@ -4928,15 +4800,6 @@ function searchBox(d,mode){// mode: "disc" (adicionar conteúdo), {replace:id} o
   }
   return box}
 
-function ownDetailRow(it){const open=openKey===it.key,s=get(it.key),dd=dueIn(s);
-  const li=el(`<li class="t${open?" open":""}" id="t-${it.key}"><button class="item" aria-expanded="${open}"><span class="num">FAC</span><span class="topic"></span><span class="lvl" data-l="${lvKey(s)}">${lvName(s)}</span><span class="meta"></span></button></li>`);
-  li.querySelector(".topic").textContent=it.t;const m=li.querySelector(".meta");
-  if(dd!==null)m.appendChild(el(`<span class="${dd<=0?"late":""}">${dueLabel(dd)}</span>`));
-  const [sd,st]=subCount(it);if(st)m.appendChild(el(`<span>${sd}/${st} subtópicos</span>`));if(notes[it.key])m.appendChild(el(`<span>com anotações</span>`));
-  if(!m.children.length)m.appendChild(el(`<span>tema próprio</span>`));
-  li.querySelector(".item").onclick=()=>{openKey=open?null:it.key;formErr="";subErr="";render()};
-  if(open){const det=renderDetail(it);det.appendChild(dupBox(it));li.appendChild(det)}
-  return li}
 /* tema da faculdade repetido de um tema da residência: troca, levando tudo junto */
 function dupBox(it){const id=it.key.slice(2),o=fac.own[id],w=el(`<div class="fdup"></div>`);w.appendChild(linkPickEl(id));if(!(o&&o.spId===id))w.appendChild(dupBox0(it,id));return w}
 /* conteúdo ligado a vários temas: anotações, erros e cartões de cada um, juntos (só leitura; cada tema guarda os seus) */
@@ -5037,7 +4900,7 @@ let facShown=new Set(),facSemInit=false;
 const FOLDER_SVG=`<svg class="ffold" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.2l2 2.2h8.8A1.5 1.5 0 0 1 21 8.7v9.8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></svg>`;
 
 /* ---------- Faculdade: painel de provas, simulado da prova, depois da prova, materiais e foco por disciplina ---------- */
-let facProvAll=false,facRes=null,facLinkMsg="",facProvNew=false;
+let facProvAll=false,facRes=null,facProvNew=false;
 /* prontidão de uma prova: o que já está estudado e o ritmo para o resto (a véspera fica para revisar) */
 function provaStats(p){const refs=p.items.filter(refOk),pend=provaPending(p),dd=daysTo(p.date),tot=refs.length,done=tot-pend.length,avail=Math.max(1,dd-1),rate=pend.length/avail;
   const lvl=!tot||!pend.length?"ok":dd<=1||rate>1.5?"bad":rate>0.5?"warn":"ok";return {refs,pend,tot,done,dd,rate,lvl}}
@@ -6210,7 +6073,6 @@ function qActsEl(q,mine,ctx){const st=qSt(q),k=ctx.k,ok=!!BYKEY[k],w=el(`<div cl
 /* aba Questões */
 const QCH_FEW=10;let qChSort=(()=>{try{return localStorage.getItem("resid-qchsort")==="gain"?"gain":"acc"}catch(e){return "acc"}})();
 let qWorse=false,qFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-qfpanel")==="1"}catch(e){return false}})(), qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
-function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
 const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
 function qOf(k,from){if(!from){const s=get(k);return [s.qc||0,s.qt||0]}const r=qPeriod([k],from);return [r.c,r.q]}
@@ -6350,23 +6212,6 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
 function focusScore(it){const s=get(it.key);if(it.own||!(s.qt||s.last||s.l>0))return 0;// tema nunca estudado nem praticado é assunto do plano (tema novo), não de "onde focar"
   const w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return w*w*Math.max(0,0.8-est)}
 function focusRank(U){return (U||ALL).filter(i=>!i.own).map(it=>({it,sc:focusScore(it)})).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||wOf(b.it)-wOf(a.it)||a.it.num-b.it.num).map(r=>r.it)}
-function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
-  const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);
-  if(!rows.length){c.appendChild(el(`<p class="cempty">${U.some(i=>!i.own)?"Todos os temas deste filtro estão com 80% ou mais de acerto. Mantenha as revisões.":"Escolha temas da residência nos filtros para ver as prioridades."}</p>`));return c}
-  c.appendChild(el(`<p class="how hx">Temas que mais caem na prova e onde o seu acerto está mais longe de 80%. Temas sem questões contam como 60% até você fazer algumas.</p>`));
-  const ol=el(`<ol class="qglist"></ol>`),sh=rows.slice(0,qGainMore?20:6);
-  sh.forEach((r,i)=>{const it=r.it,p=r.qt?pct(r.qc,r.qt):null,[bk]=p===null?["warn"]:band(p);
-    const li=el(`<li><span class="qgn">${i+1}</span><span class="qgm"><button class="qgt" type="button"></button><span class="qgs"></span></span><span class="qga"></span></li>`);
-    const tb=li.querySelector(".qgt");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
-    const sm=li.querySelector(".qgs");sm.textContent=`${it.area.code} · ${it.sp} · `;sm.appendChild(incEl(r.w,true));
-    li.querySelector(".qga").innerHTML=p===null?`<b class="qgp none">sem questões</b>`:`<b class="qgp"><span class="st ${bk}">${p}%</span></b><span>${r.qc}/${r.qt}</span>`;
-    const acts=el(`<span class="qgb"></span>`);
-    const rg=el(`<button class="mini" type="button">Registrar</button>`);rg.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};acts.appendChild(rg);
-    if(!sampleOff){const g=el(`<button class="mini" type="button">Gerar questões</button>`);g.onclick=()=>{openTopic(it.key);setTimeout(()=>{const x=detGet("qf-",it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(g)}
-    li.appendChild(acts);ol.appendChild(li)});
-  c.appendChild(ol);
-  if(rows.length>6){const m=el(`<button class="link" type="button">${qGainMore?"Mostrar menos":`Mostrar mais ${Math.min(rows.length,20)-6}`}</button>`);m.onclick=()=>{qGainMore=!qGainMore;render()};c.appendChild(m)}
-  return c}
 /* ----- evolução semanal: questões por semana (barras) e acerto (linha) ----- */
 function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,q:0,c:0}));
   let est=0;U.forEach(it=>{const s=get(it.key);if(s.qe&&dnum(s.qe.d)>=start)est+=s.qe.q||0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=dnum(d);if(n<start||n>t)continue;const w=W[Math.floor((n-start)/7)];if(w){w.q+=v[0]||0;w.c+=v[1]||0}}});
@@ -6501,7 +6346,7 @@ function qSrcFixEl(){const T=qSrcTotals(),w=el(`<div class="qsrcfix"></div>`);
 /* ---------- Questões: refazer erradas, registro rápido, onde ganhar pontos, evolução ---------- */
 /* questões geradas que você errou: {id, k, d, n (vezes errada), q:{enunciado, alternativas:[{letra,texto}], correta, comentario, conceito, alerta}} */
 const LSRD="resid-redo-v1",RD_MAX=600;
-let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null,qGainMore=false;
+let redo=[],redoStore=null,rdRun=null,rdList=false,rdArm=null,qReg=null;
 function rdOk(x){return !!x&&typeof x==="object"&&typeof x.id==="string"&&typeof x.k==="string"&&x.q&&typeof x.q.enunciado==="string"&&Array.isArray(x.q.alternativas)&&x.q.alternativas.length>=2&&typeof x.q.correta==="string"}
 /* Lote 12: due = quando volta; ok = acertos em dias diferentes (sai com RD_NEED); okd = dia do último acerto; wr = erros no próprio Refazer; src = gen|sim|exam */
 const RD_INT=[1,3],RD_NEED=2,RD_DAY=10,DATE_RE=/^\d{4}-\d{2}-\d{2}$/,RD_IMG_MAX=180000;
@@ -6968,8 +6813,6 @@ function provaReadEl(){const p=fac.provas.find(x=>x.id===nProvaRd);if(!p){nProva
     const a=el(`<button class="link" type="button">Abrir o tema</button>`);a.onclick=()=>{detTab[k]="notas";openTopic(k)};sec.appendChild(a);c.appendChild(sec)});
   if(!K.length)c.appendChild(el(`<p class="cempty">Nenhum conteúdo desta prova tem página no Caderno ainda.</p>`));return c}
 function provaReadGo(p){nProvaRd=p.id;nSeg="livre";try{localStorage.setItem("resid-nseg2","livre")}catch(e){}backStack=[];setView("notas");setTimeout(()=>{const x=$("#nProvaRead");if(x)x.scrollIntoView({behavior:"smooth",block:"start"})},60)}
-function tplErros(it){const mine=errors.filter(e=>e.k===it.key).sort(byNewest);
-  return mine.length?"## Meus erros neste tema\n"+mine.map(e=>"- "+e.r.replace(/\s*\n\s*/g," — ")).join("\n"):null}
 
 /* Claude: gerar resumo ou organizar */
 function notePrompt(it,kind){
@@ -7184,7 +7027,7 @@ function renderNotasView(){
 let nSeg="livre";try{const v=localStorage.getItem("resid-nseg2");if(["livre","pegadinhas"].includes(v))nSeg=v}catch(e){}
 /* Lote 13: caderno único — "Temas" e "Livre" viraram a parte "Caderno" (nSeg "livre"); "todas" continua aceito como apelido */
 function setNSeg(v){if(v==="todas"||v==="revisar")v="livre";nSeg=v;try{localStorage.setItem("resid-nseg2",v)}catch(e){}render();window.scrollTo({top:0})}
-let nNoNote=false,nPegAll=false,nTodayOpen=new Set();
+let nNoNote=false,nPegAll=false;
 /* temas do dia: plano + revisões pendentes */
 function notesTodayKeys(){const P=ensurePlan(),out=[],seen=new Set(),add=(k,why)=>{if(!seen.has(k)&&BYKEY[k]){seen.add(k);out.push({k,why})}};
   [...ALL,...FAC_ITEMS].filter(i=>isDue(get(i.key))).sort((a,b)=>dueIn(get(a.key))-dueIn(get(b.key))).forEach(i=>add(i.key,"Revisão de hoje"));
@@ -7202,19 +7045,6 @@ function rereadEl(k){const t=(notes[k]||"").trim(),it=BYKEY[k],w=el(`<div class=
   if(open){const v=el(`<div class="mdview"></div>`);v.innerHTML=md(notes[k],{fold:k});w.appendChild(v)}
   const n=(typeof freeN!=="undefined"?freeN:[]).filter(f=>(f.ks||[]).includes(k)).length,a=el(`<button class="link rrall" type="button"></button>`);
   a.textContent=n?`Ver todas as anotações do tema (+${n} ${n===1?"página ligada":"páginas ligadas"})`:"Ver todas as anotações do tema";a.onclick=()=>{detTab[k]="notas";openTopic(k)};w.appendChild(a);return w}
-function nTodayCard(){const L=notesTodayKeys(),withN=L.filter(x=>(notes[x.k]||"").trim()),without=L.filter(x=>!(notes[x.k]||"").trim()),T=today(),read=withN.filter(x=>get(x.k).nread===T).length;
-  const c=el(`<section class="card ntoday" aria-labelledby="nth"><div class="dhead"><h2 id="nth">Para reler hoje</h2><span class="todaydate"></span></div></section>`);
-  c.querySelector(".todaydate").textContent=withN.length?`${read} de ${withN.length} relidas`:"";
-  if(!L.length){c.appendChild(el(`<p class="cempty">Nenhum tema no plano ou em revisão hoje.</p>`));return c}
-  if(!withN.length)c.appendChild(el(`<p class="cempty">Nenhum dos temas de hoje tem anotação ainda. Escrever um resumo curto depois de estudar ajuda nas revisões.</p>`));
-  const ol=el(`<ol class="elist"></ol>`);withN.forEach(({k,why})=>{const it=BYKEY[k],done=get(k).nread===T,open=nTodayOpen.has(k);
-    const li=el(`<li class="ncard${done?" nread":""}"><div class="ehead"><button class="etopic" type="button"></button><span class="nloc"></span></div><div class="mdview${open?"":" clamp"}"></div><div class="efoot"><button class="mini" type="button"></button><span class="sp"></span><button class="mini nreadb" type="button"></button></div></li>`);
-    const tb=li.querySelector(".etopic");tb.textContent=it.t;tb.onclick=()=>openTopic(k);li.querySelector(".nloc").textContent=`${why} · ${it.area.code}${it.sp?" · "+it.sp:""}`;
-    li.querySelector(".mdview").innerHTML=open?md(notes[k],{fold:k}):mdC(notes[k]);{const ne=noteErrsEl(k);if(ne)li.querySelector(".mdview").after(ne)}const [tg,rb]=li.querySelectorAll(".efoot .mini");tg.textContent=open?"Recolher":"Ver tudo";tg.onclick=()=>{open?nTodayOpen.delete(k):nTodayOpen.add(k);render()};
-    rb.textContent=done?"✓ Reli":"Reli";rb.setAttribute("aria-pressed",done);rb.onclick=()=>{upd(k,s=>{if(s.nread===T)delete s.nread;else s.nread=T});if(!done)nTodayOpen.delete(k);commit()};ol.appendChild(li)});
-  c.appendChild(ol);
-  if(without.length){const p=el(`<p class="how nwithout">Sem anotação: </p>`);without.forEach(({k},i)=>{const b=el(`<button class="link" type="button"></button>`);b.textContent=BYKEY[k].t;b.onclick=()=>{detTab[k]="notas";openTopic(k)};if(i)p.append(" · ");p.appendChild(b)});c.appendChild(p)}
-  return c}
 /* pegadinhas e destaques (Lote 20C; B5: linhas ★ = HY, tipo "hy"): linhas com "> ", "> Pegadinha: … — Por quê: …", itens "**Pegadinha:** …", textos ==destacados== e itens das seções
    Pegadinhas/Alertas/Cuidado; vale para a página do tema e para as páginas livres. Cada item guarda a seção de onde veio. */
 function pegParse(txt){const t=String(txt||"").replace(/\r/g,""),out=[];let inPeg=false,sec="",fen=false;
@@ -7960,7 +7790,7 @@ function cdEditEl(){const E=cdEd,w=el(`<div class="cdedit" id="cdEdit"><div clas
   if(E.msg){const m=el(`<p class="err"></p>`);m.textContent=E.msg;w.appendChild(m)}return w}
 function cdPrevFill(pv){const E=cdEd;pv.querySelector(".osq").innerHTML=cdSafe(cdT2H(E.q));pv.querySelector(".osa").innerHTML=cdSafe(cdJoinA(E.a,E.x,E.n));const r=cdT2H(E.r);pv.querySelector(".osref").innerHTML=r?cdSafe(r):"";pv.querySelector(".osref").hidden=!r}
 /* ---- árvore Grande área › Especialidade › Tema, com estudo por recorte ---- */
-let cdTreeOpen=new Set(),cdTopicOpen=null;
+let cdTreeOpen=new Set();
 function cdCounts(L){const T=today();return {n:L.length,d:L.filter(x=>x.f.st&&x.due<=T).length,nw:L.filter(x=>!x.f.st).length}}
 function cdCountTxt(c){return `${c.n} ${c.n===1?"cartão":"cartões"}${c.d?` · <b class="cdtd">${c.d} hoje</b>`:""}${c.nw?` · ${c.nw} ${c.nw===1?"novo":"novos"}`:""}`}
 /* vencidos entram como revisão normal (e os novos até o limite do dia); o resto entra como treino extra, sem mexer na agenda */
@@ -8116,8 +7946,6 @@ function cardsBlock(it){const k=it.key,mine=cards.filter(x=>x.k===k),G=cdGen[k],
 let nMsgCards="";
 /* sessão de revisão dos cartões */
 
-function nCardsCard(){const c=nCardsCard0();c.querySelector(".dhead").appendChild(helpBtn("Cartões"));
-  return c}
 /* Aba Cartões (13/11/2026): contas da lista, do criador e dos Números. Funções puras (sem tela); testes em tests/unit/cartoes.test.js.
    Desenho: docs/superpowers/specs/2026-11-13-aba-cartoes-design.md */
 const cdTxt=h=>String(h||"").replace(/<br\s*\/?>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;/g," ").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&").replace(/\s+/g," ").trim();
@@ -8682,22 +8510,6 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
 /* ----- erros que se repetem (últimos 30 dias) ----- */
 function eRepeat(){const t=dnum(today()),by={};errors.forEach(e=>{if(BYKEY[e.k]&&!e.arch&&t-dnum(e.d)<=30)(by[e.k]=by[e.k]||[]).push(e)});
   return {tem:Object.entries(by).filter(([,l])=>l.length>=2).sort((a,b)=>b[1].length-a[1].length),stub:errors.filter(e=>BYKEY[e.k]&&!e.arch&&(e.miss||0)>=2).sort((a,b)=>b.miss-a.miss)}}
-function eRepCard(){const {tem,stub}=eRepeat();if(!tem.length&&!stub.length)return null;
-  const c=el(`<section class="card erep" aria-labelledby="eph"><div class="dhead"><h2 id="eph">Erros que se repetem</h2><span class="todaydate">últimos 30 dias</span></div></section>`);
-  if(tem.length){c.appendChild(el(`<p class="gtext">Errar várias vezes no mesmo tema é sinal de que a base não firmou. Antes de mais questões, volte à teoria ou à sua anotação desses temas.</p>`));
-    const ul=el(`<ul class="ereplist"></ul>`);tem.slice(0,6).forEach(([k,l])=>{const it=BYKEY[k],tc={};l.forEach(e=>tc[e.t]=(tc[e.t]||0)+1);const main=Object.keys(tc).sort((a,b)=>tc[b]-tc[a])[0];
-      const li=el(`<li><button class="link" type="button"></button><span class="ks"></span><button class="mini" type="button">Ver erros</button><button class="mini" type="button">Estudar de novo</button></li>`);
-      li.querySelector(".link").textContent=it.t;li.querySelector(".link").onclick=()=>openTopic(k);
-      li.querySelector(".ks").textContent=`${l.length} erros · mais: ${(ETYPES[main]||"").toLowerCase()}`;
-      const [v,s]=li.querySelectorAll(".mini");v.onclick=()=>{eGoTopic(k);render();$("#elist").scrollIntoView({behavior:"smooth",block:"start"})};
-      s.onclick=()=>{detTab[k]=(notes[k]||"").trim()?"notas":"estudo";openTopic(k)};ul.appendChild(li)});
-    if(tem.length>6)ul.appendChild(el(`<li class="how">+ ${tem.length-6} temas.</li>`));c.appendChild(ul)}
-  if(stub.length){c.appendChild(el(`<span class="glabel">Ainda não firmaram na revisão</span>`));
-    const ul=el(`<ul class="ereplist"></ul>`);stub.slice(0,5).forEach(e=>{const it=BYKEY[e.k],li=el(`<li><span class="ew"><b></b><span></span></span><span class="ks"></span></li>`);
-      li.querySelector("b").textContent=it.t+": ";li.querySelector(".ew span").textContent=eOneLine(e.w).slice(0,140)+(eOneLine(e.w).length>140?"…":"");li.querySelector(".ks").textContent=`"ainda erraria" ${e.miss}×`;
-      li.appendChild(eCardBtn(e));if(cdErr[e.id])li.appendChild(cdErrEl(e));ul.appendChild(li)});c.appendChild(ul);
-    c.appendChild(el(`<p class="how">Para estes, um cartão de memorização ajuda: ele volta mais vezes que a revisão do erro.</p>`))}
-  return c}
 /* ----- erros por semana, por tipo ----- */
 const ECOL={conhecimento:"var(--due)",interpretacao:"var(--l1)",confusao:"var(--l2)"};
 function eWeeksEl(){const N=8,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,n:0,t:{conhecimento:0,interpretacao:0,confusao:0}}));
@@ -8732,7 +8544,6 @@ const ECTIPS={"Nunca estudei isso":"Esses temas precisam de teoria antes de ques
   "Troquei critério ou classificação":"Escreva os critérios lado a lado e revise pelos cartões.",
   "Lembrei pela metade":"Revise o conceito inteiro, não só a resposta: reescreva o 'Correto' com as suas palavras."};
 /* ----- arquivar erros resolvidos ----- */
-const eAct=e=>!e.arch;
 function eArchive(e,on){eMenu=null;if(on)e.arch=today();else delete e.arch;putErr(e);render()}
 /* ----- filtros extras ----- */
 let eFlags=new Set(),ePer="all",eSrc="all",eCause="all",eVis=[],eMsg="",eSide="all";
@@ -8754,7 +8565,6 @@ function eExtraOk(e,R){
   if(eCause!=="all"&&(e.c||"")!==eCause)return false;
   if(eSide==="fac"&&!eIsFac(e,R.FL))return false;if(eSide==="res"&&eIsFac(e,R.FL))return false;
   if(eSide==="pw"&&!(R.PW&&R.PW.has(e.k)))return false;return true}
-const eExtraOn=()=>eFlags.size||ePer!=="all"||eSrc!=="all"||eCause!=="all"||eSide!=="all";
 let eFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-efpanel")==="1"}catch(e){return false}})();
 function eClearAll(){eFlags.clear();eSide="all";ePer="all";eSrc="all";eCause="all";eArea="all";eSp="all";eType="all";eQuery="";eTopicKey=null;const q=$("#eq");if(q)q.value=""}
 /* mostrar os erros de um tema: limpa os outros filtros (senão podia não sobrar nada) e, se o tema só tem arquivados, abre os arquivados */
@@ -8820,10 +8630,6 @@ async function ePdfSave(){if(!downloadsFn||!eVis.length){eMsg=eVis.length?"":"Ne
 function eCardBtn(e){const n=cards.filter(x=>x.eid===e.id||x.id===e.cd).length,b=el(`<button class="mini" type="button"></button>`);b.textContent=n?`${n} ${n===1?"cartão":"cartões"} ✓`:cdErr[e.id]?"Cartões ▾":"Criar cartões";b.disabled=!!n;
   b.title="Cria dois cartões do padrão Osler a partir do erro: o que separa a certa da sua e por que a sua não serve";b.id="ecd-"+e.id;
   b.onclick=()=>{if(cdErr[e.id])delete cdErr[e.id];else cdErr[e.id]={list:cdErrDrafts(e)};render();setTimeout(()=>{const x=document.querySelector(`.cderr[data-eid="${e.id}"]`);if(x)x.scrollIntoView({block:"nearest"})},40)};return b}
-function eToNote(e){const k=e.k,cur=notes[k]||"",line=`- ${eOneLine(e.r)}${e.w?` (errei: ${eOneLine(e.w).slice(0,160)}${eOneLine(e.w).length>160?"…":""})`:""} {{e:${e.id}}}`,m=cur.match(/^#{1,3}\s*Meus erros\s*$/mi);let v;
-  if(m){const at=m.index+m[0].length,nx=cur.slice(at).search(/\n#{1,3}\s/),end=nx<0?cur.length:at+nx;v=cur.slice(0,end).replace(/\s+$/,"")+"\n"+line+(end<cur.length?"\n"+cur.slice(end):"")}
-  else v=(cur.trim()?cur.replace(/\s+$/,"")+"\n\n":"")+"## Meus erros\n"+line;
-  replaceNote(k,v);e.nt=today();putErr(e);render()}
 /* 10/2026: erros saem das anotações. Uma vez por aparelho (resid-enm), a seção "## Meus erros" de cada anotação vai para o caderno:
    linha com o selo de um erro que existe = já está no caderno (só sai da anotação); o resto vira erro novo do tema (fonte "Anotação"). */
 function errNoteMig(){try{if(localStorage.getItem("resid-enm")==="1")return 0}catch(x){return 0}let moved=0,made=0;
@@ -8836,8 +8642,6 @@ function errNoteMig(){try{if(localStorage.getItem("resid-enm")==="1")return 0}ca
     const v=(cur.slice(0,at).replace(/\s+$/,"")+(end<cur.length?"\n\n"+cur.slice(end).replace(/^\s+/,""):"")).trim();saveNote(k,v)}
   errors.forEach(e=>{if(e.nt){delete e.nt;putErr(e)}});
   try{localStorage.setItem("resid-enm","1")}catch(x){}if(moved||made)render();return moved+made}
-function eNoteBtn(e){const b=el(`<button class="mini" type="button"></button>`);b.textContent=e.nt?"Na anotação ✓":"Levar para a anotação";b.disabled=!!e.nt;
-  b.title="Acrescenta o conceito correto na seção Meus erros da anotação do tema";b.onclick=()=>eToNote(e);return b}
 
 function renderErros(){
   {const n=eDueList().length;$("#ecount").textContent=n?String(n):""}
@@ -9040,15 +8844,6 @@ function weekStats(ws){const r={fo:0,q:0,c:0,e:0,rv:0,er:0};const we=ws+6;
   foSess.forEach(x=>{const n=dnum(x.d);if(n>=ws&&n<=we)r.fo+=x.sec});
   for(let n=ws;n<=we;n++){const h=hist[fromNum(n)];if(h){r.q+=h.q||0;r.c+=h.c||0;r.e+=h.e||0;r.rv+=h.r||0}}
   errors.forEach(e=>{if(!e.d)return;const n=dnum(e.d);if(n>=ws&&n<=we)r.er++});return r}
-function iWeekCard(){const dow=new Date().getDay();if(dow!==0&&dow!==1)return null;const ws=dow===0?foWeekStart():foWeekStart()-7;if(lsGet("resid-wkdis","")===String(ws))return null;
-  const A=weekStats(ws),B=weekStats(ws-7);if(!A.fo&&!A.q&&!A.e&&!A.rv)return null;
-  const c=el(`<section class="card iweek" id="iWeek" aria-labelledby="iwh"><div class="dhead"><h2 id="iwh"></h2><button class="link" type="button">Fechar</button></div><div class="iwk"></div><p class="how"></p></section>`);
-  c.querySelector("h2").textContent=dow===0?"Sua semana":"Semana passada";c.querySelector(".dhead .link").onclick=()=>{lsSet("resid-wkdis",String(ws));render()};
-  const cmp=(a,b,fmt)=>{if(!b)return "";const d=a-b;return d===0?" · igual":` · ${d>0?"▲":"▼"} ${fmt(Math.abs(d))}`};
-  const rows=[["Foco",fmtMin(A.fo),cmp(A.fo,B.fo,fmtMin)],["Questões",A.q?`${A.q} · ${pct(A.c,A.q)}%`:"0",cmp(A.q,B.q,String)],["Temas estudados",String(A.e),cmp(A.e,B.e,String)],["Revisões",String(A.rv),cmp(A.rv,B.rv,String)],["Erros registrados",String(A.er),cmp(A.er,B.er,String)]];
-  const g=c.querySelector(".iwk");rows.forEach(([l,v,d])=>{const r=el(`<div class="kpi"><span class="kl"></span><b></b><span class="ks"></span></div>`);r.querySelector(".kl").textContent=l;r.querySelector("b").textContent=v;r.querySelector(".ks").textContent=d?`vs. anterior${d}`:"";g.appendChild(r)});
-  const best=A.fo>B.fo&&B.fo?"Mais tempo de foco que na semana anterior.":A.q>B.q&&B.q?"Mais questões que na semana anterior.":"";
-  c.querySelector("p.how").textContent=`${br(fromNum(ws))} a ${br(fromNum(ws+6))}.${best?" "+best:""}`;return c}
 /* ----- 12. Início personalizável ----- */
 /* ---------- Início: saudação do dia (#iHero) — data, "Bom dia, Nome.", o que espera hoje, prova perto, feito real ou frase do dia e o botão da fila ---------- */
 const heroDate=()=>{const s=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});return s.charAt(0).toUpperCase()+s.slice(1)};
@@ -9700,10 +9495,6 @@ addEventListener("scroll",()=>{tip.hidden=true},{passive:true});
 document.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")tip.hidden=true});
 
 /* filtros e agrupamento por especialidade (anotações e caderno de erros) */
-function spChips(box,area,sel,countOf,pick){box.innerHTML="";box.hidden=area==="all";if(area==="all")return;
-  const a=AREAS.find(x=>x.code===area);if(!a){box.hidden=true;return}
-  [["all","Todas as especialidades"],...a.specs.map(x=>[x.name,x.name])].forEach(([v,lab])=>{const c=countOf(v);if(v!=="all"&&!c)return;
-    const b=el(`<button class="chip" aria-pressed="${sel===v}"></button>`);b.textContent=`${lab} · ${c}`;b.onclick=()=>pick(v);box.appendChild(b)})}
 function groupHead(it,area,count,unit){const h=el(`<li class="lhead"><span class="code"></span><span class="lname"></span><span class="lcount"></span></li>`);
   h.querySelector(".code").textContent=it.area.code;h.querySelector(".lname").textContent=it.sp;
   h.querySelector(".lcount").textContent=`${count} ${count===1?unit[0]:unit[1]}`;return h}
@@ -10262,7 +10053,6 @@ function renderPerfil(){const v=$("#viewPerfil"),slot=$("#acctSlot");v.appendChi
 const goalSpan=dd=>dd>=60?`${Math.round(dd/30.4)} meses`:dd>=14?`${Math.round(dd/7)} semanas`:`${dd} dias`;
 
 /* ---------- Configurações ---------- */
-let wkMsg="";
 /* Lote 18: "Mais opções" dentro de cada cartão de Configurações (lembrado neste aparelho) */
 let cfOpen=new Set((()=>{try{return JSON.parse(localStorage.getItem("resid-cfmore")||"[]")}catch(e){return []}})());
 function cfLayer(card,key,labels,nodes){const rows=[...card.querySelectorAll(":scope>.cfrow")].filter(r=>labels.includes((r.querySelector(".cfl b")||{}).textContent)),N=[...nodes.filter(Boolean),...rows];if(!N.length)return;
@@ -10580,7 +10370,6 @@ function stPerTopic(){const by={};foSess.forEach(x=>{const r=x.ref||"";if(!r.sta
 function stFirst(){const d=[...Object.keys(hist).filter(heroActive),...foSess.map(x=>x.d)].sort()[0];return d?dnum(d):null}
 function stTopicAct(keys,a,b){let nw=0,rv=0;keys.forEach(k=>{const ed=(get(k).ed||[]).slice().sort();ed.forEach((d,i)=>{const n=dnum(d);if(n<a||n>b)return;if(i===0)nw++;else rv++})});return {nw,rv}}
 const stH=s=>s>=3600?(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1})+" h":Math.round(s/60)+" min";
-const stHn=s=>(s/3600).toLocaleString("pt-BR",{maximumFractionDigits:1});
 const stPct=x=>x===null||x===undefined?"—":Math.round(x*100)+"%";
 const stMon=d=>{const M=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];return M[+d.slice(5,7)-1]+" de "+d.slice(0,4)};
 function stDelta(n,p,o={}){if(n===null||p===null||n===undefined||p===undefined)return ["","—"];const d=o.pts?Math.round((n-p)*100):n-p;if(!d)return ["eq","="];

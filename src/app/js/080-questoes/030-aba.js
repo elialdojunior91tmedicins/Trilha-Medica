@@ -1,7 +1,6 @@
 /* aba Questões */
 const QCH_FEW=10;let qChSort=(()=>{try{return localStorage.getItem("resid-qchsort")==="gain"?"gain":"acc"}catch(e){return "acc"}})();
 let qWorse=false,qFOpen=(()=>{try{return (document.documentElement.dataset.layout!=="phone"||window.__noSheet)&&localStorage.getItem("resid-qfpanel")==="1"}catch(e){return false}})(), qArea="all", qSort="num", qWeak=false, qSpec="all", qDisc="all", qQuery="", qPer="all", qAcc="all", qInc=false, qErrF=false, qDueF=false, qChartBy="spec", qMore=false;
-function aggr(items){let c=0,t=0;items.forEach(i=>{const s=get(i.key);c+=s.qc||0;t+=s.qt||0});return [c,t]}
 /* questões de um tema no período escolhido na aba Questões */
 const qFrom=()=>qPer==="all"?null:fromNum(dnum(today())-(+qPer)+1);
 function qOf(k,from){if(!from){const s=get(k);return [s.qc||0,s.qt||0]}const r=qPeriod([k],from);return [r.c,r.q]}
@@ -141,23 +140,6 @@ function qRegPanel(){const R=qReg,w=el(`<div class="qreg" id="qReg"><div class="
 function focusScore(it){const s=get(it.key);if(it.own||!(s.qt||s.last||s.l>0))return 0;// tema nunca estudado nem praticado é assunto do plano (tema novo), não de "onde focar"
   const w=wOf(it),est=((s.qc||0)+3)/((s.qt||0)+5);return w*w*Math.max(0,0.8-est)}
 function focusRank(U){return (U||ALL).filter(i=>!i.own).map(it=>({it,sc:focusScore(it)})).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||wOf(b.it)-wOf(a.it)||a.it.num-b.it.num).map(r=>r.it)}
-function qGainCard(U){const rows=U.filter(i=>!i.own).map(it=>{const s=get(it.key),w=wOf(it),qt=s.qt||0,qc=s.qc||0,est=(qc+3)/(qt+5);return {it,w,qt,qc,est,sc:w*w*Math.max(0,0.8-est)}}).filter(r=>r.sc>0).sort((a,b)=>b.sc-a.sc||b.w-a.w||a.it.num-b.it.num);
-  const c=el(`<section class="card qgain" aria-labelledby="qgh"><div class="dhead"><h2 id="qgh">Onde ganhar pontos</h2></div></section>`);
-  if(!rows.length){c.appendChild(el(`<p class="cempty">${U.some(i=>!i.own)?"Todos os temas deste filtro estão com 80% ou mais de acerto. Mantenha as revisões.":"Escolha temas da residência nos filtros para ver as prioridades."}</p>`));return c}
-  c.appendChild(el(`<p class="how hx">Temas que mais caem na prova e onde o seu acerto está mais longe de 80%. Temas sem questões contam como 60% até você fazer algumas.</p>`));
-  const ol=el(`<ol class="qglist"></ol>`),sh=rows.slice(0,qGainMore?20:6);
-  sh.forEach((r,i)=>{const it=r.it,p=r.qt?pct(r.qc,r.qt):null,[bk]=p===null?["warn"]:band(p);
-    const li=el(`<li><span class="qgn">${i+1}</span><span class="qgm"><button class="qgt" type="button"></button><span class="qgs"></span></span><span class="qga"></span></li>`);
-    const tb=li.querySelector(".qgt");tb.textContent=it.t;tb.onclick=()=>openTopic(it.key);
-    const sm=li.querySelector(".qgs");sm.textContent=`${it.area.code} · ${it.sp} · `;sm.appendChild(incEl(r.w,true));
-    li.querySelector(".qga").innerHTML=p===null?`<b class="qgp none">sem questões</b>`:`<b class="qgp"><span class="st ${bk}">${p}%</span></b><span>${r.qc}/${r.qt}</span>`;
-    const acts=el(`<span class="qgb"></span>`);
-    const rg=el(`<button class="mini" type="button">Registrar</button>`);rg.onclick=()=>{qReg={k:it.key,d:today()};render();const f=$("#qReg");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})};acts.appendChild(rg);
-    if(!sampleOff){const g=el(`<button class="mini" type="button">Gerar questões</button>`);g.onclick=()=>{openTopic(it.key);setTimeout(()=>{const x=detGet("qf-",it.key);if(x)x.scrollIntoView({behavior:"smooth",block:"center"})},350)};acts.appendChild(g)}
-    li.appendChild(acts);ol.appendChild(li)});
-  c.appendChild(ol);
-  if(rows.length>6){const m=el(`<button class="link" type="button">${qGainMore?"Mostrar menos":`Mostrar mais ${Math.min(rows.length,20)-6}`}</button>`);m.onclick=()=>{qGainMore=!qGainMore;render()};c.appendChild(m)}
-  return c}
 /* ----- evolução semanal: questões por semana (barras) e acerto (linha) ----- */
 function qEvoSvg(U,width){const N=12,t=dnum(today()),ws=t-(new Date().getDay()+6)%7,start=ws-7*(N-1),W=[...Array(N)].map((_,i)=>({s:start+7*i,q:0,c:0}));
   let est=0;U.forEach(it=>{const s=get(it.key);if(s.qe&&dnum(s.qe.d)>=start)est+=s.qe.q||0;for(const d in s.qd||{}){const v=s.qd[d];if(!Array.isArray(v))continue;const n=dnum(d);if(n<start||n>t)continue;const w=W[Math.floor((n-start)/7)];if(w){w.q+=v[0]||0;w.c+=v[1]||0}}});
