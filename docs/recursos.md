@@ -1,8 +1,8 @@
 # Recursos do app, assunto por assunto
 
 Movido do `CLAUDE.md` em 12/11/2026, sem mudar o texto: a descrição de cada tela e de cada lote (funções, ids, formatos, decisões do usuário).
-O `CLAUDE.md` guarda o núcleo e o índice destes títulos. Onde um nome está no código agora: `node tools/mapa/onde.js <nome>`, que também diz em que linha
-deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no estilo denso dos outros, e ponha o título no índice do `CLAUDE.md`.
+O `CLAUDE.md` guarda o núcleo (desde 16/11/2026 sem o índice destes títulos: `grep -n "^## " docs/recursos.md`). Onde um nome está no código agora: `node tools/mapa/onde.js <nome>`, que também diz em que linha
+deste arquivo o nome é citado. Recurso novo: escreva o bloco dele aqui, no estilo denso dos outros, com um título `## ` claro.
 
 ## Início
 

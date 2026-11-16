@@ -18,7 +18,7 @@ function inputs() {
   const unit = has("tests/unit") ? fs.readdirSync(path.join(ROOT, "tests/unit")).filter(f => f.endsWith(".js")).sort().map(f => "tests/unit/" + f) : [];
   const extra = ["bridge.js", "sw.js", "config.js", "tools/backup-drive.gs", "src/build_site.py", "firestore.rules", "manifest.webmanifest", "site.css"].filter(has);
   const html = ["src/app/topo.html", "src/app/corpo.html", "src/app/fim.html"], css = ["src/app/css/app.css"];
-  return { js, tests, unit, extra, html, css, doc: ["CLAUDE.md", "docs/recursos.md"].filter(has), list: has("tests/list.txt") ? ["tests/list.txt"] : [] };
+  return { js, tests, unit, extra, html, css, doc: ["CLAUDE.md", "docs/arquitetura.md", "docs/recursos.md"].filter(has), list: has("tests/list.txt") ? ["tests/list.txt"] : [] };
 }
 function stamp() {
   const I = inputs(), h = crypto.createHash("sha1");
