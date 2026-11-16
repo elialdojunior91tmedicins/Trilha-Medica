@@ -34,6 +34,11 @@ Usa só o `node:test` do próprio Node e o acorn guardado em `tests/unit/vendor/
 - `dados.test.js`: os literais de `js/010-dados/` (198 temas; `HY_DEF` com índices válidos e dentro do teto; `DN_DEF`, `AX_NEAR`,
   `EX_CAT`, `OF_CAT`; `HELP` com 18 assuntos e todo `helpBtn`/`goHelp` apontando para um que existe; instruções antigas do gerador → padrão).
 - `markdown.test.js`: `md`/`inl`/`flowHTML`; 24 textos de ataque não podem virar HTML ativo.
+- `contrato.test.js` (16/11/2026): contrato entre o site e o app. Todo nome livre do `bridge.js` precisa ser do app (declarado no topo de
+  `src/app/js/`) ou do navegador (lista `NAVEGADOR` no teste; nome novo do navegador: acrescente lá); o que o `bridge.js` reescreve (`state = …`)
+  precisa ser `let` no app; o que o app lê de `window.__site` precisa estar no objeto que o `bridge.js` monta. Renomear `migrate`, `bankRestore`
+  & cia. quebra aqui, não no Importar backup de alguém. O leitor de nomes livres respeita escopo (função, bloco, catch, for) e conta reescrita
+  por desestruturação e `for…of`; deu o mesmo resultado do eslint-scope no `bridge.js` (16/11/2026). Usa só o acorn de `unit/vendor/` (roda sem `npm i`).
 - `backup.test.js`: `backup-sample.json` passa pela carga (`registerOwn` → `migrate`, `errOk`, `facNormalize`) e volta igual.
 
 Vários testes são "fotos" do comportamento atual (ex.: a sequência Bom, Bom, Bom do FSRS = 4, 23, 109, 437 dias): se uma
@@ -47,6 +52,16 @@ ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
 - `mockdb.js`: imita `window.claude.use` (db, user, sample, downloads) do artefato; `window.__store` é o
   banco em memória. Marca os Primeiros passos como vistos, a não ser que o teste defina `window.__wantOnb`.
 - `fakefb.js`: imita o Firebase para os testes do site (dados em `localStorage.__fbdb`).
+- **Sorteio repetível** (16/11/2026): `mockdb.js` e `fakefb.js` trocam o `Math.random` da página por um gerador com semente (mulberry32).
+  O mesmo teste sorteia sempre igual (o t148 falhava às vezes porque o sorteio do banco soma um ruído aleatório). Cada página do mesmo
+  contexto ganha a semente seguinte (contador `__seedN` no localStorage), para dois "aparelhos" não gerarem ids iguais (contextos separados
+  começam todos do mesmo ponto; os ids levam `Date.now()` antes do sorteio). Para trocar a semente, o `window.__seed = N` tem de vir ANTES do texto
+  do mock (`addInitScript("window.__seed=5;"+mock+…)`); `= false` volta ao sorteio de verdade. Teste novo que depende de sorte: confira com 2–3 sementes.
+- **Cobertura real** (16/11/2026): `tests/run.sh --cobertura` (ou `--cobertura t148 t151`) roda os testes com `cobertura/gancho.js` antes, que liga
+  a cobertura de JavaScript do Chromium em cada página e grava em `cobertura/saida/<teste>.json` as funções do topo do app (e do `bridge.js`)
+  que rodaram (antes de cada `goto`/`reload` a medição da página é guardada e recomeça: o V8 descarta o documento anterior; recarga feita pelo
+  próprio app escapa e só perde aquele pedaço); `node cobertura/relatorio.js` junta tudo em `cobertura/saida/RELATORIO.md` (por módulo, pelo número de funções e pelo tamanho,
+  e as maiores que nunca rodaram). "Rodou" não quer dizer "conferido"; os testes do Node não entram (o relatório marca as funções citadas neles).
 - `mkprev.py`: monta `preview.html`.
 - `list.txt`: os testes da rodada completa.
 

@@ -4,6 +4,7 @@
 #                             tests/run.sh --monkey   (teste aleatório nos 6 aparelhos)
 #                             tests/run.sh --unit     (testes da lógica no Node, sem navegador: ~2 s)
 #                             tests/run.sh --rapido   (unitários + t151, a abertura nos 6 aparelhos: ~30 s)
+#                             tests/run.sh --cobertura [tNN…]  (os testes com a cobertura de JavaScript ligada; relatório em tests/cobertura/saida/RELATORIO.md)
 cd "$(dirname "$0")"
 if [ "$1" = "--unit" ]; then node --test unit/*.test.js 2>&1 | grep -E "^# (pass|fail)|^not ok"; exit "${PIPESTATUS[0]}"; fi
 if [ "$1" = "--rapido" ]; then ./run.sh --unit || exit 1; set -- t151; fi
@@ -17,9 +18,11 @@ if [ "$1" = "--monkey" ]; then
   for d in fone ipad578 tabEmPe tabDeitado note monitor; do (timeout 600 node monkey8.js 1 220 $d > out_monkey_$d.txt 2>&1 &); done; wait
   sleep 2; while pgrep -f monkey8.js >/dev/null; do sleep 5; done; tail -n 2 out_monkey_*.txt; exit 0
 fi
+# cobertura real (16/11/2026): cada teste roda com tests/cobertura/gancho.js antes; no fim, o relatório junta tudo
+if [ "$1" = "--cobertura" ]; then shift; rm -rf cobertura/saida; export COB="-r ./cobertura/gancho.js"; fi
 if [ $# -gt 0 ]; then L=$(printf "%s.js\n" "$@"); else L=$(cat list.txt); fi
 # resultado de um teste: 0 = passou (sem FALHA e sem Error na saída)
-one() { timeout 600 node "$1" > "out_$1.txt" 2>&1; f=$(grep -c "^FALHA" "out_$1.txt"); e=$(grep -c "Error" "out_$1.txt"); n=$(grep -c "^OK" "out_$1.txt"); [ "$f$e" = "00" ] && echo "ok    $1 ($n)" || echo "FALHA $1 ($f falhas, $e erros) -> tests/out_$1.txt"; }
+one() { timeout 600 node $COB "$1" > "out_$1.txt" 2>&1; f=$(grep -c "^FALHA" "out_$1.txt"); e=$(grep -c "Error" "out_$1.txt"); n=$(grep -c "^OK" "out_$1.txt"); [ "$f$e" = "00" ] && echo "ok    $1 ($n)" || echo "FALHA $1 ($f falhas, $e erros) -> tests/out_$1.txt"; }
 export -f one
 R=$(echo "$L" | xargs -P 3 -I{} bash -c 'one {}' | sort)
 # Testes instáveis (t133, t147, t148… falham às vezes sob carga): o que falhou roda de novo SOZINHO, uma vez.
@@ -32,5 +35,6 @@ if [ -n "$F" ] && [ -z "$SEM_REPETIR" ]; then
     else echo "$(date +%F\ %H:%M) $t falhou duas vezes" >> out_instaveis.txt; fi; done
 fi
 echo "$R"
+[ -n "$COB" ] && node cobertura/relatorio.js
 echo "$R" | grep -q "^inst" && echo "(inst = instável: falhou junto com os outros e passou sozinho. Histórico: tests/out_instaveis.txt)"
 echo "$R" | grep -q "^FALHA" && exit 1 || exit 0

@@ -1,3 +1,9 @@
+/* Sorteio repetível (16/11/2026): o Math.random da página vira um gerador com semente (mulberry32), para o mesmo teste dar sempre o mesmo
+   resultado (o t148 falhava às vezes porque o sorteio do banco tem ruído). Cada página aberta no mesmo contexto ganha a semente seguinte
+   (contador "__seedN" no localStorage), para dois "aparelhos" não gerarem os mesmos ids. window.__seed = número troca a semente; = false desliga. */
+if(!window.__randOn&&window.__seed!==false){window.__randOn=1;let n=0;try{n=+localStorage.getItem("__seedN")||0;localStorage.setItem("__seedN",String(n+1))}catch(e){}
+  let a=((typeof window.__seed==="number"?window.__seed:20261116)+Math.imul(n,0x9E3779B9))>>>0;
+  Math.random=function(){a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
 if(window.__noShuffle===undefined)window.__noShuffle=true;// testes antigos escolhem a alternativa pela posição
 if(window.__qLegacy===undefined)window.__qLegacy=true;// B2: testes antigos veem a aba Questões como era (tudo junto, sem as partes do banco)
 try{if(!window.__wantOnb&&!localStorage.getItem("resid-onb-seen"))localStorage.setItem("resid-onb-seen","1")}catch(e){}

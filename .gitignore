@@ -6,6 +6,8 @@ tests/*.pdf
 tests/*.ics
 tests/trilha-*.txt
 tests/out_sim17_*.json
+# cobertura (saída de tests/run.sh --cobertura)
+tests/cobertura/saida/
 tools/divisao/node_modules/
 tools/divisao/package-lock.json
 # saída do build (o app sem a conta, para o preview e os testes antigos); gere com python3 src/build_site.py

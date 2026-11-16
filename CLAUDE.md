@@ -42,7 +42,8 @@ consultado quando há dúvida. Responda em português.
    `python3 src/build_site.py --check` só confere se `index.html` e `sw.js` batem com `src/app/`.
 3. Rode os testes: `tests/run.sh --rapido` a cada mudança (unitários no Node + t151, a abertura nos 6 aparelhos; ~30 s) e
    `tests/run.sh` (todos; veja `tests/README.md`) antes de publicar. Lógica nova sem tela (cálculo, datas, limpeza de dados) ganha teste em `tests/unit/` e escreva um teste novo `tests/tNN.js` para cada recurso novo
-   (inclua-o em `tests/list.txt`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
+   (inclua-o em `tests/list.txt`). O `tests/unit/contrato.test.js` confere que todo nome do app que o `bridge.js` usa ainda existe:
+   renomeou algo e ele falhou → ajuste o `bridge.js` junto. Para ver o que os testes não alcançam: `tests/run.sh --cobertura` (`tests/README.md`). Teste no celular (390px, toque), tablet (820/1180, toque, inclusive 578px com tela 1180×820 =
    iPad dentro do app do Claude) e computador (1366, 1920). Modos de layout ficam em
    `html[data-layout=phone|tablet|desktop|compact][data-cols]`, decididos pelo tamanho da TELA.
 4. Commit e push na `main` (o GitHub Pages publica a raiz).
