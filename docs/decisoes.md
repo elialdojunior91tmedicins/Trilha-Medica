@@ -12,6 +12,8 @@ com a data e não apague o histórico.
 - Responder em português do Brasil, sem jargão de programação; crítica sincera; consultar quando houver dúvida. Nunca mudar uma decisão registrada sem perguntar. (CLAUDE.md; skill nexus-dev)
 - O usuário confere tudo antes de publicar: prints reais nos aparelhos, depois "pode publicar". Cada ramo vai para a `main` só com o OK dele. (skill nexus-dev)
 - Provas e PDFs nunca entram no repositório; arquivos de gabarito e comentários ficam com o usuário. (CLAUDE.md; claude/banco-plano.md)
+- **Pendências: uma lista só, no Projeto do Claude** (`claude/pendencias.md`, 16/11/2026). O fluxo de 08/11 (pasta `pendencias/` + `ESTADO.md` no repositório) foi aposentado sem ser instalado; os documentos antigos do projeto ficam como histórico, com um aviso no topo. (claude/fluxo-chat-code.md)
+- Limpeza de código sem uso pode ir direto para a `main`, sem esperar aprovação (16/11/2026, 16h32: "Pode fazer todas as limpezas"). (recursos › Limpeza 16/11/2026)
 
 ## Plataforma
 
@@ -64,17 +66,15 @@ com a data e não apague o histórico.
 - Aparelho com versão antiga do app (sem atualizar) apaga o histórico e o "suspenso" de um cartão ao responder; some quando ele atualiza (revisão final, 13/11). Ações em vários vão juntas para a conta.
 - Sugestões aceitas (13/11, 09h06): todas de 1 a 18, menos a **6 (cartão de lacuna), recusada**. Histórico de cada revisão (30 por cartão); "lembrou" = Difícil/Bom/Fácil; maduro = 21 dias; mais esquecido = 4 vezes. (docs/superpowers/specs/2026-11-13-aba-cartoes-design.md)
 
-- **Limpeza do código sem uso** (16/11/2026, 16h32): o usuário pediu todas as limpezas, sem esperar aprovação; `crUnlink` fica (botão adiado em 12/11). (recursos › Limpeza 16/11/2026; claude/limpeza-funcoes.md)
+## Código e desempenho (16/11/2026)
 
-- **Abertura do app fica como está** (16/11/2026, 17h02). Medida no iPhone instalado: 0,25 a 1,1 s, mediana 0,7 s. O `sw.js` continua com "rede primeiro" (baixa ~533 KB a cada abertura e espera até 4 s). Recusada a "cópia primeiro", porque a versão nova só chegaria na abertura seguinte. O meio-termo (perguntar só a versão) e a espera de 2 s ficaram para depois: voltar a isso só se o app demorar fora do Wi-Fi. (claude/qualidade-testes-16-11.md)
+- Testes: contrato site ↔ app, sorteio repetível e cobertura real aprovados e publicados (16/11, 14h21 e 16h29). (claude/qualidade-testes-16-11.md)
+- **Limpeza:** 19 funções, 9 variáveis e 80 classes do CSS sem uso apagadas; `crUnlink` fica (o botão foi adiado em 12/11). (recursos › Limpeza 16/11/2026; claude/limpeza-funcoes.md)
+- **Abertura do app fica como está** (16/11/2026, 17h02). Medida no iPhone instalado: 0,25 a 1,1 s, mediana 0,7 s. O `sw.js` continua com "rede primeiro" (baixa ~533 KB a cada abertura e espera até 4 s). O meio-termo (perguntar só a versão) e a espera de 2 s ficam para depois, só se o app demorar fora do Wi-Fi. (claude/qualidade-testes-16-11.md)
 
 ## Aprovado e ainda não feito
 
-- Ajustar os intervalos pela retenção das revisões — depois de ~2 meses de histórico (13/11/2026). (claude/sugestoes-12-11.md)
-- **Revisar com questões do banco** (a nota da revisão sai do acerto) — guardado para quando o banco tiver **5.000 questões** (12/11/2026). (claude/sugestoes-12-11.md)
-- Contador de uso só no aparelho, para basear um novo lote de enxugamento — mais adiante (12/11/2026). Demais sugestões de 12/11 (por aba, beleza, código): guardadas para depois, em claude/sugestoes-12-11.md.
-- Provas, entregas e fechamentos no **Calendário do iPhone** pela conta Google (agenda "Nexus", só leitura, sem alertas) — opção A, 01/11/2026, 08h23. (claude/integracoes.md)
-- **Atalhos do iPhone/iPad** (links que abrem uma tela pronta: Foco, Registrar tempo, Revisar erros, Fila do dia, abas) — aprovado em 01/11/2026, 07h49; os links exatos a confirmar ao fazer. (claude/integracoes.md)
+Fica na lista única de pendências, `claude/pendencias.md` do Projeto (desde 16/11/2026), para não ter duas listas que discordam.
 
 ## Recusado (não propor de novo sem o usuário pedir)
 
@@ -89,6 +89,7 @@ com a data e não apague o histórico.
 - Calendário por link secreto assinado no iPhone (opção B) — 01/11/2026.
 - Abrir o Foco antes do Anki para contar o tempo (depende de lembrar toda vez) — 30/10/2026.
 - Artefato novo com outro link — 05/11/2026.
+- "Cópia primeiro" no `sw.js` (abrir da cópia e atualizar por trás): a versão nova chegaria uma abertura depois — 16/11/2026, 17h00.
 
 Fontes: claude/problemas-a-resolver.md, claude/lote-21.md, claude/lote-21-publicado.md, claude/integracoes.md, claude/banco-de-questoes.md,
-claude/banco-plano.md, claude/b5.md, docs/recursos.md e a skill nexus-dev. Compilado em 12/11/2026.
+claude/banco-plano.md, claude/b5.md, docs/recursos.md e a skill nexus-dev. Compilado em 12/11/2026; reorganizado em 16/11/2026 (pendências na lista única).

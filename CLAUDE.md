@@ -69,7 +69,7 @@ consultado quando há dúvida. Responda em português.
   `progress/errors/{id}`, `progress/notes/{key}`.
 - Faculdade: `fac.sems[]` = {id,name,archived,lv,ucs?:[{id,name}]} (UC opcional, só o nome: `ucLabel` mostra "NCS 6" pelo número do semestre);
   `fac.discs[]` = {name, ucId?, div:"sp"|"" (com SPs ou só lista), info:{tipo,ch,prof,tutor,horario,local,ementa,objetivos}, items (conteúdos diretos),
-  sps:[{id,name,items:[ref],objs:[texto]}]}; `sem.lv` renomeia os níveis (disc, sp). Não há mais eixo.
+  sps:[{id,name,items:[ref],objs:[texto]}]}; `sem.lv` renomeia os níveis (disc, sp). A estrutura não tem mais eixo (o "eixo atual" do plano, Lote 20E, é outra coisa: a área das SPs da semana, `ui.prefs.eixo`).
   SP = conteúdo: cada SP tem `fac.own[s.id]={t:s.name,discId,spId:s.id}` e `"O:"+s.id` sempre como 1º item (`isSelf`); os outros itens são
   conteúdos dentro dela. Renomear a SP muda `own.t` junto. `facMigrateSP` (em `facNormalize`) converte o formato antigo: cria o próprio da SP,
   copia a área do eixo para a SP (e para conteúdos FAC aninhados sem área), apaga `eixos`/`eixoId`/`lv.eixo` e define `div`.
@@ -90,7 +90,7 @@ consultado quando há dúvida. Responda em português.
   que este aparelho gravou por último) nem passa por cima do que ainda vai ser enviado (`saveTimer`/`facTimer`/`uiTimer`/`noteTimers[k]` voltam a 0
   ao disparar; tema com `JSON(state[k])!==tSaved[k]`); `hist` junta pelo maior valor; listas atualizam o objeto no lugar e só apagam ids já vistos
   (`liveSeen`). A tela só é redesenhada (`liveFlush`) sem campo em edição e após `LIVE_IDLE` (5 s) sem toque/tecla; `#save` mostra
-  "Atualizado com seus outros aparelhos". Ao voltar ao app após 5 min em segundo plano (`liveHidAt`) ou com `online`, `liveRefresh` confere tudo com `get()`. Teste: `tests/t80.js`
+  "Atualizado com seus outros aparelhos". Ao voltar ao app após 30 min em segundo plano (`liveHidAt`, Lote 18; antes eram 5 min) ou com `online`, `liveRefresh` confere tudo com `get()`. Teste: `tests/t80.js`
   (`mockdb.js` tem `window.__remote(caminho,dados)`; no `fakefb.js` duas páginas do mesmo contexto são dois aparelhos).
 - Leituras da conta (Lote 18, 10/2026): a carga não lê mais tudo duas vezes. `liveOpen(ref)` abre UMA assinatura por documento/lista (todas juntas no começo da carga, objeto `R`);
   `liveFirst(ref)` devolve a 1ª resposta do servidor (resposta só do cache com internet espera até `LIVE_WAIT`=8 s) no lugar do `get()`; `liveStart` reaproveita a assinatura
@@ -109,6 +109,16 @@ consultado quando há dúvida. Responda em português.
   lê o Firestore por REST com o token do dono do projeto e `X-Goog-User-Project`, só leitura; monta o MESMO objeto do `buildBackup()`, tira `updatedAt`
   das prefs; pasta "Nexus - Trilha Médica (backups)" com escopo `drive.file`, guarda 30). Restaurar = Importar backup do site. Instalação em
   `tools/backup-drive-LEIA.md`. **Mudou o formato dos dados ou um campo novo no `buildBackup` → atualizar o script** (teste `tests/t87.js` compara os dois).
+
+## Onde fica cada registro (organizado em 16/11/2026)
+
+- **Este `CLAUDE.md`:** o que cada coisa é, a arquitetura e o formato dos dados.
+- **`docs/recursos.md`:** um bloco por recurso e por lote (funções, ids, decisões, teste). Histórico: blocos antigos citam nomes que já saíram (veja "Limpeza 16/11/2026").
+- **`docs/decisoes.md`:** o que o usuário decidiu e o que **recusou**.
+- **Pendências (tudo o que está aberto): só em `claude/pendencias.md` do Projeto "Trilha Médica" no Claude.** Os outros documentos `claude/…` são histórico
+  e referência (desenho de cada ideia). Não há `pendencias/` nem `ESTADO.md` no repositório (fluxo de 08/11 aposentado em 16/11/2026).
+- **Skill `nexus-dev`** (na conta do Claude): o jeito de trabalhar. **`tests/README.md`:** os testes. **`tools/mapa/LEIA.md`:** o mapa do código.
+- `docs/adr/` (decisões técnicas) e `docs/superpowers/` (desenhos e planos de lotes, 13/11/2026) são histórico.
 
 ## Recursos (em `docs/recursos.md`)
 

@@ -2,7 +2,7 @@
 
 Endereço: **https://elialdojunior91tmedicins.github.io/Trilha-Medica/**
 
-Site do checklist de estudos para residência médica: 185 temas de alta recorrência,
+Site do checklist de estudos para residência médica: 198 temas de alta recorrência,
 plano do dia, revisões espaçadas, faculdade, questões, anotações e caderno de erros.
 
 - Funciona como app: no Safari, **Compartilhar › Adicionar à Tela de Início**.
@@ -24,7 +24,7 @@ Enquanto `config.js` estiver com `COLE_AQUI`, o site funciona salvando só no pr
 
 ## Arquivos
 
-- `index.html` — o app (gerado a partir da versão do Claude)
+- `index.html` — o app (gerado de `src/app/` por `python3 src/build_site.py`; não editar à mão)
 - `bridge.js` — conta, sincronização, backup, IA por copiar e colar
 - `config.js` — configuração do Firebase
 - `sw.js`, `manifest.webmanifest`, `icons/` — app instalável e modo sem internet
