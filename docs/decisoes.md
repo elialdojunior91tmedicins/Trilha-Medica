@@ -66,6 +66,8 @@ com a data e não apague o histórico.
 
 - **Limpeza do código sem uso** (16/11/2026, 16h32): o usuário pediu todas as limpezas, sem esperar aprovação; `crUnlink` fica (botão adiado em 12/11). (recursos › Limpeza 16/11/2026; claude/limpeza-funcoes.md)
 
+- **Abertura do app fica como está** (16/11/2026, 17h02). Medida no iPhone instalado: 0,25 a 1,1 s, mediana 0,7 s. O `sw.js` continua com "rede primeiro" (baixa ~533 KB a cada abertura e espera até 4 s). Recusada a "cópia primeiro", porque a versão nova só chegaria na abertura seguinte. O meio-termo (perguntar só a versão) e a espera de 2 s ficaram para depois: voltar a isso só se o app demorar fora do Wi-Fi. (claude/qualidade-testes-16-11.md)
+
 ## Aprovado e ainda não feito
 
 - Ajustar os intervalos pela retenção das revisões — depois de ~2 meses de histórico (13/11/2026). (claude/sugestoes-12-11.md)
