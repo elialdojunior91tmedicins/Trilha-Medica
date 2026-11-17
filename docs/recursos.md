@@ -729,3 +729,14 @@ com o mapa ("sem uso" = o nome só aparece na definição). **Os nomes abaixo n�
 - Testes ajustados: t65 e t103 (tiradas as conferências do Levar para a anotação antigo e do Para reler hoje), t74 (resumo da semana do Início),
   t68 (marca a anotação no erro direto), t36.
 
+
+## Segurança do que é colado ou importado (17/11/2026)
+
+- Revisão: textos que vêm de fora (resposta da IA colada, backup importado, prova importada, ementa) e tudo que o usuário digita
+  só entram na tela por `esc()`, `md()`/`mdC()` (escapa antes; link só `http(s)`), `textContent` ou `option.textContent` (`fcSel`).
+  `bridge.js` não usa `innerHTML`. Nas ~40 interpolações sem `esc` achadas, o valor é número, nome do catálogo, texto do pedido para a IA,
+  texto do PDF (`para`) ou vai por `textContent`/atributo. Nada a corrigir.
+- Teste `tests/t156.js`: põe HTML que tentaria rodar código (`<img onerror>`, `<svg onload>`, `javascript:`) em erros (com `ra`), cartões,
+  caderno livre, provas importadas, banco, refazer, foco, perfil, faculdade, etiquetas e anotações; passa por todas as abas e partes no
+  celular 390 e no computador 1366. Falha se algo rodar, se houver erro de página ou se menos de 14 tipos de texto aparecerem na tela.
+- Regra para código novo: texto do usuário ou de fora nunca dentro de `el(\`…${x}…\`)` sem `esc(x)`; prefira `textContent`.
