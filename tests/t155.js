@@ -13,8 +13,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];
  const C=await p.evaluate(()=>({mac:eSameCore("Azitromicina 1.200 mg VO uma vez por semana","Itraconazol 200 mg por via oral uma vez ao dia"),
    same:eSameCore("Azitromicina 1.200 mg VO uma vez por semana","Iniciar azitromicina semanal"),
    neuro:eSameCore("Penicilina G cristalina IV 18 a 24 milhões UI/dia por 14 dias","Penicilina G cristalina IV por 14 dias"),
-   vazio:eSameCore("Sim","Sim")}));
- ok(C.mac===false&&C.same===true&&C.neuro===true&&C.vazio===false,name+": núcleo da resposta (MAC × histoplasmose não casa; mesma droga casa) "+JSON.stringify(C));
+   vazio:eSameCore("Sim","Sim"),hemo:eSameCore("Hemofilia A","Hemofilia B"),hemoA:eSameCore("Hemofilia A","Hemofilia A"),benz:eSameCore("Penicilina G cristalina IV 18 a 24 milhões UI/dia por 14 dias","Penicilina benzatina 2,4 milhões UI IM semanal por 3 semanas"),cl:eSameCore("Penicilina G cristalina IV 18 a 24 milhões UI/dia","Cristalina"),k:eSameCore("Insulina regular IV em infusão contínua 0,1 U/kg/h","Repor potássio IV e adiar a insulina até potássio ≥ 3,3")}));
+ ok(C.mac===false&&C.same===true&&C.neuro===true&&C.vazio===false&&C.hemo===false&&C.hemoA===true&&C.benz===false&&C.cl===true&&C.k===false,name+": núcleo da resposta (MAC × histoplasmose não casa; mesma droga casa) "+JSON.stringify(C));
  /* erro: profilaxia de MAC; no acervo, uma irmã de histoplasmose (não pode casar) */
  const Q=(en,alts,c,cm,pc)=>({enunciado:en,alternativas:alts.map((t,i)=>({letra:"ABCD"[i],texto:t})),correta:c,comentario:cm,pc});
  await p.evaluate(Q=>{errors=[];redo=[];const k=ALL.find(i=>/HIV/.test(i.t)).key;window.__k=k;Q=eval(Q);

@@ -8,13 +8,18 @@ const eWrote=e=>eOneLine(e.w).replace(/;\s*a certa era .*$/i,"").replace(/^Marqu
    de dose e via; o usuário pode desfazer o par ("Este caso não é da mesma regra", e.ra.nao2) */
 const E_GEN=new Set("dose doses semana semanas semanal semanais diaria diario diarias diarios dias vezes oral orais intravenosa intravenoso endovenosa endovenoso venosa subcutanea intramuscular horas hora manter iniciar inicio indicado indicada indicacao tratamento tratar realizar solicitar uso usar profilaxia primaria primario secundaria secundario milhoes durante ate cada ambos ambas apenas somente associado associada associacao".split(" "));
 const eCore=t=>[...clWords(t)].filter(w=>!/^\d+$/.test(w)&&!E_GEN.has(w));
-function eSameCore(a,b){const A=new Set(eCore(a)),B=[...new Set(eCore(b))];if(!A.size||!B.length)return false;const n=B.filter(w=>A.has(w)).length;return n>=1&&n>=Math.min(A.size,B.length)/2}
+/* letras soltas que mudam a resposta ("Hemofilia A" × "Hemofilia B", "Vitamina K" × "Vitamina D"): só maiúsculas e nunca a primeira palavra */
+const eLetters=t=>new Set(String(t||"").split(/\s+/).slice(1).map(w=>w.replace(/[(),.;:]/g,"")).filter(w=>/^[A-Z]$/.test(w)));
+/* parecença do núcleo das duas respostas (0 a 1): palavras em comum ÷ palavras das duas juntas; letras diferentes vetam */
+function eCoreSim(a,b){const A=new Set(eCore(a)),B=new Set(eCore(b));if(!A.size||!B.size)return 0;const La=eLetters(a),Lb=eLetters(b);if(La.size&&Lb.size&&![...La].some(x=>Lb.has(x)))return 0;
+  const n=[...B].filter(w=>A.has(w)).length;return n/new Set([...A,...B]).size}
+const eSameCore=(a,b)=>eCoreSim(a,b)>=.5;
 const eSisKey=t=>norm(String(t||"")).slice(0,80);
 const eRightTxt=e=>{const Q=e&&e.q;const r=Q&&Array.isArray(Q.a)&&Q.a.find(a=>a.l===Q.c);return r?r.t:""};
 function eSister(e){const ra=e.ra;if(!ra||!ra.regra)return null;const K=clWords(ra.regra),own=eSisKey(e.q&&e.q.e),inRd=new Set(redo.map(x=>eSisKey(x.q&&x.q.enunciado))),no=new Set(ra.nao2||[]),okT=eRightTxt(e);if(!okT)return null;let best=null;
   exams.forEach(ex=>(ex.qs||[]).forEach(r=>{if(!r||!r.q||(r.k!==e.k&&!(r.ks||[]).includes(e.k)))return;const t=eSisKey(r.q.enunciado);if(!t||t===own||inRd.has(t)||no.has(t))return;
-    const c=(r.q.alternativas||[]).find(a=>a.letra===r.q.correta);if(!c||!eSameCore(okT,c.texto))return;
-    const W=clWords([r.q.enunciado,r.q.comentario,r.q.pc].join(" "));let n=0;K.forEach(w=>{if(W.has(w))n++});if(n>=3&&(!best||n>best.n))best={n,q:r.q,ans:c.texto,src:ex.name,key:t}}));
+    const c=(r.q.alternativas||[]).find(a=>a.letra===r.q.correta);const sim=c?eCoreSim(okT,c.texto):0;if(sim<.5)return;
+    const W=clWords([r.q.enunciado,r.q.comentario,r.q.pc].join(" "));let n=0;K.forEach(w=>{if(W.has(w))n++});if(n>=3&&(!best||sim>best.sim||sim===best.sim&&n>best.n))best={n,sim,q:r.q,ans:c.texto,src:ex.name,key:t}}));
   if(!best)return null;const A=eAskSplit(best.q.enunciado),Q=best.q;
   /* o raciocínio vem do caso mostrado, não do erro original */
   let passos=[];try{const o=eOrg({k:e.k,w:"",r:"",pc:Q.pc||"",q:{e:Q.enunciado,a:(Q.alternativas||[]).map(a=>({l:a.letra,t:a.texto,p:a.porque||""})),c:Q.correta,m:Q.correta,cm:Q.comentario||"",co:Q.conceito||""}});if(o)passos=o.passos}catch(x){}
