@@ -43,7 +43,7 @@ jobs:
         run: tests/run.sh
       - name: Guardar as saídas dos testes
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: saidas-dos-testes
           path: tests/out_*.txt
