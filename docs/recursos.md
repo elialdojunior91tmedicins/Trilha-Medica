@@ -739,4 +739,4 @@ com o mapa ("sem uso" = o nome só aparece na definição). **Os nomes abaixo n�
 - Teste `tests/t156.js`: põe HTML que tentaria rodar código (`<img onerror>`, `<svg onload>`, `javascript:`) em erros (com `ra`), cartões,
   caderno livre, provas importadas, banco, refazer, foco, perfil, faculdade, etiquetas e anotações; passa por todas as abas e partes no
   celular 390 e no computador 1366. Falha se algo rodar, se houver erro de página ou se menos de 14 tipos de texto aparecerem na tela.
-- Regra para código novo: texto do usuário ou de fora nunca dentro de `el(\`…${x}…\`)` sem `esc(x)`; prefira `textContent`.
+- Regra para código novo: texto do usuário ou de fora nunca dentro do modelo de `el(...)` como `${x}` sem `esc(x)`; prefira `textContent`.
