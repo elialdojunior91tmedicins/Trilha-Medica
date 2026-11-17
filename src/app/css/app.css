@@ -31,6 +31,9 @@
 .donut{width:100%;height:100%;display:block}
 .donut circle[data-tip]{cursor:default}
 @media (pointer:coarse){.ptitle,.etopic,.qt{padding-block:8px;margin-block:-8px}}
+/* Toque (17/11/2026): links de texto e botões "?" ganham uma área de toque invisível de ~44px, sem mudar a aparência */
+@media (pointer:coarse){.link,.hlpb{position:relative}.link::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:40px;min-width:44px;transform:translateY(-50%)}
+.hlpb::after{content:"";position:absolute;inset:-11px;border-radius:50%}.exmain input[type=radio]{width:24px;height:24px}}
 .ringc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
 .ringc b{font:500 1.7rem/1 var(--mono);font-variant-numeric:tabular-nums}
 .ringc span{font-size:.75rem;color:var(--muted);margin-top:3px}
@@ -1439,7 +1442,12 @@ html[data-layout="phone"] .wpopts{display:grid;grid-template-columns:repeat(5,1f
 .pday{display:flex;flex-direction:column;gap:8px}.pest{margin:0;font-size:12.5px;color:var(--muted)}.pest.over{color:var(--warn)}.pbrake{margin:0;font-size:13px;padding:8px 10px;border-radius:10px;background:var(--track);border-left:3px solid var(--gold)}
 .revg{gap:8px;flex-wrap:nowrap;width:100%;max-width:420px}.revg .btn{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15;flex:1 1 0;min-width:0;padding-left:6px;padding-right:6px}.revg .btn small{font-size:11px;font-weight:500;opacity:.75}.pdrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .ptime{display:inline-flex;align-items:center;background:var(--bg);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--accent)}
-.pdrow .link{font-size:.84rem}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
+.pdrow .link{font-size:.84rem}
+/* Ajustar o dia (17/11/2026): só no celular; nos outros aparelhos as três ações continuam à vista */
+.padjb,.padj{display:none}
+html[data-layout="phone"] .padjb{display:inline-block}html[data-layout="phone"] .padj{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+html[data-layout="phone"] .padj .btn{flex:1 1 auto}html[data-layout="phone"] .padj .btn.warn{border-color:var(--warn,#c0662b);color:var(--warn,#c0662b)}
+html[data-layout="phone"] #planRedo,html[data-layout="phone"] #pTimeChg,html[data-layout="phone"] #pHnd{display:none}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
 .plight{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.plight .how{margin:0;font-size:.84rem}
 .plight ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.plight li{display:flex;gap:10px;align-items:baseline}.pltag{font-size:.78rem;color:var(--muted)}
 .plight .btn{align-self:flex-start}.plgen{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:8px;font-size:.88rem}.plgen .how{font-size:.8rem}

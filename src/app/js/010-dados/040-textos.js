@@ -143,6 +143,7 @@ Um dia de estudo:
 - **Freio de revisões:** com mais de 20 revisões atrasadas, o plano traz só 1 tema novo; com mais de 40, nenhum. O cartão mostra o tempo estimado do dia.
 - **Folga e sequência:** folga planejada sem estudo **congela** a sequência (❄ no mapa do Foco); estudar na folga soma. Na folga, o Início sugere coisas leves e opcionais; **Hoje é só descanso** esconde.
 - **Hoje não deu** (1 por semana, dois toques): hoje vira folga, o plano zera, as revisões passam para o próximo dia de estudo e a sequência congela. **Desfazer** no mesmo dia.
+- **No celular**, **Refazer plano**, **Tenho menos tempo hoje** e **Hoje não deu** ficam juntos em **Ajustar o dia**, no topo do Estudar hoje.
 - **Faculdade no plano:** com aula fixa amanhã, lembra os objetivos da SP aberta; entregas dos próximos 3 dias aparecem com **Já entreguei**; na semana da prova, **Ler as anotações da prova** junta as páginas dela.
 - **Meta e projeção** (Residência; no celular, parte Progresso): temas que faltam, quantos por semana até a prova principal e o seu ritmo das últimas 4 semanas. **Ver semanas** mostra semana a semana (temas novos, revisões, cartões); semanas de prova da faculdade recebem menos temas.
 - **Próximos 6 dias:** prévia do que o plano deve propor, supondo que você cumpra o plano. Prova nova nos próximos 7 dias refaz o plano sozinho.`],

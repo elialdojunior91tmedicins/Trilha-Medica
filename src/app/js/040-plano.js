@@ -129,7 +129,7 @@ function planMinutes(P){return P.items.filter(x=>!itemDone(x)).reduce((a,x)=>a+(
    planOpen guarda o que você abriu ou fechou à mão hoje */
 let planOpen={};
 /* tempo de hoje no Estudar hoje: selo, "Tenho mais/menos tempo hoje" e, no dia de 30 min, o leve */
-let tdOpen=false;
+let tdOpen=false,adjOpen=false,rdAll=false;
 function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pday"><div class="pdrow"><span class="ptime" id="pTime"></span><button class="link" type="button" id="pTimeChg"></button></div></div>`);
   w.querySelector("#pTime").textContent=`${WD_FULL[wdOf(t)][0].toUpperCase()+WD_FULL[wdOf(t)].slice(1)} · ${WP_LAB[m]}`;
   const cb=w.querySelector("#pTimeChg");cb.textContent=tdOpen?"Fechar":m>=180?"Tenho menos tempo hoje":m===0?"Vou estudar hoje":"Tenho mais ou menos tempo hoje";cb.setAttribute("aria-expanded",tdOpen);cb.onclick=()=>{tdOpen=!tdOpen;render()};
@@ -137,13 +137,21 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
     else if(m>0&&!W){const b=el(`<button class="link phndb" type="button" id="pHnd"></button>`);b.textContent=hndArm?"Toque de novo: hoje vira folga (1 por semana)":"Hoje não deu";if(hndArm)b.classList.add("warn");
       b.title="Doença ou imprevisto: transforma hoje em folga, empurra as revisões para o próximo dia de estudo e não quebra a sequência";b.onclick=()=>{if(hndArm){hndArm=false;hojeNaoDeu()}else{hndArm=true;render();setTimeout(()=>{if(hndArm){hndArm=false;render()}},6000)}};w.querySelector(".pdrow").appendChild(b)}
     else if(m>0&&W&&W.d!==today()){const s=el(`<span class="phndu"></span>`);s.textContent=`“Hoje não deu” já usado nesta semana (${br(W.d).slice(0,5)}).`;w.querySelector(".pdrow").appendChild(s)}}
+  /* Ajustar o dia (17/11/2026): no celular, Refazer plano, o tempo de hoje e Hoje não deu ficam num botão só; os originais continuam (escondidos no celular pelo CSS) */
+  {const hb=w.querySelector("#pHnd"),open=adjOpen||hndArm,ab=el(`<button class="link padjb" type="button" id="pAdj" aria-controls="pAdjBox"></button>`);ab.textContent=open?"Fechar":"Ajustar o dia";ab.setAttribute("aria-expanded",open);
+    ab.onclick=()=>{adjOpen=!open;if(!adjOpen)hndArm=false;render()};w.querySelector(".pdrow").appendChild(ab);
+    if(open){const x=el(`<div class="padj" id="pAdjBox" role="group" aria-label="Ajustar o dia"></div>`),mk=(id,txt,fn,warn)=>{const b=el(`<button class="btn" type="button"></button>`);b.id=id;b.textContent=txt;if(warn)b.classList.add("warn");b.onclick=fn;x.appendChild(b)};
+      mk("pAdjRedo","Refazer plano",()=>{adjOpen=false;const r=$("#planRedo");if(r)r.click()});
+      mk("pAdjTime",cb.textContent,()=>{adjOpen=false;cb.click()});
+      if(hb)mk("pAdjHnd",hb.textContent,()=>{adjOpen=!hndArm;hb.click()},hndArm);
+      w.appendChild(x)}}
   if(tdOpen){const g=el(`<div class="seg pdseg" role="group" aria-label="Tempo de hoje"></div>`);WP_MIN.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="tdm-"+v;b.textContent=WP_LAB[v];b.setAttribute("aria-pressed",v===m);b.onclick=()=>{tdOpen=false;if(v!==m)setTodayMin(v)};g.appendChild(b)});
     w.appendChild(g);w.appendChild(el(`<p class="how">Muda só hoje (fica no plano desta semana). O que você já começou continua no plano.</p>`))}
   if(m>0){const qm=qMinutes(qCounts()),pm=dayPlan&&dayPlan.d===today()?planMinutes(dayPlan):0,tot=qm+pm,e=el(`<p class="pest" id="pEst"></p>`);
     e.textContent=`Tempo estimado: fila ≈ ${fmtMin(qm*60)} + plano ≈ ${fmtMin(pm*60)} = ${fmtMin(tot*60)}${m<180?` · você tem ${WP_LAB[m]}`:""}`;if(m<180&&tot>m)e.classList.add("over");w.appendChild(e)}
   {const BR=revBrake();if(BR.cap<99&&!CR.active&&!PW.length&&m>=60){const b=el(`<p class="pbrake" id="pBrake"></p>`);
     b.textContent=recActive().length?`Recuperação do atraso até ${br((ui.prefs.rec||{}).until||today())}: hoje só 1 tema novo. As revisões remanejadas vêm primeiro.`:BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
-    if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont"||x.cls==="r-eixo")&&!itemStarted(x)).length>BR.cap)b.textContent+=" O plano de hoje foi montado antes: toque em Refazer plano para aplicar.";w.appendChild(b)}}
+    if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont"||x.cls==="r-eixo")&&!itemStarted(x)).length>BR.cap)b.textContent+=` O plano de hoje foi montado antes: toque em ${document.documentElement.dataset.layout==="phone"?"Ajustar o dia › Refazer plano":"Refazer plano"} para aplicar.`;w.appendChild(b)}}
   if(m>0){const fn=facDayNotesEl();if(fn)w.appendChild(fn)}
   if(m>=60&&!CR.active&&!PW.length){const ax=axLineEl();if(ax)w.appendChild(ax)}
   if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"],...(()=>{const W=C.weak&&weakToday();return W&&BYKEY[W.k]?[["weak","Ponto fraco · "+BYKEY[W.k].t,C.weak,"questões"]]:[]})()].filter(x=>x[2]);
@@ -297,7 +305,10 @@ function renderRevs(){
   const rt=(ensurePlan().revd||[]).filter(k=>BYKEY[k]);
   $("#revdone").hidden=!rt.length;
   if(rt.length){$("#revdone").innerHTML="";$("#revdone").appendChild(el(`<span class="plabel">Revisadas hoje · ${rt.length}</span>`));
-    const w=el(`<div class="rtags"></div>`);rt.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`),ar=get(k).ar;b.textContent="✓ "+BYKEY[k].t+(ar&&ar.d===today()?` · questões ${ar.a}%`:"");b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w)}
+    /* 17/11/2026: com mais de 8, mostra as 6 mais recentes e "Ver todas" (a lista longa empurrava Próximos dias para baixo) */
+    const many=rt.length>8&&!rdAll,show=many?rt.slice(-6):rt;
+    const w=el(`<div class="rtags"></div>`);show.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`),ar=get(k).ar;b.textContent="✓ "+BYKEY[k].t+(ar&&ar.d===today()?` · questões ${ar.a}%`:"");b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w);
+    if(rt.length>8){const m=el(`<button class="link" type="button" id="rdAllB"></button>`);m.textContent=rdAll?"Mostrar só as 6 mais recentes":`Ver todas as ${rt.length}`;m.setAttribute("aria-expanded",rdAll);m.onclick=()=>{rdAll=!rdAll;render()};$("#revdone").appendChild(m)}}
   // próximas
   const ub=$("#revup");ub.innerHTML="";
   if(up.length){const det=el(`<details class="plain revup"${revUpOpen?" open":""}><summary>Próximas revisões nos próximos 7 dias · ${up.length}</summary><ul class="uplist"></ul></details>`);

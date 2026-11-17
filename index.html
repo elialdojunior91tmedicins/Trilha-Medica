@@ -15,12 +15,12 @@
 <meta name="apple-mobile-web-app-title" content="Nexus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="site.css?v=142af23d">
+<link rel="stylesheet" href="site.css?v=5f52de37">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="config.js?v=142af23d"></script>
-<script src="bridge.js?v=142af23d"></script>
+<script src="config.js?v=5f52de37"></script>
+<script src="bridge.js?v=5f52de37"></script>
 </head>
 <body>
 <script>
@@ -79,6 +79,9 @@ if(!document.documentElement.lang)document.documentElement.lang="pt-BR";// hifen
 .donut{width:100%;height:100%;display:block}
 .donut circle[data-tip]{cursor:default}
 @media (pointer:coarse){.ptitle,.etopic,.qt{padding-block:8px;margin-block:-8px}}
+/* Toque (17/11/2026): links de texto e botões "?" ganham uma área de toque invisível de ~44px, sem mudar a aparência */
+@media (pointer:coarse){.link,.hlpb{position:relative}.link::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:40px;min-width:44px;transform:translateY(-50%)}
+.hlpb::after{content:"";position:absolute;inset:-11px;border-radius:50%}.exmain input[type=radio]{width:24px;height:24px}}
 .ringc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
 .ringc b{font:500 1.7rem/1 var(--mono);font-variant-numeric:tabular-nums}
 .ringc span{font-size:.75rem;color:var(--muted);margin-top:3px}
@@ -1487,7 +1490,12 @@ html[data-layout="phone"] .wpopts{display:grid;grid-template-columns:repeat(5,1f
 .pday{display:flex;flex-direction:column;gap:8px}.pest{margin:0;font-size:12.5px;color:var(--muted)}.pest.over{color:var(--warn)}.pbrake{margin:0;font-size:13px;padding:8px 10px;border-radius:10px;background:var(--track);border-left:3px solid var(--gold)}
 .revg{gap:8px;flex-wrap:nowrap;width:100%;max-width:420px}.revg .btn{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15;flex:1 1 0;min-width:0;padding-left:6px;padding-right:6px}.revg .btn small{font-size:11px;font-weight:500;opacity:.75}.pdrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .ptime{display:inline-flex;align-items:center;background:var(--bg);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;color:var(--accent)}
-.pdrow .link{font-size:.84rem}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
+.pdrow .link{font-size:.84rem}
+/* Ajustar o dia (17/11/2026): só no celular; nos outros aparelhos as três ações continuam à vista */
+.padjb,.padj{display:none}
+html[data-layout="phone"] .padjb{display:inline-block}html[data-layout="phone"] .padj{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+html[data-layout="phone"] .padj .btn{flex:1 1 auto}html[data-layout="phone"] .padj .btn.warn{border-color:var(--warn,#c0662b);color:var(--warn,#c0662b)}
+html[data-layout="phone"] #planRedo,html[data-layout="phone"] #pTimeChg,html[data-layout="phone"] #pHnd{display:none}.pdseg{flex-wrap:wrap;align-self:flex-start}.pday>.how{margin:0;font-size:.8rem}
 .plight{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.plight .how{margin:0;font-size:.84rem}
 .plight ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.plight li{display:flex;gap:10px;align-items:baseline}.pltag{font-size:.78rem;color:var(--muted)}
 .plight .btn{align-self:flex-start}.plgen{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:8px;font-size:.88rem}.plgen .how{font-size:.8rem}
@@ -2988,6 +2996,7 @@ Um dia de estudo:
 - **Freio de revisões:** com mais de 20 revisões atrasadas, o plano traz só 1 tema novo; com mais de 40, nenhum. O cartão mostra o tempo estimado do dia.
 - **Folga e sequência:** folga planejada sem estudo **congela** a sequência (❄ no mapa do Foco); estudar na folga soma. Na folga, o Início sugere coisas leves e opcionais; **Hoje é só descanso** esconde.
 - **Hoje não deu** (1 por semana, dois toques): hoje vira folga, o plano zera, as revisões passam para o próximo dia de estudo e a sequência congela. **Desfazer** no mesmo dia.
+- **No celular**, **Refazer plano**, **Tenho menos tempo hoje** e **Hoje não deu** ficam juntos em **Ajustar o dia**, no topo do Estudar hoje.
 - **Faculdade no plano:** com aula fixa amanhã, lembra os objetivos da SP aberta; entregas dos próximos 3 dias aparecem com **Já entreguei**; na semana da prova, **Ler as anotações da prova** junta as páginas dela.
 - **Meta e projeção** (Residência; no celular, parte Progresso): temas que faltam, quantos por semana até a prova principal e o seu ritmo das últimas 4 semanas. **Ver semanas** mostra semana a semana (temas novos, revisões, cartões); semanas de prova da faculdade recebem menos temas.
 - **Próximos 6 dias:** prévia do que o plano deve propor, supondo que você cumpra o plano. Prova nova nos próximos 7 dias refaz o plano sozinho.`],
@@ -3723,7 +3732,7 @@ function planMinutes(P){return P.items.filter(x=>!itemDone(x)).reduce((a,x)=>a+(
    planOpen guarda o que você abriu ou fechou à mão hoje */
 let planOpen={};
 /* tempo de hoje no Estudar hoje: selo, "Tenho mais/menos tempo hoje" e, no dia de 30 min, o leve */
-let tdOpen=false;
+let tdOpen=false,adjOpen=false,rdAll=false;
 function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pday"><div class="pdrow"><span class="ptime" id="pTime"></span><button class="link" type="button" id="pTimeChg"></button></div></div>`);
   w.querySelector("#pTime").textContent=`${WD_FULL[wdOf(t)][0].toUpperCase()+WD_FULL[wdOf(t)].slice(1)} · ${WP_LAB[m]}`;
   const cb=w.querySelector("#pTimeChg");cb.textContent=tdOpen?"Fechar":m>=180?"Tenho menos tempo hoje":m===0?"Vou estudar hoje":"Tenho mais ou menos tempo hoje";cb.setAttribute("aria-expanded",tdOpen);cb.onclick=()=>{tdOpen=!tdOpen;render()};
@@ -3731,13 +3740,21 @@ function planDayEl(CR,PW){const t=dnum(today()),m=dayMin(t),w=el(`<div class="pd
     else if(m>0&&!W){const b=el(`<button class="link phndb" type="button" id="pHnd"></button>`);b.textContent=hndArm?"Toque de novo: hoje vira folga (1 por semana)":"Hoje não deu";if(hndArm)b.classList.add("warn");
       b.title="Doença ou imprevisto: transforma hoje em folga, empurra as revisões para o próximo dia de estudo e não quebra a sequência";b.onclick=()=>{if(hndArm){hndArm=false;hojeNaoDeu()}else{hndArm=true;render();setTimeout(()=>{if(hndArm){hndArm=false;render()}},6000)}};w.querySelector(".pdrow").appendChild(b)}
     else if(m>0&&W&&W.d!==today()){const s=el(`<span class="phndu"></span>`);s.textContent=`“Hoje não deu” já usado nesta semana (${br(W.d).slice(0,5)}).`;w.querySelector(".pdrow").appendChild(s)}}
+  /* Ajustar o dia (17/11/2026): no celular, Refazer plano, o tempo de hoje e Hoje não deu ficam num botão só; os originais continuam (escondidos no celular pelo CSS) */
+  {const hb=w.querySelector("#pHnd"),open=adjOpen||hndArm,ab=el(`<button class="link padjb" type="button" id="pAdj" aria-controls="pAdjBox"></button>`);ab.textContent=open?"Fechar":"Ajustar o dia";ab.setAttribute("aria-expanded",open);
+    ab.onclick=()=>{adjOpen=!open;if(!adjOpen)hndArm=false;render()};w.querySelector(".pdrow").appendChild(ab);
+    if(open){const x=el(`<div class="padj" id="pAdjBox" role="group" aria-label="Ajustar o dia"></div>`),mk=(id,txt,fn,warn)=>{const b=el(`<button class="btn" type="button"></button>`);b.id=id;b.textContent=txt;if(warn)b.classList.add("warn");b.onclick=fn;x.appendChild(b)};
+      mk("pAdjRedo","Refazer plano",()=>{adjOpen=false;const r=$("#planRedo");if(r)r.click()});
+      mk("pAdjTime",cb.textContent,()=>{adjOpen=false;cb.click()});
+      if(hb)mk("pAdjHnd",hb.textContent,()=>{adjOpen=!hndArm;hb.click()},hndArm);
+      w.appendChild(x)}}
   if(tdOpen){const g=el(`<div class="seg pdseg" role="group" aria-label="Tempo de hoje"></div>`);WP_MIN.forEach(v=>{const b=el(`<button type="button"></button>`);b.id="tdm-"+v;b.textContent=WP_LAB[v];b.setAttribute("aria-pressed",v===m);b.onclick=()=>{tdOpen=false;if(v!==m)setTodayMin(v)};g.appendChild(b)});
     w.appendChild(g);w.appendChild(el(`<p class="how">Muda só hoje (fica no plano desta semana). O que você já começou continua no plano.</p>`))}
   if(m>0){const qm=qMinutes(qCounts()),pm=dayPlan&&dayPlan.d===today()?planMinutes(dayPlan):0,tot=qm+pm,e=el(`<p class="pest" id="pEst"></p>`);
     e.textContent=`Tempo estimado: fila ≈ ${fmtMin(qm*60)} + plano ≈ ${fmtMin(pm*60)} = ${fmtMin(tot*60)}${m<180?` · você tem ${WP_LAB[m]}`:""}`;if(m<180&&tot>m)e.classList.add("over");w.appendChild(e)}
   {const BR=revBrake();if(BR.cap<99&&!CR.active&&!PW.length&&m>=60){const b=el(`<p class="pbrake" id="pBrake"></p>`);
     b.textContent=recActive().length?`Recuperação do atraso até ${br((ui.prefs.rec||{}).until||today())}: hoje só 1 tema novo. As revisões remanejadas vêm primeiro.`:BR.cap?`${BR.n} revisões atrasadas: hoje só 1 tema novo. As revisões vêm primeiro (as mais importantes no topo).`:`${BR.n} revisões atrasadas: dia de pôr em dia, sem tema novo. Comece pelas revisões mais importantes.`;
-    if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont"||x.cls==="r-eixo")&&!itemStarted(x)).length>BR.cap)b.textContent+=" O plano de hoje foi montado antes: toque em Refazer plano para aplicar.";w.appendChild(b)}}
+    if(dayPlan&&dayPlan.d===today()&&dayPlan.items.filter(x=>(x.cls==="r-new"||x.cls==="r-cont"||x.cls==="r-eixo")&&!itemStarted(x)).length>BR.cap)b.textContent+=` O plano de hoje foi montado antes: toque em ${document.documentElement.dataset.layout==="phone"?"Ajustar o dia › Refazer plano":"Refazer plano"} para aplicar.`;w.appendChild(b)}}
   if(m>0){const fn=facDayNotesEl();if(fn)w.appendChild(fn)}
   if(m>=60&&!CR.active&&!PW.length){const ax=axLineEl();if(ax)w.appendChild(ax)}
   if(m===30&&!CR.active&&!PW.length){const C=qCounts(),L=[["cards","Cartões",C.cards,"para hoje"],["errs","Erros",C.errs,"para revisar"],["redo","Questões para refazer",C.redo||0,"para hoje"],["revs","Revisões de temas",C.revs,C.revs>3?"comece pelas mais atrasadas":"para hoje"],...(()=>{const W=C.weak&&weakToday();return W&&BYKEY[W.k]?[["weak","Ponto fraco · "+BYKEY[W.k].t,C.weak,"questões"]]:[]})()].filter(x=>x[2]);
@@ -3891,7 +3908,10 @@ function renderRevs(){
   const rt=(ensurePlan().revd||[]).filter(k=>BYKEY[k]);
   $("#revdone").hidden=!rt.length;
   if(rt.length){$("#revdone").innerHTML="";$("#revdone").appendChild(el(`<span class="plabel">Revisadas hoje · ${rt.length}</span>`));
-    const w=el(`<div class="rtags"></div>`);rt.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`),ar=get(k).ar;b.textContent="✓ "+BYKEY[k].t+(ar&&ar.d===today()?` · questões ${ar.a}%`:"");b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w)}
+    /* 17/11/2026: com mais de 8, mostra as 6 mais recentes e "Ver todas" (a lista longa empurrava Próximos dias para baixo) */
+    const many=rt.length>8&&!rdAll,show=many?rt.slice(-6):rt;
+    const w=el(`<div class="rtags"></div>`);show.forEach(k=>{const b=el(`<button class="rtag" type="button"></button>`),ar=get(k).ar;b.textContent="✓ "+BYKEY[k].t+(ar&&ar.d===today()?` · questões ${ar.a}%`:"");b.onclick=()=>openTopic(k);w.appendChild(b)});$("#revdone").appendChild(w);
+    if(rt.length>8){const m=el(`<button class="link" type="button" id="rdAllB"></button>`);m.textContent=rdAll?"Mostrar só as 6 mais recentes":`Ver todas as ${rt.length}`;m.setAttribute("aria-expanded",rdAll);m.onclick=()=>{rdAll=!rdAll;render()};$("#revdone").appendChild(m)}}
   // próximas
   const ub=$("#revup");ub.innerHTML="";
   if(up.length){const det=el(`<details class="plain revup"${revUpOpen?" open":""}><summary>Próximas revisões nos próximos 7 dias · ${up.length}</summary><ul class="uplist"></ul></details>`);

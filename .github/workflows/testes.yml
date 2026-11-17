@@ -33,7 +33,7 @@ jobs:
       - name: Playwright e Chromium
         run: |
           cd tests
-          npm i --no-save --no-audit --no-fund playwright@1.56
+          npm i --no-save --no-audit --no-fund playwright@1.56 pdf-lib sharp pdfjs-dist@4.10.38
           npx playwright install --with-deps chromium
       - name: Testes rápidos
         if: ${{ !inputs.completa }}

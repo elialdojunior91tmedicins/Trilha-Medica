@@ -58,7 +58,8 @@ for(const name of Object.keys(DEV)){const [w,h,mob]=DEV[name];const ipad=name===
   ok(r4.due===0,name+": sem folga, as revisões vencem normalmente");
   const caps=await p.evaluate(wd=>[60,120,180].map(m=>{ui.prefs.wday[wd]=m;saveUI();redoPlan();return ensurePlan().items.length}),T.wd);
   ok(caps[0]===1&&caps[1]===2&&caps[2]===3,name+": 1 h = 1 tema, 2 h = 2, 3 h+ = 3 "+caps);
-  await click('#pTimeChg');await click('#tdm-60');
+  // no celular, "Tenho menos tempo hoje" fica dentro de "Ajustar o dia" (17/11/2026)
+  if(await p.evaluate(()=>document.documentElement.dataset.layout==='phone')){await click('#pAdj');await click('#pAdjTime')}else await click('#pTimeChg');await click('#tdm-60');
   const r4b=await p.evaluate(()=>{const t=dnum(today()),W=ui.prefs.wplans[fromNum(wpMon(t))];return {w:W&&W.m[wdOf(t)],pad:ui.prefs.wday[wdOf(t)],n:ensurePlan().items.length,note:document.querySelector('#planNote').textContent}});
   ok(r4b.w===60&&r4b.pad===180&&r4b.n>=1&&/1 h/.test(r4b.note),name+": \"Tenho menos tempo hoje\" muda só hoje (na semana) e refaz o plano "+JSON.stringify(r4b));
   /* 4b. esta semana: confirmar e voltar à padrão */

@@ -73,6 +73,7 @@ com a data e não apague o histórico.
 - **Limpeza:** 19 funções, 9 variáveis e 80 classes do CSS sem uso apagadas; `crUnlink` fica (o botão foi adiado em 12/11). (recursos › Limpeza 16/11/2026; claude/limpeza-funcoes.md)
 - **Testes automáticos no GitHub** (17/11/2026, "Pode sim"): a cada envio, conferência do build e testes rápidos; a rodada completa só à mão. (tests/README.md › No GitHub)
 - **Revisão de segurança do que é colado ou importado** (17/11/2026, "Pode seguir"): nada a corrigir; o teste `t156` garante daqui em diante. (recursos › Segurança do que é colado ou importado)
+- **Toque e arrumação** (17/11/2026, "Pode fazer o 1, 2 e 3"): área de toque maior nas telas de toque; no celular, **Ajustar o dia** junta Refazer plano, o tempo de hoje e Hoje não deu; Revisadas hoje mostra as 6 mais recentes e "Ver todas". Recusado o ajuste da caixa "Trazer seu progresso da versão do Claude" (não usam mais o artefato). (recursos › Toque e arrumação)
 - **Abertura do app fica como está** (16/11/2026, 17h02). Medida no iPhone instalado: 0,25 a 1,1 s, mediana 0,7 s. O `sw.js` continua com "rede primeiro" (baixa ~533 KB a cada abertura e espera até 4 s). O meio-termo (perguntar só a versão) e a espera de 2 s ficam para depois, só se o app demorar fora do Wi-Fi. (claude/qualidade-testes-16-11.md)
 
 ## Aprovado e ainda não feito

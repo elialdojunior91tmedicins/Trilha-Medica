@@ -51,7 +51,8 @@ Vários testes são "fotos" do comportamento atual (ex.: a sequência Bom, Bom, 
 mudança alterar o número de propósito, atualize o teste junto e diga no commit.
 
 Precisa de Node com o pacote `playwright` (1.56) e do Chromium (`PLAYWRIGHT_BROWSERS_PATH`). Em outro
-ambiente: `npm i playwright@1.56 && npx playwright install chromium`.
+ambiente: `npm i playwright@1.56 && npx playwright install chromium`. Os testes de PDF de prova (t83, t92–t94, t104, t115, t116)
+precisam também de `pdf-lib`, `sharp` e `pdfjs-dist@4.10.38` (`npm i pdf-lib sharp pdfjs-dist@4.10.38` na pasta `tests/`).
 
 ## Peças
 

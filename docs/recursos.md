@@ -740,3 +740,14 @@ com o mapa ("sem uso" = o nome só aparece na definição). **Os nomes abaixo n�
   caderno livre, provas importadas, banco, refazer, foco, perfil, faculdade, etiquetas e anotações; passa por todas as abas e partes no
   celular 390 e no computador 1366. Falha se algo rodar, se houver erro de página ou se menos de 14 tipos de texto aparecerem na tela.
 - Regra para código novo: texto do usuário ou de fora nunca dentro do modelo de `el(...)` como `${x}` sem `esc(x)`; prefira `textContent`.
+
+## Toque e arrumação (17/11/2026)
+
+- **Área de toque:** `@media (pointer:coarse)` em `app.css`: `.link` e `.hlpb` ficam `position:relative` com `::after` invisível (link: 40px de altura,
+  6px de cada lado, mín. 44px de largura; `?`: 11px em volta). `.exmain input[type=radio]` 24px. Aparência igual; no computador nada muda.
+  Links encostados dividem a área: o toque vai para o vizinho mais perto (o mais abaixo no código ganha na sobra).
+- **Ajustar o dia** (só `data-layout=phone`): `planDayEl` põe `#pAdj` na `.pdrow`; aberto (`adjOpen`, ou `hndArm` armado) mostra `#pAdjBox` com
+  `#pAdjRedo`, `#pAdjTime` (texto do `#pTimeChg`) e `#pAdjHnd` (texto do `#pHnd`, com `.warn` armado). Eles clicam nos originais `#planRedo`,
+  `#pTimeChg`, `#pHnd`, que continuam no DOM e escondidos pelo CSS no celular. Aviso do freio no celular: "toque em Ajustar o dia › Refazer plano".
+- **Revisadas hoje** (`renderRevs`): com mais de 8, mostra as 6 mais recentes (`rt.slice(-6)`) e `#rdAllB` "Ver todas as N" (`rdAll`, não salvo).
+- Teste `tests/t157.js` (celular, iPad no Claude, tablet deitado, computador); t25 e t85 abrem "Ajustar o dia" no celular.
