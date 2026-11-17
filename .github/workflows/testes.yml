@@ -1,0 +1,51 @@
+# Testes automáticos (17/11/2026): a cada envio (main ou qualquer ramo) e a cada pedido de mudança (pull request),
+# o GitHub confere se o index.html bate com src/app/ e roda os testes rápidos (unitários + abertura nos 6 aparelhos, ~1 min).
+# A rodada completa (~10 min) só roda quando pedida à mão: aba Actions › Testes › Run workflow › "completa".
+name: Testes
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      completa:
+        description: "Rodar todos os testes (uns 10 minutos), não só os rápidos"
+        type: boolean
+        default: false
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: O index.html e o sw.js batem com src/app/?
+        run: python3 src/build_site.py --check
+      - name: Ferramentas do mapa do código
+        run: cd tools/divisao && npm i --no-audit --no-fund
+      - name: Playwright e Chromium
+        run: |
+          cd tests
+          npm i --no-save --no-audit --no-fund playwright@1.56
+          npx playwright install --with-deps chromium
+      - name: Testes rápidos
+        if: ${{ !inputs.completa }}
+        run: tests/run.sh --rapido
+      - name: Todos os testes
+        if: ${{ inputs.completa }}
+        run: tests/run.sh
+      - name: Guardar as saídas dos testes
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: saidas-dos-testes
+          path: tests/out_*.txt
+          if-no-files-found: ignore
+          retention-days: 7

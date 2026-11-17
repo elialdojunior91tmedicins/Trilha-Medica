@@ -21,6 +21,12 @@ O que falha na rodada em paralelo roda de novo **sozinho**, uma vez. Passou na 2
 não do app; fica anotado em `tests/out_instaveis.txt`, que junta o histórico); falhou de novo = `FALHA`, defeito a investigar. A saída da
 1ª tentativa fica em `out_<teste>.1a.txt`. `SEM_REPETIR=1 tests/run.sh` desliga. O comando sai com 1 se sobrar alguma `FALHA`.
 
+## No GitHub (desde 17/11/2026)
+
+`.github/workflows/testes.yml`: a cada envio (main ou ramo) e a cada pull request, o GitHub confere `build_site.py --check`, instala o
+`tools/divisao` e o Playwright 1.56 e roda `tests/run.sh --rapido`. A rodada completa só à mão (Actions › Testes › Run workflow › "completa").
+Resultado: ✓ ou ✗ ao lado do commit; as saídas `out_*.txt` ficam 7 dias como anexo da rodada. Se falhar, o GitHub manda e-mail.
+
 ## Testes unitários (`tests/unit/`, desde 11/2026)
 
 `tests/unit/load.js` carrega a lógica do app no Node, sem navegador: lê `src/app/js/` (e as pastas de módulo) na ordem, declara todas as

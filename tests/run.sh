@@ -13,7 +13,9 @@ G=../src/checklist-residencia.html
 if [ ! -f "$G" ] || [ -n "$(find ../src/app -newer "$G" -type f ! -name .gerado.sha1 -print -quit)" ]; then (cd .. && python3 src/build_site.py) || exit 1; fi
 python3 mkprev.py
 # os testes do site abrem http://localhost:8765/ (a raiz do repositório, com index.html gerado)
-if ! curl -s -o /dev/null http://localhost:8765/; then (cd .. && setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &); sleep 1; fi
+# o servidor fica ligado para as próximas rodadas; a saída do subshell também vai para /dev/null, senão ele segura a saída
+# deste comando e quem a lê por um cano (tests/run.sh | tail, o GitHub) fica esperando para sempre (17/11/2026)
+if ! curl -s -o /dev/null http://localhost:8765/; then (cd .. && setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &) </dev/null >/dev/null 2>&1; sleep 1; fi
 if [ "$1" = "--monkey" ]; then
   for d in fone ipad578 tabEmPe tabDeitado note monitor; do (timeout 600 node monkey8.js 1 220 $d > out_monkey_$d.txt 2>&1 &); done; wait
   sleep 2; while pgrep -f monkey8.js >/dev/null; do sleep 5; done; tail -n 2 out_monkey_*.txt; exit 0
