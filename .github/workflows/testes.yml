@@ -35,12 +35,16 @@ jobs:
           cd tests
           npm i --no-save --no-audit --no-fund playwright@1.56 pdf-lib sharp pdfjs-dist@4.10.38
           npx playwright install --with-deps chromium
+          sudo apt-get install -y -qq poppler-utils >/dev/null
       - name: Testes rápidos
         if: ${{ !inputs.completa }}
         run: tests/run.sh --rapido
       - name: Todos os testes
         if: ${{ inputs.completa }}
         run: tests/run.sh
+      - name: O que falhou
+        if: ${{ failure() }}
+        run: grep -H "^FALHA" tests/out_*.txt || grep -l "Error" tests/out_*.txt | xargs -r -n1 sh -c 'echo "== $0"; grep -m1 -A3 Error "$0"'
       - name: Guardar as saídas dos testes
         if: ${{ always() }}
         uses: actions/upload-artifact@v6
