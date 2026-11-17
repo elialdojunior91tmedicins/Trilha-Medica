@@ -3,11 +3,24 @@ function eRevCard(){const c=eRevCard0();c.querySelector(".dhead").insertBefore(h
 const E_ASK=/\?$|\b(assinale|marque|qual (?:[ée]|a|o|das|dos)|indique|aponte)\b/i;
 function eAskSplit(t){const S=clSents(t||"");let i=-1;for(let j=S.length-1;j>=0;j--)if(E_ASK.test(S[j])){i=j;break}return i<0?{caso:S.join(" "),ask:""}:{caso:S.filter((_,j)=>j!==i).join(" "),ask:S[i]}}
 const eWrote=e=>eOneLine(e.w).replace(/;\s*a certa era .*$/i,"").replace(/^Marquei\s+/i,"Marquei ");
-/* questão irmã do próprio acervo: mesmo tema, palavras da mesma regra, nunca a mesma questão nem uma que está no Refazer */
-function eSister(e){const ra=e.ra;if(!ra||!ra.regra)return null;const K=clWords(ra.regra),own=norm(String(e.q&&e.q.e||"").slice(0,80)),inRd=new Set(redo.map(x=>norm(String(x.q&&x.q.enunciado||"").slice(0,80))));let best=null;
-  exams.forEach(ex=>(ex.qs||[]).forEach(r=>{if(!r||!r.q||(r.k!==e.k&&!(r.ks||[]).includes(e.k)))return;const t=norm(String(r.q.enunciado||"").slice(0,80));if(!t||t===own||inRd.has(t))return;
-    const W=clWords([r.q.enunciado,r.q.comentario,r.q.pc].join(" "));let n=0;K.forEach(w=>{if(W.has(w))n++});if(n>=3&&(!best||n>best.n)){const c=(r.q.alternativas||[]).find(a=>a.letra===r.q.correta);if(c)best={n,q:r.q,ans:c.texto,src:ex.name}}}));
-  if(!best)return null;const A=eAskSplit(best.q.enunciado);return {e:A.caso,ask:A.ask,ans:best.ans,src:best.src}}
+/* questão irmã do próprio acervo: mesmo tema, palavras da mesma regra, nunca a mesma questão nem uma que está no Refazer.
+   Desde 17/11/2026 só vale se a RESPOSTA certa da irmã tiver o núcleo da resposta do erro (droga, doença, conduta), sem contar palavras genéricas
+   de dose e via; o usuário pode desfazer o par ("Este caso não é da mesma regra", e.ra.nao2) */
+const E_GEN=new Set("dose doses semana semanas semanal semanais diaria diario diarias diarios dias vezes oral orais intravenosa intravenoso endovenosa endovenoso venosa subcutanea intramuscular horas hora manter iniciar inicio indicado indicada indicacao tratamento tratar realizar solicitar uso usar profilaxia primaria primario secundaria secundario milhoes durante ate cada ambos ambas apenas somente associado associada associacao".split(" "));
+const eCore=t=>[...clWords(t)].filter(w=>!/^\d+$/.test(w)&&!E_GEN.has(w));
+function eSameCore(a,b){const A=new Set(eCore(a)),B=[...new Set(eCore(b))];if(!A.size||!B.length)return false;const n=B.filter(w=>A.has(w)).length;return n>=1&&n>=Math.min(A.size,B.length)/2}
+const eSisKey=t=>norm(String(t||"")).slice(0,80);
+const eRightTxt=e=>{const Q=e&&e.q;const r=Q&&Array.isArray(Q.a)&&Q.a.find(a=>a.l===Q.c);return r?r.t:""};
+function eSister(e){const ra=e.ra;if(!ra||!ra.regra)return null;const K=clWords(ra.regra),own=eSisKey(e.q&&e.q.e),inRd=new Set(redo.map(x=>eSisKey(x.q&&x.q.enunciado))),no=new Set(ra.nao2||[]),okT=eRightTxt(e);if(!okT)return null;let best=null;
+  exams.forEach(ex=>(ex.qs||[]).forEach(r=>{if(!r||!r.q||(r.k!==e.k&&!(r.ks||[]).includes(e.k)))return;const t=eSisKey(r.q.enunciado);if(!t||t===own||inRd.has(t)||no.has(t))return;
+    const c=(r.q.alternativas||[]).find(a=>a.letra===r.q.correta);if(!c||!eSameCore(okT,c.texto))return;
+    const W=clWords([r.q.enunciado,r.q.comentario,r.q.pc].join(" "));let n=0;K.forEach(w=>{if(W.has(w))n++});if(n>=3&&(!best||n>best.n))best={n,q:r.q,ans:c.texto,src:ex.name,key:t}}));
+  if(!best)return null;const A=eAskSplit(best.q.enunciado),Q=best.q;
+  /* o raciocínio vem do caso mostrado, não do erro original */
+  let passos=[];try{const o=eOrg({k:e.k,w:"",r:"",pc:Q.pc||"",q:{e:Q.enunciado,a:(Q.alternativas||[]).map(a=>({l:a.letra,t:a.texto,p:a.porque||""})),c:Q.correta,m:Q.correta,cm:Q.comentario||"",co:Q.conceito||""}});if(o)passos=o.passos}catch(x){}
+  return {e:A.caso,ask:A.ask,ans:best.ans,src:best.src,key:best.key,passos}}
+/* caso novo da vez: o do Claude (se a resposta dele bate com a regra e não foi desfeito) ou a questão irmã */
+function eCaso2(e){const ra=e.ra;if(ra&&ra.caso2&&!(ra.nao2||[]).includes("claude")&&eSameCore(eRightTxt(e),ra.caso2.ans))return {...ra.caso2,src:"Claude",key:"claude"};return eSister(e)}
 /* texto do caso com os dados decisivos marcados (depois de abrir) */
 function eCaseFill(box,text,dados,show){box.textContent="";if(!show||!dados||!dados.length){box.textContent=text;return}
   /* cada dado vira um ou mais trechos do texto: as mesmas palavras, na mesma ordem, aceitando pontuação e parênteses entre elas */
@@ -55,7 +68,7 @@ function eLotEl(){const R=eLot;if(!R)return null;const w=el(`<div class="cdlot e
     if(r.miss)b1.innerHTML=`<p class="how">O Claude não devolveu este erro.</p>`;else{b1.innerHTML=blk(r.ra)+(r.ra.contraste?`<p class="how">+ quadro de contraste</p>`:"")+(r.ra.caso2?`<p class="how">+ caso novo com a mesma regra</p>`:"");
       const cb=el(`<label class="cdck cdap"><input type="checkbox"> Aprovar</label>`),inp=cb.querySelector("input");inp.id="eAp-"+i;inp.checked=r.ok;inp.onchange=()=>{r.ok=inp.checked;render()};li.querySelector(".cdbah").appendChild(cb)}ol.appendChild(li)});w.appendChild(ol);
   const n=R.res.filter(r=>!r.miss&&r.ok).length,B=el(`<div class="btns"><button class="btn primary" type="button" id="eLotApply"></button><button class="link" type="button" id="eLotCancel">Descartar</button></div>`);
-  B.querySelector("#eLotApply").textContent=`Aplicar ${n} ${n===1?"aprovado":"aprovados"}`;B.querySelector("#eLotApply").disabled=!n;B.querySelector("#eLotApply").onclick=()=>{R.res.forEach(r=>{if(r.miss||!r.ok)return;const e=errors.find(x=>x.id===r.id);if(e){e.ra=r.ra;putErr(e)}});eLot=null;render()};
+  B.querySelector("#eLotApply").textContent=`Aplicar ${n} ${n===1?"aprovado":"aprovados"}`;B.querySelector("#eLotApply").disabled=!n;B.querySelector("#eLotApply").onclick=()=>{R.res.forEach(r=>{if(r.miss||!r.ok)return;const e=errors.find(x=>x.id===r.id);if(e){const n2=(e.ra&&e.ra.nao2)||[];e.ra=n2.length?{...r.ra,nao2:n2}:r.ra;putErr(e)}});eLot=null;render()};
   B.querySelector("#eLotCancel").onclick=()=>{eLot=null;render()};w.appendChild(B);return w}
 const eSrcLab={app:"montado pelo app",claude:"organizado pelo Claude",eu:"corrigido por você"};
 function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-labelledby="erh"><div class="dhead"><h2 id="erh">Revisar erros</h2><span class="todaydate"></span></div></section>`);
@@ -70,7 +83,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
       c.appendChild(el(`<p class="how">Errei volta amanhã; Em parte, na metade do prazo do Acertei (mín. 2 dias); Acertei sobe para o próximo intervalo (3, 7, 15 e 30 dias).</p>`));
       const b=el(`<button class="btn primary" type="button">Fechar</button>`);b.onclick=()=>{erRun=null;render()};c.appendChild(b);return c}
     const it=BYKEY[e.k],Q=e.q&&Array.isArray(e.q.a)?e.q:null,ra=e.ra||null,show=R.show,n=(e.rev||0)+1;
-    const sis=Q&&(e.rev||0)>=2?(ra&&ra.caso2?{...ra.caso2,src:"Claude"}:eSister(e)):null;/* 6A.1: a partir da 3ª revisão, caso novo com a mesma regra */
+    const sis=Q&&(e.rev||0)>=2?eCaso2(e):null;/* 6A.1: a partir da 3ª revisão, caso novo com a mesma regra */
     const card=el(`<div class="erv2${show?" show":""}"><div class="erprog"><div class="erpb"><i></i></div><span></span></div><div class="erhd"><h3 class="ertema"></h3><p class="ermeta"></p></div><div class="erg"><div class="erl"></div><div class="erside"></div></div></div>`);
     card.querySelector(".erprog i").style.width=`${Math.round(R.i/R.ids.length*100)}%`;card.querySelector(".erprog span").textContent=`${R.i+1} de ${R.ids.length}`;
     const tt=card.querySelector(".ertema");tt.textContent=it?it.t:"";tt.onclick=()=>openTopic(e.k);
@@ -90,8 +103,8 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
       if(Q){const ri=Q.a.find(a=>a.l===Q.c),mi=Q.a.find(a=>a.l===Q.m),cs=el(`<div class="ercs"><div class="ercok"><span>${sis?"Resposta deste caso":"Certa"}</span><p></p></div>${!sis&&mi&&Q.m!==Q.c?`<div class="ercno"><span>Você marcou na prova</span><p></p></div>`:""}</div>`);
         cs.querySelector(".ercok p").textContent=sis?sis.ans:ri?ri.t:"";if(!sis&&mi&&Q.m!==Q.c)cs.querySelector(".ercno p").textContent=mi.t;L.appendChild(cs)}
       else{const cs=el(`<div class="ercs"><div class="ercok"><span>Correto</span><p class="r"></p></div></div>`);eRFill(cs.querySelector(".r"),e.r);L.appendChild(cs)}
-      if(ra&&(ra.regra||ra.passos.length)){const rg=el(`<div class="errg"><span>A regra</span><p></p><small class="ersrc"></small></div>`);rg.querySelector("p").textContent=ra.regra||"";rg.querySelector(".ersrc").textContent=eSrcLab[ra.src]||"";Rt.appendChild(rg);
-        if(ra.passos.length){const ps=el(`<div class="erpsw"><span class="glabel">O raciocínio</span><ol class="erps"></ol></div>`),ol=ps.querySelector("ol");ra.passos.forEach(x=>{const li=el(`<li></li>`);boldFill(li,x);ol.appendChild(li)});Rt.appendChild(ps)}
+      const PS=sis?(sis.passos||[]):ra?ra.passos:[];if(ra&&(ra.regra||ra.passos.length)){const rg=el(`<div class="errg"><span>A regra</span><p></p><small class="ersrc"></small></div>`);rg.querySelector("p").textContent=ra.regra||"";rg.querySelector(".ersrc").textContent=eSrcLab[ra.src]||"";Rt.appendChild(rg);
+        if(PS.length){const ps=el(`<div class="erpsw"><span class="glabel">O raciocínio${sis?" deste caso":""}</span><ol class="erps"></ol></div>`),ol=ps.querySelector("ol");PS.forEach(x=>{const li=el(`<li></li>`);boldFill(li,x);ol.appendChild(li)});Rt.appendChild(ps)}
         if(ra.contraste){const T=ra.contraste,tb=el(`<div class="erct"><span class="glabel">O que separa uma da outra</span><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody></tbody></table></div>`),th=tb.querySelectorAll("th");th[1].textContent=T.h[0];th[2].textContent=T.h[1];
           T.rows.forEach(r=>{const tr=el(`<tr><td></td><td></td><td></td></tr>`),td=tr.querySelectorAll("td");td[0].textContent=r.l;td[1].textContent=r.a;td[2].textContent=r.b;tb.querySelector("tbody").appendChild(tr)});Rt.appendChild(tb)}
         const ns=ra.naoSua||cdErrParse(e).why;if(ns&&!sis){const w=el(`<div class="ernao"><span class="glabel">Por que não a sua</span><p></p></div>`);w.querySelector("p").textContent=ns;Rt.appendChild(w)}}
@@ -103,6 +116,7 @@ function eRevCard0(){const due=eDueList(),c=el(`<section class="card erev" aria-
       const T=el(`<div class="ertools"></div>`);
       if(ra){const ed=el(`<button class="mini" type="button" id="erEdB">✎ Corrigir</button>`);ed.onclick=()=>{erEd={id:e.id,regra:ra.regra||"",dados:(ra.dados||[]).join("\n"),passos:(ra.passos||[]).join("\n"),naoSua:ra.naoSua||""};render()};T.appendChild(ed)}
       if(Q&&!sampleOff){const ai=el(`<button class="mini" type="button" id="erAI">✦ Melhorar com o Claude</button>`);ai.disabled=!sampleFn||!!eLot;ai.onclick=()=>eLotRun([e]);T.appendChild(ai)}
+      if(sis){const nb=el(`<button class="mini" type="button" id="erNot2">Este caso não é da mesma regra</button>`);nb.onclick=()=>{const r=e.ra||{regra:"",dados:[],passos:[],naoSua:"",src:"app"};e.ra=eRaClean({...r,nao2:[...(r.nao2||[]),sis.key].slice(-20)})||r;putErr(e);render()};T.appendChild(nb)}
       T.appendChild(eCardBtn(e));Rt.appendChild(T);if(cdErr[e.id])Rt.appendChild(cdErrEl(e));if(erEd&&erEd.id===e.id)Rt.appendChild(erEdEl(e))}
     c.appendChild(card);
     /* notas: Errei · Em parte · Acertei, cada uma com quando volta */

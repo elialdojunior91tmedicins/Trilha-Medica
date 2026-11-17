@@ -25,7 +25,7 @@ function ecardEl(e,withTopic){
 function eRaClean(r){if(!r||typeof r!=="object")return null;const S=(v,n)=>typeof v==="string"?v.slice(0,n):"",L=(v,n,m)=>Array.isArray(v)?v.filter(x=>typeof x==="string"&&x.trim()).slice(0,n).map(x=>x.slice(0,m)):[];
   const o={regra:S(r.regra,600),dados:L(r.dados,6,160),passos:L(r.passos,5,500),naoSua:S(r.naoSua,800),src:["app","claude","eu"].includes(r.src)?r.src:"app",at:S(r.at,10)};
   if(r.contraste&&typeof r.contraste==="object"&&Array.isArray(r.contraste.h)&&Array.isArray(r.contraste.rows)){const rows=r.contraste.rows.filter(x=>x&&typeof x==="object").slice(0,6).map(x=>({l:S(x.l,80),a:S(x.a,200),b:S(x.b,200)})).filter(x=>x.a||x.b);if(rows.length)o.contraste={h:[S(r.contraste.h[0],80),S(r.contraste.h[1],80)],rows}}
-  if(r.caso2&&typeof r.caso2==="object"&&typeof r.caso2.e==="string"&&r.caso2.e.trim())o.caso2={e:S(r.caso2.e,3000),ask:S(r.caso2.ask,400),ans:S(r.caso2.ans,600)};return o}
+  if(r.caso2&&typeof r.caso2==="object"&&typeof r.caso2.e==="string"&&r.caso2.e.trim())o.caso2={e:S(r.caso2.e,3000),ask:S(r.caso2.ask,400),ans:S(r.caso2.ans,600)};const n2=L(r.nao2,20,120);if(n2.length)o.nao2=n2;return o}
 function errOk(e){if(!e||typeof e!=="object"||!BYKEY[e.k]||typeof e.id!=="string")return false;if(e.ra!==undefined){const r=eRaClean(e.ra);if(r)e.ra=r;else delete e.ra}for(const f of ["w","r","s"])if(typeof e[f]!=="string")e[f]=String(e[f]??"");if(typeof e.d!=="string")e.d=today();
   for(const f of ["pc","dd"])if(e[f]!=null&&typeof e[f]!=="string")delete e[f];
   if(e.q!=null&&!(e.q&&typeof e.q==="object"&&typeof e.q.e==="string"&&Array.isArray(e.q.a)))delete e.q;return true}
