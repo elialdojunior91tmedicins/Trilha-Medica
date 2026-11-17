@@ -42,6 +42,7 @@ com a data e não apague o histórico.
 ## Erros, cartões e caderno
 
 - Revisar erros: **Proposta B** — o app monta a regra, os dados decisivos e o raciocínio; o usuário corrige com toques; o Claude é opcional, em lote (31/10/2026, 22h09). O que o usuário corrige nunca é sobrescrito sem ele aprovar. (claude/lote-21.md)
+- Caso novo com a mesma regra (Revisar erros): só vale a questão irmã cuja **resposta certa** tem o mesmo núcleo da resposta do erro; sem irmã que passe, volta o caso original. Com caso novo, o raciocínio é o do caso mostrado; botão "Este caso não é da mesma regra" desfaz o par (17/11/2026, 10h47; simulação com 5 erros aprovada às 11h25). (claude/pendencias.md)
 - "Em parte" nos erros = volta na metade do prazo do Acertei, mínimo 2 dias, mesmo degrau (05/11/2026, 07h07). (claude/lote-21-publicado.md)
 - Erros **não** são escritos dentro da anotação do tema: ficam só no caderno de erros, ligados ao tema; as seções "## Meus erros" antigas foram para o caderno (19/10/2026). (claude/problemas-a-resolver.md)
 - O **caderno livre é o centro** da aba Caderno; a anotação do tema é uma página dele (21/10/2026, 22h43). (claude/problemas-a-resolver.md)
