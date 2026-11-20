@@ -751,3 +751,11 @@ com o mapa ("sem uso" = o nome só aparece na definição). **Os nomes abaixo n�
   `#pTimeChg`, `#pHnd`, que continuam no DOM e escondidos pelo CSS no celular. Aviso do freio no celular: "toque em Ajustar o dia › Refazer plano".
 - **Revisadas hoje** (`renderRevs`): com mais de 8, mostra as 6 mais recentes (`rt.slice(-6)`) e `#rdAllB` "Ver todas as N" (`rdAll`, não salvo).
 - Teste `tests/t157.js` (celular, iPad no Claude, tablet deitado, computador); t25 e t85 abrem "Ajustar o dia" no celular.
+
+## Marca "Trilha N" (19/11/2026)
+Proposta B de 03/11 (`claude/logomarca-proposta-b.md`), aplicada a pedido do usuário junto com o site de lançamento. `.blogo` em `src/app/corpo.html`:
+um `path` (trilha em N, traço 8, ponta redonda, `url(#nxg1)`) + `circle` (ponto da meta, r 7, `url(#nxg3)`); `nxg2` saiu. Mesmo `viewBox 0 0 120 80` e as
+mesmas variáveis `--lg1/2/3` (claro e escuro), então o CSS da `.blogo` não mudou. `icons/` regerados por Playwright: fundo
+`radial-gradient(circle at 25% 15%, #1d3164, #0b1326 78%)`, raio 22% nos de navegador (192, 512, favicon-32 com traço 12 e ponto r 9), quadrados
+sem transparência no `apple-touch-icon` (180) e no `maskable-512` (símbolo com 50% da largura, dentro da margem segura). Teste: t79 (75).
+No iPhone/iPad o ícone da Tela de Início só muda reinstalando o app.
